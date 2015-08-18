@@ -1,0 +1,102 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] GPSD on Cygwin
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2004-November/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20GPSD%20on%20Cygwin&In-Reply-To=%3C0b5001c4c133%247c218180%240300a8c0%40betsy%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="000130.html">
+   <LINK REL="Next"  HREF="000132.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] GPSD on Cygwin</H1>
+    <B>RenderMan</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20GPSD%20on%20Cygwin&In-Reply-To=%3C0b5001c4c133%247c218180%240300a8c0%40betsy%3E"
+       TITLE="[Gpsd-users] GPSD on Cygwin">render at renderlab.net
+       </A><BR>
+    <I>Wed Nov  3 00:27:14 CET 2004</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="000130.html">[Gpsd-users] Announcing release 2.3 of gpsd
+</A></li>
+        <LI>Next message: <A HREF="000132.html">[Gpsd-users] Runleveleditor ?
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#131">[ date ]</a>
+              <a href="thread.html#131">[ thread ]</a>
+              <a href="subject.html#131">[ subject ]</a>
+              <a href="author.html#131">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Various stories exist online of people compiling GPSD under Cygwin.  A 
+useful idea since providing GPS data to the network would be nice from any 
+platform.  Tinkering with 2.2 and now 2.3 I've had ever decreasing problems, 
+but still cannot get it to work. (Note: I have GPSD compiling and running 
+wonderfully under Slackware for Kismet, Cygwin has been far more of an 
+adventure.  My goal is a working Kismet setup under windows, the last piece 
+is the GPS data, everything else works).
+
+To get get 2.3 to compile, you need:
+
+libgpsd_core.c - Add #include &lt;sys/socket.h&gt;
+gps.c - Add #include &lt;stdio.h&gt;
+
+If you add those, 2.3 compiles cleanly.  Running it is where the problems 
+start:
+
+$ ./gpsd -p /dev/ttyS2 -D99
+gpsd: launching (Version 2.3)
+gpsd: listening on port 2947
+gpsd: Selecting Generic NMEA driver...
+gpsd: closed GPS
+gpsd: opening GPS data source at /dev/ttyS2
+gpsd: setting speed 4800, 8 bits, no parity
+gpsd: gpsd_activate: opened GPS (4)
+gpsd: =&gt; client(128): GPSD,X=1
+gpsd: Client on 128 has vanished.
+&lt;last line repeats 4 times with an ever increasing Client #&gt;
+
+telnet to port 2947 connects until a keypress then the daemon closes with a 
+&quot;Bad File Descriptor&quot; error.
+
+cat &lt;/dev/ttyS2  shows normal looking NMEA GPRMC sentances coming through.
+
+Tried with GPSgate simulator software and with Garmin Etrex Legend.  Both 
+work on the same machine with different apps.  Cygwin version 1.5.11-1 from 
+Cygwin.com, full install
+
+Any insights?
+
+Brad 'RenderMan' Haines 
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="000130.html">[Gpsd-users] Announcing release 2.3 of gpsd
+</A></li>
+	<LI>Next message: <A HREF="000132.html">[Gpsd-users] Runleveleditor ?
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#131">[ date ]</a>
+              <a href="thread.html#131">[ thread ]</a>
+              <a href="subject.html#131">[ subject ]</a>
+              <a href="author.html#131">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

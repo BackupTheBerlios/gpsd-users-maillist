@@ -1,0 +1,131 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] Ntp Problems
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2009-November/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Ntp%20Problems&In-Reply-To=%3Ca2d3b4550911130954g1a17c841u89d3bf4fd83a10be%40mail.gmail.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="004052.html">
+   <LINK REL="Next"  HREF="004054.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] Ntp Problems</H1>
+    <B>Don Weeks</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Ntp%20Problems&In-Reply-To=%3Ca2d3b4550911130954g1a17c841u89d3bf4fd83a10be%40mail.gmail.com%3E"
+       TITLE="[Gpsd-users] Ntp Problems">don.l.weeks.jr at gmail.com
+       </A><BR>
+    <I>Fri Nov 13 18:54:48 CET 2009</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="004052.html">[Gpsd-users] Ntp Problems
+</A></li>
+        <LI>Next message: <A HREF="004054.html">[Gpsd-users] Ntp Problems
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#4053">[ date ]</a>
+              <a href="thread.html#4053">[ thread ]</a>
+              <a href="subject.html#4053">[ subject ]</a>
+              <a href="author.html#4053">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Oops, sorry. that code comes from WinNT # define and is not valid. Still
+looking.
+          Don
+
+On Fri, Nov 13, 2009 at 11:47 AM, Don Weeks &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">don.l.weeks.jr at gmail.com</A>&gt;wrote:
+
+&gt;<i> Gary,
+</I>&gt;<i>    The one difference I see between your shm and mine is that the
+</I>&gt;<i> permissions are different via ntp. For some reason, mine are 700.
+</I>&gt;<i>
+</I>&gt;<i> Below is the open routine from NTP and it is set to either 700 or 777. Not
+</I>&gt;<i> sure why you have 644 on NTP.  And BTW, on my machine,  both ntp and gpsd
+</I>&gt;<i> are started as root.
+</I>&gt;<i>          Don
+</I>&gt;<i>
+</I>&gt;<i>         shmid=shmget (0x4e545030+unit, sizeof (struct shmTime),
+</I>&gt;<i>                       IPC_CREAT|(unit&lt;2?0700:0777));
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i> On Fri, Nov 13, 2009 at 10:32 AM, Gary E. Miller &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">gem at rellim.com</A>&gt; wrote:
+</I>&gt;<i>
+</I>&gt;&gt;<i> -----BEGIN PGP SIGNED MESSAGE-----
+</I>&gt;&gt;<i> Hash: SHA1
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> Yo Don!
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> On Fri, 13 Nov 2009, Don Weeks wrote:
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> &gt; So, on shared memory, should the shm look like this:
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> Nope.  Your prior guess looks right.  For some reason they are not
+</I>&gt;&gt;<i> working off the same segments.  Here is how mine look:
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> cat /proc/sysvipc/shm
+</I>&gt;&gt;<i>       key      shmid perms       size  cpid  lpid nattch   uid   gid  cuid
+</I>&gt;&gt;<i>  cgid      atime      dtime      ctime
+</I>&gt;&gt;<i> 1314148400          0   644                    96 25020 27168      2     0
+</I>&gt;&gt;<i>     0     0     0 1258098492 1258098489 1257543244
+</I>&gt;&gt;<i> 1314148401      32769   644                    96 25020 27168      2     0
+</I>&gt;&gt;<i>     0     0     0 1258098492 1258098489 1257543244
+</I>&gt;&gt;<i> 1314148402      65538   644                    96 25020 27168      1     0
+</I>&gt;&gt;<i>     0     0     0 1258098492 1258098489 1257543244
+</I>&gt;&gt;<i> 1314148403      98307   644                    96 25020 27168      1     0
+</I>&gt;&gt;<i>     0     0     0 1258098492 1258098489 1257543244
+</I>&gt;&gt;<i> &gt;
+</I>&gt;&gt;<i>  PID USER      PR  NI  VIRT  RES  SHR S %CPU %MEM    TIME+  COMMAND
+</I>&gt;&gt;<i> 25654 root      RT   0 19008 1356  956 S    0  0.0   0:00.23 ntpd
+</I>&gt;&gt;<i> 27168 root      10 -10 29756 2880 1476 S    0  0.0   0:11.91 gpsd
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> For the shm thing to work you should start ntpd as root and then gpsd.
+</I>&gt;&gt;<i> If you start gpsd as root then it can nice() itself.
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> RGDS
+</I>&gt;&gt;<i> GARY
+</I>&gt;&gt;<i> -
+</I>&gt;&gt;<i> ---------------------------------------------------------------------------
+</I>&gt;&gt;<i> Gary E. Miller Rellim 109 NW Wilmington Ave., Suite E, Bend, OR 97701
+</I>&gt;&gt;<i>        <A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">gem at rellim.com</A>  Tel:+1(541)382-8588
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> -----BEGIN PGP SIGNATURE-----
+</I>&gt;&gt;<i> Version: GnuPG v1.4.3 (GNU/Linux)
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> iD8DBQFK/YoIBmnRqz71OvMRAnXGAKC4IUHKNYSvi/qB9qeV2H08dpK7FQCgjsDl
+</I>&gt;&gt;<i> MrwjVJ7RrajWAHv27sDznkA=
+</I>&gt;&gt;<i> =zHwj
+</I>&gt;&gt;<i> -----END PGP SIGNATURE-----
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i>
+</I>&gt;<i>
+</I>
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="004052.html">[Gpsd-users] Ntp Problems
+</A></li>
+	<LI>Next message: <A HREF="004054.html">[Gpsd-users] Ntp Problems
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#4053">[ date ]</a>
+              <a href="thread.html#4053">[ thread ]</a>
+              <a href="subject.html#4053">[ subject ]</a>
+              <a href="author.html#4053">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

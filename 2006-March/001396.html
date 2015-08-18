@@ -1,0 +1,89 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] Altitude not always being reported
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2006-March/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Altitude%20not%20always%20being%20reported&In-Reply-To=%3C20060309212100.61053.qmail%40web32501.mail.mud.yahoo.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="001395.html">
+   <LINK REL="Next"  HREF="001446.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] Altitude not always being reported</H1>
+    <B>Michael R. Davis</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Altitude%20not%20always%20being%20reported&In-Reply-To=%3C20060309212100.61053.qmail%40web32501.mail.mud.yahoo.com%3E"
+       TITLE="[Gpsd-users] Altitude not always being reported">mrdvt92 at yahoo.com
+       </A><BR>
+    <I>Thu Mar  9 22:21:00 CET 2006</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="001395.html">[Gpsd-users] Altitude not always being reported
+</A></li>
+        <LI>Next message: <A HREF="001446.html">[Gpsd-users] Altitude not always being reported
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1396">[ date ]</a>
+              <a href="thread.html#1396">[ thread ]</a>
+              <a href="subject.html#1396">[ subject ]</a>
+              <a href="author.html#1396">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>--- Ravi Mathur &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">ravidavi at mail.utexas.edu</A>&gt; wrote:
+
+&gt;<i>  Every 
+</I>&gt;<i> command that I send to gpsd seems to work ok, *except* for getting  
+</I>&gt;<i> the altitude.  If I send the 'a' command over and over, most of the  
+</I>&gt;<i> time it just returns &quot;GPSD,A=?&quot;.  About 10% of the time, it will  
+</I>&gt;<i> actually report the correct altitude.  It seems to me that the  
+</I>&gt;<i> altitude is only being reported when it changes?  Is this correct?
+</I>
+Actually the way gpsd works is that the altitude is only reported when
+the gps device reports it.  You can run gpspipe -wr and see the raw
+data.  Altitude is the sixth field in the &quot;O&quot; (man gpsd) field and the
+9th value in the GGA sentences (see NMEA).  If you want an altitude
+caching capability, you'll have to put that in your application.
+
+The gpsd list archive is at
+<A HREF="http://lists.berlios.de/pipermail/gpsd-users.mbox/gpsd-users.mbox">http://lists.berlios.de/pipermail/gpsd-users.mbox/gpsd-users.mbox</A>
+download and grep it up.
+
+I'm trying to get people to start to put information on the wiki I
+setup at <A HREF="http://gpsd.davisnetworks.com/.">http://gpsd.davisnetworks.com/.</A>
+
+Mike (mrdvt92)
+
+__________________________________________________
+Do You Yahoo!?
+Tired of spam?  Yahoo! Mail has the best spam protection around 
+<A HREF="http://mail.yahoo.com">http://mail.yahoo.com</A> 
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="001395.html">[Gpsd-users] Altitude not always being reported
+</A></li>
+	<LI>Next message: <A HREF="001446.html">[Gpsd-users] Altitude not always being reported
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1396">[ date ]</a>
+              <a href="thread.html#1396">[ thread ]</a>
+              <a href="subject.html#1396">[ subject ]</a>
+              <a href="author.html#1396">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

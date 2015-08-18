@@ -1,0 +1,318 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] gpsd in VMware
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2008-December/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20gpsd%20in%20VMware&In-Reply-To=%3C34721A41A7BCF54ABC3B116219A8C1C204FB0CD255%40NP1EXCH012.corp.halliburton.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="003518.html">
+   <LINK REL="Next"  HREF="003520.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] gpsd in VMware</H1>
+    <B>Mike Pilkington</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20gpsd%20in%20VMware&In-Reply-To=%3C34721A41A7BCF54ABC3B116219A8C1C204FB0CD255%40NP1EXCH012.corp.halliburton.com%3E"
+       TITLE="[Gpsd-users] gpsd in VMware">MPilkington at lgc.com
+       </A><BR>
+    <I>Sat Dec 27 01:09:57 CET 2008</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="003518.html">[Gpsd-users] HP 58534A GPS Timing Antenna and gpsd
+</A></li>
+        <LI>Next message: <A HREF="003520.html">[Gpsd-users] Fix mode downgrades
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3655">[ date ]</a>
+              <a href="thread.html#3655">[ thread ]</a>
+              <a href="subject.html#3655">[ subject ]</a>
+              <a href="author.html#3655">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi,
+
+I'm using the BackTrack 3 LiveCD (based on Slackware 12) to run Kismet with gpsd.  My GPS receiver is a TripNav BU-353 USB GPS (details at <A HREF="http://www.usglobalsat.com/p-62-bu-353-w.aspx">http://www.usglobalsat.com/p-62-bu-353-w.aspx</A>).
+
+gpsd and Kismet work flawlessly when I boot my laptop with the BackTrack CD, insert the GPS receiver, run 'gpsd /dev/ttyUSB0', and then start Kismet.
+
+However, what I would also like to be able to do is use this setup with VMware.  I have VMware Workstation 6.5.1.  When I do the same routine within VMware, it fails.  Interestingly, I have the older version of this GPS receiver (model BU-303; details at <A HREF="http://www.usglobalsat.com/p-395-bu303a.aspx">http://www.usglobalsat.com/p-395-bu303a.aspx</A>) and it works fine within VMware.
+
+Below is some information on each instance.  The first set of output is from my native LiveCD boot on the laptop.  The second set is from the VMware boot.  What I notice most is the following lines missing from the VMware boot:
+
+Dec 26 13:45:32 (none) gpsd[6193]: gpsd: switch_driver(Generic NMEA) called...
+Dec 26 13:45:32 (none) gpsd[6193]: gpsd: selecting Generic NMEA driver...
+
+It seems to me that the VMware needs to switch to this Generic NMEA driver, but it is not.
+
+Any help you can provide is much appreciated!!
+
+------------------
+Details from native boot:
+------------------
+
+After bootup, I insert the GPS receiver and get the following new modules added:
+
+Module                  Size  Used by
+pl2303                 23300  0
+usbserial              33128  1 pl2303
+
+I start gpsd as follows:  gpsd -D 3 /dev/ttyUSB0
+
+The following appears in /var/log/messages:
+
+Dec 26 13:45:00 (none) kernel: usb 1-2.3: new full speed USB device using uhci_hcd and address 6
+Dec 26 13:45:01 (none) kernel: usb 1-2.3: configuration #1 chosen from 1 choice
+Dec 26 13:45:01 (none) kernel: pl2303 1-2.3:1.0: pl2303 converter detected
+Dec 26 13:45:01 (none) kernel: usb 1-2.3: pl2303 converter now attached to ttyUSB0
+Dec 26 13:45:29 (none) gpsd[6193]: gpsd: launching (Version 2.37)
+Dec 26 13:45:29 (none) gpsd[6193]: gpsd: listening on port 2947
+Dec 26 13:45:29 (none) gpsd[6193]: gpsd: shmat(0,0,0) succeeded
+Dec 26 13:45:29 (none) last message repeated 3 times
+Dec 26 13:45:29 (none) gpsd[6193]: gpsd: changing to group 14
+Dec 26 13:45:29 (none) gpsd[6193]: gpsd: running with effective group ID 14
+Dec 26 13:45:29 (none) gpsd[6193]: gpsd: running with effective user ID 99
+Dec 26 13:45:29 (none) gpsd[6193]: gpsd: opening GPS data source at '/dev/ttyUSB0'
+Dec 26 13:45:29 (none) gpsd[6193]: gpsd: speed 0, 8N1
+Dec 26 13:45:29 (none) gpsd[6193]: gpsd: Navcom: sent command 0x1c (Test Support Block)
+Dec 26 13:45:29 (none) gpsd[6193]: gpsd: Navcom: sent command 0x20 (Data Request) - data block id = ae at rate 00
+Dec 26 13:45:29 (none) gpsd[6193]: gpsd: Navcom: sent command 0x20 (Data Request) - data block id = 86 at rate 0a
+Dec 26 13:45:29 (none) gpsd[6193]: gpsd: garmin_gps not active.
+Dec 26 13:45:29 (none) gpsd[6193]: gpsd: no probe matched...
+Dec 26 13:45:29 (none) gpsd[6193]: gpsd: gpsd_activate(1): opened GPS (5)
+Dec 26 13:45:30 (none) logger: ACPI group thermal_zone / action TZ1 is not defined
+Dec 26 13:45:31 (none) gpsd[6193]: gpsd: speed 4800, 7N2
+Dec 26 13:45:31 (none) gpsd[6193]: gpsd: Navcom: sent command 0x1c (Test Support Block)
+Dec 26 13:45:31 (none) gpsd[6193]: gpsd: Navcom: sent command 0x20 (Data Request) - data block id = ae at rate 00
+Dec 26 13:45:31 (none) gpsd[6193]: gpsd: Navcom: sent command 0x20 (Data Request) - data block id = 86 at rate 0a
+Dec 26 13:45:32 (none) gpsd[6193]: gpsd: switch_driver(Generic NMEA) called...
+Dec 26 13:45:32 (none) gpsd[6193]: gpsd: selecting Generic NMEA driver...
+Dec 26 13:45:32 (none) gpsd[6193]: gpsd: ntpd_link_activate: 0
+Dec 26 13:45:32 (none) gpsd[6193]: gpsd: Partial satellite data (2 of 3).
+Dec 26 13:45:32 (none) gpsd[6193]: gpsd: Create Thread gpsd_ppsmonitor
+Dec 26 13:45:32 (none) gpsd[6193]: gpsd: GPGSV field 3 value of 12 != actual count 8
+Dec 26 13:45:32 (none) gpsd[6193]: gpsd: Satellite data OK (3 of 3).
+Dec 26 13:45:32 (none) gpsd[6193]: gpsd: GPRMC starts a reporting cycle.
+Dec 26 13:45:32 (none) gpsd[6193]: gpsd: GPRMC sets mode 2
+Dec 26 13:45:32 (none) gpsd[6193]: gpsd: LOS matrix is singular, can't calculate DOPs.
+Dec 26 13:45:32 (none) gpsd[6193]: gpsd: GPGGA starts a reporting cycle.
+Dec 26 13:45:32 (none) gpsd[6193]: gpsd: GPGGA sets status 1 and mode 3 (changed)
+Dec 26 13:45:32 (none) gpsd[6193]: gpsd: GPGSA sets mode 3
+Dec 26 13:45:33 (none) gpsd[6193]: gpsd: GPRMC sets mode 2
+Dec 26 13:45:33 (none) gpsd[6193]: gpsd: GPGGA starts a reporting cycle.
+Dec 26 13:45:33 (none) gpsd[6193]: gpsd: GPGGA sets status 1 and mode 3 (changed)
+Dec 26 13:45:33 (none) gpsd[6193]: gpsd: GPGSA sets mode 3
+Dec 26 13:45:34 (none) gpsd[6193]: gpsd: GPRMC sets mode 2
+Dec 26 13:45:34 (none) gpsd[6193]: gpsd: GPGGA starts a reporting cycle.
+Dec 26 13:45:34 (none) gpsd[6193]: gpsd: GPGGA sets status 1 and mode 3 (changed)
+Dec 26 13:45:34 (none) gpsd[6193]: gpsd: GPGSA sets mode 3
+Dec 26 13:45:35 (none) gpsd[6193]: gpsd: GPRMC sets mode 2
+Dec 26 13:45:35 (none) gpsd[6193]: gpsd: GPGGA starts a reporting cycle.
+Dec 26 13:45:35 (none) gpsd[6193]: gpsd: GPGGA sets status 1 and mode 3 (changed)
+Dec 26 13:45:35 (none) gpsd[6193]: gpsd: GPGSA sets mode 3
+Dec 26 13:45:36 (none) gpsd[6193]: gpsd: GPRMC sets mode 2
+Dec 26 13:45:36 (none) gpsd[6193]: gpsd: GPGGA starts a reporting cycle.
+Dec 26 13:45:36 (none) gpsd[6193]: gpsd: GPGGA sets status 1 and mode 3 (changed)
+Dec 26 13:45:36 (none) gpsd[6193]: gpsd: GPGSA sets mode 3
+Dec 26 13:45:36 (none) gpsd[6193]: gpsd: Partial satellite data (1 of 3).
+Dec 26 13:45:37 (none) gpsd[6193]: gpsd: Partial satellite data (2 of 3).
+Dec 26 13:45:37 (none) gpsd[6193]: gpsd: Satellite data OK (3 of 3).
+Dec 26 13:45:37 (none) gpsd[6193]: gpsd: GPRMC sets mode 2
+Dec 26 13:45:37 (none) gpsd[6193]: gpsd: DOPS computed/reported: H=1.632394/2.800000, V=2.158004/1.700000, P=2.705862/0.000000, T=1.649070/nan, G=3.168773/nan
+Dec 26 13:45:37 (none) gpsd[6193]: gpsd: GPGGA starts a reporting cycle.
+Dec 26 13:45:37 (none) gpsd[6193]: gpsd: GPGGA sets status 1 and mode 3 (changed)
+Dec 26 13:45:37 (none) gpsd[6193]: gpsd: GPGSA sets mode 3
+Dec 26 13:45:38 (none) gpsd[6193]: gpsd: GPRMC sets mode 2
+Dec 26 13:45:38 (none) gpsd[6193]: gpsd: GPGGA starts a reporting cycle.
+Dec 26 13:45:38 (none) gpsd[6193]: gpsd: GPGGA sets status 1 and mode 3 (changed)
+Dec 26 13:45:38 (none) gpsd[6193]: gpsd: GPGSA sets mode 3
+Dec 26 13:45:39 (none) gpsd[6193]: gpsd: GPRMC sets mode 2
+Dec 26 13:45:39 (none) gpsd[6193]: gpsd: GPGGA starts a reporting cycle.
+Dec 26 13:45:39 (none) gpsd[6193]: gpsd: GPGGA sets status 1 and mode 3 (changed)
+Dec 26 13:45:39 (none) gpsd[6193]: gpsd: GPGSA sets mode 3
+Dec 26 13:45:39 (none) gpsd[6193]: gpsd: GPRMC sets mode 2
+Dec 26 13:45:40 (none) gpsd[6193]: gpsd: GPGGA starts a reporting cycle.
+Dec 26 13:45:40 (none) gpsd[6193]: gpsd: GPGGA sets status 1 and mode 3 (changed)
+Dec 26 13:45:40 (none) gpsd[6193]: gpsd: GPGSA sets mode 3
+Dec 26 13:45:41 (none) gpsd[6193]: gpsd: GPRMC sets mode 2
+Dec 26 13:45:41 (none) gpsd[6193]: gpsd: GPGGA starts a reporting cycle.
+Dec 26 13:45:41 (none) gpsd[6193]: gpsd: GPGGA sets status 1 and mode 3 (changed)
+Dec 26 13:45:41 (none) gpsd[6193]: gpsd: GPGSA sets mode 3
+Dec 26 13:45:42 (none) gpsd[6193]: gpsd: Partial satellite data (1 of 3).
+Dec 26 13:45:42 (none) gpsd[6193]: gpsd: Partial satellite data (2 of 3).
+Dec 26 13:45:42 (none) gpsd[6193]: gpsd: Satellite data OK (3 of 3).
+Dec 26 13:45:42 (none) gpsd[6193]: gpsd: GPRMC sets mode 2
+Dec 26 13:45:42 (none) gpsd[6193]: gpsd: DOPS computed/reported: H=4.142394/8.400000, V=7.686435/4.000000, P=8.731592/0.000000, T=6.799698/1.649070, G=11.066914/3.168773
+
+## Deleted a lot of repeating data here.  Note that Kismet starts just below at 13:46:21:
+
+Dec 26 13:46:20 (none) gpsd[6193]: gpsd: GPGGA starts a reporting cycle.
+Dec 26 13:46:20 (none) gpsd[6193]: gpsd: GPGGA sets status 2 and mode 3 (changed)
+Dec 26 13:46:20 (none) gpsd[6193]: gpsd: GPGSA sets mode 3
+Dec 26 13:46:21 (none) gpsd[6193]: gpsd: GPRMC sets mode 2
+Dec 26 13:46:21 (none) kernel: device kis0 entered promiscuous mode
+Dec 26 13:46:21 (none) gpsd[6193]: gpsd: client 127.0.0.1 (0) connect on fd 6
+Dec 26 13:46:21 (none) gpsd[6193]: gpsd: checking client(0)
+Dec 26 13:46:21 (none) gpsd[6193]: gpsd: checking client(0)
+Dec 26 13:46:21 (none) gpsd[6193]: gpsd: client(0): assigning channel...
+Dec 26 13:46:21 (none) gpsd[6193]: gpsd: User requires 2, channel type is 1
+Dec 26 13:46:21 (none) gpsd[6193]: gpsd: client(0): channel 5 already active.
+Dec 26 13:46:21 (none) gpsd[6193]: gpsd: transfer mask on RMC: 01
+Dec 26 13:46:21 (none) last message repeated 43 times
+Dec 26 13:46:21 (none) gpsd[6193]: gpsd: GPGGA starts a reporting cycle.
+Dec 26 13:46:21 (none) gpsd[6193]: gpsd: GPGGA sets status 2 and mode 3 (changed)
+Dec 26 13:46:21 (none) gpsd[6193]: gpsd: transfer mask on GGA: 1000039b
+Dec 26 13:46:21 (none) gpsd[6193]: gpsd: client(0): channel 5 already active.
+Dec 26 13:46:21 (none) gpsd[6193]: gpsd: GPS has a fix (status=2, mode=3).
+Dec 26 13:46:21 (none) gpsd[6193]: gpsd: transfer mask on GGA: 01
+Dec 26 13:46:21 (none) last message repeated 29 times
+Dec 26 13:46:21 (none) gpsd[6193]: gpsd: GPGSA sets mode 3
+Dec 26 13:46:21 (none) gpsd[6193]: gpsd: transfer mask on GSA: 101e01
+Dec 26 13:46:21 (none) gpsd[6193]: gpsd: client(0): channel 5 already active.
+Dec 26 13:46:21 (none) gpsd[6193]: gpsd: GPS has a fix (status=2, mode=3).
+Dec 26 13:46:21 (none) gpsd[6193]: gpsd: transfer mask on GSA: 01
+Dec 26 13:46:22 (none) last message repeated 38 times
+Dec 26 13:46:22 (none) gpsd[6193]: gpsd: Partial satellite data (1 of 3).
+Dec 26 13:46:22 (none) gpsd[6193]: gpsd: transfer mask on GSV: 8000001
+Dec 26 13:46:22 (none) gpsd[6193]: gpsd: transfer mask on GSV: 01
+Dec 26 13:46:22 (none) last message repeated 39 times
+Dec 26 13:46:22 (none) gpsd[6193]: gpsd: Partial satellite data (2 of 3).
+Dec 26 13:46:22 (none) gpsd[6193]: gpsd: transfer mask on GSV: 8000001
+Dec 26 13:46:22 (none) gpsd[6193]: gpsd: transfer mask on GSV: 01
+Dec 26 13:46:22 (none) last message repeated 34 times
+Dec 26 13:46:22 (none) gpsd[6193]: gpsd: Satellite data OK (3 of 3).
+Dec 26 13:46:22 (none) gpsd[6193]: gpsd: transfer mask on GSV: 40001
+Dec 26 13:46:22 (none) gpsd[6193]: gpsd: client(0): channel 5 already active.
+Dec 26 13:46:22 (none) gpsd[6193]: gpsd: transfer mask on GSV: 01
+Dec 26 13:46:22 (none) last message repeated 37 times
+Dec 26 13:46:22 (none) gpsd[6193]: gpsd: GPRMC sets mode 2
+Dec 26 13:46:22 (none) gpsd[6193]: gpsd: DOPS computed/reported: H=1.627621/2.700000, V=2.157199/1.700000, P=2.702343/0.000000, T=1.646443/1.649070, G=3.164401/3.168773
+Dec 26 13:46:22 (none) gpsd[6193]: gpsd: transfer mask on RMC: 6b
+Dec 26 13:46:22 (none) gpsd[6193]: gpsd: client(0): channel 5 already active.
+Dec 26 13:46:22 (none) gpsd[6193]: gpsd: GPS has a fix (status=2, mode=3).
+Dec 26 13:46:22 (none) gpsd[6193]: gpsd: transfer mask on RMC: 01
+Dec 26 13:46:22 (none) last message repeated 43 times
+Dec 26 13:46:22 (none) gpsd[6193]: gpsd: GPGGA starts a reporting cycle.
+Dec 26 13:46:22 (none) gpsd[6193]: gpsd: GPGGA sets status 2 and mode 3 (changed)
+Dec 26 13:46:22 (none) gpsd[6193]: gpsd: transfer mask on GGA: 1000039b
+Dec 26 13:46:22 (none) gpsd[6193]: gpsd: client(0): channel 5 already active.
+Dec 26 13:46:22 (none) gpsd[6193]: gpsd: GPS has a fix (status=2, mode=3).
+Dec 26 13:46:22 (none) gpsd[6193]: gpsd: transfer mask on GGA: 01
+Dec 26 13:46:22 (none) last message repeated 29 times
+Dec 26 13:46:22 (none) gpsd[6193]: gpsd: GPGSA sets mode 3
+Dec 26 13:46:22 (none) gpsd[6193]: gpsd: transfer mask on GSA: 101e01
+Dec 26 13:46:22 (none) gpsd[6193]: gpsd: client(0): channel 5 already active.
+Dec 26 13:46:22 (none) gpsd[6193]: gpsd: GPS has a fix (status=2, mode=3).
+Dec 26 13:46:22 (none) gpsd[6193]: gpsd: transfer mask on GSA: 01
+Dec 26 13:46:23 (none) last message repeated 38 times
+Dec 26 13:46:23 (none) gpsd[6193]: gpsd: GPRMC sets mode 2
+Dec 26 13:46:23 (none) gpsd[6193]: gpsd: transfer mask on RMC: 6b
+Dec 26 13:46:23 (none) gpsd[6193]: gpsd: client(0): channel 5 already active.
+Dec 26 13:46:23 (none) gpsd[6193]: gpsd: GPS has a fix (status=2, mode=3).
+Dec 26 13:46:23 (none) gpsd[6193]: gpsd: transfer mask on RMC: 01
+Dec 26 13:46:23 (none) last message repeated 43 times
+Dec 26 13:46:23 (none) gpsd[6193]: gpsd: GPGGA starts a reporting cycle.
+Dec 26 13:46:23 (none) gpsd[6193]: gpsd: GPGGA sets status 2 and mode 3 (changed)
+Dec 26 13:46:23 (none) gpsd[6193]: gpsd: transfer mask on GGA: 1000039b
+Dec 26 13:46:23 (none) gpsd[6193]: gpsd: client(0): channel 5 already active.
+Dec 26 13:46:23 (none) gpsd[6193]: gpsd: GPS has a fix (status=2, mode=3).
+Dec 26 13:46:23 (none) gpsd[6193]: gpsd: transfer mask on GGA: 01
+
+## Lots of repeating data follows, but everything works fine in Kismet and all is well.
+
+------------------
+Details from VMware boot:
+------------------
+
+After bootup, I insert the GPS receiver and get the following new modules added:
+
+Module                  Size  Used by
+pl2303                 23300  0
+usbserial              33128  1 pl2303
+
+
+I start gpsd as follows:  gpsd -D 3 /dev/ttyUSB0
+
+The following appears in /var/log/messages:
+
+Dec 26 15:51:26 (none) kernel: usb 2-1: new full speed USB device using uhci_hcd and address 4
+Dec 26 15:51:27 (none) kernel: usb 2-1: configuration #1 chosen from 1 choice
+Dec 26 15:51:27 (none) kernel: usbcore: registered new interface driver usbserial
+Dec 26 15:51:27 (none) kernel: drivers/usb/serial/usb-serial.c: USB Serial support registered for generic
+Dec 26 15:51:27 (none) kernel: usbcore: registered new interface driver usbserial_generic
+Dec 26 15:51:27 (none) kernel: drivers/usb/serial/usb-serial.c: USB Serial Driver core
+Dec 26 15:51:27 (none) kernel: drivers/usb/serial/usb-serial.c: USB Serial support registered for pl2303
+Dec 26 15:51:27 (none) kernel: pl2303 2-1:1.0: pl2303 converter detected
+Dec 26 15:51:27 (none) kernel: usb 2-1: pl2303 converter now attached to ttyUSB0
+Dec 26 15:51:27 (none) kernel: usbcore: registered new interface driver pl2303
+Dec 26 15:51:27 (none) kernel: drivers/usb/serial/pl2303.c: Prolific PL2303 USB to serial adaptor driver
+Dec 26 15:52:24 (none) gpsd[29622]: gpsd: launching (Version 2.37)
+Dec 26 15:52:24 (none) gpsd[29622]: gpsd: listening on port 2947
+Dec 26 15:52:24 (none) gpsd[29622]: gpsd: shmat(0,0,0) succeeded
+Dec 26 15:52:24 (none) last message repeated 3 times
+Dec 26 15:52:24 (none) gpsd[29622]: gpsd: changing to group 14
+Dec 26 15:52:24 (none) gpsd[29622]: gpsd: running with effective group ID 14
+Dec 26 15:52:24 (none) gpsd[29622]: gpsd: running with effective user ID 99
+Dec 26 15:52:24 (none) gpsd[29622]: gpsd: opening GPS data source at '/dev/ttyUSB0'
+Dec 26 15:52:25 (none) gpsd[29622]: gpsd: speed 0, 8N1
+Dec 26 15:52:25 (none) gpsd[29622]: gpsd: Navcom: sent command 0x1c (Test Support Block)
+Dec 26 15:52:25 (none) gpsd[29622]: gpsd: Navcom: sent command 0x20 (Data Request) - data block id = ae at rate 00
+Dec 26 15:52:25 (none) gpsd[29622]: gpsd: Navcom: sent command 0x20 (Data Request) - data block id = 86 at rate 0a
+Dec 26 15:52:25 (none) gpsd[29622]: gpsd: garmin_gps not active.
+Dec 26 15:52:25 (none) gpsd[29622]: gpsd: no probe matched...
+Dec 26 15:52:25 (none) gpsd[29622]: gpsd: gpsd_activate(1): opened GPS (5)
+Dec 26 15:53:18 (none) gpsd[29622]: gpsd: speed 4800, 7N2
+Dec 26 15:53:18 (none) gpsd[29622]: gpsd: Navcom: sent command 0x1c (Test Support Block)
+Dec 26 15:53:18 (none) gpsd[29622]: gpsd: Navcom: sent command 0x20 (Data Request) - data block id = ae at rate 00
+Dec 26 15:53:18 (none) gpsd[29622]: gpsd: Navcom: sent command 0x20 (Data Request) - data block id = 86 at rate 0a
+Dec 26 15:53:31 (none) kernel: device ap0 entered promiscuous mode
+Dec 26 15:53:31 (none) gpsd[29622]: gpsd: client 127.0.0.1 (0) connect on fd 6
+Dec 26 15:53:31 (none) gpsd[29622]: gpsd: checking client(0)
+Dec 26 15:53:31 (none) gpsd[29622]: gpsd: checking client(0)
+Dec 26 15:53:31 (none) gpsd[29622]: gpsd: client(0): assigning channel...
+Dec 26 15:53:31 (none) gpsd[29622]: gpsd: User requires 2, channel type is -1
+Dec 26 15:53:31 (none) gpsd[29622]: gpsd: client(0): channel 5 already active.
+Dec 26 15:53:31 (none) gpsd[29622]: gpsd: transfer mask on : 01
+Dec 26 15:54:02 (none) last message repeated 146 times
+Dec 26 15:54:12 (none) last message repeated 50 times
+Dec 26 15:54:12 (none) gpsd[29622]: gpsd: packet sniffer failed to sync up
+Dec 26 15:54:12 (none) gpsd[29622]: gpsd: closing GPS=/dev/ttyUSB0 (5)
+
+## When booting to VMware, the pl2303 driver is found and loaded, but it doesn't work.  In this setup, gpsd never switches to the generic NMEA driver.
+
+Again, any help is much appreciated!
+
+Thanks,
+Mike
+
+----------------------------------------------------------------------
+This e-mail, including any attached files, may contain confidential and privileged information for the sole use of the intended recipient.  Any review, use, distribution, or disclosure by others is strictly prohibited.  If you are not the intended recipient (or authorized to receive information for the intended recipient), please contact the sender by reply e-mail and delete all copies of this message.
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="003518.html">[Gpsd-users] HP 58534A GPS Timing Antenna and gpsd
+</A></li>
+	<LI>Next message: <A HREF="003520.html">[Gpsd-users] Fix mode downgrades
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3655">[ date ]</a>
+              <a href="thread.html#3655">[ thread ]</a>
+              <a href="subject.html#3655">[ subject ]</a>
+              <a href="author.html#3655">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

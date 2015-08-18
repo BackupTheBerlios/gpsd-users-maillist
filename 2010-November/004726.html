@@ -1,0 +1,90 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] Bugs in Trimble Driver
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2010-November/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Bugs%20in%20Trimble%20Driver&In-Reply-To=%3C4CD08A21.30508%40softdevsys.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="004728.html">
+   <LINK REL="Next"  HREF="004727.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] Bugs in Trimble Driver</H1>
+    <B>David Severt</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Bugs%20in%20Trimble%20Driver&In-Reply-To=%3C4CD08A21.30508%40softdevsys.com%3E"
+       TITLE="[Gpsd-users] Bugs in Trimble Driver">severtd at softdevsys.com
+       </A><BR>
+    <I>Tue Nov  2 23:01:05 CET 2010</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="004728.html">[Gpsd-users] NTP time sync problem
+</A></li>
+        <LI>Next message: <A HREF="004727.html">[Gpsd-users] Bugs in Trimble Driver
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#4726">[ date ]</a>
+              <a href="thread.html#4726">[ thread ]</a>
+              <a href="subject.html#4726">[ subject ]</a>
+              <a href="author.html#4726">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>  I've attached a patch file for the version 2.90 sources that fixes a 
+problem with using gpsd and the Trimble Resolution SMT chip set.  The 
+problems fixed are:
+
+1) Satellite info reporting is inconsistent.  TSIP responds to a request 
+for satellite info with a series of 0x5c packets.  The number of packets 
+reported varies depending on how many satellites are in view.  Any time 
+the number of 0x5c packets returned is less than the maximum number ever 
+seen, the SATELLITE_SET (SATELLITE_IS) bit is never set and satellite 
+information is not sent to the application.  This can result in long 
+periods of time with no satellite information reported to the app.
+2) Satellite info is not cleared between reports (this is only a problem 
+when problem 1) is fixed).
+3) Altitude info is reported incorrectly.  This is because some 
+initialization code is skipped incorrectly.  At the beginning of the 
+&quot;tsip_event_hook()&quot; function, the statement:
+
+if (event == event_identified &amp;&amp; event == event_reactivate)
+should be-
+if (event == event_identified || event == event_reactivate)
+
+If this is not the proper forum for reporting bugs/fixes, please let me 
+know.
+
+
+David
+-------------- next part --------------
+An embedded and charset-unspecified text was scrubbed...
+Name: lwpatch
+URL: &lt;<A HREF="https://lists.berlios.de/pipermail/gpsd-users/attachments/20101102/bd6197a4/attachment.ksh">https://lists.berlios.de/pipermail/gpsd-users/attachments/20101102/bd6197a4/attachment.ksh</A>&gt;
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="004728.html">[Gpsd-users] NTP time sync problem
+</A></li>
+	<LI>Next message: <A HREF="004727.html">[Gpsd-users] Bugs in Trimble Driver
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#4726">[ date ]</a>
+              <a href="thread.html#4726">[ thread ]</a>
+              <a href="subject.html#4726">[ subject ]</a>
+              <a href="author.html#4726">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

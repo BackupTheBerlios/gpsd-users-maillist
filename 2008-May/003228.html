@@ -1,0 +1,116 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] problem with NTRIP, authentication
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2008-May/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20problem%20with%20NTRIP%2C%20authentication&In-Reply-To=%3C17126511.post%40talk.nabble.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="003223.html">
+   <LINK REL="Next"  HREF="003229.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] problem with NTRIP, authentication</H1>
+    <B>Zanardi</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20problem%20with%20NTRIP%2C%20authentication&In-Reply-To=%3C17126511.post%40talk.nabble.com%3E"
+       TITLE="[Gpsd-users] problem with NTRIP, authentication">gasperotti at supereva.it
+       </A><BR>
+    <I>Thu May  8 16:15:15 CEST 2008</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="003223.html">[Gpsd-users] problem with NTRIP, authentication
+</A></li>
+        <LI>Next message: <A HREF="003229.html">[Gpsd-users] every 5th point gets lost
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3228">[ date ]</a>
+              <a href="thread.html#3228">[ thread ]</a>
+              <a href="subject.html#3228">[ subject ]</a>
+              <a href="author.html#3228">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>
+I have read (and translate :-D) all your answers, thank you. 
+
+
+Chris Kuethe wrote:
+&gt;<i> 
+</I>&gt;<i> One thing you need to consider is the data flow. Currently GPSD can't
+</I>&gt;<i> write NTRIP/DGPS/RTCM data back to a receiver. You'd have to do some
+</I>&gt;<i> tricks with gpspipe to read the corrections and feed them to the com
+</I>&gt;<i> port where the receiver's secondary input is connected. ick.
+</I>&gt;<i> 
+</I>
+
+I am writing from Italy, in my region have created a network DGPS (NTRIP),
+and for my project I have to connect a GPS-client to this network:
+
+IP: 194.105.50.232
+PORT: 2101
+MountPoint:
+- MAX3 (RTCM 3.1)
+- IMAX2 (RTCM 2.3)
+- IMAX3 (RTCM 3.1)
+- NRT2 (RTCM 2.3)
+
+If I can use GPSPIPE could be the solution...
+
+I tried:
+
+gpspipe -r gpsd.rellim.com
+
+ok, GPSPIPE working properly :-)
+
+
+gpspipe -r 194.105.50.232:2101
+
+
+...nothing on STDOUT! Of course I do login:
+
+
+gpspipe -r USER:<A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">PASSWORD at 194.105.50.232</A>:2101
+gpspipe: could not connect to gpsd USER:<A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">PASSWORD at 194.105.50.232</A>, Success(0)
+
+
+and:
+
+
+gpspipe -r USER:<A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">PASSWORD at 194.105.50.232</A>:2101/IMAX2
+gpspipe: could not connect to gpsd USER:<A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">PASSWORD at 194.105.50.232</A>, Success(0)
+
+
+&lt;&lt;&lt;&lt;Help!&gt;&gt;&gt;&gt;
+-- 
+View this message in context: <A HREF="http://www.nabble.com/problem-with-NTRIP%2C-authentication-tp17107127p17126511.html">http://www.nabble.com/problem-with-NTRIP%2C-authentication-tp17107127p17126511.html</A>
+Sent from the GPSd - Users mailing list archive at Nabble.com.
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="003223.html">[Gpsd-users] problem with NTRIP, authentication
+</A></li>
+	<LI>Next message: <A HREF="003229.html">[Gpsd-users] every 5th point gets lost
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3228">[ date ]</a>
+              <a href="thread.html#3228">[ thread ]</a>
+              <a href="subject.html#3228">[ subject ]</a>
+              <a href="author.html#3228">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

@@ -1,0 +1,123 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] NTRIP Issue patch
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2011-February/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20NTRIP%20Issue%20patch&In-Reply-To=%3C4D624D84.5090604%40googlemail.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="005046.html">
+   <LINK REL="Next"  HREF="005036.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] NTRIP Issue patch</H1>
+    <B>Andre Naujoks</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20NTRIP%20Issue%20patch&In-Reply-To=%3C4D624D84.5090604%40googlemail.com%3E"
+       TITLE="[Gpsd-users] NTRIP Issue patch">nautsch2 at googlemail.com
+       </A><BR>
+    <I>Mon Feb 21 12:33:24 CET 2011</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="005046.html">[Gpsd-users] NTRIP Issue patch
+</A></li>
+        <LI>Next message: <A HREF="005036.html">[Gpsd-users] NTRIP Issue patch
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#5035">[ date ]</a>
+              <a href="thread.html#5035">[ thread ]</a>
+              <a href="subject.html#5035">[ subject ]</a>
+              <a href="author.html#5035">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi again.
+
+As per recommendation I tried to set up a git repo on github.
+
+<A HREF="git://github.com/nautsch/nautsch-branch.git">git://github.com/nautsch/nautsch-branch.git</A>
+
+It contains all the stuff from the patches. Don't hold me
+responsible for the commit messages though. I never planned to
+release this to the public. The commits may also not be of much
+more help than the patch, because they are relatively random as the
+code progressed.
+
+I think I'll take this as a learning experience. :-)
+
+It should be in sync with the current head/master from berlios.
+
+Regards
+  Andre
+
+
+Am 19.02.2011 01:47, schrieb Eric Raymond:
+&gt;<i> Andre Naujoks &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">nautsch2 at googlemail.com</A>&gt;:
+</I>&gt;&gt;<i> As promised here is a huge patch which *should* apply to the current git head.
+</I>&gt;<i> 
+</I>&gt;<i> Alas, it did not.  Almost all bands other than the change to gps/client.py
+</I>&gt;<i> failed with patch -p1.  The exceptions were one band for gpsd.h-tail and
+</I>&gt;<i> one for net_ntrip.c.
+</I>&gt;<i> 
+</I>&gt;<i> I may try applying some of these by hand if I decide I understand them.
+</I>&gt;<i> But we really ought to figure out why the patch was bad.
+</I>&gt;<i>  
+</I>&gt;&gt;<i> What it does is the following.
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> - workaround for some kind of bug in the python client.
+</I>&gt;&gt;<i>   This is probably wrong, but I don't know what to fix there with my 
+</I>&gt;&gt;<i>   limited python abilities. X-)
+</I>&gt;<i> 
+</I>&gt;<i> Would you describe the bug to me, please?  Preferably including a 
+</I>&gt;<i> backtrace.  That last line - the change to the dictwrapper call -
+</I>&gt;<i> doesn't look quite right to me.
+</I>&gt;<i> 
+</I>&gt;&gt;<i> - simplify the way add_device and open_device are used
+</I>&gt;<i> 
+</I>&gt;<i> Hm.  I want to know more about this before I apply it.  There
+</I>&gt;<i> may be subtleties you are missing, and I'm reluctabt to destabilize 
+</I>&gt;<i> core code when we're gearing up for a release.  
+</I>&gt;<i> 
+</I>&gt;<i> Can you separate this patch fromn the NTRIP fixes? I consider
+</I>&gt;<i> those much less risky.
+</I>&gt;<i> 
+</I>&gt;&gt;<i> - the context-&gt;dsock is now unset when an ntrip server disconnects
+</I>&gt;&gt;<i> - the ntrip connection is reestablished, when it worked but got 
+</I>&gt;&gt;<i>   disconnected by the server. This is done only, when the connection
+</I>&gt;&gt;<i>   was good the last time.
+</I>&gt;&gt;<i> - the ntrip connection is now multistaged. the gps_open just 
+</I>&gt;&gt;<i>   initializes the connection process. The remaining connection is done
+</I>&gt;&gt;<i>   from consume_packet
+</I>&gt;&gt;<i> - The patch from the earlier mails, which does an NMEA update to an 
+</I>&gt;&gt;<i>   ntrip server in a semi regular interval.
+</I>&gt;<i> 
+</I>&gt;<i> These certainly sound like theyt're heading in a good direction.
+</I>
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="005046.html">[Gpsd-users] NTRIP Issue patch
+</A></li>
+	<LI>Next message: <A HREF="005036.html">[Gpsd-users] NTRIP Issue patch
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#5035">[ date ]</a>
+              <a href="thread.html#5035">[ thread ]</a>
+              <a href="subject.html#5035">[ subject ]</a>
+              <a href="author.html#5035">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

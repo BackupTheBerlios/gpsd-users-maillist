@@ -1,0 +1,91 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] How to start gpsd with fix baud rate of	serial	interface
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2009-September/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20How%20to%20start%20gpsd%20with%20fix%20baud%20rate%20of%0A%09serial%09interface&In-Reply-To=%3C20090916142334.GA3521%40thyrsus.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="003930.html">
+   <LINK REL="Next"  HREF="003933.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] How to start gpsd with fix baud rate of	serial	interface</H1>
+    <B>Eric S. Raymond</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20How%20to%20start%20gpsd%20with%20fix%20baud%20rate%20of%0A%09serial%09interface&In-Reply-To=%3C20090916142334.GA3521%40thyrsus.com%3E"
+       TITLE="[Gpsd-users] How to start gpsd with fix baud rate of	serial	interface">esr at thyrsus.com
+       </A><BR>
+    <I>Wed Sep 16 16:23:34 CEST 2009</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="003930.html">[Gpsd-users] How to start gpsd with fix baud rate of serial	interface
+</A></li>
+        <LI>Next message: <A HREF="003933.html">[Gpsd-users] How to start gpsd with fix baud rate of serial	interface
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3932">[ date ]</a>
+              <a href="thread.html#3932">[ thread ]</a>
+              <a href="subject.html#3932">[ subject ]</a>
+              <a href="author.html#3932">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Kai Klenke &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">klenke at ohb-teledata.de</A>&gt;:
+&gt;<i> i am using the ublox &quot;Antaris LEA-4H&quot;-GPS-Receiver and it is via RS232
+</I>&gt;<i> connected to the
+</I>&gt;<i> gpsd on a Linux-Debian-Lenny machine.
+</I>&gt;<i> 
+</I>&gt;<i> The GPS-Receiver is configured to 38400 baud 8-N-1 with standard NMEA
+</I>&gt;<i> output.
+</I>&gt;<i> 
+</I>&gt;<i> With debug level 5 of the gpsd i can see that there is an autobauding which
+</I>&gt;<i> starts
+</I>&gt;<i> with 9600baud -&gt; 4800baud -&gt; 19200baud -&gt; 38400baud. This takes much time
+</I>&gt;<i> and
+</I>&gt;<i> so it will be nice if there is a possibility to start the gpsd with a fix
+</I>&gt;<i> baudrate.
+</I>&gt;<i> 
+</I>&gt;<i> Is it possible via default file /etc/default/gpsd?
+</I>&gt;<i> 
+</I>&gt;<i> I don't find any description about this file.
+</I>&gt;<i> 
+</I>&gt;<i> Who can help?
+</I>
+There is no such file. and one of my design goals is that there never will be.
+
+The first speed tried by the hunt loop is the one already set by the
+hardware (this is why 0 comes first in the hunt group list, to tell
+gpsd not to change sppeds).  So, unless the hardware oport speed has
+been changed since gpsd lasted opened it, gpsd spends no time at all
+baud-hunting.
+-- 
+		&lt;a href=&quot;<A HREF="http://www.catb.org/~esr/">http://www.catb.org/~esr/</A>&quot;&gt;Eric S. Raymond&lt;/a&gt;
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="003930.html">[Gpsd-users] How to start gpsd with fix baud rate of serial	interface
+</A></li>
+	<LI>Next message: <A HREF="003933.html">[Gpsd-users] How to start gpsd with fix baud rate of serial	interface
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3932">[ date ]</a>
+              <a href="thread.html#3932">[ thread ]</a>
+              <a href="subject.html#3932">[ subject ]</a>
+              <a href="author.html#3932">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

@@ -1,0 +1,123 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] time warp
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2005-July/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20time%20warp&In-Reply-To=%3C1122774348.19971.12.camel%40tiger%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="000920.html">
+   <LINK REL="Next"  HREF="000918.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] time warp</H1>
+    <B>Kenneth Johansson</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20time%20warp&In-Reply-To=%3C1122774348.19971.12.camel%40tiger%3E"
+       TITLE="[Gpsd-users] time warp">ken at kenjo.org
+       </A><BR>
+    <I>Sun Jul 31 03:45:48 CEST 2005</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="000920.html">[Gpsd-users] Input buffer overrun
+</A></li>
+        <LI>Next message: <A HREF="000918.html">[Gpsd-users] time warp
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#917">[ date ]</a>
+              <a href="thread.html#917">[ thread ]</a>
+              <a href="subject.html#917">[ subject ]</a>
+              <a href="author.html#917">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>I'm not subscribed so do not remove me from the to or cc list.
+
+
+I have a globalsat  BT-338 bluetooth gps receiver that I was trying to
+use as a time source for ntp on my desktop computer but I have some
+problems. 
+
+gpsd returns a strange date like 
+GPSD,D=1949-11-08T19:08:350.00Z
+
+not even the hour or minutes or seconds is even near what it should be. 
+
+I do not currently know anything about the format of NMEA 0183 but the
+string 013249.000 is the utc time as far as I can tell and that one is
+only 5-6 seconds off from what my normal ntp server say.  Still that is
+a bit strange as I take the ntp time from a very good source that
+provide the standard time for sweden so I would think that the gps time
+would be very close.
+
+I do know that I do not get good values from the satellites as I have
+the receiver indoors but should this not be good enough for just the
+time ???
+
+
+this is a few lines from the raw output
+
+$GPGGA,013249.000,5921.0760,N,01800.0932,E,1,08,1.7,52.9,M,,,,0000*3D
+$GPGSA,A,3,21,18,19,26,22,15,08,29,,,,,3.2,1.7,2.7*31
+$GPRMC,013249.000,A,5921.0760,N,01800.0932,E,0.59,82.88,151285,,*3D
+$GPGGA,013250.000,5921.0761,N,01800.0933,E,1,08,1.7,52.8,M,,,,0000*34
+$GPGSA,A,3,21,18,19,26,22,15,08,29,,,,,3.2,1.7,2.7*31
+$GPRMC,013250.000,A,5921.0761,N,01800.0933,E,0.21,39.23,151285,,*3B
+$GPGGA,013251.000,5921.0762,N,01800.0934,E,1,08,1.7,52.8,M,,,,0000*31
+$GPGSA,A,3,21,18,19,26,22,15,08,29,,,,,3.2,1.7,2.7*31
+$GPGSV,3,1,11,03,70,231,,15,62,088,26,22,53,150,34,18,53,085,37*78
+$GPGSV,3,2,11,19,49,286,24,21,24,080,27,16,19,199,24,26,19,029,36*75
+$GPGSV,3,3,11,08,13,329,19,29,13,017,26,27,07,300,*49
+$GPRMC,013251.000,A,5921.0762,N,01800.0934,E,0.34,323.22,151285,,*03
+$GPGGA,013252.000,5921.0763,N,01800.0936,E,1,08,1.7,53.0,M,,,,0000*38
+$GPGSA,A,3,21,18,19,26,22,15,08,29,,,,,3.2,1.7,2.7*31
+$GPRMC,013252.000,A,5921.0763,N,01800.0936,E,0.38,348.67,151285,,*03
+$GPGGA,013253.000,5921.0763,N,01800.0938,E,1,08,1.7,53.0,M,,,,0000*37
+$GPGSA,A,3,21,18,19,26,22,15,08,29,,,,,3.2,1.7,2.7*31
+$GPRMC,013253.000,A,5921.0763,N,01800.0938,E,0.51,293.30,151285,,*06
+$GPGGA,013254.000,5921.0764,N,01800.0942,E,1,08,1.8,53.1,M,,,,0000*34
+$GPGSA,A,3,21,18,19,26,22,15,08,29,,,,,3.2,1.8,2.7*3E
+$GPRMC,013254.000,A,5921.0764,N,01800.0942,E,0.11,31.25,151285,,*31
+$GPGGA,013255.000,5921.0764,N,01800.0942,E,1,08,1.8,52.9,M,,,,0000*3C
+$GPGSA,A,3,21,18,19,26,22,15,08,29,,,,,3.2,1.8,2.7*3E
+$GPRMC,013255.000,A,5921.0764,N,01800.0942,E,0.52,313.03,151285,,*00
+$GPGGA,013256.000,5921.0768,N,01800.0945,E,1,08,1.8,54.5,M,,,,0000*3E
+$GPGSA,A,3,21,18,19,26,22,15,08,29,,,,,3.2,1.8,2.7*3E
+$GPGSV,3,1,11,03,70,231,15,15,62,088,25,22,53,150,34,18,53,085,37*7F
+$GPGSV,3,2,11,19,49,286,23,21,24,080,27,16,19,199,24,26,19,029,36*72
+$GPGSV,3,3,11,08,13,329,19,29,13,017,26,27,07,300,*49
+
+-------------- next part --------------
+A non-text attachment was scrubbed...
+Name: signature.asc
+Type: application/pgp-signature
+Size: 189 bytes
+Desc: This is a digitally signed message part
+URL: &lt;<A HREF="https://lists.berlios.de/pipermail/gpsd-users/attachments/20050731/890a0e12/attachment.pgp">https://lists.berlios.de/pipermail/gpsd-users/attachments/20050731/890a0e12/attachment.pgp</A>&gt;
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="000920.html">[Gpsd-users] Input buffer overrun
+</A></li>
+	<LI>Next message: <A HREF="000918.html">[Gpsd-users] time warp
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#917">[ date ]</a>
+              <a href="thread.html#917">[ thread ]</a>
+              <a href="subject.html#917">[ subject ]</a>
+              <a href="author.html#917">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

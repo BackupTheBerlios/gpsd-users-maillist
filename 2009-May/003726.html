@@ -1,0 +1,100 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] Garmin GPS 60 USB - real time acquisition
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2009-May/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Garmin%20GPS%2060%20USB%20-%20real%20time%20acquisition&In-Reply-To=%3C7644167.1300581242321694299.JavaMail.defaultUser%40defaultHost%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="003728.html">
+   <LINK REL="Next"  HREF="003727.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] Garmin GPS 60 USB - real time acquisition</H1>
+    <B>iodavide at libero.it</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Garmin%20GPS%2060%20USB%20-%20real%20time%20acquisition&In-Reply-To=%3C7644167.1300581242321694299.JavaMail.defaultUser%40defaultHost%3E"
+       TITLE="[Gpsd-users] Garmin GPS 60 USB - real time acquisition">iodavide at libero.it
+       </A><BR>
+    <I>Thu May 14 19:21:34 CEST 2009</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="003728.html">[Gpsd-users] Newbie Help - gpsd: Can't open /proc/bus/usb/devices
+</A></li>
+        <LI>Next message: <A HREF="003727.html">[Gpsd-users] Garmin GPS 60 USB - real time acquisition
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3726">[ date ]</a>
+              <a href="thread.html#3726">[ thread ]</a>
+              <a href="subject.html#3726">[ subject ]</a>
+              <a href="author.html#3726">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi,
+
+I'm trying to connect my Garmin GPS 60 (reported like supported and tested 
+in the gpsd website)
+I would like to collect real time data from gps using gpsd 
+and Kismet but I can't capture anything
+
+# lsusb
+Bus 004 Device 003: ID 091e:
+0003 Garmin International GPSmap (various models)
+
+gpsd /dev/ttyUSB0
+
+Kismet 
+and GpsDrive says &quot;no gps device&quot;
+
+I tried to use NetCat
+# nc localhost 2947
+
+sniffing at localhost, Wireshark can't capture any packet
+
+I also tried to 
+capture raw data from all USB interface
+
+# mount -t debugfs none_debugs 
+/sys/kernel/debug
+# modprobe usbmon
+#cat /sys/kernel/debug/usbmon/0u
+I can 
+capture mouse movement but not gps transmission 
+ 
+Help:
+somebody can explain 
+me how I have to use gpsd?
+
+tnx a million
+
+MrOrange
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="003728.html">[Gpsd-users] Newbie Help - gpsd: Can't open /proc/bus/usb/devices
+</A></li>
+	<LI>Next message: <A HREF="003727.html">[Gpsd-users] Garmin GPS 60 USB - real time acquisition
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3726">[ date ]</a>
+              <a href="thread.html#3726">[ thread ]</a>
+              <a href="subject.html#3726">[ subject ]</a>
+              <a href="author.html#3726">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

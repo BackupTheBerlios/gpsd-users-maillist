@@ -1,0 +1,96 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] Feature request
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2009-August/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Feature%20request&In-Reply-To=%3CPine.LNX.4.64.0908092232200.29002%40birdbird.example.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="003858.html">
+   <LINK REL="Next"  HREF="003861.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] Feature request</H1>
+    <B>Matt Roberds</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Feature%20request&In-Reply-To=%3CPine.LNX.4.64.0908092232200.29002%40birdbird.example.com%3E"
+       TITLE="[Gpsd-users] Feature request">mattroberds at cox.net
+       </A><BR>
+    <I>Mon Aug 10 05:45:35 CEST 2009</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="003858.html">[Gpsd-users] Feature request
+</A></li>
+        <LI>Next message: <A HREF="003861.html">[Gpsd-users] odd delay problem, with sirf receiver
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3859">[ date ]</a>
+              <a href="thread.html#3859">[ thread ]</a>
+              <a href="subject.html#3859">[ subject ]</a>
+              <a href="author.html#3859">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>On Sun, 9 Aug 2009, Ekki Plicht (DF4OR) wrote:
+&gt;<i> I have the need for a copy of the serial data (in NMEA format) of the
+</I>&gt;<i> GPS device.  Besides the computer use of the GPS data I have a second
+</I>&gt;<i> device which would like to be fed with NMEA data (a radio, like in Ham
+</I>&gt;<i> Radio and APRS).
+</I>
+As long as the ham radio never wants to *talk* to the GPS receiver, you
+could just run another wire to the serial port on the ham radio.  RS-232
+isn't officially supposed to work this way, but as long as you aren't
+trying to drive (say) 10 devices from one device, it usually works OK.
+
+You end up with a cable with three connectors:
+
+GPS         PC with    Ham
+receiver    gpsd       radio
+RX  &lt;-------&lt; TX
+
+TX  &gt;---+---&gt; RX
+         |
+         '--------------&gt; RX
+
+Gnd ----+---- Gnd
+         |
+         '--------------- Gnd
+
+You would have to tell gpsd to stay in NMEA mode, and make sure that
+the GPS receiver is configured (either in its non-volatile memory or by
+gpsd) to use the same serial line settings (eg 4800 8N1) and to emit all
+the NMEA sentences that the ham radio expects to see.
+
+Again, don't land airplanes with this.  But for just messing around, it
+should be fine.
+
+Matt Roberds
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="003858.html">[Gpsd-users] Feature request
+</A></li>
+	<LI>Next message: <A HREF="003861.html">[Gpsd-users] odd delay problem, with sirf receiver
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3859">[ date ]</a>
+              <a href="thread.html#3859">[ thread ]</a>
+              <a href="subject.html#3859">[ subject ]</a>
+              <a href="author.html#3859">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

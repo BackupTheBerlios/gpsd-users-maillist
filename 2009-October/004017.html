@@ -1,0 +1,144 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] Unplugging USB gps receivers - gpsd behaviour.
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2009-October/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Unplugging%20USB%20gps%20receivers%20-%20gpsd%20behaviour.&In-Reply-To=%3C4AE022A4.1020007%40attglobal.net%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="004015.html">
+   <LINK REL="Next"  HREF="004012.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] Unplugging USB gps receivers - gpsd behaviour.</H1>
+    <B>Two Sank</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Unplugging%20USB%20gps%20receivers%20-%20gpsd%20behaviour.&In-Reply-To=%3C4AE022A4.1020007%40attglobal.net%3E"
+       TITLE="[Gpsd-users] Unplugging USB gps receivers - gpsd behaviour.">sanktwo at attglobal.net
+       </A><BR>
+    <I>Thu Oct 22 11:15:16 CEST 2009</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="004015.html">[Gpsd-users] Unplugging USB gps receivers - gpsd behaviour.
+</A></li>
+        <LI>Next message: <A HREF="004012.html">[Gpsd-users] Unplugging USB gps receivers - gpsd behaviour.
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#4017">[ date ]</a>
+              <a href="thread.html#4017">[ thread ]</a>
+              <a href="subject.html#4017">[ subject ]</a>
+              <a href="author.html#4017">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Ed W wrote:
+&gt;<i> Two Sank wrote:
+</I>&gt;&gt;<i> OK, Ed, I have now logged some Kernel and UDEV rules. First can you tell
+</I>&gt;&gt;<i> me if I am doing the right thing. I did:
+</I>&gt;&gt;<i> sudo udevadm monitor
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> That gave me a lot of events with Kernel and UDEV at the beginning of
+</I>&gt;&gt;<i> each line. What I have not yet managed to understand is exactly which
+</I>&gt;&gt;<i> UDEV rule is actually firing on which event. There seems to be no
+</I>&gt;&gt;<i> indication in the log as to which rule in which file is causing
+</I>&gt;&gt;<i> anything. I can see the rules in /lib/rules.d/40-gpsd.rules
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> BUT what is interesting in the logs of the &quot;add&quot; event there are lots of
+</I>&gt;&gt;<i> references to &quot;tty&quot;. In the &quot;remove&quot; event, there is not a single
+</I>&gt;&gt;<i> reference to the letters &quot;tty&quot; in either the kernel or the UDEV events.
+</I>&gt;&gt;<i> Since the /lib/rules.d/40-gpsd.rules has a rule which says
+</I>&gt;&gt;<i> SUBSYSTEM!=&quot;tty&quot;, GOTO=&quot;gpsd_rules_end&quot; i.e. do nothing if it is not a
+</I>&gt;&gt;<i> tty, I suspect that there are NO tty rules being fired on the remove
+</I>&gt;&gt;<i> event hence the gpsd rules are not even being tried.
+</I>&gt;&gt;<i>   
+</I>&gt;<i> 
+</I>&gt;<i> Correct - from memory my rule with udev-141 needed to be something like:
+</I>&gt;<i> 
+</I>&gt;<i> KERNEL==&quot;ttyUSB[0-9]*&quot; RUN=etc
+</I>
+Ed, I checked very carefully, there are NO kernel &quot;remove&quot; events containing the
+string &quot;tty&quot;.  There are a few containing various &quot;USB&quot; keys which I have used
+to trigger the remove of gpsd.
+&gt;<i> 
+</I>&gt;<i> Anything more exact than that would not match.  Actually I *think* I
+</I>&gt;<i> couldn't even match the tty subsystem (not at the machine to test)
+</I>&gt;<i> 
+</I>&gt;<i> Additionally as you have presumably discovered, the choice of kernel is
+</I>&gt;<i> important because certain kernels around the 2.6.29/30 ish time frame
+</I>&gt;<i> exhibit a similar bug to what you describe? I think I moved to 2.6.30.6
+</I>&gt;<i> - I don't have it running at present, but I believe that I probably
+</I>&gt;<i> picked that because it was working ok...
+</I>
+OK, now you are getting beyond my capabilities. I have NO idea how good an
+idea it is to replace a kernel in a particular distribution of Ubuntu.
+You are correct, I am running on an older kernel that you. Jaunty in the
+netbook remix flavour reports its kernel as &quot;Ubuntu 2.6.28-15-generic&quot;.
+I have NO idea even how to rebuild that, never having built a kernel.
+I am not sure my little netbook is the right place to build one either.
+Presumeably there is a good chance that I would break something else?
+Also, the next version of Ubuntu is due out before too long so I might
+just wait for that.
+&gt;<i> 
+</I>&gt;<i> You could also try varying the udev version you are using?  I'm on
+</I>&gt;<i> gentoo here so that's quite easy to do, but perhaps your distro has a
+</I>&gt;<i> variety of options available...? Consider raising this particular issue
+</I>&gt;<i> further on the udev/kernel list, but be sure to simplify your problem to
+</I>&gt;<i> a simple script which just prints hello to a log file or similar...
+</I>&gt;<i> (this is the simplest way to debug things)
+</I>UDEV seems to be working just fine. I am pretty sure that it is the
+kernel which is not working correctly. You will see from an earlier post
+that I discovered a thread on the lists associated with the kernel about
+the lack of remove events for tty that are held open (not just ttyUSB).
+In one case (not mine) this was causing a kernel crash.
+They were working on this in July of this year so perhaps that is now fixed.
+Once I put in the rule to trigger on an existing kernel event, the remove
+action was called correctly.
+&gt;<i> 
+</I>&gt;<i> Oh, additionally note that the gpsd supplied udev script causes udev to
+</I>&gt;<i> hang indefinitely on a subset of udev versions - the gentoo init script
+</I>&gt;<i> is modified to run the gpsd bits in a separately forked thread.  It
+</I>&gt;<i> appears to make no difference on the version that I am using, but it's
+</I>&gt;<i> worth noting this potentially problem isn't biting you?  Debug it by
+</I>&gt;<i> disabling the ADD part of the rules, run the script manually from the
+</I>&gt;<i> command line and then debug the remove events only..?
+</I>I can see from the script that there was a problem.
+All of the script is now run on a separate thread.
+There was a deadlock condition. This seems to have been fixed in the
+version I am using which now does a fork.
+However, I did suspect that forking to another process was
+the cause of the problem - I wondered if the delayed release of the ttyUSB
+was the cause of it not vanishing. My last test (calling the release by hand)
+showed that it did not matter how early the release was called, the ttyUSBx was
+not being removed, despite no processes keeping it open and no device being
+attached to it. What I intend to do is to try to write up these experiments
+and results on a website to make them more understandable than this thread.
+Thanks for all your help.
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="004015.html">[Gpsd-users] Unplugging USB gps receivers - gpsd behaviour.
+</A></li>
+	<LI>Next message: <A HREF="004012.html">[Gpsd-users] Unplugging USB gps receivers - gpsd behaviour.
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#4017">[ date ]</a>
+              <a href="thread.html#4017">[ thread ]</a>
+              <a href="subject.html#4017">[ subject ]</a>
+              <a href="author.html#4017">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

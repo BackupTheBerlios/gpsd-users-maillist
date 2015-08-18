@@ -1,0 +1,524 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] Problem with TSIP detection
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2009-January/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Problem%20with%20TSIP%20detection&In-Reply-To=%3C20090105140550.GA861069%40hiwaay.net%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="003529.html">
+   <LINK REL="Next"  HREF="003535.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] Problem with TSIP detection</H1>
+    <B>Chris Adams</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Problem%20with%20TSIP%20detection&In-Reply-To=%3C20090105140550.GA861069%40hiwaay.net%3E"
+       TITLE="[Gpsd-users] Problem with TSIP detection">cmadams at hiwaay.net
+       </A><BR>
+    <I>Mon Jan  5 15:05:50 CET 2009</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="003529.html">[Gpsd-users] Problem with TSIP detection
+</A></li>
+        <LI>Next message: <A HREF="003535.html">[Gpsd-users] Problem with TSIP detection
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3531">[ date ]</a>
+              <a href="thread.html#3531">[ thread ]</a>
+              <a href="subject.html#3531">[ subject ]</a>
+              <a href="author.html#3531">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Once upon a time, Chris Kuethe &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">chris.kuethe at gmail.com</A>&gt; said:
+&gt;<i> that's not good... seems like your gps isn't chatty enough. last time
+</I>&gt;<i> i saw that, a broken serial driver was involved.
+</I>
+I have ntpd running on the same port, getting a signal just fine, so I
+don't think there's a problem like that.
+
+As for not being chatty; when I was running that debug last night, I had
+half an inch of rain falling (the antenna is sitting in a window that
+doesn't have a particularly great view of the sky), so it probably just
+didn't have a lock.  This morning it is plenty chatty.
+
+&gt;<i> does it work if you build a gpsd with only the trimble driver and a
+</I>&gt;<i> fixed speed of 9600bps?
+</I>
+Well, with 2.38rc1, I couldn't disable the NMEA or GPSClock drivers (got
+a compile error).  I build with those and TSIP, and fixed to 9600, and
+still no go.
+
+It isn't just the speed that's a problem; it never tries to switch
+parity.  I think part of the problem is that it gets the first byte of a
+packet (0x10) right, because the serial driver ignores the extra parity
+bit (actually, odd parity would be a 1 for 0x10, which the serial port
+would treat as a stop bit).  gpsd sees 0x10 and starts looking for TSIP
+(in packet.c, which doesn't shift parity settings), and it goes bad from
+there, since now all you get is garbage (off-by-one at the bit level and
+getting worse with each byte).
+
+-- 
+Chris Adams &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">cmadams at hiwaay.net</A>&gt;
+Systems and Network Administrator - HiWAAY Internet Services
+I don't speak for anybody but myself - that's enough trouble.
+
+
+gpsd: control socket opened at /var/run/gpsd.sock
+gpsd: launching (Version 2.38rc1)
+gpsd: listening on port gpsd
+gpsd: Priority sertting failed.
+gpsd: shmat(0,0,0) succeeded
+gpsd: shmat(0,0,0) succeeded
+gpsd: shmat(0,0,0) succeeded
+gpsd: shmat(0,0,0) succeeded
+gpsd: running with effective group ID 0
+gpsd: running with effective user ID 0
+gpsd: opening GPS data source at '/dev/gps'
+gpsd: speed 0, 8N1
+gpsd: no probe matched...
+gpsd: gpsd_activate(1): opened GPS (5)
+gpsd: select waits
+gpsd: polling 5
+gpsd: Read 1 chars to buffer offset 0 (total 1): 10
+gpsd: 00000000: character '.' [10], new state: DLE_LEADER
+gpsd: packet sniff on /dev/gps finds type -2
+gpsd: GPS sent 1 new characters
+gpsd: New data on /dev/gps, not yet a packet
+gpsd: select waits
+gpsd: polling 5
+gpsd: Read 14 chars to buffer offset 1 (total 15): 512a6f96578f34901f0b5a304a38
+gpsd: 00000001: character 'Q' [51], new state: TSIP_PAYLOAD
+gpsd: 00000002: character '*' [2a], new state: TSIP_PAYLOAD
+gpsd: 00000003: character 'o' [6f], new state: TSIP_PAYLOAD
+gpsd: 00000004: character '.' [96], new state: TSIP_PAYLOAD
+gpsd: 00000005: character 'W' [57], new state: TSIP_PAYLOAD
+gpsd: 00000006: character '.' [8f], new state: TSIP_PAYLOAD
+gpsd: 00000007: character '4' [34], new state: TSIP_PAYLOAD
+gpsd: 00000008: character '.' [90], new state: TSIP_PAYLOAD
+gpsd: 00000009: character '.' [1f], new state: TSIP_PAYLOAD
+gpsd: 00000010: character '.' [0b], new state: TSIP_PAYLOAD
+gpsd: 00000011: character 'Z' [5a], new state: TSIP_PAYLOAD
+gpsd: 00000012: character '0' [30], new state: TSIP_PAYLOAD
+gpsd: 00000013: character 'J' [4a], new state: TSIP_PAYLOAD
+gpsd: 00000014: character '8' [38], new state: TSIP_PAYLOAD
+gpsd: packet sniff on /dev/gps finds type -2
+gpsd: GPS sent 14 new characters
+gpsd: New data on /dev/gps, not yet a packet
+gpsd: select waits
+gpsd: polling 5
+gpsd: Read 1 chars to buffer offset 15 (total 16): 10
+gpsd: 00000015: character '.' [10], new state: TSIP_DLE
+gpsd: packet sniff on /dev/gps finds type -2
+gpsd: GPS sent 1 new characters
+gpsd: New data on /dev/gps, not yet a packet
+gpsd: select waits
+gpsd: polling 5
+gpsd: Read 2 chars to buffer offset 16 (total 18): 0dff
+gpsd: 00000016: character '.' [0d], new state: GROUND_STATE
+gpsd: Character discarded, buffer 17 chars = 512a6f96578f34901f0b5a304a38100dff
+gpsd: 00000017: character 'Q' [51], new state: GROUND_STATE
+gpsd: Character discarded, buffer 16 chars = 2a6f96578f34901f0b5a304a38100dff
+gpsd: 00000018: character '*' [2a], new state: GROUND_STATE
+gpsd: Character discarded, buffer 15 chars = 6f96578f34901f0b5a304a38100dff
+gpsd: 00000019: character 'o' [6f], new state: GROUND_STATE
+gpsd: Character discarded, buffer 14 chars = 96578f34901f0b5a304a38100dff
+gpsd: 00000020: character '.' [96], new state: GROUND_STATE
+gpsd: Character discarded, buffer 13 chars = 578f34901f0b5a304a38100dff
+gpsd: 00000021: character 'W' [57], new state: GROUND_STATE
+gpsd: Character discarded, buffer 12 chars = 8f34901f0b5a304a38100dff
+gpsd: 00000022: character '.' [8f], new state: GROUND_STATE
+gpsd: Character discarded, buffer 11 chars = 34901f0b5a304a38100dff
+gpsd: 00000023: character '4' [34], new state: GROUND_STATE
+gpsd: Character discarded, buffer 10 chars = 901f0b5a304a38100dff
+gpsd: 00000024: character '.' [90], new state: GROUND_STATE
+gpsd: Character discarded, buffer 9 chars = 1f0b5a304a38100dff
+gpsd: 00000025: character '.' [1f], new state: GROUND_STATE
+gpsd: Character discarded, buffer 8 chars = 0b5a304a38100dff
+gpsd: 00000026: character '.' [0b], new state: GROUND_STATE
+gpsd: Character discarded, buffer 7 chars = 5a304a38100dff
+gpsd: 00000027: character 'Z' [5a], new state: GROUND_STATE
+gpsd: Character discarded, buffer 6 chars = 304a38100dff
+gpsd: 00000028: character '0' [30], new state: GROUND_STATE
+gpsd: Character discarded, buffer 5 chars = 4a38100dff
+gpsd: 00000029: character 'J' [4a], new state: GROUND_STATE
+gpsd: Character discarded, buffer 4 chars = 38100dff
+gpsd: 00000030: character '8' [38], new state: GROUND_STATE
+gpsd: Character discarded, buffer 3 chars = 100dff
+gpsd: 00000031: character '.' [10], new state: DLE_LEADER
+gpsd: 00000032: character '.' [0d], new state: GROUND_STATE
+gpsd: Character discarded, buffer 2 chars = 0dff
+gpsd: 00000033: character '.' [0d], new state: GROUND_STATE
+gpsd: Character discarded, buffer 1 chars = ff
+gpsd: 00000034: character '.' [ff], new state: GROUND_STATE
+gpsd: Character discarded, buffer 0 chars = 
+gpsd: packet sniff on /dev/gps finds type -2
+gpsd: GPS sent 2 new characters
+gpsd: New data on /dev/gps, not yet a packet
+gpsd: select waits
+gpsd: polling 5
+gpsd: Read 1 chars to buffer offset 0 (total 1): 10
+gpsd: 00000035: character '.' [10], new state: DLE_LEADER
+gpsd: packet sniff on /dev/gps finds type -2
+gpsd: GPS sent 1 new characters
+gpsd: New data on /dev/gps, not yet a packet
+gpsd: select waits
+gpsd: polling 5
+gpsd: Read 14 chars to buffer offset 1 (total 15): 512a4f16de34d107ed6c48055241
+gpsd: 00000036: character 'Q' [51], new state: TSIP_PAYLOAD
+gpsd: 00000037: character '*' [2a], new state: TSIP_PAYLOAD
+gpsd: 00000038: character 'O' [4f], new state: TSIP_PAYLOAD
+gpsd: 00000039: character '.' [16], new state: TSIP_PAYLOAD
+gpsd: 00000040: character '.' [de], new state: TSIP_PAYLOAD
+gpsd: 00000041: character '4' [34], new state: TSIP_PAYLOAD
+gpsd: 00000042: character '.' [d1], new state: TSIP_PAYLOAD
+gpsd: 00000043: character '.' [07], new state: TSIP_PAYLOAD
+gpsd: 00000044: character '.' [ed], new state: TSIP_PAYLOAD
+gpsd: 00000045: character 'l' [6c], new state: TSIP_PAYLOAD
+gpsd: 00000046: character 'H' [48], new state: TSIP_PAYLOAD
+gpsd: 00000047: character '.' [05], new state: TSIP_PAYLOAD
+gpsd: 00000048: character 'R' [52], new state: TSIP_PAYLOAD
+gpsd: 00000049: character 'A' [41], new state: TSIP_PAYLOAD
+gpsd: packet sniff on /dev/gps finds type -2
+gpsd: GPS sent 14 new characters
+gpsd: New data on /dev/gps, not yet a packet
+gpsd: select waits
+gpsd: polling 5
+gpsd: Read 3 chars to buffer offset 15 (total 18): 100dff
+gpsd: 00000050: character '.' [10], new state: TSIP_DLE
+gpsd: 00000051: character '.' [0d], new state: GROUND_STATE
+gpsd: Character discarded, buffer 17 chars = 512a4f16de34d107ed6c48055241100dff
+gpsd: 00000052: character 'Q' [51], new state: GROUND_STATE
+gpsd: Character discarded, buffer 16 chars = 2a4f16de34d107ed6c48055241100dff
+gpsd: 00000053: character '*' [2a], new state: GROUND_STATE
+gpsd: Character discarded, buffer 15 chars = 4f16de34d107ed6c48055241100dff
+gpsd: 00000054: character 'O' [4f], new state: GROUND_STATE
+gpsd: Character discarded, buffer 14 chars = 16de34d107ed6c48055241100dff
+gpsd: 00000055: character '.' [16], new state: GROUND_STATE
+gpsd: Character discarded, buffer 13 chars = de34d107ed6c48055241100dff
+gpsd: 00000056: character '.' [de], new state: GROUND_STATE
+gpsd: Character discarded, buffer 12 chars = 34d107ed6c48055241100dff
+gpsd: 00000057: character '4' [34], new state: GROUND_STATE
+gpsd: Character discarded, buffer 11 chars = d107ed6c48055241100dff
+gpsd: 00000058: character '.' [d1], new state: GROUND_STATE
+gpsd: Character discarded, buffer 10 chars = 07ed6c48055241100dff
+gpsd: 00000059: character '.' [07], new state: GROUND_STATE
+gpsd: Character discarded, buffer 9 chars = ed6c48055241100dff
+gpsd: 00000060: character '.' [ed], new state: GROUND_STATE
+gpsd: Character discarded, buffer 8 chars = 6c48055241100dff
+gpsd: 00000061: character 'l' [6c], new state: GROUND_STATE
+gpsd: Character discarded, buffer 7 chars = 48055241100dff
+gpsd: 00000062: character 'H' [48], new state: GROUND_STATE
+gpsd: Character discarded, buffer 6 chars = 055241100dff
+gpsd: 00000063: character '.' [05], new state: GROUND_STATE
+gpsd: Character discarded, buffer 5 chars = 5241100dff
+gpsd: 00000064: character 'R' [52], new state: GROUND_STATE
+gpsd: Character discarded, buffer 4 chars = 41100dff
+gpsd: 00000065: character 'A' [41], new state: GROUND_STATE
+gpsd: Character discarded, buffer 3 chars = 100dff
+gpsd: 00000066: character '.' [10], new state: DLE_LEADER
+gpsd: 00000067: character '.' [0d], new state: GROUND_STATE
+gpsd: Character discarded, buffer 2 chars = 0dff
+gpsd: 00000068: character '.' [0d], new state: GROUND_STATE
+gpsd: Character discarded, buffer 1 chars = ff
+gpsd: 00000069: character '.' [ff], new state: GROUND_STATE
+gpsd: Character discarded, buffer 0 chars = 
+gpsd: packet sniff on /dev/gps finds type -2
+gpsd: GPS sent 3 new characters
+gpsd: New data on /dev/gps, not yet a packet
+gpsd: select waits
+gpsd: polling 5
+gpsd: Read 1 chars to buffer offset 0 (total 1): 10
+gpsd: 00000070: character '.' [10], new state: DLE_LEADER
+gpsd: packet sniff on /dev/gps finds type -2
+gpsd: GPS sent 1 new characters
+gpsd: New data on /dev/gps, not yet a packet
+gpsd: select waits
+gpsd: polling 5
+gpsd: Read 14 chars to buffer offset 1 (total 15): 512a2fd5af3c3410174dd20552c1
+gpsd: 00000071: character 'Q' [51], new state: TSIP_PAYLOAD
+gpsd: 00000072: character '*' [2a], new state: TSIP_PAYLOAD
+gpsd: 00000073: character '/' [2f], new state: TSIP_PAYLOAD
+gpsd: 00000074: character '.' [d5], new state: TSIP_PAYLOAD
+gpsd: 00000075: character '.' [af], new state: TSIP_PAYLOAD
+gpsd: 00000076: character '&lt;' [3c], new state: TSIP_PAYLOAD
+gpsd: 00000077: character '4' [34], new state: TSIP_PAYLOAD
+gpsd: 00000078: character '.' [10], new state: TSIP_DLE
+gpsd: 00000079: character '.' [17], new state: GROUND_STATE
+gpsd: Character discarded, buffer 14 chars = 512a2fd5af3c3410174dd20552c1
+gpsd: 00000080: character 'Q' [51], new state: GROUND_STATE
+gpsd: Character discarded, buffer 13 chars = 2a2fd5af3c3410174dd20552c1
+gpsd: 00000081: character '*' [2a], new state: GROUND_STATE
+gpsd: Character discarded, buffer 12 chars = 2fd5af3c3410174dd20552c1
+gpsd: 00000082: character '/' [2f], new state: GROUND_STATE
+gpsd: Character discarded, buffer 11 chars = d5af3c3410174dd20552c1
+gpsd: 00000083: character '.' [d5], new state: GROUND_STATE
+gpsd: Character discarded, buffer 10 chars = af3c3410174dd20552c1
+gpsd: 00000084: character '.' [af], new state: GROUND_STATE
+gpsd: Character discarded, buffer 9 chars = 3c3410174dd20552c1
+gpsd: 00000085: character '&lt;' [3c], new state: GROUND_STATE
+gpsd: Character discarded, buffer 8 chars = 3410174dd20552c1
+gpsd: 00000086: character '4' [34], new state: GROUND_STATE
+gpsd: Character discarded, buffer 7 chars = 10174dd20552c1
+gpsd: 00000087: character '.' [10], new state: DLE_LEADER
+gpsd: 00000088: character '.' [17], new state: TSIP_PAYLOAD
+gpsd: 00000089: character 'M' [4d], new state: TSIP_PAYLOAD
+gpsd: 00000090: character '.' [d2], new state: TSIP_PAYLOAD
+gpsd: 00000091: character '.' [05], new state: TSIP_PAYLOAD
+gpsd: 00000092: character 'R' [52], new state: TSIP_PAYLOAD
+gpsd: 00000093: character '.' [c1], new state: TSIP_PAYLOAD
+gpsd: packet sniff on /dev/gps finds type -2
+gpsd: GPS sent 14 new characters
+gpsd: New data on /dev/gps, not yet a packet
+gpsd: select waits
+gpsd: polling 5
+gpsd: Read 3 chars to buffer offset 7 (total 10): 4134fc
+gpsd: 00000094: character 'A' [41], new state: TSIP_PAYLOAD
+gpsd: 00000095: character '4' [34], new state: TSIP_PAYLOAD
+gpsd: 00000096: character '.' [fc], new state: TSIP_PAYLOAD
+gpsd: packet sniff on /dev/gps finds type -2
+gpsd: GPS sent 3 new characters
+gpsd: New data on /dev/gps, not yet a packet
+gpsd: select waits
+gpsd: polling 5
+gpsd: Read 1 chars to buffer offset 10 (total 11): 10
+gpsd: 00000097: character '.' [10], new state: TSIP_DLE
+gpsd: packet sniff on /dev/gps finds type -2
+gpsd: GPS sent 1 new characters
+gpsd: New data on /dev/gps, not yet a packet
+gpsd: select waits
+gpsd: polling 5
+gpsd: Read 14 chars to buffer offset 11 (total 25): 512a0ff517449ad07d28d2c152d0
+gpsd: 00000098: character 'Q' [51], new state: GROUND_STATE
+gpsd: Character discarded, buffer 24 chars = 174dd20552c14134fc10512a0ff517449ad07d28d2c152d0
+gpsd: 00000099: character '.' [17], new state: GROUND_STATE
+gpsd: Character discarded, buffer 23 chars = 4dd20552c14134fc10512a0ff517449ad07d28d2c152d0
+gpsd: 00000100: character 'M' [4d], new state: GROUND_STATE
+gpsd: Character discarded, buffer 22 chars = d20552c14134fc10512a0ff517449ad07d28d2c152d0
+gpsd: 00000101: character '.' [d2], new state: GROUND_STATE
+gpsd: Character discarded, buffer 21 chars = 0552c14134fc10512a0ff517449ad07d28d2c152d0
+gpsd: 00000102: character '.' [05], new state: GROUND_STATE
+gpsd: Character discarded, buffer 20 chars = 52c14134fc10512a0ff517449ad07d28d2c152d0
+gpsd: 00000103: character 'R' [52], new state: GROUND_STATE
+gpsd: Character discarded, buffer 19 chars = c14134fc10512a0ff517449ad07d28d2c152d0
+gpsd: 00000104: character '.' [c1], new state: GROUND_STATE
+gpsd: Character discarded, buffer 18 chars = 4134fc10512a0ff517449ad07d28d2c152d0
+gpsd: 00000105: character 'A' [41], new state: GROUND_STATE
+gpsd: Character discarded, buffer 17 chars = 34fc10512a0ff517449ad07d28d2c152d0
+gpsd: 00000106: character '4' [34], new state: GROUND_STATE
+gpsd: Character discarded, buffer 16 chars = fc10512a0ff517449ad07d28d2c152d0
+gpsd: 00000107: character '.' [fc], new state: GROUND_STATE
+gpsd: Character discarded, buffer 15 chars = 10512a0ff517449ad07d28d2c152d0
+gpsd: 00000108: character '.' [10], new state: DLE_LEADER
+gpsd: 00000109: character 'Q' [51], new state: TSIP_PAYLOAD
+gpsd: 00000110: character '*' [2a], new state: TSIP_PAYLOAD
+gpsd: 00000111: character '.' [0f], new state: TSIP_PAYLOAD
+gpsd: 00000112: character '.' [f5], new state: TSIP_PAYLOAD
+gpsd: 00000113: character '.' [17], new state: TSIP_PAYLOAD
+gpsd: 00000114: character 'D' [44], new state: TSIP_PAYLOAD
+gpsd: 00000115: character '.' [9a], new state: TSIP_PAYLOAD
+gpsd: 00000116: character '.' [d0], new state: TSIP_PAYLOAD
+gpsd: 00000117: character '}' [7d], new state: TSIP_PAYLOAD
+gpsd: 00000118: character '(' [28], new state: TSIP_PAYLOAD
+gpsd: 00000119: character '.' [d2], new state: TSIP_PAYLOAD
+gpsd: 00000120: character '.' [c1], new state: TSIP_PAYLOAD
+gpsd: 00000121: character 'R' [52], new state: TSIP_PAYLOAD
+gpsd: 00000122: character '.' [d0], new state: TSIP_PAYLOAD
+gpsd: packet sniff on /dev/gps finds type -2
+gpsd: GPS sent 14 new characters
+gpsd: New data on /dev/gps, not yet a packet
+gpsd: select waits
+gpsd: polling 5
+gpsd: Read 3 chars to buffer offset 15 (total 18): 411afc
+gpsd: 00000123: character 'A' [41], new state: TSIP_PAYLOAD
+gpsd: 00000124: character '.' [1a], new state: TSIP_PAYLOAD
+gpsd: 00000125: character '.' [fc], new state: TSIP_PAYLOAD
+gpsd: packet sniff on /dev/gps finds type -2
+gpsd: GPS sent 3 new characters
+gpsd: New data on /dev/gps, not yet a packet
+gpsd: select waits
+gpsd: polling 5
+gpsd: Read 1 chars to buffer offset 18 (total 19): 10
+gpsd: 00000126: character '.' [10], new state: TSIP_DLE
+gpsd: packet sniff on /dev/gps finds type -2
+gpsd: GPS sent 1 new characters
+gpsd: New data on /dev/gps, not yet a packet
+gpsd: select waits
+gpsd: polling 5
+gpsd: Read 14 chars to buffer offset 19 (total 33): 512a0f1560b4440ea1a8212b4c09
+gpsd: 00000127: character 'Q' [51], new state: GROUND_STATE
+gpsd: Character discarded, buffer 32 chars = 512a0ff517449ad07d28d2c152d0411afc10512a0f1560b4440ea1a8212b4c09
+gpsd: 00000128: character 'Q' [51], new state: GROUND_STATE
+gpsd: Character discarded, buffer 31 chars = 2a0ff517449ad07d28d2c152d0411afc10512a0f1560b4440ea1a8212b4c09
+gpsd: 00000129: character '*' [2a], new state: GROUND_STATE
+gpsd: Character discarded, buffer 30 chars = 0ff517449ad07d28d2c152d0411afc10512a0f1560b4440ea1a8212b4c09
+gpsd: 00000130: character '.' [0f], new state: GROUND_STATE
+gpsd: Character discarded, buffer 29 chars = f517449ad07d28d2c152d0411afc10512a0f1560b4440ea1a8212b4c09
+gpsd: 00000131: character '.' [f5], new state: GROUND_STATE
+gpsd: Character discarded, buffer 28 chars = 17449ad07d28d2c152d0411afc10512a0f1560b4440ea1a8212b4c09
+gpsd: 00000132: character '.' [17], new state: GROUND_STATE
+gpsd: Character discarded, buffer 27 chars = 449ad07d28d2c152d0411afc10512a0f1560b4440ea1a8212b4c09
+gpsd: 00000133: character 'D' [44], new state: GROUND_STATE
+gpsd: Character discarded, buffer 26 chars = 9ad07d28d2c152d0411afc10512a0f1560b4440ea1a8212b4c09
+gpsd: 00000134: character '.' [9a], new state: GROUND_STATE
+gpsd: Character discarded, buffer 25 chars = d07d28d2c152d0411afc10512a0f1560b4440ea1a8212b4c09
+gpsd: 00000135: character '.' [d0], new state: GROUND_STATE
+gpsd: Character discarded, buffer 24 chars = 7d28d2c152d0411afc10512a0f1560b4440ea1a8212b4c09
+gpsd: 00000136: character '}' [7d], new state: GROUND_STATE
+gpsd: Character discarded, buffer 23 chars = 28d2c152d0411afc10512a0f1560b4440ea1a8212b4c09
+gpsd: 00000137: character '(' [28], new state: GROUND_STATE
+gpsd: Character discarded, buffer 22 chars = d2c152d0411afc10512a0f1560b4440ea1a8212b4c09
+gpsd: 00000138: character '.' [d2], new state: GROUND_STATE
+gpsd: Character discarded, buffer 21 chars = c152d0411afc10512a0f1560b4440ea1a8212b4c09
+gpsd: 00000139: character '.' [c1], new state: GROUND_STATE
+gpsd: Character discarded, buffer 20 chars = 52d0411afc10512a0f1560b4440ea1a8212b4c09
+gpsd: 00000140: character 'R' [52], new state: GROUND_STATE
+gpsd: Character discarded, buffer 19 chars = d0411afc10512a0f1560b4440ea1a8212b4c09
+gpsd: 00000141: character '.' [d0], new state: GROUND_STATE
+gpsd: Character discarded, buffer 18 chars = 411afc10512a0f1560b4440ea1a8212b4c09
+gpsd: 00000142: character 'A' [41], new state: GROUND_STATE
+gpsd: Character discarded, buffer 17 chars = 1afc10512a0f1560b4440ea1a8212b4c09
+gpsd: 00000143: character '.' [1a], new state: GROUND_STATE
+gpsd: Character discarded, buffer 16 chars = fc10512a0f1560b4440ea1a8212b4c09
+gpsd: 00000144: character '.' [fc], new state: GROUND_STATE
+gpsd: Character discarded, buffer 15 chars = 10512a0f1560b4440ea1a8212b4c09
+gpsd: 00000145: character '.' [10], new state: DLE_LEADER
+gpsd: 00000146: character 'Q' [51], new state: TSIP_PAYLOAD
+gpsd: 00000147: character '*' [2a], new state: TSIP_PAYLOAD
+gpsd: 00000148: character '.' [0f], new state: TSIP_PAYLOAD
+gpsd: 00000149: character '.' [15], new state: TSIP_PAYLOAD
+gpsd: 00000150: character '`' [60], new state: TSIP_PAYLOAD
+gpsd: 00000151: character '.' [b4], new state: TSIP_PAYLOAD
+gpsd: 00000152: character 'D' [44], new state: TSIP_PAYLOAD
+gpsd: 00000153: character '.' [0e], new state: TSIP_PAYLOAD
+gpsd: 00000154: character '.' [a1], new state: TSIP_PAYLOAD
+gpsd: 00000155: character '.' [a8], new state: TSIP_PAYLOAD
+gpsd: 00000156: character '!' [21], new state: TSIP_PAYLOAD
+gpsd: 00000157: character '+' [2b], new state: TSIP_PAYLOAD
+gpsd: 00000158: character 'L' [4c], new state: TSIP_PAYLOAD
+gpsd: 00000159: character '.' [09], new state: TSIP_PAYLOAD
+gpsd: packet sniff on /dev/gps finds type -2
+gpsd: GPS sent 14 new characters
+gpsd: New data on /dev/gps, not yet a packet
+gpsd: select waits
+gpsd: polling 5
+gpsd: Read 3 chars to buffer offset 15 (total 18): 3f42e0
+gpsd: 00000160: character '?' [3f], new state: TSIP_PAYLOAD
+gpsd: 00000161: character 'B' [42], new state: TSIP_PAYLOAD
+gpsd: 00000162: character '.' [e0], new state: TSIP_PAYLOAD
+gpsd: packet sniff on /dev/gps finds type -2
+gpsd: GPS sent 3 new characters
+gpsd: New data on /dev/gps, not yet a packet
+gpsd: select waits
+gpsd: polling 5
+gpsd: Read 1 chars to buffer offset 18 (total 19): 10
+gpsd: 00000163: character '.' [10], new state: TSIP_DLE
+gpsd: packet sniff on /dev/gps finds type -2
+gpsd: GPS sent 1 new characters
+gpsd: New data on /dev/gps, not yet a packet
+gpsd: select waits
+gpsd: polling 5
+gpsd: Read 15 chars to buffer offset 19 (total 34): 512aef4eb133d107e91943add86a84
+gpsd: 00000164: character 'Q' [51], new state: GROUND_STATE
+gpsd: Character discarded, buffer 33 chars = 512a0f1560b4440ea1a8212b4c093f42e010512aef4eb133d107e91943add86a84
+gpsd: 00000165: character 'Q' [51], new state: GROUND_STATE
+gpsd: Character discarded, buffer 32 chars = 2a0f1560b4440ea1a8212b4c093f42e010512aef4eb133d107e91943add86a84
+gpsd: 00000166: character '*' [2a], new state: GROUND_STATE
+gpsd: Character discarded, buffer 31 chars = 0f1560b4440ea1a8212b4c093f42e010512aef4eb133d107e91943add86a84
+gpsd: 00000167: character '.' [0f], new state: GROUND_STATE
+gpsd: Character discarded, buffer 30 chars = 1560b4440ea1a8212b4c093f42e010512aef4eb133d107e91943add86a84
+gpsd: 00000168: character '.' [15], new state: GROUND_STATE
+gpsd: Character discarded, buffer 29 chars = 60b4440ea1a8212b4c093f42e010512aef4eb133d107e91943add86a84
+gpsd: 00000169: character '`' [60], new state: GROUND_STATE
+gpsd: Character discarded, buffer 28 chars = b4440ea1a8212b4c093f42e010512aef4eb133d107e91943add86a84
+gpsd: 00000170: character '.' [b4], new state: GROUND_STATE
+gpsd: Character discarded, buffer 27 chars = 440ea1a8212b4c093f42e010512aef4eb133d107e91943add86a84
+gpsd: 00000171: character 'D' [44], new state: GROUND_STATE
+gpsd: Character discarded, buffer 26 chars = 0ea1a8212b4c093f42e010512aef4eb133d107e91943add86a84
+gpsd: 00000172: character '.' [0e], new state: GROUND_STATE
+gpsd: Character discarded, buffer 25 chars = a1a8212b4c093f42e010512aef4eb133d107e91943add86a84
+gpsd: 00000173: character '.' [a1], new state: GROUND_STATE
+gpsd: Character discarded, buffer 24 chars = a8212b4c093f42e010512aef4eb133d107e91943add86a84
+gpsd: 00000174: character '.' [a8], new state: GROUND_STATE
+gpsd: Character discarded, buffer 23 chars = 212b4c093f42e010512aef4eb133d107e91943add86a84
+gpsd: 00000175: character '!' [21], new state: NMEA_BANG
+gpsd: 00000176: character '+' [2b], new state: GROUND_STATE
+gpsd: Character discarded, buffer 22 chars = 2b4c093f42e010512aef4eb133d107e91943add86a84
+gpsd: 00000177: character '+' [2b], new state: GROUND_STATE
+gpsd: Character discarded, buffer 21 chars = 4c093f42e010512aef4eb133d107e91943add86a84
+gpsd: 00000178: character 'L' [4c], new state: GROUND_STATE
+gpsd: Character discarded, buffer 20 chars = 093f42e010512aef4eb133d107e91943add86a84
+gpsd: 00000179: character '.' [09], new state: GROUND_STATE
+gpsd: Character discarded, buffer 19 chars = 3f42e010512aef4eb133d107e91943add86a84
+gpsd: 00000180: character '?' [3f], new state: GROUND_STATE
+gpsd: Character discarded, buffer 18 chars = 42e010512aef4eb133d107e91943add86a84
+gpsd: 00000181: character 'B' [42], new state: GROUND_STATE
+gpsd: Character discarded, buffer 17 chars = e010512aef4eb133d107e91943add86a84
+gpsd: 00000182: character '.' [e0], new state: GROUND_STATE
+gpsd: Character discarded, buffer 16 chars = 10512aef4eb133d107e91943add86a84
+gpsd: 00000183: character '.' [10], new state: DLE_LEADER
+gpsd: 00000184: character 'Q' [51], new state: TSIP_PAYLOAD
+gpsd: 00000185: character '*' [2a], new state: TSIP_PAYLOAD
+gpsd: 00000186: character '.' [ef], new state: TSIP_PAYLOAD
+gpsd: 00000187: character 'N' [4e], new state: TSIP_PAYLOAD
+gpsd: 00000188: character '.' [b1], new state: TSIP_PAYLOAD
+gpsd: 00000189: character '3' [33], new state: TSIP_PAYLOAD
+gpsd: 00000190: character '.' [d1], new state: TSIP_PAYLOAD
+gpsd: 00000191: character '.' [07], new state: TSIP_PAYLOAD
+gpsd: 00000192: character '.' [e9], new state: TSIP_PAYLOAD
+gpsd: 00000193: character '.' [19], new state: TSIP_PAYLOAD
+gpsd: 00000194: character 'C' [43], new state: TSIP_PAYLOAD
+gpsd: 00000195: character '.' [ad], new state: TSIP_PAYLOAD
+gpsd: 00000196: character '.' [d8], new state: TSIP_PAYLOAD
+gpsd: 00000197: character 'j' [6a], new state: TSIP_PAYLOAD
+gpsd: 00000198: character '.' [84], new state: TSIP_PAYLOAD
+gpsd: packet sniff on /dev/gps finds type -2
+gpsd: GPS sent 15 new characters
+gpsd: New data on /dev/gps, not yet a packet
+gpsd: select waits
+gpsd: polling 5
+gpsd: Read 4 chars to buffer offset 16 (total 20): 10100dff
+gpsd: 00000199: character '.' [10], new state: TSIP_DLE
+gpsd: 00000200: character '.' [10], new state: TSIP_PAYLOAD
+gpsd: 00000201: character '.' [0d], new state: TSIP_PAYLOAD
+gpsd: 00000202: character '.' [ff], new state: TSIP_PAYLOAD
+gpsd: packet sniff on /dev/gps finds type -2
+gpsd: GPS sent 4 new characters
+gpsd: New data on /dev/gps, not yet a packet
+gpsd: select waits
+gpsd: polling 5
+gpsd: Read 1 chars to buffer offset 20 (total 21): 10
+gpsd: 00000203: character '.' [10], new state: TSIP_DLE
+gpsd: packet sniff on /dev/gps finds type -2
+gpsd: GPS sent 1 new characters
+gpsd: New data on /dev/gps, not yet a packet
+gpsd: select waits
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="003529.html">[Gpsd-users] Problem with TSIP detection
+</A></li>
+	<LI>Next message: <A HREF="003535.html">[Gpsd-users] Problem with TSIP detection
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3531">[ date ]</a>
+              <a href="thread.html#3531">[ thread ]</a>
+              <a href="subject.html#3531">[ subject ]</a>
+              <a href="author.html#3531">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

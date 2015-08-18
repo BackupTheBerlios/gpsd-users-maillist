@@ -1,0 +1,157 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] Unable to get gpsd to work with NTRIP
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2011-December/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Unable%20to%20get%20gpsd%20to%20work%20with%20NTRIP&In-Reply-To=%3CCACPUjCChKJsFcae2p1me_wsw4%3DV%2BC8%3DDv5uA2KUPA1VoJU7POw%40mail.gmail.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="005536.html">
+   
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] Unable to get gpsd to work with NTRIP</H1>
+    <B>Bradley Allen</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Unable%20to%20get%20gpsd%20to%20work%20with%20NTRIP&In-Reply-To=%3CCACPUjCChKJsFcae2p1me_wsw4%3DV%2BC8%3DDv5uA2KUPA1VoJU7POw%40mail.gmail.com%3E"
+       TITLE="[Gpsd-users] Unable to get gpsd to work with NTRIP">ibradleyallen at gmail.com
+       </A><BR>
+    <I>Thu Dec  1 20:14:49 CET 2011</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="005536.html">[Gpsd-users] Unable to get gpsd to work with NTRIP
+</A></li>
+        
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#5537">[ date ]</a>
+              <a href="thread.html#5537">[ thread ]</a>
+              <a href="subject.html#5537">[ subject ]</a>
+              <a href="author.html#5537">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>they seem to both be there, scons and chrpath ,  when in the gpsd-3.3 directory:
+
+<A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">brad at ubuntu</A>:~/gpsd-3.3$ scons udev-install
+scons: Reading SConscript files ...
+Checking for chrpath... yes
+Checking whether the C++ compiler worksyes
+Checking for ncurses... yes
+Checking for libusb-1.0... yes
+Checking for C library librt... yes
+Checking for bluez... no
+Checking for C header file sys/timepps.h... no
+You do not have kernel PPS available.
+Checking for C function daemon()... yes
+Checking for C function strlcpy()... no
+Checking for C function strlcat()... no
+Checking for C function clock_gettime()... yes
+Checking for C library libbluetooth... no
+libbluetooth not found, bluez cannot be enabled.
+Checking that xsltproc can make man pages... no
+Neither xsltproc nor xmlto found, documentation cannot be built.
+Checking for QtNetwork... no
+All configuration flags are defaulted.
+Package tinfo was not found in the pkg-config search path.
+Perhaps you should add the directory containing `tinfo.pc'
+to the PKG_CONFIG_PATH environment variable
+Package 'tinfo', required by 'ncurses', not found
+OSError: 'pkg-config --cflags --libs ncurses' exited 1:
+  File &quot;/home/brad/gpsd-3.3/SConstruct&quot;, line 827:
+    parse_flags=gpsdlibs + ncurseslibs)
+  File &quot;/usr/lib/scons/SCons/Environment.py&quot;, line 258:
+    return MethodWrapper.__call__(self, target, source, *args, **kw)
+  File &quot;/usr/lib/scons/SCons/Environment.py&quot;, line 222:
+    return self.method(*nargs, **kwargs)
+  File &quot;/usr/lib/scons/SCons/Builder.py&quot;, line 631:
+    env = env.Override(env_kw)
+  File &quot;/usr/lib/scons/SCons/Environment.py&quot;, line 635:
+    if merges: env.MergeFlags(merges)
+  File &quot;/usr/lib/scons/SCons/Environment.py&quot;, line 802:
+    args = self.ParseFlags(args)
+  File &quot;/usr/lib/scons/SCons/Environment.py&quot;, line 788:
+    do_parse(arg)
+  File &quot;/usr/lib/scons/SCons/Environment.py&quot;, line 669:
+    for t in arg: do_parse(t)
+  File &quot;/usr/lib/scons/SCons/Environment.py&quot;, line 674:
+    arg = self.backtick(arg[1:])
+  File &quot;/usr/lib/scons/SCons/Environment.py&quot;, line 593:
+    raise OSError(&quot;'%s' exited %d&quot; % (command, status))
+<A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">brad at ubuntu</A>:~/gpsd-3.3$
+
+
+
+thought i had installed bluez also, but am not sure if its the right version?
+
+
+
+
+
+On 12/1/11, Charles Curley &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">charlescurley at charlescurley.com</A>&gt; wrote:
+&gt;<i> On Thu, 1 Dec 2011 09:52:12 -0800
+</I>&gt;<i> Bradley Allen &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">ibradleyallen at gmail.com</A>&gt; wrote:
+</I>&gt;<i>
+</I>&gt;&gt;<i> Ive recently installed GPSD into a new Ubuntu 11.10 64b system
+</I>&gt;&gt;<i> (already tried on a few other linux installs).  I got the gpsd by
+</I>&gt;&gt;<i> going into software updater, searching for gpsd then installing it.
+</I>&gt;&gt;<i> It shows version 2.95 ?  but if I follow the official gpsd site to the
+</I>&gt;&gt;<i> source code it shows its version 3.3?  i got the source and tried to
+</I>&gt;&gt;<i> compile but it errors out.
+</I>&gt;<i>
+</I>&gt;<i> Current versions require scons and chrpath. See the file build.txt in
+</I>&gt;<i> the root of the distribution. Since you are on Ubuntu, also check out
+</I>&gt;<i> 'scons udev-install' in that file.
+</I>&gt;<i>
+</I>&gt;<i> --
+</I>&gt;<i>
+</I>&gt;<i> Charles Curley                  /&quot;\    ASCII Ribbon Campaign
+</I>&gt;<i> Looking for fine software       \ /    Respect for open standards
+</I>&gt;<i> and/or writing?                  X     No HTML/RTF in email
+</I>&gt;<i> <A HREF="http://www.charlescurley.com">http://www.charlescurley.com</A>    / \    No M$ Word docs in email
+</I>&gt;<i>
+</I>&gt;<i> Key fingerprint = CE5C 6645 A45A 64E4 94C0  809C FFF6 4C48 4ECD DFDB
+</I>&gt;<i> _______________________________________________
+</I>&gt;<i> Gpsd-users mailing list
+</I>&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">Gpsd-users at lists.berlios.de</A>
+</I>&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">https://lists.berlios.de/mailman/listinfo/gpsd-users</A>
+</I>&gt;<i>
+</I>
+
+-- 
+Bradley Rogers
+Associate Specialist
+FiRST Testbed
+Department of Geography
+4839 Ellison Hall
+UC Santa Barbara
+Santa Barbara, CA 93106-4060
+(805) 755-4908 office - primary
+(805) 308-4183 office
+(805) 325-3038 mobile
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="005536.html">[Gpsd-users] Unable to get gpsd to work with NTRIP
+</A></li>
+	
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#5537">[ date ]</a>
+              <a href="thread.html#5537">[ thread ]</a>
+              <a href="subject.html#5537">[ subject ]</a>
+              <a href="author.html#5537">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

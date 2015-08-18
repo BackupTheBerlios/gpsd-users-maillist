@@ -1,0 +1,97 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] Problems with gpsfake
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2005-November/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Problems%20with%20gpsfake&In-Reply-To=%3C200511202237.47312.list%2BGpsd%40room101.us.eu.org%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="001124.html">
+   <LINK REL="Next"  HREF="001126.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] Problems with gpsfake</H1>
+    <B>Rob McGee</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Problems%20with%20gpsfake&In-Reply-To=%3C200511202237.47312.list%2BGpsd%40room101.us.eu.org%3E"
+       TITLE="[Gpsd-users] Problems with gpsfake">list+Gpsd at room101.us.eu.org
+       </A><BR>
+    <I>Mon Nov 21 05:37:46 CET 2005</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="001124.html">[Gpsd-users] Problems with gpsfake
+</A></li>
+        <LI>Next message: <A HREF="001126.html">[Gpsd-users] Problems with gpsfake
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1125">[ date ]</a>
+              <a href="thread.html#1125">[ thread ]</a>
+              <a href="subject.html#1125">[ subject ]</a>
+              <a href="author.html#1125">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>On Sunday 2005-November-20 22:20, J Moore wrote:
+&gt;<i> work. Each time I try to start it I get:
+</I>&gt;<i>
+</I>&gt;<i> $ /usr/sbin/gpsfake -b /home/jamoore/start-at-costco.txt
+</I>&gt;<i> Processing /home/jamoore/start-at-costco.txt...sh: gpsd: command not
+</I>&gt;<i> found
+</I>&gt;<i>
+</I>&gt;<i> Someone replied off-list to my original request, and suggested that
+</I>&gt;<i> the cause was due to the fact that /usr/sbin was not in my path as a
+</I>&gt;<i> regular user. He suggested I get around the issue by starting gpsfake
+</I>&gt;<i> as root, or adding /usr/sbin to the regular user's path.
+</I>&gt;<i>
+</I>&gt;<i> I actually tried these (and several other tricks) before posting. I
+</I>
+You should report what you have tried to save people the trouble of 
+telling you what you already know. And how exactly did you try 
+adding /usr/sbin to the regular user's path?
+
+&gt;<i> tried them all again afterwards, but got the same result: gpsfake
+</I>&gt;<i> seems to be unable to start (or find?) gpsd.
+</I>
+As root: &quot;which gpsd&quot;. If that is empty, you don't have gpsd. Reinstall 
+it.
+
+As user: &quot;locate bin/gpsd&quot;. Should report the same thing. That is the 
+path that needs to be added to your $PATH:
+$ PATH=/whatever/you/found:$PATH /usr/sbin/gpsfake \
+  -b /home/jamoore/start-at-costco.txt
+
+&gt;<i> Can anyone offer ideas, or confirm that the current version of
+</I>&gt;<i> gpsfake still works?
+</I>
+First, show us that you've gotten past the shell problems. The error 
+posted was not from gpsfake, it was from sh.
+-- 
+    Rob - /dev/rob0
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="001124.html">[Gpsd-users] Problems with gpsfake
+</A></li>
+	<LI>Next message: <A HREF="001126.html">[Gpsd-users] Problems with gpsfake
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1125">[ date ]</a>
+              <a href="thread.html#1125">[ thread ]</a>
+              <a href="subject.html#1125">[ subject ]</a>
+              <a href="author.html#1125">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

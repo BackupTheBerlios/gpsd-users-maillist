@@ -1,0 +1,153 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] Compiling/running gpsd 2.25+ on Zaurus
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2005-July/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Compiling/running%20gpsd%202.25%2B%20on%20Zaurus&In-Reply-To=%3C42E657D5.1030905%40wind.sannet.ne.jp%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="000876.html">
+   <LINK REL="Next"  HREF="000883.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] Compiling/running gpsd 2.25+ on Zaurus</H1>
+    <B>Lance Fetters</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Compiling/running%20gpsd%202.25%2B%20on%20Zaurus&In-Reply-To=%3C42E657D5.1030905%40wind.sannet.ne.jp%3E"
+       TITLE="[Gpsd-users] Compiling/running gpsd 2.25+ on Zaurus">ashikase at wind.sannet.ne.jp
+       </A><BR>
+    <I>Tue Jul 26 17:33:41 CEST 2005</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="000876.html">[Gpsd-users] Compiling/running gpsd 2.25+ on Zaurus
+</A></li>
+        <LI>Next message: <A HREF="000883.html">[Gpsd-users] Compiling/running gpsd 2.25+ on Zaurus
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#882">[ date ]</a>
+              <a href="thread.html#882">[ thread ]</a>
+              <a href="subject.html#882">[ subject ]</a>
+              <a href="author.html#882">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Lance Fetters wrote:
+
+&gt;<i> However, another problem has arisen. I can telnet to port 2947 and 
+</I>&gt;<i> switch to 'wr' mode, and I start seeing input from my (BT SirfIII-based) 
+</I>&gt;<i> GPS, but soon after it crashes. I captured a log of gpsd with gdb; I 
+</I>&gt;<i> will include the log at the end of this message.
+</I>
+Just an update, I found out why gpsd is crashing in processGPGSA in my 
+case. If you look at the log below, you'll see that my GPS (i.Trek M3) 
+returns a GPGSA line with only 7 fields; processGPGSA expects 18, and 
+hence ends up reading beyond the fields array. If I wait until my 
+receiver has a fix before starting gpsd, it seems to work ok.
+
+I don't know if this is a problem with my receiver (not following the 
+spec?) or something that should be fixed in gpsd.
+
+The receiver is an OEM through Semsons, and is made by GlobalSat 
+(similar to the BT-338): <A HREF="http://www.semsons.com/im3blgpsresi.html">http://www.semsons.com/im3blgpsresi.html</A>
+
+Any thoughts are welcome.
+
+- Lance F.
+
+&gt;<i> Log follows:
+</I>&gt;<i> -------------------------------------------------------------------
+</I>&gt;<i> (gdb) run
+</I>&gt;<i> Starting program: /home/system/var/mnt/code/gpsd-2.28/.libs/lt-gpsd 
+</I>&gt;<i> /dev/rfcomm0 -D3 -N
+</I>&gt;<i> gpsd: launching (Version 2.28)
+</I>&gt;<i> gpsd: listening on port 2947
+</I>&gt;<i> gpsd: running with effective group ID 0
+</I>&gt;<i> gpsd: running with effective user ID 0
+</I>&gt;<i> gpsd: client connect on 6
+</I>&gt;<i> gpsd: checking 6
+</I>&gt;<i> gpsd: &lt;= client: f
+</I>&gt;<i> gpsd: =&gt; client(6): GPSD,F=?
+</I>&gt;<i> gpsd: checking 6
+</I>&gt;<i> gpsd: &lt;= client: wr
+</I>&gt;<i> gpsd: closing GPS=/dev/rfcomm0 (-1)
+</I>&gt;<i> gpsd: opening GPS data source at '/dev/rfcomm0'
+</I>&gt;<i> gpsd: no probe matched...
+</I>&gt;<i> gpsd: speed 9600, 8N1
+</I>&gt;<i> gpsd: gpsd_activate: opened GPS (7)
+</I>&gt;<i> gpsd: =&gt; client(6): GPSD,X=1122006682.770802
+</I>&gt;<i> gpsd: 6 turned on watching
+</I>&gt;<i> gpsd: 6 turned on raw mode
+</I>&gt;<i> gpsd: =&gt; client(6): GPSD,W=1,R=1
+</I>&gt;<i> gpsd: packet sniff finds type 0
+</I>&gt;<i> gpsd: Selecting Generic NMEA driver...
+</I>&gt;<i> gpsd: =&gt; GPS: $PFEC,GPint,GSA01,DTM00,ZDA01,RMC01,GLL00,VTG00,GSV05*3B
+</I>&gt;<i> 
+</I>&gt;<i> gpsd: =&gt; GPS: $PMOTG,ZDA,1*2F
+</I>&gt;<i> 
+</I>&gt;<i> gpsd: =&gt; GPS: $PGRM0,GSA,1*5C
+</I>&gt;<i> 
+</I>&gt;<i> gpsd: =&gt; GPS: $PSRF105,1*3E
+</I>&gt;<i> 
+</I>&gt;<i> gpsd: &lt;= GPS: $GPRMC,121449.123,V,,,,,,,210705,,*25
+</I>&gt;<i> gpsd: unknown sentence: &quot;$GPRMC,121449.123,V,,,,,,,210705,,*25
+</I>&gt;<i> &quot;
+</I>&gt;<i> gpsd: =&gt; client(6): $GPRMC,121449.123,V,,,,,,,210705,,*25
+</I>&gt;<i> gpsd: &lt;= GPS: $GPGSV,3,2,12,07,00,000,,03,00,000,,11,00,000,,15,00,000,*7B
+</I>&gt;<i> gpsd: Partial satellite data (2 of 3).
+</I>&gt;<i> gpsd: =&gt; client(6): 
+</I>&gt;<i> $GPGSV,3,2,12,07,00,000,,03,00,000,,11,00,000,,15,00,000,*7B
+</I>&gt;<i> gpsd: &lt;= GPS: $GPGGA,121454.116,,,,,0,00,,,M,,,,0000*34
+</I>&gt;<i> gpsd: GPGGA sets status 0
+</I>&gt;<i> gpsd: =&gt; client(6): $GPGGA,121454.116,,,,,0,00,,,M,,,,0000*34
+</I>&gt;<i> gpsd: &lt;= GPS: $GPGSV,3,1,12,25,00,000,,27,00,000,,30,00,000,,05,00,000,*7C
+</I>&gt;<i> gpsd: Partial satellite data (1 of 3).
+</I>&gt;<i> gpsd: =&gt; client(6): 
+</I>&gt;<i> $GPGSV,3,1,12,25,00,000,,27,00,000,,30,00,000,,05,00,000,*7C
+</I>&gt;<i> gpsd: &lt;= GPS: $GPRMC,121458.123,V,,,,,,,210705,,*25
+</I>&gt;<i> gpsd: unknown sentence: &quot;$GPRMC,121458.123,V,,,,,,,210705,,*25
+</I>&gt;<i> &quot;
+</I>&gt;<i> gpsd: =&gt; client(6): $GPRMC,121458.123,V,,,,,,,210705,,*25
+</I>&gt;<i> gpsd: &lt;= GPS: $GPGSA,A,1,,,,*32
+</I>&gt;<i> gpsd: GPGSA sets mode 1
+</I>&gt;<i> 
+</I>&gt;<i> Program received signal SIGSEGV, Segmentation fault.
+</I>&gt;<i> 0x400d0220 in __strtod_internal () from /lib/libc.so.6
+</I>&gt;<i> (gdb) bt
+</I>&gt;<i> #0  0x400d0220 in __strtod_internal () from /lib/libc.so.6
+</I>&gt;<i> #1  0x40028224 in processGPGSA (c=2064, field=0xbfffb444, out=0x201023c)
+</I>&gt;<i>     at /mnt/include/stdlib.h:297
+</I>&gt;<i> #2  0x400287e4 in nmea_parse (sentence=0x201173c &quot;$GPGSA,A,1,,,,*32\r\n&quot;,
+</I>&gt;<i>        outdata=0x201023c) at nmea_parse.c:547
+</I>&gt;<i> #3  0x40029040 in nmea_parse_input (session=0x201023c) at drivers.c:27
+</I>&gt;<i> #4  0x4002fc58 in gpsd_poll (session=0x201023c) at libgpsd_core.c:514
+</I>&gt;<i> #5  0x02004cfc in main (argc=4, argv=0xbffffa84) at gpsd.c:1239
+</I>&gt;<i> #6  0x400b3070 in __libc_start_main () from /lib/libc.so.6
+</I>&gt;<i> (gdb)
+</I>
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="000876.html">[Gpsd-users] Compiling/running gpsd 2.25+ on Zaurus
+</A></li>
+	<LI>Next message: <A HREF="000883.html">[Gpsd-users] Compiling/running gpsd 2.25+ on Zaurus
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#882">[ date ]</a>
+              <a href="thread.html#882">[ thread ]</a>
+              <a href="subject.html#882">[ subject ]</a>
+              <a href="author.html#882">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

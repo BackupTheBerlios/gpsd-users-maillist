@@ -1,0 +1,140 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] libgps questions
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2010-July/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20libgps%20questions&In-Reply-To=%3C922909.57116.qm%40web53006.mail.re2.yahoo.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="004562.html">
+   <LINK REL="Next"  HREF="004573.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] libgps questions</H1>
+    <B>Danforth Dyad</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20libgps%20questions&In-Reply-To=%3C922909.57116.qm%40web53006.mail.re2.yahoo.com%3E"
+       TITLE="[Gpsd-users] libgps questions">bdbcat at yahoo.com
+       </A><BR>
+    <I>Mon Jul  5 21:40:11 CEST 2010</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="004562.html">[Gpsd-users] sample AIVDM/AIVDO data?
+</A></li>
+        <LI>Next message: <A HREF="004573.html">[Gpsd-users] libgps questions
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#4565">[ date ]</a>
+              <a href="thread.html#4565">[ thread ]</a>
+              <a href="subject.html#4565">[ subject ]</a>
+              <a href="author.html#4565">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>
+
+Hello...
+
+I am Dave, lead developer of OpenCPN.
+We have used GPSD for some time, communicating directly with the daemon through a socket.
+We have recently shifted to the libgps interface, and are having some problems.
+
+I've searched around for some production-level sample code using libgps, but to no avail. So I would appreciate it if some gpsd/libgps developers would have a look at our code and validate the basic assumptions.
+
+The important code snippets look like this:
+
+void libgps_hook(struct gps_data_t *data, char *buf, size_t size)
+{
+
+&#160;&#160; ThreadPositionData.FixTime = (time_t)data-&gt;fix.time;
+&#160;&#160; ThreadPositionData.kLat = data-&gt;fix.latitude;
+&#160;&#160; ThreadPositionData.kLon = data-&gt;fix.longitude;
+
+&#160;&#160; ThreadPositionData.kCog = 0.;
+&#160;&#160;
+ if(!wxIsNaN(data-&gt;fix.track))
+&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160; ThreadPositionData.kCog = data-&gt;fix.track;
+
+&#160;&#160; ThreadPositionData.kSog = 0.;
+&#160;&#160; if(!wxIsNaN(data-&gt;fix.speed))
+&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160; ThreadPositionData.kSog = data-&gt;fix.speed;
+
+&#160;&#160; ThreadPositionData.nSats = data-&gt;satellites_visible;
+
+}
+
+void NMEAWindow::OnTimerLIBGPS(wxTimerEvent&amp; event)
+{
+&#160;&#160;&#160;&#160;&#160; // Library call to set the raw hook
+&#160;&#160;&#160;&#160;&#160; m_fn_gps_set_raw_hook(m_gps_data, libgps_hook);
+
+&#160;&#160;&#160;&#160;&#160; // If the library is ready.....
+&#160;&#160;&#160;&#160;&#160; if(m_fn_gps_waiting(m_gps_data)) {
+&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160; m_fn_gps_poll(m_gps_data);
+
+
+&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160; if((m_gps_data-&gt;set &amp; STATUS_SET) &amp;&amp;
+ (m_gps_data-&gt;status &gt; 0))
+&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160; {
+&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160; .....Process the fix
+&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160; }
+&#160;&#160;&#160;&#160;&#160; }
+}
+
+
+As you can see, we poll the library periodically, and extract fix data through the hook mechanism.
+
+Mostly this works OK, but we are seeing some inconsistent behavior.
+
+Here are some of our problems:
+1.&#160; The gps (gps_data_t.status) seems always to be set valid, even when the GPS
+receiver is unplugged after getting a valid fix.
+This is clearly a problem for a ship navigation application.
+Are we interprting this value incorrectly?
+
+2.&#160; (gps_data_t.version) seems sometimes to be unset, returning 0.0
+Why is that?
+
+3.&#160; Related:&#160; What is the Version of libgps which installs from standard repo in Ubuntu
+ 10.04? 
+We are getting mixed results again from (gps_data_t.version)
+
+If anyone can point me to a better interface model, I'd be happy to look at it.
+
+Thanks in advance for your comments.
+Dave
+
+
+
+
+      
+
+
+      
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="004562.html">[Gpsd-users] sample AIVDM/AIVDO data?
+</A></li>
+	<LI>Next message: <A HREF="004573.html">[Gpsd-users] libgps questions
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#4565">[ date ]</a>
+              <a href="thread.html#4565">[ thread ]</a>
+              <a href="subject.html#4565">[ subject ]</a>
+              <a href="author.html#4565">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

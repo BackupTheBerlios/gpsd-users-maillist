@@ -1,0 +1,264 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] cgpxlogger skipping timestamp; Furuno NMEA nav data
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2007-July/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20cgpxlogger%20skipping%20timestamp%3B%20Furuno%20NMEA%20nav%20data&In-Reply-To=%3C20070704000652.078b21e0.hamish_nospam%40yahoo.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="002741.html">
+   <LINK REL="Next"  HREF="002742.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] cgpxlogger skipping timestamp; Furuno NMEA nav data</H1>
+    <B>Hamish</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20cgpxlogger%20skipping%20timestamp%3B%20Furuno%20NMEA%20nav%20data&In-Reply-To=%3C20070704000652.078b21e0.hamish_nospam%40yahoo.com%3E"
+       TITLE="[Gpsd-users] cgpxlogger skipping timestamp; Furuno NMEA nav data">hamish_nospam at yahoo.com
+       </A><BR>
+    <I>Tue Jul  3 14:06:52 CEST 2007</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="002741.html">[Gpsd-users] Getting GPSD to pick up PPS from Delorme Earthmate Serial GPS
+</A></li>
+        <LI>Next message: <A HREF="002742.html">[Gpsd-users] Getting GPSD to pick up PPS from Delorme Earthmate	Serial GPS
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2739">[ date ]</a>
+              <a href="thread.html#2739">[ thread ]</a>
+              <a href="subject.html#2739">[ subject ]</a>
+              <a href="author.html#2739">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi,
+
+cgpxlogger is only outputting a timestamp if the satellites_used struct
+is found. @#%&amp;@%@!!! Could it please use a more generic message to get the
+time? Our Furuno nav system doesn't repeat that nmea sentence. (no $GPGSA,V)
+
+
+(2.34/cgpxlogger.c)
+        if (gpsdata-&gt;satellites_used) { /* plausible timestamp */
+                char scr[128];
+                printf(&quot;        &lt;time&gt;%s&lt;/time&gt;\n&quot;,
+                    unix_to_iso8601(gpsdata-&gt;fix.time, scr, sizeof(scr)));
+        }
+
+
+but $GPGSA,V don't include a timestamp, so I'm confused as to the logic here.
+I'd rather the timestamp came from exactly the same sentence as the lat/lon
+fix for foolproofness.
+
+I assume if this can be changed I can refeed the NMEA log through gpsfake to
+cgpxlogger; or if not, I can feed it through gpsbabel to get a full GPX
+track.
+
+
+messages sent:
+$ cut -f1 -d, 20070624.log | sort | uniq
+
+$GPGGA
+$GPGLL
+$GPRMC
+$GPVTG
+$GPZDA
+$IIAPB
+$IIBOD
+$IIBWC
+$IIBWR
+$IIHSC
+$IIMWD
+$IIMWV
+$IIRMB
+$IIRMC
+$IIVWR
+$IIXTE
+$PFEC
+$SDDBS
+$SDDBT
+$SDDPT
+$YCMTW
+
+
+fwiw, here's a snippet of the NMEA log.
+(includes autopilot, depth sounder, etc messages detailed below)
+It's a Furuno GPS and Sounder, but can't recall the make of the
+autopilot or model numbers, I can get that once the ship returns
+to port.
+
+$GPRMC,201155,A,4527.5192,S,16709.2097,E,7.9,17,230607,24,E*69
+$GPGLL,4527.5171,S,16709.2106,E,201156,A
+$GPGGA,201156,4527.5171,S,16709.2106,E,1,7,1.9,12,M,2,M,,
+$GPVTG,,T,354,M,7.9,N,14.6,K
+$GPZDA,201156,23,06,2007,-12,0
+$SDDBT,00309.3,f,0094.3,M,0051.5,F*00
+$GPRMC,201156,A,4527.5171,S,16709.2106,E,7.9,18,230607,24,E*61
+$SDDBS,00309.3,f,0094.3,M,0051.5,F*07
+$SDDPT,0094.3,000.0*69
+$PFEC,SDvrm,0001.1*70
+$YCMTW,007.59,C*02
+$GPGLL,4527.5150,S,16709.2116,E,201157,A
+$IIRMC,201355.00,A,4527.517,S,16709.210,E,7.90,18,230607,024,E*5E
+$GPGGA,201157,4527.5150,S,16709.2116,E,1,7,1.9,12,M,2,M,,
+$IIVWR,,,,N,,M,,K*1B
+$IIMWD,,T,,M,,N,,M*44
+$GPVTG,,T,354,M,7.9,N,14.6,K
+$IIMWV,,T,,N,A*3B
+$IIMWV,,R,,N,A*3D
+$GPZDA,201157,23,06,2007,-12,0
+$GPRMC,201157,A,4527.5150,S,16709.2116,E,7.9,18,230607,24,E*62
+$GPGLL,4527.5129,S,16709.2125,E,201158,A
+$GPGGA,201158,4527.5129,S,16709.2125,E,1,7,1.9,12,M,2,M,,
+$GPVTG,,T,354,M,7.9,N,14.6,K
+$GPZDA,201158,23,06,2007,-12,0
+$SDDBT,00309.3,f,0094.3,M,0051.5,F*00
+$SDDBS,00309.3,f,0094.3,M,0051.5,F*07
+$GPRMC,201158,A,4527.5129,S,16709.2125,E,7.9,18,230607,24,E*63
+$SDDPT,0094.3,000.0*69
+$PFEC,SDvrm,0001.1*70
+$YCMTW,007.55,C*0E
+$GPGLL,4527.5108,S,16709.2135,E,201159,A
+$GPGGA,201159,4527.5108,S,16709.2135,E,1,7,1.9,12,M,2,M,,
+$GPVTG,,T,355,M,7.9,N,14.7,K
+$GPZDA,201159,23,06,2007,-12,0
+$GPRMC,201159,A,4527.5108,S,16709.2135,E,7.9,19,230607,24,E*61
+$GPGLL,4527.5087,S,16709.2145,E,201200,A
+$GPGGA,201200,4527.5087,S,16709.2145,E,1,7,1.9,12,M,2,M,,
+$GPVTG,,T,355,M,7.9,N,14.7,K
+$GPZDA,201200,23,06,2007,-12,0
+$SDDBT,00309.3,f,0094.3,M,0051.5,F*00
+$SDDBS,00309.3,f,0094.3,M,0051.5,F*07
+$GPRMC,201200,A,4527.5087,S,16709.2145,E,7.9,19,230607,24,E*6F
+$SDDPT,0094.3,000.0*69
+$PFEC,SDvrm,0001.1*70
+$YCMTW,007.55,C*0E
+$GPGLL,4527.5067,S,16709.2155,E,201201,A
+$IIRMC,201359.00,A,4527.508,S,16709.214,E,7.90,19,230607,024,E*59
+$IIVWR,,,,N,,M,,K*1B
+$GPGGA,201201,4527.5067,S,16709.2155,E,1,7,1.9,12,M,2,M,,
+$IIMWD,,T,,M,,N,,M*44
+$IIMWV,,T,,N,A*3B
+$GPVTG,,T,355,M,7.9,N,14.6,K
+$IIMWV,,R,,N,A*3D
+$GPZDA,201201,23,06,2007,-12,0
+$GPRMC,201201,A,4527.5067,S,16709.2155,E,7.9,19,230607,24,E*61
+$GPGLL,4527.5046,S,16709.2165,E,201202,A
+$GPGGA,201202,4527.5046,S,16709.2165,E,1,7,1.9,12,M,2,M,,
+$GPVTG,,T,355,M,7.9,N,14.6,K
+$GPZDA,201202,23,06,2007,-12,0
+$SDDBT,00309.3,f,0094.3,M,0051.5,F*00
+
+
+longer NMEA logs available privately upon request.
+
+I also have a NMEA log of the RTK gps system onboard if a devel wants to
+have a look. (not sure off the top of my head if it's a Trimble or Leica)
+
+
+nmea notes for the above:
+# see <A HREF="http://gpsd.berlios.de/NMEA.txt">http://gpsd.berlios.de/NMEA.txt</A>
+
+[GPS]
+$GPGGA -- gps fix
+$GPGLL -- gps lat/lon
+$GPRMC -- gps recommended minimum gps data
+  -&gt; histortical note: RMA for min Loran, RMB for min nav, and RMC for min GPS
+
+$GPVTG -- gps track made good to wpt and ground speed
+
+$GPZDA -- gps time (hhmmss,dd,mm,yyyy,tz_hr,tz_min)
+          <A HREF="http://www.werple.net.au/~gnb/gps/nmea.html#gpzda">http://www.werple.net.au/~gnb/gps/nmea.html#gpzda</A>
+         $GPZDA,201132,23,06,2007,-12,0
+
+
+[Integrated Instrumentation]
+$IIAPB -- Autopilot &quot;Prase B&quot;
+         $IIAPB,A,A,00.00,L,N,V,V,278,M,001,278,M,278,M*3E
+
+$IIBOD -- Heading of the destination of origin
+         $IIBOD,302,T,278,M,001,000*5D
+
+$IIBWC -- Heading and distance to waypoint
+         $IIBWC,223304.00,4524.166,S,16658.903,E,302,T,278,M,000.11,N,001*2E
+
+$IIBWR -- Heading and distance to waypoint (legacy version)
+         $IIBWR,223304.00,4524.166,S,16658.903,E,302,T,278,M,000.11,N,001*3F
+
+$IIHSC -- Heading Steering Command
+         $IIHSC,302,T,278,M*4D
+
+$IIMWD -- Wind direction and speed
+         $IIMWD,,T,,M,,N,,M*44
+
+$IIMWV -- Apparent wind speed and direction
+         $IIMWV,,R,,N,A*3D
+
+$IIRMB -- Recommended minimum nav data
+         $IIRMB,A,00.00,L,000,001,4524.166,S,16658.903,E,000.11,302,,V*0C
+
+$IIRMC -- Recommended minimum GPS data
+         $IIRMC,223311.00,A,4524.229,S,16659.046,E,0.20,163,230607,024,E*63
+
+$IIVWR -- Relative wind speed and direction
+         $IIVWR,,,,N,,M,,K*1B
+
+$IIXTE -- Cross track error [deviation from rhumbline between waypoints]
+         $IIXTE,A,A,00.00,L,N*49
+
+
+[Furuno specific?]
+$PFEC -- ?  (doesn't change)
+         $PFEC,SDvrm,0001.1*70
+
+
+[Sounder, Depth]
+$SDDBS -- depth in feet, meters, and fathoms
+         $SDDBS,00305.7,f,0093.2,M,0050.9,F*04
+
+$SDDBT -- depth in feet, meters, and fathoms
+         $SDDBT,00305.7,f,0093.2,M,0050.9,F*03
+
+$SDDPT -- depth in meters  (&quot;,000.0&quot; ??)
+         $SDDPT,0093.2,000.0*6F
+
+[Sounder, Temperature]
+$YCMTW  -- depth sounder temperature (deg C)
+         $YCMTW,007.75,C*0C
+
+
+still having to parse the nmea logs myself, :-/ but being able to import
+x,y,depth,temperature data into the GIS for map making will be nice (after
+grafting in xtide corrections).
+
+
+thanks,
+Hamish
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="002741.html">[Gpsd-users] Getting GPSD to pick up PPS from Delorme Earthmate Serial GPS
+</A></li>
+	<LI>Next message: <A HREF="002742.html">[Gpsd-users] Getting GPSD to pick up PPS from Delorme Earthmate	Serial GPS
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2739">[ date ]</a>
+              <a href="thread.html#2739">[ thread ]</a>
+              <a href="subject.html#2739">[ subject ]</a>
+              <a href="author.html#2739">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

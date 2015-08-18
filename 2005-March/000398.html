@@ -1,0 +1,234 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] gpsd 2.17, Mac OS X 10.3.8, Bluetooth Ambicom/Leadtek 9537 GPS, review &amp; gpsd status
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2005-March/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20gpsd%202.17%2C%20Mac%20OS%20X%2010.3.8%2C%20Bluetooth%20Ambicom/Leadtek%209537%20GPS%2C%20review%20%26%20gpsd%20status&In-Reply-To=%3C7ca06e52299c06afc83f3102fbb28538%40nicholasfamilycentral.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="000411.html">
+   <LINK REL="Next"  HREF="000408.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] gpsd 2.17, Mac OS X 10.3.8, Bluetooth Ambicom/Leadtek 9537 GPS, review &amp; gpsd status</H1>
+    <B>Frank Nicholas</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20gpsd%202.17%2C%20Mac%20OS%20X%2010.3.8%2C%20Bluetooth%20Ambicom/Leadtek%209537%20GPS%2C%20review%20%26%20gpsd%20status&In-Reply-To=%3C7ca06e52299c06afc83f3102fbb28538%40nicholasfamilycentral.com%3E"
+       TITLE="[Gpsd-users] gpsd 2.17, Mac OS X 10.3.8, Bluetooth Ambicom/Leadtek 9537 GPS, review &amp; gpsd status">frank at nicholasfamilycentral.com
+       </A><BR>
+    <I>Wed Mar 23 15:51:14 CET 2005</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="000411.html">[Gpsd-users] gpsd segfaults when no fix is present
+</A></li>
+        <LI>Next message: <A HREF="000408.html">[Gpsd-users] gpsd 2.17, Mac OS X 10.3.8, Bluetooth Ambicom/Leadtek 9537 GPS, review &amp; gpsd status
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#398">[ date ]</a>
+              <a href="thread.html#398">[ thread ]</a>
+              <a href="subject.html#398">[ subject ]</a>
+              <a href="author.html#398">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>WARNING - A NOVEL FOLLOWS  :^)
+
+I describe my environment/setup, review the GPS unit, summarize my 
+testing, list the details of how/what I tested, list ideas for the 
+cause of connectivity problem, and ask for HELP/IDEAS/FUTURE TESTING.
+
+I am working with the following setup:
+
+Computer/Build environment:
+Mac 17&quot; 1.33 Powerbook, Mac mini 1.44, &amp; G5 1.8DP, all w/Bluetooth
+All Mac OS X 10.3.8, latest updates
+gcc version 3.3 20030304 (Apple Computer, Inc. build 1666)
+	No gcc optimization or compile flags
+	Building from the command line with:
+		./configure
+		make
+		make sirfcom
+		sudo make install
+	Builds &amp; installs successfully, without any errors or issues.
+
+GPS:
+Ambicom Air2Net Bluetooth GPS Navigation System:
+	<A HREF="http://www.ambicom.com/products/air2net/bt-gps.html">http://www.ambicom.com/products/air2net/bt-gps.html</A>
+Which is actually a Leadtek GPS 9537 Bluetooth GPS Receiver
+	<A HREF="http://www.leadtek.com/gps/gps_9537_1.html">http://www.leadtek.com/gps/gps_9537_1.html</A>
+	<A HREF="http://www.leadtek.com/gps/gps_9537_2.html">http://www.leadtek.com/gps/gps_9537_2.html</A>
+	It even says Leadtek 9537 on the unit, with NO mention of Ambicom!
+	I believe several other companies re-badge this unit
+		I've seen several GPS's with the same spec's &amp;
+		identical LED's/buttons/connectors/markings/layout
+Uses Bluetooth Serial Protocol
+	Conflicting documentation states:
+		NMEA @ 4800bps, 8N1
+		NMEA @ 38400bps, 8N1
+		With debug levels turned on, I've seen 4800, 9600 &amp; 38400 work...
+NMEA-0183 v2.2 (I think I saw this version somewhere, in one of the 
+utilities...)
+Chipset - Sirf Star IIe/LP
+
+Software tested with:
+gpsd v2.17
+sirfmon works MOST of the time.....
+gpsd works SOME of the time.....
+KisMAC direct to /dev/tty.gps works SELDOM.....
+	<A HREF="http://binaervarianz.de/projekte/programmieren/kismac/">http://binaervarianz.de/projekte/programmieren/kismac/</A>
+stty -f /dev/tty.gps -ispeed 4800 works RARELY/NEVER....
+Windows based utility SiRFDemo.exe v3.61 works EVERY time......
+
+A quick review of the unit:
+It appears to lock VERY quickly, &lt; 40 seconds in worst conditions, and 
+I've never seen it lose a lock, even in town.  It typically locks in a 
+&lt; 10 seconds.  I've even had it lock indoors, near a small window!  (At 
+least that's what the LED indicates.)
+Bluetooth range SUCKS big time.  3'-5' line of site.  If anything is in 
+between, the range drops significantly.  This was tested with three (3) 
+different Bluetooth adapters (Apple Powerbook built-in, d-link &amp; 
+Belkin), a PocketPC &amp; Palm Tungsten T.
+Unit has Lithium battery that lasts ~7 hours.  The battery is a cell 
+phone type, and user replaceable.  The units works without a battery, 
+if power cord is used.
+Ambicom version comes with battery, US AC adapter, Car adapter &amp; 
+software for Windows &amp; PocketPC - Retail ~$220.
+Leadtek version (EXACT unit, maybe even a newer, HS-High Sensitivity, 
+version) comes with battery, US AC adapter, Non-US Plugs for AC 
+adapter, Car adapter &amp; No software - Online ~$130.
+Built-in ceramic patch antenna
+External antenna connector (conflicting information - MC or MMC?)
+Charging/Power Jack
+Bluetooth status LED
+Sat. Lock/Charging status LED
+Power Button
+Dimensions:  83mm x 45mm x 18mm
+Weight:  52g w/o Battery, 78g w/Battery
+
+Testing summary:
+The Auto baud-rate/bits/parity/driver detection in gpsd USUALLY does 
+NOT work.  When it does work, the unit works GREAT with gpsd, KisMAC 
+w/gpsd &amp; sirfmon.  sirfmon Auto detection appears to work more 
+reliably.  I keep mentioning sirfmon, because it allows me to set the 
+GPS output mode and baud rate.  If sirfmon detects the unit and works, 
+I can set the baud rate to 4800, and gpsd works almost every time.  
+gpsd has recognized the unit as both a generic NMEA &amp; SiRF unit, I 
+think, depending on how I've set it with sirfmon, when exiting sirfmon.
+
+Testing detail &amp; observations:
+The unit is quickly found by the Bluetooth adapter for pairing.  I pair 
+the unit easily and successfully on any device/adapter I've tried.  I 
+then set up a serial port, that does not use security, or require 
+authentication.  The serial port is defined as an &quot;Outgoing&quot; port, and 
+named '/dev/tty.gps'.  The Mac has a GUI to do this, called &quot;Bluetooth 
+Serial Utility&quot;.  When using 'stty', 'gpsd', 'sirfmon', 'cat 
+/dev/tty.gps' or KisMAC (directly to /dev/tty.gps), the Bluetooth 
+serial port is connected automatically.  'cat /dev/tty.gps' usually 
+spits out data - typically NOT ASCII.  When trying to use 'stty' to set 
+the serial port speed ('stty -f /dev/tty.gps -ispeed 4800'), it usually 
+fails (I don't think I've ever seen it work, but I've done so much 
+testing, I won't swear to it.)  The error message is:  &quot;I NEED TO 
+LOOKUP THE ERROR MESSAGE&quot;.  The speed is reported back as 9600, no 
+matter what I try to set it to.  'stty -f /dev/tty.gps' almost always 
+reports the speed at 9600, UNLESS 'gpsd', 'sirfmon', or KisMAC are 
+running and working correctly.  If 'gpsd', 'sirfmon', or KisMAC 
+(directly to the /dev/tty.gps, not using gpsd) are working correctly, 
+then the speed is usually reported as 4800.  I've run gpsd with '-N 
+-D6' and added my own debugging output.  If gpsd is NOT going to work, 
+it hangs in 'packet.c', at function packet_sniff(), in the 'for' loop 
+near lines 404-425 (the line numbers may be a little off, with my 
+additional debugging code), and hammers my CPU, until I kill gpsd.  The 
+variable 'count' never gets changed from 0.  If I add a 'count = 1 ;' , 
+at the end of the 'for' loop, just before the brace, it does step 
+through SNIFF_RETRIES packets, before returning.  I don't fully 
+understand what's happening in the 'for' loop, so this may NOT be a 
+good thing.  I wonder if there is a bug in packet_sniff()?  I've tried 
+upping SNIFF_RETRIES, and it doesn't seem to help.  After I added the 
+'count = 1;', it does step through ALL the baud rate/bit combinations.  
+It just never finds a working combination.  I've hacked up both gpsd &amp; 
+sirfmon, to only try single buad rates.  If they don't auto detect, I 
+can usually get at least sirfmon to work at 38400 (hacked to only use 
+that baud rate.)  Then I use sifrmon to change the baud rate to 4800, 
+and then gpsd works.  I do think the failures of gpsd, KisMAC &amp; sirfmon 
+occur most often, when the GPS unit is inside, and without a lock.  
+This is NOT always the case - I have had it fail outside, in an open 
+horizon, with a lock indication.  Throughout all of this testing, I 
+have tried turning the GPS on and off at various times, to &quot;reset&quot; it.  
+The documentation mentions NO method of officially reseting the GPS - 
+hold the power button for .5 seconds to turn on, and hold the power 
+button for 3 seconds to turn off.  I have observed that if the GPS is 
+off, and you hold the power button for too long, it will NOT turn on.  
+If the GPS unit is on, and you hold the power button for too long, it 
+will NOT turn off.  I have tried removing the battery, but I believe 
+the unit has an internal battery for keeping some satellite data.  I 
+didn't notice any effect on my testing, after removing the battery, to 
+try and reset the unit.
+
+As I mentioned earlier, I've used a Windows based tool from the 
+chip-set manufacturer, SiRFDemo.exe, and it works EVERY time.
+
+I haven't come to any definite conclusion as to where the problem is.  
+Here are some possibilities/ideas:
+1 - The GPS unit gets into STRANGE modes/states, and doesn't respond 
+appropriately to commands or baud rate changes
+2 - The GPS unit is broken or poorly implemented
+3 - The GPS unit's Bluetooth implementation SUCKS
+4 - Weak Bluetooth signal strength is causing communication issues
+5 - Bluetooth serial devices on the Mac don't respond correctly to baud 
+rate change requests properly
+6 - Bug in gpsd auto detect code
+
+I would be glad to do some additional testing or coding, if anyone has 
+any ideas/recommendations.  If someone can explain the packet_sniff() 
+function and what's happening in it &amp; get_packet, I'll look into it.  
+If someone knows of a Bluetooth sniffer for Mac or Windows, I would be 
+glad to sniff the traffic between the Windows machine and the GPS unit 
+when using SiRFDemo.exe.  I do have a couple of Linux (Gentoo) systems 
+(my servers), but I haven't used the Bluetooth adapters with them.  
+They are servers for my house and family, and the family expects them 
+to be on and work all the time....  ;^)  I might install Linux on 
+another available box, if someone thinks it will help troubleshooting.
+
+I plan to return the Ambicom unit (in about a week), and probably 
+purchase the Leadtek unit, with an external antenna ($20 extra).  I 
+really like the size and GPS locking ability of this unit.  I just need 
+to get it reliably connecting with a Mac &amp; gpsd.  If anyone has any 
+recommendations for a comparable Bluetooth GPS unit, they've had work 
+with a Mac, works with gpsd, has an external antenna port and can be 
+powered by the vehicle, please let me know.
+
+Thanks for reading my novel,
+Frank
+
+______________________________________________________________________
+This email has been scanned by the MessageLabs Email Security System.
+For more information please visit <A HREF="http://www.messagelabs.com/email">http://www.messagelabs.com/email</A> 
+______________________________________________________________________
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="000411.html">[Gpsd-users] gpsd segfaults when no fix is present
+</A></li>
+	<LI>Next message: <A HREF="000408.html">[Gpsd-users] gpsd 2.17, Mac OS X 10.3.8, Bluetooth Ambicom/Leadtek 9537 GPS, review &amp; gpsd status
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#398">[ date ]</a>
+              <a href="thread.html#398">[ thread ]</a>
+              <a href="subject.html#398">[ subject ]</a>
+              <a href="author.html#398">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

@@ -1,0 +1,97 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] Version checking gpsd
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2010-March/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Version%20checking%20gpsd&In-Reply-To=%3C20100323170342.20a6b13f%40dragon.localdomain%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="004297.html">
+   <LINK REL="Next"  HREF="004296.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] Version checking gpsd</H1>
+    <B>Charles Curley</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Version%20checking%20gpsd&In-Reply-To=%3C20100323170342.20a6b13f%40dragon.localdomain%3E"
+       TITLE="[Gpsd-users] Version checking gpsd">charlescurley at charlescurley.com
+       </A><BR>
+    <I>Wed Mar 24 00:03:42 CET 2010</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="004297.html">[Gpsd-users] Compiling as root?
+</A></li>
+        <LI>Next message: <A HREF="004296.html">[Gpsd-users] Version checking gpsd
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#4295">[ date ]</a>
+              <a href="thread.html#4295">[ thread ]</a>
+              <a href="subject.html#4295">[ subject ]</a>
+              <a href="author.html#4295">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Having successfully compiled gpsd from the bleeding edge, I then
+recompiled and ran a client that I am working on. It reported:
+
+Wrong protocol version. We require version 4.1. libgps reports version
+3.1.
+
+The complaining code is as follows:
+
+    if (gpsdata-&gt;set &amp; VERSION_SET){
+        if (gpsdata-&gt;version.proto_major != GPSD_API_MAJOR_VERSION
+            || gpsdata-&gt;version.proto_minor != GPSD_API_MINOR_VERSION) {
+            fprintf (stderr, &quot;Wrong protocol version. We require
+    version %d.%d.&quot;, GPSD_API_MAJOR_VERSION,
+                    GPSD_API_MINOR_VERSION);
+	    fprintf (stderr, &quot; libgps reports version %d.%d.\n&quot;,
+		     gpsdata-&gt;version.proto_major,
+		     gpsdata-&gt;version.proto_minor);
+
+            if (tag != 0) {
+                g_source_remove (tag);
+            }
+
+            gtk_main_quit ();
+        }
+    }
+
+Am I doing something wrong?
+
+-- 
+
+Charles Curley                  /&quot;\    ASCII Ribbon Campaign
+Looking for fine software       \ /    Respect for open standards
+and/or writing?                  X     No HTML/RTF in email
+<A HREF="http://www.charlescurley.com">http://www.charlescurley.com</A>    / \    No M$ Word docs in email
+
+Key fingerprint = CE5C 6645 A45A 64E4 94C0  809C FFF6 4C48 4ECD DFDB
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="004297.html">[Gpsd-users] Compiling as root?
+</A></li>
+	<LI>Next message: <A HREF="004296.html">[Gpsd-users] Version checking gpsd
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#4295">[ date ]</a>
+              <a href="thread.html#4295">[ thread ]</a>
+              <a href="subject.html#4295">[ subject ]</a>
+              <a href="author.html#4295">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

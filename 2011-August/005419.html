@@ -1,0 +1,133 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] Fwd: gpsfake fails
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2011-August/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Fwd%3A%20gpsfake%20fails&In-Reply-To=%3C1313675945.17694.YahooMailClassic%40web39310.mail.mud.yahoo.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="005416.html">
+   <LINK REL="Next"  HREF="005424.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] Fwd: gpsfake fails</H1>
+    <B>Ezequiel Garc&#237;a</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Fwd%3A%20gpsfake%20fails&In-Reply-To=%3C1313675945.17694.YahooMailClassic%40web39310.mail.mud.yahoo.com%3E"
+       TITLE="[Gpsd-users] Fwd: gpsfake fails">elezegarcia at yahoo.com.ar
+       </A><BR>
+    <I>Thu Aug 18 15:59:05 CEST 2011</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="005416.html">[Gpsd-users] Rv: Re:  Fwd:  gpsfake fails
+</A></li>
+        <LI>Next message: <A HREF="005424.html">[Gpsd-users] Fwd: gpsfake fails
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#5419">[ date ]</a>
+              <a href="thread.html#5419">[ thread ]</a>
+              <a href="subject.html#5419">[ subject ]</a>
+              <a href="author.html#5419">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>
+Rusty, 
+
+You tell the error is this, right?
+    import gps.fake
+ImportError: No module named gps.fake
+
+I think its clear; python can't find gps.py or fake.py. 
+You need to tell him where it is.
+I dont know if gpsd needs python 2.6 or 2.7, 
+but I dont think it has anything to do with it. 
+
+You fake.py is here
+
+/usr/local/lib/python2.6/site-packages/gps/fake.py
+
+so you just need to add that path to python,
+again PYTHONPATH controls this. You could try reading a bit
+of python:
+
+<A HREF="http://docs.python.org/release/2.6/using/cmdline.html#envvar-PYTHONPATH">http://docs.python.org/release/2.6/using/cmdline.html#envvar-PYTHONPATH</A>
+
+So, after setting PYTHONPATH=/usr/local/lib/python2.6/site-packages/gps
+do this:
+
+python -c &quot;import sys; print sys.path&quot;
+
+To check the path python knows for its modules. This path must
+include gps directory for gps.py.
+
+Hope it helps.
+
+--- El jue 18-ago-11, Rusty Synate &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">k.saran.k at gmail.com</A>&gt; escribi&#243;:
+
+De: Rusty Synate &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">k.saran.k at gmail.com</A>&gt;
+Asunto: Re: [Gpsd-users] Fwd: gpsfake fails
+Para: &quot;Ezequiel Garc&#237;a&quot; &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">elezegarcia at yahoo.com.ar</A>&gt;, <A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">gpsd-users at lists.berlios.de</A>
+Fecha: jueves, 18 de agosto de 2011, 3:13
+
+Hi,
+
+I have done as told. Here is output for the locate. 
+
+[<A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">root at uxchas233</A> ~]# locate gps.py
+
+/home/gpsd-2.96/build/lib.linux-i686-2.6/gps/gps.py
+/home/gpsd-2.96/gps/gps.py
+
+/usr/local/lib/python2.6/site-packages/gps/gps.py
+/usr/local/lib/python2.6/site-packages/gps/gps.pyc
+
+
+
+[<A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">root at uxchas233</A> ~]# locate fake.py
+/home/gpsd-2.96/build/lib.linux-i686-2.6/gps/fake.py
+
+/home/gpsd-2.96/gps/fake.py
+/usr/local/lib/python2.6/site-packages/gps/fake.py
+
+/usr/local/lib/python2.6/site-packages/gps/fake.pyc
+
+I even tried to add those to PYTHONPATH. But still it is showing the same error. 
+
+
+[<A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">root at uxchas233</A> ~]# echo $PYTHONPATH
+:<i>/usr/local/lib/python2.6/site-packages/gps/gps.py:/usr/local/lib/python2.6/site-packages/gps/gps.py:
+</I>
+/usr/local/lib/python2.6/site-packages/gps/fake.py:/usr/local/lib/python2.6/site-packages/gps/
+
+My doubt is that does this version of gpsd require python2.7 ??
+
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="005416.html">[Gpsd-users] Rv: Re:  Fwd:  gpsfake fails
+</A></li>
+	<LI>Next message: <A HREF="005424.html">[Gpsd-users] Fwd: gpsfake fails
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#5419">[ date ]</a>
+              <a href="thread.html#5419">[ thread ]</a>
+              <a href="subject.html#5419">[ subject ]</a>
+              <a href="author.html#5419">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

@@ -1,0 +1,122 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] How to start gpsd with fix baud	rate	of	serial	interface
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2009-September/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20How%20to%20start%20gpsd%20with%20fix%20baud%0A%09rate%09of%09serial%09interface&In-Reply-To=%3C4ABD10AF.9040507%40wildgooses.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="003977.html">
+   <LINK REL="Next"  HREF="003931.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] How to start gpsd with fix baud	rate	of	serial	interface</H1>
+    <B>Ed W</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20How%20to%20start%20gpsd%20with%20fix%20baud%0A%09rate%09of%09serial%09interface&In-Reply-To=%3C4ABD10AF.9040507%40wildgooses.com%3E"
+       TITLE="[Gpsd-users] How to start gpsd with fix baud	rate	of	serial	interface">lists at wildgooses.com
+       </A><BR>
+    <I>Fri Sep 25 20:49:19 CEST 2009</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="003977.html">[Gpsd-users] How to start gpsd with fix baud rate	of	serial	interface
+</A></li>
+        <LI>Next message: <A HREF="003931.html">[Gpsd-users] gpsd with ntpd and PPS works only if in ntp.conf is a	additional external server
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3978">[ date ]</a>
+              <a href="thread.html#3978">[ thread ]</a>
+              <a href="subject.html#3978">[ subject ]</a>
+              <a href="author.html#3978">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Diego Berge wrote:
+&gt;<i> -----BEGIN PGP SIGNED MESSAGE-----
+</I>&gt;<i> Hash: SHA1
+</I>&gt;<i>
+</I>&gt;<i> Ed W wrote:
+</I>&gt;<i>
+</I>&gt;<i>   
+</I>&gt;&gt;<i> I think the main thing you might be missing (or I misunderstand your 
+</I>&gt;&gt;<i> answer?) is that modems as a class just sit there and don't *do 
+</I>&gt;&gt;<i> anything* until you probe them..  There are no &quot;OK&quot; strings coming out 
+</I>&gt;&gt;<i> of a modem or any other string for that matter - they just sit quietly 
+</I>&gt;&gt;<i> until you talk to them!
+</I>&gt;&gt;<i>     
+</I>&gt;<i>
+</I>&gt;<i>    ...unless someone else is already using it, or it is set on
+</I>&gt;<i> autorespond, or it is not /quite/ a Hayes modem and it will decide to
+</I>&gt;<i> spontaneously let you know about things it deems interesting (e.g.,
+</I>&gt;<i> incoming SMS), etc.
+</I>&gt;<i>   
+</I>
+Agreed
+
+However, again without going into corner cases, many of those things are 
+usually signalled by strobing DTR or similar? (I guess auto answer isn't?)
+
+Obviously someone could argue this either way, but given the current use 
+case is that this is a &quot;suddenly available&quot; serial port which has 
+appeared on udev's radar, I would suggest a sensible way to handle this 
+situation in the case it was a modem was for our udev tool to realise it 
+was a modem and pass it over to some other script to configure it, this 
+can then obviously return the modem to whatever state it should be in.  
+I'm a big fan of always fully configuring serial modems whenever they 
+appear so that you can be sure someone didn't accidently set something 
+they shouldn't have done.
+
+It's a completely moot point though - using &quot;AT\r&quot; or &quot;AT&amp;F\r&quot; is 
+unlikely to change the detection, it will simply fail to detect the 
+modem if it's in some kind of corner state which stops it responding to 
+AT commands...  Now someone is bound to point out that we could improve 
+this even more by sending something like &quot;++++&quot; first, but this is 
+really my point - it's fairly easy to design a bunch of AT commands 
+which should detect a VERY high percentage of all devices with very few 
+false positives.  AT modems generally just respond in a timely manner 
+with either OK or ERROR to pretty much any random string which starts 
+with an AT and ends &quot;\r&quot;... (Please dont' take this to the limit, of 
+course some AT commands don't return instantly, the point is most do, 
+including most random ones even...)
+
+So please DON'T detect AT modems by listening for &quot;OK&quot;.  Instead probe 
+them with &quot;ATsomething&quot; and then listen for an OK/ERROR.  Repeat this as 
+many times as required to get the confidence as high as you wish.
+
+
+I think this is actually a fairly simple probe to write based on the 
+notes here: <A HREF="http://gpsd.berlios.de/writing-a-driver.html">http://gpsd.berlios.de/writing-a-driver.html</A> - however, I 
+have not yet had a crack at it.... Rather hoping someone who knows the 
+code a bit better might start me off to be honest...
+
+Cheers
+
+Ed W
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="003977.html">[Gpsd-users] How to start gpsd with fix baud rate	of	serial	interface
+</A></li>
+	<LI>Next message: <A HREF="003931.html">[Gpsd-users] gpsd with ntpd and PPS works only if in ntp.conf is a	additional external server
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3978">[ date ]</a>
+              <a href="thread.html#3978">[ thread ]</a>
+              <a href="subject.html#3978">[ subject ]</a>
+              <a href="author.html#3978">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

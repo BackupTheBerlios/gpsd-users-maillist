@@ -1,0 +1,98 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] xgps doesn't display 3 digit PRN like WAAS
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2006-January/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20xgps%20doesn%27t%20display%203%20digit%20PRN%20like%20WAAS&In-Reply-To=%3C20060124031908.34732.qmail%40web32511.mail.mud.yahoo.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="001255.html">
+   <LINK REL="Next"  HREF="001242.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] xgps doesn't display 3 digit PRN like WAAS</H1>
+    <B>Michael R. Davis</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20xgps%20doesn%27t%20display%203%20digit%20PRN%20like%20WAAS&In-Reply-To=%3C20060124031908.34732.qmail%40web32511.mail.mud.yahoo.com%3E"
+       TITLE="[Gpsd-users] xgps doesn't display 3 digit PRN like WAAS">mrdvt92 at yahoo.com
+       </A><BR>
+    <I>Tue Jan 24 04:19:08 CET 2006</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="001255.html">[Gpsd-users] Debian bug #329259: xgpsspeed: just flashing blob
+</A></li>
+        <LI>Next message: <A HREF="001242.html">[Gpsd-users] xgps doesn't display 3 digit PRN like WAAS
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1240">[ date ]</a>
+              <a href="thread.html#1240">[ thread ]</a>
+              <a href="subject.html#1240">[ subject ]</a>
+              <a href="author.html#1240">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Anyone know who is the correct person to submit xgps bugs to?
+
+---
+
+I modified the display.c so that WAAS (PRN=122) will display as 122
+vice 12.
+
+Mike
+
+&gt;<i> 
+</I>&gt;<i> diff -urNad gpsd-2.30/display.c gpsd-2.31/display.c
+</I>&gt;<i> --- gpsd-2.30/display.c 2005-06-14 19:52:36.000000000 -0400
+</I>&gt;<i> +++ gpsd-2.31/display.c 2006-01-14 01:12:25.000000000 -0500
+</I>&gt;<i> @@ -127,9 +127,9 @@
+</I>&gt;<i>                      11, 11,            /* width, height */
+</I>&gt;<i>                      0, 360 * 64        /* angle1, angle2 */
+</I>&gt;<i>                 );
+</I>&gt;<i> -           (void)snprintf(buf, sizeof(buf), &quot;%02d&quot;,
+</I>&gt;<i> gpsdata-&gt;PRN[i]);
+</I>&gt;<i> +           (void)snprintf(buf, sizeof(buf), &quot;%03d&quot;,
+</I>&gt;<i> gpsdata-&gt;PRN[i]);
+</I>&gt;<i>             set_color(&quot;Blue&quot;);
+</I>&gt;<i> -           (void)XDrawString(XtDisplay(draww), pixmap, drawGC, x, y
+</I>&gt;<i> + 17, buf, 2);
+</I>&gt;<i> +           (void)XDrawString(XtDisplay(draww), pixmap, drawGC, x, y
+</I>&gt;<i> + 17, buf, 3);
+</I>&gt;<i>             if (gpsdata-&gt;ss[i]) {
+</I>&gt;<i>                 set_color(&quot;Black&quot;);
+</I>&gt;<i>                 (void)XDrawPoint(XtDisplay(draww), pixmap, drawGC, x,
+</I>&gt;<i> y);
+</I>&gt;<i> 
+</I>
+
+__________________________________________________
+Do You Yahoo!?
+Tired of spam?  Yahoo! Mail has the best spam protection around 
+<A HREF="http://mail.yahoo.com">http://mail.yahoo.com</A> 
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="001255.html">[Gpsd-users] Debian bug #329259: xgpsspeed: just flashing blob
+</A></li>
+	<LI>Next message: <A HREF="001242.html">[Gpsd-users] xgps doesn't display 3 digit PRN like WAAS
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1240">[ date ]</a>
+              <a href="thread.html#1240">[ thread ]</a>
+              <a href="subject.html#1240">[ subject ]</a>
+              <a href="author.html#1240">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

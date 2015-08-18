@@ -1,0 +1,92 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] delay in gpsd boot
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2010-April/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20delay%20in%20gpsd%20boot&In-Reply-To=%3C20100416075307.GA4298%40thyrsus.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="004391.html">
+   <LINK REL="Next"  HREF="004394.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] delay in gpsd boot</H1>
+    <B>Eric Raymond</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20delay%20in%20gpsd%20boot&In-Reply-To=%3C20100416075307.GA4298%40thyrsus.com%3E"
+       TITLE="[Gpsd-users] delay in gpsd boot">esr at thyrsus.com
+       </A><BR>
+    <I>Fri Apr 16 09:53:07 CEST 2010</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="004391.html">[Gpsd-users] delay in gpsd boot
+</A></li>
+        <LI>Next message: <A HREF="004394.html">[Gpsd-users] delay in gpsd boot
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#4393">[ date ]</a>
+              <a href="thread.html#4393">[ thread ]</a>
+              <a href="subject.html#4393">[ subject ]</a>
+              <a href="author.html#4393">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>rabin shahav &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">shahav at gmail.com</A>&gt;:
+&gt;<i> I think that the tty freq identification is working better if the gps has
+</I>&gt;<i> &quot;fixed&quot;, I did the above experiments indoor, without &quot;fix&quot;.
+</I>
+Oh, that's *bad*.  
+
+It suggests that you have one of the rare, hideosly broken chipsets
+like the Furuno GN-77 that don't ship validly checksummed packets
+until they have fix.  Wuthout the checksum, our packet sniffer can't
+know it has locked onto a packet type.
+
+What was your make and model again?  
+ 
+&gt;<i> So, i know that there are no flags to set freq, is there a run time config
+</I>&gt;<i> file? i know that it is almost as having a bunch of flags, but it seems to
+</I>&gt;<i> be needed, after all.
+</I>
+No such file, and there isn't going to be - ever - for reasons I explain in
+the Hacking Guide. Any gain in supporting one or two broken device types
+that way would be more than offset by additional code complexity and
+test paths.  Just not worth it.
+
+Your only way out would be to compile GPSD for a fixed port speed. 
+I put this option in for the SBC crowd, but it's also a blunt instrument
+for coping with devices so brain-dead that autobauding on them fails.
+
+Unfortunately, even then you may lose. As I said, without valid checksums
+on the packets, the sniffer won't lock to the NMEA packet type and
+know how to parse what it's seeing.
+-- 
+		&lt;a href=&quot;<A HREF="http://www.catb.org/~esr/">http://www.catb.org/~esr/</A>&quot;&gt;Eric S. Raymond&lt;/a&gt;
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="004391.html">[Gpsd-users] delay in gpsd boot
+</A></li>
+	<LI>Next message: <A HREF="004394.html">[Gpsd-users] delay in gpsd boot
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#4393">[ date ]</a>
+              <a href="thread.html#4393">[ thread ]</a>
+              <a href="subject.html#4393">[ subject ]</a>
+              <a href="author.html#4393">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

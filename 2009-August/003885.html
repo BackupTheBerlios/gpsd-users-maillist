@@ -1,0 +1,149 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] New GPSD protocol is ready for beta use
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2009-August/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20New%20GPSD%20protocol%20is%20ready%20for%20beta%20use&In-Reply-To=%3C1251544082.24193.1.camel%40jvcomp.jvlab.nl%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="003879.html">
+   <LINK REL="Next"  HREF="003886.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] New GPSD protocol is ready for beta use</H1>
+    <B>Jan Veninga</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20New%20GPSD%20protocol%20is%20ready%20for%20beta%20use&In-Reply-To=%3C1251544082.24193.1.camel%40jvcomp.jvlab.nl%3E"
+       TITLE="[Gpsd-users] New GPSD protocol is ready for beta use">veninga at familiemail.nl
+       </A><BR>
+    <I>Sat Aug 29 13:08:02 CEST 2009</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="003879.html">[Gpsd-users] New GPSD protocol is ready for beta use
+</A></li>
+        <LI>Next message: <A HREF="003886.html">[Gpsd-users] New GPSD protocol is ready for beta use
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3885">[ date ]</a>
+              <a href="thread.html#3885">[ thread ]</a>
+              <a href="subject.html#3885">[ subject ]</a>
+              <a href="author.html#3885">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>On Wed, 2009-08-26 at 23:50 -0400, Eric S. Raymond wrote:
+
+First of all, I like the changes outlined in your transition document. I
+think it is the right way to go.
+
+&gt;<i> It is
+</I>&gt;<i> ready for experimentation and beta-testing.
+</I>
+Ok, I gave it a try today. It is not a live test, but I use an old trace
+via gpsfake. The data comes from an AIS transponder. I have some things
+that don't seem right:
+
+------------
+
+If I start 
+
+$ gpsfake ais.nmea 
+
+and then make a connection via 
+
+$ telnet localhost 2947
+
+I ask information about devices
+
+?DEVICES;
+Connection closed by foreign host.
+
+The connection is closed and can not be opened
+
+I might have something to do with not being a real device?
+
+------------
+
+If I start 
+
+$ gpsfake ais.nmea 
+
+and then make a connection via 
+
+$ telnet localhost 2947
+
+Trying 127.0.0.1...
+Connected to localhost.
+Escape character is '^]'.
+{&quot;class&quot;:&quot;VERSION&quot;,&quot;release&quot;:&quot;2.40dev&quot;,&quot;rev&quot;:&quot;$Id: gpsd.c 5957
+2009-08-23 15:45:54Z esr $&quot;,&quot;api_major&quot;:3,&quot;api_minor&quot;:1}
+
+I turn on streaming
+
+?WATCH={&quot;enable&quot;:true};
+{&quot;class&quot;:&quot;DEVICE&quot;,&quot;device&quot;:&quot;/dev/pts/9&quot;,&quot;activated&quot;:1251538712.85}
+{&quot;class&quot;:&quot;WATCH&quot;,&quot;enable&quot;:true,&quot;raw&quot;:-1,&quot;buffer_policy&quot;:0,&quot;scaled&quot;:false}
+{&quot;class&quot;:&quot;TPV&quot;,&quot;tag&quot;:&quot;RMC&quot;,&quot;device&quot;:&quot;/dev/pts/9&quot;,&quot;time&quot;:1249156168.000,&quot;ept&quot;:0.005,&quot;lat&quot;:52.699955000,&quot;lon&quot;:5.292744833,&quot;track&quot;:0.0000,&quot;speed&quot;:0.003,&quot;mode&quot;:2}
+{&quot;class&quot;:&quot;AIS&quot;,&quot;type&quot;:1,&quot;repeat&quot;:0,&quot;mmsi&quot;:&quot;000000004&quot;,&quot;status&quot;:15,&quot;turn&quot;:-128,&quot;speed&quot;:1023,&quot;accuracy&quot;:0,&quot;lon&quot;:108600000,&quot;lat&quot;:54600000,&quot;course&quot;:3600,&quot;heading&quot;:511,&quot;second&quot;:60,&quot;maneuver&quot;:0,&quot;raim&quot;:0,&quot;radio&quot;:266630}
+{&quot;class&quot;:&quot;AIS&quot;,&quot;type&quot;:18,&quot;repeat&quot;:0,&quot;mmsi&quot;:&quot;244630386&quot;,&quot;reserved&quot;:0,&quot;speed&quot;:0,&quot;accuracy&quot;:0,&quot;lon&quot;:3175648,&quot;lat&quot;:31619973,&quot;course&quot;:0,&quot;heading&quot;:511,&quot;second&quot;:29,&quot;regional&quot;:0,&quot;cs&quot;:1,&quot;display&quot;:0,&quot;dsc&quot;:1,&quot;band&quot;:1,&quot;msg22&quot;:1,&quot;raim&quot;:0,&quot;radio&quot;:917510}
+
+I get 1 gps (TPV) report. After the first AIS report I only get AIS
+reports.
+
+
+If I also turn on &quot;raw&quot;
+
+?WATCH={&quot;enable&quot;:true,&quot;raw&quot;:1};
+{&quot;class&quot;:&quot;DEVICE&quot;,&quot;device&quot;:&quot;/dev/pts/9&quot;,&quot;activated&quot;:1251538942.12}
+{&quot;class&quot;:&quot;WATCH&quot;,&quot;enable&quot;:true,&quot;raw&quot;:1,&quot;buffer_policy&quot;:0,&quot;scaled&quot;:false}
+$GPRMC,194928.00,A,5241.99730,N,00517.56469,E,0.005,,010809,,,A*77
+{&quot;class&quot;:&quot;TPV&quot;,&quot;tag&quot;:&quot;RMC&quot;,&quot;device&quot;:&quot;/dev/pts/9&quot;,&quot;time&quot;:1249156168.000,&quot;ept&quot;:0.005,&quot;lat&quot;:52.699955000,&quot;lon&quot;:5.292744833,&quot;track&quot;:0.0000,&quot;speed&quot;:0.003,&quot;mode&quot;:2}
+$GPGBS,194928.00,3.0,1.9,4.2,,,,*43
+!AIVDO,1,1,,,B3aC3LP00063ag7RNpD03wf5sP06,0*37
+{&quot;class&quot;:&quot;AIS&quot;,&quot;type&quot;:1,&quot;repeat&quot;:0,&quot;mmsi&quot;:&quot;000000004&quot;,&quot;status&quot;:15,&quot;turn&quot;:-128,&quot;speed&quot;:1023,&quot;accuracy&quot;:0,&quot;lon&quot;:108600000,&quot;lat&quot;:54600000,&quot;course&quot;:3600,&quot;heading&quot;:511,&quot;second&quot;:60,&quot;maneuver&quot;:0,&quot;raim&quot;:0,&quot;radio&quot;:266630}
+$GPRMC,194929.00,A,5241.99738,N,00517.56482,E,0.002,,010809,,,A*7C
+$GPGBS,194929.00,3.0,1.9,4.2,,,,*42
+!AIVDO,1,1,,,B3aC3LP00063ah7RNpD03wfUsP06,0*58
+{&quot;class&quot;:&quot;AIS&quot;,&quot;type&quot;:18,&quot;repeat&quot;:0,&quot;mmsi&quot;:&quot;244630386&quot;,&quot;reserved&quot;:0,&quot;speed&quot;:0,&quot;accuracy&quot;:0,&quot;lon&quot;:3175648,&quot;lat&quot;:31619973,&quot;course&quot;:0,&quot;heading&quot;:511,&quot;second&quot;:29,&quot;regional&quot;:0,&quot;cs&quot;:1,&quot;display&quot;:0,&quot;dsc&quot;:1,&quot;band&quot;:1,&quot;msg22&quot;:1,&quot;raim&quot;:0,&quot;radio&quot;:917510}
+{&quot;class&quot;:&quot;AIS&quot;,&quot;type&quot;:1,&quot;repeat&quot;:0,&quot;mmsi&quot;:&quot;211315540&quot;,&quot;status&quot;:7,&quot;turn&quot;:-128,&quot;speed&quot;:1023,&quot;accuracy&quot;:0,&quot;lon&quot;:108600000,&quot;lat&quot;:54600000,&quot;course&quot;:3600,&quot;heading&quot;:511,&quot;second&quot;:63,&quot;maneuver&quot;:0,&quot;raim&quot;:0,&quot;radio&quot;:307520}
+$GPRMC,194930.00,A,5241.99745,N,00517.56492,E,0.006,,010809,,,A*7B
+$GPGBS,194930.00,3.0,1.9,4.2,,,,*4A
+
+then I see the raw gps data and still nog processed gps responses.
+
+
+I hope this input helps. If you need the test data I can send it to you.
+
+-- 
+
+Jan Veninga
+
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="003879.html">[Gpsd-users] New GPSD protocol is ready for beta use
+</A></li>
+	<LI>Next message: <A HREF="003886.html">[Gpsd-users] New GPSD protocol is ready for beta use
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3885">[ date ]</a>
+              <a href="thread.html#3885">[ thread ]</a>
+              <a href="subject.html#3885">[ subject ]</a>
+              <a href="author.html#3885">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

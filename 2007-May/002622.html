@@ -1,0 +1,147 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] Unknown Sentences $IIMWV and $IIVWR
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2007-May/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Unknown%20Sentences%20%24IIMWV%20and%20%24IIVWR&In-Reply-To=%3C20070508182529.0e59a724.hamish_nospam%40yahoo.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="002624.html">
+   <LINK REL="Next"  HREF="002607.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] Unknown Sentences $IIMWV and $IIVWR</H1>
+    <B>Hamish</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Unknown%20Sentences%20%24IIMWV%20and%20%24IIVWR&In-Reply-To=%3C20070508182529.0e59a724.hamish_nospam%40yahoo.com%3E"
+       TITLE="[Gpsd-users] Unknown Sentences $IIMWV and $IIVWR">hamish_nospam at yahoo.com
+       </A><BR>
+    <I>Tue May  8 08:25:29 CEST 2007</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="002624.html">[Gpsd-users] Unknown Sentences $IIMWV and $IIVWR
+</A></li>
+        <LI>Next message: <A HREF="002607.html">[Gpsd-users] Recommneded Unit
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2622">[ date ]</a>
+              <a href="thread.html#2622">[ thread ]</a>
+              <a href="subject.html#2622">[ subject ]</a>
+              <a href="author.html#2622">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Chris Kuethe wrote:
+&gt;<i> 
+</I>&gt;<i> I'd argue that {wind,water} direction, velocity, temperature, pressure
+</I>&gt;<i> have no place in a navigation solution. They are utterly irrelevant to
+</I>&gt;<i> the position of the navigation set (or the phase center of its
+</I>&gt;<i> antenna). They are, relevant in the larger context of describing the
+</I>&gt;<i> environment when the plane crashed or the ship sank, but I consider
+</I>&gt;<i> mixing enviromental measurements and navigation solutions to be
+</I>&gt;<i> pollution.
+</I>
+That leads the fundamental question of whether Gpsd exists to provide a
+x,y,z,t GPS navigation solution or a general NMEA parsing solution. If
+it exists to provide solely a navigation solution, with NMEA as one of
+many accepted input flavors, then so be it. But if it claims to be NMEA
+parsing software, it needs to recognize that NMEA was designed with all
+these inputs in mind, fed from a ship's instruments to its bridge over a
+crude network, using a common language. Not just LORAN-C or GPS
+positioning info- that just proved to be the most popular use. And of
+course lest-we-forget, the M in NMEA is for Marine...
+
+
+FWIW....
+
+Both water depth and temperature are longstanding navigational aids.
+Perhaps more of historical use, but water depth, given some local
+knowledge, will answer the am I on/off the continental shelf &amp; how close
+to shore am I question, and water temperature may be used to test, for
+example, where you are in relation to the gulf stream. They are hard
+reality-check positional data that's difficult to argue with and as such
+was probably more critical to safe navigation than the sextant was.
+(and yes, still used today even on ships with all the fancy electronics)
+
+Most, if not all, industrial use depth sounders will include a
+thermistor in the pinger package (helps with the speed of sound calc),
+and will retransmit both depth &amp; temperature as NMEA to be integrated
+with the navigational displays on the ship's bridge. Just about every
+marine navigation software package out there will look for that data and
+display it if found*. Any package sold with recreational or racing
+sailboats in mind, or to assist large ships to dock, will likely pass
+through any wind &amp; current info it can find. Most will interface with
+autopilot messages as well, e.g. non-GPS generated NMEA from B&amp;G
+hardware  <A HREF="http://www.bandg.com">http://www.bandg.com</A>
+
+[*] Check out these guys:  <A HREF="http://www.olex.no/index_e_NY.html">http://www.olex.no/index_e_NY.html</A>
+They parse NMEA for depth &amp; ping return strength (sea floor hardness),
+and I see at the bottom of the page it now can incorporate COG, SOG,
+GPS-compass (antenna array) heading, currents, etc. They are certainly
+a major potential user of Gpsd if not using it already.
+
+
+For our use, we log the physical properties of the sea as the ship is
+underway as a method of monitoring, in real time, where we are in
+relation to ocean fronts. In addition this is archived and post-
+processed to provide context for any samples taken under way.
+Having to parse raw NMEA ourselves is a PITA, given that Gpsd is already
+running.
+
+
+&gt;<i> *If* gpsd is to begin forwarding arbitrary NMEA messages, or parsing
+</I>&gt;<i> them, I think that would best be handled by a protocol v4 message. I
+</I>&gt;<i> say &quot;If&quot; because I'm unconvinced that we want to get into the business
+</I>&gt;<i> of parsing non-gps data. If we did go that way, it would be good to
+</I>&gt;<i> have a copy of the NMEA spec.
+</I>
+Complying with the NMEA standard is one thing. Even if we did that 100%
+it is likely that many manufacturers wouldn't, and we still have the
+practical problem of unexpected junk coming down the line. 
+(see also HTML standards)
+
+
+All in all, it would sure be nice if gpsd had some sort of sanitized
+plugin mechanism for allowing users to graft on support for custom
+messages. We (as VARs/developers/tinkerers) can continue to randomly
+hack in support for the non-GPS messages we need, but it would be a lot
+nicer and much more more robust to be able to do this in some prescribed
+way with checksums and sanity checks already taken care of. Sure we can
+use raw mode, but then you lose all the NMEA parsing goodness.
+
+It is surely a huge time-sink and bad idea for Gpsd to try and
+officially support/include every new message type that comes along, but
+if Gpsd could provide the tools to users to do that themselves, then
+everyone wins.
+
+
+2or3c,
+Hamish
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="002624.html">[Gpsd-users] Unknown Sentences $IIMWV and $IIVWR
+</A></li>
+	<LI>Next message: <A HREF="002607.html">[Gpsd-users] Recommneded Unit
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2622">[ date ]</a>
+              <a href="thread.html#2622">[ thread ]</a>
+              <a href="subject.html#2622">[ subject ]</a>
+              <a href="author.html#2622">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

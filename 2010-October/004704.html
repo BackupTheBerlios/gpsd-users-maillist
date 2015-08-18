@@ -1,0 +1,132 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] Trimble Placer 450 GPS
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2010-October/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Trimble%20Placer%20450%20GPS&In-Reply-To=%3Calpine.LNX.1.00.1010241213360.9065%40catbert.rellim.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="004703.html">
+   <LINK REL="Next"  HREF="004705.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] Trimble Placer 450 GPS</H1>
+    <B>Gary E. Miller</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Trimble%20Placer%20450%20GPS&In-Reply-To=%3Calpine.LNX.1.00.1010241213360.9065%40catbert.rellim.com%3E"
+       TITLE="[Gpsd-users] Trimble Placer 450 GPS">gem at rellim.com
+       </A><BR>
+    <I>Sun Oct 24 21:25:00 CEST 2010</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="004703.html">[Gpsd-users] Trimble Placer 450 GPS
+</A></li>
+        <LI>Next message: <A HREF="004705.html">[Gpsd-users] gpsd sync to ntpd under large offset conditions
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#4704">[ date ]</a>
+              <a href="thread.html#4704">[ thread ]</a>
+              <a href="subject.html#4704">[ subject ]</a>
+              <a href="author.html#4704">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>-----BEGIN PGP SIGNED MESSAGE-----
+Hash: SHA1
+
+Yo Bruce!
+
+On Fri, 22 Oct 2010, Bruce Dale wrote:
+
+&gt;<i> I
+</I>&gt;<i> am using gpsd to provide a Pulse Per Second to ntpd over the shared memory
+</I>&gt;<i> interface.
+</I>
+Cool, what version of gpsd?
+
+&gt;<i> I am also using a Trimble Placer 450 GPS receiver that is configured to
+</I>&gt;<i> generate NMEA sentances. I understand that the maintainers of gpsd requested
+</I>&gt;<i> notification regarding the use of new GPS receivers and if this is not the
+</I>&gt;<i> correct forum to do so, please let me know.
+</I>
+I see that is not on our hardware page.  Please fill out this form:
+
+<A HREF="https://www.mainframe.cx/cgi-bin/gps_report.cgi">https://www.mainframe.cx/cgi-bin/gps_report.cgi</A>
+
+&gt;<i> If the antenna is disconnected, the
+</I>&gt;<i> time in the GLL, GGA and RMC sentences stops advancing as the data reported
+</I>&gt;<i> becomes stale. The time in the ZDA sentence continues to advance.
+</I>
+Ugly.
+
+&gt;<i> This creates a problem for ntpd as gpsd reports the time in all 4 sentences to
+</I>&gt;<i> ntpd as the current time of day.
+</I>
+Odd, does the NMEA still report the fix as valid?
+
+&gt;<i> Ntpd sees this as time running backwards and
+</I>&gt;<i> becomes very confused.
+</I>
+gpsd tries to never report time to ntpd if the GPS reports no fix.
+
+&gt;<i> This problem was corrected by modifying the source code
+</I>&gt;<i> (driver_nmea.c) to report only the time in the ZDA sentence to ntpd.
+</I>
+That will not work as a general solution.  Many GPS do not send a ZDA sentence.
+
+Better is to find a way to not report the bad times to ntpd.but allow them to
+be used when valid.
+
+&gt;<i> I also noticed a daily cycle in the time offset data (loopstats) from ntpd,
+</I>&gt;<i> almost 200 us peak-peak. Does anyone know if this performance is typical?
+</I>
+Your PPS should be stable to around 1uS depending on several factors it
+could be 2x or 3x better or worse.
+
+I suspect the PPS is stable, but your system clock is not.  Daily fluctuations
+in the temperature of your motherboard clock cam easily be in the 10mS range
+or more if left uncorrected.  Things like room temperature, airflow, sunlight,
+CPU load factor can easily swing the local clock.  That is why we use gpsd
+and ntpd to discipline the local clock.
+
+RGDS
+GARY
+- ---------------------------------------------------------------------------
+Gary E. Miller Rellim 109 NW Wilmington Ave., Suite E, Bend, OR 97701
+	<A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">gem at rellim.com</A>  Tel:+1(541)382-8588
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v1.4.3 (GNU/Linux)
+
+iD8DBQFMxIgOBmnRqz71OvMRAqBSAJ494YkgyqKqVOcgykxT8YUbtGkOPwCfT7EI
+xy9kir3iAVhD5Oio3NP7e9M=
+=V8fE
+-----END PGP SIGNATURE-----
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="004703.html">[Gpsd-users] Trimble Placer 450 GPS
+</A></li>
+	<LI>Next message: <A HREF="004705.html">[Gpsd-users] gpsd sync to ntpd under large offset conditions
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#4704">[ date ]</a>
+              <a href="thread.html#4704">[ thread ]</a>
+              <a href="subject.html#4704">[ subject ]</a>
+              <a href="author.html#4704">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

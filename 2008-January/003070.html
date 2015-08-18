@@ -1,0 +1,105 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] Code cleanup for 1Hz square wave pulse code
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2008-January/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Code%20cleanup%20for%201Hz%20square%20wave%20pulse%20code&In-Reply-To=%3C3BF93070B3D1B047BA7ABF612958950D02CF5DF0%40hcex.hartwellcorp.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="003069.html">
+   <LINK REL="Next"  HREF="003073.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] Code cleanup for 1Hz square wave pulse code</H1>
+    <B>Michael St. Laurent</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Code%20cleanup%20for%201Hz%20square%20wave%20pulse%20code&In-Reply-To=%3C3BF93070B3D1B047BA7ABF612958950D02CF5DF0%40hcex.hartwellcorp.com%3E"
+       TITLE="[Gpsd-users] Code cleanup for 1Hz square wave pulse code">mikes at hartwellcorp.com
+       </A><BR>
+    <I>Fri Jan 11 01:19:12 CET 2008</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="003069.html">[Gpsd-users] Code cleanup for 1Hz square wave pulse code
+</A></li>
+        <LI>Next message: <A HREF="003073.html">[Gpsd-users] Code cleanup for 1Hz square wave pulse code
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3070">[ date ]</a>
+              <a href="thread.html#3070">[ thread ]</a>
+              <a href="subject.html#3070">[ subject ]</a>
+              <a href="author.html#3070">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>No, that last patch was wrong.  How's this one?
+
+--- libgpsd_core.c.orig2	2008-01-10 15:44:14.000000000 -0800
++++ libgpsd_core.c	2008-01-10 16:16:27.000000000 -0800
+@@ -183,23 +183,21 @@
+ 	    duration = timediff(tv, pulse[state == 0]);
+ #undef timediff
+ 
+-	    if (800000 &gt; duration) {
++	    if (800000 &gt; duration &amp;&amp; !
+session-&gt;driver.nmea.ignore_trailing_edge) {
+ 		/* less than 800mS, duration too short for anything */
+ 		gpsd_report(LOG_RAW, 
+ 		    &quot;PPS pulse rejected too short. cycle: %d, duration:
+%d\n&quot;,
+ 		    cycle, duration);
+-#ifdef GPSCLOCK_ENABLE
+-		    /*
+-		     * Ugly hack to cope with things like the Furuno
+GPSClock,
+-		     * which has the odd property that you have to
+-		     * ignore the trailing edge of the PPS.
+-		     */
+-		    if (state==1 &amp;&amp;
+session-&gt;driver.nmea.ignore_trailing_edge) 
+-			(void)ntpshm_pps(session, &amp;tv);
+-#endif /* GPSCLOCK_ENABLE */
+ 	    } else if (cycle &gt; 999000 &amp;&amp; cycle &lt; 1001000 ) {
+-		/* looks like PPS pulse */
+-		(void)ntpshm_pps(session, &amp;tv);
++		if (duration &gt; 499000 &amp;&amp; duration &lt; 501000 &amp;&amp;
+session-&gt;driver.nmea.ignore_trailing_edge) {
++		     /* looks like 1.0 Hz square wave, ignore trailing
+edge */
++		     if (state == 1) {
++			  (void)ntpshm_pps(session, &amp;tv);
++		     }
++		} else {
++		     /* looks like PPS pulse */
++		     (void)ntpshm_pps(session, &amp;tv);
++		}
+ 	    } else if (cycle &gt; 1999000 &amp;&amp; cycle &lt; 2001000) {
+ 		/* looks like 0.5 Hz square wave */
+ 		(void)ntpshm_pps(session, &amp;tv);
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="003069.html">[Gpsd-users] Code cleanup for 1Hz square wave pulse code
+</A></li>
+	<LI>Next message: <A HREF="003073.html">[Gpsd-users] Code cleanup for 1Hz square wave pulse code
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3070">[ date ]</a>
+              <a href="thread.html#3070">[ thread ]</a>
+              <a href="subject.html#3070">[ subject ]</a>
+              <a href="author.html#3070">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

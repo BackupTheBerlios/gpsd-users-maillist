@@ -1,0 +1,167 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] Getting GPSD to pick up PPS from Delorme Earthmate	Serial GPS
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2007-July/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Getting%20GPSD%20to%20pick%20up%20PPS%20from%20Delorme%20Earthmate%0A%09Serial%20GPS&In-Reply-To=%3C1183474629.468a63c602741%40dev.getwebemail.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="002738.html">
+   <LINK REL="Next"  HREF="002741.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] Getting GPSD to pick up PPS from Delorme Earthmate	Serial GPS</H1>
+    <B>Adam Dosch</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Getting%20GPSD%20to%20pick%20up%20PPS%20from%20Delorme%20Earthmate%0A%09Serial%20GPS&In-Reply-To=%3C1183474629.468a63c602741%40dev.getwebemail.com%3E"
+       TITLE="[Gpsd-users] Getting GPSD to pick up PPS from Delorme Earthmate	Serial GPS">adamdosch at fdlinux.com
+       </A><BR>
+    <I>Tue Jul  3 16:57:10 CEST 2007</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="002738.html">[Gpsd-users] Getting GPSD to pick up PPS from Delorme Earthmate Serial GPS
+</A></li>
+        <LI>Next message: <A HREF="002741.html">[Gpsd-users] Getting GPSD to pick up PPS from Delorme Earthmate Serial GPS
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2740">[ date ]</a>
+              <a href="thread.html#2740">[ thread ]</a>
+              <a href="subject.html#2740">[ subject ]</a>
+              <a href="author.html#2740">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Matt, 
+
+Quoting Matt Roberds &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">mattroberds at cox.net</A>&gt;:
+
+&gt;<i> I suspect, though, that if you
+</I>&gt;<i> can perceive the LED being on, the pulse length is almost surely longer
+</I>&gt;<i> than 10 millisec.  I agree with Gary Miller that you should check to see
+</I>&gt;<i> if your gpsd was compiled with pps support; if not or if you're not
+</I>&gt;<i> sure, you may want to build it from source yourself.
+</I>
+`gpsd` is definitely compiled with PPS support.  I flip-flopped between builds
+for DCD and CTS.  According to `gpsd`, I would get similar results if I used the
+CTS PPS build or DCD build.  Below is the DCD build stuff.  I went code hacking
+and really tore into libgpsd_core.c to see why I'm not tripping on any of the
+PPS code.
+
+So this is what I've gathered:
+
+1)  My Deolorme Earthmate Serial GPS cold boot is crazy long.  We're talking
+like 6-8 minutes before it gets a fix on any satellites and I start seeing NMEA
+lines.  (Don't ask me why, it's made to take 4 AAA batteries (6 volts), but it
+will take power in on pin 9 on the serial port (which is cool), so I've been
+powering it via 5 volt USB soldering hack I fit in on my PPS circuit.  So lower
+voltage causing the longer cold boot for satellite fixing?  Got me, man)
+
+With that code boot so long, it initially checks and gets a handle on my PPS
+pulse because I get this right away:
+
+   gpsd: pps-detect (DCD) on /dev/ttyS0 changed to 0
+
+But shortly after that, I get:
+
+   gpsd: TIOCMIWAIT returns unchanged state, ppsmonitor terminates
+
+Reason is does this is NOT because my pulse isn't there, it's because (IMHO and
+and partly because of my cold boot GPS issue) of what is determined in the code
+as a 'true' PPS.  The reason it cannot get my changed pulse state is because if
+I don't get 4 valid fixes (according to the code, a Garmin specific standard)
+then it's not a valid PPS.  Well if I don't ever make it to evaluating my pulse
+duration part of the code because of the fix count, and the state unchanged
+counter reaches its threshold (10 count), then it breaks out of the everlasting
+loop to monitor the PPS, hence the &quot;ppsmonitor terminates&quot; message above and all
+is lost.  (And I never see it try to enter that ppsmonitor code again, because I
+have breakpoints all over it before it enters that everlasting loop I mentioned
+above.)
+
+...so obviously I rejiggered the code, so I could see what I was getting for a
+pulse duration since that seemed like a good way to measure it feasibly and it
+seems WAY too long (what Dave C has mentioned in his reply on this thread).
+Below is my debug, you can see it'll loop up until that unchanged state
+threshold (it's default is 10, I changed it way up to 50 to keep from breaking
+out of the pps_monitor loop so quick):
+
+   gpsd: Entering into the PPS status change DCD loop
+   gpsd: The Fix Count in order to do pulse measurement is 3, ours is 0
+   gpsd: Our fix count is 0, which is bigger than 3, continuing...
+   gpsd: Our duration is (244765447), must be atleast 80000 - 100100 to be a
+true pulse
+   gpsd: PPS pulse rejected.  cycle: 200, duration: 244765447
+   gpsd: Entering into the PPS status change DCD loop
+   ...
+   gpsd: Entering into the PPS status change DCD loop
+   ... 
+ 
+To me, that pulse duration is huge and doesn't even fit the ranges the code it
+looking at for a 'true' pulse.  But I dunno, case in point:  Can I still have an
+accurate NTP stratum-0 home-brew time server without PPS?  This seems like it's
+going to be a miracle to get working... Is it possible my GPS is not a PPS
+equipped receiver?  I dunno.  To Dave C.'s comment, perhaps I could not fanaggle
+with this, and just set up NTP and see if `gpsd` will pick up my pulse signal.
+
+&gt;<i>
+</I>&gt;<i> I don't remember whether it's looking for a mark or a space on DCD.
+</I>&gt;<i>
+</I>
+In the code it says it looks for the space duration.  Direct copy/paste out of
+the code (good thing I looked in there ;-):  
+
+    * ...The duration variable is used to
+    * determine which way the pulse is going.  The code assumes
+    * that the UTC second is changing when the signal has not
+    * been changing for at least 800ms, i.e. it assumes the duty
+    * cycle is at most 20%.
+    *
+    * Some GPS instead output a square wave that is 2Hz and each
+    * edge denotes the start of a second.
+
+&gt;<i> You could leave the GPS hooked up only to TXD, RXD, and ground, and
+</I>&gt;<i> connect your own stuff (more in a minute) to the DCD pin.  Then fire up
+</I>&gt;<i> gpsd in debug mode and apply known pulses to DCD to see if they show up
+</I>&gt;<i> in the log.
+</I>&gt;<i> 
+</I>&gt;<i> The &quot;stuff&quot; you need is a way to apply something more positive than +3 V
+</I>&gt;<i> or less than -3 V to the DCD pin.  This could be as simple as a jumper
+</I>&gt;<i> that you could touch to either the +12 V or -12 V lines from the power
+</I>&gt;<i> supply inside your computer (assuming a desktop), or a fresh 9 V battery
+</I>&gt;<i> with snap connector.
+</I>
+You're the man, I'm going to definitely try hooking a jumper up tonight (on both
+CTS and DCD) and see where that takes me.  I'm slowly losing faith that this is
+going to work.
+
+Thanks for everyone's insight on this.  Feel free to comment.
+
+-Adam
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="002738.html">[Gpsd-users] Getting GPSD to pick up PPS from Delorme Earthmate Serial GPS
+</A></li>
+	<LI>Next message: <A HREF="002741.html">[Gpsd-users] Getting GPSD to pick up PPS from Delorme Earthmate Serial GPS
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2740">[ date ]</a>
+              <a href="thread.html#2740">[ thread ]</a>
+              <a href="subject.html#2740">[ subject ]</a>
+              <a href="author.html#2740">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

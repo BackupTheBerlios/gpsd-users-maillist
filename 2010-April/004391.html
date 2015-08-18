@@ -1,0 +1,128 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] delay in gpsd boot
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2010-April/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20delay%20in%20gpsd%20boot&In-Reply-To=%3Cy2i94de9b221004152307xe05557cj7faccfc7bd62e82d%40mail.gmail.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="004388.html">
+   <LINK REL="Next"  HREF="004393.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] delay in gpsd boot</H1>
+    <B>rabin shahav</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20delay%20in%20gpsd%20boot&In-Reply-To=%3Cy2i94de9b221004152307xe05557cj7faccfc7bd62e82d%40mail.gmail.com%3E"
+       TITLE="[Gpsd-users] delay in gpsd boot">shahav at gmail.com
+       </A><BR>
+    <I>Fri Apr 16 08:07:36 CEST 2010</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="004388.html">[Gpsd-users] delay in gpsd boot
+</A></li>
+        <LI>Next message: <A HREF="004393.html">[Gpsd-users] delay in gpsd boot
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#4391">[ date ]</a>
+              <a href="thread.html#4391">[ thread ]</a>
+              <a href="subject.html#4391">[ subject ]</a>
+              <a href="author.html#4391">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Here is are symptoms
+lnxlt1375:~# gpsd -D2 -N -n -b /dev/ttyUSB0
+gpsd: launching (Version 2.36)
+gpsd: listening on port gpsd
+gpsd: successfully connected to the DBUS system bus
+gpsd: running with effective group ID 0
+gpsd: running with effective user ID 0
+gpsd: opening read-only GPS data source at '/dev/ttyUSB0'
+gpsd: speed 9600, 8N1
+gpsd: garmin_gps not active.
+gpsd: gpsd_activate(1): opened GPS (5)
+# at this point i telnet to gpsd
+gpsd: client 127.0.0.1 (0) connect on fd 6
+gpsd: client(0) turned on raw mode
+gpsd: speed 4800, 8N1
+#the above 4800 is wrong, after waiting for 30s
+# i used stty -F /dev/ttyUSB0 38400
+# and suddenly, telnet raw mode start it output
+gpsd: =&gt; GPS: $PGRMCE*0E\x0d\x0a FAILED
+gpsd: =&gt; GPS: $PFEC,GPint*58\x0d\x0a FAILED
+gpsd: =&gt; GPS: $PFST*11\x0d\x0a FAILED
+gpsd: =&gt; GPS: $PFEC,GPsrq*5B\x0d\x0a FAILED
+gpsd: =&gt; GPS: $PASHQ,RID*28\x0d\x0a FAILED
+gpsd: client(0) turned off raw mode
+gpsd: GPS is offline (1271372382.448631 sec since data)
+gpsd: closing GPS=/dev/ttyUSB0 (5)
+
+In a different case, i noticed it switching several baud rates for about a
+minute, and then going to 100% cpu... , i killed it.
+I think that the tty freq identification is working better if the gps has
+&quot;fixed&quot;, I did the above experiments indoor, without &quot;fix&quot;.
+
+So, i know that there are no flags to set freq, is there a run time config
+file? i know that it is almost as having a bunch of flags, but it seems to
+be needed, after all.
+
+Eric, thanx 4 the support, good to know that someone care about open code.
+R.
+
+
+On Thu, Apr 15, 2010 at 6:57 PM, Eric Raymond &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">esr at thyrsus.com</A>&gt; wrote:
+
+&gt;<i> rabin shahav &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">shahav at gmail.com</A>&gt;:
+</I>&gt;<i> &gt; I know that gpsd is proud of a powerful auto configure engine, but as it
+</I>&gt;<i> &gt; seems now, this engain takes way too long to &quot;sync&quot; with the usb serial
+</I>&gt;<i> &gt; port.
+</I>&gt;<i>
+</I>&gt;<i> I keep an eye on this. Sync time is too short for me to notice on
+</I>&gt;<i> both my desktop and laptop (both Intel Core Duo machines running
+</I>&gt;<i> Karmic Koala). But hold on, it's a two-line change to actually
+</I>&gt;<i> display time since device open in the startup logging.
+</I>&gt;<i>
+</I>&gt;<i> gpsd: /dev/ttyUSB1 identified as type SiRF binary (0.280448 sec @ 4800bps)
+</I>&gt;<i>
+</I>&gt;<i> The lag is not really dependent on processor speed, because most of
+</I>&gt;<i> it's going to be serial I/O waits for a full packet to come in.
+</I>&gt;<i> Slower baud rates could make it take longer, but you're not even going
+</I>&gt;<i> to crack one second unless you're at an effective rate well below
+</I>&gt;<i> 4800bps.
+</I>&gt;<i>
+</I>&gt;<i> I'm not seeing other reports of slow sync, so there is probably
+</I>&gt;<i> something pretty unusual about your setup.  If we can identify
+</I>&gt;<i> what that is maybe we can develop a workaround.
+</I>&gt;<i> --
+</I>&gt;<i>                 &lt;a href=&quot;<A HREF="http://www.catb.org/~esr/&lt;http://www.catb.org/%7Eesr/">http://www.catb.org/~esr/&lt;http://www.catb.org/%7Eesr/</A>&gt;&quot;&gt;Eric
+</I>&gt;<i> S. Raymond&lt;/a&gt;
+</I>&gt;<i>
+</I>
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="004388.html">[Gpsd-users] delay in gpsd boot
+</A></li>
+	<LI>Next message: <A HREF="004393.html">[Gpsd-users] delay in gpsd boot
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#4391">[ date ]</a>
+              <a href="thread.html#4391">[ thread ]</a>
+              <a href="subject.html#4391">[ subject ]</a>
+              <a href="author.html#4391">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

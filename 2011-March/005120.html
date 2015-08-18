@@ -1,0 +1,124 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] [Gpsd-dev]  gps_read() does not block
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2011-March/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20%5BGpsd-dev%5D%20%20gps_read%28%29%20does%20not%20block&In-Reply-To=%3C4D788627.4010105%40googlemail.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="005115.html">
+   <LINK REL="Next"  HREF="005116.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] [Gpsd-dev]  gps_read() does not block</H1>
+    <B>Andre Naujoks</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20%5BGpsd-dev%5D%20%20gps_read%28%29%20does%20not%20block&In-Reply-To=%3C4D788627.4010105%40googlemail.com%3E"
+       TITLE="[Gpsd-users] [Gpsd-dev]  gps_read() does not block">nautsch2 at googlemail.com
+       </A><BR>
+    <I>Thu Mar 10 09:04:55 CET 2011</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="005115.html">[Gpsd-users] [Gpsd-dev]  gps_read() does not block
+</A></li>
+        <LI>Next message: <A HREF="005116.html">[Gpsd-users] Have I failed to simplify *enough*?
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#5120">[ date ]</a>
+              <a href="thread.html#5120">[ thread ]</a>
+              <a href="subject.html#5120">[ subject ]</a>
+              <a href="author.html#5120">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Am 09.03.2011 19:50, schrieb Eric Raymond:
+&gt;<i> Andre Naujoks &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">nautsch2 at googlemail.com</A>&gt;:
+</I>&gt;&gt;&gt;&gt;<i> I lean towards 3, but I'm open to persuasion.
+</I>&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;<i> I'd suggest implementing both 2 &amp; 3. To me, doing nothing leaves a hole in
+</I>&gt;&gt;&gt;<i> the implementation. I think the library needs to provide what I see as a
+</I>&gt;&gt;&gt;<i> basic way of interfacing with the gps. Either of these implementations
+</I>&gt;&gt;&gt;<i> extend the existing functionality in an upward compatible way (assuming the
+</I>&gt;&gt;&gt;<i> argument to gps_waiting is optional).
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> You got my vote on the 2 &amp; 3 approach. Where I see 2 as much simpler
+</I>&gt;&gt;<i> (Eric said so, too) and more intuitive to work with if you are
+</I>&gt;&gt;<i> accustomed to working with sockets in their default blocking state.
+</I>&gt;<i> 
+</I>&gt;<i> The current state of play is this:
+</I>&gt;<i> 
+</I>&gt;<i> (1) I have fully implemented, documented, and tested the timeout argument to
+</I>&gt;<i> gps_waiting(). Charles Curley has verified that it works with his client.
+</I>&gt;<i> I am happy with this change.  It enabled me to replace select(2) machinery
+</I>&gt;<i> in three test clients with simpler, more elegant code involving a single
+</I>&gt;<i> gps_waiting() call.
+</I>&gt;<i> 
+</I>&gt;<i> (2) I am undecided about, and currently leaning against, implementing 
+</I>&gt;<i> POLL_BLOCK.  This would add complexity and (it seems to me) duplicate
+</I>&gt;<i> capability the new gps_waiting() already gives us.  (The reverse would
+</I>&gt;<i> not have been true.)
+</I>&gt;<i> 
+</I>&gt;<i> Can show me a use case that a POLL_BLOCK flag would address
+</I>&gt;<i> but gps_waiting() does not, I think POLL_BLOCK will die.
+</I>
+I don't think there is a use case, that is not possible either way.
+
+The blocking would be simpler and more intuitive, than to loop around
+with a gps_waiting(). IMHO(!) any read should block. Only if you
+explicitly say otherwise it should be non-blocking.
+
+If you have a non-interactive programm, which has gps as the only data
+source, then you add a call to this program by not allowing a blocking
+read. Thats about it. I don't think this is super bad. With a POLL_BLOCK
+you could do:
+
+open gps
+loop {
+  read gps
+  do your thing.
+}
+
+Now you have to
+
+open gps
+loop {
+  check for data
+  read gps
+  do your thing.
+}
+
+As I said, this is a really small thing. Still less intuitive than a
+blocking approach, but really small and I could live with it. ... I
+would still use select though just because it is easier to read and
+understand what is done.
+
+This should be really well documented and made clear on release, because
+it behaves differently from everything I ever used.
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="005115.html">[Gpsd-users] [Gpsd-dev]  gps_read() does not block
+</A></li>
+	<LI>Next message: <A HREF="005116.html">[Gpsd-users] Have I failed to simplify *enough*?
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#5120">[ date ]</a>
+              <a href="thread.html#5120">[ thread ]</a>
+              <a href="subject.html#5120">[ subject ]</a>
+              <a href="author.html#5120">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

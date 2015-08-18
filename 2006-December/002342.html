@@ -1,0 +1,90 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] u-blox LEA-4S &amp; unknown sentence
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2006-December/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20u-blox%20LEA-4S%20%26%20unknown%20sentence&In-Reply-To=%3C91981b3e0612130823k56dbf2a5u756b117192b42145%40mail.gmail.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="002341.html">
+   <LINK REL="Next"  HREF="002343.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] u-blox LEA-4S &amp; unknown sentence</H1>
+    <B>Chris Kuethe</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20u-blox%20LEA-4S%20%26%20unknown%20sentence&In-Reply-To=%3C91981b3e0612130823k56dbf2a5u756b117192b42145%40mail.gmail.com%3E"
+       TITLE="[Gpsd-users] u-blox LEA-4S &amp; unknown sentence">chris.kuethe at gmail.com
+       </A><BR>
+    <I>Wed Dec 13 17:23:13 CET 2006</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="002341.html">[Gpsd-users] u-blox LEA-4S &amp; unknown sentence
+</A></li>
+        <LI>Next message: <A HREF="002343.html">[Gpsd-users] u-blox LEA-4S &amp; unknown sentence
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2342">[ date ]</a>
+              <a href="thread.html#2342">[ thread ]</a>
+              <a href="subject.html#2342">[ subject ]</a>
+              <a href="author.html#2342">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>On 12/13/06, Ali Utku Selen &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">selenau at kentkart.com.tr</A>&gt; wrote:
+&gt;<i> As Chris says:
+</I>&gt;<i> &gt; The packet sniffer Eric mentions is the part of gpsd that looks at the
+</I>&gt;<i> &gt; wire protocol, detects a packet (which necessarily means identifying what
+</I>&gt;<i> &gt; sort of packet it is) and passes it off to that protocol's decoder for
+</I>&gt;<i> &gt; further processing.
+</I>&gt;<i>
+</I>&gt;<i> I checked the documentation for lea-4s and it says module is working on NMEA
+</I>&gt;<i> and has a proprietary message for switching to ubx. So how will gpsd behave
+</I>&gt;<i> about this? Am I going to start gpsd with an option?
+</I>
+You may have noticed that your receive sends $GPTXT messages when you
+send it something it can't handle. That's a useful packet signature,
+as is &quot;$PUBX,01&quot; and getting &quot;$PUBX,01,...&quot; as a reply.
+
+Have a look at drivers.c - this is where we set up structures defining
+different hardware types and their probes.
+
+In the case of the ANTARIS &quot;$PUBX,41,01,03,01,57600,00&quot; would set
+port 01 to use
+NMEA and UBX in (0x1 + 0x2)
+UBX out (0x2)
+UART speed is 57600
+and disable auto-baud.
+
+CK
+
+-- 
+GDB has a 'break' feature; why doesn't it have 'fix' too?
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="002341.html">[Gpsd-users] u-blox LEA-4S &amp; unknown sentence
+</A></li>
+	<LI>Next message: <A HREF="002343.html">[Gpsd-users] u-blox LEA-4S &amp; unknown sentence
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2342">[ date ]</a>
+              <a href="thread.html#2342">[ thread ]</a>
+              <a href="subject.html#2342">[ subject ]</a>
+              <a href="author.html#2342">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

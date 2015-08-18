@@ -1,0 +1,112 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] PPS pulse length. (and now a couple more questions)
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2010-March/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20PPS%20pulse%20length.%20%28and%20now%20a%20couple%20more%20questions%29&In-Reply-To=%3Calpine.LNX.1.10.1003301734410.26402%40catbert.rellim.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="004337.html">
+   <LINK REL="Next"  HREF="004340.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] PPS pulse length. (and now a couple more questions)</H1>
+    <B>Gary E. Miller</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20PPS%20pulse%20length.%20%28and%20now%20a%20couple%20more%20questions%29&In-Reply-To=%3Calpine.LNX.1.10.1003301734410.26402%40catbert.rellim.com%3E"
+       TITLE="[Gpsd-users] PPS pulse length. (and now a couple more questions)">gem at rellim.com
+       </A><BR>
+    <I>Wed Mar 31 02:43:15 CEST 2010</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="004337.html">[Gpsd-users] PPS pulse length. (and now a couple more questions)
+</A></li>
+        <LI>Next message: <A HREF="004340.html">[Gpsd-users] PPS pulse length. (and now a couple more questions)
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#4338">[ date ]</a>
+              <a href="thread.html#4338">[ thread ]</a>
+              <a href="subject.html#4338">[ subject ]</a>
+              <a href="author.html#4338">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>-----BEGIN PGP SIGNED MESSAGE-----
+Hash: SHA1
+
+Yo Greger!
+
+On Wed, 31 Mar 2010, Greger Gimseus wrote:
+
+&gt;<i> &gt; I only see 2 time sources, you will need at least one more so ntpd can
+</I>&gt;<i> &gt; see that GPS1is more accuracte than GPS and pick that one.
+</I>&gt;<i>
+</I>&gt;<i> Okey, either it's poorly described in the docs or I'm just blind/ignorant :)
+</I>
+We welcome suggestions on how to improve the doc.  It does assume a
+fair knowledge of how NTP works.
+
+&gt;<i> localhost ntp # ntpq -p
+</I>&gt;<i>     remote           refid      st t when poll reach   delay   offset  jitter
+</I>&gt;<i> ==============================================================================
+</I>&gt;<i> +ntp1.sp.se      .PPS.            1 u   51   64  377   25.794    1.523   0.193
+</I>&gt;<i> xSHM(0)          .GPS.            0 l    3   16  377    0.000  445.125  25.923
+</I>&gt;<i> *SHM(1)          .GPS1.           0 l    4   16  377    0.000   -0.006   0.001
+</I>
+That is looking much better.  After a few days it will pull in even more.
+
+&gt;<i> I just followed the example of ntp.conf  with &quot;time1 0.420&quot; offset,
+</I>&gt;<i> how do I determine the real offset for _my_ device?
+</I>
+As the ntpq shows, you are locked on to SHM(1) which is your gpsd/PPS. That
+is  about 1mS from ntp1.sp.se.  Unless you have been running on PPS for
+several days and you are really close to ntp1.sp.se, I would just leave
+that alone.
+
+You can also see that SHM(0) which is your TSIP decoded time is off about
+445mS.  First I would see how &quot;time1 0&quot; works for you and adjust until
+you are happy.  Given the jitter on the serial time you can not expect to
+dial it in better than about +/- 200mS.
+
+RGDS
+GARY
+- ---------------------------------------------------------------------------
+Gary E. Miller Rellim 109 NW Wilmington Ave., Suite E, Bend, OR 97701
+	<A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">gem at rellim.com</A>  Tel:+1(541)382-8588
+
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v1.4.3 (GNU/Linux)
+
+iD8DBQFLspqlBmnRqz71OvMRAlCdAJ9dVY0mMbtaSgMIIMFqoQdNvxCBFwCfTp4I
+XdVBrgs0j97+GBWQ9AmeHh4=
+=A9zj
+-----END PGP SIGNATURE-----
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="004337.html">[Gpsd-users] PPS pulse length. (and now a couple more questions)
+</A></li>
+	<LI>Next message: <A HREF="004340.html">[Gpsd-users] PPS pulse length. (and now a couple more questions)
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#4338">[ date ]</a>
+              <a href="thread.html#4338">[ thread ]</a>
+              <a href="subject.html#4338">[ subject ]</a>
+              <a href="author.html#4338">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

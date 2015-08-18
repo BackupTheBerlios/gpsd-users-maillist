@@ -1,0 +1,79 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] gpsd in conjunction with software GPS
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2007-May/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20gpsd%20in%20conjunction%20with%20software%20GPS&In-Reply-To=%3C91981b3e0705211509j4a6e8322j8ddf72dc1a5ef59e%40mail.gmail.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="002658.html">
+   <LINK REL="Next"  HREF="002660.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] gpsd in conjunction with software GPS</H1>
+    <B>Chris Kuethe</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20gpsd%20in%20conjunction%20with%20software%20GPS&In-Reply-To=%3C91981b3e0705211509j4a6e8322j8ddf72dc1a5ef59e%40mail.gmail.com%3E"
+       TITLE="[Gpsd-users] gpsd in conjunction with software GPS">chris.kuethe at gmail.com
+       </A><BR>
+    <I>Tue May 22 00:09:30 CEST 2007</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="002658.html">[Gpsd-users] gpsd in conjunction with software GPS
+</A></li>
+        <LI>Next message: <A HREF="002660.html">[Gpsd-users] gpsd in conjunction with software GPS
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2659">[ date ]</a>
+              <a href="thread.html#2659">[ thread ]</a>
+              <a href="subject.html#2659">[ subject ]</a>
+              <a href="author.html#2659">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>On 5/21/07, Gary E. Miller &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">gem at rellim.com</A>&gt; wrote:
+&gt;<i> Piece of cake.  Just have your software GPS output NMEA to a named pipe.
+</I>&gt;<i> Then have gpsd read from that named pipe.  Something like this should work:
+</I>&gt;<i>
+</I>&gt;<i> mknod /tmp/gps p
+</I>&gt;<i> softgps &gt; /tmp/gps &amp;
+</I>&gt;<i> gpsd -nN /tmp/gps
+</I>
+Or, if you have /dev/stdin, you can do something like this:
+
+softgps | ./gpsd -n -N -D3 /dev/stdin
+
+(i used -D3 just so I could see that gpsd was in fact doing something)
+
+CK
+
+-- 
+GDB has a 'break' feature; why doesn't it have 'fix' too?
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="002658.html">[Gpsd-users] gpsd in conjunction with software GPS
+</A></li>
+	<LI>Next message: <A HREF="002660.html">[Gpsd-users] gpsd in conjunction with software GPS
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2659">[ date ]</a>
+              <a href="thread.html#2659">[ thread ]</a>
+              <a href="subject.html#2659">[ subject ]</a>
+              <a href="author.html#2659">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

@@ -1,0 +1,137 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] New guy with a question
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2008-June/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20New%20guy%20with%20a%20question&In-Reply-To=%3CPine.LNX.4.64.0806041627420.13106%40birdbird.example.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="003258.html">
+   <LINK REL="Next"  HREF="003260.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] New guy with a question</H1>
+    <B>Matt Roberds</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20New%20guy%20with%20a%20question&In-Reply-To=%3CPine.LNX.4.64.0806041627420.13106%40birdbird.example.com%3E"
+       TITLE="[Gpsd-users] New guy with a question">mattroberds at cox.net
+       </A><BR>
+    <I>Wed Jun  4 23:59:59 CEST 2008</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="003258.html">[Gpsd-users] New guy with a question
+</A></li>
+        <LI>Next message: <A HREF="003260.html">[Gpsd-users] New guy with a question
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3259">[ date ]</a>
+              <a href="thread.html#3259">[ thread ]</a>
+              <a href="subject.html#3259">[ subject ]</a>
+              <a href="author.html#3259">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>On Wed, 4 Jun 2008, Tim Rambo wrote:
+&gt;<i> I'm new at both embedded systems and GPS and I'm having some problems.
+</I>&gt;<i> All I really want is to be able to read position and time from the GPS
+</I>&gt;<i> in a C program that I am running on an embedded Linux system.
+</I>
+Well, assuming you want to use gpsd to help you out, I think there are
+three basic chunks to this task.
+
+1) Get your GPS receiver connected and talking to your computer.
+2) Get gpsd talking to your GPS receiver.
+3) Write your program to talk to gpsd and parse its output.
+
+Step 1 varies depending on your specific hardware.  In general, you will
+probably be plugging your GPS into a serial port, or a USB or Bluetooth
+emulation of a serial port.  You will also have to arrange for your GPS
+to get power somehow: via USB, via a connection to your system's power
+supply, whatever.
+
+Once you have this connection made, and you know (or suspect) which
+serial port device in Linux corresponds to the place you plugged it in
+(/dev/ttyS0, /dev/ttyUSB1, etc) you can fire up a terminal program like
+minicom and point it at that device.  With the terminal program adjusted
+to the right bit rate, data bits, stop bits, parity, etc, you should
+see *something* coming from the GPS.  If you never get anything, you may
+be on the wrong port, or your GPS may need to be &quot;woken up&quot; in some way.
+If the GPS is in NMEA mode, the data you see will be mostly-human-
+readable ASCII strings; if the GPS has an antenna with enough sky view,
+you will probably be able to recognize numbers close to your actual
+latitude, longitude, and altitude (in meters) in one of the strings.
+
+Once you are happy with Step 1, Step 2 involves getting gpsd running on
+your system.  If you are using a Linux distribution like Debian, Red
+Hat, etc, it may already be available as a pre-compiled package; if not
+you'll have to download the gpsd source and compile it.  Once you have
+the gpsd executable, you run it, telling it which port your GPS device
+is on (the same one from step 1).  It should find your GPS and
+auto-negotiate the best communication mode that your GPS is capable of;
+gpsd will write debugging messages to the system log and/or the screen
+(depending on command-line options) to help you see what it's doing.
+
+Once gpsd has reported some kind of success, you should be able to
+telnet in to port 2947, issue gpsd commands, and get some kind of
+response from gpsd.  If your GPS can see enough satellites, the 'o'
+command should give you a current position report.
+
+Step 3 is mostly your baby, once Steps 1 and 2 are complete.  You might
+read <A HREF="http://gpsd.berlios.de/faq.html">http://gpsd.berlios.de/faq.html</A> , in particular &quot;How should I
+interface my application with gpsd?&quot;  That entry links to
+<A HREF="http://gpsd.berlios.de/libgps.html">http://gpsd.berlios.de/libgps.html</A> which has a (very simplified) C code
+example.  Basically, the calls to gpsd will fill in members of a
+gps_fix_t structure, which you can then read and act on.
+
+Other random tips:
+
+If there's any possible way to do it, arrange for your GPS to have an
+antenna that can see satellites.  Sometimes this is as simple as putting
+the antenna out on your windowsill; sometimes you have to run half a
+mile of cable to the surface from your secure underground bunker.  The
+reason is that the responses from the GPS will be minimal until it sees
+some satellites; these minimal responses are enough to verify that the
+GPS isn't totally dead, but it's hard to go much beyond that.  If you
+can't yet pick up the whole embedded system and carry it around outside,
+you might also see if you can at least carry the antenna around outside;
+this will cause the GPS to report movement, which is probably the main
+thing you're interested in in your program.
+
+If your GPS connects via serial/USB/Bluetooth, and if your embedded
+system is difficult to develop on (for instance: you only have a 300 bps
+serial console to it, or you have to burn all the code into EPROM and
+then try it and see), it might be faster to develop some of the code on
+a normal desktop PC, running Linux, with your GPS plugged into it.  On
+your desktop, you can pop another xterm to read the documentation, go
+check the gpsd web site, fire off an email if you're really stuck, etc.
+
+Matt Roberds
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="003258.html">[Gpsd-users] New guy with a question
+</A></li>
+	<LI>Next message: <A HREF="003260.html">[Gpsd-users] New guy with a question
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3259">[ date ]</a>
+              <a href="thread.html#3259">[ thread ]</a>
+              <a href="subject.html#3259">[ subject ]</a>
+              <a href="author.html#3259">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

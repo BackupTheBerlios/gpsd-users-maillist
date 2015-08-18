@@ -1,0 +1,152 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] BU303 in sirf mode?
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2006-February/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20BU303%20in%20sirf%20mode%3F&In-Reply-To=%3C9fd2d2180602170906t377c087g%40mail.gmail.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="001310.html">
+   <LINK REL="Next"  HREF="001312.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] BU303 in sirf mode?</H1>
+    <B>pmarc</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20BU303%20in%20sirf%20mode%3F&In-Reply-To=%3C9fd2d2180602170906t377c087g%40mail.gmail.com%3E"
+       TITLE="[Gpsd-users] BU303 in sirf mode?">paulomarcondes at gmail.com
+       </A><BR>
+    <I>Fri Feb 17 18:06:56 CET 2006</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="001310.html">[Gpsd-users] BU303 in sirf mode?
+</A></li>
+        <LI>Next message: <A HREF="001312.html">[Gpsd-users] BU303 in sirf mode?
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1311">[ date ]</a>
+              <a href="thread.html#1311">[ thread ]</a>
+              <a href="subject.html#1311">[ subject ]</a>
+              <a href="author.html#1311">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>2006/2/17, Eric S. Raymond &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">esr at thyrsus.com</A>&gt;:
+
+&gt;<i> It's not just possible, it's my mormal test setup.
+</I>
+I could imagine that.
+
+However, when my unit is is sirf mode, it reports a few sentences, a
+lot unknown sentences, and then disconnects.
+
+
+Switching to NMEA, those issues disappear.
+
+Then with the device in NMEA mode (set with sirfmon /dev/ttyUSB0, then
+'n'), I start gpsd -nN /dev/ttyUSB0 -D2
+
+gpsd: launching (Version 2.30)
+gpsd: listening on port gpsd
+gpsd: successfully connected to the DBUS system bus
+gpsd: running with effective group ID 100
+gpsd: running with effective user ID 1001
+gpsd: opening GPS data source at '/dev/ttyUSB0'
+gpsd: speed 4800, 8N1
+gpsd: gpsd_activate: opened GPS (5)
+gpsd: =&gt; GPS: $PFEC,GPint,GSA01,DTM00,ZDA01,RMC01,GLL00,VTG00,GSV05*3B\x0d
+
+gpsd: =&gt; GPS: @NC10151010\x0d
+
+gpsd: =&gt; GPS: $PMOTG,ZDA,1*2F\x0d
+
+gpsd: =&gt; GPS: $PGRMCE*0E\x0d
+
+gpsd: =&gt; GPS: $PSRF105,1*3E\x0d
+
+gpsd: =&gt; GPS: $PFST*11\x0d
+
+gpsd: &lt;= GPS: $GPGLL,2254.9426,S,04313.7322,W,165501.958,A*30
+gpsd: &lt;= GPS: $GPGSA,A,2,08,10,28,,,,,,,,,,25.3,15.4,20.0*06
+gpsd: &lt;= GPS: $GPGSV,2,1,08,28,71,276,41,08,47,189,35,13,44,056,00,27,43,144,00*77
+gpsd: &lt;= GPS: $GPGSV,2,2,08,10,27,244,46,17,21,002,00,19,18,123,00,23,10,046,00*71
+gpsd: &lt;= GPS: $GPRMC,165501.958,A,2254.9426,S,04313.7322,W,0.00,,170206,,*1B
+gpsd: &lt;= GPS: $GPVTG,,T,,M,0.00,N,0.0,K*7E
+gpsd: &lt;= GPS: $Ack Input105.
+gpsd: found $Ack Input105..
+gpsd: Switching chip mode to SiRF binary.
+gpsd: =&gt; GPS: $PSRF100,0,4800,8,1,0*0F\x0d
+
+gpsd: closing GPS=/dev/ttyUSB0 (5)
+gpsd: closing GPS=/dev/ttyUSB0 (-1)
+gpsd: Received terminating signal 2. Exiting...
+
+with the devide in sirf (I think)
+
+<A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">paulo at onix</A>:~$ gpsd -nN /dev/ttyUSB0 -D3
+gpsd: launching (Version 2.30)
+gpsd: listening on port gpsd
+gpsd: successfully connected to the DBUS system bus
+gpsd: running with effective group ID 100
+gpsd: running with effective user ID 1001
+gpsd: opening GPS data source at '/dev/ttyUSB0'
+gpsd: no probe matched...
+gpsd: speed 4800, 8N1
+gpsd: gpsd_activate: opened GPS (5)
+gpsd: packet sniff finds type -1
+gpsd: packet sniff finds type -1
+&lt;many times .....&gt;
+gpsd: packet sniff finds type -1
+gpsd: packet sniff finds type -1
+gpsd: packet sniff finds type 1
+gpsd: Selecting SiRF-II binary driver...
+gpsd: Unknown SiRF packet id 28 length 56:
+1c010004b7080a411e18efd79af4694179cbb5bbd84e5146789b86414f45fef68f4d267530172d2c2d2c2c2d2c2c2d2c03e801f400000000
+gpsd: Unknown SiRF packet id 28 length 56:
+1c020004b7081c411e18efd79af469417729377825a5b8467a12de4152d23f9b299fb17530072a29292929292929292a03e801f400000000
+gpsd: Unknown SiRF packet id 30 length 83:
+1e08411e18efc9734880416221405ccb955ec1667b5b1a601a1ec174ed51cce19e91409da9fd206a2d0a409f1b4fa457580ac071fbb33bd119abbf0ddacd6863a4c8a76dec0001000000000000000000000000
+gpsd: Unknown SiRF packet id 30 length 83:
+1e0a411e18efc9734880c14c48586ef8ec1bc174fdb54e06b1a4c16b25b8583236204085854616a1c567c09a35d8e0f4624440a337eb6c50f1183f14ad52aa2e6d25ab0e8fd601000000000000000000000000
+gpsd: Unknown SiRF packet id 28 length 56:
+1c000004baf008411e18f3d79af469417896aac248c195467b8ca54152d030c224b1027530072122212221222220222103e801f400000000
+gpsd: Unknown SiRF packet id 28 length 56:
+1c010004baf00a411e18f3d79af4694179cf97ffcac950467896b4414f6511cd13191c7530172c2d2c2d2c2c2c2c2c2d03e801f400000000
+gpsd: Unknown SiRF packet id 28 length 56:
+1c020004baf01c411e18f3d79af46941772d1fb9335924467a0dfb4152e1e07ad9f63575300729292929292a2a29292903e801f400000000
+gpsd: GPS is offline (2.000039 sec since data)
+gpsd: closing GPS=/dev/ttyUSB0 (5)
+
+
+--
+Paulo Marcondes = PU1/PU2PIX
+-22.915 -42.229 = GG87vc (<A HREF="http://www.amsat.org/cgi-bin/gridconv">http://www.amsat.org/cgi-bin/gridconv</A>)
+Debian GNU/Linux = <A HREF="http://rj.debianbrasil.org">http://rj.debianbrasil.org</A> = <A HREF="http://www.debian.org">http://www.debian.org</A>
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="001310.html">[Gpsd-users] BU303 in sirf mode?
+</A></li>
+	<LI>Next message: <A HREF="001312.html">[Gpsd-users] BU303 in sirf mode?
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1311">[ date ]</a>
+              <a href="thread.html#1311">[ thread ]</a>
+              <a href="subject.html#1311">[ subject ]</a>
+              <a href="author.html#1311">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

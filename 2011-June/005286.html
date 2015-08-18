@@ -1,0 +1,154 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] TCP Feed Clarification
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2011-June/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20TCP%20Feed%20Clarification&In-Reply-To=%3CBANLkTinC4OPUXEUY7_pyFhj9yVyE2fh3gA%40mail.gmail.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="005285.html">
+   <LINK REL="Next"  HREF="005287.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] TCP Feed Clarification</H1>
+    <B>Josephine</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20TCP%20Feed%20Clarification&In-Reply-To=%3CBANLkTinC4OPUXEUY7_pyFhj9yVyE2fh3gA%40mail.gmail.com%3E"
+       TITLE="[Gpsd-users] TCP Feed Clarification">josephine at huron-data.com
+       </A><BR>
+    <I>Thu Jun  2 18:16:08 CEST 2011</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="005285.html">[Gpsd-users] TCP Feed Clarification
+</A></li>
+        <LI>Next message: <A HREF="005287.html">[Gpsd-users] TCP Feed Clarification
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#5286">[ date ]</a>
+              <a href="thread.html#5286">[ thread ]</a>
+              <a href="subject.html#5286">[ subject ]</a>
+              <a href="author.html#5286">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Well, gpsdproxy does not appear to be the answer either.  It pushes gps data
+at a predefined interval out over UDP to the remote host, a second gpsd
+instance can not receive the data.
+
+I have temporarily obtained the functionality I need using an ssh tunnel (I
+use those often and it seemed to be the easiest quick-and-dirty fix).
+
+
+On HostB I issued the command:
+
+# ssh -NL localhost:2947:HostA:2947 localhost
+
+
+ I have configured key-based auth to avoid ssh prompting for a password.
+Now as long as the ssh tunnel is properly in place, the gpsd clients on
+HostB can connect to localhost:2947 as if there was a local instance of gpsd
+running.
+
+
+I am still looking for a more elegant solution.  In the absence of any other
+options I may simply redirect HostB's localhost:2947 to HostA:2947 using
+IpTables/NAT.
+
+-Josie
+
+
+
+On Thu, Jun 2, 2011 at 11:34, Josephine &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">josephine at huron-data.com</A>&gt; wrote:
+
+&gt;<i> Thanks for the quick responses.  I have previously checked out gpspipe to
+</I>&gt;<i> see if it would suit my purpose.  Unfortunately it is not exactly what I am
+</I>&gt;<i> looking for.
+</I>&gt;<i>
+</I>&gt;<i> Here is some background on my setup....
+</I>&gt;<i>
+</I>&gt;<i> HostA has a GPS receiver connected via RS232 and an AIS receiver connected
+</I>&gt;<i> via RS422.  It runs gpsd listening on all network interfaces.
+</I>&gt;<i>
+</I>&gt;<i> HostB does not have a GPS receiver.  Several libgps clients run on HostB,
+</I>&gt;<i> most of which assume that the gpsd to which they should connect is local.
+</I>&gt;<i> My plan was to run gpsd on HostB receiving a feed from HostA.  That way all
+</I>&gt;<i> the HostB clients can connect to a local instance of gpsd.  An added benefit
+</I>&gt;<i> of this configuration is that only one gpsd data stream needs to be passed
+</I>&gt;<i> over my network between HostA and HostB.
+</I>&gt;<i>
+</I>&gt;<i> It seems that older pre-JSON versions of gpsd had the capability to connect
+</I>&gt;<i> to a remote gpsd source using &quot;<A HREF="gpsd://...">gpsd://...</A>&quot;.  This functionality does not
+</I>&gt;<i> seem to exist in 2.95.
+</I>&gt;<i>
+</I>&gt;<i> I have begun looking at gpsdproxy, but docs appear scarce and I have not
+</I>&gt;<i> yet determined exactly how it will integrate into my system.  From the
+</I>&gt;<i> description on the gpsdproxy site, it looks like I would run gpsdproxy on
+</I>&gt;<i> HostA and then have my HostB instance of gpsd connect to gpsdproxy as a UDP
+</I>&gt;<i> feed.
+</I>&gt;<i>
+</I>&gt;<i> -j
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i> On Thu, Jun 2, 2011 at 10:53, Tomalak Geret'kal &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">tom at kera.name</A>&gt; wrote:
+</I>&gt;<i>
+</I>&gt;&gt;<i> On 02/06/2011 15:51, Josephine wrote:
+</I>&gt;&gt;<i>
+</I>&gt;&gt;&gt;<i> Hello gpsd-users,
+</I>&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;<i> Can gpsd receive the output of another gpsd instance as a feed source?
+</I>&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;<i> For example specifying '<A HREF="tcp://172.16.10.20:2947">tcp://172.16.10.20:2947</A>' as an argument to gpsd
+</I>&gt;&gt;&gt;<i> to
+</I>&gt;&gt;&gt;<i> cause it to connect to another remote gpsd.
+</I>&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;<i>  From my initial attempts it appears that this will not work.  Also the
+</I>&gt;&gt;&gt;&gt;<i> man
+</I>&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;<i> page for gpsd states that data packets from a TCP feed &quot;will be
+</I>&gt;&gt;&gt;<i> interpreted
+</I>&gt;&gt;&gt;<i> as though they had been issued by a serial device&quot;.  This leads me to
+</I>&gt;&gt;&gt;<i> believe that gpsd is expecting raw gps receiver (NMEA 0183) data from the
+</I>&gt;&gt;&gt;<i> feed, not the JSON output of another gpsd.
+</I>&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;<i> I am currently using gpsd 2.95.
+</I>&gt;&gt;&gt;<i>
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> Take a look at `gpspipe`.
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> Tom
+</I>&gt;&gt;<i> _______________________________________________
+</I>&gt;&gt;<i> Gpsd-users mailing list
+</I>&gt;&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">Gpsd-users at lists.berlios.de</A>
+</I>&gt;&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">https://lists.berlios.de/mailman/listinfo/gpsd-users</A>
+</I>&gt;&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i>
+</I>
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="005285.html">[Gpsd-users] TCP Feed Clarification
+</A></li>
+	<LI>Next message: <A HREF="005287.html">[Gpsd-users] TCP Feed Clarification
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#5286">[ date ]</a>
+              <a href="thread.html#5286">[ thread ]</a>
+              <a href="subject.html#5286">[ subject ]</a>
+              <a href="author.html#5286">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

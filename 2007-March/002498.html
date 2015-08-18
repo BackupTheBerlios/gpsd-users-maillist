@@ -1,0 +1,109 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] GPSD is not setting the time via ntpd
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2007-March/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20GPSD%20is%20not%20setting%20the%20time%20via%20ntpd&In-Reply-To=%3CPine.LNX.4.64.0703151522240.10144%40catbert.rellim.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="002497.html">
+   <LINK REL="Next"  HREF="002499.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] GPSD is not setting the time via ntpd</H1>
+    <B>Gary E. Miller</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20GPSD%20is%20not%20setting%20the%20time%20via%20ntpd&In-Reply-To=%3CPine.LNX.4.64.0703151522240.10144%40catbert.rellim.com%3E"
+       TITLE="[Gpsd-users] GPSD is not setting the time via ntpd">gem at rellim.com
+       </A><BR>
+    <I>Thu Mar 15 23:26:50 CET 2007</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="002497.html">[Gpsd-users] GPSD is not setting the time via ntpd
+</A></li>
+        <LI>Next message: <A HREF="002499.html">[Gpsd-users] Issues with PPS on Garmin GPS 18LVC
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2498">[ date ]</a>
+              <a href="thread.html#2498">[ thread ]</a>
+              <a href="subject.html#2498">[ subject ]</a>
+              <a href="author.html#2498">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>-----BEGIN PGP SIGNED MESSAGE-----
+Hash: SHA1
+
+Yo David!
+
+On Fri, 16 Mar 2007, David Cottle wrote:
+
+&gt;<i> Many thanks!  Indeed I tried ntpdc -p and I don't see my gps.
+</I>&gt;<i>
+</I>&gt;<i> Its definately in my ntp.conf file as I pasted below.
+</I>
+Here is mine, looks like yours:
+
+# for gpsd
+server 127.127.28.0 minpoll 4 maxpoll 4
+fudge 127.127.28.0 time1 0.429  refid GPS
+# for PPS and gpsd
+server 127.127.28.1 minpoll 4 maxpoll 4 prefer
+fudge 127.127.28.1 time1 -0.0004 refid GPS1
+
+Some distros play games with the ntp config file name.  Recheck that
+ntp.conf is the right one for you.  Then it's time to compile from
+scratch.
+
+&gt;<i> As I am running Fedora (FC6) any tips on compiling a new ntpd for my
+</I>&gt;<i> server?
+</I>
+I prefer Linux myself and stay away from Fedora.
+
+Here is how I build my ntp:
+
+	./configure --disable-nls --with-crypto
+	make &amp;&amp; make install
+
+RGDS
+GARY
+- ---------------------------------------------------------------------------
+Gary E. Miller Rellim 20340 Empire Ave., Suite E-3, Bend, OR 97701
+	<A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">gem at rellim.com</A>  Tel:+1(541)382-8588
+
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v1.4.3 (GNU/Linux)
+
+iD8DBQFF+cgt8KZibdeR3qURAvDrAKC0OAKmioQ4eW3u2IDPhuoqbiDdmQCeKyQq
+UKaHdqRlsN8nzEnWXHg81Uc=
+=eWpJ
+-----END PGP SIGNATURE-----
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="002497.html">[Gpsd-users] GPSD is not setting the time via ntpd
+</A></li>
+	<LI>Next message: <A HREF="002499.html">[Gpsd-users] Issues with PPS on Garmin GPS 18LVC
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2498">[ date ]</a>
+              <a href="thread.html#2498">[ thread ]</a>
+              <a href="subject.html#2498">[ subject ]</a>
+              <a href="author.html#2498">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

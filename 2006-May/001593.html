@@ -1,0 +1,98 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] Re: Leap second
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2006-May/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Re%3A%20Leap%20second&In-Reply-To=%3C20060517224248.GA30294%40thyrsus.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="001548.html">
+   <LINK REL="Next"  HREF="001587.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] Re: Leap second</H1>
+    <B>Eric S. Raymond</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Re%3A%20Leap%20second&In-Reply-To=%3C20060517224248.GA30294%40thyrsus.com%3E"
+       TITLE="[Gpsd-users] Re: Leap second">esr at thyrsus.com
+       </A><BR>
+    <I>Thu May 18 00:42:48 CEST 2006</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="001548.html">[Gpsd-users] Re: Leap second
+</A></li>
+        <LI>Next message: <A HREF="001587.html">[Gpsd-users] Feature request
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1593">[ date ]</a>
+              <a href="thread.html#1593">[ thread ]</a>
+              <a href="subject.html#1593">[ subject ]</a>
+              <a href="author.html#1593">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Wolfgang S. Rupprecht &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">wolfgang+gnus200605 at dailyplanet.dontspam.wsrcc.com</A>&gt;:
+&gt;<i> It might be worthwhile for gpsd to store away the NIST leap second
+</I>&gt;<i> table.  Ntpd has a poorly described mode where it downloads the NIST
+</I>&gt;<i> table.  See the last two paragraphs on this page:
+</I>&gt;<i> 
+</I>&gt;<i>           <A HREF="http://www.cis.udel.edu/~mills/ntp/html/authopt.html">http://www.cis.udel.edu/~mills/ntp/html/authopt.html</A>
+</I>&gt;<i> 
+</I>&gt;<i> And an old version of the file appears here (where is the newest one???):
+</I>&gt;<i> 
+</I>&gt;<i>           <A HREF="http://www.cis.udel.edu/~mills/leap-seconds.3169152000">http://www.cis.udel.edu/~mills/leap-seconds.3169152000</A>
+</I>&gt;<i> 
+</I>&gt;<i> If gpsd read this file at startup it could set the initial leapsecond
+</I>&gt;<i> value to something reasonable until better information from the gps
+</I>&gt;<i> data stream was available.  In theory this file gets updated a few
+</I>&gt;<i> months before any leap-second event, so it should work across
+</I>&gt;<i> transitions too.
+</I>
+I wouldn't do this in gpsd.  I'd do it in the hotplug script. Here's
+the trick; we know that the leap-second changes only every six months,
+so we should put in logic that downloads the NIST file if either (a)
+there's no local offset file, or (b) the local offset file is more
+than five months old.
+
+The hotplug script, when it downloads, would make a new local offset
+file.  All gpsd would have to know is how to read that, not the full
+NIST format.  That would make for good separation of function and a
+minimal footprint increase in the gpsd binary.  Because the hotplug
+script is already written in Python, adding the check-and download
+logic would be trivial.
+
+The typical overhead at gpsd startup would be just one stat(2) call
+to check whether or not the local offset file is stale.
+
+This would all be duck soup if we just knew a stable permanent URL
+for the NIST offsets file.  Hey -- there's a contact email in it...
+-- 
+		&lt;a href=&quot;<A HREF="http://www.catb.org/~esr/">http://www.catb.org/~esr/</A>&quot;&gt;Eric S. Raymond&lt;/a&gt;
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="001548.html">[Gpsd-users] Re: Leap second
+</A></li>
+	<LI>Next message: <A HREF="001587.html">[Gpsd-users] Feature request
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1593">[ date ]</a>
+              <a href="thread.html#1593">[ thread ]</a>
+              <a href="subject.html#1593">[ subject ]</a>
+              <a href="author.html#1593">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

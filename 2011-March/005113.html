@@ -1,0 +1,115 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] gps_read() does not block
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2011-March/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20gps_read%28%29%20does%20not%20block&In-Reply-To=%3C4D773369.90408%40googlemail.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="005109.html">
+   <LINK REL="Next"  HREF="005115.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] gps_read() does not block</H1>
+    <B>Andre Naujoks</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20gps_read%28%29%20does%20not%20block&In-Reply-To=%3C4D773369.90408%40googlemail.com%3E"
+       TITLE="[Gpsd-users] gps_read() does not block">nautsch2 at googlemail.com
+       </A><BR>
+    <I>Wed Mar  9 08:59:37 CET 2011</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="005109.html">[Gpsd-users] gps_read() does not block
+</A></li>
+        <LI>Next message: <A HREF="005115.html">[Gpsd-users] [Gpsd-dev]  gps_read() does not block
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#5113">[ date ]</a>
+              <a href="thread.html#5113">[ thread ]</a>
+              <a href="subject.html#5113">[ subject ]</a>
+              <a href="author.html#5113">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Am 09.03.2011 02:24, schrieb Brad Morgan:
+&gt;&gt;&gt;<i> What about a flag like POLL_NONBLOCK but the other way around?
+</I>&gt;<i> POLL_BLOCK?
+</I>&gt;<i> 
+</I>&gt;&gt;<i> 1.  Do nothing.  gps_waiting isn't actually useless, you get a 1 msec
+</I>&gt;<i> delay
+</I>&gt;&gt;<i> out of it that you don't from spinning in a gps_read().  Everybody keeps
+</I>&gt;&gt;<i> using select(2).
+</I>&gt;<i> 
+</I>&gt;&gt;<i> 2. Add a POLL_BLOCK flag.  Very easy, I could do it in 5 minutes.
+</I>&gt;<i> 
+</I>&gt;<i> I've been silently following this discussion and I think I understand the
+</I>&gt;<i> issue. The OP wants gps_read() to block the process until it returns some
+</I>&gt;<i> data. I assume this is what a POLL_BLOCK flag would do.
+</I>
+I am very glad not to be alone with this. And yes that is what
+POLL_BLOCK would do in my eyes.
+
+&gt;<i> 
+</I>&gt;&gt;<i> 3. Add an argument to gps_waiting to specify the interval on the timeout
+</I>&gt;&gt;<i> it uses in its internal select(2).
+</I>&gt;<i> 
+</I>&gt;<i> Does this mean that gps_waiting will return as soon as there is data to be
+</I>&gt;<i> read or if there is no data, the timeout interval has expired? If so this
+</I>&gt;<i> would prevent the process from getting hung when the gps is never going to
+</I>&gt;<i> send any data.
+</I>
+Thats how I understand it, too.
+
+&gt;<i> 
+</I>&gt;&gt;<i> I lean towards 3, but I'm open to persuasion.
+</I>&gt;<i> 
+</I>&gt;<i> I'd suggest implementing both 2 &amp; 3. To me, doing nothing leaves a hole in
+</I>&gt;<i> the implementation. I think the library needs to provide what I see as a
+</I>&gt;<i> basic way of interfacing with the gps. Either of these implementations
+</I>&gt;<i> extend the existing functionality in an upward compatible way (assuming the
+</I>&gt;<i> argument to gps_waiting is optional).
+</I>
+You got my vote on the 2 &amp; 3 approach. Where I see 2 as much simpler
+(Eric said so, too) and more intuitive to work with if you are
+accustomed to working with sockets in their default blocking state.
+
+Andre
+
+&gt;<i> 
+</I>&gt;<i> Regards,
+</I>&gt;<i> 
+</I>&gt;<i> Brad Morgan
+</I>&gt;<i> 
+</I>&gt;<i> _______________________________________________
+</I>&gt;<i> Gpsd-users mailing list
+</I>&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">Gpsd-users at lists.berlios.de</A>
+</I>&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">https://lists.berlios.de/mailman/listinfo/gpsd-users</A>
+</I>
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="005109.html">[Gpsd-users] gps_read() does not block
+</A></li>
+	<LI>Next message: <A HREF="005115.html">[Gpsd-users] [Gpsd-dev]  gps_read() does not block
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#5113">[ date ]</a>
+              <a href="thread.html#5113">[ thread ]</a>
+              <a href="subject.html#5113">[ subject ]</a>
+              <a href="author.html#5113">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

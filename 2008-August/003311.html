@@ -1,0 +1,147 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] Autobaud - does it have to be that way?
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2008-August/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Autobaud%20-%20does%20it%20have%20to%20be%20that%20way%3F&In-Reply-To=%3C91981b3e0808071407i7f91f9f2ice203c8f2a77933d%40mail.gmail.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="003310.html">
+   <LINK REL="Next"  HREF="003313.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] Autobaud - does it have to be that way?</H1>
+    <B>Chris Kuethe</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Autobaud%20-%20does%20it%20have%20to%20be%20that%20way%3F&In-Reply-To=%3C91981b3e0808071407i7f91f9f2ice203c8f2a77933d%40mail.gmail.com%3E"
+       TITLE="[Gpsd-users] Autobaud - does it have to be that way?">chris.kuethe at gmail.com
+       </A><BR>
+    <I>Thu Aug  7 23:07:02 CEST 2008</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="003310.html">[Gpsd-users] Autobaud - does it have to be that way?
+</A></li>
+        <LI>Next message: <A HREF="003313.html">[Gpsd-users] Simple question
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3311">[ date ]</a>
+              <a href="thread.html#3311">[ thread ]</a>
+              <a href="subject.html#3311">[ subject ]</a>
+              <a href="author.html#3311">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>On Thu, Aug 7, 2008 at 12:35 PM, Bob.. &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">gpsd-users at spamblockemail.info</A>&gt; wrote:
+&gt;<i> By the way, I did want to say a few things on this:
+</I>&gt;<i> 1. Thank you for the pointers
+</I>&gt;<i> 2. I applaud the selection of a software policy as is described in the
+</I>&gt;<i> links above.
+</I>&gt;<i>   Too many pieces of software have *no* development policies or weakly
+</I>&gt;<i> defended ones.
+</I>&gt;<i>   The collection of policies roughly forms the architecture of the system.
+</I>&gt;<i>   Weak policy &gt; weak architecture &gt; weak code (sometimes colloquially
+</I>&gt;<i> known as &quot;spaghetti code&quot;).
+</I>
+We try. Yes, development policy, strategy, direction, purpose... is good.
+
+&gt;<i> 3. While I applaud the policy, it is easy to argue about the reasons
+</I>&gt;<i> that lead up to it.
+</I>&gt;<i> Things like: &quot;99% of&quot; are easily argued about: is that 99% of models?
+</I>&gt;<i> Or, 99% of units sold?
+</I>&gt;<i> But, I don't really care.  You picked a development target, and are
+</I>&gt;<i> writing a good system for that target...
+</I>
+Practically speaking there is very little difference between &quot;99% of
+models&quot; and &quot;99% of units sold&quot;, at least in the consumer space. It's
+not really suprising though, considering how thin the margins are in
+that market, the chipset vendor usually provides a reference design
+and there's probably already an OEM producing modules from that
+design.
+
+Within a given chipset family, there seems to be next to no hardware
+differentiation. I just bought a Novatel SuperStar II - prices for the
+bare board range from about $100 to over $350. It's the same hardware,
+just different firmware magic. Globalsat were being jackasses about
+sending me an updated firmware to enable WAAS on my BU-353 (hence I'm
+boycotting them). I was able to flash the firmware from my TomTom on
+to the '353 and got WAAS.
+
+&gt;<i> 4. Question:
+</I>&gt;<i> Were these devices, the ones that GPSD is targeting, designed for
+</I>&gt;<i> auto-configuration?
+</I>
+no. and they shouldn't need to be.
+
+we don't really target any particular receiver, rather we want to
+support &quot;all of them&quot;. every now and then i find some receiver with
+nifty capabilities - I'm particularly interested in more sophisticate
+receivers with good timing or static positioning performance - and
+this motivates me to work on support for them (cf. itrax03 or ublox).
+
+GPSD, because it's running on such a vastly more capable machine than
+the embedded core, should ideally be able to figure out what kind of a
+device it's talking to. The developers, being much smarter than a
+simple program, should be able to comprehend technical documentation
+to figure out whether the device as shipped is well-/poorly-configured
+and and whether there's a better output setting. Examples: Trimble
+receivers tend to be be configured to output single-precision
+solutions, we'd prefer double-precision. Thales/magellan AC12 ships
+with all output messages disabled, that's not at all useful. sirf
+binary is much more useful than NMEA, but some versions of firmware
+emit invalid output packets - gotta avoid those. Certain OEMs ship
+with a non-WAAS capable firmware, sometimes the firmware is WAAS
+capable but not enabled by default, sometimes the WAAS preference is
+for the wrong PRN...
+
+Every receiver has some input commands, some have a richer set than
+others. The UT-41 can basically control which sentence mix is being
+sent, and what fraction of 1Hz output you get. With an iTrax03 I can
+jiggle pretty much every register in the hardware and every tunable in
+the software. ublox, trimble, sirf... have varying levels of
+configurability.
+
+&gt;<i> 5. Statement: To the best of my recollection,  RS-232/serial/v.24  is an
+</I>&gt;<i> evolved, de-facto standard with no inherent support for auto-configuration.
+</I>&gt;<i> Since a lot of these devices are serial or treated as such, I'm
+</I>&gt;<i> surprised you wend this route.
+</I>
+Sure, serial isn't designed for autoconfiguration, but it's something
+we can do because of the limited search space - known protocols with
+distinct signatures and predictable content. It's also something we
+should do because the current state of the market sucks frozen dead
+bunnies through bent straws - ill-designed protocols, poor default
+configuration, firmware bugs... why make the guy who just wants
+gpsdrive to work fight with all that?
+
+CK
+
+-- 
+GDB has a 'break' feature; why doesn't it have 'fix' too?
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="003310.html">[Gpsd-users] Autobaud - does it have to be that way?
+</A></li>
+	<LI>Next message: <A HREF="003313.html">[Gpsd-users] Simple question
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3311">[ date ]</a>
+              <a href="thread.html#3311">[ thread ]</a>
+              <a href="subject.html#3311">[ subject ]</a>
+              <a href="author.html#3311">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

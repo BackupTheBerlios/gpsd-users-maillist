@@ -1,0 +1,114 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] Lost packet problem
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2005-July/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Lost%20packet%20problem&In-Reply-To=%3C42EAC085.2040106%40boilerbots.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="000905.html">
+   <LINK REL="Next"  HREF="000910.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] Lost packet problem</H1>
+    <B>maillist</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Lost%20packet%20problem&In-Reply-To=%3C42EAC085.2040106%40boilerbots.com%3E"
+       TITLE="[Gpsd-users] Lost packet problem">maillist at boilerbots.com
+       </A><BR>
+    <I>Sat Jul 30 01:49:25 CEST 2005</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="000905.html">[Gpsd-users] Lost packet problem
+</A></li>
+        <LI>Next message: <A HREF="000910.html">[Gpsd-users] Lost packet problem
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#906">[ date ]</a>
+              <a href="thread.html#906">[ thread ]</a>
+              <a href="subject.html#906">[ subject ]</a>
+              <a href="author.html#906">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>I think I solved this problem:
+
+My solution in packet.c is to use inbufptr to point to the current 
+position in the input buffer that is next to be parsed. Then only use 
+inbuflen to track the end of the input buffer and use this to add new 
+incoming data. Then when a packet is excepted and that data removed, put 
+a &quot;break&quot; statement to exit the while loop so that packet can be sent 
+out. This only required changes in a few locations and it seems to work.
+
+Now for my next problem......
+
+Curt
+
+maillist wrote:
+
+&gt;<i> Hey Eric,
+</I>&gt;<i>
+</I>&gt;<i> I hope this isn't another lack of sleep bug, but here is a problem 
+</I>&gt;<i> that I am seeing.
+</I>&gt;<i>
+</I>&gt;<i> I got this gps that outputs sentences at 20Hz. So with several of the 
+</I>&gt;<i> sentences turned on the data rate is getting pretty high and constant.
+</I>&gt;<i>
+</I>&gt;<i> What I see it that the function packet_parse() has a problem with the 
+</I>&gt;<i> high data rate. The while loop will proceed through the data that was 
+</I>&gt;<i> read in and then get out when it runs out of data. If it finds a match 
+</I>&gt;<i> then it removes that data and then usually exits the loop because 
+</I>&gt;<i> there isn't enough data for anything else to happen.
+</I>&gt;<i>
+</I>&gt;<i> Sometimes in my situation it happes that what is just read into the 
+</I>&gt;<i> buffer is the final remaining piece of one sentence and the a whole 
+</I>&gt;<i> complete new sentence (this usually occurs when the next sentence is a 
+</I>&gt;<i> short one). When this happens the while loop with identify the end of 
+</I>&gt;<i> the first sentence and accept the data but it will then continue in 
+</I>&gt;<i> the while loop and accept the next sentence, causing the previous one 
+</I>&gt;<i> to be lost.
+</I>&gt;<i>
+</I>&gt;<i> Normally this almost goes un-noticed except when it happens during a 
+</I>&gt;<i> GSA or other multi-part message. Sometimes one piece of the GSA is 
+</I>&gt;<i> lost and then poof, gpsd exits.
+</I>&gt;<i>
+</I>&gt;<i> You can probably solve this gracefully I hope. Meanwhile I am going to 
+</I>&gt;<i> hack on it.
+</I>&gt;<i>
+</I>&gt;<i> I am including some output showing where this failure occurred. You 
+</I>&gt;<i> will see the packet accepted, discarded then another immediately 
+</I>&gt;<i> accepted and discarded. Only the final packet is sent out, the GSV 3rd 
+</I>&gt;<i> sentence, loosing the 2nd sentence.
+</I>&gt;<i>
+</I>&gt;<i> Thanks,
+</I>&gt;<i> Curt
+</I>&gt;<i>
+</I>
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="000905.html">[Gpsd-users] Lost packet problem
+</A></li>
+	<LI>Next message: <A HREF="000910.html">[Gpsd-users] Lost packet problem
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#906">[ date ]</a>
+              <a href="thread.html#906">[ thread ]</a>
+              <a href="subject.html#906">[ subject ]</a>
+              <a href="author.html#906">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

@@ -1,0 +1,159 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] Weird Long/Lat output
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2006-April/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Weird%20Long/Lat%20output&In-Reply-To=%3C4437CC87.4000909%40650.co.nz%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="001503.html">
+   <LINK REL="Next"  HREF="001505.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] Weird Long/Lat output</H1>
+    <B>Jon Keller</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Weird%20Long/Lat%20output&In-Reply-To=%3C4437CC87.4000909%40650.co.nz%3E"
+       TITLE="[Gpsd-users] Weird Long/Lat output">jon at 650.co.nz
+       </A><BR>
+    <I>Sat Apr  8 16:45:27 CEST 2006</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="001503.html">[Gpsd-users] Weird Long/Lat output
+</A></li>
+        <LI>Next message: <A HREF="001505.html">[Gpsd-users] Mail System Error - Returned Mail
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1504">[ date ]</a>
+              <a href="thread.html#1504">[ thread ]</a>
+              <a href="subject.html#1504">[ subject ]</a>
+              <a href="author.html#1504">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Debug logs...
+
+This is from the gpsd installation on the arm cpu based machine which is 
+reporting the wrong location
+
+gpsd: =&gt; client(4): GPSD,P=86.635993 
+-36.796571,D=0008/04/2006T14:41:09Z,T=?,U=?,V=?,S=1,M=3
+gpsd: 
+$GPGGA,14419.000,8638.1596,N,3647.7943,W,3,05,81.00,3048755.9,M,26.000,M19.61,E*05
+$GPRMC,14419.000,A,8638.1596,N,3647.7943,W,0.0000,0.000,080406,,*23
+gpsd: GPS has a fix (status=1, mode=3).
+gpsd: GPS has a fix (status=1, mode=3).
+gpsd: =&gt; client(4): GPSD,P=86.635993 
+-36.796571,D=0008/04/2006T14:41:09Z,A=3048755.870000,S=1,M=3
+gpsd: GPS has a fix (status=1, mode=3).
+gpsd: GPS has a fix (status=1, mode=3).
+gpsd: =&gt; client(4): GPSD,Q=5 136.00 81.00 109.00,M=3,E=1106.80 659.19 887.06
+gpsd: $GPGSA,A,3,15,21,18,22,09,,,,,,,,136.00,81.00,109.00*30
+gpsd: GPS has a fix (status=1, mode=3).
+gpsd: GPS has a fix (status=1, mode=3).
+gpsd: =&gt; client(4): GPSD,Q=5 136.00 81.00 109.00,M=3,E=1106.80 659.19 887.06
+gpsd: GPS has a fix (status=1, mode=3).
+gpsd: GPS has a fix (status=1, mode=3).
+gpsd: =&gt; client(4): GPSD,P=86.635993 
+-36.796571,D=0008/04/2006T14:41:10Z,A=3048756.270000,S=1,M=3
+gpsd: GPS has a fix (status=1, mode=3).
+gpsd: GPS has a fix (status=1, mode=3).
+gpsd: GPS has a fix (status=1, mode=3).
+gpsd: GPS has a fix (status=1, mode=3).
+gpsd: =&gt; client(4): GPSD,P=86.635993 
+-36.796571,D=0008/04/2006T14:41:10Z,T=?,U=?,V=?,S=1,M=3
+gpsd: 
+$GPGGA,144110.000,8638.1596,N,3647.7943,W,3,05,81.00,3048756.3,M,26.000,M19.61,E*34
+$GPRMC,144110.000,A,8638.1596,N,3647.7943,W,0.0000,0.000,080406,,*1B
+gpsd: GPS has a fix (status=1, mode=3).
+gpsd: GPS has a fix (status=1, mode=3).
+gpsd: =&gt; client(4): GPSD,P=86.635993 
+-36.796571,D=0008/04/2006T14:41:10Z,A=3048756.270000,S=1,M=3
+
+
+
+
+
+This is from the gpsd installation which is reporting the correct 
+location, same gps.
+
+gpsd: =&gt; client(4): GPSD,P=-36.788828 
+174.681591,D=0008/04/2006T14:37:03Z,T=0.000000,V=0.000000,S=1,M=3
+gpsd: 
+$GPGGA,143703,3647.329657,S,17440.895441,E,3,07,81.00,70.8,M,26.000000,M19.606616,E$GPRMC,143703,A,3647.329657,S,17440.895441,E,0.000000,0.000000,080406,,gpsd: 
+GPS has a fix (status=1, mode=3).
+gpsd: GPS has a fix (status=1, mode=3).
+gpsd: =&gt; client(4): GPSD,P=-36.788828 
+174.681591,D=0008/04/2006T14:37:03Z,A=70.800000,S=1,M=3
+gpsd: GPS has a fix (status=1, mode=3).
+gpsd: =&gt; client(4): GPSD,Q=7 138.000000 81.000000 112.000000,M=3
+gpsd: $GPGSA,A,3,21,18,22,09,07,26,,,,,,,138.00,81.00,112.00*33
+gpsd: GPS has a fix (status=1, mode=3).
+gpsd: =&gt; client(4): GPSD,Q=7 138.000000 81.000000 112.000000,M=3
+gpsd: GPS has a fix (status=1, mode=3).
+gpsd: GPS has a fix (status=1, mode=3).
+gpsd: =&gt; client(4): GPSD,P=-36.788828 
+174.681591,D=0008/04/2006T14:37:04Z,A=69.810000,S=1,M=3
+gpsd: GPS has a fix (status=1, mode=3).
+gpsd: GPS has a fix (status=1, mode=3).
+gpsd: GPS has a fix (status=1, mode=3).
+gpsd: =&gt; client(4): GPSD,P=-36.788828 
+174.681591,D=0008/04/2006T14:37:04Z,T=0.000000,V=0.000000,S=1,M=3
+gpsd: 
+$GPGGA,143704,3647.329657,S,17440.895441,E,3,07,81.00,69.8,M,26.000000,M19.606616,E$GPRMC,143704,A,3647.329657,S,17440.895441,E,0.000000,0.000000,080406,,gpsd: 
+GPS has a fix (status=1, mode=3).
+
+
+Jon Keller wrote:
+&gt;<i> Hello,
+</I>&gt;<i>
+</I>&gt;<i> I'm having an issue where a gpsd install of mine is giving long/lat 
+</I>&gt;<i> outputs that are way off, for example..472.36N ,36.47W, Alt  40797M. 
+</I>&gt;<i> I'll get this reported while sustaining a 3d lock with at least 6-7 
+</I>&gt;<i> green sats.
+</I>&gt;<i>
+</I>&gt;<i> Now this install is running on an arm processor linux machine running 
+</I>&gt;<i> gpsd v2.13. I'm using the old version because this is the last version 
+</I>&gt;<i> that works with my gps (a serial delorme earthmate, zodiac).
+</I>&gt;<i>
+</I>&gt;<i> Normally I'd think that my gps was messed up but it gives the correct 
+</I>&gt;<i> output (about 36S 174E, alt 30m)  on a x86 linux install running the 
+</I>&gt;<i> exact same version of gpsd.
+</I>&gt;<i>
+</I>&gt;<i> Does anyone have any idea what could cause this change in output? Any 
+</I>&gt;<i> help is appreciated.
+</I>&gt;<i>
+</I>&gt;<i>    -Jon
+</I>&gt;<i> _______________________________________________
+</I>&gt;<i> Gpsd-users mailing list
+</I>&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">Gpsd-users at lists.berlios.de</A>
+</I>&gt;<i> <A HREF="http://lists.berlios.de/mailman/listinfo/gpsd-users">http://lists.berlios.de/mailman/listinfo/gpsd-users</A>
+</I>
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="001503.html">[Gpsd-users] Weird Long/Lat output
+</A></li>
+	<LI>Next message: <A HREF="001505.html">[Gpsd-users] Mail System Error - Returned Mail
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1504">[ date ]</a>
+              <a href="thread.html#1504">[ thread ]</a>
+              <a href="subject.html#1504">[ subject ]</a>
+              <a href="author.html#1504">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

@@ -1,0 +1,120 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] svn version 6758 on Ubuntu 9.10: error while loading shared libraries: libgps.so.19: cannot open shared object file: No such file or directory
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2009-December/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20svn%20version%206758%20on%20Ubuntu%209.10%3A%20error%20while%20loading%0A%20shared%20libraries%3A%20libgps.so.19%3A%20cannot%20open%20shared%20object%20file%3A%20No%20such%0A%20file%20or%20directory&In-Reply-To=%3C20091207151030.7f0b9b55%40dragon.localdomain%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="004111.html">
+   <LINK REL="Next"  HREF="004113.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] svn version 6758 on Ubuntu 9.10: error while loading shared libraries: libgps.so.19: cannot open shared object file: No such file or directory</H1>
+    <B>Charles Curley</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20svn%20version%206758%20on%20Ubuntu%209.10%3A%20error%20while%20loading%0A%20shared%20libraries%3A%20libgps.so.19%3A%20cannot%20open%20shared%20object%20file%3A%20No%20such%0A%20file%20or%20directory&In-Reply-To=%3C20091207151030.7f0b9b55%40dragon.localdomain%3E"
+       TITLE="[Gpsd-users] svn version 6758 on Ubuntu 9.10: error while loading shared libraries: libgps.so.19: cannot open shared object file: No such file or directory">charlescurley at charlescurley.com
+       </A><BR>
+    <I>Mon Dec  7 23:10:30 CET 2009</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="004111.html">[Gpsd-users] Sirf Binary, Gpsmon and other things
+</A></li>
+        <LI>Next message: <A HREF="004113.html">[Gpsd-users] svn version 6758 on Ubuntu 9.10: error while loading shared libraries: libgps.so.19: cannot open shared object file: No such file or directory
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#4112">[ date ]</a>
+              <a href="thread.html#4112">[ thread ]</a>
+              <a href="subject.html#4112">[ subject ]</a>
+              <a href="author.html#4112">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>I just built up a brand new Ubuntu 9.10 machine.
+
+I installed gpsd from the Ubuntu repos in order to verify that my gps
+receiver is working; it is. I then purged it and libgps.
+
+Per the INSTALL document, I ran &quot;apt-get build-dep gpsd&quot;. I then
+successfully checked out and compiled gpsd svn version 6758. I then
+ran &quot;sudo make install&quot; in Ubuntu fashion, and that ran successfully,
+with the following partial output:
+
+--------------------------------------------------
+libtool: install: /usr/bin/install -c .libs/libgps.so.19.0.0 /usr/local/lib/libgps.so.19.0.0
+libtool: install: (cd /usr/local/lib &amp;&amp; { ln -s -f libgps.so.19.0.0 libgps.so.19 || { rm -f libgps.so.19 &amp;&amp; ln -s libgps.so.19.0.0 libgps.so.19; }; })
+libtool: install: (cd /usr/local/lib &amp;&amp; { ln -s -f libgps.so.19.0.0 libgps.so || { rm -f libgps.so &amp;&amp; ln -s libgps.so.19.0.0 libgps.so; }; })
+libtool: install: /usr/bin/install -c .libs/libgps.lai /usr/local/lib/libgps.la
+libtool: install: /usr/bin/install -c .libs/libgps.a /usr/local/lib/libgps.a
+libtool: install: chmod 644 /usr/local/lib/libgps.a
+libtool: install: ranlib /usr/local/lib/libgps.a
+libtool: finish: PATH=&quot;/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/X11R6/bin:/sbin&quot; ldconfig -n /usr/local/lib
+--------------------------------------------------
+
+However, when I try to run it as root:
+
+--------------------------------------------------
+<A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">root at white</A>:~# gpsd /dev/ttyUSB0
+gpsd: error while loading shared libraries: libgps.so.19: cannot open shared object file: No such file or directory
+<A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">root at white</A>:~# ll /usr/local/lib/libgps.*
+-rw-r--r-- 1 root root 1442664 2009-12-07 14:30 /usr/local/lib/libgps.a
+-rwxr-xr-x 1 root root     948 2009-12-07 14:30 /usr/local/lib/libgps.la
+lrwxrwxrwx 1 root root      16 2009-12-07 14:30 /usr/local/lib/libgps.so -&gt; libgps.so.19.0.0
+lrwxrwxrwx 1 root root      16 2009-12-07 14:30 /usr/local/lib/libgps.so.19 -&gt; libgps.so.19.0.0
+-rwxr-xr-x 1 root root  964667 2009-12-07 14:30 /usr/local/lib/libgps.so.19.0.0
+<A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">root at white</A>:~# 
+--------------------------------------------------
+
+As the user under which I compiled, gpsd ran just fine:
+
+--------------------------------------------------
+<A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">ccurley at white</A>:~/projects/gpsd/trunk$ ./gpsd /dev/ttyUSB0
+<A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">ccurley at white</A>:~/projects/gpsd/trunk$ ps aux | grep -i gpsd | grep -v grep
+ccurley   7920  0.0  0.8   4620  1856 ?        Ss   14:48   0:00 /home/ccurley/projects/gpsd/trunk/.libs/lt-gpsd /dev/ttyUSB0
+<A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">ccurley at white</A>:~/projects/gpsd/trunk$ 
+--------------------------------------------------
+
+With similar results for xgps run locally vs. from the build
+directory.
+
+So what am I doing wrong?
+
+Thanks
+
+-- 
+
+Charles Curley                  /&quot;\    ASCII Ribbon Campaign
+Looking for fine software       \ /    Respect for open standards
+and/or writing?                  X     No HTML/RTF in email
+<A HREF="http://www.charlescurley.com">http://www.charlescurley.com</A>    / \    No M$ Word docs in email
+
+Key fingerprint = CE5C 6645 A45A 64E4 94C0  809C FFF6 4C48 4ECD DFDB
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="004111.html">[Gpsd-users] Sirf Binary, Gpsmon and other things
+</A></li>
+	<LI>Next message: <A HREF="004113.html">[Gpsd-users] svn version 6758 on Ubuntu 9.10: error while loading shared libraries: libgps.so.19: cannot open shared object file: No such file or directory
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#4112">[ date ]</a>
+              <a href="thread.html#4112">[ thread ]</a>
+              <a href="subject.html#4112">[ subject ]</a>
+              <a href="author.html#4112">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

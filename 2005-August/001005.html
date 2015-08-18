@@ -1,0 +1,235 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] Re: gps.py EarthDistance method problem
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2005-August/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Re%3A%20gps.py%20EarthDistance%20method%20problem&In-Reply-To=%3C87d5ogmmbn.fsf%40bonnet.wsrcc.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="001002.html">
+   <LINK REL="Next"  HREF="001007.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] Re: gps.py EarthDistance method problem</H1>
+    <B>Wolfgang S. Rupprecht</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Re%3A%20gps.py%20EarthDistance%20method%20problem&In-Reply-To=%3C87d5ogmmbn.fsf%40bonnet.wsrcc.com%3E"
+       TITLE="[Gpsd-users] Re: gps.py EarthDistance method problem">wolfgang+gnus20050814 at dailyplanet.dontspam.wsrcc.com
+       </A><BR>
+    <I>Sun Aug 14 19:59:24 CEST 2005</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="001002.html">[Gpsd-users] Re: gps.py EarthDistance method problem
+</A></li>
+        <LI>Next message: <A HREF="001007.html">[Gpsd-users] Re: gps.py EarthDistance method problem
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1005">[ date ]</a>
+              <a href="thread.html#1005">[ thread ]</a>
+              <a href="subject.html#1005">[ subject ]</a>
+              <a href="author.html#1005">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>&quot;Eric S. Raymond&quot; &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">esr at thyrsus.com</A>&gt; writes:
+&gt;<i> Wallace Owen &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">wally.owen at titan.com</A>&gt;:
+</I>&gt;&gt;<i> On Wed, 2005-08-10 at 12:52 -0700, Wolfgang S. Rupprecht wrote:
+</I>&gt;&gt;<i> &gt; &gt; The problem is that the formula does not give accurate
+</I>&gt;&gt;<i> &gt; &gt; results for small distances, a better formula for short distances is the
+</I>&gt;&gt;<i> &gt; &gt; Haversine Formula. For long distances the existing method is fine.
+</I>&gt;&gt;<i> &gt; 
+</I>&gt;&gt;<i> &gt; I think you might be pleasantly surprised how good the original
+</I>&gt;&gt;<i> &gt; equation is on modern computers.
+</I>&gt;&gt;<i> 
+</I>&gt;&gt;<i> Doesn't the trigonometry have loss of precision issues and large error
+</I>&gt;&gt;<i> terms when small distances are involved?  It isn't an issue of trying to
+</I>&gt;&gt;<i> do these calcs with a deficient floating point unit.  As the subtended
+</I>&gt;&gt;<i> angle approaches zero the (sine?cosine?) approaches infinity.  Right?
+</I>&gt;&gt;<i> 
+</I>&gt;&gt;<i> I remember having to use haversine equations for that reason.  I got
+</I>&gt;&gt;<i> them from &quot;Guide to the practical Navigator (Bowditch).
+</I>&gt;&gt;<i> 
+</I>&gt;&gt;<i> Of course, I could be all wrong. :^)
+</I>&gt;<i>
+</I>&gt;<i> I rather doubt you are.  All kinds of bad stuff can happen near the 
+</I>&gt;<i> singularities in trig formulas, and the problems are of such a
+</I>&gt;<i> nature that no finite-precision machine can escape them.  I used
+</I>&gt;<i> to be a mathematician and am well aware of such issues.
+</I>
+Since nobody could be convinced to actually do the error calculation,
+let me post my old work sheet.  This is my old work-sheet to see if I
+needed to worry about the round-off errors when running on a BSD
+machine using IEEE doubles.
+
+The reader's digest summary: with two points separated by 1 meter in
+each of lat and lon the error is 2mm.  I've tried to use the
+worst-case situation, with two very closely spaced points, but this
+may have been the wrong set of points.
+
+    The original method:
+    (lat-lon-dist       37.0 121.0 37.00001 121.00001) 1.4224531304780474
+
+    The haversine method:
+    (lat-lon-dist-short 37.0 121.0 37.00001 121.00001) 1.424636677057649
+
+    The difference:
+    (lat-lon-dist-error 37.0 121.0 37.00001 121.00001) 0.002183546579601625
+
+-wolfgang
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;									     ;;
+;;	File:     gps.el						     ;;
+;;	Author:   Wolfgang Rupprecht &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">wolfgang at wsrcc.com</A>&gt;		     ;;
+;;	Created:  Sun Jun  9 07:27:22 PDT 1996				     ;;
+;;	Contents: various gps calculation programs			     ;;
+;;									     ;;
+;;	Copyright (c) 1996 Wolfgang Rupprecht.				     ;;
+;;	All rights reserved.						     ;;
+;;									     ;;
+;;	$Id: gps.el,v 1.5 2000/02/24 07:42:31 wolfgang Exp $
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+;; WGS semi-major axis: 	6378137.0
+;; in meters. 
+;; WGS 1/f: 			    298.257223563
+
+(defconst wgs84:a0 6378137.0 &quot;Semimajor axis of the Earth in meters&quot;)
+
+(defconst meters-per-degree 
+  (/ (* 2.0 pi wgs84:a0) 360.0)
+  &quot;convertion constant for degrees to meters.
+The approximation is useful for calculating small distances on the
+order of a few meters.&quot;)
+;; 111319.49079327358 meters/degrees
+
+;; dist = 	Arccos[Cos[lat1] Cos[lon1] Cos[lat2] Cos[lon2] + 
+;; 	   	Cos[lat1] Sin[lon1] Cos[lat2] Sin[lon2] +
+;; 		Sin[lat1] Sin[lat2]]/360 * 2Pi * r
+
+(defun lat-lon-dist (lat1 lon1 lat2 lon2)
+  &quot;Distance between 2 pts on the earth (in meters).&quot;
+  (interactive &quot;nLattitude 1\nnLongitude 1\nnLattitude 2\nnLongitude 2&quot;)
+  (setq lat1 (degrees-to-radians lat1)
+	lon1 (degrees-to-radians lon1)
+	lat2 (degrees-to-radians lat2)
+	lon2 (degrees-to-radians lon2))
+  (* wgs84:a0
+     (acos
+      (+
+       (* (cos lat1)
+	  (cos lon1)
+	  (cos lat2)
+	  (cos lon2))
+       (* (cos lat1)
+	  (sin lon1)
+	  (cos lat2)
+	  (sin lon2))
+       (* (sin lat1)
+	  (sin lat2))))))
+
+(defun lat-lon-dist-short (lat1 lon1 lat2 lon2)
+  &quot;Distance between 2 nearby pts on the earth (in meters).&quot;
+  (interactive &quot;nLattitude 1\nnLongitude 1\nnLattitude 2\nnLongitude 2&quot;)
+  (let* ((dlat (- lat1 lat2))
+	 (dlon (* (cos (degrees-to-radians lat1)) (- lon1 lon2))))
+    (* meters-per-degree
+       (sqrt
+	(+ (* dlat dlat) (*  dlon dlon))))))
+
+(defun lat-lon-dist-error (lat1 lon1 lat2 lon2)
+  (-
+   (lat-lon-dist-short lat1 lon1 lat2 lon2)
+   (lat-lon-dist lat1 lon1 lat2 lon2)))
+
+;; And now lets work out a concrete example for the record.  Here we
+;; have two points separated by approx. A meter in the n/s and e/w
+;; direction.  As expected, we have approx. 1.4 meters between them.
+;; The important thing to note is that the hairy sin's/cos's equetion
+;; really doesn't do that badly even at short distances.  We only see
+;; a 2mm difference between what we were expecting and what it gave us
+;; as the answer.  Thats an error factor of 0.15% .
+;;
+;; (lat-lon-dist       37.0 121.0 37.00001 121.00001) 1.4224531304780474
+;; (lat-lon-dist-short 37.0 121.0 37.00001 121.00001) 1.424636677057649
+;; (lat-lon-dist-error 37.0 121.0 37.00001 121.00001) 0.002183546579601625
+
+;; (/ 0.002183546579601625 1.424636677057649) 0.0015327041727659144
+
+;; and now the medium range (Haversine) equation:
+;;
+;;  dlon = lon2 - lon1
+;;  dlat = lat2 - lat1
+;;  a = (sin(dlat/2))^2 + cos(lat1) * cos(lat2) * (sin(dlon/2))^2
+;;  c = 2 * atan2(sqrt(a), sqrt(1-a)) 
+;;  d = R * c
+;;
+
+(defun squared (x)
+  (* x x))
+
+(defun lat-lon-dist-medium (lat1 lon1 lat2 lon2)
+  &quot;Distance between 2 moderately close pts on the earth (in meters).
+This uses the Haversign Formula&quot;
+  (interactive &quot;nLattitude 1\nnLongitude 1\nnLattitude 2\nnLongitude 2&quot;)
+  (setq lat1 (degrees-to-radians lat1)
+	lon1 (degrees-to-radians lon1)
+	lat2 (degrees-to-radians lat2)
+	lon2 (degrees-to-radians lon2))
+  (let* ((dlat (- lat1 lat2))
+	 (dlon (- lon1 lon2))
+	 (a (+ (squared (sin (/ dlat 2.0)))
+	       (*
+		(cos lat1)
+		(cos lat2)
+		(squared (sin (/ dlon 2.0))))))
+	 (c (* 2 (atan (/ (sqrt a) (sqrt (- 1 a)))) wgs84:a0)))
+    c))
+    
+(defun lat-lon-dist-medium-error (lat1 lon1 lat2 lon2)
+  (-
+   (lat-lon-dist-short lat1 lon1 lat2 lon2)
+   (lat-lon-dist-medium lat1 lon1 lat2 lon2)))
+
+;; (setq float-output-format &quot;%.15f&quot;)
+;; (lat-lon-dist-medium       37.0 121.0 37.00001 121.00001) 1.4246366396117067
+;; (lat-lon-dist-medium-error 37.0 121.0 37.00001 121.00001) 0.000000037445942
+                                   
+;;
+;; end
+;;
+
+
+
+-- 
+Wolfgang S. Rupprecht                <A HREF="http://www.wsrcc.com/wolfgang/">http://www.wsrcc.com/wolfgang/</A>
+      Microsoft Vista - because &quot;Virus Installer&quot; was too long.
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="001002.html">[Gpsd-users] Re: gps.py EarthDistance method problem
+</A></li>
+	<LI>Next message: <A HREF="001007.html">[Gpsd-users] Re: gps.py EarthDistance method problem
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1005">[ date ]</a>
+              <a href="thread.html#1005">[ thread ]</a>
+              <a href="subject.html#1005">[ subject ]</a>
+              <a href="author.html#1005">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

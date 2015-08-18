@@ -1,0 +1,192 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] Problem with TSIP detection
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2009-January/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Problem%20with%20TSIP%20detection&In-Reply-To=%3C20090105053837.GC905651%40hiwaay.net%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="003527.html">
+   <LINK REL="Next"  HREF="003529.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] Problem with TSIP detection</H1>
+    <B>Chris Adams</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Problem%20with%20TSIP%20detection&In-Reply-To=%3C20090105053837.GC905651%40hiwaay.net%3E"
+       TITLE="[Gpsd-users] Problem with TSIP detection">cmadams at hiwaay.net
+       </A><BR>
+    <I>Mon Jan  5 06:38:37 CET 2009</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="003527.html">[Gpsd-users] Problem with TSIP detection
+</A></li>
+        <LI>Next message: <A HREF="003529.html">[Gpsd-users] Problem with TSIP detection
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3528">[ date ]</a>
+              <a href="thread.html#3528">[ thread ]</a>
+              <a href="subject.html#3528">[ subject ]</a>
+              <a href="author.html#3528">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Once upon a time, Chris Kuethe &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">chris.kuethe at gmail.com</A>&gt; said:
+&gt;<i> I think he means me. We're coming up on the 2.38 release, so if I
+</I>&gt;<i> could get you to test a release candidate i can see if this might be
+</I>&gt;<i> fixed already (or ensure that we don't ship a broken release).
+</I>
+Nope, still a no-go.  Here's a debug log output.
+-- 
+Chris Adams &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">cmadams at hiwaay.net</A>&gt;
+Systems and Network Administrator - HiWAAY Internet Services
+I don't speak for anybody but myself - that's enough trouble.
+
+
+gpsd: control socket opened at /var/run/gpsd.sock
+gpsd: launching (Version 2.38rc1)
+gpsd: listening on port gpsd
+gpsd: Priority sertting failed.
+gpsd: shmat(0,0,0) succeeded
+gpsd: shmat(0,0,0) succeeded
+gpsd: shmat(0,0,0) succeeded
+gpsd: shmat(0,0,0) succeeded
+gpsd: running with effective group ID 0
+gpsd: running with effective user ID 0
+gpsd: opening GPS data source at '/dev/gps'
+gpsd: speed 9600, 8N1
+gpsd: =&gt; GPS: $PASHQ,RID*28\x0d
+
+gpsd: Navcom: command dump: 0299661c0800040200001203
+gpsd: =&gt; GPS: 0299661c0800040200001203
+gpsd: Navcom: sent command 0x1c (Test Support Block)
+gpsd: Navcom: command 0x1c mode = 02, length = 0
+gpsd: Navcom: command dump: 029966200e000001ae02000071000000f203
+gpsd: =&gt; GPS: 029966200e000001ae02000071000000f203
+gpsd: Navcom: sent command 0x20 (Data Request) - data block id = ae at rate 00
+gpsd: Navcom: command dump: 029966200e00000186020a0071000000d003
+gpsd: =&gt; GPS: 029966200e00000186020a0071000000d003
+gpsd: Navcom: sent command 0x20 (Data Request) - data block id = 86 at rate 0a
+gpsd: garmin_gps not active.
+gpsd: no probe matched...
+gpsd: gpsd_activate(1): opened GPS (5)
+gpsd: select waits
+gpsd: select waits
+gpsd: select waits
+gpsd: select waits
+gpsd: polling 5
+gpsd: Read 1 chars to buffer offset 0 (total 1): 10
+gpsd: 00000000: character '.' [10], new state: DLE_LEADER
+gpsd: packet sniff on /dev/gps finds type -2
+gpsd: GPS sent 1 new characters
+gpsd: New data on /dev/gps, not yet a packet
+gpsd: select waits
+gpsd: polling 5
+gpsd: Read 14 chars to buffer offset 1 (total 15): 053b0deb32a0c1ba417001030c68
+gpsd: 00000001: character '.' [05], new state: GROUND_STATE
+gpsd: Character discarded, buffer 14 chars = 053b0deb32a0c1ba417001030c68
+gpsd: ISGPS word tag not correct, skipping byte
+gpsd: 00000002: character '.' [05], new state: GROUND_STATE
+gpsd: Character discarded, buffer 13 chars = 3b0deb32a0c1ba417001030c68
+gpsd: ISGPS word tag not correct, skipping byte
+gpsd: 00000003: character ';' [3b], new state: GROUND_STATE
+gpsd: Character discarded, buffer 12 chars = 0deb32a0c1ba417001030c68
+gpsd: ISGPS word tag not correct, skipping byte
+gpsd: 00000004: character '.' [0d], new state: GROUND_STATE
+gpsd: Character discarded, buffer 11 chars = eb32a0c1ba417001030c68
+gpsd: ISGPS word tag not correct, skipping byte
+gpsd: 00000005: character '.' [eb], new state: GROUND_STATE
+gpsd: Character discarded, buffer 10 chars = 32a0c1ba417001030c68
+gpsd: ISGPS word tag not correct, skipping byte
+gpsd: 00000006: character '2' [32], new state: GROUND_STATE
+gpsd: Character discarded, buffer 9 chars = a0c1ba417001030c68
+gpsd: 00000007: character '.' [a0], new state: SIRF_LEADER_1
+gpsd: 00000008: character '.' [c1], new state: GROUND_STATE
+gpsd: Character discarded, buffer 8 chars = c1ba417001030c68
+gpsd: ISGPS word tag not correct, skipping byte
+gpsd: 00000009: character '.' [c1], new state: GROUND_STATE
+gpsd: Character discarded, buffer 7 chars = ba417001030c68
+gpsd: ISGPS word tag not correct, skipping byte
+gpsd: 00000010: character '.' [ba], new state: GROUND_STATE
+gpsd: Character discarded, buffer 6 chars = 417001030c68
+gpsd: ISGPS syncing at byte 11: 100000041
+gpsd: ISGPS syncing at byte 11: 200630720
+gpsd: ISGPS syncing at byte 11: 400630720
+gpsd: ISGPS syncing at byte 11: 800630720
+gpsd: ISGPS syncing at byte 11: 1000630720
+gpsd: ISGPS syncing at byte 11: 2000630720
+gpsd: ISGPS lock never achieved
+gpsd: 00000011: character 'A' [41], new state: ASTRAL_1
+gpsd: 00000012: character 'p' [70], new state: GROUND_STATE
+gpsd: Character discarded, buffer 5 chars = 7001030c68
+gpsd: ISGPS syncing at byte 13: 4000000070
+gpsd: ISGPS syncing at byte 13: 8000630720
+gpsd: ISGPS syncing at byte 13: 10000630720
+gpsd: ISGPS syncing at byte 13: 20000630720
+gpsd: ISGPS syncing at byte 13: 40100630720
+gpsd: ISGPS syncing at byte 13: 80300630720
+gpsd: ISGPS lock never achieved
+gpsd: 00000013: character 'p' [70], new state: GROUND_STATE
+gpsd: Character discarded, buffer 4 chars = 01030c68
+gpsd: ISGPS word tag not correct, skipping byte
+gpsd: 00000014: character '.' [01], new state: GROUND_STATE
+gpsd: Character discarded, buffer 3 chars = 030c68
+gpsd: ISGPS word tag not correct, skipping byte
+gpsd: 00000015: character '.' [03], new state: GROUND_STATE
+gpsd: Character discarded, buffer 2 chars = 0c68
+gpsd: ISGPS word tag not correct, skipping byte
+gpsd: 00000016: character '.' [0c], new state: GROUND_STATE
+gpsd: Character discarded, buffer 1 chars = 68
+gpsd: ISGPS syncing at byte 17: 100600000068
+gpsd: ISGPS syncing at byte 17: 200c00630720
+gpsd: ISGPS syncing at byte 17: 401800630720
+gpsd: ISGPS syncing at byte 17: 803100630720
+gpsd: ISGPS syncing at byte 17: 1006200630720
+gpsd: ISGPS syncing at byte 17: 200c500630720
+gpsd: ISGPS lock never achieved
+gpsd: 00000017: character 'h' [68], new state: GROUND_STATE
+gpsd: Character discarded, buffer 0 chars = 
+gpsd: packet sniff on /dev/gps finds type -2
+gpsd: GPS sent 14 new characters
+gpsd: New data on /dev/gps, not yet a packet
+gpsd: select waits
+gpsd: polling 5
+gpsd: Read 1 chars to buffer offset 0 (total 1): f0
+gpsd: ISGPS word tag not correct, skipping byte
+gpsd: 00000018: character '.' [f0], new state: GROUND_STATE
+gpsd: Character discarded, buffer 0 chars = 
+gpsd: packet sniff on /dev/gps finds type -2
+gpsd: GPS sent 1 new characters
+gpsd: New data on /dev/gps, not yet a packet
+gpsd: select waits
+gpsd: select waits
+gpsd: select waits
+gpsd: select waits
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="003527.html">[Gpsd-users] Problem with TSIP detection
+</A></li>
+	<LI>Next message: <A HREF="003529.html">[Gpsd-users] Problem with TSIP detection
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3528">[ date ]</a>
+              <a href="thread.html#3528">[ thread ]</a>
+              <a href="subject.html#3528">[ subject ]</a>
+              <a href="author.html#3528">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

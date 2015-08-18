@@ -1,0 +1,113 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] Detecting Gps/Modems
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2009-September/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Detecting%20Gps/Modems&In-Reply-To=%3C20090925185503.GA5387%40thyrsus.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="003975.html">
+   <LINK REL="Next"  HREF="003969.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] Detecting Gps/Modems</H1>
+    <B>Eric S. Raymond</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Detecting%20Gps/Modems&In-Reply-To=%3C20090925185503.GA5387%40thyrsus.com%3E"
+       TITLE="[Gpsd-users] Detecting Gps/Modems">esr at thyrsus.com
+       </A><BR>
+    <I>Fri Sep 25 20:55:03 CEST 2009</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="003975.html">[Gpsd-users] Detecting Gps/Modems
+</A></li>
+        <LI>Next message: <A HREF="003969.html">[Gpsd-users] How to start gpsd with fix baud rate of	serial	interface
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3979">[ date ]</a>
+              <a href="thread.html#3979">[ thread ]</a>
+              <a href="subject.html#3979">[ subject ]</a>
+              <a href="author.html#3979">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Ed W &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">lists at wildgooses.com</A>&gt;:
+&gt;<i> Actually, I will show you a conversation which will allow us to very  
+</I>&gt;<i> reliably detect a modem.  If you look at my pseudo code before I pointed  
+</I>&gt;<i> out that I agreed that a single &quot;OK&quot; response to a single &quot;AT&quot; question  
+</I>&gt;<i> was just the starting point.  If you then munch data for a while to  
+</I>&gt;<i> clear down any input then if it doesn't stop then we should abort  
+</I>&gt;<i> because it's not a modem.  If it does go quiet then you simply repeat  
+</I>&gt;<i> the AT, get an OK response a few times to be sure it's a modem.  And  
+</I>&gt;<i> then I would personally ask the modem a few other AT commands which  
+</I>&gt;<i> generate slightly different responses to get a bit more detail about  
+</I>&gt;<i> make/model
+</I>
+But getting make/model is *well* outside gpsd's remit.
+
+&gt;<i> I really think there is very, very little chance of false positives  
+</I>&gt;<i> here.  However, the point is to do slightly more than just sending an  
+</I>&gt;<i> &quot;AT&quot; and assuming if we get a single &quot;OK&quot; back then it must be a modem.   
+</I>&gt;<i> I'm sure the same logic actually extends to testing most of the GPS  
+</I>&gt;<i> devices though?
+</I>
+No.  The packet-sniffer doesn't actually send any probes at all, and
+does *much* more careful pattern-matching that relies on checksums.
+
+&gt;&gt;<i> You probably need to be talking to the udev or DeviceKit folks, then.
+</I>&gt;&gt;<i>   
+</I>&gt;<i>
+</I>&gt;<i> Perhaps - however, I think udev simply gives us the means to spot that  
+</I>&gt;<i> the hardware is connected.  Probing it seems like a userspace problem to  
+</I>&gt;<i> me.
+</I>
+Yes.  DeviceKit (formerly hald) is the userspace part.
+
+&gt;<i> Sure - but I guess you hit those because between them they dominate the  
+</I>&gt;<i> observed market?
+</I>
+The GPS market.  We don't know about other device classes.
+
+&gt;<i> In the same way, the remaining small number of serial devices is  
+</I>&gt;<i> probably then dominated by modems.
+</I>
+I doubt it.  Consider UPSes with USB monitoring ports.  I have three of
+those in my house and no modems.
+
+&gt;<i> Yep - spot on.  I was hoping to
+</I>&gt;<i>
+</I>&gt;<i> a) &quot;borrow&quot; the central gpsd device detection loop and as a result all  
+</I>&gt;<i> the packet sniffing stuff
+</I>
+Go right ahead.  The interface to the low-level library is pretty
+well documented; look at libgpsd.xml.
+-- 
+		&lt;a href=&quot;<A HREF="http://www.catb.org/~esr/">http://www.catb.org/~esr/</A>&quot;&gt;Eric S. Raymond&lt;/a&gt;
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="003975.html">[Gpsd-users] Detecting Gps/Modems
+</A></li>
+	<LI>Next message: <A HREF="003969.html">[Gpsd-users] How to start gpsd with fix baud rate of	serial	interface
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3979">[ date ]</a>
+              <a href="thread.html#3979">[ thread ]</a>
+              <a href="subject.html#3979">[ subject ]</a>
+              <a href="author.html#3979">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

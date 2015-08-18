@@ -1,0 +1,148 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] GlobalSat Compact Flash GPS with multi-card reader
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2011-February/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20GlobalSat%20Compact%20Flash%20GPS%20with%20multi-card%20reader&In-Reply-To=%3CAANLkTimoMj9_wME0MWq0Bu%3DvbnfURJdfsy1H_1%2Bz-%2B8N%40mail.gmail.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="005028.html">
+   <LINK REL="Next"  HREF="005029.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] GlobalSat Compact Flash GPS with multi-card reader</H1>
+    <B>Tim Bowden</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20GlobalSat%20Compact%20Flash%20GPS%20with%20multi-card%20reader&In-Reply-To=%3CAANLkTimoMj9_wME0MWq0Bu%3DvbnfURJdfsy1H_1%2Bz-%2B8N%40mail.gmail.com%3E"
+       TITLE="[Gpsd-users] GlobalSat Compact Flash GPS with multi-card reader">tim.bowden at gmail.com
+       </A><BR>
+    <I>Tue Feb 15 04:52:29 CET 2011</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="005028.html">[Gpsd-users] NTRIP/RTCM disconnects solved(?)
+</A></li>
+        <LI>Next message: <A HREF="005029.html">[Gpsd-users] NTRIP Issue patch
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#5027">[ date ]</a>
+              <a href="thread.html#5027">[ thread ]</a>
+              <a href="subject.html#5027">[ subject ]</a>
+              <a href="author.html#5027">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>I have a GlobalSat Compact Flash GPS receiver [1] but no CF slot so I
+acquired a multi-card reader.  I'd like to see if I can get it going
+on my Ubuntu 9.10 laptop.  Looking at the list archives, it appears I
+may be out of luck [2] with using the cf gps with a card reader.
+Still, on the off chance things have changed I'm after any advice that
+might help me get it going.
+
+Following previous advice I'm inserting the card reader with the gps
+already inserted.
+
+Syslog output:
+
+
+Feb 15 11:40:27 fangorn kernel: [  411.712643] usb 1-1: new high speed
+USB device using ehci_hcd and address 2
+Feb 15 11:40:27 fangorn kernel: [  411.865445] usb 1-1: configuration
+#1 chosen from 1 choice
+Feb 15 11:40:27 fangorn kernel: [  411.926977] Initializing USB Mass
+Storage driver...
+Feb 15 11:40:27 fangorn kernel: [  411.927305] scsi4 : SCSI emulation
+for USB Mass Storage devices
+Feb 15 11:40:27 fangorn kernel: [  411.927517] usbcore: registered new
+interface driver usb-storage
+Feb 15 11:40:27 fangorn kernel: [  411.927524] USB Mass Storage
+support registered.
+Feb 15 11:40:27 fangorn kernel: [  411.936202] usb-storage: device found at 2
+Feb 15 11:40:27 fangorn kernel: [  411.936209] usb-storage: waiting
+for device to settle before scanning
+Feb 15 11:40:32 fangorn kernel: [  416.933575] usb-storage: device scan complete
+Feb 15 11:40:32 fangorn kernel: [  416.934368] scsi 4:0:0:0:
+Direct-Access     Generic  USB SD Reader    1.00 PQ: 0 ANSI: 0
+Feb 15 11:40:32 fangorn kernel: [  416.934978] scsi 4:0:0:1:
+Direct-Access     Generic  USB CF Reader    1.01 PQ: 0 ANSI: 0
+Feb 15 11:40:32 fangorn kernel: [  416.935607] scsi 4:0:0:2:
+Direct-Access     Generic  USB SM Reader    1.02 PQ: 0 ANSI: 0
+Feb 15 11:40:32 fangorn kernel: [  416.936223] scsi 4:0:0:3:
+Direct-Access     Generic  USB MS Reader    1.03 PQ: 0 ANSI: 0
+Feb 15 11:40:32 fangorn kernel: [  416.937464] sd 4:0:0:0: Attached
+scsi generic sg2 type 0
+Feb 15 11:40:32 fangorn kernel: [  416.937703] sd 4:0:0:1: Attached
+scsi generic sg3 type 0
+Feb 15 11:40:32 fangorn kernel: [  416.937933] sd 4:0:0:2: Attached
+scsi generic sg4 type 0
+Feb 15 11:40:32 fangorn kernel: [  416.938168] sd 4:0:0:3: Attached
+scsi generic sg5 type 0
+Feb 15 11:40:51 fangorn kernel: [  435.603418] sd 4:0:0:2: [sdd]
+Attached SCSI removable disk
+Feb 15 11:40:51 fangorn kernel: [  435.619344] sd 4:0:0:3: [sde]
+Attached SCSI removable disk
+Feb 15 11:40:51 fangorn kernel: [  435.619942] sd 4:0:0:0: [sdb]
+Attached SCSI removable disk
+Feb 15 11:40:51 fangorn kernel: [  435.621188] sd 4:0:0:1: [sdc]
+Attached SCSI removable disk
+
+
+lsusb:
+Bus 002 Device 003: ID 04f2:b044 Chicony Electronics Co., Ltd
+Bus 002 Device 001: ID 1d6b:0002 Linux Foundation 2.0 root hub
+Bus 005 Device 002: ID 045e:00cb Microsoft Corp.
+Bus 005 Device 001: ID 1d6b:0001 Linux Foundation 1.1 root hub
+Bus 003 Device 001: ID 1d6b:0001 Linux Foundation 1.1 root hub
+Bus 004 Device 001: ID 1d6b:0001 Linux Foundation 1.1 root hub
+Bus 001 Device 002: ID 058f:6362 Alcor Micro Corp. Hi-Speed 21-in-1
+Flash Card Reader/Writer (Internal/External)
+Bus 001 Device 001: ID 1d6b:0002 Linux Foundation 2.0 root hub
+
+
+
+The red light on the cf-gps card lights up (low intensity initially
+when the device is scanned, then moments later full brightness as per
+normal, however it goes out at the 11:40:51 mark.  I don't really
+understand the low level stuff being reported (it's been many years
+since I've had to look under the linux hood; It all 'just works' for
+me till now!)
+
+Is there anything I can try?
+
+
+
+[1]  <A HREF="http://www.usglobalsat.com/p-140-bc-337.aspx">http://www.usglobalsat.com/p-140-bc-337.aspx</A> (card only; without
+the extras)
+
+[2]  <A HREF="https://lists.berlios.de/pipermail/gpsd-users/2010-September/004652.html">https://lists.berlios.de/pipermail/gpsd-users/2010-September/004652.html</A>
+and <A HREF="../2007-December/003034.html">http://lists.berlios.de/pipermail/gpsd-users/2007-December/003034.html</A>
+
+Regards,
+Tim Bowden
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="005028.html">[Gpsd-users] NTRIP/RTCM disconnects solved(?)
+</A></li>
+	<LI>Next message: <A HREF="005029.html">[Gpsd-users] NTRIP Issue patch
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#5027">[ date ]</a>
+              <a href="thread.html#5027">[ thread ]</a>
+              <a href="subject.html#5027">[ subject ]</a>
+              <a href="author.html#5027">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

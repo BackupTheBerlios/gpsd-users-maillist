@@ -1,0 +1,101 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] ntp pps with garmin 18lvc
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2006-January/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20ntp%20pps%20with%20garmin%2018lvc&In-Reply-To=%3CPine.LNX.4.64.0601171727460.10029%40catbert.rellim.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="001222.html">
+   <LINK REL="Next"  HREF="001228.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] ntp pps with garmin 18lvc</H1>
+    <B>Gary E. Miller</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20ntp%20pps%20with%20garmin%2018lvc&In-Reply-To=%3CPine.LNX.4.64.0601171727460.10029%40catbert.rellim.com%3E"
+       TITLE="[Gpsd-users] ntp pps with garmin 18lvc">gem at rellim.com
+       </A><BR>
+    <I>Wed Jan 18 02:32:07 CET 2006</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="001222.html">[Gpsd-users] ntp pps with garmin 18lvc
+</A></li>
+        <LI>Next message: <A HREF="001228.html">[Gpsd-users] another bug + fix
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1223">[ date ]</a>
+              <a href="thread.html#1223">[ thread ]</a>
+              <a href="subject.html#1223">[ subject ]</a>
+              <a href="author.html#1223">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>-----BEGIN PGP SIGNED MESSAGE-----
+Hash: SHA1
+
+Yo Tim!
+
+Here is my ntpq -p after settling for a bit longer:
+
+     remote           refid      st t when poll reach   delay   offset  jitter
+==============================================================================
+- -catbert.rellim. 204.123.2.5      2 u    4   64  377    0.158   -1.499   0.038
+- -hobbes.rellim.c 204.123.2.5      2 u    7   64  377    0.143    1.817   0.050
+- -qwest-gw.inow.c 204.152.184.72   3 u   40   64  377   39.122    2.496   2.200
+ main1.inow.com  .STEP.          16 u    - 1024    0    0.000    0.000 4000.00
++clepsydra.dec.c .GPS.            1 u   39   64  377   24.336    1.117   0.197
+- -time-nw.nist.go .ACTS.           1 u   10   64  377   24.394   -1.830   0.143
+- -207.126.98.204. .ACTS.           1 u   12   64  377   23.777    5.613   0.148
++17.254.0.49     .GPS.            1 u   13   64  377   43.669    0.310 100.783
+xtime.windows.co 192.43.244.18    2 u   33   64  277   24.110  -17.039   4.351
++clock.isc.org   204.123.2.5      2 u   50   64  377   29.751    0.123   0.764
+xSHM(0)          .GPS.            0 l    6   16  377    0.000   54.620   3.529
+*SHM(1)          .GPS1.           0 l    6   16  377    0.000    0.011   0.013
+
+You can see as the ntpd gets the local clock under tigher control that
+things just look a lot better.  I would expect that the jitter for GPS1 (the
+PPS) gets to around 0.003 by tommorrow.  Far better than my humble needs.
+
+RGDS
+GARY
+- ---------------------------------------------------------------------------
+Gary E. Miller Rellim 20340 Empire Blvd, Suite E-3, Bend, OR 97701
+	<A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">gem at rellim.com</A>  Tel:+1(541)382-8588 Fax: +1(541)382-8676
+
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v1.4.1 (GNU/Linux)
+
+iD8DBQFDzZqa8KZibdeR3qURAvUYAJwKUREtcRN59mMy8XsES9DpVYGpQgCbBqEr
+1UcfK6T9shCyImoHVDmkjIo=
+=IKuG
+-----END PGP SIGNATURE-----
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="001222.html">[Gpsd-users] ntp pps with garmin 18lvc
+</A></li>
+	<LI>Next message: <A HREF="001228.html">[Gpsd-users] another bug + fix
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1223">[ date ]</a>
+              <a href="thread.html#1223">[ thread ]</a>
+              <a href="subject.html#1223">[ subject ]</a>
+              <a href="author.html#1223">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

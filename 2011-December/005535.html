@@ -1,0 +1,110 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] Unable to get gpsd to work with NTRIP
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2011-December/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Unable%20to%20get%20gpsd%20to%20work%20with%20NTRIP&In-Reply-To=%3CCACPUjCBrYT799wjMkzV8gU4zQBx1CoPKi%2B30y3T1khN6GQ0QNQ%40mail.gmail.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   
+   <LINK REL="Next"  HREF="005536.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] Unable to get gpsd to work with NTRIP</H1>
+    <B>Bradley Allen</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Unable%20to%20get%20gpsd%20to%20work%20with%20NTRIP&In-Reply-To=%3CCACPUjCBrYT799wjMkzV8gU4zQBx1CoPKi%2B30y3T1khN6GQ0QNQ%40mail.gmail.com%3E"
+       TITLE="[Gpsd-users] Unable to get gpsd to work with NTRIP">ibradleyallen at gmail.com
+       </A><BR>
+    <I>Thu Dec  1 18:52:12 CET 2011</I>
+    <P><UL>
+        
+        <LI>Next message: <A HREF="005536.html">[Gpsd-users] Unable to get gpsd to work with NTRIP
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#5535">[ date ]</a>
+              <a href="thread.html#5535">[ thread ]</a>
+              <a href="subject.html#5535">[ subject ]</a>
+              <a href="author.html#5535">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>hi
+
+Ive recently installed GPSD into a new Ubuntu 11.10 64b system
+(already tried on a few other linux installs).  I got the gpsd by
+going into software updater, searching for gpsd then installing it.
+It shows version 2.95 ?  but if I follow the official gpsd site to the
+source code it shows its version 3.3?  i got the source and tried to
+compile but it errors out.
+
+with gpsd installed, i have a GPS receiver connected to my usb port,
+it shows up as /dev/ttyACM0  and if i open a serial port terminal i
+can see the data filling the screen once per second.  i have tried
+variations of:
+
+gpsd /dev/ttyACM0 with different options, where it either returns with
+no message or says
+gpsd: can't bind to IPv4 port gpsd, Address already in use
+gpsd: maybe gpsd is already running!
+gpsd: can't bind to IPv6 port gpsd, Address already in use
+gpsd: maybe gpsd is already running!
+<A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">brad at ubuntu</A>:~$
+
+
+I then try to telnet localhost 2947 and it shows up:
+<A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">brad at ubuntu</A>:~$ telnet localhost 2947
+Trying 127.0.0.1...
+Connected to localhost.
+Escape character is '^]'.
+{&quot;class&quot;:&quot;VERSION&quot;,&quot;release&quot;:&quot;2.95&quot;,&quot;rev&quot;:&quot;2011-07-27T11:32:38&quot;,&quot;proto_major&quot;:3,&quot;proto_minor&quot;:3}
+
+then i type in, per instructions,
+?WATCH={&quot;enable&quot;:true,&quot;json&quot;};
+ ..and the reply is
+{&quot;class&quot;:&quot;DEVICES&quot;,&quot;devices&quot;:[]}
+{&quot;class&quot;:&quot;WATCH&quot;,&quot;enable&quot;:true,&quot;json&quot;:false,&quot;nmea&quot;:false,&quot;raw&quot;:0,&quot;scaled&quot;:false,&quot;timing&quot;:false}
+
+
+I try cgps or xgps and it brings up a screen with empty information, i
+expect at least the time but its empty as in not connected.
+
+I try to connect to my NTRIP server  saying gpsd
+<A HREF="ntrip://admin:password@192.168.2.25:2101">ntrip://admin:password@192.168.2.25:2101</A> /RTCM1819
+
+and it returns with no message.  I check my NTRIP server and no
+attempt was made to connect.  Ive tried a few variations on typing
+this in also.
+
+The goal is to have a NTRIP ready GPS unit connect up and get the feed
+from the NTRIP server and show me very accurate position info.  Have
+tried for many days now, any hints or suggestions are so greatly
+appreciated, THANKS!
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	
+	<LI>Next message: <A HREF="005536.html">[Gpsd-users] Unable to get gpsd to work with NTRIP
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#5535">[ date ]</a>
+              <a href="thread.html#5535">[ thread ]</a>
+              <a href="subject.html#5535">[ subject ]</a>
+              <a href="author.html#5535">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

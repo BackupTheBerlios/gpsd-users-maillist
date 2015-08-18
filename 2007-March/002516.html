@@ -1,0 +1,89 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] Semantics of libgps
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2007-March/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Semantics%20of%20libgps&In-Reply-To=%3C91981b3e0703262045gc150a54lbbba89df8a2e09fd%40mail.gmail.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="002514.html">
+   <LINK REL="Next"  HREF="002519.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] Semantics of libgps</H1>
+    <B>Chris Kuethe</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Semantics%20of%20libgps&In-Reply-To=%3C91981b3e0703262045gc150a54lbbba89df8a2e09fd%40mail.gmail.com%3E"
+       TITLE="[Gpsd-users] Semantics of libgps">chris.kuethe at gmail.com
+       </A><BR>
+    <I>Tue Mar 27 05:45:51 CEST 2007</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="002514.html">[Gpsd-users] Semantics of libgps
+</A></li>
+        <LI>Next message: <A HREF="002519.html">[Gpsd-users] Semantics of libgps
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2516">[ date ]</a>
+              <a href="thread.html#2516">[ thread ]</a>
+              <a href="subject.html#2516">[ subject ]</a>
+              <a href="author.html#2516">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>On 3/26/07, Yang &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">wtfc2m902 at sneakemail.com</A>&gt; wrote:
+&gt;<i> Do either the Python module or C implementation of libgps clear out
+</I>&gt;<i> the data structures that they use to hold the data? (fix, gpsdata,
+</I>&gt;<i> etc.)
+</I>
+The library doesn't clear - it overwrites old data with whatever comes
+down the wire next.
+
+&gt;<i> I was reading through gps.py and it doesn't seem like it
+</I>&gt;<i> necessary sets all fields.... Although one might be able to figure out
+</I>&gt;<i> which fields to ignore based on certain other fields, this is very
+</I>&gt;<i> misleading.
+</I>
+Have a look at cgps... floating point quantities are compared to NaN.
+If there is valid data isnan() will return false. If the data is not
+valid, gpsd will instead send a '?' which can't be meaningfully
+interpreted as a float, so isnan() is true. Basically, you should be
+able to rely on all numeric types in the struct.
+
+The daemon tries very hard to not send data that isn't real... no
+valid altitude is sent in 2D fix mode. If this interferes with your
+application, you can enable a form of buffering with the &quot;J&quot; command,
+which merges new fix data into old.
+
+CK
+
+-- 
+GDB has a 'break' feature; why doesn't it have 'fix' too?
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="002514.html">[Gpsd-users] Semantics of libgps
+</A></li>
+	<LI>Next message: <A HREF="002519.html">[Gpsd-users] Semantics of libgps
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2516">[ date ]</a>
+              <a href="thread.html#2516">[ thread ]</a>
+              <a href="subject.html#2516">[ subject ]</a>
+              <a href="author.html#2516">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

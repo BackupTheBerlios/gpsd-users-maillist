@@ -1,0 +1,142 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] thales Ac-12 help
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2009-April/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20thales%20Ac-12%20help&In-Reply-To=%3C91981b3e0904121350ue825b37u8c7c35f2fca8156a%40mail.gmail.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="003707.html">
+   <LINK REL="Next"  HREF="003709.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] thales Ac-12 help</H1>
+    <B>Chris Kuethe</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20thales%20Ac-12%20help&In-Reply-To=%3C91981b3e0904121350ue825b37u8c7c35f2fca8156a%40mail.gmail.com%3E"
+       TITLE="[Gpsd-users] thales Ac-12 help">chris.kuethe at gmail.com
+       </A><BR>
+    <I>Sun Apr 12 22:50:29 CEST 2009</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="003707.html">[Gpsd-users] thales Ac-12 help
+</A></li>
+        <LI>Next message: <A HREF="003709.html">[Gpsd-users] thales Ac-12 help
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3708">[ date ]</a>
+              <a href="thread.html#3708">[ thread ]</a>
+              <a href="subject.html#3708">[ subject ]</a>
+              <a href="author.html#3708">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>On Sun, Apr 12, 2009 at 2:37 PM, JOAO BOSCO JUNIOR &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">boscojr at gmail.com</A>&gt; wrote:
+&gt;<i> Hi Chris.
+</I>&gt;<i>
+</I>&gt;<i> yes I'm using only the bare module.
+</I>&gt;<i>
+</I>&gt;<i> I'm using a USB to TTL converter FTDI232R. his does not work?
+</I>
+Arduino cable? ;)
+
+Not sure if that'll work... I'd think it should, since I'm using the
+same sort of cable with my novatel superstar2
+
+&gt;<i> I used the ashctl thus:
+</I>&gt;<i>
+</I>&gt;<i> ashctl /dev/ttyUSB0 normal
+</I>&gt;<i>
+</I>&gt;<i> If this in binary format how to decode?
+</I>
+&quot;normal = 9600, GGA+GSA+GSV+RMC+ZDA\n&quot;
+
+That's NMEA at 9600bps. If you connected at 4800 that would produce
+strange characters. You're using minicom so it's easy to check all the
+other common speeds.
+
+Oh - one thing I've noticed. Sometimes these usb-serial cables get
+confused if you're sending data while plugging them in. This too can
+lead to strange characters. The workaround is to plug in the
+usb-serial, then power-on or connect the device that is sending data.
+
+CK
+
+&gt;<i>
+</I>&gt;<i> Thanks.
+</I>&gt;<i>
+</I>&gt;<i> BOSCO.
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i> 2009/4/12 Chris Kuethe &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">chris.kuethe at gmail.com</A>&gt;
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> just the bare module? if so, you'll need a level shifter (MAX232) to
+</I>&gt;&gt;<i> connect a computer to it. depending on which mode you used in ashctl,
+</I>&gt;&gt;<i> the module may be running at 57600 with binary messages enabled - that
+</I>&gt;&gt;<i> could cause the strange characters you're seeing.
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> CK
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> On Sun, Apr 12, 2009 at 1:43 PM, JOAO BOSCO JUNIOR &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">boscojr at gmail.com</A>&gt;
+</I>&gt;&gt;<i> wrote:
+</I>&gt;&gt;<i> &gt; Hi all,
+</I>&gt;&gt;<i> &gt;
+</I>&gt;&gt;<i> &gt; I have a module Thales ac-12 and I can not use it.
+</I>&gt;&gt;<i> &gt;
+</I>&gt;&gt;<i> &gt; I used the ashctl to try to configure it, but all it displays strange
+</I>&gt;&gt;<i> &gt; characters on output.
+</I>&gt;&gt;<i> &gt;
+</I>&gt;&gt;<i> &gt; I tried to send some commands via minicom, but he does not respond.
+</I>&gt;&gt;<i> &gt;
+</I>&gt;&gt;<i> &gt; anyone have any idea?
+</I>&gt;&gt;<i> &gt;
+</I>&gt;&gt;<i> &gt; I'm using gpsd 2:39 and fedora 10.
+</I>&gt;&gt;<i> &gt;
+</I>&gt;&gt;<i> &gt; thanks,
+</I>&gt;&gt;<i> &gt;
+</I>&gt;&gt;<i> &gt; BOSCO.
+</I>&gt;&gt;<i> &gt; _______________________________________________
+</I>&gt;&gt;<i> &gt; Gpsd-users mailing list
+</I>&gt;&gt;<i> &gt; <A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">Gpsd-users at lists.berlios.de</A>
+</I>&gt;&gt;<i> &gt; <A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">https://lists.berlios.de/mailman/listinfo/gpsd-users</A>
+</I>&gt;&gt;<i> &gt;
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> --
+</I>&gt;&gt;<i> GDB has a 'break' feature; why doesn't it have 'fix' too?
+</I>&gt;<i>
+</I>&gt;<i>
+</I>
+
+
+-- 
+GDB has a 'break' feature; why doesn't it have 'fix' too?
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="003707.html">[Gpsd-users] thales Ac-12 help
+</A></li>
+	<LI>Next message: <A HREF="003709.html">[Gpsd-users] thales Ac-12 help
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3708">[ date ]</a>
+              <a href="thread.html#3708">[ thread ]</a>
+              <a href="subject.html#3708">[ subject ]</a>
+              <a href="author.html#3708">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

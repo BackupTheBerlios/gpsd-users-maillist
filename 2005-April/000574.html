@@ -1,0 +1,128 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] using gpsd with sysonchip cf plus
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2005-April/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20using%20gpsd%20with%20sysonchip%20cf%20plus&In-Reply-To=%3C200504242156.00564.msexauer%40gmail.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="000573.html">
+   <LINK REL="Next"  HREF="000575.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] using gpsd with sysonchip cf plus</H1>
+    <B>Michael Sexauer</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20using%20gpsd%20with%20sysonchip%20cf%20plus&In-Reply-To=%3C200504242156.00564.msexauer%40gmail.com%3E"
+       TITLE="[Gpsd-users] using gpsd with sysonchip cf plus">msexauer at gmail.com
+       </A><BR>
+    <I>Sun Apr 24 21:56:00 CEST 2005</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="000573.html">[Gpsd-users] Another whack at the crazy-speed bug
+</A></li>
+        <LI>Next message: <A HREF="000575.html">[Gpsd-users] using gpsd with sysonchip cf plus
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#574">[ date ]</a>
+              <a href="thread.html#574">[ thread ]</a>
+              <a href="subject.html#574">[ subject ]</a>
+              <a href="author.html#574">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>I'm trying to use a sysonchip cf plus gps card with an ipaq 55xx 
+(opie/familiar)
+
+I start the gpsd with 
+
+gpsd -p /dev/tts/3  
+
+Everything ist fine. With 
+
+telnet localhost 2947
+r
+
+I get, e.g here I'm in a room, so no satellite could be seen!
+
+GPSD,R=1
+$GPGGA,194913.909,,,,,0,00,50.0,,M,,,,0000*29
+$GPGSA,A,1,,,,,,,,,,,,,50.0,50.0,50.0*05
+$GPRMC,194913.909,V,,,,,,,240405,,,N*4D
+$GPVTG,,T,,M,,N,,K,N*2C
+$GPGGA,194914.909,,,,,0,00,50.0,,M,,,,0000*2E
+$GPGSA,A,1,,,,,,,,,,,,,50.0,50.0,50.0*05
+$GPRMC,194914.909,V,,,,,,,240405,,,N*4A
+$GPVTG,,T,,M,,N,,K,N*2C
+$GPGGA,194915.909,,,,,0,00,50.0,,M,,,,0000*2F
+$GPGSA,A,1,,,,,,,,,,,,,50.0,50.0,50.0*05
+$GPRMC,194915.909,V,,,,,,,240405,,,N*4B
+$GPVTG,,T,,M,,N,,K,N*2C
+$GPGGA,194916.909,,,,,0,00,50.0,,M,,,,0000*2C
+$GPGSA,A,1,,,,,,,,,,,,,50.0,50.0,50.0*05
+$GPGSV,2,1,08,08,68,062,,10,63,219,,27,40,062,,29,46,294,*7D
+$GPGSV,2,2,08,28,41,145,,26,28,290,,21,11,323,,19,05,050,*72
+$GPRMC,194916.909,V,,,,,,,240405,,,N*48
+$GPVTG,,T,,M,,N,,K,N*2C
+$GPGGA,194917.909,,,,,0,00,50.0,,M,,,,0000*2D
+
+seems to be fine, or am I wrong?
+
+No the problem, if I try to connect with qpeGPS to the device I get a message 
+that qpsd is running, but no GPS device is detected. 
+
+With the telnet I get the following informations:
+
+GPSD,R=0
+i
+GPSD,I=Generic NMEA
+b
+GPSD,B=4800 8 N 1
+after r=0 i get
+GPSD,Y=8:8 68 62 0 0:10 63 219 0 0:27 40 62 0 0:29 46 294 0 0:28 41 145 0 0:26 
+28 290 0 0:21 11 323 0 0:19 5 50 0 0:
+GPSD,Y=8:8 68 62 0 0:10 63 219 0 0:27 40 62 0 0:29 46 294 0 0:28 41 145 0 0:26 
+28 290 0 0:21 11 323 0 0:19 5 50 0 0:
+GPSD,Y=8:8 68 62 0 0:10 63 219 0 0:27 40 62 0 0:29 46 294 0 0:28 41 145 0 0:26 
+28 290 0 0:21 11 323 0 0:19 5 50 0 0:
+GPSD,Y=8:8 68 62 0 0:10 63 219 0 0:27 40 62 0 0:29 46 294 0 0:28 41 145 0 0:26 
+28 290 0 0:21 11 323 0 0:19 5 50 0 0:
+GPSD,Y=8:8 68 62 0 0:10 63 219 0 0:27 40 62 0 0:29 46 294 0 0:28 41 145 0 0:26 
+28 290 0 0:21 11 323 0 0:19 5 50 0 0:
+
+So, what is wrong?
+
+Thank for any help!
+
+
+
+-- 
+Michael Sexauer
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="000573.html">[Gpsd-users] Another whack at the crazy-speed bug
+</A></li>
+	<LI>Next message: <A HREF="000575.html">[Gpsd-users] using gpsd with sysonchip cf plus
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#574">[ date ]</a>
+              <a href="thread.html#574">[ thread ]</a>
+              <a href="subject.html#574">[ subject ]</a>
+              <a href="author.html#574">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

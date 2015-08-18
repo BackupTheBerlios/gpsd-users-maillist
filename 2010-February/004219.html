@@ -1,0 +1,119 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] getting ntpd to work with gpsd
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2010-February/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20getting%20ntpd%20to%20work%20with%20gpsd&In-Reply-To=%3Calpine.LNX.1.10.1002081918200.8477%40catbert.rellim.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="004213.html">
+   <LINK REL="Next"  HREF="004226.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] getting ntpd to work with gpsd</H1>
+    <B>Gary E. Miller</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20getting%20ntpd%20to%20work%20with%20gpsd&In-Reply-To=%3Calpine.LNX.1.10.1002081918200.8477%40catbert.rellim.com%3E"
+       TITLE="[Gpsd-users] getting ntpd to work with gpsd">gem at rellim.com
+       </A><BR>
+    <I>Tue Feb  9 04:29:24 CET 2010</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="004213.html">[Gpsd-users] getting ntpd to work with gpsd
+</A></li>
+        <LI>Next message: <A HREF="004226.html">[Gpsd-users] getting ntpd to work with gpsd
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#4219">[ date ]</a>
+              <a href="thread.html#4219">[ thread ]</a>
+              <a href="subject.html#4219">[ subject ]</a>
+              <a href="author.html#4219">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>-----BEGIN PGP SIGNED MESSAGE-----
+Hash: SHA1
+
+Yo Ryan!
+
+On Mon, 8 Feb 2010, Ryan Turcotte 10E wrote:
+
+&gt;<i> I need help with gpsd -&gt; ntpd.
+</I>
+You are in the right place, although patience is required.
+
+&gt;<i> But I've added the settings listed in man gps to ntp.conf
+</I>
+Can you send a copy of your ntpd.conf?
+
+&gt;<i> I'm running ntpd and gpsd by running 'su' so I am root
+</I>
+I hope you meant 'su -'.  You need to 'su -' so root's enviroanment is
+completly setup.
+
+&gt;<i> ./gpsd -nNGD 6 /dev/ttyUSB0 2&gt;&amp;1 | egrep 'NTP|PPS' gives me this debug:
+</I>
+That looks good, so far.
+
+&gt;<i> (i've been told these 2 lines are wrong...)
+</I>&gt;<i> gpsd: NTPD shmat(1114128,0,0) succeeded
+</I>&gt;<i> gpsd: NTPD shmat(1146897,0,0) succeeded
+</I>
+Yep, those are wrong, not sure why.  Should look like this:
+
+gpsd: NTPD shmat(163842,0,0) succeeded, segment 2
+gpsd: NTPD shmat(196611,0,0) succeeded, segment 3
+
+Those are only used if gpsd is not run as root, so it should not be fatal.
+
+Send along the output of this so we can see the shm state:
+	# cat /proc/sysvipc/shm
+
+&gt;<i> gpsd: NTPD ntpshm_put: Clock: 1265647358.000000 @ 1265676803.976325, fudge: 0.000
+</I>
+And that shows youe NMEA time is OK, but you are not getting any PPS from your
+GPS.  Are you sure your PPS pin is hooked up properly?
+
+
+RGDS
+GARY
+- ---------------------------------------------------------------------------
+Gary E. Miller Rellim 109 NW Wilmington Ave., Suite E, Bend, OR 97701
+	<A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">gem at rellim.com</A>  Tel:+1(541)382-8588
+
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v1.4.3 (GNU/Linux)
+
+iD8DBQFLcNaWBmnRqz71OvMRAsz9AKCK0kNBNeXbTbKYhUOAOWoCQR6hnACfbRWp
+pC6a8/b7uxbkYkc5fRrXDj4=
+=DjEp
+-----END PGP SIGNATURE-----
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="004213.html">[Gpsd-users] getting ntpd to work with gpsd
+</A></li>
+	<LI>Next message: <A HREF="004226.html">[Gpsd-users] getting ntpd to work with gpsd
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#4219">[ date ]</a>
+              <a href="thread.html#4219">[ thread ]</a>
+              <a href="subject.html#4219">[ subject ]</a>
+              <a href="author.html#4219">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

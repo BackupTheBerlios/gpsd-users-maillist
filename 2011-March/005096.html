@@ -1,0 +1,107 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] gps_read() does not block
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2011-March/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20gps_read%28%29%20does%20not%20block&In-Reply-To=%3C4D74ED44.5060301%40googlemail.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="005095.html">
+   <LINK REL="Next"  HREF="005097.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] gps_read() does not block</H1>
+    <B>Andre Naujoks</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20gps_read%28%29%20does%20not%20block&In-Reply-To=%3C4D74ED44.5060301%40googlemail.com%3E"
+       TITLE="[Gpsd-users] gps_read() does not block">nautsch2 at googlemail.com
+       </A><BR>
+    <I>Mon Mar  7 15:35:48 CET 2011</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="005095.html">[Gpsd-users] gps_read() does not block
+</A></li>
+        <LI>Next message: <A HREF="005097.html">[Gpsd-users] gps_read() does not block
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#5096">[ date ]</a>
+              <a href="thread.html#5096">[ thread ]</a>
+              <a href="subject.html#5096">[ subject ]</a>
+              <a href="author.html#5096">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Am 07.03.2011 12:52, schrieb Andre Naujoks:
+&gt;<i> Hi.
+</I>&gt;<i> 
+</I>&gt;<i> I recently tried to write a very small tool, that connects to gpsd
+</I>&gt;<i> and sets the system time. It tries to connect to gpsd untill a time
+</I>&gt;<i> is read. Then it quits.
+</I>&gt;<i> 
+</I>&gt;<i> The thing is, gps_read does not seem to block, which it should. I get
+</I>&gt;<i> thousands of &quot;read&quot;s in a second and then a time.
+</I>&gt;<i> 
+</I>&gt;<i> Am I doing something wrong here, or is this a bug?
+</I>&gt;<i> 
+</I>&gt;<i> I am using the git head of gpsd for this.
+</I>&gt;<i> 
+</I>&gt;<i> 
+</I>&gt;<i> I would appreciate input on this.
+</I>&gt;<i> 
+</I>&gt;<i> 
+</I>
+I just confirmed this in a little bigger app.
+
+fcntl(gpsd-&gt;gps_fd, F_SETFL, fcntl(gpsd-&gt;gps_fd, F_GETFL) &amp; ~O_NONBLOCK);
+
+after gps_open fixes the problem.
+
+I think this comes from the fact, that netlib_connectsock always
+sets a socket into non blocking mode.
+
+
+This patch would fix it. But I think its ugly to do this here. A flag to netlib_connectsock()
+to open a socket blocking would be nicer. But it would require a whole lot of code
+change in the remaining parts of gpsd.
+
+
+diff --git a/libgps_core.c b/libgps_core.c
+index ab1a302..d2120c3 100644
+--- a/libgps_core.c
++++ b/libgps_core.c
+@@ -110,6 +110,7 @@ int gps_open(/*@null@*/const char *host, /*@null@*/const char *port,
+     else
+        libgps_debug_trace((DEBUG_CALLS, &quot;netlib_connectsock() returns socket on fd %d\n&quot;,
+                            gpsdata-&gt;gps_fd));
++    fcntl(gpsdata-&gt;gps_fd, F_SETFL, fcntl(gpsdata-&gt;gps_fd, F_GETFL) &amp; ~O_NONBLOCK);
+ #else
+     QTcpSocket *sock = new QTcpSocket();
+     gpsdata-&gt;gps_fd = sock;
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="005095.html">[Gpsd-users] gps_read() does not block
+</A></li>
+	<LI>Next message: <A HREF="005097.html">[Gpsd-users] gps_read() does not block
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#5096">[ date ]</a>
+              <a href="thread.html#5096">[ thread ]</a>
+              <a href="subject.html#5096">[ subject ]</a>
+              <a href="author.html#5096">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

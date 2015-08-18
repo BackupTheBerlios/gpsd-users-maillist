@@ -1,0 +1,114 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] gpsd with pps
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2008-November/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20gpsd%20with%20pps&In-Reply-To=%3C20687755.post%40talk.nabble.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="003455.html">
+   <LINK REL="Next"  HREF="003459.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] gpsd with pps</H1>
+    <B>Sandor Nagy</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20gpsd%20with%20pps&In-Reply-To=%3C20687755.post%40talk.nabble.com%3E"
+       TITLE="[Gpsd-users] gpsd with pps">nagy.sandor3 at freemail.hu
+       </A><BR>
+    <I>Tue Nov 25 20:12:51 CET 2008</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="003455.html">[Gpsd-users] gpsd with pps
+</A></li>
+        <LI>Next message: <A HREF="003459.html">[Gpsd-users] gpsd with pps
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3457">[ date ]</a>
+              <a href="thread.html#3457">[ thread ]</a>
+              <a href="subject.html#3457">[ subject ]</a>
+              <a href="author.html#3457">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>
+Dear Dave,
+
+I am using a gumstix-connex board with a netCF and a GPSstix.
+
+&gt;<i>1. Does your GPS actually output a PPS signal? Not all GPS do. I'm using a 
+</I>&gt;<i>Garmin 18LVC which does - but the other Garmin 18's don't.
+</I>Yes, My GPS receiver is a NAVSYNC CW25-TIM and it has PPS output.
+
+&gt;<i>2. If your GPS does output a PPS signal, how is the PPS signal formatted? 
+</I>&gt;<i>The Garmin 18LVC outputs a short (user programmable) pulse at the beginning 
+</I>&gt;<i>of the 'second'. Other GPS units output a 1 Hz square wave, others output a 
+</I>&gt;<i>2Hz square wave (i.e. changes state each second). GPSD requires a short 
+</I>&gt;<i>pulse at the beginning of the 'second'. If the pulse is too long, I seem to 
+</I>&gt;<i>recall that GPSD will ignore the pulse.
+</I>Originally it is a 100us pulse, and unfortunately it is not programmable. I
+though that, it is not enough wide, so I used a monostable multivibrator to
+increase it to 230ms.
+
+&gt;<i>3. Are you getting a good GPS fix? The Garmin 18LVC won't start to output 
+</I>&gt;<i>the PPS pulse until it's got a good fix - both time and position - from a 
+</I>&gt;<i>number of satellites.
+</I>I have checked it with an oscilloscope and it was there.
+
+&gt;<i>4. Have you got the appropriate level translation between your GPS and your 
+</I>&gt;<i>Gumstix? Don't forget that a RS232 level translator such as a MAX232 also 
+</I>&gt;<i>does a signal inversion - so your short PPS pulse may have become an 
+</I>&gt;<i>extremely long pulse....
+</I>
+According to the scope it is a 230ms pulse width , where Uop=3V.
+
+&gt;<i>5. On your Gumstix, have you enabled the serial ports correctly? Not all 
+</I>&gt;<i>the serial ports have 4 wire connectivity, and as I recall you have to 
+</I>&gt;<i>configure some internal registers correctly to enable flow control signals.
+</I>
+I am using the BTUART port.
+The GPIO config: 
+<A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">root at gumstix-custom-connex</A>:~$ cat /proc/gpio/GPIO4[2345] 
+42 AF1 in set 
+43 AF2 out set 
+44 AF1 in clear 
+45 AF2 out set 
+
+And I connected the pps signal to the CTS pin of the BTUART port.
+
+I have no idea how to continue.
+Thanks for your effort to help me.
+Best regards,
+Sandor
+-- 
+View this message in context: <A HREF="http://www.nabble.com/gpsd-with-pps-tp20669666p20687755.html">http://www.nabble.com/gpsd-with-pps-tp20669666p20687755.html</A>
+Sent from the GPSd - Users mailing list archive at Nabble.com.
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="003455.html">[Gpsd-users] gpsd with pps
+</A></li>
+	<LI>Next message: <A HREF="003459.html">[Gpsd-users] gpsd with pps
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3457">[ date ]</a>
+              <a href="thread.html#3457">[ thread ]</a>
+              <a href="subject.html#3457">[ subject ]</a>
+              <a href="author.html#3457">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

@@ -1,0 +1,133 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] Lost connection between NTPD and GPSD
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2008-February/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Lost%20connection%20between%20NTPD%20and%20GPSD&In-Reply-To=%3C89ee8cd70802040945m59f1f19ewc75c4932d603bfb6%40mail.gmail.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="003136.html">
+   <LINK REL="Next"  HREF="003138.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] Lost connection between NTPD and GPSD</H1>
+    <B>Askar Ibragimov</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Lost%20connection%20between%20NTPD%20and%20GPSD&In-Reply-To=%3C89ee8cd70802040945m59f1f19ewc75c4932d603bfb6%40mail.gmail.com%3E"
+       TITLE="[Gpsd-users] Lost connection between NTPD and GPSD">askar.ibragimov at gmail.com
+       </A><BR>
+    <I>Mon Feb  4 18:45:46 CET 2008</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="003136.html">[Gpsd-users] Lost connection between NTPD and GPSD
+</A></li>
+        <LI>Next message: <A HREF="003138.html">[Gpsd-users] Lost connection between NTPD and GPSD
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3137">[ date ]</a>
+              <a href="thread.html#3137">[ thread ]</a>
+              <a href="subject.html#3137">[ subject ]</a>
+              <a href="author.html#3137">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hello Gary,
+
+
+&gt;<i> &gt; I have a gpsd and ntpd in connection running on a Fedora 5 box.
+</I>&gt;<i> Sometimes
+</I>&gt;<i> &gt; (once in a few days) strange thing happen:  NTP reports that connection
+</I>&gt;<i> to
+</I>&gt;<i> &gt; GPSD is lost, and never tries to recover it,
+</I>&gt;<i>
+</I>&gt;<i> First, a few more questions:
+</I>&gt;<i>
+</I>&gt;<i> What version of gpsd are you running?  There have been recent changes
+</I>&gt;<i> in the PPS logic so try to run the current SVN if you can.
+</I>
+
+version is 2.36, my files dated to January 21. I will check latest SVN too.
+
+
+
+
+What does 'ntpdc -p' look like when you have a good lock?
+
+
+
+
+This:
+
+[<A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">root at nm</A> gpsd]#  ntpdc -p
+     remote           local      st poll reach  delay   offset    disp
+=======================================================================
+=SHM(0)          127.0.0.1        0   16  377 0.00000  0.267696 0.01552
+*SHM(1)          127.0.0.1        0   16  377 0.00000 -0.000006 0.01581
+=ousrvr.oulu.fi  130.231.81.40    2   16  377 0.00047  0.000163 0.01045
+=ousrvr2.oulu.fi 130.231.81.40    2   16  377 0.00047  0.000160 0.01421
+
+
+
+&gt;<i> There is a question to GPSD experts, under which circumstances
+</I>&gt;<i> &gt; GPSD can stop reporting the time to NTPD?
+</I>&gt;<i>
+</I>&gt;<i> gpsd insists on a valid fix before reporting any time to ntpd.  Depending
+</I>&gt;<i> on your gpsd version there is also some checking of PPS time relative to
+</I>&gt;<i> NMEA time.  Be sure to try the SVN for our last best guess at that.
+</I>
+
+
+But the problem is, NTPD probably lost contact on occasion of bad fix. But
+the fix regained, and contact with NTPD is not.
+
+
+Cheers, Askar
+
+RGDS
+&gt;<i> GARY
+</I>&gt;<i> -
+</I>&gt;<i> ---------------------------------------------------------------------------
+</I>&gt;<i> Gary E. Miller Rellim 109 NW Wilmington Ave., Suite E, Bend, OR 97701
+</I>&gt;<i>         <A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">gem at rellim.com</A>  Tel:+1(541)382-8588
+</I>&gt;<i>
+</I>&gt;<i> -----BEGIN PGP SIGNATURE-----
+</I>&gt;<i> Version: GnuPG v1.4.3 (GNU/Linux)
+</I>&gt;<i>
+</I>&gt;<i> iD8DBQFHp0y78KZibdeR3qURAhWiAJ4xs/cYLOTKdUw52SEbEPWGFov+WgCfXNsc
+</I>&gt;<i> Lss0VsRl8Qu2wxNUtZXhS0A=
+</I>&gt;<i> =MMgx
+</I>&gt;<i> -----END PGP SIGNATURE-----
+</I>&gt;<i>
+</I>&gt;<i>
+</I>
+
+-- 
+ICQ 19576333  Cellular +358 45 6386080
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="003136.html">[Gpsd-users] Lost connection between NTPD and GPSD
+</A></li>
+	<LI>Next message: <A HREF="003138.html">[Gpsd-users] Lost connection between NTPD and GPSD
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3137">[ date ]</a>
+              <a href="thread.html#3137">[ thread ]</a>
+              <a href="subject.html#3137">[ subject ]</a>
+              <a href="author.html#3137">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

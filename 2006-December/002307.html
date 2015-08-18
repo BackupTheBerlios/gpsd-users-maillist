@@ -1,0 +1,106 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] Private-use fields vs. GPSD-NG queries
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2006-December/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Private-use%20fields%20vs.%20GPSD-NG%20queries&In-Reply-To=%3C20061204202248.GB17865%40thyrsus.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="002304.html">
+   <LINK REL="Next"  HREF="002308.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] Private-use fields vs. GPSD-NG queries</H1>
+    <B>Eric S. Raymond</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Private-use%20fields%20vs.%20GPSD-NG%20queries&In-Reply-To=%3C20061204202248.GB17865%40thyrsus.com%3E"
+       TITLE="[Gpsd-users] Private-use fields vs. GPSD-NG queries">esr at thyrsus.com
+       </A><BR>
+    <I>Mon Dec  4 21:22:48 CET 2006</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="002304.html">[Gpsd-users] [PATCH] Re: Garmin GPS almost never sends new position data
+</A></li>
+        <LI>Next message: <A HREF="002308.html">[Gpsd-users] Private-use fields vs. GPSD-NG queries
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2307">[ date ]</a>
+              <a href="thread.html#2307">[ thread ]</a>
+              <a href="subject.html#2307">[ subject ]</a>
+              <a href="author.html#2307">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>I've broken this out into a new thread to reflect the new topic.  I had 
+written thus:
+
+&gt;<i>However, one of the ways we may end up extending O is by adding
+</I>&gt;<i>optional private-use fields to the end of the report.  These would be
+</I>&gt;<i>used for numeric metadata that is closely coupled to a PVT report --
+</I>&gt;<i>for example, water depth or temperature.
+</I>&gt;<i>
+</I>&gt;<i>Those would differ from the separate GPSD-NG queries, which would be
+</I>&gt;<i>for things like satellite ephemeris data *not* closely associated 
+</I>&gt;<i>with an individual PVT report.
+</I>
+Chris Kuethe &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">chris.kuethe at gmail.com</A>&gt;:
+&gt;<i> Gut feeling says that's not the right approach, hanging metadata off the 
+</I>&gt;<i> end...
+</I>&gt;<i> 
+</I>&gt;<i> Protocol 3 is pretty complete for what it's supposed to do... supply
+</I>&gt;<i> PVT[1], either in simple question-and-answer format, or as a full
+</I>&gt;<i> report. It feels very nearly permanently frozen (modulo critical
+</I>&gt;<i> bugfixes).
+</I>&gt;<i> 
+</I>&gt;<i> Any extensions are probably best added to protocol 4, which we get to
+</I>&gt;<i> design from scratch with a view to crazy, unimaginable future uses of
+</I>&gt;<i> unified ... environmental and dynamics information. Extensions are
+</I>&gt;<i> needed when gpsd is doing more than the simple job it was first
+</I>&gt;<i> intended to do - don't mess with a good thing.
+</I>&gt;<i> 
+</I>&gt;<i> [1] PVT != polarization of ambient light, volume of the stereo and
+</I>&gt;<i> temperature of beer...
+</I>
+There are certainly reasons to be wary of private-use fields.  But I
+don't see how else we can tie metadata to individual PVT reports without
+creating yet another stupid jitter-vs.latency fight.  The last thing
+we want to do is recreate the horror that is NMEA altitude reporting
+at the application level.
+
+Your footnote is a good, funny list of things that probably shouldn't be
+in private-use fields.  The ones I keep thinking about, though, are 
+depth of water and water temperature from a fish-finder like the
+Humminbird.  Those really are nailed to the PVT data.
+
+Actually, come to think of it, there's a case for polarization of
+ambient light to be a private-use field.  Not the other two, though :-).
+-- 
+		&lt;a href=&quot;<A HREF="http://www.catb.org/~esr/">http://www.catb.org/~esr/</A>&quot;&gt;Eric S. Raymond&lt;/a&gt;
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="002304.html">[Gpsd-users] [PATCH] Re: Garmin GPS almost never sends new position data
+</A></li>
+	<LI>Next message: <A HREF="002308.html">[Gpsd-users] Private-use fields vs. GPSD-NG queries
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2307">[ date ]</a>
+              <a href="thread.html#2307">[ thread ]</a>
+              <a href="subject.html#2307">[ subject ]</a>
+              <a href="author.html#2307">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

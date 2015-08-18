@@ -1,0 +1,144 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] State of GPSD
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2005-August/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20State%20of%20GPSD&In-Reply-To=%3CPine.LNX.4.63.0508051120460.28852%40catbert.rellim.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="000967.html">
+   <LINK REL="Next"  HREF="000969.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] State of GPSD</H1>
+    <B>Gary E. Miller</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20State%20of%20GPSD&In-Reply-To=%3CPine.LNX.4.63.0508051120460.28852%40catbert.rellim.com%3E"
+       TITLE="[Gpsd-users] State of GPSD">gem at rellim.com
+       </A><BR>
+    <I>Fri Aug  5 20:27:07 CEST 2005</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="000967.html">[Gpsd-users] State of GPSD
+</A></li>
+        <LI>Next message: <A HREF="000969.html">[Gpsd-users] State of GPSD
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#968">[ date ]</a>
+              <a href="thread.html#968">[ thread ]</a>
+              <a href="subject.html#968">[ subject ]</a>
+              <a href="author.html#968">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>-----BEGIN PGP SIGNED MESSAGE-----
+Hash: SHA1
+
+Yo Curt!
+
+On Fri, 5 Aug 2005, maillist wrote:
+
+&gt;<i> I don't see anything Garmin 18/LVC in the test directory.
+</I>
+Already sent to Eric.   Not online yet.
+
+&gt;<i> Can you capture some
+</I>&gt;<i> of the output, doesn't need to be when the GSV problem occurs and post it. I
+</I>&gt;<i> am curious what the NMEA looks like when your GPS-18 is talking with a fix.
+</I>
+Just for you, I ust pulled svn head and recompiled it and 2.28.  Then
+ran these tests.  This is with my GPS-18/LVC.
+
+Here is a copy of the NMEA as current svn gpsd sees it, grabbed with
+'gpspipe -r':
+
+$GPRMC,182029,A,4405.5579,N,12118.3945,W,000.0,359.3,050805,016.8,E*64
+$GPGSA,A,3,01,,11,14,,20,23,,25,,,,3.1,1.9,1.5*3C
+$GPGSV,3,2,11,16,04,150,00,20,49,308,36,23,25,264,43,24,27,312,00*7C
+$GPRMC,182030,A,4405.5579,N,12118.3945,W,000.0,272.2,050805,016.8,E*65
+$GPGSA,A,3,01,,11,14,,20,23,,25,,,,3.1,1.9,1.5*3C
+$GPGSV,3,2,11,16,04,150,00,20,49,308,36,23,25,264,43,24,27,312,00*7C
+$GPRMC,182031,A,4405.5579,N,12118.3945,W,000.0,322.6,050805,016.8,E*64
+$GPGSA,A,3,01,,11,14,,20,23,,25,,,,2.8,2.0,1.0*3B
+$GPGSV,3,2,11,16,04,150,00,20,49,308,36,23,25,264,43,24,27,312,00*7C
+$GPRMC,182032,A,4405.5579,N,12118.3945,W,000.0,236.0,050805,016.8,E*65
+$GPGSA,A,3,01,,11,14,,20,23,,25,,,,3.2,2.0,1.5*35
+$GPGSV,3,2,11,16,04,150,00,20,49,308,36,23,25,264,44,24,27,312,00*7B
+$GPRMC,182033,A,4405.5579,N,12118.3945,W,000.0,122.8,050805,016.8,E*6A
+$GPGSA,A,3,01,,11,14,,20,23,,25,,,,3.2,2.0,1.5*35
+$GPGSV,3,2,11,16,04,150,00,20,49,308,37,23,25,264,44,24,27,312,00*7A
+$GPRMC,182034,A,4405.5579,N,12118.3945,W,000.0,318.1,050805,016.8,E*6F
+$GPGSA,A,3,01,,11,14,,20,23,,25,,,,3.2,2.0,1.5*35
+$GPGSV,3,2,11,16,04,150,00,20,49,308,37,23,25,264,44,24,27,312,00*7A
+
+Notice the missing sentences.  Here is a copy as gpsd 2.28 sees it,
+grabbed 10 seconds later with 'gpspipe -r':
+
+$GPRMC,182201,A,4405.5580,N,12118.3940,W,000.0,279.2,050805,016.8,E*6D
+$GPGGA,182201,4405.5580,N,12118.3940,W,1,05,2.4,1065.6,M,-20.1,M,,*49
+$GPGSA,A,3,01,,11,,,20,23,,25,,,,3.9,2.4,2.5*3C
+$GPGSV,3,1,11,01,57,051,50,07,00,308,00,11,38,230,39,14,22,067,00*71
+$GPGSV,3,2,11,16,04,150,00,20,50,308,40,23,26,265,47,24,27,311,00*70
+$GPGSV,3,3,11,25,67,082,49,30,13,047,00,33,00,000,00*4A
+$GPRMC,182202,A,4405.5580,N,12118.3940,W,000.0,188.3,050805,016.8,E*62
+$GPGGA,182202,4405.5580,N,12118.3940,W,1,05,2.4,1065.6,M,-20.1,M,,*4A
+$GPGSA,A,3,01,,11,,,20,23,,25,,,,3.9,2.4,2.5*3C
+$GPGSV,3,1,11,01,57,051,50,07,00,308,00,11,38,230,39,14,22,067,00*71
+$GPGSV,3,2,11,16,04,150,00,20,50,308,40,23,26,265,47,24,27,311,00*70
+$GPGSV,3,3,11,25,67,082,49,30,13,047,00,33,00,000,00*4A
+$GPRMC,182203,A,4405.5580,N,12118.3940,W,000.0,206.5,050805,016.8,E*60
+$GPGGA,182203,4405.5580,N,12118.3940,W,1,05,2.4,1065.7,M,-20.1,M,,*4A
+$GPGSA,A,3,01,,11,,,20,23,,25,,,,3.9,2.4,2.5*3C
+$GPGSV,3,1,11,01,57,051,50,07,00,308,00,11,38,230,39,14,22,067,00*71
+$GPGSV,3,2,11,16,04,150,00,20,50,308,40,23,26,265,47,24,27,311,00*70
+$GPGSV,3,3,11,25,67,082,49,30,13,047,00,33,00,000,00*4A
+
+Notice it looks fine?  Tobias confirmed that 2.28 works and svn head
+does not on his bluetooth gps.  So it is a rcent gpsd code issue, not a
+gps issue.
+
+My GPS-18/USB, which does not use the standard gpsd packet engine, works
+fine on both revs.
+
+RGDS
+GARY
+- ---------------------------------------------------------------------------
+Gary E. Miller Rellim 20340 Empire Blvd, Suite E-3, Bend, OR 97701
+	<A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">gem at rellim.com</A>  Tel:+1(541)382-8588 Fax: +1(541)382-8676
+
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v1.4.1 (GNU/Linux)
+
+iD8DBQFC869+8KZibdeR3qURAirMAJ0RSRvXNsLf4aw0PHDjYJsFpouihgCdE83F
+GAQWhjVYKgf/GJZkZXETnyk=
+=VqW3
+-----END PGP SIGNATURE-----
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="000967.html">[Gpsd-users] State of GPSD
+</A></li>
+	<LI>Next message: <A HREF="000969.html">[Gpsd-users] State of GPSD
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#968">[ date ]</a>
+              <a href="thread.html#968">[ thread ]</a>
+              <a href="subject.html#968">[ subject ]</a>
+              <a href="author.html#968">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

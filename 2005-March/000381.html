@@ -1,0 +1,117 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] RE: Willem's disconnect bug
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2005-March/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20RE%3A%20Willem%27s%20disconnect%20bug&In-Reply-To=%3C200503172121.j2HLLZaY011927%40ns4.i-mecca.net%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="000379.html">
+   <LINK REL="Next"  HREF="000383.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] RE: Willem's disconnect bug</H1>
+    <B>Willem</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20RE%3A%20Willem%27s%20disconnect%20bug&In-Reply-To=%3C200503172121.j2HLLZaY011927%40ns4.i-mecca.net%3E"
+       TITLE="[Gpsd-users] RE: Willem's disconnect bug">willem at pcfish.ca
+       </A><BR>
+    <I>Thu Mar 17 22:19:38 CET 2005</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="000379.html">[Gpsd-users] Willem's disconnect bug
+</A></li>
+        <LI>Next message: <A HREF="000383.html">[Gpsd-users] Re: Willem's disconnect bug
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#381">[ date ]</a>
+              <a href="thread.html#381">[ thread ]</a>
+              <a href="subject.html#381">[ subject ]</a>
+              <a href="author.html#381">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Well I'm at a loss?  Could this be kernel related?  What could cause a
+device to hang like this?
+
+
+-----Original Message-----
+From: Eric S. Raymond [mailto:<A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">esr at snark.thyrsus.com</A>] 
+Sent: Thursday, March 17, 2005 12:53 PM
+To: Willem
+Cc: <A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">gpsd-users at lists.berlios.de</A>
+Subject: Willem's disconnect bug 
+
+Willem:
+&gt;<i>This is how I start Gpsd:
+</I>&gt;<i>
+</I>&gt;<i>1) GPS is connected and running
+</I>&gt;<i>
+</I>&gt;<i>2) gpsd -f /dev/ttyS0 -N -D 2 to run the server in the foreground with
+</I>debug
+&gt;<i>level 2
+</I>&gt;<i>
+</I>&gt;<i>4) I then telnet into localhost 2947
+</I>&gt;<i>
+</I>&gt;<i>5) From there I try a command such as p - it will report back with either a
+</I>&gt;<i>position or a question mark.
+</I>&gt;<i>
+</I>&gt;<i>6) I then unplug the GPS and the debug reports: closed GPS
+</I>&gt;<i>
+</I>&gt;<i>7) I then try a command from the telnet connection such as p.  Debug
+</I>returns
+&gt;<i>the following: opening GPS -- datasource at /dev/ttyS0 -- setting speed
+</I>&gt;<i>9600, 1 stopbits, no parity
+</I>
+With you so far...
+
+&gt;<i>At this point I get no reponse whatsoever.  Typing any command such as p or
+</I>&gt;<i>r does nothing.
+</I>
+That's not what happens here. The open fails and 'p' comes back with 
+GPSD,P=? as expected.
+
+&gt;<i>8) I plug the GPS back in and it picks up where it left off.  It will again
+</I>&gt;<i>respond to my commands from the telnet connection.
+</I>&gt;<i>
+</I>&gt;<i>So the way I see it is this.  When the GPS is disconnected any command will
+</I>&gt;<i>open a connection to the server.  However, if there is no GPS running then
+</I>&gt;<i>the server will not respond back and we get stuck in an endless wait.
+</I>
+Mysterious.  Looks to me like your device open is hanging for some reason.
+-- 
+		&lt;a href=&quot;<A HREF="http://www.catb.org/~esr/">http://www.catb.org/~esr/</A>&quot;&gt;Eric S. Raymond&lt;/a&gt;
+
+The American Republic will endure, until politicians realize they can
+bribe the people with their own money.
+	-- Alexis de Tocqueville
+
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="000379.html">[Gpsd-users] Willem's disconnect bug
+</A></li>
+	<LI>Next message: <A HREF="000383.html">[Gpsd-users] Re: Willem's disconnect bug
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#381">[ date ]</a>
+              <a href="thread.html#381">[ thread ]</a>
+              <a href="subject.html#381">[ subject ]</a>
+              <a href="author.html#381">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

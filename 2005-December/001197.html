@@ -1,0 +1,134 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] PPS (another definition)
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2005-December/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20PPS%20%28another%20definition%29&In-Reply-To=%3Cp06230903bfd96a0ce340%40%5B192.168.1.11%5D%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="001196.html">
+   <LINK REL="Next"  HREF="001198.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] PPS (another definition)</H1>
+    <B>Robin L Darroch</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20PPS%20%28another%20definition%29&In-Reply-To=%3Cp06230903bfd96a0ce340%40%5B192.168.1.11%5D%3E"
+       TITLE="[Gpsd-users] PPS (another definition)">robin at spade-men.com
+       </A><BR>
+    <I>Thu Dec 29 11:31:14 CET 2005</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="001196.html">[Gpsd-users] PS - not the only problem
+</A></li>
+        <LI>Next message: <A HREF="001198.html">[Gpsd-users] gpsd-tracker application to Google Maps
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1197">[ date ]</a>
+              <a href="thread.html#1197">[ thread ]</a>
+              <a href="subject.html#1197">[ subject ]</a>
+              <a href="author.html#1197">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>This PPS means &quot;post post script&quot;:
+
+I think the difference *may* lie in the sequence of commands sent to 
+the GPS after selecting the &quot;Generic NMEA&quot; driver... or in something 
+else that happens right around then.  Here's what gpsd 2.25 does:
+
+[lots of stuff with no NMEA sentences - assume this is 
+packet-sniffing to autodetect]
+Character '7', new state: 4
+Character 0x0d, new state: 5
+Character 0x0a, new state: 6
+packet_sniff returns 0
+gpsd_activate: opened GPS (5)
+Selecting Generic NMEA driver...
+=&gt; GPS: $PFEC,GPint,GSA01,DTM00,ZDA01,RMC01,GLL00,VTG00,GSV05*3B
+
+=&gt; GPS: $PMOTG,ZDA,1*2F
+
+=&gt; GPS: $PGRM0,GSA,1*5C
+
+=&gt; GPS: $PSRF105,1*3E
+
+&lt;= GPS: $GPRMC,101045.820,V,2024.1230,S,11835.9746,E,0.000000,,291205,,*17
+GPS has 1 chars waiting
+Character '$', new state: 1
+Character 'G', new state: 3
+Character 'P', new state: 4
+[and then all the normal stuff associated with handling NMEA stream]
+
+
+Now, here's what gpsd 2.30 does:
+
+[lots of stuff as above - assume this too is packet-sniffing to autodetect]
+00002012: character 'D' [44], new state: NMEA_LEADER_END
+00002013: character '.' [0d], new state: NMEA_CR
+00002014: character '.' [0a], new state: NMEA_RECOGNIZED
+Packet type 0 accepted 70 = 
+2447504753562c332c322c30392c32382c33312c3134382c33342c31302c33312c3331362c30302c30382c32362c3131322c30302c30392c30382c3234302c30302a37440d0a
+Packet discard of 70, chars remaining is 5 = 2447504753
+packet sniff finds type 0
+Selecting Generic NMEA driver...
+[so we agree]
+=&gt; GPS: $PFEC,GPint,GSA01,DTM00,ZDA01,RMC01,GLL00,VTG00,GSV05*3B
+
+=&gt; GPS: @NC10151010
+
+=&gt; GPS: $PMOTG,ZDA,1*2F
+
+=&gt; GPS: $PGRMCE*0E
+
+=&gt; GPS: $PSRF105,1*3E
+
+=&gt; GPS: $PFST*11
+
+[that's all folks - the only think it will hear now is a ^C.  the 
+telnet port will still accept new connections, but will not respond 
+to commands]
+
+
+Obviously some very different sentences being sent to the GPS, 
+including the one with an @ at the beginning... is that right?  Is 
+there anything else very different about how gpsd responds (or 
+doesn't) at this particular point in its execution?
+
+Maybe this will be a good excuse for 2.31, and then we can be free of 
+string vs decimal confusion in version numbering (at least until 
+2.40). :)
+-- 
+
+-------------------------------------------------------------------------
+  Robin L. Darroch - PO Box 2715, South Hedland WA 6722 - +61 421 503 966
+       <A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">robin at darroch.id.au</A> - <A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">robin at nyca.org.au</A> - <A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">robin at spade-men.com</A>
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="001196.html">[Gpsd-users] PS - not the only problem
+</A></li>
+	<LI>Next message: <A HREF="001198.html">[Gpsd-users] gpsd-tracker application to Google Maps
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1197">[ date ]</a>
+              <a href="thread.html#1197">[ thread ]</a>
+              <a href="subject.html#1197">[ subject ]</a>
+              <a href="author.html#1197">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

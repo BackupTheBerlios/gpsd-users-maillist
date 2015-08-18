@@ -1,0 +1,173 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] Re: [Gpsd-dev] New GPS report, gpsd 2.20, Mac OS X 10.3.8, GlobalSat BT-318 Bluetooth GPS, specs &amp; gpsd status
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2005-April/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Re%3A%20%5BGpsd-dev%5D%20New%20GPS%20report%2C%20gpsd%202.20%2C%20Mac%20OS%20X%2010.3.8%2C%20GlobalSat%20BT-318%20Bluetooth%20GPS%2C%20specs%20%26%20gpsd%20status&In-Reply-To=%3C202579c4c2e087f3b2fe4c383f68aa10%40nicholasfamilycentral.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="000563.html">
+   <LINK REL="Next"  HREF="000553.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] Re: [Gpsd-dev] New GPS report, gpsd 2.20, Mac OS X 10.3.8, GlobalSat BT-318 Bluetooth GPS, specs &amp; gpsd status</H1>
+    <B>Frank Nicholas</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Re%3A%20%5BGpsd-dev%5D%20New%20GPS%20report%2C%20gpsd%202.20%2C%20Mac%20OS%20X%2010.3.8%2C%20GlobalSat%20BT-318%20Bluetooth%20GPS%2C%20specs%20%26%20gpsd%20status&In-Reply-To=%3C202579c4c2e087f3b2fe4c383f68aa10%40nicholasfamilycentral.com%3E"
+       TITLE="[Gpsd-users] Re: [Gpsd-dev] New GPS report, gpsd 2.20, Mac OS X 10.3.8, GlobalSat BT-318 Bluetooth GPS, specs &amp; gpsd status">frank at nicholasfamilycentral.com
+       </A><BR>
+    <I>Fri Apr  8 16:48:11 CEST 2005</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="000563.html">[Gpsd-users] Re: [Gpsd-dev] New GPS report, gpsd 2.20, Mac OS X 10.3.8, GlobalSat BT-318 Bluetooth GPS, specs &amp; gpsd status
+</A></li>
+        <LI>Next message: <A HREF="000553.html">[Gpsd-users] gpsd seg-fault condition found on Mac OS X, with GlobalSat BT-318 Bluetooth GPS
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#551">[ date ]</a>
+              <a href="thread.html#551">[ thread ]</a>
+              <a href="subject.html#551">[ subject ]</a>
+              <a href="author.html#551">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Here's some further testing.....
+
+If I have the GPS in NMEA mode, gpsd WILL recognize it as a generic  
+NMEA GPS (see output at bottom).  It should probably be added to the  
+compatible list, as NMEA mode only, for now.
+
+If I try sirfmon, it auto-bauds at 4800, shows the ncurses screen, and  
+then appears to hang.  I think sirfmon is trying to put the GPS into  
+SiRF mode.  Also, the Leadtek SiRF utility recognizes the unit when in  
+NMEA mode, but will not change it to SiRF mode.....  After running  
+sirfmon or the Leadtek SiRF utility (trying to change it to SiRF mode),  
+the GPS gets &quot;really confused&quot;.  It just appears to put out a random  
+string of 0xF8's &amp; 0x80's (I can supply if anyone's interested).   
+NOTHING (sirfmon, gpsd, GlobalSAT's supplied utility, Leadtek's Palm  
+Pilot utility, SiRFDemo.exe for windows)  will recognize it, until I  
+remove power (AC and Battery), for several minutes.  This puts the GPS  
+back into NMEA mode at 4800 baud.  Evidently, before I first tried it  
+with gpsd, I got it &quot;really confused&quot; with sirfmon, or some other tool.  
+  The thing is, I though I had it working with the Leadtek Palm Pilot  
+utility, in SiRF mode.....  I'm going to do some more testing with the  
+Leadtek Palm Pilot utility this afternoon.
+
+The utilities that came with the GPS are windows/pocket pc only.  When  
+the GPS is &quot;really confused&quot;, even these (at least the PC utility - I  
+don't have access to a pocket pc) utilities won't recognize it.  I  
+think they are expecting NMEA mode.
+
+I'm searching for more information.  GlobalSAT supplies two (2), pretty  
+generic, PDF's as documentation.  There's not even a piece of paper in  
+the box the GPS came in!
+
+If anyone has any tools/ideas/code to hack on, to get the unit into  
+SiRF mode, please let me know.
+
+$ gpsd -D6 -N -f /dev/tty.gps
+gpsd: launching (Version 2.20)
+gpsd: listening on port gpsd
+gpsd: client connect on 4
+gpsd: closed GPS
+gpsd: opening GPS data source at /dev/tty.gps
+gpsd: No USB serial drivers found.
+gpsd: no probe matched...
+gpsd: hunting at speed 4800, 8N1
+gpsd: packet_sniff begins
+gpsd: Read 207 chars (total 207):  
+0,000,,10,00,000,,25,00,000,,09,00,000,*74\x0d\x0a$GPGSV,3,2,12,07,00,00 
+0,,03,00,000,,11,00,000,,15,00,000,*7B\x0d\x0a$GPGSV,3,3,12,02,00,000,,3 
+0,00,000,,01,00,000,,26,00,000,*7E\x0d\x0a$GPRMC,000521.979,V,,,,,,,0205 
+04,,*2D\x0d\x0a
+gpsd: Packet copy, type 0
+gpsd: Packet discard with 101 remaining
+gpsd: Packet copy, type 0
+gpsd: Packet discard with 39 remaining
+gpsd: Packet copy, type 0
+gpsd: Packet discard with 0 remaining
+gpsd: packet_sniff ends
+gpsd: gpsd_activate: opened GPS (5)
+gpsd: Selecting Generic NMEA driver...
+gpsd: =&gt; GPS: $PFEC,GPint,GSA01,DTM00,ZDA01,RMC01,GLL00,GSV05*52
+
+gpsd: =&gt; GPS: $PSRF105,1*3E
+
+gpsd: checking 4
+gpsd: &lt;= client: p
+
+
+
+On Apr 7, 2005, at 7:21 PM, Gary E. Miller wrote:
+
+-----BEGIN PGP SIGNED MESSAGE-----
+Hash: SHA1
+
+Yo Frank!
+
+Looks like Eric, the Sirf maintainer, is out.  I do not have a sirf but
+can offer a few ignorant suggestions.
+
+Have you tried the gpsd program sirfmon?  Can you get any info that way?
+Then try to set the PS to nmea and 9600 baud to see if that helps the
+gpsd autodetect.
+
+RGDS
+GARY
+-  
+------------------------------------------------------------------------ 
+---
+Gary E. Miller Rellim 20340 Empire Blvd, Suite E-3, Bend, OR 97701
+	<A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">gem at rellim.com</A>  Tel:+1(541)382-8588 Fax: +1(541)382-8676
+
+On Thu, 7 Apr 2005, Frank Nicholas wrote:
+
+&gt;<i> GPS:
+</I>&gt;<i> GlobalSat BT-318 Bluetooth GPS:
+</I>&gt;<i> 	<A HREF="http://www.globalsat.com.tw/english/products_detail.php?">http://www.globalsat.com.tw/english/products_detail.php?</A>
+</I>&gt;<i> main_id=21&amp;p_id=107
+</I>&gt;<i> Uses Bluetooth Serial Protocol
+</I>&gt;<i> GPS Protocol (from box):
+</I>&gt;<i> 	Default:  NMEA 0183 (Secondary:  SiRF binary)
+</I>&gt;<i> 	NMEA-0183 v2.2
+</I>-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v1.2.3 (GNU/Linux)
+
+iD8DBQFCVc6F8KZibdeR3qURAgI3AJ4k1rtO6adwIsEPhlOlvTLe+GeKWACeN4eu
+59xGsn1QRth8cxJuVE5Hgm8=
+=ZVWX
+-----END PGP SIGNATURE-----
+
+
+______________________________________________________________________
+This email has been scanned by the MessageLabs Email Security System.
+For more information please visit <A HREF="http://www.messagelabs.com/email">http://www.messagelabs.com/email</A> 
+______________________________________________________________________
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="000563.html">[Gpsd-users] Re: [Gpsd-dev] New GPS report, gpsd 2.20, Mac OS X 10.3.8, GlobalSat BT-318 Bluetooth GPS, specs &amp; gpsd status
+</A></li>
+	<LI>Next message: <A HREF="000553.html">[Gpsd-users] gpsd seg-fault condition found on Mac OS X, with GlobalSat BT-318 Bluetooth GPS
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#551">[ date ]</a>
+              <a href="thread.html#551">[ thread ]</a>
+              <a href="subject.html#551">[ subject ]</a>
+              <a href="author.html#551">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

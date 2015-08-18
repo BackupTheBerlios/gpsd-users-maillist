@@ -1,0 +1,106 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] Please help me in building GPSD
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2006-July/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Please%20help%20me%20in%20building%20GPSD&In-Reply-To=%3C20060731155215.GC3965%40www.gritch.org%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="001804.html">
+   
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] Please help me in building GPSD</H1>
+    <B>Jeff Francis</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Please%20help%20me%20in%20building%20GPSD&In-Reply-To=%3C20060731155215.GC3965%40www.gritch.org%3E"
+       TITLE="[Gpsd-users] Please help me in building GPSD">jeff at gritch.org
+       </A><BR>
+    <I>Mon Jul 31 17:52:15 CEST 2006</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="001804.html">[Gpsd-users] Please help me in building GPSD
+</A></li>
+        
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1811">[ date ]</a>
+              <a href="thread.html#1811">[ thread ]</a>
+              <a href="subject.html#1811">[ subject ]</a>
+              <a href="author.html#1811">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>  There's not enough information here to say definitively, but I
+suspect the issue is that you do not have the Motif/Lesstif libraries
+and/or headers installed on your machine, and the build is failing to
+find them.  Try this:
+
+  ./configure --without-x
+
+  Then try the build again.  XWindows can't work as a replacement for
+Motif/Lesstif because they are completely different things serving
+completely different purposes.  X (XWindows) is your windowing system
+and Motif/Lesstif is a library of &quot;window-management functions&quot; (in
+much the same way as the Gnome libraries, the KDE libraries, etc.).
+Just to be confusing, Motif is also an old-school window manager,
+though in this case, that's not relevant.
+
+
+
+On Sun, Jul 30, 2006 at 11:40:14PM -0700, saikat mukherjee wrote:
+
+&gt;<i> I am a new user of GPSD. When I tried to build GPSD (according to to
+</I>&gt;<i> the procedure mentioned in Install file) by running './autogen.sh'
+</I>&gt;<i> and 'make', I find that GPSD (gpsd) is building. But libgps.so,
+</I>&gt;<i> xgps, and xgpsspeed are not building as mentioned in the Install
+</I>&gt;<i> file.
+</I>
+&gt;<i> My system configuration is :
+</I>&gt;<i> Linux 2.6
+</I>&gt;<i> XWindows is installed
+</I>
+&gt;<i> My questions are:
+</I>&gt;<i> 1&gt; Why all the four files are not building ?
+</I>
+&gt;<i> 2&gt; Even if Motif/Lesstif is needed for xgps/xgpsspeed, why libgps is
+</I>&gt;<i> not building ?
+</I>
+&gt;<i> 3&gt; Can't XWindows work as an replacement for Motif/Lesstif ?
+</I>
+&gt;<i> Can anybody please help me out ?
+</I>
+
+-- 
++--------------------------+
+|<i>   Jeff Francis - N0GQ    |
+</I>|<i> Snohomish, WA USA, Earth |
+</I>|<i>     <A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">jeff at gritch.org</A>      |
+</I>|<i>  <A HREF="http://blog.gritch.org">http://blog.gritch.org</A>  |
+</I>+--------------------------+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="001804.html">[Gpsd-users] Please help me in building GPSD
+</A></li>
+	
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1811">[ date ]</a>
+              <a href="thread.html#1811">[ thread ]</a>
+              <a href="subject.html#1811">[ subject ]</a>
+              <a href="author.html#1811">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

@@ -1,0 +1,154 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] deluo gps ntp time offset and strangeness
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2007-February/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20deluo%20gps%20ntp%20time%20offset%20and%20strangeness&In-Reply-To=%3C91981b3e0702181634xf6363a9s907d16e18668f67a%40mail.gmail.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="002464.html">
+   <LINK REL="Next"  HREF="002465.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] deluo gps ntp time offset and strangeness</H1>
+    <B>Chris Kuethe</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20deluo%20gps%20ntp%20time%20offset%20and%20strangeness&In-Reply-To=%3C91981b3e0702181634xf6363a9s907d16e18668f67a%40mail.gmail.com%3E"
+       TITLE="[Gpsd-users] deluo gps ntp time offset and strangeness">chris.kuethe at gmail.com
+       </A><BR>
+    <I>Mon Feb 19 01:34:21 CET 2007</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="002464.html">[Gpsd-users] deluo gps ntp time offset and strangeness
+</A></li>
+        <LI>Next message: <A HREF="002465.html">[Gpsd-users] Choosing a GPS &amp; Supporting the Project
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2471">[ date ]</a>
+              <a href="thread.html#2471">[ thread ]</a>
+              <a href="subject.html#2471">[ subject ]</a>
+              <a href="author.html#2471">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>On 2/16/07, Kerry Hoath &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">kerry at gotss.net</A>&gt; wrote:
+&gt;<i> I admit to switching it into SiRf Binary; afterall the device is cheap, I
+</I>&gt;<i> have a screwdriver and don't mind resetting the unit.
+</I>
+That's fine. Gpsd can switch it back to NMEA with the N command,
+gpsctl should be able to kick it back as well.
+
+&gt;<i> This is one of the little square gps units on a cable; see
+</I>&gt;<i> <A HREF="http://www.deluoelectronics.com/">http://www.deluoelectronics.com/</A> and seems to contain the Sirf3 chipset.
+</I>
+I'm told that the SiRFstar 3 is not the optimal choice for precison
+timing applications. For +/- 1 second though, it should be fine.
+
+&gt;<i> I have configured ntpd to take time from gpsd 2.34-1 and the peer billboard
+</I>&gt;<i> looks as follows:
+</I>
+It's been ages since I last used ntp.org as my time daemon.
+
+&gt;<i> Now currently the time offset is 14 seconds, however I have seen the
+</I>&gt;<i> difference be as large as 80 seconds.
+</I>
+14 seconds is understandable - leap seconds. Not sure where 80 is coming from.
+
+&gt;<i> At night I seem to get 6 satelites and a reasonable fix however in the
+</I>&gt;<i> daytime the fix can fail completely or drop to 1 or 2 satelites.
+</I>&gt;<i> the unit sits on a window cill in our block of units; so perhaps the view of
+</I>&gt;<i> the sky plays a part but I am wondering why I would see time errors
+</I>&gt;<i> as large as 80 seconds?
+</I>
+Yes, I also live in an apartment with a GPS in the window; around here
+I'm lucky if I get 4 satellites; often I get 2 and a ton of multipath
+error.
+
+I'm wondering if maybe it's something in SHM. I seem to recall hearing
+that running gpsd at debug level 5 will give some insight into the
+workings of SHM.
+
+&gt;<i> I'm happy with 5 seconds either way worst case sanario but 80 seems a bit
+</I>&gt;<i> wrong.
+</I>&gt;<i>
+</I>&gt;<i> Running gpsprof -f cycle yields:
+</I>&gt;<i> ...
+</I>&gt;<i> I don't know Python but it seems as if gpsprof gets values that it does not
+</I>&gt;<i> like which are out of sequence.
+</I>
+I don't know python either. ;)
+
+&gt;<i> I read in the gpsd manpage that running in a binary protocol at reasonable
+</I>&gt;<i> baudrate would improve accuracy or could do so.
+</I>
+It can reduce certain transmission delays, and running in binary mode
+means you can get a full navigation solution in a single packet,
+rather than having to reassemble it from NMEA sentences.
+
+&gt;<i> The unit seems to return reasonable possition information when I query it
+</I>&gt;<i> with the p command, and as previously stated q shows fixes between 3 and 6
+</I>&gt;<i> satelites.
+</I>
+With 3 satellites you don't get a real 3d solution - you can make some
+good guesses, but any receiver intended for timing use I've ever seen
+insists on having at least 4 satellites.
+
+&gt;<i> Is there anything I could try to potentially improve accuracy to below 5
+</I>&gt;<i> seconds or to stop the unit from loosing fix? The gps time source appears to
+</I>&gt;<i> occationally become unavailable which causes the server to lock onto another
+</I>&gt;<i> time source and given the time differences stay locked onto that source.
+</I>
+&gt;<i> Am I expecting too much from a cheap SiRf3 unit? Should I go out and buy a
+</I>&gt;<i> Garman or similar?
+</I>
+No, you're not expecting too much to be able to get time within a few seconds.
+
+&gt;<i> I also have a couple of other gps units; wondering if it is worth trying one
+</I>&gt;<i> of these.
+</I>
+Go for it... it can't hurt.
+
+&gt;<i> I am happy to buy another gps unit for a time source but am trying not to
+</I>&gt;<i> use a bluetooth unit if possible since I don't really want the 2.4 ghz radio
+</I>&gt;<i> noise in the unit block and a cable seems more reliable potentially.
+</I>
+Heh. Bluetooth has its own issues, notably the tendency to not switch
+port speed correctly. I prefer wired also.
+
+&gt;<i> Any help or insight would be greatly apreciated. Happy to provide any debug
+</I>&gt;<i> dumps or similar information including switching gps to NMEA or similar.
+</I>
+telnet to 127.0.0.1 port 2947 and send &quot;N=0&quot;
+
+CK
+
+-- 
+GDB has a 'break' feature; why doesn't it have 'fix' too?
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="002464.html">[Gpsd-users] deluo gps ntp time offset and strangeness
+</A></li>
+	<LI>Next message: <A HREF="002465.html">[Gpsd-users] Choosing a GPS &amp; Supporting the Project
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2471">[ date ]</a>
+              <a href="thread.html#2471">[ thread ]</a>
+              <a href="subject.html#2471">[ subject ]</a>
+              <a href="author.html#2471">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

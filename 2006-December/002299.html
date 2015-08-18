@@ -1,0 +1,126 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] Precision of lat/lon/height
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2006-December/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Precision%20of%20lat/lon/height&In-Reply-To=%3C91981b3e0612021334s12fef114m30b19c893311aa12%40mail.gmail.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="002298.html">
+   <LINK REL="Next"  HREF="002305.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] Precision of lat/lon/height</H1>
+    <B>Chris Kuethe</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Precision%20of%20lat/lon/height&In-Reply-To=%3C91981b3e0612021334s12fef114m30b19c893311aa12%40mail.gmail.com%3E"
+       TITLE="[Gpsd-users] Precision of lat/lon/height">chris.kuethe at gmail.com
+       </A><BR>
+    <I>Sat Dec  2 22:34:58 CET 2006</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="002298.html">[Gpsd-users] Precision of lat/lon/height
+</A></li>
+        <LI>Next message: <A HREF="002305.html">[Gpsd-users] Precision of lat/lon/height
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2299">[ date ]</a>
+              <a href="thread.html#2299">[ thread ]</a>
+              <a href="subject.html#2299">[ subject ]</a>
+              <a href="author.html#2299">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>On 12/2/06, Diego Berge &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">gpsd at nippur.net</A>&gt; wrote:
+&gt;<i> From: Chris Kuethe &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">chris.kuethe at gmail.com</A>&gt;
+</I>&gt;<i> &gt; I'm in favor of passing everything -
+</I>&gt;<i> &gt; because maybe, just maybe, today we are using an RTK or dual-frequency
+</I>&gt;<i> &gt; receiver.
+</I>&gt;<i>
+</I>&gt;<i> Not just maybe :) The Navcoms I use are Starfire receivers
+</I>
+Fun!
+
+And yes,  &quot;maybe&quot;. The daemon generally has no a priori knowledge of
+what receiver it is going to be communicating with. Sometimes it can
+probe the receiver, sometimes it can't.
+
+&gt;<i> &gt; And any serious analysis program is going to check the quality flags
+</I>&gt;<i> anyway.
+</I>&gt;<i> And the RMS values.
+</I>
+ie. We hope no one Seriously using GPS is just going to believe the
+position reports without somehow checking their quality.
+
+&gt;<i> Sorry, what is DR? (too tired to look at the code now).
+</I>
+Dead Reckoning. Automotive-integrated sets (for example) may take
+odometer ticks off the drivetrain, and gyro/accelerometer outputs from
+the ABS and mash those into the navigation solution when the GPS
+signal is degraded/unavailable.
+
+My laptop (Thinkpad T42) has accelerometers onboard. I did up a kernel
+patch to make them output at 100Hz and calibrated the output, so I
+have some fairly entertaining logs from my last time out at the
+racetrack. I was foolish and didn't put my SiRF into binary mode
+before I started logging, so I really only have graphs of fairly well
+correlated position, speed, acceleration and time, but not closely
+linked enough to postprocess... at least, i don't think they're good
+enough.
+
+&gt;<i> Off the top of my head, I can't think of anything else other than the
+</I>&gt;<i> quality indicators already present (DGPS status, RMS, DOPs), except perhaps
+</I>&gt;<i> that you would want to include some extra output such as vectors to the base
+</I>&gt;<i> station and status info. But as I said, I would have to have a think about
+</I>&gt;<i> it when I am properly rested.
+</I>
+Hm. That'll require a different message format. For now, the O message
+(7DOF PVT solution with 95% confidence intervals) is what we've got.
+It's a good format. We're not dismissing this extra RTK metadata
+outright, but I don't think it has a place in the standard PVT report.
+
+Stick around though - you can help us with the Next Generation
+Protocol. As an actual user of RTK gear, you can tell us whether or
+not a message format contains enough useful information.
+
+&gt;<i> btw, I've just had another stupid idea (RINEX output) but I'd rather not
+</I>&gt;<i> mention it until I'm back from leave in two weeks time. :P
+</I>
+That's hardly stupid. If you read the archives of gpsd-users and
+gpsd-dev and you will see that I've been mulling that over for some
+time. I've tried to restrict my gps purchases to hardware that does
+actually give me carrier phase and pseudorange so I can hack on this
+sort of thing.
+
+CK
+
+-- 
+GDB has a 'break' feature; why doesn't it have 'fix' too?
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="002298.html">[Gpsd-users] Precision of lat/lon/height
+</A></li>
+	<LI>Next message: <A HREF="002305.html">[Gpsd-users] Precision of lat/lon/height
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2299">[ date ]</a>
+              <a href="thread.html#2299">[ thread ]</a>
+              <a href="subject.html#2299">[ subject ]</a>
+              <a href="author.html#2299">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

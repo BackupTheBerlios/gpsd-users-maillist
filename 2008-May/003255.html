@@ -1,0 +1,135 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] gps position hinting?
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2008-May/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20gps%20position%20hinting%3F&In-Reply-To=%3C14008.1212068008%40foxharp.boston.ma.us%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="003254.html">
+   <LINK REL="Next"  HREF="003256.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] gps position hinting?</H1>
+    <B>Paul Fox</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20gps%20position%20hinting%3F&In-Reply-To=%3C14008.1212068008%40foxharp.boston.ma.us%3E"
+       TITLE="[Gpsd-users] gps position hinting?">pgf at foxharp.boston.ma.us
+       </A><BR>
+    <I>Thu May 29 15:33:28 CEST 2008</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="003254.html">[Gpsd-users] gps position hinting?
+</A></li>
+        <LI>Next message: <A HREF="003256.html">[Gpsd-users] gps position hinting?
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3255">[ date ]</a>
+              <a href="thread.html#3255">[ thread ]</a>
+              <a href="subject.html#3255">[ subject ]</a>
+              <a href="author.html#3255">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>greg wrote:
+ &gt; Paul Fox &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">pgf at foxharp.boston.ma.us</A>&gt; writes:
+ &gt; 
+ &gt; &gt; i've heard a couple of people lately say, effectively, this: 
+ &gt; &gt;     &quot;Long lock-on times have been reduced considerably in the latest
+ &gt; &gt;     generation of cheap GPS hardware.  Initializing with a good guess
+ &gt; &gt;     makes it even faster, just a few seconds.&quot;
+ &gt; 
+ &gt; The notion that knowing position well reduces time to first fix to
+ &gt; seconds doesn't quite make sense.  Most of my receivers store some data
+ &gt; in non-volative memory to aid the next startup:
+ &gt; 
+ &gt;   almanac
+ &gt;   last position
+ &gt;   time
+ &gt;   ephemeris
+
+thank you.  you forced me to go and look up the difference between
+almanac and ephemeris data.  (btw, i ended up at how-gps-works.com -- how
+appropriate.)
+
+ &gt; 
+ &gt; I've seen the following terms used:
+ &gt; 
+ &gt;    cold start: no almanac/position/time.  Receiver searches for signals
+ &gt;    until it finds one.  Then it knows time.  It waits for almanac and
+ &gt;    ephemeris.  It can position once it has 4 sats with ephemeris, and
+ &gt;    can find more sats efficiently with almanac and position.  Time to
+ &gt;    first fix multiple minutes.
+ &gt; 
+ &gt;    warm start: has almanac, approximate position, approximate time
+ &gt;    (receiver has been on within the last month(?) or so, but not the
+ &gt;    last 2 hours).  Can find sats efficiently by knowing what's above the
+ &gt;    horizon, and approximate doppler shift.  I typically see satellites
+ &gt;    acquired in several seconds in this condition, but they aren't usable
+ &gt;    for navigation due to lack of ephemeris.  Time to first fix typically
+ &gt;    35 seconds if not moving and clear sky (5 to acquire, 30 to wait for
+ &gt;    ephemeris).  If moving, can take minutes due to interruption of
+ &gt;    ephemeris data - if I start driving right away I often get on the
+
+thanks for this as well -- i hadn't ever quite understood why fixes
+took so much longer while moving.  this makes sense.
+
+ &gt;    order of several km before acquisition, and it usually happens either
+ &gt;    on a clear stretch of road with good sky view or waiting for stop
+ &gt;    light or stop sign.
+ &gt; 
+ &gt;    hot start: has warm start data plus ephermeris (receiver has been on
+ &gt;    within the last hour or so).  I typically see satellites acquired in
+ &gt;    several seconds (same as warm), but they are immediately usable -
+ &gt;    time to first fix might be 5 seconds.
+ &gt; 
+ &gt; So it might make sense to send approximate position, time and almanac to
+ &gt; a receiver which is in cold start mode.  Position only needs to be good
+ &gt; enough to know what's above the horizon and calculate doppler - being
+ &gt; off 50 km or a minute is no big deal.
+ &gt; 
+ &gt; Beyond that, I'm skeptical that gpsd would often enough have fresh
+ &gt; ephemeris, unless there's support to extract it and share it on the
+ &gt; network - I could see maintaining it from a home receiver and squirting
+ &gt; it into a car receiver on power up.
+
+like this server, i guess:
+    <A HREF="http://www.tdc.co.uk/index.php?key=ephemeris">http://www.tdc.co.uk/index.php?key=ephemeris</A>
+
+for something like this to be practical, i guess gpsd would need to
+be in contact with the ephemeris server within a couple of hours
+of your needing cold start assistance.  and, the server would
+need to be close enough to you for the information to be useful. 
+i wonder what that distance limit is?
+
+paul
+=---------------------
+ paul fox, <A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">pgf at foxharp.boston.ma.us</A> (arlington, ma, where it's 55.4 degrees)
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="003254.html">[Gpsd-users] gps position hinting?
+</A></li>
+	<LI>Next message: <A HREF="003256.html">[Gpsd-users] gps position hinting?
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3255">[ date ]</a>
+              <a href="thread.html#3255">[ thread ]</a>
+              <a href="subject.html#3255">[ subject ]</a>
+              <a href="author.html#3255">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

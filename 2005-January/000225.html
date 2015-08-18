@@ -1,0 +1,118 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] Garmin GPS 18 receiver
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2005-January/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Garmin%20GPS%2018%20receiver&In-Reply-To=%3CPine.LNX.4.62.0501201134190.16980%40catbert.rellim.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="000223.html">
+   <LINK REL="Next"  HREF="000222.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] Garmin GPS 18 receiver</H1>
+    <B>Gary E. Miller</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Garmin%20GPS%2018%20receiver&In-Reply-To=%3CPine.LNX.4.62.0501201134190.16980%40catbert.rellim.com%3E"
+       TITLE="[Gpsd-users] Garmin GPS 18 receiver">gem at rellim.com
+       </A><BR>
+    <I>Thu Jan 20 20:53:01 CET 2005</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="000223.html">[Gpsd-users] Garmin GPS 18 receiver
+</A></li>
+        <LI>Next message: <A HREF="000222.html">[Gpsd-users] Garmin GPS 18 receiver
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#225">[ date ]</a>
+              <a href="thread.html#225">[ thread ]</a>
+              <a href="subject.html#225">[ subject ]</a>
+              <a href="author.html#225">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>-----BEGIN PGP SIGNED MESSAGE-----
+Hash: SHA1
+
+Yo Eric!
+
+On Thu, 20 Jan 2005, Eric S. Raymond wrote:
+
+&gt;<i> We have a hardware entry for the 18 that doesn't mention this.  I guess I'm
+</I>&gt;<i> going to have to start tracking contributors, because I'd like to ask whoever
+</I>&gt;<i> it was whether they found a waty to beat it into emitting NMEA.
+</I>
+Since you asked...
+
+I have been playing, mostly sucessfully, with the GPS 18 since getting
+one for Xmas.  OK, it was a self gift, but the thought was there. :-)
+
+The garmin-gps driver is now up to rev 0.23 and part of the linux
+2.6.11-rc1 kenel.  Not had great luck with kernels past 2.6.7 myself
+but I can confirm the 0.19, and 0.23 drivers work.  The 0.19 had some
+problems if you used a USB mouse at the same time, 0.23 seems better
+but not used it much yet.
+
+Both driver versions will segfault gpsd afer a while.  Killing and
+restarting garminusb2nmea and gpsd a few times will revive it.  Not
+dug in to that yet.
+
+The garmin-gps page on SF also has a daemon garminusb2nmea.  That daemon
+can read the garmin propietary protocol and output simple NMEA on a
+pipe.  The pipe can then be read by gpsd (as /dev/gps).  Not had any
+luck using it with the &quot;-d dgps.wsrcc.com&quot; option though...
+
+Here is a sample NMEA output from garminusb.nmea:
+
+$GPGSV,2,1,06,04,61,082,39,17,32,189,40,02,56,175,45,09,45,226,44*71
+$GPGSV,2,2,06,30,23,305,43,05,56,305,39*76
+$GPGGA,194141,4404.1339,N,12118.8432,W,1,06,,1129.4,M,-20.1,M,,*6B
+$GPRMC,194141,A,4404.1339,N,12118.8432,W,000.0,000.0,200105,,*0B
+$GPGLL,4404.1339,N,12118.8432,W,194141,A*3A
+$GPGSA,A,3,,,04,,17,,02,,,09,30,05,,,*13
+
+A native garmin decoder for gpsd would be great.
+
+
+RGDS
+GARY
+- ---------------------------------------------------------------------------
+Gary E. Miller Rellim 20340 Empire Blvd, Suite E-3, Bend, OR 97701
+	<A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">gem at rellim.com</A>  Tel:+1(541)382-8588 Fax: +1(541)382-8676
+
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v1.2.3 (GNU/Linux)
+
+iD8DBQFB8Awg8KZibdeR3qURAvSsAKDZuSLrh3USv2sC3nWrw7DWQpWR4gCfdpa8
+hdcPctT0lA1SlkPt7TQoXEg=
+=6fcO
+-----END PGP SIGNATURE-----
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="000223.html">[Gpsd-users] Garmin GPS 18 receiver
+</A></li>
+	<LI>Next message: <A HREF="000222.html">[Gpsd-users] Garmin GPS 18 receiver
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#225">[ date ]</a>
+              <a href="thread.html#225">[ thread ]</a>
+              <a href="subject.html#225">[ subject ]</a>
+              <a href="author.html#225">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

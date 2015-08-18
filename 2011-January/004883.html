@@ -1,0 +1,122 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] Trouble installing on Opensuse 10.2
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2011-January/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Trouble%20installing%20on%20Opensuse%2010.2&In-Reply-To=%3C4D233A8A.4040805%40funsoft.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="004887.html">
+   <LINK REL="Next"  HREF="004885.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] Trouble installing on Opensuse 10.2</H1>
+    <B>Gary Eheman</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Trouble%20installing%20on%20Opensuse%2010.2&In-Reply-To=%3C4D233A8A.4040805%40funsoft.com%3E"
+       TITLE="[Gpsd-users] Trouble installing on Opensuse 10.2">eheman at funsoft.com
+       </A><BR>
+    <I>Tue Jan  4 16:19:38 CET 2011</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="004887.html">[Gpsd-users] Trouble installing on Opensuse 10.2
+</A></li>
+        <LI>Next message: <A HREF="004885.html">[Gpsd-users] Trouble installing on Opensuse 10.2
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#4883">[ date ]</a>
+              <a href="thread.html#4883">[ thread ]</a>
+              <a href="subject.html#4883">[ subject ]</a>
+              <a href="author.html#4883">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>I recently did this on an openSuSE 10.1 and a 10.3 system (surrounding releases for
+10.2).
+
+In my case, I had already installed via yast
+
+gpsd
+gpsd-clients
+gpsd-devel
+
+rpms from the openSuSE repositories. When I grabbed the higher level gpsd 2.95 tar
+ball from the gpsd.berlios.de download site, I noted that the &quot;make install&quot; step
+will by default put the new &quot;gpsd&quot; module in /usr/local/sbin/gpsd, and the suse rpm
+package installed via yast puts it in /usr/sbin/gspd.  Since &quot;/usr/local/sbin/&quot;
+follows &quot;/usr/sbin&quot; in root's default $PATH, I renamed the rpm-provided
+/usr/sbin/gpsd and moved the /usr/local/sbin/gpsd to /usr/sbin/gpsd. The other
+client files from the build went to /usr/local/bin and that precedes /usr/bin/ in
+root's $PATH where the suse rpm put its versions of them.
+
+After doing the &quot;make install&quot; for the higher level gpsd, and fixing module
+locations, don't forget to run &quot;ldconfig&quot;.
+
+When I did the ./configure step in the gpsd 2.95 directory prior to doing the &quot;make&quot;,
+it did issue a warning about not being able to locate something it was seeking
+relating to building the man pages.  I cannot recall what it was looking for, but I
+went back into yast and searched/installed it, and then reran ./configure prior to
+the &quot;make&quot;. So for me, the man pages were built ok.
+
+On 01/04/2011 06:22 AM, bob wrote:
+&gt;<i> Hello gpsd list,
+</I>&gt;<i> 
+</I>&gt;<i> If this is documented somewhere, sorry but I couldn't find it.
+</I>&gt;<i> 
+</I>&gt;<i> I am trying to install gpsd on OpenSUSE 10.2 (the pc is a Toshiba
+</I>&gt;<i> Satellite from 2004, it won't support any newer stuff due to many driver
+</I>&gt;<i> problems). I am using the gpsd-2.95 source tarball.
+</I>&gt;<i> Configure seems to be sane, but I get a &quot;No XML processor, omitting
+</I>&gt;<i> manual page installation&quot; error during make.
+</I>&gt;<i> Make install yields the same &quot;warning&quot; several times but finishes
+</I>&gt;<i> without an error.
+</I>&gt;<i> The library stuff seems to have been installed OK in &quot;/usr/local/lib&quot;
+</I>&gt;<i> and tools in &quot;/usr/local/bin&quot;. However, there is no gpsd binary. My
+</I>&gt;<i> intention was to have gpsd handle hot-plugging and rfcomm permissions to
+</I>&gt;<i> hand the gps data to navit.
+</I>&gt;<i> I imagine that I am missing some information here and would be grateful
+</I>&gt;<i> if someone could set me on the right road.
+</I>&gt;<i> 
+</I>&gt;<i> With many thanks,
+</I>&gt;<i> 
+</I>&gt;<i> Robert von Knobloch
+</I>&gt;<i> 
+</I>&gt;<i> _______________________________________________
+</I>&gt;<i> Gpsd-users mailing list
+</I>&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">Gpsd-users at lists.berlios.de</A>
+</I>&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">https://lists.berlios.de/mailman/listinfo/gpsd-users</A>
+</I>&gt;<i> 
+</I>&gt;<i> 
+</I>
+-- 
+Gary Eheman
+Fundamental Software, Inc.
+<A HREF="http://www.funsoft.com">http://www.funsoft.com</A>
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="004887.html">[Gpsd-users] Trouble installing on Opensuse 10.2
+</A></li>
+	<LI>Next message: <A HREF="004885.html">[Gpsd-users] Trouble installing on Opensuse 10.2
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#4883">[ date ]</a>
+              <a href="thread.html#4883">[ thread ]</a>
+              <a href="subject.html#4883">[ subject ]</a>
+              <a href="author.html#4883">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

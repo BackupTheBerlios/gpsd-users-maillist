@@ -1,0 +1,125 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] earthmate usb on linux-2.6 gpsd
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2006-February/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20earthmate%20usb%20on%20linux-2.6%20gpsd&In-Reply-To=%3Cp06230919c0144dbff6cd%40%5B192.168.1.12%5D%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="001290.html">
+   <LINK REL="Next"  HREF="001292.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] earthmate usb on linux-2.6 gpsd</H1>
+    <B>Robin L Darroch</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20earthmate%20usb%20on%20linux-2.6%20gpsd&In-Reply-To=%3Cp06230919c0144dbff6cd%40%5B192.168.1.12%5D%3E"
+       TITLE="[Gpsd-users] earthmate usb on linux-2.6 gpsd">robin at spade-men.com
+       </A><BR>
+    <I>Sun Feb 12 03:30:41 CET 2006</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="001290.html">[Gpsd-users] earthmate usb on linux-2.6 gpsd
+</A></li>
+        <LI>Next message: <A HREF="001292.html">[Gpsd-users] VIP watches - LOW price!
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1291">[ date ]</a>
+              <a href="thread.html#1291">[ thread ]</a>
+              <a href="subject.html#1291">[ subject ]</a>
+              <a href="author.html#1291">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Try your gpsd command without the -T switch - the output you're 
+getting using cat /dev/ttyUSB0 is standard NMEA output, so you can 
+just let gpsd use that as long as you haven't told it specifically 
+not to do so (which is what I believe the -Te option does).
+
+At 18:27 -0500 11/2/06, Mike T. Machenry wrote:
+&gt;<i>Hello,
+</I>&gt;<i>
+</I>&gt;<i>First of all I'm sorry if the information I'm asking for is on this list. 
+</I>&gt;<i>I've searched the  archive and can't find the answer to my question. 
+</I>&gt;<i>Basically I have an Earthmate USB GPS device and a fresh install of ubuntu
+</I>&gt;<i>v5.04 running Linux kernel 2.6.10. I am have a difficult time getting it to
+</I>&gt;<i>work. Here's what I've tried:
+</I>&gt;<i>
+</I>&gt;<i>sudo modprobe cypress_m8
+</I>&gt;<i>gpds -Te -D2 -p/dev/ttyUSB0 -n
+</I>&gt;<i>
+</I>&gt;<i>and I get null for the positions. I have tried this outside with no luck so
+</I>&gt;<i>I don't think it's a problem of not finding the satellite. I'm exactly sure
+</I>&gt;<i>what I'm supposed to see. When I plug the Earthmate into my USB port,
+</I>&gt;<i>modprobe cypress and cat /dev/ttyUSB0 I get stuff like what I've pasted at
+</I>&gt;<i>the bottom of my message so I'm pretty convinced that the device is being
+</I>&gt;<i>recognized, so I think the problem is with my gpsd configuration. Any one
+</I>&gt;<i>what I'm doing wrong? I've read a little about the EMUL (Earthmate user land)
+</I>&gt;<i>project but it all says that it is deprecated as of Linux-2.6.10 so it
+</I>&gt;<i>shouldn't be necessary.
+</I>&gt;<i>
+</I>&gt;<i>Thanks for the help,
+</I>&gt;<i>-mike
+</I>&gt;<i>
+</I>&gt;<i><A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">dskippy at ubuntu</A>:~$ cat /dev/ttyUSB0
+</I>&gt;<i>$Version 231.000.000ES-01502
+</I>&gt;<i>$GPS Port B : User Protocol
+</I>&gt;<i>$TOW: 600456
+</I>&gt;<i>$WK:  1361
+</I>&gt;<i>$POS: 1526190  -4463950 4277988
+</I>&gt;<i>$CLK: 101208
+</I>&gt;<i>$CHNL:12
+</I>&gt;<i>
+</I>&gt;<i>$Baud rate: 4800  System clock: 24.553MHz
+</I>&gt;<i>$HW Type: S2AM
+</I>&gt;<i>$Asic Version: 0x23
+</I>&gt;<i>$Clock Source: GPSCLK
+</I>&gt;<i>$Internal Beacon: None
+</I>&gt;<i>$LED Flash rate : OnTime: 10 , OffTime: 10
+</I>&gt;<i>$GPGGA,232153.000,4223.6122,N,07107.4903,W,0,00,50.0,-0.3,M,-33.7,M,0.0,0000*5B
+</I>&gt;<i>$GPGSA,A,1,,,,,,,,,,,,,50.0,50.0,50.0*05
+</I>&gt;<i>$GPGSV,3,1,09,17,84,292,00,26,70,053,,21,61,299,,29,58,049,*79
+</I>&gt;<i>$GPGSV,3,2,09,15,33,310,,10,27,081,,06,21,220,,09,19,164,*7D
+</I>&gt;<i>$GPGSV,3,3,09,08,11,037,*4C
+</I>&gt;<i>$GPRMC,232153.000,V,4223.6122,N,07107.4903,W,0.00,0.00,110206,,*09
+</I>&gt;<i>
+</I>&gt;<i>_______________________________________________
+</I>&gt;<i>Gpsd-users mailing list
+</I>&gt;<i><A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">Gpsd-users at lists.berlios.de</A>
+</I>&gt;<i><A HREF="http://lists.berlios.de/mailman/listinfo/gpsd-users">http://lists.berlios.de/mailman/listinfo/gpsd-users</A>
+</I>
+
+-- 
+
+-------------------------------------------------------------------------
+  Robin L. Darroch - PO Box 2715, South Hedland WA 6722 - +61 421 503 966
+       <A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">robin at darroch.id.au</A> - <A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">robin at nyca.org.au</A> - <A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">robin at spade-men.com</A>
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="001290.html">[Gpsd-users] earthmate usb on linux-2.6 gpsd
+</A></li>
+	<LI>Next message: <A HREF="001292.html">[Gpsd-users] VIP watches - LOW price!
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1291">[ date ]</a>
+              <a href="thread.html#1291">[ thread ]</a>
+              <a href="subject.html#1291">[ subject ]</a>
+              <a href="author.html#1291">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

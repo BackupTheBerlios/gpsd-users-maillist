@@ -1,0 +1,79 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] using libgps.dylib with OpenCPN
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2011-June/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20using%20libgps.dylib%20with%20OpenCPN&In-Reply-To=%3CB0B7C956-EDF0-4896-853E-26EA977986C7%40friedensflotte.org%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="005295.html">
+   <LINK REL="Next"  HREF="005300.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] using libgps.dylib with OpenCPN</H1>
+    <B>Andreas Lackner</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20using%20libgps.dylib%20with%20OpenCPN&In-Reply-To=%3CB0B7C956-EDF0-4896-853E-26EA977986C7%40friedensflotte.org%3E"
+       TITLE="[Gpsd-users] using libgps.dylib with OpenCPN">luke at friedensflotte.org
+       </A><BR>
+    <I>Sun Jun  5 11:23:03 CEST 2011</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="005295.html">[Gpsd-users] TCP Feed Clarification
+</A></li>
+        <LI>Next message: <A HREF="005300.html">[Gpsd-users] using libgps.dylib with OpenCPN
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#5299">[ date ]</a>
+              <a href="thread.html#5299">[ thread ]</a>
+              <a href="subject.html#5299">[ subject ]</a>
+              <a href="author.html#5299">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>
+Hi Folks,
+
+I can't get OpenCPN to run using GPSD. I've compiled current gpsd and OpenCPN 2.3.1 on my Mac OS X 10.6. 
+libgps.dylib is loaded dynamically using dlopen(&quot;libgps.dylib&quot;, RTLD_LAZY), and methodspointers are extracted like this:
+
+void *p = dlsym(m_lib_handle, &quot;gps_open&quot;);
+m_fn_gps_open = (gps_data_t *(*)(char *, char *))p;
+
+This works fine, but some methods can't be found (dlerror() returns &quot;symbol not found&quot;), including &quot;gps_read&quot;, &quot;gps_waiting&quot; and &quot;gps_stream&quot;).
+
+As I'm not a C-professional nor deep into XCode, any help would be highly appreciated.
+
+++Luke
+
+
+
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="005295.html">[Gpsd-users] TCP Feed Clarification
+</A></li>
+	<LI>Next message: <A HREF="005300.html">[Gpsd-users] using libgps.dylib with OpenCPN
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#5299">[ date ]</a>
+              <a href="thread.html#5299">[ thread ]</a>
+              <a href="subject.html#5299">[ subject ]</a>
+              <a href="author.html#5299">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

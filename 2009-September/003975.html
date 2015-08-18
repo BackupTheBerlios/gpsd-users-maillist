@@ -1,0 +1,158 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] Detecting Gps/Modems
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2009-September/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Detecting%20Gps/Modems&In-Reply-To=%3C4ABCDE94.70106%40wildgooses.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="003972.html">
+   <LINK REL="Next"  HREF="003979.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] Detecting Gps/Modems</H1>
+    <B>Ed W</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Detecting%20Gps/Modems&In-Reply-To=%3C4ABCDE94.70106%40wildgooses.com%3E"
+       TITLE="[Gpsd-users] Detecting Gps/Modems">lists at wildgooses.com
+       </A><BR>
+    <I>Fri Sep 25 17:15:32 CEST 2009</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="003972.html">[Gpsd-users] Detecting Gps/Modems
+</A></li>
+        <LI>Next message: <A HREF="003979.html">[Gpsd-users] Detecting Gps/Modems
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3975">[ date ]</a>
+              <a href="thread.html#3975">[ thread ]</a>
+              <a href="subject.html#3975">[ subject ]</a>
+              <a href="author.html#3975">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi
+
+&gt;<i> Not normally, no.  But remember the hunt loop.  Every time we change parameters 
+</I>&gt;<i> we're likely to get a bunch of baud barf as the UART resettles. The failure mode
+</I>&gt;<i> I'm worried about is this: we change settings, random garbage starts coming 
+</I>&gt;<i> in, we ship &quot;AT&quot;, and oops!  That OK was baud barf, not an actual response.
+</I>&gt;<i>   
+</I>
+Actually, I will show you a conversation which will allow us to very 
+reliably detect a modem.  If you look at my pseudo code before I pointed 
+out that I agreed that a single &quot;OK&quot; response to a single &quot;AT&quot; question 
+was just the starting point.  If you then munch data for a while to 
+clear down any input then if it doesn't stop then we should abort 
+because it's not a modem.  If it does go quiet then you simply repeat 
+the AT, get an OK response a few times to be sure it's a modem.  And 
+then I would personally ask the modem a few other AT commands which 
+generate slightly different responses to get a bit more detail about 
+make/model
+
+I really think there is very, very little chance of false positives 
+here.  However, the point is to do slightly more than just sending an 
+&quot;AT&quot; and assuming if we get a single &quot;OK&quot; back then it must be a modem.  
+I'm sure the same logic actually extends to testing most of the GPS 
+devices though?
+
+
+&gt;&gt;<i>                     I really need a more generic approach to handling 
+</I>&gt;&gt;<i> the hotplug event and figuring out which subsystem should be fired up in 
+</I>&gt;&gt;<i> response to a serial port connection event
+</I>&gt;&gt;<i>     
+</I>&gt;<i>
+</I>&gt;<i> You probably need to be talking to the udev or DeviceKit folks, then.
+</I>&gt;<i>   
+</I>
+Perhaps - however, I think udev simply gives us the means to spot that 
+the hardware is connected.  Probing it seems like a userspace problem to 
+me.
+
+Remember this is what USB is designed to solve - detecting a device and 
+getting the device to cooperate with that.  The situation here is being 
+stuck with a bunch of serial devices which obviously doesn't lend itself 
+easily to plug'n'play.
+
+
+&gt;&gt;<i> Why am I posting here?  Basically because there is already a great 
+</I>&gt;&gt;<i> autodetection in gpsd for a wide class of serial connected devices and 
+</I>&gt;&gt;<i> with a bit of open-mindedness I hope people can see that it might be 
+</I>&gt;&gt;<i> useful to re-use the autodetection part of gpsd for a wider purpose....
+</I>&gt;&gt;<i>     
+</I>&gt;<i>
+</I>&gt;<i> Actually, we handle a very *narrow* class of devices - eight specific 
+</I>&gt;<i> USB-to-serial chips and that's it.
+</I>&gt;<i>   
+</I>
+Sure - but I guess you hit those because between them they dominate the 
+observed market?
+
+In the same way, the remaining small number of serial devices is 
+probably then dominated by modems.  At this stage I was only going to 
+try and pick those off with a generic detection and leave detecting 
+serial port connected fridges as a todo item...
+
+
+&gt;<i> There's a timeout. Maybe you didn't wait long enough for it.
+</I>&gt;<i>   
+</I>
+Aha - probably that's it
+
+However, this gets me no further to solving my goal.  I have a serial 
+port - it's either a gps or a modem - I need to do something with it 
+once I know which it is... 
+
+&gt;<i> The packet sniffer, maybe.  None of the rest of it.
+</I>&gt;<i>   
+</I>
+Yep - spot on.  I was hoping to
+
+a) &quot;borrow&quot; the central gpsd device detection loop and as a result all 
+the packet sniffing stuff
+b) make it available as a separate utility to udev (why? because right 
+now my 5MB embedded device needs to gain a 10MB python dependency simply 
+for the sake of a 20 line udev script. Coding this in C and making it 
+smarter would eliminate a lot of baggage in my situation)
+
+
+
+I don't think this is seriously silly stuff though.  Probably these days 
+serial ports are dominated by gps style devices.  Modems are probably a 
+smaller percentage, but the next most common (especially I should think 
+detecting the difference between bluetooth phone connections and 
+bluetooth gps devices? untested question though?).  Everything below 
+that is probably increasingly rare, eg I would imagine that for desktops 
+then UPS's were the next most common use, but for my marine users, its 
+probably AIS receivers and HF radios.
+
+
+Ed W
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="003972.html">[Gpsd-users] Detecting Gps/Modems
+</A></li>
+	<LI>Next message: <A HREF="003979.html">[Gpsd-users] Detecting Gps/Modems
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3975">[ date ]</a>
+              <a href="thread.html#3975">[ thread ]</a>
+              <a href="subject.html#3975">[ subject ]</a>
+              <a href="author.html#3975">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

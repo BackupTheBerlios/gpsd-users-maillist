@@ -1,0 +1,95 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] GPSD and NTP/Openntp SHM
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2010-August/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20GPSD%20and%20NTP/Openntp%20SHM&In-Reply-To=%3Calpine.LNX.2.01.1008021644460.497%40catbert.rellim.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="004619.html">
+   <LINK REL="Next"  HREF="004621.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] GPSD and NTP/Openntp SHM</H1>
+    <B>Gary E. Miller</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20GPSD%20and%20NTP/Openntp%20SHM&In-Reply-To=%3Calpine.LNX.2.01.1008021644460.497%40catbert.rellim.com%3E"
+       TITLE="[Gpsd-users] GPSD and NTP/Openntp SHM">gem at rellim.com
+       </A><BR>
+    <I>Tue Aug  3 01:50:04 CEST 2010</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="004619.html">[Gpsd-users] GPSD and NTP/Openntp SHM
+</A></li>
+        <LI>Next message: <A HREF="004621.html">[Gpsd-users] GPSD and NTP/Openntp SHM
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#4620">[ date ]</a>
+              <a href="thread.html#4620">[ thread ]</a>
+              <a href="subject.html#4620">[ subject ]</a>
+              <a href="author.html#4620">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>-----BEGIN PGP SIGNED MESSAGE-----
+Hash: SHA1
+
+Yo Tom!
+
+On Mon, 2 Aug 2010, Echols Jr, Thomas wrote:
+
+&gt;<i> ntpd is running as ntpd -g and gpsd is running as gpsd -n -G.  GPSD
+</I>&gt;<i> reads the gps an streams data via cgps, but it appears that it does not
+</I>&gt;<i> attach itself to SHM.  I dont know if this is because the User ID is
+</I>&gt;<i> titled 'nobody' and not root.  If so how do you change gpsd to run as
+</I>&gt;<i> root?
+</I>
+Are you running ntpd first, or gpsd first?  If you run ntpd as root, first,
+hen you probably do not need to run gpsd as root.  To run gpsd as
+root just sudo.
+
+Check out the comments in ntpshm.c around line 60.
+
+
+RGDS
+GARY
+- ---------------------------------------------------------------------------
+Gary E. Miller Rellim 109 NW Wilmington Ave., Suite E, Bend, OR 97701
+	<A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">gem at rellim.com</A>  Tel:+1(541)382-8588
+
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v1.4.3 (GNU/Linux)
+
+iD8DBQFMV1muBmnRqz71OvMRAvyTAJ4ky3Ty7kLIFryx16foUfxryR4aKgCeLB6W
+NBpN6QUPMPMlsMivrbZ+YBU=
+=lGeG
+-----END PGP SIGNATURE-----
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="004619.html">[Gpsd-users] GPSD and NTP/Openntp SHM
+</A></li>
+	<LI>Next message: <A HREF="004621.html">[Gpsd-users] GPSD and NTP/Openntp SHM
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#4620">[ date ]</a>
+              <a href="thread.html#4620">[ thread ]</a>
+              <a href="subject.html#4620">[ subject ]</a>
+              <a href="author.html#4620">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

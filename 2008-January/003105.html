@@ -1,0 +1,94 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] Looks like a BUG?? was PPS 5Hz + GPSClock square	wave pulse detection indefault nmea driver
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2008-January/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Looks%20like%20a%20BUG%3F%3F%20was%20PPS%205Hz%20%2B%20GPSClock%20square%0A%09wave%20pulse%20detection%20indefault%20nmea%20driver&In-Reply-To=%3C000601c857e1%24fd9f9010%24fbc31eac%40tau%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="003102.html">
+   <LINK REL="Next"  HREF="003103.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] Looks like a BUG?? was PPS 5Hz + GPSClock square	wave pulse detection indefault nmea driver</H1>
+    <B>John Arthur</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Looks%20like%20a%20BUG%3F%3F%20was%20PPS%205Hz%20%2B%20GPSClock%20square%0A%09wave%20pulse%20detection%20indefault%20nmea%20driver&In-Reply-To=%3C000601c857e1%24fd9f9010%24fbc31eac%40tau%3E"
+       TITLE="[Gpsd-users] Looks like a BUG?? was PPS 5Hz + GPSClock square	wave pulse detection indefault nmea driver">lists at davey.net.au
+       </A><BR>
+    <I>Wed Jan 16 02:49:11 CET 2008</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="003102.html">[Gpsd-users] Looks like a BUG?? was PPS 5Hz + GPSClock square wave pulse detection indefault nmea driver
+</A></li>
+        <LI>Next message: <A HREF="003103.html">[Gpsd-users] Patch gpsd-2.36.jad-6.0 against 2.36 to fix pps thread	bug,	add Garmin 18-5Hz bug and add generic nmea 1Hz square wave PPS device	support
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3105">[ date ]</a>
+              <a href="thread.html#3105">[ thread ]</a>
+              <a href="subject.html#3105">[ subject ]</a>
+              <a href="author.html#3105">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi Gary,
+
+&gt;<i> 
+</I>&gt;<i> &gt; Obviously I do not understand svn because the codes (bug) 
+</I>&gt;<i> still there.
+</I>&gt;<i> 
+</I>&gt;<i> And your patch would be?
+</I>&gt;<i> 
+</I>
+patch gpsd-2.36.jad-6.0 that I just posted to the list.
+
+Anyhow you'd better check out trunk/serial.c it's still going to start
+2 ntp threads.
+
+#ifdef NTPSHM_ENABLE
+    /*
+     * Now is the right time to grab the shared memory segment(s)
+     * to communicate the navigation message derived and (possibly)
+     * 1pps derived time data to ntpd.
+     */              
+-------&gt;    ntpd_link_activate(session);
+
+    gpsd_report(LOG_INF, &quot;ntpd_link_activate: %d\n&quot;,
+      (int)session-&gt;shmindex &gt;=0 );
+    /* do not start more than one ntp thread */       
+    if (!(session-&gt;shmindex &gt;=0))
+       ntpd_link_activate(session);
+
+#endif /* NTPSHM_ENABLE */
+
+
+
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="003102.html">[Gpsd-users] Looks like a BUG?? was PPS 5Hz + GPSClock square wave pulse detection indefault nmea driver
+</A></li>
+	<LI>Next message: <A HREF="003103.html">[Gpsd-users] Patch gpsd-2.36.jad-6.0 against 2.36 to fix pps thread	bug,	add Garmin 18-5Hz bug and add generic nmea 1Hz square wave PPS device	support
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3105">[ date ]</a>
+              <a href="thread.html#3105">[ thread ]</a>
+              <a href="subject.html#3105">[ subject ]</a>
+              <a href="author.html#3105">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

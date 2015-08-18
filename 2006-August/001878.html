@@ -1,0 +1,134 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] Globalsat BU-353 BU Floating Point Issues on ARM /	AT91RM9200
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2006-August/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Globalsat%20BU-353%20BU%20Floating%20Point%20Issues%20on%20ARM%20/%0A%09AT91RM9200&In-Reply-To=%3Cfce118170608240903v28ea9768wc6e51a6a535cfddf%40mail.gmail.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="001877.html">
+   <LINK REL="Next"  HREF="001879.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] Globalsat BU-353 BU Floating Point Issues on ARM /	AT91RM9200</H1>
+    <B>Jon Webb</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Globalsat%20BU-353%20BU%20Floating%20Point%20Issues%20on%20ARM%20/%0A%09AT91RM9200&In-Reply-To=%3Cfce118170608240903v28ea9768wc6e51a6a535cfddf%40mail.gmail.com%3E"
+       TITLE="[Gpsd-users] Globalsat BU-353 BU Floating Point Issues on ARM /	AT91RM9200">digitalwebb at gmail.com
+       </A><BR>
+    <I>Thu Aug 24 18:03:59 CEST 2006</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="001877.html">[Gpsd-users] Not connecting to satellite
+</A></li>
+        <LI>Next message: <A HREF="001879.html">[Gpsd-users] Globalsat BU-353 BU Floating Point Issues on ARM /	AT91RM9200
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1878">[ date ]</a>
+              <a href="thread.html#1878">[ thread ]</a>
+              <a href="subject.html#1878">[ subject ]</a>
+              <a href="author.html#1878">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>HI All,
+
+I must be missing a trick somewhere, and i'm not that experienced with
+embedded stuff but....
+
+My setup is an ARM9 / AT91RM9200 uClinux based system with a 2.6.14 kernel.
+The USB Device is a GlobalSat BU-353, i have the USB Serial driver compiles,
+installed and functioning on ttyUSB0.
+
+I'm having an issue where by the GPSd deamon is not reporting the
+coordinates properly when i telnet to port 2947. If I enter pn i generally
+get back a very very strange result, such as:
+
+pn
+GPSD,P=-855695866870622261632659049238453494227056661231441824014044473400636108
+58121273230343668099631306865926350924860129376946470956179957864635487866792709
+2075926913024.000000 0.000000,N=0
+pn
+GPSD,P=-855695866870622261632659049238453494227056661231441824014044473400636108
+58121273230343668099631306865926350924860129376946470956179957864635487866792709
+2075926913024.000000 0.000000,N=0
+pn
+GPSD,P=-0.000000 827520360021000424981956793291054776320.000000,N=0
+pn
+GPSD,P=0.000000 -0.000000,N=0
+pn
+GPSD,P=8941994256452070452004103367984364295246960586450636454330821820419752866
+666800462623145984.000000168040757792742644638045248690266522298600971487628990
+10370487101968934186514105017303040.000000,N=0
+
+It's also switching through the various 0,2,3 NMEA states very regularly,
+atleast once per second
+
+I've tried lots of difference compilation options, fixing the port speed and
+it makes very little difference.
+
+now, although this isn't the safest way to advertise my location - the data
+coming back from the GPS looks sane
+
+$GPRMC,154519.000,A,5047.7664,N,00037.4308,W,5.40,81.08,240806,,*2A
+$GPGGA,154520.000,5047.7664,N,00037.4305,W,1,03,8.3,14.7,M,47.1,M,,0000*72
+$GPGSA,A,2,30,14,01,,,,,,,,,,8.3,8.3,1.0*35
+$GPGSV,3,1,11,05,73,068,,30,60,258,27,14,49,274,20,09,34,125,*78
+$GPGSV,3,2,11,01,21,319,27,06,19,197,13,04,16,059,,02,16,098,*7C
+$GPGSV,3,3,11,24,12,039,,25,01,303,,20,00,359,*4D
+$GPRMC,154520.000,A,5047.7664,N,00037.4305,W,16.52,79.82,240806,,*19
+$GPGGA,154521.000,5047.7653,N,00037.4394,W,1,03,8.2,14.7,M,47.1,M,,0000*7E
+$GPGSA,A,2,30,14,01,,,,,,,,,,8.3,8.2,1.0*34
+$GPRMC,154521.000,A,5047.7653,N,00037.4394,W,0.80,245.96,240806,,*14
+$GPGGA,154522.000,5047.7709,N,00037.3903,W,1,03,8.2,14.7,M,47.1,M,,0000*70
+$GPGSA,A,2,30,14,01,,,,,,,,,,8.3,8.2,1.0*34
+$GPRMC,154522.000,A,5047.7709,N,00037.3903,W,6.42,79.30,240806,,*23
+$GPGGA,154523.000,5047.7680,N,00037.4156,W,1,03,8.2,14.7,M,47.1,M,,0000*7E
+$GPGSA,A,2,30,14,01,,,,,,,,,,8.3,8.2,1.0*34
+$GPRMC,154523.000,A,5047.7680,N,00037.4156,W,12.55,80.40,240806,,*1F
+
+This output from the ARM platform is very very close to the Fedora Core
+systems.
+
+I stumbled across this:
+<A HREF="http://sablevm.org/lists/sablevm-bugs/2004-November/000239.html">http://sablevm.org/lists/sablevm-bugs/2004-November/000239.html</A> which
+(although not related to gpsd, has a few pointers for me)
+
+I would prefer not to have to recompile everything with -msoft-float unless
+there is really no other way.
+
+I would really appreciate any pointers.
+
+Many thanks,
+
+Jon
+-------------- next part --------------
+An HTML attachment was scrubbed...
+URL: &lt;<A HREF="https://lists.berlios.de/pipermail/gpsd-users/attachments/20060824/629fe25e/attachment.html">https://lists.berlios.de/pipermail/gpsd-users/attachments/20060824/629fe25e/attachment.html</A>&gt;
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="001877.html">[Gpsd-users] Not connecting to satellite
+</A></li>
+	<LI>Next message: <A HREF="001879.html">[Gpsd-users] Globalsat BU-353 BU Floating Point Issues on ARM /	AT91RM9200
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1878">[ date ]</a>
+              <a href="thread.html#1878">[ thread ]</a>
+              <a href="subject.html#1878">[ subject ]</a>
+              <a href="author.html#1878">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

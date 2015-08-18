@@ -1,0 +1,295 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] Garmin GPS 60 USB - real time acquisition
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2009-May/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Garmin%20GPS%2060%20USB%20-%20real%20time%20acquisition&In-Reply-To=%3C40E9E0CB-06D9-4D3C-B331-792C9BF4521A%40gmail.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="003743.html">
+   <LINK REL="Next"  HREF="003745.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] Garmin GPS 60 USB - real time acquisition</H1>
+    <B>TheMrOrange</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Garmin%20GPS%2060%20USB%20-%20real%20time%20acquisition&In-Reply-To=%3C40E9E0CB-06D9-4D3C-B331-792C9BF4521A%40gmail.com%3E"
+       TITLE="[Gpsd-users] Garmin GPS 60 USB - real time acquisition">themrorange at gmail.com
+       </A><BR>
+    <I>Wed May 20 13:56:31 CEST 2009</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="003743.html">[Gpsd-users] gpsd can not find device garminGPS60
+</A></li>
+        <LI>Next message: <A HREF="003745.html">[Gpsd-users] Garmin GPS 60 USB - real time acquisition
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3744">[ date ]</a>
+              <a href="thread.html#3744">[ thread ]</a>
+              <a href="subject.html#3744">[ subject ]</a>
+              <a href="author.html#3744">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>I've tried to :
+# gpsd -N -D 6 /dev/ttyUSB0
+psd: launching (Version 2.37)
+gpsd: listening on port gpsd
+gpsd: shmat(0,0,0) succeeded
+gpsd: shmat(0,0,0) succeeded
+gpsd: shmat(0,0,0) succeeded
+gpsd: shmat(0,0,0) succeeded
+gpsd: successfully connected to the DBUS system bus
+gpsd: running with effective group ID 0
+gpsd: running with effective user ID 0
+gpsd: opening GPS data source at '/dev/ttyUSB0'
+gpsd: device open failed: No such file or directory - retrying read-only
+gpsd: read-only device open failed: No such file or directory
+gpsd: GPS device /dev/ttyUSB0 nonexistent or can't be read
+
+
+so I tried tty0 and others but output is almost the same
+
+# gpsd -N -D 6 /dev/tty0
+gpsd: launching (Version 2.37)
+gpsd: listening on port gpsd
+gpsd: shmat(0,0,0) succeeded
+gpsd: shmat(0,0,0) succeeded
+gpsd: shmat(0,0,0) succeeded
+gpsd: shmat(0,0,0) succeeded
+gpsd: successfully connected to the DBUS system bus
+gpsd: running with effective group ID 0
+gpsd: running with effective user ID 0
+gpsd: opening GPS data source at '/dev/tty0'
+gpsd: speed 38400, 8N1
+gpsd: =&gt; GPS: $PASHQ,RID*28\x0d
+
+gpsd: Navcom: command dump: 0299661c0800040200001203
+gpsd: =&gt; GPS: 0299661c0800040200001203
+gpsd: Navcom: sent command 0x1c (Test Support Block)
+gpsd: Navcom: command 0x1c mode = 02, length = 0
+gpsd: Navcom: command dump: 029966200e000001ae02000071000000f203
+gpsd: =&gt; GPS: 029966200e000001ae02000071000000f203
+gpsd: Navcom: sent command 0x20 (Data Request) - data block id = ae at  
+rate 00
+gpsd: Navcom: command dump: 029966200e00000186020a0071000000d003
+gpsd: =&gt; GPS: 029966200e00000186020a0071000000d003
+gpsd: Navcom: sent command 0x20 (Data Request) - data block id = 86 at  
+rate 0a
+gpsd: garmin_gps not active.
+gpsd: no probe matched...
+gpsd: gpsd_activate(0): opened GPS (5)
+gpsd: client 127.0.0.1 (0) connect on fd 6
+gpsd: checking client(0)
+gpsd: &lt;= client(0): R
+gpsd: client(0): assigning channel...
+gpsd: User requires 2, channel type is -1
+gpsd: client(0): channel 5 already active.
+gpsd: client(0) turned on raw mode
+gpsd: =&gt; client(0): GPSD,R=1
+gpsd: checking client(0)
+gpsd: detaching 127.0.0.1 (sub0, fd 6) in detach_client
+gpsd: client 127.0.0.1 (0) connect on fd 6
+gpsd: checking client(0)
+gpsd: &lt;= client(0): R
+gpsd: client(0): assigning channel...
+gpsd: User requires 2, channel type is -1
+gpsd: client(0): channel 5 already active.
+gpsd: client(0) turned on raw mode
+gpsd: =&gt; client(0): GPSD,R=1
+gpsd: checking client(0)
+gpsd: detaching 127.0.0.1 (sub0, fd 6) in detach_client
+psd: client 127.0.0.1 (0) connect on fd 6
+gpsd: checking client(0)
+gpsd: &lt;= client(0): l
+gpsd: =&gt; client(0): GPSD,L=3 2.37 abcdefgijklmnopqrstuvwxyz
+gpsd: checking client(0)
+gpsd: &lt;= client(0): j=1
+gpsd: =&gt; client(0): GPSD,J=1
+gpsd: checking client(0)
+gpsd: &lt;= client(0): w=1
+gpsd: client(0): assigning channel...
+gpsd: User requires 2, channel type is -1
+gpsd: client(0): channel 5 already active.
+gpsd: =&gt; client(0): GPSD,W=1
+gpsd: checking client(0)
+gpsd: detaching 127.0.0.1 (sub0, fd 6) in detach_client
+^Cgpsd: Received terminating signal 2. Exiting...
+gpsd: closing GPS=/dev/tty0 (5)
+<A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">root at orange</A>:/home/mrorange# gpsd -N -D 6 /dev/tty0
+gpsd: launching (Version 2.37)
+gpsd: listening on port gpsd
+gpsd: shmat(0,0,0) succeeded
+gpsd: shmat(0,0,0) succeeded
+gpsd: shmat(0,0,0) succeeded
+gpsd: shmat(0,0,0) succeeded
+gpsd: successfully connected to the DBUS system bus
+gpsd: running with effective group ID 0
+gpsd: running with effective user ID 0
+gpsd: opening GPS data source at '/dev/tty0'
+gpsd: speed 38400, 8N1
+gpsd: =&gt; GPS: $PASHQ,RID*28\x0d
+
+gpsd: Navcom: command dump: 0299661c0800040200001203
+gpsd: =&gt; GPS: 0299661c0800040200001203
+gpsd: Navcom: sent command 0x1c (Test Support Block)
+gpsd: Navcom: command 0x1c mode = 02, length = 0
+gpsd: Navcom: command dump: 029966200e000001ae02000071000000f203
+gpsd: =&gt; GPS: 029966200e000001ae02000071000000f203
+gpsd: Navcom: sent command 0x20 (Data Request) - data block id = ae at  
+rate 00
+gpsd: Navcom: command dump: 029966200e00000186020a0071000000d003
+gpsd: =&gt; GPS: 029966200e00000186020a0071000000d003
+gpsd: Navcom: sent command 0x20 (Data Request) - data block id = 86 at  
+rate 0a
+gpsd: garmin_gps not active.
+gpsd: no probe matched...
+gpsd: gpsd_activate(0): opened GPS (5)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+xgps e cgps can't collect data
+
+
+# dmesg
+[22793.600226] usb 4-1: USB disconnect, address 5
+[22798.800104] usb 4-1: new full speed USB device using uhci_hcd and  
+address 6
+[22798.952314] usb 4-1: configuration #1 chosen from 1 choice
+
+/dev/uhci_hcd doesn't exist!
+also /dev/ttyUSB0doesn't exist...
+
+no others USB device were plugged...
+
+I really don't know how to select the device
+
+uhci_hcd sound like a problem...
+
+
+help
+
+
+
+# lsusb
+Bus 004 Device 003: ID 091e:0003 Garmin International GPSmap (various  
+models)
+
+
+# lsusb -s 004:003 -vvv
+Bus 004 Device 003: ID 091e:0003 Garmin International GPSmap (various  
+models)
+Device Descriptor:
+  bLength                18
+  bDescriptorType         1
+  bcdUSB               1.10
+  bDeviceClass          255 Vendor Specific Class
+  bDeviceSubClass       255 Vendor Specific Subclass
+  bDeviceProtocol       255 Vendor Specific Protocol
+  bMaxPacketSize0         8
+  idVendor           0x091e Garmin International
+  idProduct          0x0003 GPSmap (various models)
+  bcdDevice            0.01
+  iManufacturer           0
+  iProduct                0
+  iSerial                 0
+  bNumConfigurations      1
+  Configuration Descriptor:
+    bLength                 9
+    bDescriptorType         2
+    wTotalLength           39
+    bNumInterfaces          1
+    bConfigurationValue     1
+    iConfiguration          0
+    bmAttributes         0xc0
+      Self Powered
+    MaxPower                0mA
+    Interface Descriptor:
+      bLength                 9
+      bDescriptorType         4
+      bInterfaceNumber        0
+      bAlternateSetting       0
+      bNumEndpoints           3
+      bInterfaceClass       255 Vendor Specific Class
+      bInterfaceSubClass    255 Vendor Specific Subclass
+      bInterfaceProtocol    255 Vendor Specific Protocol
+      iInterface              0
+      Endpoint Descriptor:
+        bLength                 7
+        bDescriptorType         5
+        bEndpointAddress     0x81  EP 1 IN
+        bmAttributes            3
+          Transfer Type            Interrupt
+          Synch Type               None
+          Usage Type               Data
+        wMaxPacketSize     0x0040  1x 64 bytes
+        bInterval               1
+      Endpoint Descriptor:
+        bLength                 7
+        bDescriptorType         5
+        bEndpointAddress     0x02  EP 2 OUT
+        bmAttributes            2
+          Transfer Type            Bulk
+          Synch Type               None
+          Usage Type               Data
+        wMaxPacketSize     0x0040  1x 64 bytes
+        bInterval               0
+      Endpoint Descriptor:
+        bLength                 7
+        bDescriptorType         5
+        bEndpointAddress     0x83  EP 3 IN
+        bmAttributes            2
+          Transfer Type            Bulk
+          Synch Type               None
+          Usage Type               Data
+        wMaxPacketSize     0x0008  1x 8 bytes
+        bInterval               0
+Device Status:     0x0001
+  Self Powered
+
+
+
+
+How can select the correct device and how I can understand if is  
+correct?
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="003743.html">[Gpsd-users] gpsd can not find device garminGPS60
+</A></li>
+	<LI>Next message: <A HREF="003745.html">[Gpsd-users] Garmin GPS 60 USB - real time acquisition
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3744">[ date ]</a>
+              <a href="thread.html#3744">[ thread ]</a>
+              <a href="subject.html#3744">[ subject ]</a>
+              <a href="author.html#3744">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

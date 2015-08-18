@@ -1,0 +1,95 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] gps protocol problem
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2007-January/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20gps%20protocol%20problem&In-Reply-To=%3C200701221514.29120.Gpsd-users%40ostertag.name%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="002420.html">
+   <LINK REL="Next"  HREF="002421.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] gps protocol problem</H1>
+    <B>Joerg Ostertag</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20gps%20protocol%20problem&In-Reply-To=%3C200701221514.29120.Gpsd-users%40ostertag.name%3E"
+       TITLE="[Gpsd-users] gps protocol problem">Gpsd-users at ostertag.name
+       </A><BR>
+    <I>Mon Jan 22 15:14:28 CET 2007</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="002420.html">[Gpsd-users] gps protocol problem
+</A></li>
+        <LI>Next message: <A HREF="002421.html">[Gpsd-users] gps protocol problem
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2422">[ date ]</a>
+              <a href="thread.html#2422">[ thread ]</a>
+              <a href="subject.html#2422">[ subject ]</a>
+              <a href="author.html#2422">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>On Sunday 21 January 2007 20:32, Gene Imes wrote:
+&gt;<i> Chris Kuethe wrote:
+</I>&gt;<i> &gt; On 1/21/07, Gene Imes &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">ebi6 at ozob.net</A>&gt; wrote:
+</I>&gt;<i> &gt;&gt; Sorry if I sent the same stuff twice.
+</I>&gt;<i> &gt;&gt;
+</I>&gt;<i> &gt;&gt; I have two bluetooth gpses. Both holux gpses but different models. Both
+</I>&gt;<i> &gt;&gt; have worked previously.
+</I>&gt;<i> &gt;&gt;
+</I>&gt;<i> &gt;&gt; I upgraded to 2.34 and gps number one has stopped working properly.
+</I>&gt;<i> &gt;&gt;
+</I>&gt;<i> &gt;&gt; If I do a cat /dev/rfcomm0 this is what I get:
+</I>&gt;<i> &gt;&gt; ...
+</I>&gt;<i> &gt;&gt; I downgraded to 2.33 and still the same thing. Did 2.34 change the
+</I>&gt;<i> &gt;&gt; protocol. gps number two shows NMEA output.
+</I>&gt;<i> &gt;&gt;
+</I>&gt;<i> &gt;&gt; What has happened and how can I regain use of gps number one?
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; Yes, gpsd switched to the binary protocol. Assuming gpsd can parse the
+</I>&gt;<i> &gt; output from the tty, you can use the B and N commands to force the
+</I>&gt;<i> &gt; speed and protocol back.
+</I>&gt;<i>
+</I>&gt;<i> How do I issue the commands to my gps?
+</I>
+<A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">tweety at moby</A>:~/gpsdrive/gpsdrive-svn$ cat scripts/gpsd_nmea.sh 
+#!/bin/sh
+echo &quot;Switching the local gpsd to NMEA Mode&quot;
+(echo &quot;N=0&quot;; sleep 1 )  | telnet localhost 2947
+
+
+
+-- 
+Joerg
+
+<A HREF="http://www.ostertag.name/">http://www.ostertag.name/</A>
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="002420.html">[Gpsd-users] gps protocol problem
+</A></li>
+	<LI>Next message: <A HREF="002421.html">[Gpsd-users] gps protocol problem
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2422">[ date ]</a>
+              <a href="thread.html#2422">[ thread ]</a>
+              <a href="subject.html#2422">[ subject ]</a>
+              <a href="author.html#2422">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

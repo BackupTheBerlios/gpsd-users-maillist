@@ -1,0 +1,90 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] xgps no satellites bug
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2010-November/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20xgps%20no%20satellites%20bug&In-Reply-To=%3C20101117142947.3a2f1314%40dragon%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="004754.html">
+   <LINK REL="Next"  HREF="004755.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] xgps no satellites bug</H1>
+    <B>Charles Curley</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20xgps%20no%20satellites%20bug&In-Reply-To=%3C20101117142947.3a2f1314%40dragon%3E"
+       TITLE="[Gpsd-users] xgps no satellites bug">charlescurley at charlescurley.com
+       </A><BR>
+    <I>Wed Nov 17 22:29:47 CET 2010</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="004754.html">[Gpsd-users] gpsd and python: running
+</A></li>
+        <LI>Next message: <A HREF="004755.html">[Gpsd-users] bu353 and cold start
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#4753">[ date ]</a>
+              <a href="thread.html#4753">[ thread ]</a>
+              <a href="subject.html#4753">[ subject ]</a>
+              <a href="author.html#4753">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>I'm a python illiterate, so I probably wouldn't produce a very good
+patch.
+
+I'm using GPSD version: 2.96~dev Rev: 2010-11-13T17:32:59, Protocol
+3.3, GPS Driver: SiRF binary: GSW3.1.1LowV_3.1.00.07-C23B1.00, BU 353
+GPS receiver.
+
+If I plug it in indoors, it does not get a fix, and sends a bogus
+timestamp (March, 2005). I can then run xgps, which throws the following
+complaint:
+
+Traceback (most recent call last):
+  File &quot;/usr/local/bin/xgps&quot;, line 668, in handle_response
+    self.update_skyview(self.daemon.data)
+  File &quot;/usr/local/bin/xgps&quot;, line 628, in update_skyview
+    satellites = data.satellites
+AttributeError: dictwrapper instance has no attribute 'satellites'
+
+Indeed, there are no satellites &quot;visible&quot; at the time. xgps then stops,
+while gpsd continues to feed data to other clients.
+
+-- 
+
+Charles Curley                  /&quot;\    ASCII Ribbon Campaign
+Looking for fine software       \ /    Respect for open standards
+and/or writing?                  X     No HTML/RTF in email
+<A HREF="http://www.charlescurley.com">http://www.charlescurley.com</A>    / \    No M$ Word docs in email
+
+Key fingerprint = CE5C 6645 A45A 64E4 94C0  809C FFF6 4C48 4ECD DFDB
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="004754.html">[Gpsd-users] gpsd and python: running
+</A></li>
+	<LI>Next message: <A HREF="004755.html">[Gpsd-users] bu353 and cold start
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#4753">[ date ]</a>
+              <a href="thread.html#4753">[ thread ]</a>
+              <a href="subject.html#4753">[ subject ]</a>
+              <a href="author.html#4753">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

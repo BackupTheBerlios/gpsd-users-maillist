@@ -1,0 +1,185 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] State of GPSD
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2005-August/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20State%20of%20GPSD&In-Reply-To=%3C42F2EF15.3030808%40boilerbots.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="000957.html">
+   <LINK REL="Next"  HREF="000961.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] State of GPSD</H1>
+    <B>maillist</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20State%20of%20GPSD&In-Reply-To=%3C42F2EF15.3030808%40boilerbots.com%3E"
+       TITLE="[Gpsd-users] State of GPSD">maillist at boilerbots.com
+       </A><BR>
+    <I>Fri Aug  5 06:46:13 CEST 2005</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="000957.html">[Gpsd-users] State of GPSD
+</A></li>
+        <LI>Next message: <A HREF="000961.html">[Gpsd-dev] Re: [Gpsd-users] State of GPSD
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#960">[ date ]</a>
+              <a href="thread.html#960">[ thread ]</a>
+              <a href="subject.html#960">[ subject ]</a>
+              <a href="author.html#960">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Eric S. Raymond wrote:
+
+&gt;<i>I wanted to release 2.29 Tuesday night, but we've had a flurry of problems
+</I>&gt;<i>and bug reports that need to be dealt with first.
+</I>&gt;<i>
+</I>&gt;<i>1. Under unknown circumstances gpsd becomes severly laggy
+</I>&gt;<i>
+</I>&gt;<i>Andreas Schneider &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">mail at cynapses.org</A>&gt;:
+</I>&gt;<i>  
+</I>&gt;<i>
+</I>&gt;&gt;<i>Not only the speed is 10 seconds to late, the postion too. I have updated my
+</I>&gt;&gt;<i>system clock with ntpdate and compared with the time gpsd reports. The
+</I>&gt;&gt;<i>difference is 9-12 sec.
+</I>&gt;&gt;<i>    
+</I>&gt;&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i>I have not been able to reproduce this. However, I have seen something 
+</I>&gt;<i>happen on my laptop that could be related.  When I profile on my laptop the
+</I>&gt;<i>lag between the fix time and when it is delkivered increases slightly every
+</I>&gt;<i>cycle, as though the daemon can't keep up with the incoming data.  I don't
+</I>&gt;<i>see this on my desktop machine.
+</I>&gt;<i>
+</I>&gt;<i>  
+</I>&gt;<i>
+</I>If the socket communication between gpsd and ntp is using blocking read 
+then data can get backed up in the socket if it is not emptied fast 
+enough on the reader side. I don't know if I am describing this well 
+enough, but basically the ntp daemon needs to open it's socket with the 
+non-block flag set. Before it reads data from gpsd it should flush the 
+stale data in the socket and wait for  a fresh sentence.
+
+The error will become bigger or the back log greater on slow machines or 
+machines with high loads.
+
+Also if this is the problem, a bad route table could cause things to be 
+ineffecient.
+
+&gt;<i>2. The GPS-18 LVC sends GSV parts in random order and sometimes
+</I>&gt;<i>duplicates them.  As Gary points out, we can get stuff like this:
+</I>&gt;<i>
+</I>&gt;<i>$GPGSV,3,1,11,02,07,307,00,03,13,114,00,04,09,267,00,08,09,249,00*7F
+</I>&gt;<i>$GPGSV,3,3,11,24,02,229,00,27,42,260,42,51,00,000,00*41
+</I>&gt;<i>$GPGSV,3,2,11,13,66,320,49,16,42,059,43,20,28,178,00,23,72,090,50*72
+</I>&gt;<i>$GPGSV,3,2,11,13,66,320,49,16,42,059,43,20,28,178,00,23,72,090,50*72
+</I>&gt;<i>
+</I>&gt;<i>The problem is that after the 3rd sentence, there is a count of 11 sats.
+</I>&gt;<i>When processGSV sees the duplicated sentence it counts past 12, errors
+</I>&gt;<i>out and clears the data.  This causes xgps to show the sats winking on
+</I>&gt;<i>and off over many seconds.
+</I>&gt;<i>
+</I>&gt;<i>The DARPA Grand Challenge guy (Curt, I've never seen his last name) 
+</I>&gt;<i>is working on a patch that may fix this.  I don't consider it severe
+</I>&gt;<i>and a fix can wait until after 2.29.
+</I>&gt;<i>
+</I>&gt;<i>  
+</I>&gt;<i>
+</I>I guess I should chime in here. My name is Curt Meyers, sorry I never 
+disclosed it before. I use a series of random email address that I 
+create under my own domain to fight spam. That is why this email comes 
+from the generic name &quot;maillist&quot;.
+
+About the GSV problem. I had a &quot;hack&quot; fix that I sent to Eric related to 
+this problem but it didn't quite cut the mustard. I didn't have time to 
+do regression testing and Eric said it breaks a bunch of things, that I 
+believe.
+
+Basically there are two possible problems as I see it.
+
+1. You haven't updated to get the latest changes made to packet.c where 
+incoming packets can get totally lost. I you have looked at the output 
+of your device using a terminal program (I use minicom) and always see 
+all the GSV messages in order then this is the fix to your problem. 
+Essentially gpsd is dropping packets randomly but you only notice the 
+problem with GSV because this causes gpsd to abort due to the mistmatch 
+sattelite count.
+
+2. You device does output messages in a random way (which is a bit hard 
+to believe but I will go with it for now) and you need the change that I 
+attempted to make to the nmea_parse.c code. Essentially what this does 
+it look at the fields 1, 2, and 3 and uses those to stuff the internal 
+structure with the sattelite stats. What gpsd currently does it reset a 
+sattelite counter when it sees the first sentence (starts with 3,1 
+above) and just counts up from there. In the above sample the first 
+sentence resets the counter. The second sentence increments us to +3 for 
+a total of 7, the third +4 for a total of 11 and the last +4 for a total 
+of  15.  The limit right now is 12 so this causes the error.
+
+I have a receiver that receives up to 14 sattelites so that there is 
+still another problem but you probably won't see that.
+
+&gt;<i>3. Spontaneous closes
+</I>&gt;<i>
+</I>&gt;<i>Chris Kuethe and Andreas Schneider are reporting an occasional problem
+</I>&gt;<i>with gpsd spontaneously closing its GPS device. We've managed to show
+</I>&gt;<i>that it's not happening because all client sessions attached to the
+</I>&gt;<i>device are shut down.  I have no idea what is going on here.
+</I>&gt;<i>
+</I>&gt;<i>  
+</I>&gt;<i>
+</I>This is probably related to item #2. You should run gpsd with some level 
+of datalogging. Like &quot;-D 5&quot; with output a lot of information. If it is 
+related to #2 above it might crash on a GSV sentence. What is 
+interesting is that with more debug information printing out it seems to 
+be more likely to crash. Try it at level 5 and it might crash pretty quick.
+
+Also try loading up the machine when you are testing it. I did a lot of 
+disk thrashing to create a lot of IO to provoke my failures.
+
+&gt;<i>4. gpsprof -f space is still busted.
+</I>&gt;<i>
+</I>&gt;<i>Gary Miller has promised to fix it.
+</I>&gt;<i>
+</I>&gt;<i>5. Trouble with packet_names.h
+</I>&gt;<i>
+</I>&gt;<i>Several people have reported that it isn't betting automatically rebuilt
+</I>&gt;<i>when absent.  That always happens here, but other people with the same
+</I>&gt;<i>or newer versions in their make/automake versions report that they have
+</I>&gt;<i>to type 'make packet_names.h' to get it.
+</I>&gt;<i>
+</I>&gt;<i>Alas, I'm basically completely stumped on 1, 3, and 5 because I can't
+</I>&gt;<i>reproduce them here.
+</I>&gt;<i>  
+</I>&gt;<i>
+</I>
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="000957.html">[Gpsd-users] State of GPSD
+</A></li>
+	<LI>Next message: <A HREF="000961.html">[Gpsd-dev] Re: [Gpsd-users] State of GPSD
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#960">[ date ]</a>
+              <a href="thread.html#960">[ thread ]</a>
+              <a href="subject.html#960">[ subject ]</a>
+              <a href="author.html#960">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

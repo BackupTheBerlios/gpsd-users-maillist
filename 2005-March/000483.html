@@ -1,0 +1,98 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] Gpsd on a Zaurus SL-C3000
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2005-March/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Gpsd%20on%20a%20Zaurus%20SL-C3000&In-Reply-To=%3C16971.29956.975046.743135%40desk.crynwr.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="000477.html">
+   <LINK REL="Next"  HREF="000484.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] Gpsd on a Zaurus SL-C3000</H1>
+    <B>Russell Nelson</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Gpsd%20on%20a%20Zaurus%20SL-C3000&In-Reply-To=%3C16971.29956.975046.743135%40desk.crynwr.com%3E"
+       TITLE="[Gpsd-users] Gpsd on a Zaurus SL-C3000">nelson at crynwr.com
+       </A><BR>
+    <I>Thu Mar 31 05:56:52 CEST 2005</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="000477.html">[Gpsd-users] Gpsd on a Zaurus SL-C3000
+</A></li>
+        <LI>Next message: <A HREF="000484.html">[Gpsd-users] Gpsd on a Zaurus SL-C3000
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#483">[ date ]</a>
+              <a href="thread.html#483">[ thread ]</a>
+              <a href="subject.html#483">[ subject ]</a>
+              <a href="author.html#483">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Gary E. Miller writes:
+ &gt; &gt; Offsets are how the data is presented to you off the network,
+ &gt; &gt; serial port, or disk.
+ &gt; 
+ &gt; Correct, and we use reads to get back strings of bytes.  But the data
+ &gt; in the packet is logically a structure.  So it is easier and less
+ &gt; error promne to use the structures.
+
+Not in my experience.  The old earthmate.c code had structs and it did
+not work correctly.  I took them out and replaced them with offsets,
+and the code worked properly.  I'm not some kind of godlike error-free
+creature.  I've just found that some methods generate fewer mistakes;
+that some types of coding can more easily be seen to be correct.
+
+ &gt; Yes and no.  If the compiler packs the structure and the item size
+ &gt; is strictly specified, then it too is consistent across machine
+ &gt; architecture.
+
+Programming for the ARM processor quickly disabuses you of this
+notion.  All the world's not a VAX.
+
+ &gt; Do some rooting around in the glibc code and you will see they
+ &gt; agree with me.
+
+If you're wrong, pointing to other people who are also wrong is no
+help.  There's a lot of code in the Linux kernel written by people who
+agree with you.  They, too, are wrong.  The people who wrote the
+garmin library are also wrong.  Streams of data organized into packets
+need to be marshalled into structs, not cast into structs.  You can't
+vote on reality; you can only recognize it.  You can't vote on
+scientific principles; you can only discover them.
+
+-- 
+--My blog is at     blog.russnelson.com         | The laws of physics cannot
+Crynwr sells support for free software  | PGPok | be legislated.  Neither can
+521 Pleasant Valley Rd. | +1 315-323-1241 cell  | the laws of countries.
+Potsdam, NY 13676-3213  | +1 212-202-2318 VOIP  | 
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="000477.html">[Gpsd-users] Gpsd on a Zaurus SL-C3000
+</A></li>
+	<LI>Next message: <A HREF="000484.html">[Gpsd-users] Gpsd on a Zaurus SL-C3000
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#483">[ date ]</a>
+              <a href="thread.html#483">[ thread ]</a>
+              <a href="subject.html#483">[ subject ]</a>
+              <a href="author.html#483">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

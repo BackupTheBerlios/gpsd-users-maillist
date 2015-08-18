@@ -1,0 +1,106 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] u-blox LEA-4S &amp; unknown sentence
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2006-December/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20u-blox%20LEA-4S%20%26%20unknown%20sentence&In-Reply-To=%3C91981b3e0612131118q526f0534u81ab94ca968ae561%40mail.gmail.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="002343.html">
+   <LINK REL="Next"  HREF="002345.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] u-blox LEA-4S &amp; unknown sentence</H1>
+    <B>Chris Kuethe</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20u-blox%20LEA-4S%20%26%20unknown%20sentence&In-Reply-To=%3C91981b3e0612131118q526f0534u81ab94ca968ae561%40mail.gmail.com%3E"
+       TITLE="[Gpsd-users] u-blox LEA-4S &amp; unknown sentence">chris.kuethe at gmail.com
+       </A><BR>
+    <I>Wed Dec 13 20:18:26 CET 2006</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="002343.html">[Gpsd-users] u-blox LEA-4S &amp; unknown sentence
+</A></li>
+        <LI>Next message: <A HREF="002345.html">[Gpsd-users] u-blox LEA-4S &amp; unknown sentence
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2344">[ date ]</a>
+              <a href="thread.html#2344">[ thread ]</a>
+              <a href="subject.html#2344">[ subject ]</a>
+              <a href="author.html#2344">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>n 12/13/06, Andreas Stricker &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">andy at knitter.ch</A>&gt; wrote:
+&gt;<i> Ok, it should have been fun for me, but I'm too busy to work serious at
+</I>&gt;<i> an UBX driver. So I hand over all I've done so far to you:
+</I>&gt;<i>
+</I>&gt;<i> * implemented the packet parser in packet.c
+</I>&gt;<i> * added a new driver in ubx.c and ubx.h
+</I>&gt;<i> * connected the new driver at all places I know of (Thank to Mick Durkin)
+</I>&gt;<i> * build the new driver with the existing autotools enviroment
+</I>&gt;<i>
+</I>&gt;<i> Currently my patch will split the packets in generic packet getter
+</I>&gt;<i> (with checksum test). In ubx.c some packages type are recognized and
+</I>&gt;<i> logged. And I already started to interpret the NAV SOL message.
+</I>&gt;<i>
+</I>&gt;<i> There is still much work left:
+</I>&gt;<i>
+</I>&gt;<i> * the mode switch must be added, as Chris suggested
+</I>&gt;<i> * all the reconfigure functionality must also be added
+</I>&gt;<i> * nearly all packets must be parsed into gpsd navigation data
+</I>&gt;<i>   structures
+</I>&gt;<i>
+</I>&gt;<i> The patch attached should work with SVN HEAD, I just updated and tested it.
+</I>
+w00t!
+
+Storing the current configuration is going to be a pain - the ubx
+protocol is quite rich and offers fine grain control over many aspects
+of the receiver's operation. Translation: it takes quite a while and a
+large number of message to poll all the settings and it's likely we'll
+get it wrong... Heck, even uCenter was having problems.
+
+One thing that bit me was that in my old firmware (3.01 or 3.10) was
+that after the switch to UBX, none of the output messages were turned
+on! Grrrrrrr. And after every reset I had to turn all the messages on
+again.
+
+The mode switch shouldn't be that hard - we have a definative probe,
+and a simple mode switcher. Still, that's low priority. My receivers
+output NMEA on one port and UBX on the other, and I think it's more
+important that we correctly extract information from the bytes we read
+before we start playing mode switch games.
+
+CK
+
+-- 
+GDB has a 'break' feature; why doesn't it have 'fix' too?
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="002343.html">[Gpsd-users] u-blox LEA-4S &amp; unknown sentence
+</A></li>
+	<LI>Next message: <A HREF="002345.html">[Gpsd-users] u-blox LEA-4S &amp; unknown sentence
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2344">[ date ]</a>
+              <a href="thread.html#2344">[ thread ]</a>
+              <a href="subject.html#2344">[ subject ]</a>
+              <a href="author.html#2344">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

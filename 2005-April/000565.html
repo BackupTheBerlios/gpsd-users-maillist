@@ -1,0 +1,94 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] Mac OS X/BSD's &amp; /dev/tty.xxx or /dev/cu.xxx
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2005-April/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Mac%20OS%20X/BSD%27s%20%26%20/dev/tty.xxx%20or%20/dev/cu.xxx&In-Reply-To=%3C5d94648c7c3940218dd71c4003d20887%40nicholasfamilycentral.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="000561.html">
+   <LINK REL="Next"  HREF="000566.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] Mac OS X/BSD's &amp; /dev/tty.xxx or /dev/cu.xxx</H1>
+    <B>Frank Nicholas</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Mac%20OS%20X/BSD%27s%20%26%20/dev/tty.xxx%20or%20/dev/cu.xxx&In-Reply-To=%3C5d94648c7c3940218dd71c4003d20887%40nicholasfamilycentral.com%3E"
+       TITLE="[Gpsd-users] Mac OS X/BSD's &amp; /dev/tty.xxx or /dev/cu.xxx">frank at nicholasfamilycentral.com
+       </A><BR>
+    <I>Tue Apr 12 13:50:35 CEST 2005</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="000561.html">[Gpsd-users] Re: [Gpsd-dev] Mac OS X &amp; BSD - Should we use /dev/tty.xxx or /dev/cu.xxx for gpsd?
+</A></li>
+        <LI>Next message: <A HREF="000566.html">[Gpsd-users] Re: [Gpsd-dev] Mac OS X/BSD's &amp; /dev/tty.xxx or /dev/cu.xxx
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#565">[ date ]</a>
+              <a href="thread.html#565">[ thread ]</a>
+              <a href="subject.html#565">[ subject ]</a>
+              <a href="author.html#565">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>How will using /dev/cu.xxx, instead of /dev/tty.xxx, effect gpsd?  I 
+see some undesirable behavior on Mac OS X, with Bluetooth &amp; Bluetooth 
+serial devices.
+
+When an application (gpsd, Kismac, GPSUtility) connects to the 
+Bluetooth serial device (I've been using /dev/tty.gps), the Bluetooth 
+connection is made with the device, and everything works fine.  If the 
+applications is then closed, or closes /dev/tty.gps, the Bluetooth 
+connection remains active for 60 seconds.  If an application tries to 
+use the Bluetooth device, /dev/tty.gps, while the Bluetooth connection 
+is still active from the first open, the application just hangs, with 
+NO data coming from the device.  From tracing gpsd, the application can 
+open the device, it just doesn't receive anything from it.  If I 
+manually disconnect the Bluetooth device (via System Preferences), or 
+wait for the 60 second timeout, everything works fine.  This REALLY 
+hurts with gpsd, when all clients disconnect, and then a client 
+reconnects, within the 60 seconds.....
+
+I should also mention, that some applications filter the list of 
+devices you're allowed to use.  Kismac only allows the /dev/tty.xxx 
+devices.  GPSUtility only allows /dev/cu.xxx devices.  dataComet (a 
+GREAT &amp; ACCURATE, terminal emulator), only allows /dev/cu.xxx devices 
+for initiating a serial connection.  Both /dev/cu.xxx devices &amp; 
+/dev/tty.xxx devices are created when using either Bluetooth serial 
+ports, or USB-&gt;Serial adapters.
+
+I didn't know if my odd Bluetooth Serial behavior might be related to 
+using /dev/tty.xxx, instead of /dev/cu.xxx.  Any thoughts?
+
+______________________________________________________________________
+This email has been scanned by the MessageLabs Email Security System.
+For more information please visit <A HREF="http://www.messagelabs.com/email">http://www.messagelabs.com/email</A> 
+______________________________________________________________________
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="000561.html">[Gpsd-users] Re: [Gpsd-dev] Mac OS X &amp; BSD - Should we use /dev/tty.xxx or /dev/cu.xxx for gpsd?
+</A></li>
+	<LI>Next message: <A HREF="000566.html">[Gpsd-users] Re: [Gpsd-dev] Mac OS X/BSD's &amp; /dev/tty.xxx or /dev/cu.xxx
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#565">[ date ]</a>
+              <a href="thread.html#565">[ thread ]</a>
+              <a href="subject.html#565">[ subject ]</a>
+              <a href="author.html#565">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

@@ -1,0 +1,103 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] gpsd and python
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2010-November/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20gpsd%20and%20python&In-Reply-To=%3C20101117201531.GA21624%40dizzy.vulkor.net%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="004750.html">
+   <LINK REL="Next"  HREF="004752.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] gpsd and python</H1>
+    <B>vwf</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20gpsd%20and%20python&In-Reply-To=%3C20101117201531.GA21624%40dizzy.vulkor.net%3E"
+       TITLE="[Gpsd-users] gpsd and python">vwf at vulkor.net
+       </A><BR>
+    <I>Wed Nov 17 21:15:31 CET 2010</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="004750.html">[Gpsd-users] gpsd and python
+</A></li>
+        <LI>Next message: <A HREF="004752.html">[Gpsd-users] gpsd and python
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#4751">[ date ]</a>
+              <a href="thread.html#4751">[ thread ]</a>
+              <a href="subject.html#4751">[ subject ]</a>
+              <a href="author.html#4751">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>On Wed, Nov 17, 2010 at 06:21:05PM +0000, Tomalak Geret'kal wrote:
+&gt;<i> On 17/11/2010 17:02, vwf wrote:
+</I>&gt;&gt;<i> I just started using gpsd 2.39. Gpsd works fine, but I need position data
+</I>&gt;&gt;<i> using python
+</I>[...]
+&gt;<i>
+</I>&gt;<i> First of all, can you upgrade to gpsd 2.95? Lots of bugs have been fixed 
+</I>&gt;<i> since gpsd 2.39.
+</I>[...]
+Thank you for your reply. Jumped through several hoops to build the debian
+packages but xgps shows the desired result. Now python. My Q&amp;D test;
+
+#!/usr/bin/env python2.5
+from gps import *
+session = gps(mode=WATCH_ENABLE)  &lt;&lt;what is this?
+try:
+    while (True):
+        # Do stuff
+        report = session.next()
+        print report
+except StopIteration:
+    print &quot;GPSD has terminated&quot;
+
+The first time around I get 
+&lt;dictwrapper: {'release': '2.95', 'proto_major': 3, 'rev':
+'2010-11-17T19:31:47', 'class': 'VERSION', 'proto_minor': 3}&gt;
+
+The second time around it goes to gps.py
+line 317: def next(self)
+line 300: def poll(self)
+
+from there to client.py
+line 68: def read(self)
+and all stops at line 74: frag = self.sock.recv(4096)
+
+All on debian stable, python 2.5, gpsg2.95 (downloaded today), 
+GPS BU-353
+
+Any suggestions?  (I'm sorry if I made a stupid mistake: I always have
+problems getting the first code working)
+
+Thanks, vwf
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="004750.html">[Gpsd-users] gpsd and python
+</A></li>
+	<LI>Next message: <A HREF="004752.html">[Gpsd-users] gpsd and python
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#4751">[ date ]</a>
+              <a href="thread.html#4751">[ thread ]</a>
+              <a href="subject.html#4751">[ subject ]</a>
+              <a href="author.html#4751">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

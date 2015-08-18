@@ -1,0 +1,308 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] PPS 5Hz (was Bug - Switching Drivers from Generic	NMEAtoGarmin serial creates 2 gpsd_ppsmonitor thread)
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2008-January/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20PPS%205Hz%20%28was%20Bug%20-%20Switching%20Drivers%20from%20Generic%0A%09NMEAtoGarmin%20serial%20creates%202%20gpsd_ppsmonitor%20thread%29&In-Reply-To=%3C3BF93070B3D1B047BA7ABF612958950D02CF5DFD%40hcex.hartwellcorp.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="003083.html">
+   <LINK REL="Next"  HREF="003092.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] PPS 5Hz (was Bug - Switching Drivers from Generic	NMEAtoGarmin serial creates 2 gpsd_ppsmonitor thread)</H1>
+    <B>Michael St. Laurent</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20PPS%205Hz%20%28was%20Bug%20-%20Switching%20Drivers%20from%20Generic%0A%09NMEAtoGarmin%20serial%20creates%202%20gpsd_ppsmonitor%20thread%29&In-Reply-To=%3C3BF93070B3D1B047BA7ABF612958950D02CF5DFD%40hcex.hartwellcorp.com%3E"
+       TITLE="[Gpsd-users] PPS 5Hz (was Bug - Switching Drivers from Generic	NMEAtoGarmin serial creates 2 gpsd_ppsmonitor thread)">mikes at hartwellcorp.com
+       </A><BR>
+    <I>Mon Jan 14 19:59:40 CET 2008</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="003083.html">[Gpsd-users] GPSd and gpsfeed+ trouble communicating
+</A></li>
+        <LI>Next message: <A HREF="003092.html">[Gpsd-users] PPS 5Hz (was Bug - Switching Drivers from Generic NMEAtoGarmin serial creates 2 gpsd_ppsmonitor thread)
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3091">[ date ]</a>
+              <a href="thread.html#3091">[ thread ]</a>
+              <a href="subject.html#3091">[ subject ]</a>
+              <a href="author.html#3091">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>&gt;<i> OK I've rewitten the code and put them back.
+</I>&gt;<i> 
+</I>&gt;<i> This is a second shot. I've also modified the Furuno GPSClock hack
+</I>&gt;<i> instead of &quot;bool driver.nmea.ignore_trailing_edge&quot; it's now 
+</I>&gt;<i> &quot;int driver.nmea.leading_edge&quot; which is set to the leading edge
+</I>&gt;<i> state 0 or 1 (1 in the case of the Furuno).
+</I>&gt;<i> 
+</I>&gt;<i>   if (state==1 &amp;&amp; session-&gt;driver.nmea.ignore_trailing_edge) 
+</I>&gt;<i> becomes
+</I>&gt;<i>   if (state==session-&gt;driver.nmea.leading_edge)
+</I>&gt;<i> 
+</I>&gt;<i> which is only tested when a 1Hz square wave pulse is detected.
+</I>&gt;<i> 
+</I>&gt;<i> This means support for any new 1Hz square wave devices only
+</I>&gt;<i> requires a new driver that initialises driver.nmea.leading_edge
+</I>&gt;<i> to the correct leading edge state no new code hacks required.
+</I>&gt;<i> 
+</I>&gt;<i> I don't think that I've broken anything and the changes should
+</I>&gt;<i> make adding support for a 10Hz device simpler.
+</I>&gt;<i> 
+</I>&gt;<i> Patch below
+</I>[patch-snipped]
+
+That is mostly working with my Furuno Electric unit.  The NMEA is
+working reliably again but I'm still not getting the PPS.  Something in
+the code is insisting that the PPS is not right and it's losing PPS
+lock.  Sample log data below:
+
+Jan 14 10:51:51 hcnas gpsd[23765]: gpsd: &lt;= GPS:
+$GPRMC,185151,A,3351.7906,N,11749.5220,W,000.0,273.3,140108,013.2,E,A*0A
+ 
+Jan 14 10:51:51 hcnas gpsd[23765]: gpsd: GPRMC sets mode 2 
+Jan 14 10:51:52 hcnas gpsd[23765]: gpsd: pps-detect (DCD) on /dev/ttyS0
+changed to 1 
+Jan 14 10:51:52 hcnas gpsd[23765]: gpsd: 1Hz PPS pulse. cycle: 1000004,
+duration: 500008 
+Jan 14 10:51:52 hcnas gpsd[23765]: gpsd: &lt;= GPS:
+$GPGGA,185152,3351.7906,N,11749.5220,W,1,10,01.56,000082.3,M,-032.3,M,,*
+7C
+ 
+Jan 14 10:51:52 hcnas gpsd[23765]: gpsd: GPGGA starts a reporting cycle.
+
+Jan 14 10:51:52 hcnas gpsd[23765]: gpsd: GPGGA sets status 1 and mode 3
+(changed) 
+Jan 14 10:51:52 hcnas gpsd[23765]: gpsd: ntpshm_put: Clock: 1200336712 @
+1200336712.203576 
+Jan 14 10:51:52 hcnas gpsd[23765]: gpsd: &lt;= GPS:
+$GPZDA,185153,14,01,2008,+00,00*66
+ 
+Jan 14 10:51:52 hcnas gpsd[23765]: gpsd: &lt;= GPS:
+$GPGLL,3351.7906,N,11749.5220,W,185152,A,A*5C
+ 
+Jan 14 10:51:52 hcnas gpsd[23765]: gpsd: GPGLL sets status 1 
+Jan 14 10:51:52 hcnas gpsd[23765]: gpsd: &lt;= GPS:
+$GPVTG,273.3,T,260.1,M,000.0,N,0000.0,K,A*13
+ 
+Jan 14 10:51:52 hcnas gpsd[23765]: gpsd: pps-detect (DCD) on /dev/ttyS0
+changed to 0 
+Jan 14 10:51:52 hcnas gpsd[23765]: gpsd: 1Hz PPS pulse. cycle: 1000002,
+duration: 499994 
+Jan 14 10:51:52 hcnas gpsd[23765]: gpsd: ntpshm_pps: clock:
+1200336712.505583, Pulse 655 
+Jan 14 10:51:52 hcnas gpsd[23765]: gpsd: ntpshm_pps: lost PPS lock:
+pulse 655 
+Jan 14 10:51:52 hcnas gpsd[23765]: gpsd: &lt;= GPS:
+$GPRMC,185152,A,3351.7906,N,11749.5220,W,000.0,273.3,140108,013.2,E,A*09
+ 
+Jan 14 10:51:52 hcnas gpsd[23765]: gpsd: GPRMC sets mode 2 
+Jan 14 10:51:53 hcnas gpsd[23765]: gpsd: pps-detect (DCD) on /dev/ttyS0
+changed to 1 
+Jan 14 10:51:53 hcnas gpsd[23765]: gpsd: 1Hz PPS pulse. cycle: 1000002,
+duration: 500008 
+Jan 14 10:51:53 hcnas gpsd[23765]: gpsd: &lt;= GPS:
+$GPGGA,185153,3351.7906,N,11749.5220,W,1,10,01.56,000082.3,M,-032.3,M,,*
+7D
+ 
+Jan 14 10:51:53 hcnas gpsd[23765]: gpsd: GPGGA starts a reporting cycle.
+
+Jan 14 10:51:53 hcnas gpsd[23765]: gpsd: GPGGA sets status 1 and mode 3
+(changed) 
+Jan 14 10:51:53 hcnas gpsd[23765]: gpsd: ntpshm_put: Clock: 1200336713 @
+1200336713.203584 
+Jan 14 10:51:53 hcnas gpsd[23765]: gpsd: &lt;= GPS:
+$GPZDA,185154,14,01,2008,+00,00*61
+ 
+Jan 14 10:51:53 hcnas gpsd[23765]: gpsd: &lt;= GPS:
+$GPGLL,3351.7906,N,11749.5220,W,185153,A,A*5D
+ 
+Jan 14 10:51:53 hcnas gpsd[23765]: gpsd: GPGLL sets status 1 
+Jan 14 10:51:53 hcnas gpsd[23765]: gpsd: &lt;= GPS:
+$GPVTG,273.4,T,260.2,M,000.0,N,0000.0,K,A*17
+ 
+Jan 14 10:51:53 hcnas gpsd[23765]: gpsd: pps-detect (DCD) on /dev/ttyS0
+changed to 0 
+Jan 14 10:51:53 hcnas gpsd[23765]: gpsd: 1Hz PPS pulse. cycle: 1000004,
+duration: 499996 
+Jan 14 10:51:53 hcnas gpsd[23765]: gpsd: ntpshm_pps: clock:
+1200336713.505587, Pulse 656 
+Jan 14 10:51:53 hcnas gpsd[23765]: gpsd: ntpshm_pps: lost PPS lock:
+pulse 656 
+Jan 14 10:51:53 hcnas gpsd[23765]: gpsd: &lt;= GPS:
+$GPRMC,185153,A,3351.7906,N,11749.5220,W,000.0,273.4,140108,013.2,E,A*0F
+ 
+Jan 14 10:51:53 hcnas gpsd[23765]: gpsd: GPRMC sets mode 2 
+Jan 14 10:51:54 hcnas gpsd[23765]: gpsd: pps-detect (DCD) on /dev/ttyS0
+changed to 1 
+Jan 14 10:51:54 hcnas gpsd[23765]: gpsd: 1Hz PPS pulse. cycle: 1000029,
+duration: 500033 
+Jan 14 10:51:54 hcnas gpsd[23765]: gpsd: &lt;= GPS:
+$GPGGA,185154,3351.7906,N,11749.5220,W,1,10,01.56,000082.2,M,-032.3,M,,*
+7B
+ 
+Jan 14 10:51:54 hcnas gpsd[23765]: gpsd: GPGGA starts a reporting cycle.
+
+Jan 14 10:51:54 hcnas gpsd[23765]: gpsd: GPGGA sets status 1 and mode 3
+(changed) 
+Jan 14 10:51:54 hcnas gpsd[23765]: gpsd: ntpshm_put: Clock: 1200336714 @
+1200336714.203588 
+Jan 14 10:51:54 hcnas gpsd[23765]: gpsd: &lt;= GPS:
+$GPZDA,185155,14,01,2008,+00,00*60
+ 
+Jan 14 10:51:54 hcnas gpsd[23765]: gpsd: &lt;= GPS:
+$GPGLL,3351.7906,N,11749.5220,W,185154,A,A*5A
+ 
+Jan 14 10:51:54 hcnas gpsd[23765]: gpsd: GPGLL sets status 1 
+Jan 14 10:51:54 hcnas gpsd[23765]: gpsd: &lt;= GPS:
+$GPGSA,A,3,02,04,05,06,09,10,12,24,29,30,,,01.56,00.90,01.27*3D
+ 
+Jan 14 10:51:54 hcnas gpsd[23765]: gpsd: GPGSA sets mode 3 
+Jan 14 10:51:54 hcnas gpsd[23765]: gpsd: pps-detect (DCD) on /dev/ttyS0
+changed to 0 
+Jan 14 10:51:54 hcnas gpsd[23765]: gpsd: 1Hz PPS pulse. cycle: 1000006,
+duration: 499973 
+Jan 14 10:51:54 hcnas gpsd[23765]: gpsd: ntpshm_pps: clock:
+1200336714.505593, Pulse 657 
+Jan 14 10:51:54 hcnas gpsd[23765]: gpsd: ntpshm_pps: lost PPS lock:
+pulse 657 
+Jan 14 10:51:54 hcnas gpsd[23765]: gpsd: &lt;= GPS:
+$GPGSV,3,1,11,02,52,040,46,04,15,047,39,05,68,291,46,06,21,293,42*79
+ 
+Jan 14 10:51:54 hcnas gpsd[23765]: gpsd: Partial satellite data (1 of
+3). 
+Jan 14 10:51:54 hcnas gpsd[23765]: gpsd: &lt;= GPS:
+$GPGSV,3,2,11,07,13,291,00,09,15,205,40,10,42,136,43,12,84,244,46*72
+ 
+Jan 14 10:51:54 hcnas gpsd[23765]: gpsd: Partial satellite data (2 of
+3). 
+Jan 14 10:51:54 hcnas gpsd[23765]: gpsd: &lt;= GPS:
+$GPGSV,3,3,11,24,37,234,44,29,34,300,42,30,50,310,46*41
+ 
+Jan 14 10:51:54 hcnas gpsd[23765]: gpsd: Satellite data OK (3 of 3). 
+Jan 14 10:51:55 hcnas gpsd[23765]: gpsd: pps-detect (DCD) on /dev/ttyS0
+changed to 1 
+Jan 14 10:51:55 hcnas gpsd[23765]: gpsd: 1Hz PPS pulse. cycle: 1000029,
+duration: 500056 
+Jan 14 10:51:55 hcnas gpsd[23765]: gpsd: &lt;= GPS:
+$GPVTG,273.4,T,260.2,M,000.0,N,0000.0,K,A*17
+ 
+Jan 14 10:51:55 hcnas gpsd[23765]: gpsd: &lt;= GPS:
+$GPGGA,185155,3351.7906,N,11749.5220,W,1,10,01.56,000082.2,M,-032.3,M,,*
+7A
+ 
+Jan 14 10:51:55 hcnas gpsd[23765]: gpsd: GPGGA starts a reporting cycle.
+
+Jan 14 10:51:55 hcnas gpsd[23765]: gpsd: GPGGA sets status 1 and mode 3
+(changed) 
+Jan 14 10:51:55 hcnas gpsd[23765]: gpsd: ntpshm_put: Clock: 1200336715 @
+1200336715.203625 
+Jan 14 10:51:55 hcnas gpsd[23765]: gpsd: &lt;= GPS:
+$GPZDA,185156,14,01,2008,+00,00*63
+ 
+Jan 14 10:51:55 hcnas gpsd[23765]: gpsd: &lt;= GPS:
+$GPGLL,3351.7906,N,11749.5220,W,185155,A,A*5B
+ 
+Jan 14 10:51:55 hcnas gpsd[23765]: gpsd: GPGLL sets status 1 
+Jan 14 10:51:55 hcnas gpsd[23765]: gpsd: &lt;= GPS:
+$GPVTG,273.5,T,260.3,M,000.0,N,0000.0,K,A*17
+ 
+Jan 14 10:51:55 hcnas gpsd[23765]: gpsd: pps-detect (DCD) on /dev/ttyS0
+changed to 0 
+Jan 14 10:51:55 hcnas gpsd[23765]: gpsd: 1Hz PPS pulse. cycle: 1000005,
+duration: 499949 
+Jan 14 10:51:55 hcnas gpsd[23765]: gpsd: ntpshm_pps: clock:
+1200336715.505598, Pulse 658 
+Jan 14 10:51:55 hcnas gpsd[23765]: gpsd: ntpshm_pps: lost PPS lock:
+pulse 658 
+Jan 14 10:51:55 hcnas gpsd[23765]: gpsd: &lt;= GPS:
+$GPRMC,185155,A,3351.7906,N,11749.5220,W,000.0,273.5,140108,013.2,E,A*08
+ 
+Jan 14 10:51:55 hcnas gpsd[23765]: gpsd: GPRMC sets mode 2 
+Jan 14 10:51:56 hcnas gpsd[23765]: gpsd: pps-detect (DCD) on /dev/ttyS0
+changed to 1 
+Jan 14 10:51:56 hcnas gpsd[23765]: gpsd: 1Hz PPS pulse. cycle: 999961,
+duration: 500012 
+Jan 14 10:51:56 hcnas gpsd[23765]: gpsd: &lt;= GPS:
+$GPGGA,185156,3351.7906,N,11749.5220,W,1,10,01.56,000082.2,M,-032.3,M,,*
+79
+ 
+Jan 14 10:51:56 hcnas gpsd[23765]: gpsd: GPGGA starts a reporting cycle.
+
+Jan 14 10:51:56 hcnas gpsd[23765]: gpsd: GPGGA sets status 1 and mode 3
+(changed) 
+Jan 14 10:51:56 hcnas gpsd[23765]: gpsd: ntpshm_put: Clock: 1200336716 @
+1200336716.203632 
+Jan 14 10:51:56 hcnas gpsd[23765]: gpsd: &lt;= GPS:
+$GPZDA,185157,14,01,2008,+00,00*62
+ 
+Jan 14 10:51:56 hcnas gpsd[23765]: gpsd: &lt;= GPS:
+$GPGLL,3351.7906,N,11749.5220,W,185156,A,A*58
+ 
+Jan 14 10:51:56 hcnas gpsd[23765]: gpsd: GPGLL sets status 1 
+Jan 14 10:51:56 hcnas gpsd[23765]: gpsd: &lt;= GPS:
+$GPVTG,273.6,T,260.4,M,000.0,N,0000.0,K,A*13
+ 
+Jan 14 10:51:56 hcnas gpsd[23765]: gpsd: pps-detect (DCD) on /dev/ttyS0
+changed to 0 
+Jan 14 10:51:56 hcnas gpsd[23765]: gpsd: 1Hz PPS pulse. cycle: 1000002,
+duration: 499990 
+Jan 14 10:51:56 hcnas gpsd[23765]: gpsd: ntpshm_pps: clock:
+1200336716.505600, Pulse 659 
+Jan 14 10:51:56 hcnas gpsd[23765]: gpsd: ntpshm_pps: lost PPS lock:
+pulse 659 
+Jan 14 10:51:56 hcnas gpsd[23765]: gpsd: &lt;= GPS:
+$GPRMC,185156,A,3351.7906,N,11749.5220,W,000.0,273.6,140108,013.2,E,A*08
+ 
+Jan 14 10:51:56 hcnas gpsd[23765]: gpsd: GPRMC sets mode 2 
+Jan 14 10:51:57 hcnas gpsd[23765]: gpsd: pps-detect (DCD) on /dev/ttyS0
+changed to 1 
+Jan 14 10:51:57 hcnas gpsd[23765]: gpsd: 1Hz PPS pulse. cycle: 999999,
+duration: 500009 
+Jan 14 10:51:57 hcnas gpsd[23765]: gpsd: &lt;= GPS:
+$GPGGA,185157,3351.7906,N,11749.5220,W,1,10,01.56,000082.1,M,-032.3,M,,*
+7B
+ 
+Jan 14 10:51:57 hcnas gpsd[23765]: gpsd: GPGGA starts a reporting cycle.
+
+Jan 14 10:51:57 hcnas gpsd[23765]: gpsd: GPGGA sets status 1 and mode 3
+(changed) 
+Jan 14 10:51:57 hcnas gpsd[23765]: gpsd: ntpshm_put: Clock: 1200336717 @
+1200336717.203650 
+Jan 14 10:51:57 hcnas gpsd[23765]: gpsd: &lt;= GPS:
+$GPZDA,185158,14,01,2008,+00,00*6D
+ 
+Jan 14 10:51:57 hcnas gpsd[23765]: gpsd: &lt;= GPS:
+$GPGLL,3351.7906,N,11749.5220,W,185157,A,A*59
+ 
+Jan 14 10:51:57 hcnas gpsd[23765]: gpsd: GPGLL sets status 1 
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="003083.html">[Gpsd-users] GPSd and gpsfeed+ trouble communicating
+</A></li>
+	<LI>Next message: <A HREF="003092.html">[Gpsd-users] PPS 5Hz (was Bug - Switching Drivers from Generic NMEAtoGarmin serial creates 2 gpsd_ppsmonitor thread)
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3091">[ date ]</a>
+              <a href="thread.html#3091">[ thread ]</a>
+              <a href="subject.html#3091">[ subject ]</a>
+              <a href="author.html#3091">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

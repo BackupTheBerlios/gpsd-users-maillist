@@ -1,0 +1,162 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] Unplugging USB gps receivers - gpsd behaviour.
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2009-October/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Unplugging%20USB%20gps%20receivers%20-%20gpsd%20behaviour.&In-Reply-To=%3C4ADB60D2.2030702%40attglobal.net%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="004011.html">
+   <LINK REL="Next"  HREF="004014.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] Unplugging USB gps receivers - gpsd behaviour.</H1>
+    <B>Two Sank</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Unplugging%20USB%20gps%20receivers%20-%20gpsd%20behaviour.&In-Reply-To=%3C4ADB60D2.2030702%40attglobal.net%3E"
+       TITLE="[Gpsd-users] Unplugging USB gps receivers - gpsd behaviour.">sanktwo at attglobal.net
+       </A><BR>
+    <I>Sun Oct 18 20:39:14 CEST 2009</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="004011.html">[Gpsd-users] Unplugging USB gps receivers - gpsd behaviour.
+</A></li>
+        <LI>Next message: <A HREF="004014.html">[Gpsd-users] Unplugging USB gps receivers - gpsd behaviour.
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#4013">[ date ]</a>
+              <a href="thread.html#4013">[ thread ]</a>
+              <a href="subject.html#4013">[ subject ]</a>
+              <a href="author.html#4013">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>&gt;&gt;<i> Two Sank wrote:
+</I>&gt;&gt;&gt;<i> Hi Ed, thanks for responding.
+</I>&gt;&gt;&gt;<i> The truth is that I cannot find ANY remove event for the first 4 tty
+</I>&gt;&gt;&gt;<i> devices. After that the remove event is invoked and works just fine.
+</I>&gt;&gt;&gt;<i> Also, if I kill gpsd, then the remove event is generated and the remove
+</I>&gt;&gt;&gt;<i> script for gpsd is called - but gpsd is of course missing.  I am really
+</I>&gt;&gt;&gt;<i> puzzled. I can only think that because gpsd is keeping the tty open,
+</I>&gt;&gt;&gt;<i> Ubuntu does not generate the receive event - but why???
+</I>&gt;&gt;&gt;<i>   
+</I>&gt;&gt;<i> If you need help then why are you ignoring all the help I tried to offer?
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> Please use udev monitor and check the exact events.  Then simplify your
+</I>&gt;&gt;<i> remove event until it starts to fire - this will show a lot of info
+</I>&gt;&gt;<i> about why it's not firing. In my case I need a udev rule which is simply
+</I>&gt;&gt;<i> matched on any ttyUSB event, no matter what driver...
+</I>&gt;<i> 
+</I>&gt;<i> Ed, I failed to mention that the original &quot;remove&quot; rule is:
+</I>&gt;<i> 
+</I>&gt;<i> ACTION=&quot;remove&quot;, RUN+=&quot;/lib/udev/gpsd.hotplug.wrapper&quot;
+</I>&gt;<i> 
+</I>&gt;<i> the only thing that bypasses that rule is: if the subsystem is not tty
+</I>&gt;<i> all the gpsd rules are ignored including this one. I think that the
+</I>&gt;<i> above rule is about as simple as possible.
+</I>&gt;<i> So I have to figure out why some other rule does not think that the
+</I>&gt;<i> receiver is a tty device. I don't like the idea of triggering the remove
+</I>&gt;<i> for all possible subsystems e.g. when I remove a USB DVD drive.
+</I>&gt;<i> 
+</I>&gt;<i> What I think I have to do is find out what rules are being fired for the
+</I>&gt;<i> device and, as you wrote, find out why the add rules identify the device
+</I>&gt;<i> as tty but the remove rules do not.  I can do that once I can figure out
+</I>&gt;<i> from the logs which UDEV rules are actually being triggered for &quot;add&quot;
+</I>&gt;<i> since there seems to be quite a lot of them in the directory.
+</I>
+Warren Free pointed out that I had made an error above. The original &quot;remove&quot; rule was:
+ACTION==&quot;remove&quot;, RUN+=&quot;/lib/udev/gpsd.hotplug.wrapper&quot;
+== not =
+
+However, I now have further information. I am coming to believe that the problem
+of the /dev/ttyUSBx not vanishing may well be unsolvable without either totally killing
+the gpsd daemon or the behaviour of the Linux kernel tty subsystem being fixed.
+I fixed the UDEV rules so that the remove script is called, albeit with a device name not
+of the form /dev/ttyUSBx
+First I suspected that the name given caused the problem, but a few debug statements
+showed that gpsd was being sent the close command for &quot;remove&quot;. For anyone interested the
+log below shows that, even with the gpsd NOT holding open /dev/ttyUSB0, it still does
+not vanish on unplug. Only killing the daemon seems to do that. The log below is
+commented with the actions I took. If anyone can see a flaw with the logic, I would
+be very interested. The lines beginning $ are the commands, the rest the responses.
+
+$ #This is test with fix applied so that &quot;remove&quot; is called.
+$ #The machine has just been rebooted and the receiver is not plugged in.
+$ #first look at ttyUSB devices
+$ ls /dev/ttyU*
+ls: cannot access /dev/ttyU*: No such file or directory
+$ #none. Now plug in the receiver and test to see if gpsd is running
+$ ls /dev/ttyU*
+/dev/ttyUSB0
+$ ps ax|grep gps
+ 3385 ?        S&lt;sl   0:00 gpsd -F /var/run/gpsd.sock
+ 3392 pts/0    S+     0:00 grep gps
+$ #OK, ttyUSB0 is there and gpsd is running. Next check if it is open.
+$ sudo fuser /dev/ttyUSB0
+/dev/ttyUSB0:         3385
+$ #Yes, gpsd has the device open. Here I unplug and look at state
+$ ls /dev/ttyU*
+/dev/ttyUSB0
+$ #ttyUSB0 is still there, test gpsd existing and having it open
+$ ps ax|grep gps
+ 3385 ?        S&lt;sl   0:01 gpsd -F /var/run/gpsd.sock
+$ sudo fuser /dev/ttyUSB0
+$ #no output from fuser so /dev/ttyUSB0 seems to be there and NOT open.
+$ #next, kill the daemon and see if /dev/ttyUSB0 is still there
+$ sudo kill -9 3385
+$ ls /dev/ttyU*
+ls: cannot access /dev/ttyU*: No such file or directory
+$ #now it has gone. Perhaps it is a question of timing of closing because
+$ #the script is forked. So here I plug in again and tell gpsd to
+$ #close manually before unplugging the receiver.
+$ ls /dev/ttyU*
+/dev/ttyUSB0
+$ ps ax|grep gps
+ 3637 ?        S&lt;sl   0:00 gpsd -F /var/run/gpsd.sock
+$ sudo fuser /dev/ttyUSB0
+/dev/ttyUSB0:         3637
+$ #yes, /dev/ttyUSB0 is back, gpsd is running and has it open.
+$ #call the gpsd remove script by hand before unplugging.
+$ sudo /lib/udev/gpsd.hotplug remove /dev/ttyUSB0
+$ sudo fuser /dev/ttyUSB0
+$ #No output, therefore gpsd has definitely closed the connection
+$ ps ax|grep gps
+ 3637 ?        S&lt;sl   0:00 gpsd -F /var/run/gpsd.sock
+$ #but gpsd is still running. Here I unplug and see if ttyUSB0 goes
+$ ps ax|grep gps
+ 3637 ?        S&lt;sl   0:00 gpsd -F /var/run/gpsd.sock
+$ ls /dev/ttyU*
+/dev/ttyUSB0
+$ #no, /dev/ttyUSB0 is still present.
+$ sudo fuser /dev/ttyUSB0
+$ #Empty response so nothing has it open.
+$ #So telling gpsd to disconnect is insufficient - apart from kill -9 what is sufficient?
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="004011.html">[Gpsd-users] Unplugging USB gps receivers - gpsd behaviour.
+</A></li>
+	<LI>Next message: <A HREF="004014.html">[Gpsd-users] Unplugging USB gps receivers - gpsd behaviour.
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#4013">[ date ]</a>
+              <a href="thread.html#4013">[ thread ]</a>
+              <a href="subject.html#4013">[ subject ]</a>
+              <a href="author.html#4013">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

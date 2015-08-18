@@ -1,0 +1,110 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] Unable to install
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2007-November/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Unable%20to%20install&In-Reply-To=%3CPine.LNX.4.64.0711031739180.30100%40birdbird.example.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="002946.html">
+   <LINK REL="Next"  HREF="002948.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] Unable to install</H1>
+    <B>Matt Roberds</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Unable%20to%20install&In-Reply-To=%3CPine.LNX.4.64.0711031739180.30100%40birdbird.example.com%3E"
+       TITLE="[Gpsd-users] Unable to install">mattroberds at cox.net
+       </A><BR>
+    <I>Sat Nov  3 23:54:38 CET 2007</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="002946.html">[Gpsd-users] Unable to install
+</A></li>
+        <LI>Next message: <A HREF="002948.html">[Gpsd-users] installing
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2947">[ date ]</a>
+              <a href="thread.html#2947">[ thread ]</a>
+              <a href="subject.html#2947">[ subject ]</a>
+              <a href="author.html#2947">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>On Sat, 3 Nov 2007, Keith E. Brandt, M.D. wrote:
+&gt;<i> I am trying to install gpsd from the ports distribution of FreeBSD6
+</I>&gt;<i> (system was completely updated approximately a month ago). It looks
+</I>&gt;<i> like it is using gpsd-2.32. When I try to build it, make returns a
+</I>&gt;<i> series of cascading errors which start with:
+</I>&gt;<i>
+</I>&gt;<i> gpxlogger.c:8:18: glib.h: No such file or directory
+</I>
+I have glib.h on my system and the comments indicate it's part of GLib.
+The docs say &quot;GLib is a library containing many useful C routines for
+things such as trees, hashes, lists, and strings.  It is a useful
+general-purpose C library used by projects such as GTK+, GIMP, and
+GNOME.&quot;
+
+I don't know if FreeBSD does this, but on Linux it's fairly common for
+libraries to have a main package (like &quot;libfoo&quot;) and a development
+package (like &quot;libfoo-dev&quot;).  The main package contains only the
+libraries, and is useful for precompiled software that just needs to
+link against the libraries.  The development package contains the
+headers that are needed to compile software that uses the library from
+source code.  You may need to install the GLib development package in
+order to get gpxlogger.c to compile.
+
+&gt;<i> gpxlogger.c:9:23: dbus/dbus.h: No such file or directory
+</I>
+Same story with dbus.h .  The docs say &quot;D-Bus is a message bus, used
+for sending messages between applications.  Conceptually, it fits
+somewhere in between raw sockets and CORBA in terms of complexity.&quot;
+There is a dbus package, plus a dbus-glib package that says &quot;This
+package provides the GLib-based shared library for applications
+using the GLib interface to D-Bus.&quot;  You may need to install the DBus
+and DBus-GLib development packages in order to get gpxlogger.c to
+compile.
+
+Another option, at least for dbus.h, would be to tell the build process
+to not look for DBus at all.  It's been a while since I built something
+on FreeBSD, but if you still get to run &quot;configure&quot; yourself, you might
+say
+
+configure --disable-dbus
+
+and it shouldn't even try to build the stuff that needs DBus.  Note that
+the --disable-dbus option os from the configure shipped with gpsd-2.34 ;
+I don't know if it was in gpsd-2.32 or not.
+
+I hope this helps!
+
+Matt Roberds
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="002946.html">[Gpsd-users] Unable to install
+</A></li>
+	<LI>Next message: <A HREF="002948.html">[Gpsd-users] installing
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2947">[ date ]</a>
+              <a href="thread.html#2947">[ thread ]</a>
+              <a href="subject.html#2947">[ subject ]</a>
+              <a href="author.html#2947">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

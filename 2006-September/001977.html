@@ -1,0 +1,124 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] Garmin GPS almost never sends new position data
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2006-September/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Garmin%20GPS%20almost%20never%20sends%20new%20position%20data&In-Reply-To=%3CPine.LNX.4.64.0609232017590.19017%40catbert.rellim.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="001975.html">
+   <LINK REL="Next"  HREF="001978.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] Garmin GPS almost never sends new position data</H1>
+    <B>Gary E. Miller</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Garmin%20GPS%20almost%20never%20sends%20new%20position%20data&In-Reply-To=%3CPine.LNX.4.64.0609232017590.19017%40catbert.rellim.com%3E"
+       TITLE="[Gpsd-users] Garmin GPS almost never sends new position data">gem at rellim.com
+       </A><BR>
+    <I>Sun Sep 24 05:29:05 CEST 2006</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="001975.html">[Gpsd-users] Garmin GPS almost never sends new position data
+</A></li>
+        <LI>Next message: <A HREF="001978.html">[Gpsd-users] Garmin GPS almost never sends new position data
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1977">[ date ]</a>
+              <a href="thread.html#1977">[ thread ]</a>
+              <a href="subject.html#1977">[ subject ]</a>
+              <a href="author.html#1977">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>-----BEGIN PGP SIGNED MESSAGE-----
+Hash: SHA1
+
+Yo Eivind!
+
+On Sat, 23 Sep 2006, Eivind Tagseth wrote:
+
+&gt;<i> But for messages larger than the 64 byte buffer, things behave like this:
+</I>
+First pass this looks to me like the documented garmin driver behavior.
+
+&gt;<i> 	n_tty_receive_buf(64 bytes)
+</I>&gt;<i> 	copy_from_read_buf(64 bytes)
+</I>&gt;<i> 	n_tty_receive_buf(32 bytes)
+</I>&gt;<i> 	n_tty_receive_buf(64 bytes)
+</I>&gt;<i> 	n_tty_receive_buf(22 bytes)
+</I>&gt;<i> 	copy_from_read_buf (repeated several times)
+</I>
+USB packets are max 64 bytes.  So each one of those is a USB packet as
+recieved from the Garmin.  The Garmin packets are composed of several
+USB packets.  For each Garmin packet the gps send 64 byte packets
+until the whole packet is sent with the last packet containing the
+last bits.  If the Garmin packet is an even 64 bytes then it will
+send a zero byte packet to denote the end of the Garmin packet.
+
+&gt;<i> I'm in deep water here, but I cannot see anything stopping the
+</I>&gt;<i> garmin_gps driver from calling tty_flip_buffer_push for multiple
+</I>&gt;<i> packets, and thus calling n_tty_receive_buf, _before_ copy_from_read_buf
+</I>&gt;<i> has returned all of the previous packet (or any of it) back to user space.
+</I>
+The gpsd garmin driver reads the garmin kernel driver the way that the
+garmin driver tells us to.  I would not put it past Redhat to have
+messed up the driver in their non-Linux copy.  I have been bit by RedHat
+way too many times to trust them.
+
+&gt;<i> Could this possibly be broken since I'm on a dual core cpu?
+</I>
+You can always boot to single user and try.  It is just a lilo option.
+Other folks have run fine on dual CPU and Garmin but I know of no recent
+success reports.
+
+&gt;<i> Unfortunately, I was unable to boot my kernel with nosmp set, and
+</I>&gt;<i> booting with maxcpus=1 only made matters worse, where gpsd couldn't even
+</I>&gt;<i> probe the GPS properly, since also the small packets got garbled.
+</I>
+This sounds more and more like a Fedora bug in their custom kernel.  I
+would really like to have you try a vanilla kernel.
+
+
+RGDS
+GARY
+- ---------------------------------------------------------------------------
+Gary E. Miller Rellim 20340 Empire Blvd, Suite E-3, Bend, OR 97701
+	<A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">gem at rellim.com</A>  Tel:+1(541)382-8588
+
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v1.4.3 (GNU/Linux)
+
+iD8DBQFFFfuE8KZibdeR3qURAkCCAJ9KdGHaRSM7hr61HKeY4y3mpFbVewCggYuf
+H5zl9ulCpdh5/lTZD/xvX1I=
+=30r8
+-----END PGP SIGNATURE-----
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="001975.html">[Gpsd-users] Garmin GPS almost never sends new position data
+</A></li>
+	<LI>Next message: <A HREF="001978.html">[Gpsd-users] Garmin GPS almost never sends new position data
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1977">[ date ]</a>
+              <a href="thread.html#1977">[ thread ]</a>
+              <a href="subject.html#1977">[ subject ]</a>
+              <a href="author.html#1977">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

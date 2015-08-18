@@ -1,0 +1,103 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] information updating
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2006-January/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20information%20updating&In-Reply-To=%3C20060101150006.71cf3c33%40hermes.omicron-arena.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="001200.html">
+   <LINK REL="Next"  HREF="001202.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] information updating</H1>
+    <B>James Jones</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20information%20updating&In-Reply-To=%3C20060101150006.71cf3c33%40hermes.omicron-arena.com%3E"
+       TITLE="[Gpsd-users] information updating">andarius at charter.net
+       </A><BR>
+    <I>Sun Jan  1 22:00:06 CET 2006</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="001200.html">[Gpsd-users] Re: Gpsd-users -- confirmation of subscription -- request 674079
+</A></li>
+        <LI>Next message: <A HREF="001202.html">[Gpsd-users] new bug + fix: gpsd dropping connection regardless of activity
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1201">[ date ]</a>
+              <a href="thread.html#1201">[ thread ]</a>
+              <a href="subject.html#1201">[ subject ]</a>
+              <a href="author.html#1201">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>I have searched and search for an answer to this, with no results.
+
+I am using gpsd-2.30 on a Slackware 10.2 system. The gps is a Trimble
+Lassen IQ module on a breakout board with two ports. The first port is
+set to output tsip and the second port is set to output NMEA. The
+interface to the computer is via a Prolific USB-2-Serial adapter using
+the module from my kernel which is v2.6.14.4. I have tried using both
+the tsip port (1) and the NMEA port (2).
+
+The problem is that during use I do not receive information updates
+on the tsip port. I have tried using the NMEA port but I only get
+position (lat/long) data. No time, no status, nothing but lat/long.
+Yet the NMEA data does update. It is just the tsip data that does not.
+
+To trouble shoot this I have run gpsd with the following command:
+
+ gpsd -nN -D 5 /dev/ttyUSB0
+
+and watched the stream. At the same time I open a terminal and poll
+the simplest thing to check (for me at least) which is the time. I
+have read part of Trimble's tsip reference manual and found the time
+packet as 0x41. While this value in the debug info is constantly
+incramented, polling gpsd via a &quot;telnet localhost 2947&quot; for &quot;D&quot; always
+returns the time that gpsd was started. The other data, such as
+position and so on also remain at the values that were given when gpsd
+was started.
+
+As I mentioned I have searched through alot of information. I have
+read the archives (searched through actualy) ofthis list as well as
+searched on google and a few others for varius keywords with no
+results. Only a few stating tsip has/had an error with velocity/mode.
+
+I can post a segment of the output from a &quot;-Dx&quot; or from a telnet
+session if required. Just let me know what level you want.
+
+Thanks
+
+James 
+
+          /=======================================\
+          | Most who fail have yet to really try! |
+          \=======================================/
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="001200.html">[Gpsd-users] Re: Gpsd-users -- confirmation of subscription -- request 674079
+</A></li>
+	<LI>Next message: <A HREF="001202.html">[Gpsd-users] new bug + fix: gpsd dropping connection regardless of activity
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1201">[ date ]</a>
+              <a href="thread.html#1201">[ thread ]</a>
+              <a href="subject.html#1201">[ subject ]</a>
+              <a href="author.html#1201">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

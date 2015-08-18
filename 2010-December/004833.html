@@ -1,0 +1,108 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] gpsd HEAD and SiRF
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2010-December/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20gpsd%20HEAD%20and%20SiRF&In-Reply-To=%3Calpine.LNX.1.00.1012241141070.15523%40catbert.rellim.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="004832.html">
+   <LINK REL="Next"  HREF="004836.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] gpsd HEAD and SiRF</H1>
+    <B>Gary E. Miller</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20gpsd%20HEAD%20and%20SiRF&In-Reply-To=%3Calpine.LNX.1.00.1012241141070.15523%40catbert.rellim.com%3E"
+       TITLE="[Gpsd-users] gpsd HEAD and SiRF">gem at rellim.com
+       </A><BR>
+    <I>Fri Dec 24 20:48:14 CET 2010</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="004832.html">[Gpsd-users] Fw: gpsd HEAD and SiRF
+</A></li>
+        <LI>Next message: <A HREF="004836.html">[Gpsd-users] Ubuntu 10.10 Udev package problems
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#4833">[ date ]</a>
+              <a href="thread.html#4833">[ thread ]</a>
+              <a href="subject.html#4833">[ subject ]</a>
+              <a href="author.html#4833">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>-----BEGIN PGP SIGNED MESSAGE-----
+Hash: SHA1
+
+Yo Eric!
+
+On Fri, 24 Dec 2010, Eric Raymond wrote:
+
+&gt;<i> Gary E. Miller &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">gem at rellim.com</A>&gt;:
+</I>&gt;<i> &gt; Some of the cheap USB GPS use an RS-232 to USB chip annd only run the
+</I>&gt;<i> &gt; internal serial link ito the GPS at 4800 baud.  Ludicrous, but that is
+</I>&gt;<i> &gt; the way it is.
+</I>&gt;<i>
+</I>&gt;<i> That is indeed ludicrous.  I wonder if we could detect this wiith an option
+</I>&gt;<i> to gpsctl that does the following:
+</I>
+I have found a USB GPPS to test on.  The internal RS-232 is indeed just
+4800 bps.  This uses a pl2303 like the other reported problem cases and
+the pl2303 linux driver actually reports that the link is running at
+4800 bps.  In the past I had seen the 4800 in stty and thought it was
+just a dummy value.
+
+I have also seen gpsd autobauding on USB GPS and thought it was a
+pointless waste of time, but now I see it really is required.  If I
+change the pl2303 speed the GPS data I see is bad and gpsd will
+autobaud until the data is good.
+
+So the original test for minimum bps is all that needs to be done.  I
+thought I had seen USB-RS-232 converters that were not reporting
+correct bps to linux and will keep an eye out for that case.
+
+Now I am wondering if I could program the SiRF to a higher speed, set
+the pl2303 to match, and get good results that way.
+
+RGDS
+GARY
+- ---------------------------------------------------------------------------
+Gary E. Miller Rellim 109 NW Wilmington Ave., Suite E, Bend, OR 97701
+	<A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">gem at rellim.com</A>  Tel:+1(541)382-8588
+
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v1.4.3 (GNU/Linux)
+
+iD8DBQFNFPkABmnRqz71OvMRAmzJAJ4wK4a5+I9rS+wf9bezIFnM7W8bSgCg15cC
+taFPifvnNSJmSE0+N1RB1WY=
+=aJQ1
+-----END PGP SIGNATURE-----
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="004832.html">[Gpsd-users] Fw: gpsd HEAD and SiRF
+</A></li>
+	<LI>Next message: <A HREF="004836.html">[Gpsd-users] Ubuntu 10.10 Udev package problems
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#4833">[ date ]</a>
+              <a href="thread.html#4833">[ thread ]</a>
+              <a href="subject.html#4833">[ subject ]</a>
+              <a href="author.html#4833">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

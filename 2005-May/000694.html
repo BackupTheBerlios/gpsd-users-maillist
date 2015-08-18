@@ -1,0 +1,127 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] Re: GPS Simulator for gpsd
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2005-May/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Re%3A%20GPS%20Simulator%20for%20gpsd&In-Reply-To=%3C005f01c55f59%24adf72330%243c67a8c0%40netsity.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="000688.html">
+   <LINK REL="Next"  HREF="000701.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] Re: GPS Simulator for gpsd</H1>
+    <B>Inpreet Singh</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Re%3A%20GPS%20Simulator%20for%20gpsd&In-Reply-To=%3C005f01c55f59%24adf72330%243c67a8c0%40netsity.com%3E"
+       TITLE="[Gpsd-users] Re: GPS Simulator for gpsd">Singh.Inpreet at netsity.com
+       </A><BR>
+    <I>Mon May 23 07:38:42 CEST 2005</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="000688.html">[Gpsd-users] Re: GPS Simulator for gpsd
+</A></li>
+        <LI>Next message: <A HREF="000701.html">[Gpsd-users] Re: GPS Simulator for gpsd
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#694">[ date ]</a>
+              <a href="thread.html#694">[ thread ]</a>
+              <a href="subject.html#694">[ subject ]</a>
+              <a href="author.html#694">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hello Sir,
+
+I started gpsd service first and then given command, as you told me to do
+&quot;/usr/bin/gpsfake  /usr/src/test_gps&quot;
+but it is showing follwogin errors, what should I do?
+************************************************************
+gpsd: invalid option -- N
+usage:  gpsd [options]
+  options include:
+  -D level     [ set debug level. If &gt;= 2, remain in foreground ]
+  -L longitude [ set longitude ]
+  -l latitude  [ set latitude ]
+  -S port      [ set gpsd listening port ]
+  -T type      [ set DeLorme models. e = Earthmate, t = Tripmate ]
+  -h           [ help message ]
+  -p path      [ set gps device pathname ]
+  -s baud_rate [ set baud rate on gps device ]
+  -c           [ use dgps service for corrections ]
+  -d host      [ set dgps server hostname]
+  -r port      [ set dgps server port ]
+  -n           [ disable setting default values for longitute and latitute ]
+  -F filename  [ read input from file ]
+  -f seconds   [ delay per input file line in seconds (default=0.2)]
+  -K           [ keep gps device open all the time (linux USB workaround) ]
+gpsfake: 'gpsd -N -P /tmp/gpsfake_pid-3957 -f /dev/pts/2' launch OK.
+Traceback (most recent call last):
+  File &quot;/usr/bin/gpsfake&quot;, line 51, in ?
+    fp = open(pidfile)
+IOError: [Errno 2] No such file or directory: '/tmp/gpsfake_pid-3957'
+************************************************************
+
+----- Original Message ----- 
+From: &quot;Eric S. Raymond&quot; &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">esr at thyrsus.com</A>&gt;
+To: &quot;Inpreet Singh&quot; &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">Singh.Inpreet at netsity.com</A>&gt;
+Cc: &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">gpsd-users at lists.berlios.de</A>&gt;
+Sent: Sunday, May 22, 2005 2:43 AM
+Subject: Re: [Gpsd-users] Re: GPS Simulator for gpsd
+
+
+&gt;<i> Inpreet Singh &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">Singh.Inpreet at netsity.com</A>&gt;:
+</I>&gt;<i> &gt; Along with this I started gpsd service daemon and tried to telnet
+</I>localhost
+&gt;<i> &gt; 2947.
+</I>&gt;<i>
+</I>&gt;<i> Did you use the exact gpsd invocation it told you to?  If you didn't, it
+</I>&gt;<i> won't work -- in fact, it will fail in exactly the way you described.
+</I>&gt;<i>
+</I>&gt;<i> Next time leave off the -n option and let gpsfake start gpsd itself.
+</I>&gt;<i>
+</I>&gt;<i> &gt; I want to write C program for simulator just as gpsfake. could you
+</I>please
+&gt;<i> &gt; share some documentation about gpsfake, which can explain what exactly
+</I>&gt;<i> &gt; gpsfake is doing. I mean business logic.
+</I>&gt;<i>
+</I>&gt;<i> &quot;Business logic&quot;?  Ouch...you just made my head hurt.  Please don't say
+</I>&gt;<i> anything else that stupid.
+</I>&gt;<i>
+</I>&gt;<i> There is a gpsfake manual page at
+</I>&gt;<i>
+</I>&gt;<i> <A HREF="http://gpsd.berlios.de/gpsfake.html.">http://gpsd.berlios.de/gpsfake.html.</A>
+</I>&gt;<i>
+</I>&gt;<i> The code is only 120 lines long and extremely simple; the important
+</I>&gt;<i> part is the main loop at lines 94-117.  Read it and learn.
+</I>&gt;<i> -- 
+</I>&gt;<i> &lt;a href=&quot;<A HREF="http://www.catb.org/~esr/">http://www.catb.org/~esr/</A>&quot;&gt;Eric S. Raymond&lt;/a&gt;
+</I>&gt;<i>
+</I>
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="000688.html">[Gpsd-users] Re: GPS Simulator for gpsd
+</A></li>
+	<LI>Next message: <A HREF="000701.html">[Gpsd-users] Re: GPS Simulator for gpsd
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#694">[ date ]</a>
+              <a href="thread.html#694">[ thread ]</a>
+              <a href="subject.html#694">[ subject ]</a>
+              <a href="author.html#694">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

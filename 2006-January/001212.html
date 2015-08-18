@@ -1,0 +1,87 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] Problems getting started with gpsd
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2006-January/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Problems%20getting%20started%20with%20gpsd&In-Reply-To=%3C20060116220448.7506ABB48E%40xprdmailfe27.nwk.excite.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="001237.html">
+   <LINK REL="Next"  HREF="001213.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] Problems getting started with gpsd</H1>
+    <B>mark_2811</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Problems%20getting%20started%20with%20gpsd&In-Reply-To=%3C20060116220448.7506ABB48E%40xprdmailfe27.nwk.excite.com%3E"
+       TITLE="[Gpsd-users] Problems getting started with gpsd">mark_2811 at excite.com
+       </A><BR>
+    <I>Mon Jan 16 23:04:48 CET 2006</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="001237.html">[Gpsd-users] Odd prob with my Holux gm-210
+</A></li>
+        <LI>Next message: <A HREF="001213.html">[Gpsd-users] Problems getting started with gpsd
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1212">[ date ]</a>
+              <a href="thread.html#1212">[ thread ]</a>
+              <a href="subject.html#1212">[ subject ]</a>
+              <a href="author.html#1212">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE> --- On Sat 12/24, Gary E. Miller &lt; <A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">gem at rellim.com</A> &gt; wrote:
+From: Gary E. Miller [mailto: <A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">gem at rellim.com</A>]
+To: <A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">mark_2811 at excite.com</A>
+     Cc: <A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">gpsd-users at lists.berlios.de</A>
+Date: Sat, 24 Dec 2005 00:18:55 -0800 (PST)
+Subject: Re: [Gpsd-users] Problems getting started with gpsd
+
+-----BEGIN PGP SIGNED MESSAGE-----&lt;br&gt;Hash: SHA1&lt;br&gt;&lt;br&gt;Yo Mark!&lt;br&gt;&lt;br&gt;On Fri, 23 Dec 2005, mark_2811 wrote:&lt;br&gt;&lt;br&gt;&gt; Hi Gary, thanks for the reply. I wasn't doing 'make install', but I don'&lt;br&gt;&gt; t want to install anyways, just copy over the executable to my compact f&lt;br&gt;&gt; lash card.&lt;br&gt;&lt;br&gt;It woould still easier to run &quot;make install&quot; on to a live FS and then&lt;br&gt;grab the pieces you need for the read-only FS&gt;&lt;br&gt;&lt;br&gt;&gt; I've learned a bit more since I sent the original message. The executabl&lt;br&gt;&gt; e is in the build directory/.libs. The file 'gpsd' in the build director&lt;br&gt;&gt; y is just a shell script that loads some libraries and launches the real&lt;br&gt;&gt;  executable. This seems to be from libtool, which I'm not familiar with.&lt;br&gt;&lt;br&gt;Now you know a good reason to run &quot;make install&quot;.  The gpsd in the build&lt;br&gt;dir uses that funcky .lib thing so you can test the build before installing&lt;br&gt;it and copying over your working copy.&lt;br&gt;&lt;br&gt;&gt; I copied libgps.so.15 to my compact flash card, in 
+addition to the gpsd&lt;br&gt;&gt; executable from /.libs. It gets alot further now, but complains at getpr&lt;br&gt;&gt; otobyname(). The error message is:&lt;br&gt;&lt;br&gt;&gt; gpsd: Can't get &quot;tcp&quot; protocol entry.&lt;br&gt;&gt; gpsd: command socket create failed, netlib error -1&lt;br&gt;&lt;br&gt;Here is my /etc/protocols:&lt;br&gt;&lt;br&gt;tcp     6       TCP     # transmission control protocol&lt;br&gt;&lt;br&gt;Here is my /etc/services:&lt;br&gt;&lt;br&gt;gpsd    2947/tcp        #&lt;br&gt;&lt;br&gt;&gt; My /etc/protocols file is fine, so not sure what's wrong with it. I susp&lt;br&gt;&gt; ect it may have something to do with nsswitch.conf (which I don't have o&lt;br&gt;&gt; n my compact flash). Any thoughts?&lt;br&gt;&lt;br&gt;My nsswitch.conf is empty.&lt;br&gt;&lt;br&gt;&gt; Also according to the documentation you're supposed to just pass the dev&lt;br&gt;&gt; ice file to gpsd as a command line argument (no -p argument).&lt;br&gt;&lt;br&gt;Not according to the man page, but I just tried it and it does work withou&lt;br&gt;the -f/-p.  Try running gpsd with debug on:&lt;br&gt;&lt;br&gt;	gpsd  -f /dev/ttyUSB0 -nN -D4&lt;br&gt;&lt;br&gt;RGDS&lt;br&gt;GARY&lt;br&gt;- 
+---------------------------------------------------------------------------&lt;br&gt;Gary E. Miller Rellim 20340 Empire Blvd, Suite E-3, Bend, OR 97701&lt;br&gt;	<A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">gem at rellim.com</A>  Tel:+1(541)382-8588 Fax: +1(541)382-8676&lt;br&gt;-----BEGIN PGP SIGNATURE-----&lt;br&gt;Version: GnuPG v1.4.1 (GNU/Linux)&lt;br&gt;&lt;br&gt;iD8DBQFDrQRy8KZibdeR3qURAsfhAKDR1nV5AMCPE9BttPlwIdVkgjsVyQCgvVZf&lt;br&gt;tIHOjUMrl/mBmMQOEB+ZN1Q=&lt;br&gt;=yBH2&lt;br&gt;-----END PGP SIGNATURE-----&lt;br&gt;&lt;br&gt;_______________________________________________&lt;br&gt;Gpsd-users mailing list&lt;br&gt;<A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">Gpsd-users at lists.berlios.de</A>&lt;br&gt;<A HREF="http://lists.berlios.de/mailman/listinfo/gpsd-users&lt;br">http://lists.berlios.de/mailman/listinfo/gpsd-users&lt;br</A>&gt;
+
+
+Hi All,
+
+I had to shelve this project for a little while, but am now back at it.  I'm still unable to get gpsd to work at all.  I have it installed on my compact-flash card, but as mentioned previously I get the error &quot;can't get &quot;tcp&quot; protocol entry&quot; when I try to launch it.  Does anyone here know what external dependencies are needed to run gpsd (ie. on the system environment)?  Deadlines are looming so any advice on diagnosing this is much appreciated.
+
+Gary - I followed your advice and used 'make install' but for some reason it still gives the same errors.
+
+Thanks,
+Mark
+
+_______________________________________________
+Join Excite! - <A HREF="http://www.excite.com">http://www.excite.com</A>
+The most personalized portal on the Web!
+
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="001237.html">[Gpsd-users] Odd prob with my Holux gm-210
+</A></li>
+	<LI>Next message: <A HREF="001213.html">[Gpsd-users] Problems getting started with gpsd
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1212">[ date ]</a>
+              <a href="thread.html#1212">[ thread ]</a>
+              <a href="subject.html#1212">[ subject ]</a>
+              <a href="author.html#1212">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

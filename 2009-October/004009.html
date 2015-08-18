@@ -1,0 +1,92 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] Unplugging USB gps receivers - gpsd behaviour.
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2009-October/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Unplugging%20USB%20gps%20receivers%20-%20gpsd%20behaviour.&In-Reply-To=%3C4AD8219A.10608%40attglobal.net%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="004008.html">
+   <LINK REL="Next"  HREF="004011.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] Unplugging USB gps receivers - gpsd behaviour.</H1>
+    <B>Two Sank</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Unplugging%20USB%20gps%20receivers%20-%20gpsd%20behaviour.&In-Reply-To=%3C4AD8219A.10608%40attglobal.net%3E"
+       TITLE="[Gpsd-users] Unplugging USB gps receivers - gpsd behaviour.">sanktwo at attglobal.net
+       </A><BR>
+    <I>Fri Oct 16 09:32:42 CEST 2009</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="004008.html">[Gpsd-users] Unplugging USB gps receivers - gpsd behaviour.
+</A></li>
+        <LI>Next message: <A HREF="004011.html">[Gpsd-users] Unplugging USB gps receivers - gpsd behaviour.
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#4009">[ date ]</a>
+              <a href="thread.html#4009">[ thread ]</a>
+              <a href="subject.html#4009">[ subject ]</a>
+              <a href="author.html#4009">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Ed W wrote:
+&gt;<i> Two Sank wrote:
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> Hi Ed, thanks for responding.
+</I>&gt;&gt;<i> The truth is that I cannot find ANY remove event for the first 4 tty
+</I>&gt;&gt;<i> devices. After that the remove event is invoked and works just fine.
+</I>&gt;&gt;<i> Also, if I kill gpsd, then the remove event is generated and the remove
+</I>&gt;&gt;<i> script for gpsd is called - but gpsd is of course missing.  I am really
+</I>&gt;&gt;<i> puzzled. I can only think that because gpsd is keeping the tty open,
+</I>&gt;&gt;<i> Ubuntu does not generate the receive event - but why???
+</I>&gt;&gt;<i>   
+</I>&gt;<i> 
+</I>&gt;<i> If you need help then why are you ignoring all the help I tried to offer?
+</I>&gt;<i> 
+</I>&gt;<i> Please use udev monitor and check the exact events.  Then simplify your
+</I>&gt;<i> remove event until it starts to fire - this will show a lot of info
+</I>&gt;<i> about why it's not firing. In my case I need a udev rule which is simply
+</I>&gt;<i> matched on any ttyUSB event, no matter what driver...
+</I>&gt;<i> 
+</I>&gt;<i> Ed W
+</I>&gt;<i> 
+</I>Sorry ed, been on holiday and only on email when I can connect. I will
+be home tonight so I will start working again.
+
+I have found out why ttyUSB4 works - the receiver is never attached to
+it! The receiver stops being attached after ttyUSB3. I have logged the
+UDEV trace using udevadm but i don't understand it all yet. I have found
+some guidance and have been reading up on udev rules so I can understand
+what you write. I am certain you are right, there is a udev rule problem
+somewhere. I can see the kernel &quot;remove&quot; events but cannot yet figure
+out where they go. More later, please don't give up on me!
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="004008.html">[Gpsd-users] Unplugging USB gps receivers - gpsd behaviour.
+</A></li>
+	<LI>Next message: <A HREF="004011.html">[Gpsd-users] Unplugging USB gps receivers - gpsd behaviour.
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#4009">[ date ]</a>
+              <a href="thread.html#4009">[ thread ]</a>
+              <a href="subject.html#4009">[ subject ]</a>
+              <a href="author.html#4009">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

@@ -1,0 +1,96 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] Establishing Direction of Travel / Bearing (Python)
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2011-November/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Establishing%20Direction%20of%20Travel%20/%20Bearing%20%28Python%29&In-Reply-To=%3C20111103140615.44845a68%40yendi%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="005525.html">
+   <LINK REL="Next"  HREF="005527.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] Establishing Direction of Travel / Bearing (Python)</H1>
+    <B>Charles Curley</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Establishing%20Direction%20of%20Travel%20/%20Bearing%20%28Python%29&In-Reply-To=%3C20111103140615.44845a68%40yendi%3E"
+       TITLE="[Gpsd-users] Establishing Direction of Travel / Bearing (Python)">charlescurley at charlescurley.com
+       </A><BR>
+    <I>Thu Nov  3 21:06:15 CET 2011</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="005525.html">[Gpsd-users] Establishing Direction of Travel / Bearing (Python)
+</A></li>
+        <LI>Next message: <A HREF="005527.html">[Gpsd-users] Establishing Direction of Travel / Bearing (Python)
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#5526">[ date ]</a>
+              <a href="thread.html#5526">[ thread ]</a>
+              <a href="subject.html#5526">[ subject ]</a>
+              <a href="author.html#5526">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>On Thu, 3 Nov 2011 19:37:06 +0000
+Neil Greenough &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">neilgreenough at sky.com</A>&gt; wrote:
+
+&gt;<i> I'm currently writing a script in Python which records the longitude,
+</I>&gt;<i> latitude and speed from the GPS device. What I'd like to do is also
+</I>&gt;<i> record the direction of travel / bearing for each hit (ie. North,
+</I>&gt;<i> South, East, West). I've tried researching this but to no avail. Any
+</I>&gt;<i> suggestions on how this can be implemented or does anyone have any
+</I>&gt;<i> examples of Python code containing bearings?
+</I>
+Direction of travel, or heading, and bearing are not the same thing.
+Heading is the direction in which you are moving, i.e. your course
+made good. Bearing is the angle from the heading to a feature.
+
+That nitpick aside...  In C:
+
+    if (gpsdata.set &amp; TRACK_SET) {
+        formatTrack (gpsdata.fix.track);
+    }
+
+gpsdata.fix.track is a double, and seems to be a value in the range 0 to
+360, of degrees from true north, where 0 and 360 are both true north.
+(To be really pedantic, it should be either 0-359 or 1-360, but I
+actually prefer the extra degree.)
+
+
+
+-- 
+
+Charles Curley                  /&quot;\    ASCII Ribbon Campaign
+Looking for fine software       \ /    Respect for open standards
+and/or writing?                  X     No HTML/RTF in email
+<A HREF="http://www.charlescurley.com">http://www.charlescurley.com</A>    / \    No M$ Word docs in email
+
+Key fingerprint = CE5C 6645 A45A 64E4 94C0  809C FFF6 4C48 4ECD DFDB
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="005525.html">[Gpsd-users] Establishing Direction of Travel / Bearing (Python)
+</A></li>
+	<LI>Next message: <A HREF="005527.html">[Gpsd-users] Establishing Direction of Travel / Bearing (Python)
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#5526">[ date ]</a>
+              <a href="thread.html#5526">[ thread ]</a>
+              <a href="subject.html#5526">[ subject ]</a>
+              <a href="author.html#5526">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

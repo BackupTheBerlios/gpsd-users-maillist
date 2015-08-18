@@ -1,0 +1,141 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] Send me your GPS logs, please
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2005-June/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Send%20me%20your%20GPS%20logs%2C%20please&In-Reply-To=%3C200506081717.j58HHqOw010715%40snark.thyrsus.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="000735.html">
+   <LINK REL="Next"  HREF="000737.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] Send me your GPS logs, please</H1>
+    <B>Eric S. Raymond</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Send%20me%20your%20GPS%20logs%2C%20please&In-Reply-To=%3C200506081717.j58HHqOw010715%40snark.thyrsus.com%3E"
+       TITLE="[Gpsd-users] Send me your GPS logs, please">esr at snark.thyrsus.com
+       </A><BR>
+    <I>Wed Jun  8 19:17:52 CEST 2005</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="000735.html">[Gpsd-users] Where is Eric?
+</A></li>
+        <LI>Next message: <A HREF="000737.html">[Gpsd-users] cross-compiling make error
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#736">[ date ]</a>
+              <a href="thread.html#736">[ thread ]</a>
+              <a href="subject.html#736">[ subject ]</a>
+              <a href="author.html#736">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>The svn head version of gpsfake has a new feature that supports
+regression testing.  As usual, gpsfake spawns a gpsd instance, the GPS
+log file on standard input input is fed to the master side of a pty
+and the gpsd reads from the slave, so gpsds run exactly as though it
+were looking at a real GPS (but will not set your system clock).
+
+What's new is this: the new -p option makes it run through the logfile
+exactly once, emitting W and R reports to standard output.  (In order
+to do this, I implemented thread-callback support in gps.py.)
+
+This is the basic tool we need for putting together a regression-test
+suite for gpsd.  We can now collect a representative set of logfiles
+from many GPSes, use gpsfake -p to crunch them into WR+ dumps, save
+those, and regression-test the daemon by running gpsfake -p on each
+log and checking whether it matches the saved version.
+
+Therefore: send me a representative log for your GPS.  This will help
+ensure that support for your device is never broken in any gpsd
+release, because we will run the full regression before we ship.
+
+A logfile should consist of an identifying header followed by a
+straight unencoded dump of GPS data, whether NMEA or binary. The
+header should consist of text lines beginning with # and ending with LF.
+Here is the beginning of one log file I already have:
+
+# Name: Holux GM-210
+# Cycle-time: 1-second
+# Start-of-cycle: ?
+# Pause-noted: ?
+# Well-behaved: N
+# Submitted-by: &quot;Patrick L. McGillan&quot; &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">pmcgillan at pateri.com</A>&gt;
+# Date: 4 Apr 2005
+$GPGGA,012519.563,4131.7353,N,09336.8150,W,0,00,50.0,280.2,M,-31.6,M,0.0,0000*7D
+$GPGSA,A,1,,,,,,,,,,,,,50.0,50.0,50.0*05
+$GPRMC,012519.563,V,4131.7353,N,09336.8150,W,0.00,,050405,,*14
+$GPGGA,012520.563,4131.7353,N,09336.8150,W,0,00,50.0,280.2,M,-31.6,M,0.0,0000*77
+$GPGSA,A,1,,,,,,,,,,,,,50.0,50.0,50.0*05
+$GPGSV,3,1,09,14,65,034,00,01,55,291,43,25,53,210,37,22,45,125,00*7E
+$GPGSV,3,2,09,30,29,096,00,11,25,294,32,05,20,056,00,18,14,127,00*73
+$GPGSV,3,3,09,15,08,176,00*4C
+$GPRMC,012520.563,V,4131.7353,N,09336.8150,W,0.00,,050405,,*1E
+$GPGGA,012521.563,4131.7353,N,09336.8150,W,0,00,50.0,280.2,M,-31.6,M,0.0,0000*76
+The Name, Cycle-Time, Submitted-by, and Date headers should be pretty
+obvious.  
+
+Start-of-cycle should be the name of the NMEA sentence (or, in a
+packet protocol, the numeric type ID of the packet) that is emitted
+first in each cycle.
+
+Pause-Noted should be Y or N as there is or is not a visible pause
+between cycles.
+
+Well-behaved should by Y if all sentences in the same cycle have the
+same timestamp, N otherwise.
+
+New log files should include after Date an additional Location header
+giving the submitter's city, state/province, country code, and a rough
+latitude/longitude.  A good one for the above file might look like
+this:
+
+Location: Osceola, Iowa, US, 41N93W
+
+(Patrick, please send me the missing fields if you can.)
+
+If you have notes or comments on the logfile or the GPS, or any
+additional information you think might be helpful, add them as
+additional # comments (not containing a colon) after these headers.
+The test machinery that interprets the headers will ignore these and
+any empty comment lines.
+
+An ideal log file would include an initial portion during which the
+GPS has no fix, a portion during which it has a fix but is stationary,
+and a portion during which it is moving.
+-- 
+		&lt;a href=&quot;<A HREF="http://www.catb.org/~esr/">http://www.catb.org/~esr/</A>&quot;&gt;Eric S. Raymond&lt;/a&gt;
+
+Strict gun laws are about as effective as strict drug laws...It pains
+me to say this, but the NRA seems to be right: The cities and states
+that have the toughest gun laws have the most murder and mayhem.
+        -- Mike Royko, Chicago Tribune
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="000735.html">[Gpsd-users] Where is Eric?
+</A></li>
+	<LI>Next message: <A HREF="000737.html">[Gpsd-users] cross-compiling make error
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#736">[ date ]</a>
+              <a href="thread.html#736">[ thread ]</a>
+              <a href="subject.html#736">[ subject ]</a>
+              <a href="author.html#736">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

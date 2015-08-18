@@ -1,0 +1,107 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] NMEA over radio modem
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2007-April/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20NMEA%20over%20radio%20modem&In-Reply-To=%3C1175781283.16610.12.camel%40mabupc.psk%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="002544.html">
+   <LINK REL="Next"  HREF="002548.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] NMEA over radio modem</H1>
+    <B>Massimo Burcheri</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20NMEA%20over%20radio%20modem&In-Reply-To=%3C1175781283.16610.12.camel%40mabupc.psk%3E"
+       TITLE="[Gpsd-users] NMEA over radio modem">burcheri at fgan.de
+       </A><BR>
+    <I>Thu Apr  5 15:54:43 CEST 2007</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="002544.html">[Gpsd-users] NMEA over radio modem
+</A></li>
+        <LI>Next message: <A HREF="002548.html">[Gpsd-users] Support for GPSD?
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2545">[ date ]</a>
+              <a href="thread.html#2545">[ thread ]</a>
+              <a href="subject.html#2545">[ subject ]</a>
+              <a href="author.html#2545">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Am Donnerstag, den 05.04.2007, 14:22 +0200 schrieb Massimo Burcheri:
+
+&gt;<i> Cmd: ,V,,,,,00.1,184.0,050407,00,E,N*2C
+</I>&gt;<i> $GPGGA,,,,,,0,,,,,,,,*66
+</I>&gt;<i> $GPRMC,,V,,,,,00.1,184.0,050407,00,E,N*2C
+</I>
+And now with valid gps signal :) :
+
+$ cat /dev/ttyS0
+
+Datenfunkcontroller WZ DFC 3
+   V01.05, May 19 2003
+  FMN communications GmbH
+      Grimmelallee 4
+    D-99734 Nordhausen
+radio found: WZ DFM500/430S V1.10
+
+Cmd:
+$GPGGA,133726.00,5037.04007,N,00707.94822,E,1,06,1.4,347.23,M,47.4,M,,*5C
+$GPRMC,133726.00,A,5037.0401,N,00707.9482,E,00.0,182.4,050407,00,E,A*23
+$GPGGA,133727.00,5037.04019,N,00707.94816,E,1,05,1.8,347.64,M,47.4,M,,*59
+$GPRMC,133727.00,A,5037.0402,N,00707.9482,E,00.0,182.4,050407,00,E,A*21
+$GPGGA,133728.00,5037.04023,N,00707.94792,E,1,06,1.4,347.73,M,47.4,M,,*55
+$GPRMC,133728.00,A,5037.0402,N,00707.9479,E,00.0,182.4,050407,00,E,A*2A
+
+
+$ ./gpsd -n -N -D2 /dev/ttyS0 -S 2948
+gpsd: launching (Version 2.35beta)
+gpsd: listening on port 2948
+gpsd: Unable to start ntpshm.  gpsd must run as root.
+gpsd: running with effective group ID 557
+gpsd: running with effective user ID 557
+gpsd: opening GPS data source at '/dev/ttyS0'
+gpsd: speed 0, 8N1
+gpsd: garmin_gps not active.
+gpsd: speed 4800, 8N1
+gpsd: gpsd_activate(1): opened GPS (4)
+gpsd: unknown sentence: &quot;@X?*67&quot;
+gpsd: unknown sentence: &quot;@X?*67&quot;
+gpsd: can't use GGA/GGL time until after ZDA or RMC has supplied a year.
+gpsd: unknown sentence: &quot;@BA=15*3A&quot;
+gpsd: unknown sentence: &quot;@BA=15*3A&quot;
+gpsd: unknown sentence: &quot;@BA=15*3A&quot;
+
+
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="002544.html">[Gpsd-users] NMEA over radio modem
+</A></li>
+	<LI>Next message: <A HREF="002548.html">[Gpsd-users] Support for GPSD?
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2545">[ date ]</a>
+              <a href="thread.html#2545">[ thread ]</a>
+              <a href="subject.html#2545">[ subject ]</a>
+              <a href="author.html#2545">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

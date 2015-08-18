@@ -1,0 +1,106 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] GPSD showing wrong coordinates
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2010-March/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20GPSD%20showing%20wrong%20coordinates&In-Reply-To=%3C835051.32341.qm%40web110015.mail.gq1.yahoo.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="004319.html">
+   <LINK REL="Next"  HREF="004321.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] GPSD showing wrong coordinates</H1>
+    <B>Hamish</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20GPSD%20showing%20wrong%20coordinates&In-Reply-To=%3C835051.32341.qm%40web110015.mail.gq1.yahoo.com%3E"
+       TITLE="[Gpsd-users] GPSD showing wrong coordinates">hamish_b at yahoo.com
+       </A><BR>
+    <I>Sat Mar 27 16:09:04 CET 2010</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="004319.html">[Gpsd-users] GPSD showing wrong coordinates
+</A></li>
+        <LI>Next message: <A HREF="004321.html">[Gpsd-users] GPSD showing wrong coordinates
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#4320">[ date ]</a>
+              <a href="thread.html#4320">[ thread ]</a>
+              <a href="subject.html#4320">[ subject ]</a>
+              <a href="author.html#4320">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hamish:
+&gt;<i> &gt; while you're at it, you might as well mention that the
+</I>&gt;<i> &gt; other &quot;classic&quot; error is a 100-150m shift when using the
+</I>&gt;<i> &gt; wrong map datum. e.g. map is in NAD27 while GPS is giving
+</I>&gt;<i> &gt; WGS84.
+</I>
+Eric wrote:
+&gt;<i> Wil this do?
+</I>&gt;<i> 
+</I>&gt;<i> &lt;p&gt;If you're using &lt;tt&gt;gpsd&lt;/tt&gt; with software that plots your
+</I>&gt;<i> position on a map, and you seem to be getting latitude/longitude
+</I>&gt;<i> that is at a fixed offset from reality, it is possible the
+</I>&gt;<i> base datum of the map is something other than the WGS84 GPS
+</I>&gt;<i> uses. An important case of this is North American Geodetic
+</I>&gt;<i> Survey maps based on NAD27; you may see a displacement of as
+</I>&gt;<i> much as 100-150m with respect to WGS84.&lt;/p&gt;
+</I>
+
+yeah, but there's nothing special about NAD27. pretty much anything
+from the 1860s to the 1960s might have an offset in that range.
+It's really not until we got into the satellite era that we had
+a good estimate of the shape &amp; center of the geoid. After then
+it converges pretty quickly on the estimate WGS84 uses. 
+
+probably this is more a usual suspect for GIS mappers than gpsd
+navigational users, but the national map projection systems in
+some countries are still defined in the old ways and much if
+not most software which does on-the-fly map reprojection seems
+to get this one wrong..
+
+how about
+
+&lt;p&gt;If you're using &lt;tt&gt;gpsd&lt;/tt&gt; with software that plots your
+position on a map, and you seem to be getting latitude/longitude
+that is at a fixed 100-150m offset from reality, it is possible
+that the geodetic datum of the map is something other than WGS84
+which GPS uses.&lt;/p&gt;
+
+
+Hamish
+
+
+
+      
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="004319.html">[Gpsd-users] GPSD showing wrong coordinates
+</A></li>
+	<LI>Next message: <A HREF="004321.html">[Gpsd-users] GPSD showing wrong coordinates
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#4320">[ date ]</a>
+              <a href="thread.html#4320">[ thread ]</a>
+              <a href="subject.html#4320">[ subject ]</a>
+              <a href="author.html#4320">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

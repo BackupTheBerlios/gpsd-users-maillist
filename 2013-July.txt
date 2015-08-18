@@ -1,0 +1,52 @@
+From folkert at vanheusden.com  Mon Jul  1 16:07:08 2013
+From: folkert at vanheusden.com (folkert)
+Date: Mon, 1 Jul 2013 16:07:08 +0200
+Subject: [Gpsd-users] gpsd:WARN: PPS TIOCMIWAIT returns unchanged state,
+ ppsmonitor sleeps 10
+Message-ID: <20130701140708.GC11795@belle.intranet.vanheusden.com>
+
+Hi,
+
+I'm trying to sync a pc via gpsd and ntpd.
+I noticed that the nmea stream is processed correctly but pps does not
+work at all.
+So I invoked gpsd with "-n -N -D 255" and saw this:
+
+gpsd:PROG: KPPS assert 1372687478.817955292, sequence: 105 - clear  1372687477.917954360, sequence: 104
+gpsd:PROG: KPPS data: using assert
+gpsd:INFO: KPPS cycle: 1000019, duration:  900001 @ 1372687478.817955292
+gpsd:PROG: KPPS assert 1372687478.817955292, sequence: 105 - clear  1372687478.917956736, sequence: 105
+gpsd:PROG: KPPS data: using clear
+gpsd:INFO: KPPS cycle: 1000002, duration:  100001 @ 1372687478.917956736
+gpsd:PROG: KPPS assert 1372687479.817934609, sequence: 106 - clear  1372687478.917956736, sequence: 105
+gpsd:PROG: KPPS data: using assert
+gpsd:INFO: KPPS cycle:  999980, duration:  899978 @ 1372687479.817934609
+gpsd:PROG: KPPS assert 1372687479.817934609, sequence: 106 - clear  1372687479.917950586, sequence: 106
+gpsd:PROG: KPPS data: using clear
+gpsd:INFO: KPPS cycle:  999994, duration:  100015 @ 1372687479.917950586
+gpsd:DATA: packet from /dev/ttyS1 with {ONLINE|TIME|LATLON|SPEED|TRACK|MODE|PACKET|CLEAR|PPSTIME}
+gpsd:DATA: packet from /dev/ttyS1 with {ONLINE|TIME|LATLON|ALTITUDE|STATUS|MODE|PACKET|PPSTIME}
+gpsd:DATA: packet from /dev/ttyS1 with {ONLINE|TIME|LATLON|STATUS|PACKET|REPORT|PPSTIME}
+gpsd:PROG: KPPS assert 1372687480.817949304, sequence: 107 - clear  1372687479.917950586, sequence: 106
+gpsd:PROG: KPPS data: using assert
+gpsd:INFO: KPPS cycle: 1000014, duration:  899999 @ 1372687480.817949304
+gpsd:PROG: KPPS assert 1372687480.817949304, sequence: 107 - clear  1372687480.917933407, sequence: 107
+gpsd:PROG: KPPS data: using clear
+gpsd:INFO: KPPS cycle:  999983, duration:   99984 @ 1372687480.917933407
+gpsd:WARN: PPS TIOCMIWAIT returns unchanged state, ppsmonitor sleeps 10
+
+So clearly the PPS signal comes in but for some reason gpsd decides to sleep 10 seconds?
+Why on earth is it doing that?
+
+
+Regards,
+
+Folkert van Heusden
+
+-- 
+MultiTail ? uno flexible tool per seguire di logfiles e effettuazione
+di commissioni. Feltrare, provedere da colore, merge, 'diff-view',
+etc. http://www.vanheusden.com/multitail/
+----------------------------------------------------------------------
+Phone: +31-6-41278122, PGP-key: 1F28D8AE, www.vanheusden.com
+

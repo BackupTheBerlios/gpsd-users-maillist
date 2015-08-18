@@ -1,0 +1,89 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] gpsd 2.1 compile error, and Debian packaging
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2004-October/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20gpsd%202.1%20compile%20error%2C%20and%20Debian%20packaging&In-Reply-To=%3C20041008223512.GA11100%40thyrsus.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="000083.html">
+   <LINK REL="Next"  HREF="000075.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] gpsd 2.1 compile error, and Debian packaging</H1>
+    <B>Eric S. Raymond</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20gpsd%202.1%20compile%20error%2C%20and%20Debian%20packaging&In-Reply-To=%3C20041008223512.GA11100%40thyrsus.com%3E"
+       TITLE="[Gpsd-users] gpsd 2.1 compile error, and Debian packaging">esr at thyrsus.com
+       </A><BR>
+    <I>Sat Oct  9 00:35:12 CEST 2004</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="000083.html">[Gpsd-users] gpsd feeding multiple programs
+</A></li>
+        <LI>Next message: <A HREF="000075.html">[Gpsd-users] building gpsd for os x
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#92">[ date ]</a>
+              <a href="thread.html#92">[ thread ]</a>
+              <a href="subject.html#92">[ subject ]</a>
+              <a href="author.html#92">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Paul Hedderly &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">bulkpaul at mjr.org</A>&gt;:
+&gt;<i> Having used a few 1.9x versions, and 2.0 I was about to package 2.1 for
+</I>&gt;<i> Debian but ran into a compilation error.
+</I>&gt;<i> 
+</I>&gt;<i> This is on a sarge/sid box with every library I think it needs and
+</I>&gt;<i> plenty more...
+</I>&gt;<i> 
+</I>&gt;<i> autogen.sh runs fine, (as does ./configure) but during a make run I get:
+</I>&gt;<i> 
+</I>&gt;<i> make  all-am
+</I>&gt;<i> make[1]: Entering directory `/home/paul/gpsd/gpsd-2.1'
+</I>&gt;<i> if gcc -DHAVE_CONFIG_H -I. -I. -I.   -I/usr/X11R6/include
+</I>&gt;<i> -I/usr/X11R6/include -g -O2 -Wall -Werror  -I/usr/X11R6/include -MT
+</I>&gt;<i> gps-display.o -MD -MP -MF &quot;.deps/gps-display.Tpo&quot; -c -o gps-display.o
+</I>&gt;<i> `test -f 'display.c' || echo './'`display.c; \
+</I>&gt;<i> then mv -f &quot;.deps/gps-display.Tpo&quot; &quot;.deps/gps-display.Po&quot;; else rm -f
+</I>&gt;<i> &quot;.deps/gps-display.Tpo&quot;; exit 1; fi
+</I>&gt;<i> display.c: In function `set_color':
+</I>&gt;<i> display.c:34: warning: implicit declaration of function `sprintf'
+</I>&gt;<i> make[1]: *** [gps-display.o] Error 1
+</I>&gt;<i> make[1]: Leaving directory `/home/paul/gpsd/gpsd-2.1'
+</I>&gt;<i> make: *** [all] Error 2
+</I>&gt;<i> 
+</I>&gt;<i> I cannot see the problem! But I'm sure I've missed something obvious.
+</I>
+Add an &quot;#include &lt;stdio.h&gt;&quot;.  I'll do this in the masters.
+-- 
+		&lt;a href=&quot;<A HREF="http://www.catb.org/~esr/">http://www.catb.org/~esr/</A>&quot;&gt;Eric S. Raymond&lt;/a&gt;
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="000083.html">[Gpsd-users] gpsd feeding multiple programs
+</A></li>
+	<LI>Next message: <A HREF="000075.html">[Gpsd-users] building gpsd for os x
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#92">[ date ]</a>
+              <a href="thread.html#92">[ thread ]</a>
+              <a href="subject.html#92">[ subject ]</a>
+              <a href="author.html#92">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

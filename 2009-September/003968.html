@@ -1,0 +1,142 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] Detecting Gps/Modems
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2009-September/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Detecting%20Gps/Modems&In-Reply-To=%3C4ABCB4FA.8020503%40wildgooses.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="003967.html">
+   <LINK REL="Next"  HREF="003972.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] Detecting Gps/Modems</H1>
+    <B>Ed W</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Detecting%20Gps/Modems&In-Reply-To=%3C4ABCB4FA.8020503%40wildgooses.com%3E"
+       TITLE="[Gpsd-users] Detecting Gps/Modems">lists at wildgooses.com
+       </A><BR>
+    <I>Fri Sep 25 14:18:02 CEST 2009</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="003967.html">[Gpsd-users] How to start gpsd with fix baud rate of serial	interface
+</A></li>
+        <LI>Next message: <A HREF="003972.html">[Gpsd-users] Detecting Gps/Modems
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3968">[ date ]</a>
+              <a href="thread.html#3968">[ thread ]</a>
+              <a href="subject.html#3968">[ subject ]</a>
+              <a href="author.html#3968">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Diego Berge wrote:
+&gt;<i> Eric S. Raymond wrote:
+</I>&gt;<i>   
+</I>&gt;&gt;<i> I'm concerned about false positive OKs.  It's only a two-character
+</I>&gt;&gt;<i> string; that means it's going to show up in random baud barf
+</I>&gt;&gt;<i> approximately once in every 65K characters...which may sound like a
+</I>&gt;&gt;<i> lot until you realize that at 9600bps it's just once every 68 seconds.
+</I>&gt;&gt;<i>     
+</I>&gt;<i>
+</I>&gt;<i>    ...while I have no stakes in this, I would like to point out that,
+</I>&gt;<i> strictly, the modem should be returning &quot;OK\r&quot; (IIRC), so that
+</I>&gt;<i> particular string would be seen once every about 4:50 hours. Of course,
+</I>&gt;<i> most serial devices don't just sit there sending random uniformly
+</I>&gt;<i> distributed 8 bit characters :)
+</I>&gt;<i>   
+</I>
+&quot;OK&quot; will turn randomly from time to time I'm sure, but the point with a 
+modem is that it *doesn't* send an OK unless you probe it in some way.  
+If an OK is turning up at all in gpsd scanning then actually you could 
+flip it on it's head and say it's even less likely to be a modem...
+
+Counterpoint though - if it *is* a modem then it says &quot;OK\r&quot; near 
+instantly every time you say &quot;AT\r&quot; to it.  This is a lot higher than 
+chance, especially if you do it a couple of times and observe the high 
+correlation between cause and effect...  (Actually I will give you a 
+much better script than just &quot;AT&quot;, which we use here as part of a custom 
+modem detection app we have written)
+
+&gt;<i>    What I don't like about the idea of detecting modems is that I don't
+</I>&gt;<i> see how that can be useful to gpsd, other than deciding that it's
+</I>&gt;<i> possibly not a GPS device (unless you are dealing with a Thuraya phone,
+</I>&gt;<i> which will respond to an &quot;AT\r&quot; as a modem, but will also give you its
+</I>&gt;<i> GPS position given the right AT command).  Detecting what specific
+</I>&gt;<i> device is on the serial port belongs somewhere else.
+</I>&gt;<i>   
+</I>
+Sure - agreed.
+
+The reason I mention it here is that it's really a higher level project 
+than gpsd, BUT, gpsd has already done quite a lot of the work towards 
+that goal and actually you have the same need that I do in the sense 
+that we both need a hotplug interface which when a &quot;serial port&quot; is 
+connected, determines if that port is connected to a gps, a modem, an 
+intelligent plant watering system, or anything else that we still see 
+serial ports used for (my users also have HF Pactor modems and all kinds 
+of other crazy things that you find on a boat...)
+
+For sure you can say that &quot;we don't care, we only use gps's here and 
+tough luck to other people&quot;, but I was actually trying to square the 
+circle here and the original point was that &quot;autodetection is a good 
+thing rather than having to have the user manually detect things.&quot;  
+Although most people on this list may only have one serial port and one 
+GPS connected to it, I have a class of users who often have 12-16+ 
+serial ports and a wide variety of hardware connected to each of them 
+(AIS receivers, NMEA, satellite phones, navigation equipment, boat 
+sensors, etc, etc).  I really need a more generic approach to handling 
+the hotplug event and figuring out which subsystem should be fired up in 
+response to a serial port connection event
+
+Why am I posting here?  Basically because there is already a great 
+autodetection in gpsd for a wide class of serial connected devices and 
+with a bit of open-mindedness I hope people can see that it might be 
+useful to re-use the autodetection part of gpsd for a wider purpose....
+
+Bigger question though - is it clear to everyone why it would be useful 
+to bump the autodetection of device type up into the udev stage?  Right 
+now gpsd basically has some udev rules which pinches all serial ports, 
+tries to use them as a gps and in my experience then continues to sit on 
+the device forever after if it just sits there quietly (Eric suggests it 
+should drop the device on the floor, this is not what I observe, but 
+hopefully the point is clear that this still doesn't fix the problem 
+that some other subsystem might want to do something with the device if 
+it's NOT a gps?)
+
+Is it clear that some of the gpsd code might make a really nice starting 
+point for such a utility?
+
+Thanks for listening
+
+Ed W
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="003967.html">[Gpsd-users] How to start gpsd with fix baud rate of serial	interface
+</A></li>
+	<LI>Next message: <A HREF="003972.html">[Gpsd-users] Detecting Gps/Modems
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3968">[ date ]</a>
+              <a href="thread.html#3968">[ thread ]</a>
+              <a href="subject.html#3968">[ subject ]</a>
+              <a href="author.html#3968">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

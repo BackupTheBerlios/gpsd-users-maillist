@@ -1,0 +1,88 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] gpsd Architecture
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2006-July/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20gpsd%20Architecture&In-Reply-To=%3C20060721141620.GA7984%40thyrsus.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="001769.html">
+   <LINK REL="Next"  HREF="001749.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] gpsd Architecture</H1>
+    <B>Eric S. Raymond</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20gpsd%20Architecture&In-Reply-To=%3C20060721141620.GA7984%40thyrsus.com%3E"
+       TITLE="[Gpsd-users] gpsd Architecture">esr at thyrsus.com
+       </A><BR>
+    <I>Fri Jul 21 16:16:20 CEST 2006</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="001769.html">[Gpsd-users] gpsd Architecture
+</A></li>
+        <LI>Next message: <A HREF="001749.html">[Gpsd-users] Sending Initialization commands
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1774">[ date ]</a>
+              <a href="thread.html#1774">[ thread ]</a>
+              <a href="subject.html#1774">[ subject ]</a>
+              <a href="author.html#1774">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Michael R. Davis &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">mrdvt92 at yahoo.com</A>&gt;:
+&gt;<i> gpsd folks,
+</I>&gt;<i> I put this page together for the gpsd wiki.  I feel many questions
+</I>&gt;<i> arise from people not understanding the gpsd Architecture.  Please
+</I>&gt;<i> review and modify or comment if necessary.
+</I>&gt;<i> 
+</I>&gt;<i> <A HREF="http://gpsd.davisnetworks.com/bin/view/Main/GpsdInformation">http://gpsd.davisnetworks.com/bin/view/Main/GpsdInformation</A>
+</I>
+I find this paragraph a bit misleading as written:
+
+    The GPS daemon (gpsd) attaches to the terminal special file and
+    initializes the GPS receiver. Initialization typically sets the serial
+    port speed and the receiver protocol (e.g. NMEA or binary). Once
+    initialized, the gpsd continuously listens to the terminal special
+    file for messages from the receiver. As messages are received, they
+    are parsed and the position, navigation, and timing data is extracted.
+
+I'd suggest eplacing it with this:
+
+    The GPS daemon (gpsd) attaches to the terminal special file and
+    automatically synchronizes itself to the type and baud rate of the 
+    GPS device. Once synchronization is achieved, gpsd continuously 
+    listens to the terminal special file for messages from the receiver. 
+    As messages are received, they are parsed and the position, navigation, 
+    and timing data is extracted.
+-- 
+		&lt;a href=&quot;<A HREF="http://www.catb.org/~esr/">http://www.catb.org/~esr/</A>&quot;&gt;Eric S. Raymond&lt;/a&gt;
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="001769.html">[Gpsd-users] gpsd Architecture
+</A></li>
+	<LI>Next message: <A HREF="001749.html">[Gpsd-users] Sending Initialization commands
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1774">[ date ]</a>
+              <a href="thread.html#1774">[ thread ]</a>
+              <a href="subject.html#1774">[ subject ]</a>
+              <a href="author.html#1774">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

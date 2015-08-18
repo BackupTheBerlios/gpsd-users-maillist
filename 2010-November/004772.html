@@ -1,0 +1,108 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] modeling errors: mode 0
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2010-November/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20modeling%20errors%3A%20mode%200&In-Reply-To=%3CAANLkTinTrd2tLBovqQ121ekF6xZU2ibRSQQ0a-0Aw%2Bp9%40mail.gmail.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="004768.html">
+   <LINK REL="Next"  HREF="004773.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] modeling errors: mode 0</H1>
+    <B>Nick Smith</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20modeling%20errors%3A%20mode%200&In-Reply-To=%3CAANLkTinTrd2tLBovqQ121ekF6xZU2ibRSQQ0a-0Aw%2Bp9%40mail.gmail.com%3E"
+       TITLE="[Gpsd-users] modeling errors: mode 0">ndaman at gmail.com
+       </A><BR>
+    <I>Tue Nov 23 02:04:08 CET 2010</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="004768.html">[Gpsd-users] bu353 and cold start
+</A></li>
+        <LI>Next message: <A HREF="004773.html">[Gpsd-users] problems after update from ubuntu 9.xx to 10.04 LTS
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#4772">[ date ]</a>
+              <a href="thread.html#4772">[ thread ]</a>
+              <a href="subject.html#4772">[ subject ]</a>
+              <a href="author.html#4772">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>I'm testing a gps unit (inside, so I know it won't probably won't get any
+satellites). It's an interesting setup (hence the pty device), it appeared
+to be working, but I don't get any client data (using gpspipe -r or cgps).
+The only error I found running gpsd in debug mode was &quot;gpsd: modeling
+errors: mode 0 ...&quot; but a Google search didn't help me understand what this
+error was about. Here's the output from gpsd:
+
+ gpsd -NnbD 4 /dev/pts/1
+gpsd: launching (Version 2.95)
+gpsd: can't create IPv6 socket
+gpsd: listening on port gpsd
+gpsd: NTPD shmat(32769,0,0) succeeded, segment 0
+gpsd: NTPD shmat(65538,0,0) succeeded, segment 1
+gpsd: NTPD shmat(98307,0,0) succeeded, segment 2
+gpsd: NTPD shmat(131076,0,0) succeeded, segment 3
+gpsd: unable to connect to the DBUS system bus
+gpsd: running with effective group ID 0
+gpsd: running with effective user ID 0
+gpsd: opening read-only GPS data source type 5 and at '/dev/pts/1'
+gpsd: speed 38400, 8N1
+gpsd: Probing TSIP
+gpsd: speed 9600, 8O1
+gpsd: speed 38400, 8N1
+gpsd: no probe matched...
+gpsd: gpsd_activate(): opened GPS (fd 4)
+gpsd: switch_driver(Generic NMEA) called...
+gpsd: selecting Generic NMEA driver...
+gpsd: NTPD ntpd_link_activate: 1
+gpsd: /dev/pts/1 identified as type Generic NMEA (0.599273 sec @ 38400bps)
+gpsd: =&gt; Probing device subtype 0
+gpsd: RMC: ddmmyy=231110 hhmmss=005748 lat=nan lon=nan speed=nan track=nan
+mode=0 status=0 mask={ONLINE}
+gpsd: modeling errors: mode=0, masks={ONLINE|DRIVER|PACKET}
+gpsd: packet from /dev/pts/1 with {ONLINE|DRIVER|PACKET}
+gpsd: GPS on /dev/pts/1 is offline (0.001770 sec since data)
+gpsd: PPS Create Thread gpsd_ppsmonitor
+gpsd: =&gt; Probing device subtype 1
+
+... in pasting this another thought came to mind, could the IPv6 socket or
+DBUS errors be the reason gpspipe -r and cgps aren't working? I initially
+assumed they didn't because gpsd prints this message as soon as I run
+gpspipe or cgps:
+gpsd: checking client (0)
+
+Thanks for the help!
+
+-Nick
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="004768.html">[Gpsd-users] bu353 and cold start
+</A></li>
+	<LI>Next message: <A HREF="004773.html">[Gpsd-users] problems after update from ubuntu 9.xx to 10.04 LTS
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#4772">[ date ]</a>
+              <a href="thread.html#4772">[ thread ]</a>
+              <a href="subject.html#4772">[ subject ]</a>
+              <a href="author.html#4772">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

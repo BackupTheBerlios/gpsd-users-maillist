@@ -1,0 +1,93 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] gpsprof -f cycle
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2006-October/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20gpsprof%20-f%20cycle&In-Reply-To=%3C20061025162345.GA27969%40thyrsus.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="002142.html">
+   <LINK REL="Next"  HREF="002143.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] gpsprof -f cycle</H1>
+    <B>Eric S. Raymond</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20gpsprof%20-f%20cycle&In-Reply-To=%3C20061025162345.GA27969%40thyrsus.com%3E"
+       TITLE="[Gpsd-users] gpsprof -f cycle">esr at thyrsus.com
+       </A><BR>
+    <I>Wed Oct 25 18:23:45 CEST 2006</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="002142.html">[Gpsd-users] [PATCH] Re: Garmin GPS almost never sends new position data
+</A></li>
+        <LI>Next message: <A HREF="002143.html">[Gpsd-users] gpsprof -f cycle
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2141">[ date ]</a>
+              <a href="thread.html#2141">[ thread ]</a>
+              <a href="subject.html#2141">[ subject ]</a>
+              <a href="author.html#2141">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Carl Brown &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">cbsled at verizon.net</A>&gt;:
+&gt;<i> The output from my Humminbird fishfinder appears to confuse gpsprof somewhat. 
+</I>&gt;<i> 
+</I>&gt;<i> The complete cycle is 4 seconds, not 2 as reported by gpsprof. 
+</I>&gt;<i> (If I'm reading the output correctly) gpsd version 2.33
+</I>&gt;<i> Here is the gpsprof output:
+</I>&gt;<i> 
+</I>&gt;<i> gpsprof -f cycle
+</I>&gt;<i> 
+</I>&gt;<i> gpsprof: looking for fix...first fix in 0.77sec, gathering samples......(79.65 
+</I>&gt;<i> sec) done.
+</I>&gt;<i> Cycle report Fri Sep 22 17:55:44 2006, Generic NMEA, 4800N1, cycle 1s
+</I>&gt;<i> The sentence set emitted by this GPS is: ZDA GGA GLL RMC
+</I>&gt;<i> ZDA: is probably emitted once every 3 seconds.
+</I>&gt;<i> GGA: is probably emitted once every 3 seconds.
+</I>&gt;<i> RMC: is emitted once every 2 seconds.
+</I>&gt;<i> Send cycle is once per 2 seconds.
+</I>&gt;<i> ---
+</I>&gt;<i> 
+</I>&gt;<i> The actual sentence set emitted by this GPS is: 
+</I>&gt;<i> (Sentences not currently handled by gpsd in parentheses)
+</I>&gt;<i> ZDA (MTW) (DPT) RMC (DPT) GLL (VTG) (MTW) (DPT) RMC (DPT) GGA
+</I>&gt;<i> ZDA: is emitted once every 4 seconds.
+</I>&gt;<i> GGA: is emitted once every 4 seconds.
+</I>&gt;<i> RMC: is emitted once every 2 seconds. (Got that one right!)
+</I>
+Can you capture a log that reproduces this behavior when you run gpsprof
+on an instance of gpsd being fed by gpsfake?
+
+If so, I can reproduce it here and probably fix it very quickly.
+-- 
+		&lt;a href=&quot;<A HREF="http://www.catb.org/~esr/">http://www.catb.org/~esr/</A>&quot;&gt;Eric S. Raymond&lt;/a&gt;
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="002142.html">[Gpsd-users] [PATCH] Re: Garmin GPS almost never sends new position data
+</A></li>
+	<LI>Next message: <A HREF="002143.html">[Gpsd-users] gpsprof -f cycle
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2141">[ date ]</a>
+              <a href="thread.html#2141">[ thread ]</a>
+              <a href="subject.html#2141">[ subject ]</a>
+              <a href="author.html#2141">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

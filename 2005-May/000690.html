@@ -1,0 +1,97 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] Bug or feature in GPSD &gt;=2.24
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2005-May/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Bug%20or%20feature%20in%20GPSD%20%3E%3D2.24&In-Reply-To=%3C20050522043047.GA16497%40thyrsus.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="000687.html">
+   <LINK REL="Next"  HREF="000693.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] Bug or feature in GPSD &gt;=2.24</H1>
+    <B>Eric S. Raymond</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Bug%20or%20feature%20in%20GPSD%20%3E%3D2.24&In-Reply-To=%3C20050522043047.GA16497%40thyrsus.com%3E"
+       TITLE="[Gpsd-users] Bug or feature in GPSD &gt;=2.24">esr at thyrsus.com
+       </A><BR>
+    <I>Sun May 22 06:30:47 CEST 2005</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="000687.html">[Gpsd-users] Bug or feature in GPSD &gt;=2.24
+</A></li>
+        <LI>Next message: <A HREF="000693.html">[Gpsd-users] Bug or feature in GPSD &gt;=2.24
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#690">[ date ]</a>
+              <a href="thread.html#690">[ thread ]</a>
+              <a href="subject.html#690">[ subject ]</a>
+              <a href="author.html#690">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>J.D. Schmidt &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">jdsmobile at gmail.com</A>&gt;:
+&gt;<i> As shown above the coordinates differ between the two outputs, where the 
+</I>&gt;<i> SiRF NMEA output has a leading zero for the longitude.
+</I>&gt;<i> This means that when using SiRF binary mode and the gpsd sirf-to-nmea 
+</I>&gt;<i> translation, gpsdrive thinks the location is 55.640325N 123.13333E 
+</I>&gt;<i> (somewhere north of Ust' Urkima in Russia), but when using the native 
+</I>&gt;<i> SiRF NMEA mode, gpsdrive correctly shows the location as 55.640325N 
+</I>&gt;<i> 12.63780E (a bit north of Copenhagen Airport, Denmark).
+</I>
+Did you build gpsd from source?  If so, try this patch:
+
+Index: libgpsd_core.c
+===================================================================
+--- libgpsd_core.c	(revision 2506)
++++ libgpsd_core.c	(working copy)
+@@ -407,7 +407,7 @@
+     gmtime_r(&amp;intfixtime, &amp;tm);
+     if (session-&gt;gpsdata.fix.mode &gt; 1) {
+ 	sprintf(bufp,
+-		&quot;$GPGGA,%02d%02d%02d,%07.4f,%c,%08.4f,%c,%d,%02d,%s,%.1f,%c,&quot;,
++		&quot;$GPGGA,%02d%02d%02d,%09.4f,%c,%010.4f,%c,%d,%02d,%s,%.1f,%c,&quot;,
+ 		tm.tm_hour,
+ 		tm.tm_min,
+ 		tm.tm_sec,
+@@ -435,7 +435,7 @@
+ 	bufp += strlen(bufp);
+     }
+     sprintf(bufp,
+-	    &quot;$GPRMC,%02d%02d%02d,%c,%07.4f,%c,%08.4f,%c,%.4f,%.3f,%02d%02d%02d,,&quot;,
++	    &quot;$GPRMC,%02d%02d%02d,%c,%09.4f,%c,%010.4f,%c,%.4f,%.3f,%02d%02d%02d,,&quot;,
+ 	    tm.tm_hour, 
+ 	    tm.tm_min, 
+ 	    tm.tm_sec,
+
+-- 
+		&lt;a href=&quot;<A HREF="http://www.catb.org/~esr/">http://www.catb.org/~esr/</A>&quot;&gt;Eric S. Raymond&lt;/a&gt;
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="000687.html">[Gpsd-users] Bug or feature in GPSD &gt;=2.24
+</A></li>
+	<LI>Next message: <A HREF="000693.html">[Gpsd-users] Bug or feature in GPSD &gt;=2.24
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#690">[ date ]</a>
+              <a href="thread.html#690">[ thread ]</a>
+              <a href="subject.html#690">[ subject ]</a>
+              <a href="author.html#690">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

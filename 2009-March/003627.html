@@ -1,0 +1,118 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] problem of altitude with gpsd-2.37
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2009-March/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20problem%20of%20altitude%20with%20gpsd-2.37&In-Reply-To=%3CFED4CD95710D97448362E8C37814C66B01DA8A%40SINFRA0-HUB001.MTQ.MIN.INTRA%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="003625.html">
+   <LINK REL="Next"  HREF="003628.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] problem of altitude with gpsd-2.37</H1>
+    <B>Lapointe, Claude</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20problem%20of%20altitude%20with%20gpsd-2.37&In-Reply-To=%3CFED4CD95710D97448362E8C37814C66B01DA8A%40SINFRA0-HUB001.MTQ.MIN.INTRA%3E"
+       TITLE="[Gpsd-users] problem of altitude with gpsd-2.37">Claude.Lapointe at mtq.gouv.qc.ca
+       </A><BR>
+    <I>Fri Mar  6 19:31:44 CET 2009</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="003625.html">[Gpsd-users] Trying to set up a HAICOM GPS HI-204S on Arch Linux
+</A></li>
+        <LI>Next message: <A HREF="003628.html">[Gpsd-users] problem of altitude with gpsd-2.37
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3627">[ date ]</a>
+              <a href="thread.html#3627">[ thread ]</a>
+              <a href="subject.html#3627">[ subject ]</a>
+              <a href="author.html#3627">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi,
+ 
+We use gpsd version 2.37 on a Technologic System Inc. board TS-5500 with
+linux 2.4.34 kernel.
+ 
+We use a GlobalSat gps Bu-353
+ 
+We developt a program named master to read data from the gpsd gps and many
+other sensors on serial port or 1-wire bus and display on on LCD on lcdProc
+daemon.
+ 
+We have a bizzare board effect.
+ 
+When we start gpsd first without delay and after the program master, the
+altitude work fine with gpsd.
+ 
+When we put a delay of 5 seconds before starting gpsd and the master program
+start first, the altitude display nan value with the command A.
+ 
+If we start sirfmon program in same time, we have a correct altitude on the
+sirfmon display.  The altitude nan value is only on the telnet connexion of
+gpsd with the command A.
+ 
+We think they are a problem when we start first the master program first
+that try to open every minutes the socket 2947 of gpsd and gpsd is not
+started and start after a delay.
+ 
+We want to use ntp to read the share memory of gpsd to synchronyze the time
+and find that we must do a delay of 5 secs before starting the gpsd.
+Whithout this delay of 5 sec, gpsd is not able to connect to the share
+memory mount point.
+ 
+Do you have idea why gpsd give nan for the altitude if it will be started
+after the master program and why with the sirfmon program we have a correct
+altitude?
+ 
+Whe don't understant why also we must do a delay of 5 seconds before
+starting gpsd for succed to connect to the shamre memory mount point.
+Witout delay, gpsd ignore the share memory mount point and we are not able
+to use ntp to connect to gpsd to synchronize time.
+ 
+Help please because we have 130 systems that have this problem of altitude
+reading (nan) after we install a delay of 5 sec before starting gpsd.
+ 
+Claude Lapointe, ing. 
+Transport Qu&#233;bec
+Chef du secteur des technologies d'exploitation
+Direction du soutien aux op&#233;rations 
+Service de l'exploitation
+
+700, boulevard Ren&#233; L&#233;vesque Est, 22e &#233;tage 
+Qu&#233;bec (Qu&#233;bec) G1R 5H1 
+T&#233;l.  :   418 644-4490, poste 2478 
+T&#233;l&#233;c.:  418 644-6963 
+Courriel: <A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">Claude.Lapointe at mtq.gouv.qc.ca</A>
+&lt;mailto:<A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">Claude.Lapointe at mtq.gouv.qc.ca</A>&gt; 
+ 
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="003625.html">[Gpsd-users] Trying to set up a HAICOM GPS HI-204S on Arch Linux
+</A></li>
+	<LI>Next message: <A HREF="003628.html">[Gpsd-users] problem of altitude with gpsd-2.37
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3627">[ date ]</a>
+              <a href="thread.html#3627">[ thread ]</a>
+              <a href="subject.html#3627">[ subject ]</a>
+              <a href="author.html#3627">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

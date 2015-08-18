@@ -1,0 +1,138 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] WBT-201
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2009-May/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20WBT-201&In-Reply-To=%3C873abdszrr.fsf%40oscar.vecernik.at%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="003723.html">
+   <LINK REL="Next"  HREF="003725.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] WBT-201</H1>
+    <B>Oliver Ve&#269;ernik</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20WBT-201&In-Reply-To=%3C873abdszrr.fsf%40oscar.vecernik.at%3E"
+       TITLE="[Gpsd-users] WBT-201">ov at vecernik.at
+       </A><BR>
+    <I>Sun May 10 18:12:24 CEST 2009</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="003723.html">[Gpsd-users] How to use GPSFeed+ with GPSD
+</A></li>
+        <LI>Next message: <A HREF="003725.html">[Gpsd-users] State of my AIVDM decoder
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3724">[ date ]</a>
+              <a href="thread.html#3724">[ thread ]</a>
+              <a href="subject.html#3724">[ subject ]</a>
+              <a href="author.html#3724">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi everybody,
+
+I'm trying to connect a Wintec G-Rays2 aka WBT-201 to gpsd, but it only
+works in read-only mode.  This is what I get in normal mode:
+
+,----
+|<i> $ sudo gpsd -D 3 -N /dev/rfcomm0
+</I>|<i> gpsd: launching (Version 2.38)
+</I>|<i> gpsd: listening on port gpsd
+</I>|<i> gpsd: Priority sertting failed.
+</I>|<i> gpsd: shmat(1081362,0,0) succeeded
+</I>|<i> gpsd: shmat(1114132,0,0) succeeded
+</I>|<i> gpsd: shmat(1146901,0,0) succeeded
+</I>|<i> gpsd: shmat(1179670,0,0) succeeded
+</I>|<i> gpsd: successfully connected to the DBUS system bus
+</I>|<i> gpsd: running with effective group ID 0
+</I>|<i> gpsd: running with effective user ID 0
+</I>|<i> gpsd: opening GPS data source at '/dev/rfcomm0'
+</I>|<i> gpsd: speed 9600, 8N1
+</I>|<i> gpsd: Navcom: sent command 0x1c (Test Support Block)
+</I>|<i> gpsd: Navcom: sent command 0x20 (Data Request) - data block id = ae at rate 00
+</I>|<i> gpsd: Navcom: sent command 0x20 (Data Request) - data block id = 86 at rate 0a
+</I>|<i> gpsd: garmin_gps not active.
+</I>|<i> gpsd: no probe matched...
+</I>|<i> gpsd: gpsd_activate(1): opened GPS (5)
+</I>|<i> gpsd: switch_driver(Generic NMEA) called...
+</I>|<i> gpsd: selecting Generic NMEA driver...
+</I>|<i> gpsd: ntpd_link_activate: 0
+</I>|<i> gpsd: Create Thread gpsd_ppsmonitor
+</I>|<i> gpsd: =&gt; Probing device subtype 0
+</I>|<i> gpsd: unknown sentence: &quot;$GPTXT,01,01,01,PASH inv format*36\x0d\x0a&quot;
+</I>|<i> gpsd: =&gt; Probing device subtype 1
+</I>|<i> gpsd: unknown sentence: &quot;$GPTXT,01,01,01,PGRM inv format*34\x0d\x0a&quot;
+</I>|<i> gpsd: =&gt; Probing device subtype 2
+</I>|<i> gpsd: unknown sentence: &quot;$GPTXT,01,01,01,PSRF inv format*2B\x0d\x0a&quot;
+</I>|<i> gpsd: =&gt; Probing device subtype 3
+</I>|<i> gpsd: GPRMC starts a reporting cycle.
+</I>|<i> gpsd: GPRMC sets mode 2
+</I>|<i> gpsd: =&gt; Probing device subtype 4
+</I>|<i> gpsd: GPGGA sets status 1 and mode 3 (changed)
+</I>|<i> gpsd: =&gt; Probing device subtype 5
+</I>|<i> gpsd: GPGSA sets mode 3
+</I>|<i> gpsd: =&gt; Probing device subtype 6
+</I>|<i> gpsd: Partial satellite data (1 of 3).
+</I>|<i> gpsd: =&gt; Probing device subtype 7
+</I>|<i> gpsd: Partial satellite data (2 of 3).
+</I>|<i> gpsd: =&gt; Probing device subtype 8
+</I>|<i> gpsd: Satellite data OK (3 of 3).
+</I>|<i> gpsd: unknown sentence: &quot;$GPTXT,01,01,01,PFEC inv format*2C\x0d\x0a&quot;
+</I>|<i> gpsd: unknown sentence: &quot;$GPTXT,01,01,01,PFST inv format*2D\x0d\x0a&quot;
+</I>|<i> gpsd: unknown sentence: &quot;$GPTXT,01,01,01,PFEC inv format*2C\x0d\x0a&quot;
+</I>|<i> gpsd: unknown sentence: &quot;$GPTXT,01,01,01,PASH inv format*36\x0d\x0a&quot;
+</I>|<i> gpsd: UBX packet seen when NMEA expected.
+</I>|<i> gpsd: switch_driver(uBlox UBX binary) called...
+</I>|<i> gpsd: selecting uBlox UBX binary driver...
+</I>|<i> gpsd: ntpd_link_activate: 1
+</I>|<i> gpsd: configuring for uBlox UBX binary...
+</I>`----
+
+Trying to connect gives only:
+
+,----
+|<i> $ gpspipe -w
+</I>|<i> GPSD,X=1241971315.726435,I=uBlox UBX binary
+</I>|<i> GPSD,W=1
+</I>`----
+
+but nothing else.  I have the same effect connecting the unit directly
+via USB and communicating over /dev/ttyUSB0.  Is there any configuration
+necessary (with u-center) to make this work?  Or does the hint in the
+supported hardware list mean exactly that and this is not implemented at
+the moment (2.38)?
+
+Thank you very much in advance!
+
+-- 
+Oliver
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="003723.html">[Gpsd-users] How to use GPSFeed+ with GPSD
+</A></li>
+	<LI>Next message: <A HREF="003725.html">[Gpsd-users] State of my AIVDM decoder
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3724">[ date ]</a>
+              <a href="thread.html#3724">[ thread ]</a>
+              <a href="subject.html#3724">[ subject ]</a>
+              <a href="author.html#3724">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

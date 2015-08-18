@@ -1,0 +1,112 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] gps_read() does not block
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2011-March/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20gps_read%28%29%20does%20not%20block&In-Reply-To=%3C4D761B7A.7000106%40googlemail.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="005102.html">
+   <LINK REL="Next"  HREF="005104.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] gps_read() does not block</H1>
+    <B>Andre Naujoks</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20gps_read%28%29%20does%20not%20block&In-Reply-To=%3C4D761B7A.7000106%40googlemail.com%3E"
+       TITLE="[Gpsd-users] gps_read() does not block">nautsch2 at googlemail.com
+       </A><BR>
+    <I>Tue Mar  8 13:05:14 CET 2011</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="005102.html">[Gpsd-users] gps_read() does not block
+</A></li>
+        <LI>Next message: <A HREF="005104.html">[Gpsd-users] gps_read() does not block
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#5103">[ date ]</a>
+              <a href="thread.html#5103">[ thread ]</a>
+              <a href="subject.html#5103">[ subject ]</a>
+              <a href="author.html#5103">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Am 08.03.2011 12:20, schrieb Tomalak Geret'kal:
+&gt;<i> On 08/03/2011 08:20, Andre Naujoks wrote:
+</I>&gt;&gt;<i> Am 07.03.2011 16:59, schrieb Eric Raymond:
+</I>&gt;&gt;&gt;<i> Charles Curley&lt;<A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">charlescurley at charlescurley.com</A>&gt;:
+</I>&gt;&gt;&gt;&gt;<i> According to the libgps man page, gps_read is non-blocking only if
+</I>&gt;&gt;&gt;&gt;<i> POLL_NONBLOCK has been sent. Is this description correct?
+</I>&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;<i> POLL_NOBLOCK was a fossil from an experiment, which I have removed.
+</I>&gt;&gt;&gt;<i> The intention of the Version 5 API is that gps_read() is non-blocking,
+</I>&gt;&gt;&gt;<i> and imput-ready checking should be done with gps_waiting().
+</I>&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;<i> I have brought the documentation up to date.
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> Okay. Then I have to use select every time I use libgps. inconvenient
+</I>&gt;&gt;<i> but okay.
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> gps_waiting() is useless, because the effect is the same as if I would
+</I>&gt;&gt;<i> just call gps_read and check for a return value of 0.
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> What about a flag like POLL_NONBLOCK but the other way around?
+</I>&gt;&gt;<i> POLL_BLOCK?
+</I>&gt;<i> 
+</I>&gt;<i> Why do you have to use select()? Charles just said that gps_read is
+</I>&gt;<i> non-blocking.
+</I>&gt;<i> 
+</I>&gt;<i> This means you can use your own event list to poll gps_waiting() (which
+</I>&gt;<i> is, of course, not the same thing at all), which is surely far more
+</I>&gt;<i> convenient?!
+</I>
+I want to trigger on the gpsd connection.
+
+I have a few possiblities here:
+
+- use a complete core of my machine for busy waiting ... not an option.
+- sleep between checking with gps_waiting()/gps_read()
+    This way I get an unnecessary delay between the actual point in time
+    when the data arrives and the point in time I read it. ... not an
+    option.
+- Use select on the gps socket. only option.
+- ... manually reset the socket into blocking mode is possible, but I
+    consider this a hack and would not like to fall back to this.
+
+Andre
+
+&gt;<i> 
+</I>&gt;<i> Tom
+</I>&gt;<i> _______________________________________________
+</I>&gt;<i> Gpsd-users mailing list
+</I>&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">Gpsd-users at lists.berlios.de</A>
+</I>&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">https://lists.berlios.de/mailman/listinfo/gpsd-users</A>
+</I>
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="005102.html">[Gpsd-users] gps_read() does not block
+</A></li>
+	<LI>Next message: <A HREF="005104.html">[Gpsd-users] gps_read() does not block
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#5103">[ date ]</a>
+              <a href="thread.html#5103">[ thread ]</a>
+              <a href="subject.html#5103">[ subject ]</a>
+              <a href="author.html#5103">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

@@ -1,0 +1,107 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] gpsd -n
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2008-October/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20gpsd%20-n&In-Reply-To=%3C768239.91679.qm%40web110013.mail.gq1.yahoo.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="003410.html">
+   <LINK REL="Next"  HREF="003412.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] gpsd -n</H1>
+    <B>Hamish</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20gpsd%20-n&In-Reply-To=%3C768239.91679.qm%40web110013.mail.gq1.yahoo.com%3E"
+       TITLE="[Gpsd-users] gpsd -n">hamish_b at yahoo.com
+       </A><BR>
+    <I>Wed Oct  8 07:58:38 CEST 2008</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="003410.html">[Gpsd-users] gpsd -n
+</A></li>
+        <LI>Next message: <A HREF="003412.html">[Gpsd-users] gpsd -n
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3411">[ date ]</a>
+              <a href="thread.html#3411">[ thread ]</a>
+              <a href="subject.html#3411">[ subject ]</a>
+              <a href="author.html#3411">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hamish wrote:
+&gt;<i> &gt; The almanac download will take 15 min, but you have to be there for
+</I>&gt;<i> &gt; the start of it, otherwise you have to wait for the next cycle. So if
+</I>&gt;<i> &gt; you are unlucky and just miss the start of one it could take just
+</I>&gt;<i> &gt; under 29 minutes to obtain, and on average closer to 22 min.
+</I>
+Gary:
+&gt;<i> Got a citation?
+</I>
+Nope. Just what I remember from back in the day when I was worked as
+an engineer building bareboard GPS enabled satellite transmitters.
+The acquire time was a very important consideration for us for power
+reasons. if you only power up the GPS long enough to get a fix, after
+some time the almanac is out of date but you're never on long enough to
+get a new one. there's then a balance point between staying on for 1/2 hr
+every now and then vs. living with it taking 45sec instead of 15 to get a
+fix after things have drifted.
+
+
+&gt;<i> I can see that a sloppy implementation could behave
+</I>&gt;<i> like that, but does the basic protocol require it?  Not that I have
+</I>&gt;<i> any proof one way or the other.
+</I>
+I am not sure if it's a handshaking issue, a change of data issue, or
+simply a PITA to fill a circular buffer without making mistakes when you
+don't know where you are until you reach the wrap point.
+
+But we know that the almanac changes, and thus it is guaranteed that at
+least some of the time packet != packet+1, and so you can't just graft
+the blobs of two of them together and assume you have a valid packet.
+
+e.g. if a new satellite is added does the length of the almanac grow or
+shift some number of bits, or otherwise allow a graft to get corrupted?
+
+I assume the thing has lots of checksums in it which may help, and
+if someone was smart perhaps it even sends a packet ID at both the start
+and end of each almanac, but I have no idea about the binary internals of
+it. 
+
+
+Hamish
+
+
+
+      
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="003410.html">[Gpsd-users] gpsd -n
+</A></li>
+	<LI>Next message: <A HREF="003412.html">[Gpsd-users] gpsd -n
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3411">[ date ]</a>
+              <a href="thread.html#3411">[ thread ]</a>
+              <a href="subject.html#3411">[ subject ]</a>
+              <a href="author.html#3411">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

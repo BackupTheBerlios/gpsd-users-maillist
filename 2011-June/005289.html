@@ -1,0 +1,150 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] TCP Feed Clarification
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2011-June/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20TCP%20Feed%20Clarification&In-Reply-To=%3CBANLkTimLXSwZHiG-t3s6%2BAKq9dp4V45-2w%40mail.gmail.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="005288.html">
+   <LINK REL="Next"  HREF="005291.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] TCP Feed Clarification</H1>
+    <B>Josephine</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20TCP%20Feed%20Clarification&In-Reply-To=%3CBANLkTimLXSwZHiG-t3s6%2BAKq9dp4V45-2w%40mail.gmail.com%3E"
+       TITLE="[Gpsd-users] TCP Feed Clarification">josephine at huron-data.com
+       </A><BR>
+    <I>Thu Jun  2 20:01:14 CEST 2011</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="005288.html">[Gpsd-users] TCP Feed Clarification
+</A></li>
+        <LI>Next message: <A HREF="005291.html">[Gpsd-users] TCP Feed Clarification
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#5289">[ date ]</a>
+              <a href="thread.html#5289">[ thread ]</a>
+              <a href="subject.html#5289">[ subject ]</a>
+              <a href="author.html#5289">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Well...
+
+I have tried another option that works but is still none too elegant.
+ On HostB issue the commands:
+# mkfifo /tmp/gpspipe
+# gpspipe -R HostA:2947 &gt;/tmp/gpspipe
+# gpsd -b /tmp/gpspipe
+
+*This will suffice, unless someone has a better idea.*
+
+-J
+
+On Thu, Jun 2, 2011 at 13:37, Josephine &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">josephine at huron-data.com</A>&gt; wrote:
+
+&gt;<i> Charles,
+</I>&gt;<i>
+</I>&gt;<i> Individual libgps clients running on HostB can already connect directly to
+</I>&gt;<i> HostA's gpsd without any problem.  I am trying to avoid modifying a bunch of
+</I>&gt;<i> custom code that expects a local gpsd data source listening on
+</I>&gt;<i> localhost:2947.  If I modify the custom code, I will have to re-modify it
+</I>&gt;<i> every time it is updated.
+</I>&gt;<i>
+</I>&gt;<i> I thought that gpsd had the ability to use another remote gpsd instance as
+</I>&gt;<i> a TCP data source.  I seem to recall that older versions of the daemon
+</I>&gt;<i> supported '<A HREF="gpsd://hostname:port">gpsd://hostname:port</A>' source specifications.  I cannot seem to
+</I>&gt;<i> find this functionality in the current version of the daemon.
+</I>&gt;<i>
+</I>&gt;<i> Thanks,
+</I>&gt;<i>
+</I>&gt;<i> -Josie
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i> On Thu, Jun 2, 2011 at 12:29, Charles Curley &lt;
+</I>&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">charlescurley at charlescurley.com</A>&gt; wrote:
+</I>&gt;<i>
+</I>&gt;&gt;<i> On Thu, 2 Jun 2011 11:34:10 -0400
+</I>&gt;&gt;<i> Josephine &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">josephine at huron-data.com</A>&gt; wrote:
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> &gt; HostB does not have a GPS receiver.  Several libgps clients run on
+</I>&gt;&gt;<i> &gt; HostB, most of which assume that the gpsd to which they should
+</I>&gt;&gt;<i> &gt; connect is local. My plan was to run gpsd on HostB receiving a feed
+</I>&gt;&gt;<i> &gt; from HostA.  That way all the HostB clients can connect to a local
+</I>&gt;&gt;<i> &gt; instance of gpsd.  An added benefit of this configuration is that
+</I>&gt;&gt;<i> &gt; only one gpsd data stream needs to be passed over my network between
+</I>&gt;&gt;<i> &gt; HostA and HostB.
+</I>&gt;&gt;<i> &gt;
+</I>&gt;&gt;<i> &gt; It seems that older pre-JSON versions of gpsd had the capability to
+</I>&gt;&gt;<i> &gt; connect to a remote gpsd source using &quot;<A HREF="gpsd://...">gpsd://...</A>&quot;.  This
+</I>&gt;&gt;<i> &gt; functionality does not seem to exist in 2.95.
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> Odd. I have a 3.0 client connected to a client on another machine,
+</I>&gt;&gt;<i> running &quot;2.96~dev Rev: 2010-10-10T19:05:28, Protocol 3.3&quot; right now.
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> Perhaps we should concentrate on getting your clients to work across
+</I>&gt;&gt;<i> the network? I suspect you will need to solve this issue for any client
+</I>&gt;&gt;<i> before gpspipe will work. The syntax for connecting will depend on the
+</I>&gt;&gt;<i> client. For xgps, &quot;xgps hostname&quot; should do it.
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> I can see the advantage of a gpspipe setup: less traffic across the
+</I>&gt;&gt;<i> network. This worked for me:
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> $ gpspipe -w white
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> {&quot;class&quot;:&quot;VERSION&quot;,&quot;release&quot;:&quot;2.96~dev&quot;,&quot;rev&quot;:&quot;2010-10-10T19:05:28&quot;,&quot;proto_major&quot;:3,&quot;proto_minor&quot;:3}
+</I>&gt;&gt;<i> {&quot;class&quot;:&quot;DEVICES&quot;,&quot;devices&quot;:[{&quot;class&quot;:&quot;DEVICE&quot;,&quot;path&quot;:&quot;/dev/ttyUSB0&quot;}]}
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> {&quot;class&quot;:&quot;WATCH&quot;,&quot;enable&quot;:true,&quot;json&quot;:true,&quot;nmea&quot;:false,&quot;raw&quot;:0,&quot;scaled&quot;:false,&quot;timing&quot;:false}
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> etc.
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> where white is my remote gpsd server.
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> --
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> Charles Curley                  /&quot;\    ASCII Ribbon Campaign
+</I>&gt;&gt;<i> Looking for fine software       \ /    Respect for open standards
+</I>&gt;&gt;<i> and/or writing?                  X     No HTML/RTF in email
+</I>&gt;&gt;<i> <A HREF="http://www.charlescurley.com">http://www.charlescurley.com</A>    / \    No M$ Word docs in email
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> Key fingerprint = CE5C 6645 A45A 64E4 94C0  809C FFF6 4C48 4ECD DFDB
+</I>&gt;&gt;<i> _______________________________________________
+</I>&gt;&gt;<i> Gpsd-users mailing list
+</I>&gt;&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">Gpsd-users at lists.berlios.de</A>
+</I>&gt;&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">https://lists.berlios.de/mailman/listinfo/gpsd-users</A>
+</I>&gt;&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i>
+</I>
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="005288.html">[Gpsd-users] TCP Feed Clarification
+</A></li>
+	<LI>Next message: <A HREF="005291.html">[Gpsd-users] TCP Feed Clarification
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#5289">[ date ]</a>
+              <a href="thread.html#5289">[ thread ]</a>
+              <a href="subject.html#5289">[ subject ]</a>
+              <a href="author.html#5289">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

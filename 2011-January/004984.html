@@ -1,0 +1,126 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] [Roadmap-general] Compatibility warning for GPSD client projects
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2011-January/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20%5BRoadmap-general%5D%20Compatibility%20warning%20for%20GPSD%0A%20client%20projects&In-Reply-To=%3C20110131034728.GA7652%40thyrsus.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="004983.html">
+   <LINK REL="Next"  HREF="004986.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] [Roadmap-general] Compatibility warning for GPSD client projects</H1>
+    <B>Eric Raymond</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20%5BRoadmap-general%5D%20Compatibility%20warning%20for%20GPSD%0A%20client%20projects&In-Reply-To=%3C20110131034728.GA7652%40thyrsus.com%3E"
+       TITLE="[Gpsd-users] [Roadmap-general] Compatibility warning for GPSD client projects">esr at thyrsus.com
+       </A><BR>
+    <I>Mon Jan 31 04:47:28 CET 2011</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="004983.html">[Gpsd-users] [Roadmap-general] Compatibility warning for GPSD client projects
+</A></li>
+        <LI>Next message: <A HREF="004986.html">[Gpsd-users] Error While Building This Morning's HEAD
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#4984">[ date ]</a>
+              <a href="thread.html#4984">[ thread ]</a>
+              <a href="subject.html#4984">[ subject ]</a>
+              <a href="author.html#4984">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Danny Backx &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">danny.backx at scarlet.be</A>&gt;:
+&gt;<i> I'm a bit confused about this change vs. the one announced December
+</I>&gt;<i> 2009. The release numbering then made me assume that that would be the
+</I>&gt;<i> API for 3.0. Has this changed ?
+</I>
+The change announced in 2009 was to the underlying wire protocol.  That
+was deployed in 2.91.
+ 
+&gt;<i> Which release implements the API just announced ?
+</I>
+The upcoming 2.96 release.  The intent in is to ship 3.0 when we
+believe both the JSON wire protocol and the C interface to the client
+library are stable.  As you correctly note, we have slipped the
+original schedule for this.
+
+&gt;<i> Can you clarify which API works with which versions of gpsd ?
+</I>
+It's described in this portion of the gps.h header comment:
+
+/*
+ * 4.1 - Base version for initial JSON protocol (Dec 2009)
+ * 4.2 - AIS application IDs split into DAC and FID (May 2010)
+ * 5.0 - MAXCHANNELS bumped from 20 to 32 for GLONASS (July 2010)
+ *       gps_open() becomes reentrant, what gps_open_r() used to be. 
+ *       gps_poll() removed in favor of gps_read().  The raw hook is gone.
+ */
+#define GPSD_API_MAJOR_VERSION	5	/* bump on incompatible changes */
+#define GPSD_API_MINOR_VERSION	0	/* bump on compatible changes */
+
+The major number gets bumped when a change to the gps_data_t structure
+breaks binary compatibility.
+
+&gt;<i> (I'm interested in the C language API.) Basically I probably need the mapping
+</I>&gt;<i> between three things :
+</I>&gt;<i> - which API (e.g. how many parameters to gps_open)
+</I>&gt;<i> - which version of the software to download (e.g. 2.95)
+</I>&gt;<i> - which macros to use in #ifdef
+</I>
+Good question.  I've tried to be clear about this, but I'm too close
+to the code.  I have changed that comment to read
+
+/*
+ * 4.1 - Base version for initial JSON protocol (Dec 2009, release 2.90)
+ * 4.2 - AIS application IDs split into DAC and FID (July 2010, release 2.95)
+ * 5.0 - MAXCHANNELS bumped from 20 to 32 for GLONASS (July 2010)
+ *       gps_open() becomes reentrant, what gps_open_r() used to be. 
+ *       gps_poll() removed in favor of gps_read().  The raw hook is gone.
+ */
+
+I hope this clarifies matters.  Use GPSD_API_MAJOR_VERSION to condition 
+your gps_open() and gps_read()/gps_poll() calls.
+ 
+&gt;<i> The dates in <A HREF="http://gpsd.berlios.de/protocol-transition.html">http://gpsd.berlios.de/protocol-transition.html</A> appear to
+</I>&gt;<i> be outdated, also its example still has two, not three, parameters in
+</I>&gt;<i> gps_open().
+</I>
+Checking...oops, that version is obsolete.  Yes, the schedule slipped; as
+you can see in the NEWS file we've put an immense amount of work into
+the last few releases. I've refreshed the version on the website.
+
+&gt;<i> Finally, (developer.)berlios.de doesn't appear to work.
+</I>
+It's up now.  The site does tend to be flaky and I want to move us off of it.
+-- 
+		&lt;a href=&quot;<A HREF="http://www.catb.org/~esr/">http://www.catb.org/~esr/</A>&quot;&gt;Eric S. Raymond&lt;/a&gt;
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="004983.html">[Gpsd-users] [Roadmap-general] Compatibility warning for GPSD client projects
+</A></li>
+	<LI>Next message: <A HREF="004986.html">[Gpsd-users] Error While Building This Morning's HEAD
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#4984">[ date ]</a>
+              <a href="thread.html#4984">[ thread ]</a>
+              <a href="subject.html#4984">[ subject ]</a>
+              <a href="author.html#4984">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

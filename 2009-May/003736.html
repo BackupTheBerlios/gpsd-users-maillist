@@ -1,0 +1,135 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] Newbie Help - gpsd: Can't open	/proc/bus/usb/devices
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2009-May/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Newbie%20Help%20-%20gpsd%3A%20Can%27t%20open%0A%09/proc/bus/usb/devices&In-Reply-To=%3C4A0F7CC3.8070503%40w2lie.net%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="003735.html">
+   <LINK REL="Next"  HREF="003738.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] Newbie Help - gpsd: Can't open	/proc/bus/usb/devices</H1>
+    <B>Phil - w2lie</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Newbie%20Help%20-%20gpsd%3A%20Can%27t%20open%0A%09/proc/bus/usb/devices&In-Reply-To=%3C4A0F7CC3.8070503%40w2lie.net%3E"
+       TITLE="[Gpsd-users] Newbie Help - gpsd: Can't open	/proc/bus/usb/devices">w2lie at w2lie.net
+       </A><BR>
+    <I>Sun May 17 04:56:03 CEST 2009</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="003735.html">[Gpsd-users] RE : gpsd on mac osx leopard
+</A></li>
+        <LI>Next message: <A HREF="003738.html">[Gpsd-users] gpsd on mac osx leopard
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3736">[ date ]</a>
+              <a href="thread.html#3736">[ thread ]</a>
+              <a href="subject.html#3736">[ subject ]</a>
+              <a href="author.html#3736">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Beat,
+Thanks for the reply.
+
+I am trying to open /dev/ttyUSB0 and the following is the error I am 
+getting.  For some reason, opening /dev/ttyUSB0 is trying to associate with
+
+/proc/bus/usb/devices
+
+
+I am attempting to run gpsd in debug 6:
+
+linux-ahlk:/usr/sbin # gpsd -N -D 6 /dev/ttyUSB0                
+gpsd: launching (Version 2.37)                                  
+gpsd: listening on port gpsd                                    
+gpsd: shmat(0,0,0) succeeded                                    
+gpsd: shmat(0,0,0) succeeded                                    
+gpsd: shmat(0,0,0) succeeded                                    
+gpsd: shmat(0,0,0) succeeded                                    
+gpsd: successfully connected to the DBUS system bus             
+gpsd: running with effective group ID 0                         
+gpsd: running with effective user ID 0                          
+gpsd: opening GPS data source at '/dev/ttyUSB0'                 
+gpsd: speed 9600, 8N1                                           
+gpsd: =&gt; GPS: $PASHQ,RID*28\x0d                                 
+
+gpsd: Navcom: command dump: 0299661c0800040200001203
+gpsd: =&gt; GPS: 0299661c0800040200001203              
+gpsd: Navcom: sent command 0x1c (Test Support Block)
+gpsd: Navcom: command 0x1c mode = 02, length = 0
+gpsd: Navcom: command dump: 029966200e000001ae02000071000000f203
+gpsd: =&gt; GPS: 029966200e000001ae02000071000000f203
+gpsd: Navcom: sent command 0x20 (Data Request) - data block id = ae at rate 00
+gpsd: Navcom: command dump: 029966200e00000186020a0071000000d003
+gpsd: =&gt; GPS: 029966200e00000186020a0071000000d003
+gpsd: Navcom: sent command 0x20 (Data Request) - data block id = 86 at rate 0a
+gpsd: Can't open /proc/bus/usb/devices
+gpsd: no probe matched...
+gpsd: gpsd_activate(0): opened GPS (5)
+
+
+Thanks again
+Phil
+
+www.w2lie.net
+Long Island Live Scanner Feeds and Forums.
+
+
+
+Beat Bolli wrote:
+&gt;<i> Phil Lichtenberger wrote:
+</I>&gt;<i>
+</I>&gt;<i>   
+</I>&gt;&gt;<i> Linux is seeing the GPS on boot:
+</I>&gt;&gt;<i> My Kernel is seeing the Garmin GPS as follows (from Boot.msg)
+</I>&gt;&gt;<i> &lt;6&gt;usbserial: USB Serial support registered for Garmin GPS usb/tty
+</I>&gt;&gt;<i> &lt;6&gt;garmin_gps 5-1:1.0: Garmin GPS usb/tty converter detected
+</I>&gt;&gt;<i> &lt;6&gt;usb 5-1: Garmin GPS usb/tty converter now attached to ttyUSB0
+</I>&gt;&gt;<i>     
+</I>&gt;<i>                                                            ^^^^^^^
+</I>&gt;<i>   
+</I>&gt;&gt;<i> &lt;6&gt;usbcore: registered new interface driver garmin_gps
+</I>&gt;&gt;<i> &lt;6&gt;garmin_gps: garmin gps driver v0.31
+</I>&gt;&gt;<i>     
+</I>&gt;<i>
+</I>&gt;<i> Hi Phil,
+</I>&gt;<i>
+</I>&gt;<i> according to this you have to use the command &quot;gpsd /dev/ttyUSB0&quot;. This
+</I>&gt;<i> is the device node created for your GPS.
+</I>&gt;<i>
+</I>&gt;<i> HTH,
+</I>&gt;<i>
+</I>&gt;<i> Beat Bolli
+</I>&gt;<i>
+</I>&gt;<i>   
+</I>
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="003735.html">[Gpsd-users] RE : gpsd on mac osx leopard
+</A></li>
+	<LI>Next message: <A HREF="003738.html">[Gpsd-users] gpsd on mac osx leopard
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3736">[ date ]</a>
+              <a href="thread.html#3736">[ thread ]</a>
+              <a href="subject.html#3736">[ subject ]</a>
+              <a href="author.html#3736">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

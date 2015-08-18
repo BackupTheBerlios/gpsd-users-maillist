@@ -1,0 +1,97 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> Fwd: [Gpsd-users] cgps reports OFFLINE: Why?
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2006-April/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20Fwd%3A%20%5BGpsd-users%5D%20cgps%20reports%20OFFLINE%3A%20Why%3F&In-Reply-To=%3C635498b70604101556v452e1d8ak60cea3049ed5ba1d%40mail.gmail.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="001507.html">
+   <LINK REL="Next"  HREF="001509.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>Fwd: [Gpsd-users] cgps reports OFFLINE: Why?</H1>
+    <B>Calum</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20Fwd%3A%20%5BGpsd-users%5D%20cgps%20reports%20OFFLINE%3A%20Why%3F&In-Reply-To=%3C635498b70604101556v452e1d8ak60cea3049ed5ba1d%40mail.gmail.com%3E"
+       TITLE="Fwd: [Gpsd-users] cgps reports OFFLINE: Why?">caluml at gmail.com
+       </A><BR>
+    <I>Tue Apr 11 00:56:15 CEST 2006</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="001507.html">[Gpsd-users] cgps reports OFFLINE: Why?
+</A></li>
+        <LI>Next message: <A HREF="001509.html">[Gpsd-users] Elite watches - LOW price!
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1508">[ date ]</a>
+              <a href="thread.html#1508">[ thread ]</a>
+              <a href="subject.html#1508">[ subject ]</a>
+              <a href="author.html#1508">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>On 4/10/06, Gary E. Miller &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">gem at rellim.com</A>&gt; wrote:
+&gt;<i>
+</I>&gt;<i> To save batterry power gpsd does not keep the GPS online if there are
+</I>&gt;<i> no clients.  It could be that the gps is offline when you make your
+</I>&gt;<i> query.  Have you started gpsd with the -n options so that it keeps the
+</I>&gt;<i> GPS runnong all the time?
+</I>
+Aaah, that's quite interesting to know. How does it know &quot;a client&quot; -
+just a TCP connection on 2947?
+
+My script starts gpsd, and immediately cgps, and the netcat to a file,
+and these processes aren't stopped  until I stop everything, so it
+should be online all the time.
+
+
+I'm using the standard Gentoo init script, which is:
+
+GPSD_OPTS=&quot;-P /var/run/gpsd.pid -f GPS0 -F /var/run/gpsd.sock&quot;
+/usr/sbin/gpsd ${GPSD_OPTS} -p ${GPS_DEV}
+
+So no, no -n option. I'll add that in, and give it a go - however, I
+was testing something out at home, and it never went &quot;OFFLINE&quot; when
+the laptop was plugged in, so I am wondering if my laptop isn't quite
+putting out the 5V it needs all the time?
+
+
+Thanks for your reply,
+
+Calum
+
+
+PS. Perhaps there should be an option on gpsd to write all NMEA data
+to a file - --dump /tmp/gpsd.output, for example?
+And one other option I've thought about that would be a good idea
+would be when gpsd gets its first sync to set the time. (I know you
+can do it with ntp)
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="001507.html">[Gpsd-users] cgps reports OFFLINE: Why?
+</A></li>
+	<LI>Next message: <A HREF="001509.html">[Gpsd-users] Elite watches - LOW price!
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1508">[ date ]</a>
+              <a href="thread.html#1508">[ thread ]</a>
+              <a href="subject.html#1508">[ subject ]</a>
+              <a href="author.html#1508">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

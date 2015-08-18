@@ -1,0 +1,222 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] some useful gpsd scripts
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2010-March/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20some%20useful%20gpsd%20scripts&In-Reply-To=%3C4BA62008.9070201%40seiner.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="004317.html">
+   <LINK REL="Next"  HREF="004287.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] some useful gpsd scripts</H1>
+    <B>Yan Seiner</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20some%20useful%20gpsd%20scripts&In-Reply-To=%3C4BA62008.9070201%40seiner.com%3E"
+       TITLE="[Gpsd-users] some useful gpsd scripts">yan at seiner.com
+       </A><BR>
+    <I>Sun Mar 21 14:32:56 CET 2010</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="004317.html">[Gpsd-users] gpsctl -b doesn't work for ublox
+</A></li>
+        <LI>Next message: <A HREF="004287.html">[Gpsd-users] gpds, ntpd, pps, and shared memory (oh my)
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#4286">[ date ]</a>
+              <a href="thread.html#4286">[ thread ]</a>
+              <a href="subject.html#4286">[ subject ]</a>
+              <a href="author.html#4286">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>I've been working on an embedded platform that, among other things, 
+reports its position.  The system reports a new position every time it 
+moves about a mile.  (the function is a simple check  for a change in 
+lat/long; it works well enough for me around 45 deg lat.  YMMV) The 
+platform is a small embedded router running OpenWRT, with a SirfIII GPS 
+puck attached.
+
+First, on boot, the system must wait until networking is up and running 
+before starting gpsd.  I use a small helper app called gpscomm:
+
+#!/bin/sh
+
+case $1 in
+    gpsd )
+        [ -e /dev/gps0 ] &amp;&amp; /usr/sbin/gpsd -N -P /var/run/gpsd.pid -n 
+/dev/gps0
+        sleep 1
+        ;;
+    ntpd )
+        [ -e /dev/gps0 ] &amp;&amp; /usr/sbin/ntpd -n -U 30 -g -p /var/run/ntpd.pid
+        sleep 1
+        ;;
+    location )
+        [ -e /dev/gps0 ] &amp;&amp; /usr/sbin/location
+        sleep 1
+        ;;
+    * )
+        rm /dev/togps
+        rm /dev/fromgps
+        ln -f -s /dev/ttyUSB0 /dev/gps0
+        mkfifo /dev/togps
+        mkfifo /dev/fromgps
+        nc localhost 2947 &lt; /dev/togps &gt; /dev/fromgps
+        ;;
+    esac
+
+You run this from /etc/inittab, and it will wait and retry so that 
+everything starts in the right order:
+
+::<i>respawn:/usr/sbin/gpscomm
+</I>::<i>respawn:/usr/sbin/gpscomm location
+</I>::<i>respawn:/usr/sbin/gpscomm gpsd
+</I>::<i>respawn:/usr/sbin/gpscomm ntpd
+</I>
+gpscomm also creates two entries under /dev, /dev/togps and 
+/dev/fromgps.  These allow non-network aware scripts to talk to gpsd.
+
+The location script reports on the location of the gps via email.  You 
+have to change the to and from variables to correspond to your 
+location.  The script uses ssmtp to send mail, a one-shot mail system 
+(it doesn't keep a queue or anything like that.)  You may also need to 
+change the check for email being successfully sent (the res ~250 line in 
+the BEGIN block) depending on your email host.
+
+#!/usr/bin/awk -f
+function mail(data) {
+    to = &quot;<A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">my at email.address</A>&quot;
+    from = &quot;gps.domain.name&quot;
+        print &quot;To: &quot; to &gt; &quot;/tmp/loc&quot;
+        print &quot;From: gps &lt;gps@&quot; from &quot;&gt;&quot; &gt;&gt; &quot;/tmp/loc&quot;
+        print &quot;Subject: Position Report&quot; &gt;&gt; &quot;/tmp/loc&quot;
+        print &quot;Date: &quot; strftime(&quot;%a, %d %b %Y %T %z&quot;) &gt;&gt; &quot;/tmp/loc&quot;
+        print &quot;Message-ID: &lt;&quot; strftime(&quot;%Y%m%d%H%m%S.%s&quot;) &quot;@&quot; from &quot;&gt;&quot; 
+ &gt;&gt; &quot;/tmp/loc&quot;
+        print &quot;&quot; &gt;&gt; &quot;/tmp/loc&quot;
+        while ((getline &lt; &quot;/tmp/pastlocs&quot;) &gt; 0) {
+        print $0 &gt;&gt; &quot;/tmp/loc&quot;
+        }
+        close(&quot;/tmp/pastlocs&quot;)
+        print data &gt;&gt; &quot;/tmp/loc&quot;
+        print &quot;.&quot; &gt;&gt; &quot;/tmp/loc&quot;
+        close(&quot;/tmp/loc&quot;)
+        system(&quot;cat /tmp/loc | sendmail -t -v &gt; /tmp/sendmail 2&gt;&amp;1 &amp; 
+sm=$! ; sleep 15 ; kill $sm&quot;)
+       }
+                                                                                                        
+
+
+BEGIN {
+   print &quot;setting gpsd&quot;
+   print &quot;?WATCH={\&quot;nmea\&quot;:true};&quot; &gt; &quot;/dev/togps&quot;;
+   system(&quot;touch /tmp/currcoord /tmp/pastlocs&quot;)
+   getline &lt; &quot;/tmp/currcoord&quot;
+   ox = $1;
+   oy = $2;
+   nread = 0;
+   close (&quot;/tmp/currcoord&quot;)
+   FS = &quot;,&quot;;
+   while ((getline &lt; &quot;/dev/fromgps&quot;) &gt; 0) {
+          if ( $0 ~ /GPRMC/ &amp;&amp; $3 == &quot;A&quot; ) {
+              cl = $10 &quot;:&quot; $2 &quot; &quot; $4 $5 &quot; &quot; $6 $7;
+              dd = int($10/10000)
+              dm = int($10/100)-(dd*100)
+              dy = int($10) -(dd*10000+dm*100)
+              th = int($2/10000)
+              tm = int($2/100)-(th*100)
+              ts = int($2) -(th*10000+tm*100)
+              print &quot;cl: &quot; cl
+              x = $4;
+              xd = int(x/100)
+              xm = int(x-(xd*100))
+              xs = 60*(x%int(x))
+              x = 100*(xd + xm/60) + xs/60
+              y = $6;
+                yd = 
+int(y/100)                                                                   
+
+                ym = 
+int(y-(yd*100))                                                              
+
+                ys = 
+60*(y%int(y))                                                   
+                y = 100*(yd + ym/60) + ys/60
+                gg = dd &quot;/&quot; dm &quot;/&quot; dy &quot; &quot; th &quot;:&quot; tm &quot;:&quot; ts &quot; &quot; yd &quot;d &quot; 
+ym &quot;m &quot; ys &quot;s &quot; $7 &quot;, &quot; xd &quot;d &quot; xm &quot;m &quot; xs &quot;s &quot; $5 
+&quot;\<A HREF="nhttp://maps.google.com/maps?f=q&amp;source=s_q&amp;hl=en&amp;geocode=&amp;q=">nhttp://maps.google.com/maps?f=q&amp;source=s_q&amp;hl=en&amp;geocode=&amp;q=</A>&quot; yd &quot;+&quot; 
+ym &quot;+&quot; ys $7 &quot;,&quot; xd &quot;+&quot; xm &quot;+&quot; xs $5
+                print &quot;gg: &quot; gg
+              dist = sqrt((x-ox)^2 + (y-oy)^2);
+              if(dist &gt; 1 || ( nread++ &gt; 120 &amp;&amp; (getline &lt; 
+&quot;/tmp/pastlocs&quot;) &gt; 0 )) {
+            close(&quot;/tmp/pastlocs&quot;)
+                  print &quot;Moved:&quot;, dist
+                    ox = x;
+                    oy = y;
+                    print x,y &gt; &quot;/tmp/currcoord&quot;
+                    close (&quot;/tmp/currcoord&quot;)
+                    mail(gg)
+                 sent = 0
+                 while ( (getline res &lt; &quot;/tmp/sendmail&quot;) &gt; 0) {
+                     if ( res ~ /250 OK id=/ ) {
+                         system(&quot;rm /tmp/pastlocs&quot;)
+                         system(&quot;touch /tmp/pastlocs&quot;)
+                         sent = 1
+                         }
+                     }
+                 if (sent == 0 &amp;&amp; dist &gt; 1) {
+                     print gg &gt;&gt; &quot;/tmp/pastlocs&quot;
+                     close(&quot;/tmp/pastlocs&quot;)
+                     }
+                 close(&quot;/tmp/sendmail&quot;)
+                    }
+              }
+      }
+   close(&quot;/dev/togps&quot;)
+   close(&quot;/dev/fromgps&quot;)
+   }
+
+
+-- 
+
+   o__
+   ,&gt;/'_         o__
+   (_)\(_)       ,&gt;/'_          o__
+A day may come  (_)\(_)         ,&gt;/'_      o__
+when the courage of men fails, (_)\(_)     ,&gt;/'_ 
+when we forsake our friends and break all (_)\(_)
+bonds of fellowship, but it is not this day.
+It is not this day!
+This day we ride!
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="004317.html">[Gpsd-users] gpsctl -b doesn't work for ublox
+</A></li>
+	<LI>Next message: <A HREF="004287.html">[Gpsd-users] gpds, ntpd, pps, and shared memory (oh my)
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#4286">[ date ]</a>
+              <a href="thread.html#4286">[ thread ]</a>
+              <a href="subject.html#4286">[ subject ]</a>
+              <a href="author.html#4286">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

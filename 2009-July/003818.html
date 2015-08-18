@@ -1,0 +1,93 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] compiling gpsd on ipod touch
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2009-July/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20compiling%20gpsd%20on%20ipod%20touch&In-Reply-To=%3C4A5F8DDC.4070304%40neuf.fr%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="003817.html">
+   <LINK REL="Next"  HREF="003819.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] compiling gpsd on ipod touch</H1>
+    <B>Romain Quidet</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20compiling%20gpsd%20on%20ipod%20touch&In-Reply-To=%3C4A5F8DDC.4070304%40neuf.fr%3E"
+       TITLE="[Gpsd-users] compiling gpsd on ipod touch">romain.quidet at neuf.fr
+       </A><BR>
+    <I>Thu Jul 16 22:30:20 CEST 2009</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="003817.html">[Gpsd-users] gpsd and iPod Touch
+</A></li>
+        <LI>Next message: <A HREF="003819.html">[Gpsd-users] compiling gpsd on ipod touch
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3818">[ date ]</a>
+              <a href="thread.html#3818">[ thread ]</a>
+              <a href="subject.html#3818">[ subject ]</a>
+              <a href="author.html#3818">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>hello,
+
+I succeeded in getting ./configure to work
+
+the make reports me an error :
+
+libtool: compile:  gcc -DHAVE_CONFIG_H -I. -g -O2 -Wall -Wcast-align 
+-Wmissing-declarations -Wmissing-prototypes -Wstrict-prototypes 
+-Wpointer-arith -Wreturn-type -D_GNU_SOURCE -MT libgpsd_core.lo -MD -MP 
+-MF .deps/libgpsd_core.Tpo -c libgpsd_core.c  -fno-common -DPIC -o 
+.libs/libgpsd_core.o
+libgpsd_core.c: In function 'gpsd_switch_driver':
+libgpsd_core.c:50: error: 'const struct gps_type_t' has no member named 
+'min_cycle'
+libgpsd_core.c: In function 'gpsd_error_model':
+libgpsd_core.c:606: warning: implicit declaration of function 'finite'
+make[1]: *** [libgpsd_core.lo] Error 1
+make[1]: Leaving directory `/private/var/mobile/Documents/dev/gpsd-2.39'
+make: *** [all] Error 2
+
+can you help me about that error ?
+
+I disabled the reconfiguration as there was a bug in my holux gps device 
+(I discovered it 2years ago with the team).
+
+min_cycle seems to be in the reconfiguration define, but is use without 
+border in the code...
+
+Thanks!
+
+romain
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="003817.html">[Gpsd-users] gpsd and iPod Touch
+</A></li>
+	<LI>Next message: <A HREF="003819.html">[Gpsd-users] compiling gpsd on ipod touch
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3818">[ date ]</a>
+              <a href="thread.html#3818">[ thread ]</a>
+              <a href="subject.html#3818">[ subject ]</a>
+              <a href="author.html#3818">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

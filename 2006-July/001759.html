@@ -1,0 +1,116 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] gpsd cpu usage
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2006-July/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20gpsd%20cpu%20usage&In-Reply-To=%3Cs4b7cd20.080%40groupwise.erc-win.erc.msstate.edu%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="001753.html">
+   <LINK REL="Next"  HREF="001764.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] gpsd cpu usage</H1>
+    <B>Marshall Crocker</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20gpsd%20cpu%20usage&In-Reply-To=%3Cs4b7cd20.080%40groupwise.erc-win.erc.msstate.edu%3E"
+       TITLE="[Gpsd-users] gpsd cpu usage">crocker at cavs.msstate.edu
+       </A><BR>
+    <I>Fri Jul 14 23:57:46 CEST 2006</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="001753.html">[Gpsd-users] Polling Rate Max for SiRf III &amp; GPSD 2.32
+</A></li>
+        <LI>Next message: <A HREF="001764.html">[Gpsd-users] Polling Rate Max for SiRf III &amp; GPSD 2.32
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1759">[ date ]</a>
+              <a href="thread.html#1759">[ thread ]</a>
+              <a href="subject.html#1759">[ subject ]</a>
+              <a href="author.html#1759">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>I'd be happy to help you figure out a solution that isn't a hack.  Some
+things you should know first:
+
+This is an embedded single board computer, model sbc4495 from Microsys. 
+This unit has the optional Trimble Lassen SQ gps chipset included.  The
+processor is an Atlas STPC system-on-a-chip with a 486/586 architecture.
+ This chip is only clocked at 133 or 166 Mhz so it makes sense that I
+could see a problem that you would not running on a much more powerful
+desktop.
+
+This board defaults to a 9600 buad rate on the serial port connected to
+the gps.  I leave it at 9600 and start gpsd with just gpsd /dev/ttyS2. 
+In my application, I get data from gpsd using the c++ wrapper class by
+calling the query function such as gps.query(&quot;w+p\n&quot;).  I am not using
+the callback function since I prefer to sleep for a second and then get
+the gps data.  This is probably not the best approach to take but I
+don't think implementing a callback function would make a huge
+difference.
+
+If necessary, I can profile gpsd but it may take some work as I am not
+sure if  the cross toolchain and library (uclibc) I'm using support -pg.
+I have tried passing -pg as part of the CFLAGS to the gpsd configure
+script and got an error: 'C compiler cannot create executables'.  Looks
+like uclibc or gcc isn't configured to handle -pg. I'll look at the
+configuration and see if I can recompile to support profiling.  I assume
+profiling is going to be the best way to track this problem down.
+
+Marshall
+ 
+ 
+&gt;&gt;&gt;<i>&quot;Eric S. Raymond&quot; &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">esr at thyrsus.com</A>&gt; 07/13/06 9:27 am &gt;&gt;&gt; 
+</I>Marshall Crocker &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">crocker at cavs.msstate.edu</A>&gt;: 
+&gt;<i>FD_SETSIZE=8 and adding the sleep statement has reduced processor 
+</I>&gt;<i>utilization to a little over 30%. Thanks for the help Elvind.  
+</I>&gt;<i> 
+</I>&gt;<i>I wish it weren't necessary to implement such hacks to get gpsd to a 
+</I>&gt;<i>reasonable utilization. 
+</I> 
+What puzzles me is that I'm not seeing these crazy processor-utilization
+
+figures.  But I'm not running on an SBC, either -- it may well be that 
+gpsd is using an unreasonable number of cycles and I just don't see it 
+because my desktop GUIs eat more. 
+ 
+I'd like to develop a solution to your problem that is not just a hack. 
+We need to start with a clear understanding of where the processor
+clocks 
+are getting burned up and why changing FD_SETSIZE and adding the sleep()
+
+are helpful. 
+ 
+What are your thoughts? 
+-- 
+&lt;a href=&quot;<A HREF="http://www.catb.org/~esr/">http://www.catb.org/~esr/</A>&quot;&gt;Eric S. Raymond&lt;/a&gt; 
+ 
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="001753.html">[Gpsd-users] Polling Rate Max for SiRf III &amp; GPSD 2.32
+</A></li>
+	<LI>Next message: <A HREF="001764.html">[Gpsd-users] Polling Rate Max for SiRf III &amp; GPSD 2.32
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1759">[ date ]</a>
+              <a href="thread.html#1759">[ thread ]</a>
+              <a href="subject.html#1759">[ subject ]</a>
+              <a href="author.html#1759">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

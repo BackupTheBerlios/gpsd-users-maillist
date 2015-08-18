@@ -1,0 +1,156 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] major gpsfake problems
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2006-July/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20major%20gpsfake%20problems&In-Reply-To=%3C5345610.post%40talk.nabble.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="001770.html">
+   <LINK REL="Next"  HREF="001781.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] major gpsfake problems</H1>
+    <B>matthewpiatt</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20major%20gpsfake%20problems&In-Reply-To=%3C5345610.post%40talk.nabble.com%3E"
+       TITLE="[Gpsd-users] major gpsfake problems">piatt.matthew at gmail.com
+       </A><BR>
+    <I>Sun Jul 16 04:08:04 CEST 2006</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="001770.html">[Gpsd-users] Polling Rate Max for SiRf III &amp; GPSD 2.32
+</A></li>
+        <LI>Next message: <A HREF="001781.html">[Gpsd-users] major gpsfake problems
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1765">[ date ]</a>
+              <a href="thread.html#1765">[ thread ]</a>
+              <a href="subject.html#1765">[ subject ]</a>
+              <a href="author.html#1765">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>
+I have been searching for the solutions to these problems for almost 2 days
+now, without any luch. I am having trouble with gpsfake. I am using gpsd
+version 2.33, compiled from source (no build trouble).
+
+Within the last month, I was traveling around the Northwesten part of the
+US. I had my laptop and GPS device with me, running FC5 and GPSd 2.33. I
+would hook up my Rayming TN-200 GPS to GPSd, and then connect 'sirfmon' to
+GPSd and turn on logging in 'sirfmon'.
+
+Now I wish to &quot;play back&quot; those log files with 'gpsfake'. I have done this
+in the past with no trouble whatsoever, but back then I was only logging
+NMEA data. (I have tried to go back to the old versions with mixed success).
+No new 2.33 clients can connect to an older 2.26 GPSd server.
+
+
+I am getting some errors that aren't allowing me to move forward.
+
+1. Python module import error
+
+[<A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">root at alpha</A> sirf]#  gpsfake -b sea-wvc.sirf
+Traceback (most recent call last):
+  File &quot;/usr/bin/gpsfake&quot;, line 10, in ?
+    import gpsfake
+ImportError: No module named gpsfake
+
+I solve this by going into my build directory and running ./gpsfake instead.
+
+2. &quot;No probe matched&quot; error
+
+[<A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">root at alpha</A> gpsd-2.33]# ./gpsfake -l -D 4 -o &quot;-nN -D 4&quot; -p -s 9600 -c 1.0
+../sirf/sea-wvc.sirf 
+gpsd: control socket opened at /tmp/gpsfake-9945.sock
+gpsd: launching (Version 2.33)
+gpsd: listening on port gpsd
+gpsd: running with effective group ID 0
+gpsd: running with effective user ID 0
+gpsd: control socket connect on 5
+gpsd: &lt;= control(5): +/dev/pts/5\x0d
+
+gpsd: &lt;= control(5): adding /dev/pts/5 
+gpsd: opening GPS data source at '/dev/pts/5'
+gpsd: no probe matched...
+gpsd: speed 9600, 8N1
+gpsd: gpsd_activate: opened GPS (6)
+gpsd: flagging descriptor 6 in open_device
+... (Ctrl-C applied)
+gpsd: closing GPS=/dev/pts/5 (6)
+gpsd: Received terminating signal 2. Exiting...
+
+I cannot get it to work through and start displaying the sentences.
+
+3. slave_is_open error (happens when using -v on gpsfake)
+
+When I run
+
+[<A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">root at alpha</A> gpsd-2.33]# ./gpsfake -v -b -c 1.0 -D 5 ../sirf/sea-wvc.sirf 
+Processing ../sirf/sea-wvc.sirf...gpsd: control socket opened at
+/tmp/gpsfake-11073.sock
+gpsd: launching (Version 2.33)
+gpsd: listening on port gpsd
+gpsd: running with effective group ID 0
+gpsd: running with effective user ID 0
+gpsd: control socket connect on 5
+gpsd: &lt;= control(5): +/dev/pts/5\x0d
+
+gpsd: &lt;= control(5): adding /dev/pts/5 
+gpsd: opening GPS data source at '/dev/pts/5'
+gpsd: garmin_gps not active.
+gpsd: no probe matched...
+gpsd: speed 4800, 8N1
+gpsd: gpsd_activate: opened GPS (6)
+gpsd: flagging descriptor 6 in open_device
+slave_is_open() beginsslave_is_open() endsslave_is_open()
+beginsslave_is_open() endsslave_is_open() beginsslave_is_open()
+endsslave_is_open() beginsslave_is_open() endsslave_is_open() 
+...... (messages repeat indefinitely until killed) ..........
+beginsslave_is_open() endsslave_is_open() beginsslave_is_open()
+endsslave_is_open() begins
+(Ctrl-C applied)
+gpsd: closing GPS=/dev/pts/5 (6)
+gpsd: Received terminating signal 2. Exiting...
+
+I have tried many different things, even running GPSd pointed to my
+SiRF-binary file directly, and then running 'gpspipe' and redirecting to a
+new file.
+
+
+Thanks in advance for any help!
+
+Matthew
+-- 
+View this message in context: <A HREF="http://www.nabble.com/major-gpsfake-problems-tf1949320.html#a5345610">http://www.nabble.com/major-gpsfake-problems-tf1949320.html#a5345610</A>
+Sent from the GPSd - Users forum at Nabble.com.
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="001770.html">[Gpsd-users] Polling Rate Max for SiRf III &amp; GPSD 2.32
+</A></li>
+	<LI>Next message: <A HREF="001781.html">[Gpsd-users] major gpsfake problems
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1765">[ date ]</a>
+              <a href="thread.html#1765">[ thread ]</a>
+              <a href="subject.html#1765">[ subject ]</a>
+              <a href="author.html#1765">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

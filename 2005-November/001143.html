@@ -1,0 +1,176 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] Trying to get working Magellan GPS 315 with pl2303 usb serial adapter
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2005-November/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Trying%20to%20get%20working%20Magellan%20GPS%20315%20with%20pl2303%0A%20usb%20serial%20adapter&In-Reply-To=%3C4389A69A.5050900%40wi.ps.pl%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="001142.html">
+   <LINK REL="Next"  HREF="001144.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] Trying to get working Magellan GPS 315 with pl2303 usb serial adapter</H1>
+    <B>Rafal Mantiuk</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Trying%20to%20get%20working%20Magellan%20GPS%20315%20with%20pl2303%0A%20usb%20serial%20adapter&In-Reply-To=%3C4389A69A.5050900%40wi.ps.pl%3E"
+       TITLE="[Gpsd-users] Trying to get working Magellan GPS 315 with pl2303 usb serial adapter">rafal.mantiuk at wi.ps.pl
+       </A><BR>
+    <I>Sun Nov 27 13:29:14 CET 2005</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="001142.html">[Gpsd-users] Trying to get working Magellan GPS 315 with pl2303 usb serial adapter
+</A></li>
+        <LI>Next message: <A HREF="001144.html">[Gpsd-users] Trying to get working Magellan GPS 315 with pl2303 usb serial adapter
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1143">[ date ]</a>
+              <a href="thread.html#1143">[ thread ]</a>
+              <a href="subject.html#1143">[ subject ]</a>
+              <a href="author.html#1143">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hello Gary,
+
+Thank you for your detailed answer.
+
+ &gt; I suggest your try this instead:
+ &gt;
+ &gt; stty speed 4800 &lt; /dev/ttyUSB0
+ &gt;
+...
+ &gt;  So first I would
+ &gt; power cycle the system and try simply  this:
+ &gt;
+ &gt; cat /dev/ttyUSB0
+
+I tried both without changing the serial connection setting and with 
+setting them to 4800, and I still get no response from the GPS.
+
+ &gt; Other thing to check, are you sure you have the right USB port for the
+ &gt; GPS?  Did you see /dev/ttyUSB0 in the dmesg or syslogs?
+
+/dev/ttyUSB0 seems to be the right port:
+
+(syslog) Nov 27 13:02:04 localhost kernel: usb 3-1: PL-2303 converter 
+now attached to ttyUSB0
+
+ &gt; Send the output
+ &gt; of this so we can see the driver got the unit:
+ &gt;
+ &gt; 	cat /proc/bus/usb/devices
+
+I included the output at the end of this email.
+
+I noticed one more thing in the syslog:
+(syslog) Nov 27 13:03:23 localhost kernel: ttyUSB0: 1 input overrun(s)
+I am not an expert on serial ports so I don't know how to interpret this.
+
+I can change both boud rate (from 1200 to 119200) and NMEA format (1.5 
+APA; 1.5 XTE; 2.1 GSA) in the GPS unit. I tried almost all combination 
+but without success.
+
+The strange is that the GPS sometimes reports &quot;External power lost&quot; when 
+connected with a cable. Perhaps there is something wrong with the cable. 
+But under Windows I can send waypoints using the same cable without any 
+problem. I haven't checked tracking on Windows because I don't have any 
+software that can do this.
+
+Cheers,
+
+Rafal
+
+========================================================================
+
+T:  Bus=04 Lev=00 Prnt=00 Port=00 Cnt=00 Dev#=  1 Spd=12  MxCh= 2
+B:  Alloc=  0/900 us ( 0%), #Int=  0, #Iso=  0
+D:  Ver= 1.10 Cls=09(hub  ) Sub=00 Prot=00 MxPS= 8 #Cfgs=  1
+P:  Vendor=0000 ProdID=0000 Rev= 2.06
+S:  Manufacturer=Linux 2.6.10 uhci_hcd
+S:  Product=Intel Corp. 82801DB/DBL/DBM (ICH4/ICH4-L/ICH4-M) USB UHCI 
+Controller #3
+S:  SerialNumber=0000:00:1d.2
+C:* #Ifs= 1 Cfg#= 1 Atr=c0 MxPwr=  0mA
+I:  If#= 0 Alt= 0 #EPs= 1 Cls=09(hub  ) Sub=00 Prot=00 Driver=hub
+E:  Ad=81(I) Atr=03(Int.) MxPS=   2 Ivl=255ms
+
+T:  Bus=03 Lev=00 Prnt=00 Port=00 Cnt=00 Dev#=  1 Spd=12  MxCh= 2
+B:  Alloc= 93/900 us (10%), #Int=  1, #Iso=  0
+D:  Ver= 1.10 Cls=09(hub  ) Sub=00 Prot=00 MxPS= 8 #Cfgs=  1
+P:  Vendor=0000 ProdID=0000 Rev= 2.06
+S:  Manufacturer=Linux 2.6.10 uhci_hcd
+S:  Product=Intel Corp. 82801DB/DBL/DBM (ICH4/ICH4-L/ICH4-M) USB UHCI 
+Controller #2
+S:  SerialNumber=0000:00:1d.1
+C:* #Ifs= 1 Cfg#= 1 Atr=c0 MxPwr=  0mA
+I:  If#= 0 Alt= 0 #EPs= 1 Cls=09(hub  ) Sub=00 Prot=00 Driver=hub
+E:  Ad=81(I) Atr=03(Int.) MxPS=   2 Ivl=255ms
+
+T:  Bus=03 Lev=01 Prnt=01 Port=00 Cnt=01 Dev#=  3 Spd=12  MxCh= 0
+D:  Ver= 1.10 Cls=00(&gt;ifc ) Sub=00 Prot=00 MxPS= 8 #Cfgs=  1
+P:  Vendor=067b ProdID=2303 Rev= 2.02
+C:* #Ifs= 1 Cfg#= 1 Atr=a0 MxPwr=100mA
+I:  If#= 0 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=00 Prot=00 
+Driver=usbserial_generic
+E:  Ad=81(I) Atr=03(Int.) MxPS=  10 Ivl=1ms
+E:  Ad=02(O) Atr=02(Bulk) MxPS=  64 Ivl=0ms
+E:  Ad=83(I) Atr=02(Bulk) MxPS=  64 Ivl=0ms
+
+T:  Bus=03 Lev=01 Prnt=01 Port=01 Cnt=02 Dev#=  2 Spd=1.5 MxCh= 0
+D:  Ver= 1.10 Cls=00(&gt;ifc ) Sub=00 Prot=00 MxPS= 8 #Cfgs=  1
+P:  Vendor=062a ProdID=0000 Rev= 2.04
+C:* #Ifs= 1 Cfg#= 0 Atr=a0 MxPwr=100mA
+I:  If#= 0 Alt= 0 #EPs= 1 Cls=03(HID  ) Sub=01 Prot=02 Driver=usbhid
+E:  Ad=81(I) Atr=03(Int.) MxPS=   4 Ivl=10ms
+
+T:  Bus=02 Lev=00 Prnt=00 Port=00 Cnt=00 Dev#=  1 Spd=12  MxCh= 2
+B:  Alloc=  0/900 us ( 0%), #Int=  0, #Iso=  0
+D:  Ver= 1.10 Cls=09(hub  ) Sub=00 Prot=00 MxPS= 8 #Cfgs=  1
+P:  Vendor=0000 ProdID=0000 Rev= 2.06
+S:  Manufacturer=Linux 2.6.10 uhci_hcd
+S:  Product=Intel Corp. 82801DB/DBL/DBM (ICH4/ICH4-L/ICH4-M) USB UHCI 
+Controller #1
+S:  SerialNumber=0000:00:1d.0
+C:* #Ifs= 1 Cfg#= 1 Atr=c0 MxPwr=  0mA
+I:  If#= 0 Alt= 0 #EPs= 1 Cls=09(hub  ) Sub=00 Prot=00 Driver=hub
+E:  Ad=81(I) Atr=03(Int.) MxPS=   2 Ivl=255ms
+
+T:  Bus=01 Lev=00 Prnt=00 Port=00 Cnt=00 Dev#=  1 Spd=480 MxCh= 6
+B:  Alloc=  0/800 us ( 0%), #Int=  0, #Iso=  0
+D:  Ver= 2.00 Cls=09(hub  ) Sub=00 Prot=01 MxPS= 8 #Cfgs=  1
+P:  Vendor=0000 ProdID=0000 Rev= 2.06
+S:  Manufacturer=Linux 2.6.10 ehci_hcd
+S:  Product=Intel Corp. 82801DB/DBM (ICH4/ICH4-M) USB 2.0 EHCI Controller
+S:  SerialNumber=0000:00:1d.7
+C:* #Ifs= 1 Cfg#= 1 Atr=e0 MxPwr=  0mA
+I:  If#= 0 Alt= 0 #EPs= 1 Cls=09(hub  ) Sub=00 Prot=00 Driver=hub
+E:  Ad=81(I) Atr=03(Int.) MxPS=   2 Ivl=256ms
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="001142.html">[Gpsd-users] Trying to get working Magellan GPS 315 with pl2303 usb serial adapter
+</A></li>
+	<LI>Next message: <A HREF="001144.html">[Gpsd-users] Trying to get working Magellan GPS 315 with pl2303 usb serial adapter
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1143">[ date ]</a>
+              <a href="thread.html#1143">[ thread ]</a>
+              <a href="subject.html#1143">[ subject ]</a>
+              <a href="author.html#1143">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

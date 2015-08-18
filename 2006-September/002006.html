@@ -1,0 +1,115 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] PPS on RTS?
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2006-September/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20PPS%20on%20RTS%3F&In-Reply-To=%3CPine.LNX.4.64.0609261117140.27977%40catbert.rellim.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="002004.html">
+   <LINK REL="Next"  HREF="002005.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] PPS on RTS?</H1>
+    <B>Gary E. Miller</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20PPS%20on%20RTS%3F&In-Reply-To=%3CPine.LNX.4.64.0609261117140.27977%40catbert.rellim.com%3E"
+       TITLE="[Gpsd-users] PPS on RTS?">gem at rellim.com
+       </A><BR>
+    <I>Tue Sep 26 20:26:05 CEST 2006</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="002004.html">[Gpsd-users] PPS on RTS?
+</A></li>
+        <LI>Next message: <A HREF="002005.html">[Gpsd-users] Your NTP Server Using A Garmin 18 LVC
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2006">[ date ]</a>
+              <a href="thread.html#2006">[ thread ]</a>
+              <a href="subject.html#2006">[ subject ]</a>
+              <a href="author.html#2006">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>-----BEGIN PGP SIGNED MESSAGE-----
+Hash: SHA1
+
+Yo Dave!
+
+On Tue, 26 Sep 2006, Dave C wrote:
+
+&gt;<i> I'm attempting to use a Garmin 18 LVC GPS as a time reference on a small
+</I>&gt;<i> datalogger based around the Gumsitx Basix platform.
+</I>
+Good so far.  One potential issue.  The LVC is TTL level and not RS-232 level
+signals.  Some RS-232 port will not work when driven by the GPS-18/LVC but
+most will.
+
+&gt;<i> 1. Has anyone else had thoughts about using the RTS line for the PPS
+</I>&gt;<i> signal? I'm not sure if the Linux serial driver would allow it though. If
+</I>&gt;<i> this is thought possible, any pointers to the PPS section(s) in the code
+</I>&gt;<i> would be useful and I'll have a hack at it.
+</I>
+DCD is no universal for PPS.  Right now the gpsd_ppsmonitor() just uses
+an ioctl() to poll the state of the serial lines.  Then checks a mask
+(TIOCM_CAR) to see if the DCD changed.  This is in libgpsd_core.c.  It
+should be easy to change the mask to poll for another line.
+
+&gt;<i> 2. Would I be better dropping the the Garmin and going to a SiRF based
+</I>&gt;<i> GPS?  I recall a passing mention in my trawling though the mailing
+</I>&gt;<i> lists that using a binary protocol will allow greater time accuracy
+</I>&gt;<i> without using a PPS signal? Is this true or am I confused?
+</I>
+The Garmin PPS spec is +/-1uSec.  You will have a hard time beating that!
+
+Without PPS, depending on who yo ask, you will have a hard time getting
+much better than 1 Sec accuracy.  I doubt you could eve get accuracy
+past 100mS over the serial line.
+
+&gt;<i> 3. Am I completely hosed in trying to get accurate time-keeping without
+</I>&gt;<i> access to a full-function serial port?
+</I>
+I think not.
+
+RGDS
+GARY
+- ---------------------------------------------------------------------------
+Gary E. Miller Rellim 20340 Empire Blvd, Suite E-3, Bend, OR 97701
+	<A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">gem at rellim.com</A>  Tel:+1(541)382-8588
+
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v1.4.3 (GNU/Linux)
+
+iD8DBQFFGXC/8KZibdeR3qURAqKMAKCwaoycm07n31CvMEDiZ9LeZbNEtwCeKiGC
+qqrz/czRuNZGV57tg4o7+Rk=
+=/2g/
+-----END PGP SIGNATURE-----
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="002004.html">[Gpsd-users] PPS on RTS?
+</A></li>
+	<LI>Next message: <A HREF="002005.html">[Gpsd-users] Your NTP Server Using A Garmin 18 LVC
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2006">[ date ]</a>
+              <a href="thread.html#2006">[ thread ]</a>
+              <a href="subject.html#2006">[ subject ]</a>
+              <a href="author.html#2006">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

@@ -1,0 +1,182 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] TSIP mode switch for gpsctl
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2009-June/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20TSIP%20mode%20switch%20for%20gpsctl&In-Reply-To=%3C91981b3e0906042154y4d24c56bs60d720d7ae7d0af5%40mail.gmail.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="003773.html">
+   <LINK REL="Next"  HREF="003775.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] TSIP mode switch for gpsctl</H1>
+    <B>Chris Kuethe</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20TSIP%20mode%20switch%20for%20gpsctl&In-Reply-To=%3C91981b3e0906042154y4d24c56bs60d720d7ae7d0af5%40mail.gmail.com%3E"
+       TITLE="[Gpsd-users] TSIP mode switch for gpsctl">chris.kuethe at gmail.com
+       </A><BR>
+    <I>Fri Jun  5 06:54:40 CEST 2009</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="003773.html">[Gpsd-users] TSIP mode switch for gpsctl
+</A></li>
+        <LI>Next message: <A HREF="003775.html">[Gpsd-users] Can't Run/Install GPSD-2.39
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3774">[ date ]</a>
+              <a href="thread.html#3774">[ thread ]</a>
+              <a href="subject.html#3774">[ subject ]</a>
+              <a href="author.html#3774">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>On Thu, Jun 4, 2009 at 8:48 PM, &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">mattroberds at cox.net</A>&gt; wrote:
+&gt;<i> All,
+</I>
+Good bug squashing - thanks!
+
+&gt;<i> With my earlier patches, I have basically got what I wanted: a way to flip
+</I>&gt;<i> a Trimble TSIP GPS into NMEA mode from the command line. &#160;But since gpsctl
+</I>&gt;<i> has built-in -n/-b flags for some other protocols, I figured I'd take a
+</I>&gt;<i> stab at implementing this for TSIP; the patch is below. &#160;Note that this
+</I>&gt;<i> hasn't been through the regression tests or splint yet. &#160;It does work, at
+</I>&gt;<i> least for my Resolution T dev kit. &#160;(In general, gpsctl seems to take a
+</I>&gt;<i> while to recognize that the GPS is speaking TSIP, but it was doing that
+</I>&gt;<i> before I started hacking on it.)
+</I>
+Yes, autodetection takes a while. I wish we could do it faster, but it
+can't really be helped.
+
+&gt;<i> Is this about the right way to do it? &#160;I'm pretty sure (not 100%) that I
+</I>&gt;<i> have to set up the NMEA messages I want with the TSIP command before
+</I>&gt;<i> switching, because I don't think there's a way to ask for which NMEA
+</I>&gt;<i> sentences you want once you're in NMEA mode.
+</I>
+I haven't found any Trimble NMEA commands to go back. Some receivers
+don't save settings in NVRAM/EEPROM, so it may be safe to do the
+protocol switch, if you can recover with power cycle. Itrax receivers
+are like that - you can switch to ITALK mode, but then you need to
+restart to get back to NMEA.
+
+&gt;<i> &#160;Also, I summarily go to
+</I>&gt;<i> 4800 8N1 when switching to NMEA, and 9600 8O1 when going back to TSIP;
+</I>&gt;<i> maybe I should just leave the current settings alone?
+</I>
+9600 8O1 seems to be the standard for tsip - though some devices are
+8N1. While I'm not always a fan of hard-coded settings <A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">NMEA at 4800-8-N-1</A>
+and <A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">TSIP at 9600-8-O-1</A> are two very common configurations. It's probably
+ok to just support those.
+
+CK
+
+&gt;<i> Any other comments?
+</I>&gt;<i>
+</I>&gt;<i> Thanks!
+</I>&gt;<i>
+</I>&gt;<i> Matt Roberds
+</I>&gt;<i>
+</I>&gt;<i> ----cut here----
+</I>&gt;<i> --- driver_tsip.c.orig &#160;2009-06-04 21:31:19.000000000 -0500
+</I>&gt;<i> +++ driver_tsip.c.withmodeswitch &#160; &#160; &#160; &#160;2009-06-04 21:36:37.000000000 -0500
+</I>&gt;<i> @@ -830,6 +830,51 @@
+</I>&gt;<i>
+</I>&gt;<i> &#160; &#160; return true; &#160; &#160; &#160; /* it would be nice to error-check this */
+</I>&gt;<i> &#160;}
+</I>&gt;<i> +
+</I>&gt;<i> +static void tsip_mode(struct gps_device_t *session, int mode)
+</I>&gt;<i> +{
+</I>&gt;<i> + &#160; &#160;unsigned char buf[16];
+</I>&gt;<i> +
+</I>&gt;<i> + &#160; &#160;if (mode == MODE_NMEA) {
+</I>&gt;<i> + &#160; &#160; &#160; &#160;/* First turn on the NMEA messages we want */
+</I>&gt;<i> +
+</I>&gt;<i> + &#160; &#160; &#160; &#160;putbyte(buf,0,0x00); &#160; &#160; &#160; &#160; &#160; /* subcode 0 */
+</I>&gt;<i> + &#160; &#160; &#160; &#160;putbyte(buf,1,0x01); &#160; &#160; &#160; &#160; &#160; &#160;/* 1-second fix interval */
+</I>&gt;<i> + &#160; &#160; &#160; &#160;putbyte(buf,2,0x00); &#160; &#160; &#160; &#160; &#160; /* Reserved */
+</I>&gt;<i> + &#160; &#160; &#160; &#160;putbyte(buf,3,0x00); &#160; &#160; &#160; &#160; &#160; /* Reserved */
+</I>&gt;<i> + &#160; &#160; &#160; &#160;putbyte(buf,4,0x01); &#160; &#160; &#160; &#160; &#160; /* 0=RMC, 1-7=Reserved */
+</I>&gt;<i> + &#160; &#160; &#160; &#160;putbyte(buf,5,0x19); &#160; &#160; &#160; &#160; &#160; /* 0=GGA, 1=GGL, 2=VTG, 3=GSV, */
+</I>&gt;<i> + &#160; &#160; &#160; &#160; &#160; &#160; &#160; &#160; &#160; &#160; &#160; &#160; &#160; &#160; &#160; &#160; &#160; &#160; &#160; &#160;/* 4=GSA, 5=ZDA, 6-7=Reserved &#160;*/
+</I>&gt;<i> +
+</I>&gt;<i> + &#160; &#160; &#160; &#160;(void)tsip_write(session, 0x7A, buf, 6);
+</I>&gt;<i> +
+</I>&gt;<i> + &#160; &#160; &#160; &#160;/* Now switch to NMEA mode */
+</I>&gt;<i> +
+</I>&gt;<i> + &#160; &#160; &#160; &#160;memset(buf, 0, sizeof(buf));
+</I>&gt;<i> +
+</I>&gt;<i> + &#160; &#160; &#160; &#160;putbyte(buf,0,0xff); &#160; &#160; &#160; &#160; &#160; /* current port */
+</I>&gt;<i> + &#160; &#160; &#160; &#160;putbyte(buf,1,0x06); &#160; &#160; &#160; &#160; &#160; &#160;/* 4800 bps input */
+</I>&gt;<i> + &#160; &#160; &#160; &#160;putbyte(buf,2,0x06); &#160; &#160; &#160; &#160; &#160; /* 4800 bps output */
+</I>&gt;<i> + &#160; &#160; &#160; &#160;putbyte(buf,3,0x03); &#160; &#160; &#160; &#160; &#160; /* 8 data bits */
+</I>&gt;<i> + &#160; &#160; &#160; &#160;putbyte(buf,4,0x00); &#160; &#160; &#160; &#160; &#160; /* No parity */
+</I>&gt;<i> + &#160; &#160; &#160; &#160;putbyte(buf,5,0x00); &#160; &#160; &#160; &#160; &#160; /* 1 stop bit */
+</I>&gt;<i> + &#160; &#160; &#160; &#160;putbyte(buf,6,0x00); &#160; &#160; &#160; &#160; &#160; /* No flow control */
+</I>&gt;<i> + &#160; &#160; &#160; &#160;putbyte(buf,7,0x02); &#160; &#160; &#160; &#160; &#160; /* Input protocol TSIP */
+</I>&gt;<i> + &#160; &#160; &#160; &#160;putbyte(buf,8,0x04); &#160; &#160; &#160; &#160; &#160; /* Output protocol NMEA */
+</I>&gt;<i> + &#160; &#160; &#160; &#160;putbyte(buf,9,0x00); &#160; &#160; &#160; &#160; &#160; /* Reserved */
+</I>&gt;<i> +
+</I>&gt;<i> + &#160; &#160; &#160; &#160;(void)tsip_write(session, 0xBC, buf, 10);
+</I>&gt;<i> +
+</I>&gt;<i> + &#160; &#160;} else if (mode == MODE_BINARY) {
+</I>&gt;<i> + &#160; &#160; &#160; &#160;/* The speed switcher also puts us back in TSIP, so call it */
+</I>&gt;<i> + &#160; &#160; &#160; &#160;/* with the default 9600 8O1. */
+</I>&gt;<i> +
+</I>&gt;<i> + &#160; &#160; &#160; &#160;tsip_speed_switch(session, 9600, 'O', 1);
+</I>&gt;<i> +
+</I>&gt;<i> + &#160; &#160;} else {
+</I>&gt;<i> + &#160; &#160; &#160; &#160;gpsd_report(LOG_ERROR, &quot;unknown mode %i requested\n&quot;, mode);
+</I>&gt;<i> + &#160; &#160;}
+</I>&gt;<i> +}
+</I>&gt;<i> &#160;#endif /* ALLOW_RECONFIGURE */
+</I>&gt;<i>
+</I>&gt;<i> &#160;/* this is everything we export */
+</I>&gt;<i> @@ -851,7 +896,7 @@
+</I>&gt;<i> &#160;#ifdef ALLOW_RECONFIGURE
+</I>&gt;<i> &#160; &#160; .configurator &#160; = tsip_configurator,/* initial mode sets */
+</I>&gt;<i> &#160; &#160; .speed_switcher = tsip_speed_switch,/* change baud rate */
+</I>&gt;<i> - &#160; &#160;.mode_switcher &#160;= NULL, &#160; &#160; &#160; &#160; &#160; &#160;/* no mode switcher */
+</I>&gt;<i> + &#160; &#160;.mode_switcher &#160;= tsip_mode, &#160; &#160; &#160; /* there is a mode switcher */
+</I>&gt;<i> &#160; &#160; .rate_switcher &#160;= NULL, &#160; &#160; &#160; &#160; &#160; &#160;/* no rate switcher */
+</I>&gt;<i> &#160; &#160; .min_cycle &#160; &#160; &#160;= 1, &#160; &#160; &#160; &#160; &#160; &#160; &#160; /* not relevant, no rate switcher */
+</I>&gt;<i> &#160; &#160; .revert &#160; &#160; &#160; &#160; = NULL, &#160; &#160; &#160; &#160; &#160; &#160;/* FIXME: revert sentence mix */
+</I>&gt;<i> ----cut here----
+</I>&gt;<i>
+</I>&gt;<i> _______________________________________________
+</I>&gt;<i> Gpsd-users mailing list
+</I>&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">Gpsd-users at lists.berlios.de</A>
+</I>&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">https://lists.berlios.de/mailman/listinfo/gpsd-users</A>
+</I>&gt;<i>
+</I>
+
+
+-- 
+GDB has a 'break' feature; why doesn't it have 'fix' too?
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="003773.html">[Gpsd-users] TSIP mode switch for gpsctl
+</A></li>
+	<LI>Next message: <A HREF="003775.html">[Gpsd-users] Can't Run/Install GPSD-2.39
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3774">[ date ]</a>
+              <a href="thread.html#3774">[ thread ]</a>
+              <a href="subject.html#3774">[ subject ]</a>
+              <a href="author.html#3774">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

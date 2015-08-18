@@ -1,0 +1,198 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] gpsd client trouble
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2007-August/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20gpsd%20client%20trouble&In-Reply-To=%3C46C834ED.2070000%40adsllc.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="002817.html">
+   <LINK REL="Next"  HREF="002819.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] gpsd client trouble</H1>
+    <B>Dave</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20gpsd%20client%20trouble&In-Reply-To=%3C46C834ED.2070000%40adsllc.com%3E"
+       TITLE="[Gpsd-users] gpsd client trouble">vendor at adsllc.com
+       </A><BR>
+    <I>Sun Aug 19 14:17:49 CEST 2007</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="002817.html">[Gpsd-users] GGA &lt;&gt; RMC, mode field differs
+</A></li>
+        <LI>Next message: <A HREF="002819.html">[Gpsd-users] gpsd_config.h
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2818">[ date ]</a>
+              <a href="thread.html#2818">[ thread ]</a>
+              <a href="subject.html#2818">[ subject ]</a>
+              <a href="author.html#2818">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>I have a Garmin GPS 10x (a little bluetooth model) and I'm having
+trouble getting data out of gpsd.
+
+I'm running Fedora Core 6 i386 with the latest updates.  I tried the
+gpsd subversion trunk and latest tarball, but couldn't get either to
+compile.  I ran from the 2.34 RPM from berlios and saw now change from
+the Fedora packages.
+
+A 'cat /dev/rfcomm0' seems to do what it should.
+gpsd seems to fire up just fine and find the unit.  It responds to 'a',
+'p', and some other requests just fine.
+The problem is that 'w', 'o', and 'y' requests don't work.
+
+xgps and the rest of the clients fail to report any significant data -
+just as if they were watching but nothing was coming in.
+
+Here are my questions:
+1. Aren't I supposed to get responses like &quot;GPSD,C=?&quot; instead of just
+&quot;GPSD&quot; if there's no information?
+2. More importantly, what can I try to get &quot;w&quot; to work.
+
+Thanks!
+
+Here is a telnet session:
+[<A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">davel at vindaloo</A> src]$ telnet localhost 2947
+Trying 127.0.0.1...
+Connected to localhost.localdomain (127.0.0.1).
+Escape character is '^]'.
+p
+GPSD,P=0.000000 0.000000
+p
+GPSD,P=41.672555 -83.606717
+a
+GPSD,A=198.300000
+d
+GPSD,D=08/14/2007 14:13:06
+e
+GPSD
+f=/dev/rfcomm0
+GPSD,D=08/14/2007 14:13:20,V=0.050000,R=1,M=3,M=3
+$GPGGA,141321.000,4140.3523,N,08336.4043,W,2,09,1.0,206.8,M,-33.7,M,0.8,0000*4A
+$GPGSA,A,3,31,22,01,14,18,12,11,05,30,,,,1.9,1.0,1.6*36
+$GPGSV,3,1,11,14,70,353,30,22,64,137,39,01,44,287,33,31,37,216,37*79
+$GPGSV,3,2,11,05,35,089,21,30,34,111,25,12,27,066,16,18,25,133,21*76
+$GPGSV,3,3,11,11,13,307,26,09,08,045,,51,36,213,39*40
+$GPRMC,141321.000,A,4140.3523,N,08336.4043,W,0.15,133.80,140807,,,D*71
+r$GPGGA,141322.000,4140.3523,N,08336.4044,W,2,09,1.0,207.4,M,-33.7,M,0.8,0000*43
+$GPGSA,A,3,31,22,01,14,18,12,11,05,30,,,,1.9,1.0,1.6*36
+$GPGSV,3,1,11,14,70,353,30,22,64,137,39,01,44,287,33,31,37,216,37*79
+$GPGSV,3,2,11,05,35,089,21,30,34,111,25,12,27,066,18,18,25,133,21*78
+$GPGSV,3,3,11,11,13,307,26,09,08,045,,51,36,213,39*40
+$GPRMC,141322.000,A,4140.3523,N,08336.4044,W,0.31,62.42,140807,,,D*48
+0
+GPSD,R=0
+a
+GPSD,A=209.100000
+p
+GPSD,P=41.672538 -83.606748
+g
+GPSD
+i
+GPSD
+k
+GPSD
+l
+GPSD
+m
+GPSD,M=3
+n
+GPSD
+GPSD
+o
+GPSD
+p
+GPSD,P=41.672495 -83.606758
+q
+GPSD
+s
+GPSD,S=2
+t
+GPSD
+u
+GPSD
+v
+GPSD,V=0.170000
+x
+GPSD
+y
+GPSD
+z
+GPSD
+$
+GPSD
+w+
+GPSD
+^]quit
+
+
+Here is a portion of the gpsd debug output:
+[<A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">root at vindaloo</A> b]# gpsd -D 255 -p /dev/rfcomm0
+command line options:
+  debug level:        255
+  gps device name:    /dev/rfcomm0
+  gps device speed:   12
+  gpsd port:          gpsd
+  latitude:           3600.000N
+  longitude:          -12300.000W
+$GPGGA,141247.000,4140.3533,N,08336.4031,W,2,09,1.0,205.6,M,-33.7,M,1.8,0000*43
+Lat: 41.672555 Lon: -83.606718 Alt: 205.600000 Sat: 9 Mod: 0 Time:
+$GPGSA,A,3,31,22,01,14,18,12,11,05,30,,,,1.9,1.0,1.6*36
+Lat: 41.672555 Lon: -83.606718 Alt: 205.600000 Sat: 9 Mod: 3 Time:
+$GPGSV,3,1,11,14,70,350,31,22,65,136,39,01,43,286,32,31,36,216,38*72
+Lat: 41.672555 Lon: -83.606718 Alt: 205.600000 Sat: 9 Mod: 3 Time:
+$GPGSV,3,2,11,05,35,090,12,30,33,112,13,12,27,067,25,18,25,133,18*74
+Lat: 41.672555 Lon: -83.606718 Alt: 205.600000 Sat: 9 Mod: 3 Time:
+$GPGSV,3,3,11,11,13,308,27,09,09,045,,51,36,213,39*4F
+Lat: 41.672555 Lon: -83.606718 Alt: 205.600000 Sat: 9 Mod: 3 Time:
+$GPRMC,141247.000,A,4140.3533,N,08336.4031,W,0.11,37.80,140807,,,D*45
+Lat: 41.672555 Lon: -83.606718 Alt: 205.600000 Sat: 9 Mod: 3 Time:
+08/14/2007 14:12:47
+$GPGGA,141248.000,4140.3533,N,08336.4030,W,2,09,1.0,205.5,M,-33.7,M,2.8,0000*4D
+Lat: 41.672555 Lon: -83.606717 Alt: 205.500000 Sat: 9 Mod: 3 Time:
+08/14/2007 14:12:47
+$GPGSA,A,3,31,22,01,14,18,12,11,05,30,,,,1.9,1.0,1.6*36
+Lat: 41.672555 Lon: -83.606717 Alt: 205.500000 Sat: 9 Mod: 3 Time:
+08/14/2007 14:12:47
+$GPGSV,3,1,11,14,70,350,31,22,65,136,39,01,43,286,32,31,36,216,38*72
+Lat: 41.672555 Lon: -83.606717 Alt: 205.500000 Sat: 9 Mod: 3 Time:
+08/14/2007 14:12:47
+$GPGSV,3,2,11,05,35,090,12,30,33,112,13,12,27,067,25,18,25,133,18*74
+---- snip ----
+$PGRMT,GPS 10x Software v2.20 BT v2.50,,,,,,,*7F
+Unknown sentence: &quot;$PGRMT,GPS 10x Software v2.20 BT v2.50,,,,,,,*7F&quot;
+---- continues as before ----
+
+
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="002817.html">[Gpsd-users] GGA &lt;&gt; RMC, mode field differs
+</A></li>
+	<LI>Next message: <A HREF="002819.html">[Gpsd-users] gpsd_config.h
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2818">[ date ]</a>
+              <a href="thread.html#2818">[ thread ]</a>
+              <a href="subject.html#2818">[ subject ]</a>
+              <a href="author.html#2818">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

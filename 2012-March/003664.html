@@ -1,0 +1,144 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> No subject
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2012-March/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20No%20subject&In-Reply-To=%3Cmailman.2.1331733124.2493.gpsd-users%40lists.berlios.de%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="003645.html">
+   <LINK REL="Next"  HREF="003716.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>No subject</H1>
+    <B></B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20No%20subject&In-Reply-To=%3Cmailman.2.1331733124.2493.gpsd-users%40lists.berlios.de%3E"
+       TITLE="No subject">
+       </A><BR>
+    <I>Wed Mar 14 14:51:36 CET 2012</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="003645.html">No subject
+</A></li>
+        <LI>Next message: <A HREF="003716.html">No subject
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3664">[ date ]</a>
+              <a href="thread.html#3664">[ thread ]</a>
+              <a href="subject.html#3664">[ subject ]</a>
+              <a href="author.html#3664">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>&quot;Field 7 (0*5C) is the NMEA 0183 data-integrity checksum for the sentence,
+preceded by &quot;0*&quot; to aide simpleminded NMEA parsers. It is computed on the
+entire sentence including the AIVDM tag but excluding the leading &quot;!&quot; &quot;
+
+- Is the checksum just a simple bitwise-or of each char?
+- Does it include the &quot;,0*&quot; part of the trailing &quot;,0*xx\r\l&quot; ?
+
+Eric
+
+On Tue, Mar 10, 2009 at 3:47 PM, Doug Robinson &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">fdr at mytemyke.net</A>&gt; wrote:
+
+&gt;<i> Here are three pages of detail, but I would guess you have already reviewed
+</I>&gt;<i> this:
+</I>&gt;<i>
+</I>&gt;<i> <A HREF="http://www.navcen.uscg.gov/enav/ais/AIS_messages.htm">http://www.navcen.uscg.gov/enav/ais/AIS_messages.htm</A>
+</I>&gt;<i> <A HREF="http://www.navcen.uscg.gov/enav/ais/AIS_Messages_A.htm">http://www.navcen.uscg.gov/enav/ais/AIS_Messages_A.htm</A>
+</I>&gt;<i> <A HREF="http://www.navcen.uscg.gov/enav/ais/AIS_Messages_A_Static.htm">http://www.navcen.uscg.gov/enav/ais/AIS_Messages_A_Static.htm</A>
+</I>&gt;<i> <A HREF="http://www.navcen.uscg.gov/enav/ais/AIS_Messages_B.htm">http://www.navcen.uscg.gov/enav/ais/AIS_Messages_B.htm</A>
+</I>&gt;<i>
+</I>&gt;<i> yr ftfl svnt etc
+</I>&gt;<i> fdr
+</I>&gt;<i> s/v Nemesis
+</I>&gt;<i>
+</I>&gt;<i> On Tue, Mar 10, 2009 at 12:00 PM, Eric S. Raymond &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">esr at snark.thyrsus.com</A>
+</I>&gt;<i> &gt;wrote:
+</I>&gt;<i>
+</I>&gt;<i> &gt; Technical standards issued under proprietary terms make me angry.  I
+</I>&gt;<i> &gt; consider it a duty to reverse-engineer them and document them from
+</I>&gt;<i> &gt; untainted sources, for two reasons: (1) so open-source software can
+</I>&gt;<i> &gt; use that information, and (2) because upsetting the sort of people
+</I>&gt;<i> &gt; who promulgate proprietary &quot;standards&quot; by destroying their ability to
+</I>&gt;<i> &gt; collect rent on them is a good deed in itself.
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; I'm currently engaged in trying to reverse-engineer the AIVDM
+</I>&gt;<i> &gt; standard.  This is used by the Automatic Identification System
+</I>&gt;<i> &gt; of marine transponders.  I'm developing an AIVDM driver for GPSD,
+</I>&gt;<i> &gt; but I would consider cracking that standard open to be be a
+</I>&gt;<i> &gt; worthwhile effort even if I weren't.
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; My analysis is at <A HREF="http://gpsd.berlios.de/AIVDM.html">http://gpsd.berlios.de/AIVDM.html</A>
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; It is incomplete and probably correct in spots.  I am looking
+</I>&gt;<i> &gt; for people with knowledge of AIVDM, and/or access to the AIVDM
+</I>&gt;<i> &gt; stndard, to help complete it.
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; Under the law, at least as it obtains in the U.S., anyone can tell me
+</I>&gt;<i> &gt; things they have read about in the AIDVM standard without copyright
+</I>&gt;<i> &gt; implications, as long as in doing so they do not reproduce more than
+</I>&gt;<i> &gt; 10 continuous words of their content in any single quote.
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; I am especially indicated in having more complete information on units
+</I>&gt;<i> &gt; and scaling factors, but anywhere you see &quot;unknown&quot; needs to be filled
+</I>&gt;<i> &gt; in.
+</I>&gt;<i> &gt; --
+</I>&gt;<i> &gt;                &lt;a href=&quot;<A HREF="http://www.catb.org/~esr/&lt;http://www.catb.org/%7Eesr/">http://www.catb.org/~esr/&lt;http://www.catb.org/%7Eesr/</A>&gt;
+</I>&gt;<i> &lt;<A HREF="http://www.catb.org/%7Eesr/">http://www.catb.org/%7Eesr/</A>&gt;&quot;&gt;Eric
+</I>&gt;<i> &gt; S. Raymond&lt;/a&gt;
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; &quot;As to the species of exercise, I advise the gun. While this gives [only]
+</I>&gt;<i> &gt; moderate exercise to the body, it gives boldness, enterprise, and
+</I>&gt;<i> &gt; independence
+</I>&gt;<i> &gt; to the mind.  Games played with the ball and others of that nature, are
+</I>&gt;<i> too
+</I>&gt;<i> &gt; violent for the body and stamp no character on the mind. Let your gun,
+</I>&gt;<i> &gt; therefore, be the constant companion to your walks.&quot;
+</I>&gt;<i> &gt;        -- Thomas Jefferson, writing to his teenaged nephew.
+</I>&gt;<i> &gt; _______________________________________________
+</I>&gt;<i> &gt; Gpsd-users mailing list
+</I>&gt;<i> &gt; <A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">Gpsd-users at lists.berlios.de</A>
+</I>&gt;<i> &gt; <A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">https://lists.berlios.de/mailman/listinfo/gpsd-users</A>
+</I>&gt;<i> &gt;
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i> --
+</I>&gt;<i> Doug Robinson
+</I>&gt;<i> office:      <A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">fdr at mytemyke.com</A>
+</I>&gt;<i> direct:     <A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">fdr at mytemyke.net</A> (gmail)
+</I>&gt;<i> _______________________________________________
+</I>&gt;<i> Gpsd-users mailing list
+</I>&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">Gpsd-users at lists.berlios.de</A>
+</I>&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">https://lists.berlios.de/mailman/listinfo/gpsd-users</A>
+</I>&gt;<i>
+</I>
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="003645.html">No subject
+</A></li>
+	<LI>Next message: <A HREF="003716.html">No subject
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3664">[ date ]</a>
+              <a href="thread.html#3664">[ thread ]</a>
+              <a href="subject.html#3664">[ subject ]</a>
+              <a href="author.html#3664">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

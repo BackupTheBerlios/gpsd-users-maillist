@@ -1,0 +1,113 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] libgps : Segmentation fault when calling gps_query and	problem with gps.py
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2007-June/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20libgps%20%3A%20Segmentation%20fault%20when%20calling%20gps_query%20and%0A%09problem%20with%20gps.py&In-Reply-To=%3CBAY117-F3774360DE8B44DD5068A28C2120%40phx.gbl%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="002714.html">
+   <LINK REL="Next"  HREF="002716.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] libgps : Segmentation fault when calling gps_query and	problem with gps.py</H1>
+    <B>Simon Le Pape</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20libgps%20%3A%20Segmentation%20fault%20when%20calling%20gps_query%20and%0A%09problem%20with%20gps.py&In-Reply-To=%3CBAY117-F3774360DE8B44DD5068A28C2120%40phx.gbl%3E"
+       TITLE="[Gpsd-users] libgps : Segmentation fault when calling gps_query and	problem with gps.py">simon.le-pape at hotmail.fr
+       </A><BR>
+    <I>Tue Jun 19 09:33:36 CEST 2007</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="002714.html">[Gpsd-users] Thank you u-blox!
+</A></li>
+        <LI>Next message: <A HREF="002716.html">[Gpsd-users] GPSD in Raw Mode and 'o' Mode
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2715">[ date ]</a>
+              <a href="thread.html#2715">[ thread ]</a>
+              <a href="subject.html#2715">[ subject ]</a>
+              <a href="author.html#2715">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi,
+
+I am testing a GPSd client based on libgps with gpsfake to simulate the GPS 
+receiver.
+I execute the code below, at the begining gpsfake is not running, the 
+program stays in the loop. I launch gpsfake, but with -i option and i do not 
+feed the daemon at this point, the connection is open and the program goes 
+out from the loop, then calls gps_query and SEGFAULT!
+With the same code, if i launch gpsfake and feed it before launching my 
+code, no SEGFAULT problem.
+I have tried to read the code of gps_query (and gps_poll and gps_unpack 
+which are called by this function) but i do not see where is the probleme 
+with my code....Any idea?
+
+
+struct gps_data_t *Data;
+Data = NULL;
+
+while (NULL == Data){
+		Data = gps_open(HOSTNAME_GPSD, PORT_GPSD);
+		sleep(1);
+}
+
+
+if(0 != gps_query(Data, &quot;o\n&quot;)){
+}
+
+
+I had a problem with gps.py too but resolved it myself.
+When i executed gpsfake, i encountered an error saying that argument 1 - 3 
+of select had to be lists.
+I made the modification below in the source code and it seems to be OK.
+
+I am using Python 2.3.4.
+
+
+(input, output, exceptions) = select.select((self.sock,), (),(), 0)
+
+
+(input, output, exceptions) = select.select([self.sock], [],[], 0)
+
+
+This two problems were encoutered with GPSd 2.33.
+
+Thx,
+
+Simon
+
+_________________________________________________________________
+Windows Live Spaces : cr&#233;ez votre blog &#224; votre image ! 
+<A HREF="http://www.windowslive.fr/spaces">http://www.windowslive.fr/spaces</A>
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="002714.html">[Gpsd-users] Thank you u-blox!
+</A></li>
+	<LI>Next message: <A HREF="002716.html">[Gpsd-users] GPSD in Raw Mode and 'o' Mode
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2715">[ date ]</a>
+              <a href="thread.html#2715">[ thread ]</a>
+              <a href="subject.html#2715">[ subject ]</a>
+              <a href="author.html#2715">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

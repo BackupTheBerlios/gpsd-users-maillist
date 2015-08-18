@@ -1,0 +1,99 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] proprietary Magellan Status
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2006-May/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20proprietary%20Magellan%20Status&In-Reply-To=%3C4478BF16.4010400%40boilerbots.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="001567.html">
+   <LINK REL="Next"  HREF="001637.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] proprietary Magellan Status</H1>
+    <B>maillist</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20proprietary%20Magellan%20Status&In-Reply-To=%3C4478BF16.4010400%40boilerbots.com%3E"
+       TITLE="[Gpsd-users] proprietary Magellan Status">maillist at boilerbots.com
+       </A><BR>
+    <I>Sat May 27 23:05:26 CEST 2006</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="001567.html">[Gpsd-users] proprietary Magellan Status
+</A></li>
+        <LI>Next message: <A HREF="001637.html">[Gpsd-users] proprietary Magellan Status
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1634">[ date ]</a>
+              <a href="thread.html#1634">[ thread ]</a>
+              <a href="subject.html#1634">[ subject ]</a>
+              <a href="author.html#1634">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Massimo Burcheri wrote:
+&gt;<i> Hello.
+</I>&gt;<i>
+</I>&gt;<i> The NMEA sentence
+</I>&gt;<i>  $PMGNST,02.12,3,T,534,05.0,+03327,00*40 
+</I>&gt;<i> shows proprietary Magellan status. 2 parts of the data is still unkown?
+</I>&gt;<i>
+</I>&gt;<i>       534     numbers change - unknown
+</I>&gt;<i>       +03327  numbers change (freq. compensation?)
+</I>&gt;<i>
+</I>&gt;<i> Isn't it possible to get the magnetic north out of the Magellan
+</I>&gt;<i> Meridian?
+</I>&gt;<i>
+</I>&gt;<i> Regards,
+</I>&gt;<i> Massimo
+</I>&gt;<i>   
+</I>I have a TrueNorth unit and I am the one that added the code to gpsd. I 
+did what seemed right at the time. As someone else mentioned this was 
+incorporated as part of our Darpa Grange Challenge project. The original 
+True North uses a capcitive fluid sensor to determine pitch and yaw. 
+Because the fluid can slosh around when a vehicle is moving this doesn't 
+work well above certain speeds. We wanted the compass to appear as a GPS 
+unit providing heading information when our vehicle was moving slow, 
+less than 2 mph slow. Otherwise the heading information from a GPS unit 
+can start to wonder around and then it makes the vehicle look like it 
+has a drunk driver behind the wheel.
+
+Anyway, I have my True North compass and can setup it up and do some 
+testing if people are interested. I am now incorporating it into a robot 
+that I am building.
+
+In the end, we did not employ gpsd in our vehicle. Instead I stripped 
+the code down into very specific drivers for each NMEA device we used. I 
+have a Trimble, Thales and True North specific driver that I used for 
+our Darpa vehicle.
+
+Curt
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="001567.html">[Gpsd-users] proprietary Magellan Status
+</A></li>
+	<LI>Next message: <A HREF="001637.html">[Gpsd-users] proprietary Magellan Status
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1634">[ date ]</a>
+              <a href="thread.html#1634">[ thread ]</a>
+              <a href="subject.html#1634">[ subject ]</a>
+              <a href="author.html#1634">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

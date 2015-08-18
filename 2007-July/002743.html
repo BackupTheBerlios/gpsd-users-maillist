@@ -1,0 +1,87 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] Getting GPSD to pick up PPS from Delorme Earthmate	Serial GPS
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2007-July/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Getting%20GPSD%20to%20pick%20up%20PPS%20from%20Delorme%20Earthmate%0A%09Serial%20GPS&In-Reply-To=%3C200707032041.14297.mick.durkin%40saunalahti.fi%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="002755.html">
+   <LINK REL="Next"  HREF="002745.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] Getting GPSD to pick up PPS from Delorme Earthmate	Serial GPS</H1>
+    <B>Mick Durkin</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Getting%20GPSD%20to%20pick%20up%20PPS%20from%20Delorme%20Earthmate%0A%09Serial%20GPS&In-Reply-To=%3C200707032041.14297.mick.durkin%40saunalahti.fi%3E"
+       TITLE="[Gpsd-users] Getting GPSD to pick up PPS from Delorme Earthmate	Serial GPS">mick.durkin at saunalahti.fi
+       </A><BR>
+    <I>Tue Jul  3 19:41:14 CEST 2007</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="002755.html">[Gpsd-users] Getting GPSD to pick up PPS from Delorme Earthmate Serial GPS
+</A></li>
+        <LI>Next message: <A HREF="002745.html">[Gpsd-users] Garmin  60CSx works with 2.34 but not 2.35beta (svn)
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2743">[ date ]</a>
+              <a href="thread.html#2743">[ thread ]</a>
+              <a href="subject.html#2743">[ subject ]</a>
+              <a href="author.html#2743">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Adam,
+
+What you described sounds like a potential bug I came across in the serial 
+code for gpsd. I have been investigating this with another user, David 
+Cottle, whilst trying to get his gps working with a new driver I am 
+developing.
+
+What we saw was that the 1pps on DCD was being tracked at the start of 
+initialisation, but is lost somehow during the checks.
+
+My feeling is that it is being killed by the baud scan routines, but I have 
+not got all the evidence I need to formally say where/what the problem is.
+
+We achieved success for Dave by modifying the way 1pps is initilised as a 
+temporary work around.
+
+Now that he is up and working (acting as my soak testing victim) I am about to 
+start working on this 1pps fault in earnest. If/when I track it down, maybe 
+it will help you.
+
+I will probably need some help to fix this once I narrow it down a bit more as 
+serial programming seems a bit of a black art.
+
+BR
+
+Mick Durkin
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="002755.html">[Gpsd-users] Getting GPSD to pick up PPS from Delorme Earthmate Serial GPS
+</A></li>
+	<LI>Next message: <A HREF="002745.html">[Gpsd-users] Garmin  60CSx works with 2.34 but not 2.35beta (svn)
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2743">[ date ]</a>
+              <a href="thread.html#2743">[ thread ]</a>
+              <a href="subject.html#2743">[ subject ]</a>
+              <a href="author.html#2743">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

@@ -1,0 +1,85 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] Help on installing gpsd on a virtual or shared server
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2010-April/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Help%20on%20installing%20gpsd%20on%20a%20virtual%20or%20shared%0A%20server&In-Reply-To=%3C20100428061035.GA13417%40thyrsus.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="004444.html">
+   <LINK REL="Next"  HREF="004445.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] Help on installing gpsd on a virtual or shared server</H1>
+    <B>Eric Raymond</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Help%20on%20installing%20gpsd%20on%20a%20virtual%20or%20shared%0A%20server&In-Reply-To=%3C20100428061035.GA13417%40thyrsus.com%3E"
+       TITLE="[Gpsd-users] Help on installing gpsd on a virtual or shared server">esr at thyrsus.com
+       </A><BR>
+    <I>Wed Apr 28 08:10:35 CEST 2010</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="004444.html">[Gpsd-users] Help on installing gpsd on a virtual or shared server
+</A></li>
+        <LI>Next message: <A HREF="004445.html">[Gpsd-users] xgps and xgpsspeed won't be built
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#4446">[ date ]</a>
+              <a href="thread.html#4446">[ thread ]</a>
+              <a href="subject.html#4446">[ subject ]</a>
+              <a href="author.html#4446">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>RODRIGO FERNANDEZ &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">refernandezm at hotmail.com</A>&gt;:
+&gt;<i> 1) just to verify that i understood your suggestion. What I most do is start de daemon like this: gpsd <A HREF="tcp://12.34.56.789:4006">tcp://12.34.56.789:4006</A> where &quot;12.34.56.789&quot; whould be the IP and 4006 would be the port used by the GPS devices to send their SMS Messages to. Is this correct?
+</I>
+That is correct, if by &quot;SMS Messages&quot; you mean &quot;GPS data packets&quot;.
+
+&gt;<i> 2) Will this still work if I have like 100 GPS devices sending data
+</I>&gt;<i> to the same server and the same port where the gpsd daemon is
+</I>&gt;<i> running?
+</I>
+Not necessarily.  The problem is that concurrent writes to the same socket
+and port might end up scrambling together packets from multiple providers.
+
+You should do one of the following things:
+
+1. Assign each provider a separate host/port combination, and pass
+each host/port to gpsd. There'll be a hard upper limit of about
+FD_SETSIZE on the number of simultaneous connections; I say &quot;about&quot;
+because in real cases a couple of fds will be eaten by the control
+socket, client sessions, and logging.
+
+2. Use UDP datagrams once we support those (probably just days away).
+I think those are atomic.
+-- 
+		&lt;a href=&quot;<A HREF="http://www.catb.org/~esr/">http://www.catb.org/~esr/</A>&quot;&gt;Eric S. Raymond&lt;/a&gt;
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="004444.html">[Gpsd-users] Help on installing gpsd on a virtual or shared server
+</A></li>
+	<LI>Next message: <A HREF="004445.html">[Gpsd-users] xgps and xgpsspeed won't be built
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#4446">[ date ]</a>
+              <a href="thread.html#4446">[ thread ]</a>
+              <a href="subject.html#4446">[ subject ]</a>
+              <a href="author.html#4446">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

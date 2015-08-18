@@ -1,0 +1,120 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] RoyalTek RCD-1100, how to make it working
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2009-April/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20RoyalTek%20RCD-1100%2C%20how%20to%20make%20it%20working&In-Reply-To=%3C938320.85969.qm%40web53009.mail.re2.yahoo.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="003713.html">
+   <LINK REL="Next"  HREF="003715.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] RoyalTek RCD-1100, how to make it working</H1>
+    <B>Nibbly</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20RoyalTek%20RCD-1100%2C%20how%20to%20make%20it%20working&In-Reply-To=%3C938320.85969.qm%40web53009.mail.re2.yahoo.com%3E"
+       TITLE="[Gpsd-users] RoyalTek RCD-1100, how to make it working">nibblyn at yahoo.com
+       </A><BR>
+    <I>Sun Apr 19 21:40:30 CEST 2009</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="003713.html">[Gpsd-users] Navilock NL-302U doesn't work anymore
+</A></li>
+        <LI>Next message: <A HREF="003715.html">[Gpsd-users] RoyalTek RCD-1100, how to make it working
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3714">[ date ]</a>
+              <a href="thread.html#3714">[ thread ]</a>
+              <a href="subject.html#3714">[ subject ]</a>
+              <a href="author.html#3714">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>
+device: RoyalTek RCD-1100
+
+specifications: <A HREF="http://www.royaltek.com/index.php?option=com_content&amp;view=article&amp;id=142&amp;Itemid=91">http://www.royaltek.com/index.php?option=com_content&amp;view=article&amp;id=142&amp;Itemid=91</A>
+GPS Chipset: Sirf Star IIIGSC3f/LP
+Interface Protocol: - Output message: NMEA 0183 ver. 3.0,GGA, GSA, RMC and GSV every 1s, - Baud rate 57,600bps 
+
+In the manual they claim:
+Convenient transferring of log data and Camera database update via USB or Bluetooth.
+With the latest in GPS technology, RCD-1100 device also can become a BT GPS Receiver to deliver GPS information.
+RCD-1100 works with all NMEA enabled navigation software.
+
+
+dmesg:
+[  415.944069] usb 1-2: new full speed USB device using uhci_hcd and address 2
+[  416.135247] usb 1-2: configuration #1 chosen from 1 choice
+[  416.473844] usbcore: registered new interface driver usbserial
+[  416.477836] usbserial: USB Serial support registered for generic
+[  416.479863] usbcore: registered new interface driver usbserial_generic
+[  416.479879] usbserial: USB Serial Driver core
+[  416.506873] usbserial: USB Serial support registered for pl2303
+[  416.508902] pl2303 1-2:1.0: pl2303 converter detected
+[  416.521782] usb 1-2: pl2303 converter now attached to ttyUSB0
+[  416.523737] usbcore: registered new interface driver pl2303
+[  416.523752] pl2303: Prolific PL2303 USB to serial adaptor driver
+
+sudo gpsd -n -N -D2 /dev/ttyUSB0:
+gpsd: launching (Version 2.37)
+gpsd: listening on port gpsd
+gpsd: successfully connected to the DBUS system bus
+gpsd: running with effective group ID 0
+gpsd: running with effective user ID 0
+gpsd: opening GPS data source at '/dev/ttyUSB0'
+gpsd: speed 9600, 8N1
+gpsd: garmin_gps not active.
+gpsd: gpsd_activate(1): opened GPS (5)
+gpsd: speed 4800, 8N1
+gpsd: speed 9600, 8N1
+gpsd: speed 19200, 8N1
+gpsd: speed 38400, 8N1
+gpsd: speed 57600, 8N1
+gpsd: speed 115200, 8N1
+gpsd: speed 0, 7N2
+gpsd: speed 4800, 7N2
+gpsd: speed 9600, 7N2
+gpsd: speed 19200, 7N2
+gpsd: speed 38400, 7N2
+gpsd: speed 57600, 7N2
+gpsd: speed 115200, 7N2
+gpsd: packet sniffer failed to sync up
+gpsd: closing GPS=/dev/ttyUSB0 (5)
+
+OS: Ubuntu, 8.10
+
+Any hint on how to make this work?
+Thank you very much in advance.
+
+
+      
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="003713.html">[Gpsd-users] Navilock NL-302U doesn't work anymore
+</A></li>
+	<LI>Next message: <A HREF="003715.html">[Gpsd-users] RoyalTek RCD-1100, how to make it working
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3714">[ date ]</a>
+              <a href="thread.html#3714">[ thread ]</a>
+              <a href="subject.html#3714">[ subject ]</a>
+              <a href="author.html#3714">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

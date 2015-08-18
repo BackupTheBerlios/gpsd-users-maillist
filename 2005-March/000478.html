@@ -1,0 +1,622 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] gpsd 2.19 still reporting crazy / incorrect speeds
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2005-March/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20gpsd%202.19%20still%20reporting%20crazy%20/%20incorrect%20speeds&In-Reply-To=%3C1112227123.5666.46.camel%40ad.adition.net%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="000465.html">
+   <LINK REL="Next"  HREF="000466.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] gpsd 2.19 still reporting crazy / incorrect speeds</H1>
+    <B>Tobias Ottmar</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20gpsd%202.19%20still%20reporting%20crazy%20/%20incorrect%20speeds&In-Reply-To=%3C1112227123.5666.46.camel%40ad.adition.net%3E"
+       TITLE="[Gpsd-users] gpsd 2.19 still reporting crazy / incorrect speeds">tottmar at gmx.de
+       </A><BR>
+    <I>Thu Mar 31 01:58:43 CEST 2005</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="000465.html">[Gpsd-users] gpsd 2.19 still reporting crazy / incorrect speeds
+</A></li>
+        <LI>Next message: <A HREF="000466.html">[Gpsd-users] Preparing for 2.20 -- take 2
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#478">[ date ]</a>
+              <a href="thread.html#478">[ thread ]</a>
+              <a href="subject.html#478">[ subject ]</a>
+              <a href="author.html#478">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Well,
+
+two things:
+
+* Setting static navigation mode didn't change anything :( Still I go
+much too fast and still there is only vertical movement on the map
+(means, logitude doesn't change but latitude does)
+
+* the good thing is that the latitude seems to be correct! I was driving
+around a bit today and saw that the pointer moved accordingly to north
+and south as it should.
+
+I did &quot;gpsd -N -D 4 -p/dev/ttyUSB0 &gt; file 2&amp;&gt; file&quot; before starting my
+journey and here is the output (not everything of it, you don't want to
+read 500kb data, do you?)
+
+Thanks,
+
+Tobias
+
+
+
+gpsd: launching (Version 2.19)
+gpsd: listening on port 2947
+gpsd: client connect on 4
+gpsd: closed GPS
+gpsd: opening GPS data source at /dev/ttyUSB0
+gpsd: no probe matched...
+gpsd: hunting at speed 4800, 8N1
+gpsd: gpsd_activate: opened GPS (5)
+gpsd: Selecting SiRF-II binary driver...
+gpsd: Setting DGPS control to use SBAS...
+gpsd: Writing SiRF control type 85: a0 a2 00 07 85 01 00 00 00 00 00 00
+86 b0 b3
+gpsd: Setting SBAS to auto/integrity mode...
+gpsd: Writing SiRF control type aa: a0 a2 00 06 aa 00 01 00 00 00 00 ab
+b0 b3
+gpsd: Probing for firmware version...
+gpsd: Writing SiRF control type 84: a0 a2 00 02 84 00 00 84 b0 b3
+gpsd: checking 4 
+gpsd: &lt;= client: R
+gpsd: 4 turned on raw mode
+gpsd: =&gt; client(4): GPSD,R=1
+gpsd: ACK 0x0b: 84
+gpsd: MND 0x02: Navtype = 0x4, Status = 1, mode = 3
+gpsd: =&gt; client(4):
+$GPGGA,062224,4845.8617,N,916.2142,E,3,00,,297.9,M,,,,,*1A
+gpsd: =&gt; client(4):
+$GPRMC,062224,A,4845.8617,N,916.2142,E,11.1121,39.502,310305,,*29
+gpsd: =&gt; client(4): $GPGSA,A,3,00,00,00,00,,,,,,,,,0.0,8.8,0.0*32
+gpsd: &lt;= GPS:
+$GPGGA,062224,4845.8617,N,916.2142,E,3,00,,297.9,M,,,,,*1A
+$GPRMC,062224,A,4845.8617,N,916.2142,E,11.1121,39.502,310305,,*29
+$GPGSA,A,3,00,00,00,00,,,,,,,,,0.0,8.8,0.0*32
+gpsd: THR 0x09: SegStatMax=0.000, SegStatLat=  0, AveTrkTime=1.000, Last
+MS=  0
+gpsd: MND 0x02: Navtype = 0x4, Status = 1, mode = 3
+gpsd: =&gt; client(4):
+$GPGGA,062225,4845.8616,N,916.2149,E,3,04,8.80,299.2,M,,,,,*0E
+gpsd: =&gt; client(4):
+$GPRMC,062225,A,4845.8616,N,916.2149,E,6.7529,61.148,310305,,*19
+gpsd: =&gt; client(4): $GPGSA,A,3,00,00,00,00,,,,,,,,,0.0,8.8,0.0*32
+gpsd: =&gt; client(4): $PGRME,71.62,0.00,0.00*4D
+gpsd: &lt;= GPS:
+$GPGGA,062225,4845.8616,N,916.2149,E,3,04,8.80,299.2,M,,,,,*0E
+$GPRMC,062225,A,4845.8616,N,916.2149,E,6.7529,61.148,310305,,*19
+$GPGSA,A,3,00,00,00,00,,,,,,,,,0.0,8.8,0.0*32
+$PGRME,71.62,0.00,0.00*4D
+gpsd: THR 0x09: SegStatMax=0.000, SegStatLat=  0, AveTrkTime=1.000, Last
+MS=  0
+gpsd: MND 0x02: Navtype = 0x4, Status = 1, mode = 3
+gpsd: =&gt; client(4):
+$GPGGA,062226,4845.8619,N,916.2157,E,3,04,8.80,300.3,M,,,,,*0D
+gpsd: =&gt; client(4):
+$GPRMC,062226,A,4845.8619,N,916.2157,E,6.7529,61.148,310305,,*1A
+gpsd: =&gt; client(4): $GPGSA,A,3,00,00,00,00,,,,,,,,,0.0,8.8,0.0*32
+gpsd: =&gt; client(4): $PGRME,71.62,0.00,0.00*4D
+gpsd: &lt;= GPS:
+$GPGGA,062226,4845.8619,N,916.2157,E,3,04,8.80,300.3,M,,,,,*0D
+$GPRMC,062226,A,4845.8619,N,916.2157,E,6.7529,61.148,310305,,*1A
+$GPGSA,A,3,00,00,00,00,,,,,,,,,0.0,8.8,0.0*32
+$PGRME,71.62,0.00,0.00*4D
+gpsd: THR 0x09: SegStatMax=0.000, SegStatLat=  0, AveTrkTime=1.000, Last
+MS=  0
+gpsd: MND 0x02: Navtype = 0x4, Status = 1, mode = 3
+gpsd: =&gt; client(4):
+$GPGGA,062227,4845.8618,N,916.2164,E,3,04,8.80,301.5,M,,,,,*0A
+gpsd: =&gt; client(4):
+$GPRMC,062227,A,4845.8618,N,916.2164,E,6.7529,61.148,310305,,*1A
+gpsd: =&gt; client(4): $GPGSA,A,3,00,00,00,00,,,,,,,,,0.0,8.8,0.0*32
+gpsd: =&gt; client(4): $PGRME,71.62,0.00,0.00*4D
+gpsd: &lt;= GPS:
+$GPGGA,062227,4845.8618,N,916.2164,E,3,04,8.80,301.5,M,,,,,*0A
+$GPRMC,062227,A,4845.8618,N,916.2164,E,6.7529,61.148,310305,,*1A
+$GPGSA,A,3,00,00,00,00,,,,,,,,,0.0,8.8,0.0*32
+$PGRME,71.62,0.00,0.00*4D
+gpsd: THR 0x09: SegStatMax=0.000, SegStatLat=  0, AveTrkTime=1.000, Last
+MS=  0
+gpsd: =&gt; client(4):
+$GPGSV,3,1,10,26,79,195,42,22,12,325,27,05,08,222,33,29,65,159,40*77
+gpsd: =&gt; client(4):
+$GPGSV,3,2,10,28,40,055,00,09,38,277,00,07,33,109,39,18,29,300,00*73
+gpsd: =&gt; client(4): $GPGSV,3,3,10,08,06,084,00,124,32,163,33*48
+gpsd: MTD 0x04: 10 satellites
+gpsd: &lt;= GPS:
+$GPGSV,3,1,10,26,79,195,42,22,12,325,27,05,08,222,33,29,65,159,40*77
+$GPGSV,3,2,10,28,40,055,00,09,38,277,00,07,33,109,39,18,29,300,00*73
+$GPGSV,3,3,10,08,06,084,00,124,32,163,33*48
+gpsd: MND 0x02: Navtype = 0x13, Status = 1, mode = 2
+gpsd: =&gt; client(4):
+$GPGGA,062228,4845.8621,N,916.2172,E,2,04,8.80,302.4,M,,,,,*0B
+gpsd: =&gt; client(4):
+$GPRMC,062228,A,4845.8621,N,916.2172,E,6.7529,61.148,310305,,*18
+gpsd: =&gt; client(4): $GPGSA,A,2,26,22,05,,,,,,,,,,0.0,13.0,0.0*00
+gpsd: =&gt; client(4): $PGRME,71.62,0.00,0.00*4D
+gpsd: &lt;= GPS:
+$GPGGA,062228,4845.8621,N,916.2172,E,2,04,8.80,302.4,M,,,,,*0B
+$GPRMC,062228,A,4845.8621,N,916.2172,E,6.7529,61.148,310305,,*18
+$GPGSA,A,2,26,22,05,,,,,,,,,,0.0,13.0,0.0*00
+$PGRME,71.62,0.00,0.00*4D
+gpsd: THR 0x09: SegStatMax=0.000, SegStatLat=  0, AveTrkTime=1.000, Last
+MS=  0
+gpsd: MND 0x02: Navtype = 0x13, Status = 1, mode = 2
+gpsd: =&gt; client(4):
+$GPGGA,062229,4845.8624,N,916.2180,E,2,03,13.00,303.1,M,,,,,*33
+gpsd: =&gt; client(4):
+$GPRMC,062229,A,4845.8624,N,916.2180,E,6.0928,103.886,310305,,*25
+gpsd: =&gt; client(4): $GPGSA,A,2,26,22,05,,,,,,,,,,0.0,13.0,0.0*00
+gpsd: =&gt; client(4): $PGRME,105.80,0.00,0.00*73
+gpsd: &lt;= GPS:
+$GPGGA,062229,4845.8624,N,916.2180,E,2,03,13.00,303.1,M,,,,,*33
+$GPRMC,062229,A,4845.8624,N,916.2180,E,6.0928,103.886,310305,,*25
+$GPGSA,A,2,26,22,05,,,,,,,,,,0.0,13.0,0.0*00
+$PGRME,105.80,0.00,0.00*73
+gpsd: THR 0x09: SegStatMax=0.000, SegStatLat=  0, AveTrkTime=1.000, Last
+MS=  0
+gpsd: MND 0x02: Navtype = 0x13, Status = 1, mode = 2
+gpsd: =&gt; client(4):
+$GPGGA,062230,4845.8620,N,916.2179,E,2,03,13.00,303.6,M,,,,,*3E
+gpsd: =&gt; client(4):
+$GPRMC,062230,A,4845.8620,N,916.2179,E,6.0928,103.886,310305,,*2F
+gpsd: =&gt; client(4): $GPGSA,A,2,26,22,05,,,,,,,,,,0.0,13.0,0.0*00
+gpsd: =&gt; client(4): $PGRME,105.80,0.00,0.00*73
+gpsd: &lt;= GPS:
+$GPGGA,062230,4845.8620,N,916.2179,E,2,03,13.00,303.6,M,,,,,*3E
+$GPRMC,062230,A,4845.8620,N,916.2179,E,6.0928,103.886,310305,,*2F
+$GPGSA,A,2,26,22,05,,,,,,,,,,0.0,13.0,0.0*00
+$PGRME,105.80,0.00,0.00*73
+gpsd: THR 0x09: SegStatMax=0.000, SegStatLat=  0, AveTrkTime=1.000, Last
+MS=  0
+gpsd: MND 0x02: Navtype = 0x13, Status = 1, mode = 2
+gpsd: =&gt; client(4):
+$GPGGA,062231,4845.8620,N,916.2179,E,2,03,13.00,304.0,M,,,,,*3E
+gpsd: =&gt; client(4):
+$GPRMC,062231,A,4845.8620,N,916.2179,E,6.0928,103.886,310305,,*2E
+gpsd: =&gt; client(4): $GPGSA,A,2,26,22,05,,,,,,,,,,0.0,12.8,0.0*09
+gpsd: =&gt; client(4): $PGRME,105.80,0.00,0.00*73
+gpsd: &lt;= GPS:
+$GPGGA,062231,4845.8620,N,916.2179,E,2,03,13.00,304.0,M,,,,,*3E
+$GPRMC,062231,A,4845.8620,N,916.2179,E,6.0928,103.886,310305,,*2E
+$GPGSA,A,2,26,22,05,,,,,,,,,,0.0,12.8,0.0*09
+$PGRME,105.80,0.00,0.00*73
+gpsd: THR 0x09: SegStatMax=0.000, SegStatLat=  0, AveTrkTime=1.000, Last
+MS=  0
+gpsd: MND 0x02: Navtype = 0x4, Status = 1, mode = 3
+gpsd: =&gt; client(4):
+$GPGGA,062232,4845.8623,N,916.2187,E,3,03,12.80,304.8,M,,,,,*3F
+gpsd: =&gt; client(4):
+$GPRMC,062232,A,4845.8623,N,916.2187,E,1.2980,242.734,310305,,*28
+gpsd: =&gt; client(4): $GPGSA,A,3,26,22,05,29,,,,,,,,,0.0,6.4,0.0*3A
+gpsd: =&gt; client(4): $PGRME,104.17,0.00,0.00*7C
+gpsd: &lt;= GPS:
+$GPGGA,062232,4845.8623,N,916.2187,E,3,03,12.80,304.8,M,,,,,*3F
+$GPRMC,062232,A,4845.8623,N,916.2187,E,1.2980,242.734,310305,,*28
+$GPGSA,A,3,26,22,05,29,,,,,,,,,0.0,6.4,0.0*3A
+$PGRME,104.17,0.00,0.00*7C
+gpsd: THR 0x09: SegStatMax=0.000, SegStatLat=  0, AveTrkTime=1.000, Last
+MS=  0
+gpsd: MND 0x02: Navtype = 0x4, Status = 1, mode = 3
+gpsd: =&gt; client(4):
+$GPGGA,062233,4845.8619,N,916.2185,E,3,04,6.40,305.4,M,,,,,*06
+gpsd: =&gt; client(4):
+$GPRMC,062233,A,4845.8619,N,916.2185,E,1.2980,242.734,310305,,*22
+gpsd: =&gt; client(4): $GPGSA,A,3,26,22,05,29,,,,,,,,,0.0,6.4,0.0*3A
+gpsd: =&gt; client(4): $PGRME,52.08,0.00,0.00*40
+gpsd: &lt;= GPS:
+$GPGGA,062233,4845.8619,N,916.2185,E,3,04,6.40,305.4,M,,,,,*06
+$GPRMC,062233,A,4845.8619,N,916.2185,E,1.2980,242.734,310305,,*22
+$GPGSA,A,3,26,22,05,29,,,,,,,,,0.0,6.4,0.0*3A
+$PGRME,52.08,0.00,0.00*40
+gpsd: THR 0x09: SegStatMax=0.000, SegStatLat=  0, AveTrkTime=1.000, Last
+MS=  0
+gpsd: FV  0x06: Firmware version: 231.000.000
+gpsd: Driver state flags are: 1a
+gpsd: MND 0x02: Navtype = 0x4, Status = 1, mode = 3
+gpsd: =&gt; client(4):
+$GPGGA,062234,4845.8621,N,916.2193,E,3,04,6.40,305.8,M,,,,,*01
+gpsd: =&gt; client(4):
+$GPRMC,062234,A,4845.8621,N,916.2193,E,6.3446,201.327,310305,,*29
+gpsd: =&gt; client(4): $GPGSA,A,3,26,22,05,29,,,,,,,,,0.0,6.4,0.0*3A
+gpsd: =&gt; client(4): $PGRME,52.08,0.00,0.00*40
+gpsd: &lt;= GPS:
+$GPGGA,062234,4845.8621,N,916.2193,E,3,04,6.40,305.8,M,,,,,*01
+$GPRMC,062234,A,4845.8621,N,916.2193,E,6.3446,201.327,310305,,*29
+$GPGSA,A,3,26,22,05,29,,,,,,,,,0.0,6.4,0.0*3A
+$PGRME,52.08,0.00,0.00*40
+gpsd: THR 0x09: SegStatMax=0.000, SegStatLat=  0, AveTrkTime=1.000, Last
+MS=  0
+gpsd: =&gt; client(4):
+$GPGSV,3,1,10,26,79,193,42,22,12,325,26,05,09,222,30,29,65,159,39*7C
+gpsd: =&gt; client(4):
+$GPGSV,3,2,10,28,40,055,00,09,38,277,00,07,33,108,38,18,29,300,00*73
+gpsd: =&gt; client(4): $GPGSV,3,3,10,08,06,084,00,124,32,163,32*49
+gpsd: MTD 0x04: 10 satellites
+gpsd: &lt;= GPS:
+$GPGSV,3,1,10,26,79,193,42,22,12,325,26,05,09,222,30,29,65,159,39*7C
+$GPGSV,3,2,10,28,40,055,00,09,38,277,00,07,33,108,38,18,29,300,00*73
+$GPGSV,3,3,10,08,06,084,00,124,32,163,32*49
+gpsd: MND 0x02: Navtype = 0x4, Status = 1, mode = 3
+gpsd: =&gt; client(4):
+$GPGGA,062235,4845.8621,N,916.2193,E,3,04,6.40,305.8,M,,,,,*00
+gpsd: =&gt; client(4):
+$GPRMC,062235,A,4845.8621,N,916.2193,E,10.8785,192.246,310305,,*17
+gpsd: =&gt; client(4): $GPGSA,A,3,26,22,05,29,,,,,,,,,0.0,6.4,0.0*3A
+gpsd: =&gt; client(4): $PGRME,52.08,0.00,0.00*40
+gpsd: &lt;= GPS:
+$GPGGA,062235,4845.8621,N,916.2193,E,3,04,6.40,305.8,M,,,,,*00
+$GPRMC,062235,A,4845.8621,N,916.2193,E,10.8785,192.246,310305,,*17
+$GPGSA,A,3,26,22,05,29,,,,,,,,,0.0,6.4,0.0*3A
+$PGRME,52.08,0.00,0.00*40
+gpsd: THR 0x09: SegStatMax=0.000, SegStatLat=  0, AveTrkTime=1.000, Last
+MS=  0
+gpsd: MND 0x02: Navtype = 0x4, Status = 1, mode = 3
+gpsd: =&gt; client(4):
+$GPGGA,062236,4845.8621,N,916.2193,E,3,04,6.40,305.8,M,,,,,*03
+gpsd: =&gt; client(4):
+$GPRMC,062236,A,4845.8621,N,916.2193,E,1.2980,242.734,310305,,*2B
+gpsd: =&gt; client(4): $GPGSA,A,3,26,22,05,29,,,,,,,,,0.0,6.4,0.0*3A
+gpsd: =&gt; client(4): $PGRME,52.08,0.00,0.00*40
+gpsd: &lt;= GPS:
+$GPGGA,062236,4845.8621,N,916.2193,E,3,04,6.40,305.8,M,,,,,*03
+$GPRMC,062236,A,4845.8621,N,916.2193,E,1.2980,242.734,310305,,*2B
+$GPGSA,A,3,26,22,05,29,,,,,,,,,0.0,6.4,0.0*3A
+$PGRME,52.08,0.00,0.00*40
+gpsd: THR 0x09: SegStatMax=0.000, SegStatLat=  0, AveTrkTime=1.000, Last
+MS=  0
+gpsd: MND 0x02: Navtype = 0x4, Status = 1, mode = 3
+gpsd: =&gt; client(4):
+$GPGGA,062237,4845.8621,N,916.2193,E,3,04,6.40,305.6,M,,,,,*0C
+gpsd: =&gt; client(4):
+$GPRMC,062237,A,4845.8621,N,916.2193,E,1.2980,242.734,310305,,*2A
+gpsd: =&gt; client(4): $GPGSA,A,3,26,22,05,29,,,,,,,,,0.0,6.4,0.0*3A
+gpsd: =&gt; client(4): $PGRME,52.08,0.00,0.00*40
+gpsd: &lt;= GPS:
+$GPGGA,062237,4845.8621,N,916.2193,E,3,04,6.40,305.6,M,,,,,*0C
+$GPRMC,062237,A,4845.8621,N,916.2193,E,1.2980,242.734,310305,,*2A
+$GPGSA,A,3,26,22,05,29,,,,,,,,,0.0,6.4,0.0*3A
+$PGRME,52.08,0.00,0.00*40
+gpsd: THR 0x09: SegStatMax=0.000, SegStatLat=  0, AveTrkTime=1.000, Last
+MS=  0
+gpsd: MND 0x02: Navtype = 0x4, Status = 1, mode = 3
+gpsd: =&gt; client(4):
+$GPGGA,062238,4845.8621,N,916.2203,E,3,04,6.40,305.2,M,,,,,*0D
+gpsd: =&gt; client(4):
+$GPRMC,062238,A,4845.8621,N,916.2203,E,5.4393,192.246,310305,,*2B
+gpsd: =&gt; client(4): $GPGSA,A,3,26,22,05,29,,,,,,,,,0.0,6.4,0.0*3A
+gpsd: =&gt; client(4): $PGRME,52.08,0.00,0.00*40
+gpsd: &lt;= GPS:
+$GPGGA,062238,4845.8621,N,916.2203,E,3,04,6.40,305.2,M,,,,,*0D
+$GPRMC,062238,A,4845.8621,N,916.2203,E,5.4393,192.246,310305,,*2B
+$GPGSA,A,3,26,22,05,29,,,,,,,,,0.0,6.4,0.0*3A
+$PGRME,52.08,0.00,0.00*40
+gpsd: THR 0x09: SegStatMax=0.000, SegStatLat=  0, AveTrkTime=1.000, Last
+MS=  0
+gpsd: MND 0x02: Navtype = 0x4, Status = 1, mode = 3
+gpsd: =&gt; client(4):
+$GPGGA,062239,4845.8621,N,916.2203,E,3,04,6.40,305.0,M,,,,,*0E
+gpsd: =&gt; client(4):
+$GPRMC,062239,A,4845.8621,N,916.2203,E,1.2980,242.734,310305,,*2E
+gpsd: =&gt; client(4): $GPGSA,A,3,26,22,05,29,,,,,,,,,0.0,6.4,0.0*3A
+gpsd: =&gt; client(4): $PGRME,52.08,0.00,0.00*40
+gpsd: &lt;= GPS:
+$GPGGA,062239,4845.8621,N,916.2203,E,3,04,6.40,305.0,M,,,,,*0E
+$GPRMC,062239,A,4845.8621,N,916.2203,E,1.2980,242.734,310305,,*2E
+$GPGSA,A,3,26,22,05,29,,,,,,,,,0.0,6.4,0.0*3A
+$PGRME,52.08,0.00,0.00*40
+gpsd: THR 0x09: SegStatMax=0.000, SegStatLat=  0, AveTrkTime=1.000, Last
+MS=  0
+gpsd: =&gt; client(4):
+$GPGSV,3,1,10,26,79,193,41,22,12,325,27,05,09,222,29,29,65,159,38*77
+gpsd: =&gt; client(4):
+$GPGSV,3,2,10,28,40,055,00,09,38,277,00,07,33,108,39,18,29,300,00*72
+gpsd: =&gt; client(4): $GPGSV,3,3,10,08,06,084,00,124,32,163,34*4F
+gpsd: MTD 0x04: 10 satellites
+gpsd: &lt;= GPS:
+$GPGSV,3,1,10,26,79,193,41,22,12,325,27,05,09,222,29,29,65,159,38*77
+$GPGSV,3,2,10,28,40,055,00,09,38,277,00,07,33,108,39,18,29,300,00*72
+$GPGSV,3,3,10,08,06,084,00,124,32,163,34*4F
+gpsd: MND 0x02: Navtype = 0x4, Status = 1, mode = 3
+gpsd: =&gt; client(4):
+$GPGGA,062240,4845.8621,N,916.2203,E,3,04,6.40,305.0,M,,,,,*00
+gpsd: =&gt; client(4):
+$GPRMC,062240,A,4845.8621,N,916.2203,E,1.2980,242.734,310305,,*20
+gpsd: =&gt; client(4): $GPGSA,A,3,26,22,05,29,,,,,,,,,0.0,6.4,0.0*3A
+gpsd: =&gt; client(4): $PGRME,52.08,0.00,0.00*40
+gpsd: &lt;= GPS:
+$GPGGA,062240,4845.8621,N,916.2203,E,3,04,6.40,305.0,M,,,,,*00
+$GPRMC,062240,A,4845.8621,N,916.2203,E,1.2980,242.734,310305,,*20
+$GPGSA,A,3,26,22,05,29,,,,,,,,,0.0,6.4,0.0*3A
+$PGRME,52.08,0.00,0.00*40
+gpsd: THR 0x09: SegStatMax=0.000, SegStatLat=  0, AveTrkTime=1.000, Last
+MS=  0
+gpsd: MND 0x02: Navtype = 0x13, Status = 1, mode = 2
+gpsd: =&gt; client(4):
+$GPGGA,062241,4845.8621,N,916.2203,E,2,04,6.40,305.0,M,,,,,*00
+gpsd: =&gt; client(4):
+$GPRMC,062241,A,4845.8621,N,916.2203,E,1.2980,242.734,310305,,*21
+gpsd: =&gt; client(4): $GPGSA,A,2,26,22,05,,,,,,,,,,0.0,12.8,0.0*09
+gpsd: =&gt; client(4): $PGRME,52.08,0.00,0.00*40
+gpsd: &lt;= GPS:
+$GPGGA,062241,4845.8621,N,916.2203,E,2,04,6.40,305.0,M,,,,,*00
+$GPRMC,062241,A,4845.8621,N,916.2203,E,1.2980,242.734,310305,,*21
+$GPGSA,A,2,26,22,05,,,,,,,,,,0.0,12.8,0.0*09
+$PGRME,52.08,0.00,0.00*40
+gpsd: THR 0x09: SegStatMax=0.000, SegStatLat=  0, AveTrkTime=1.000, Last
+MS=  0
+gpsd: MND 0x02: Navtype = 0x4, Status = 1, mode = 3
+gpsd: =&gt; client(4):
+$GPGGA,062242,4845.8625,N,916.2203,E,3,03,12.80,305.3,M,,,,,*3B
+gpsd: =&gt; client(4):
+$GPRMC,062242,A,4845.8625,N,916.2203,E,1.2980,242.734,310305,,*26
+gpsd: =&gt; client(4): $GPGSA,A,3,26,22,05,29,28,,,,,,,,0.0,2.2,0.0*32
+gpsd: =&gt; client(4): $PGRME,104.17,0.00,0.00*7C
+gpsd: &lt;= GPS:
+$GPGGA,062242,4845.8625,N,916.2203,E,3,03,12.80,305.3,M,,,,,*3B
+$GPRMC,062242,A,4845.8625,N,916.2203,E,1.2980,242.734,310305,,*26
+$GPGSA,A,3,26,22,05,29,28,,,,,,,,0.0,2.2,0.0*32
+$PGRME,104.17,0.00,0.00*7C
+gpsd: THR 0x09: SegStatMax=0.000, SegStatLat=  0, AveTrkTime=1.000, Last
+MS=  0
+gpsd: EID 0x0a type 2: Subframe error on PRN 9
+gpsd: MND 0x02: Navtype = 0x4, Status = 1, mode = 3
+gpsd: =&gt; client(4):
+$GPGGA,062243,4845.8625,N,916.2203,E,3,05,2.20,305.6,M,,,,,*02
+gpsd: =&gt; client(4):
+$GPRMC,062243,A,4845.8625,N,916.2203,E,1.2980,242.734,310305,,*27
+gpsd: =&gt; client(4): $GPGSA,A,3,26,22,05,29,28,,,,,,,,0.0,2.2,0.0*32
+gpsd: =&gt; client(4): $PGRME,17.90,0.00,0.00*40
+gpsd: &lt;= GPS:
+$GPGGA,062243,4845.8625,N,916.2203,E,3,05,2.20,305.6,M,,,,,*02
+$GPRMC,062243,A,4845.8625,N,916.2203,E,1.2980,242.734,310305,,*27
+$GPGSA,A,3,26,22,05,29,28,,,,,,,,0.0,2.2,0.0*32
+$PGRME,17.90,0.00,0.00*40
+gpsd: THR 0x09: SegStatMax=0.000, SegStatLat=  0, AveTrkTime=1.000, Last
+MS=  0
+gpsd: MND 0x02: Navtype = 0x4, Status = 1, mode = 3
+gpsd: =&gt; client(4):
+$GPGGA,062244,4845.8628,N,916.2203,E,3,05,2.20,305.9,M,,,,,*07
+gpsd: =&gt; client(4):
+$GPRMC,062244,A,4845.8628,N,916.2203,E,1.2980,242.734,310305,,*2D
+gpsd: =&gt; client(4): $GPGSA,A,3,26,22,05,29,28,,,,,,,,0.0,2.2,0.0*32
+gpsd: =&gt; client(4): $PGRME,17.90,0.00,0.00*40
+gpsd: &lt;= GPS:
+$GPGGA,062244,4845.8628,N,916.2203,E,3,05,2.20,305.9,M,,,,,*07
+$GPRMC,062244,A,4845.8628,N,916.2203,E,1.2980,242.734,310305,,*2D
+$GPGSA,A,3,26,22,05,29,28,,,,,,,,0.0,2.2,0.0*32
+$PGRME,17.90,0.00,0.00*40
+gpsd: THR 0x09: SegStatMax=0.000, SegStatLat=  0, AveTrkTime=1.000, Last
+MS=  0
+gpsd: MND 0x02: Navtype = 0x4, Status = 1, mode = 3
+gpsd: =&gt; client(4):
+$GPGGA,062245,4845.8628,N,916.2203,E,3,05,2.20,306.5,M,,,,,*09
+gpsd: =&gt; client(4):
+$GPRMC,062245,A,4845.8628,N,916.2203,E,1.2980,242.734,310305,,*2C
+gpsd: =&gt; client(4): $GPGSA,A,3,26,22,05,29,28,,,,,,,,0.0,2.2,0.0*32
+gpsd: =&gt; client(4): $PGRME,17.90,0.00,0.00*40
+gpsd: &lt;= GPS:
+$GPGGA,062245,4845.8628,N,916.2203,E,3,05,2.20,306.5,M,,,,,*09
+$GPRMC,062245,A,4845.8628,N,916.2203,E,1.2980,242.734,310305,,*2C
+$GPGSA,A,3,26,22,05,29,28,,,,,,,,0.0,2.2,0.0*32
+$PGRME,17.90,0.00,0.00*40
+gpsd: THR 0x09: SegStatMax=0.000, SegStatLat=  0, AveTrkTime=1.000, Last
+MS=  0
+gpsd: MND 0x02: Navtype = 0x4, Status = 1, mode = 3
+gpsd: =&gt; client(4):
+$GPGGA,062246,4845.8632,N,916.2203,E,3,05,2.20,306.9,M,,,,,*0D
+gpsd: =&gt; client(4):
+$GPRMC,062246,A,4845.8632,N,916.2203,E,1.2980,242.734,310305,,*24
+gpsd: =&gt; client(4): $GPGSA,A,3,26,22,05,29,28,,,,,,,,0.0,2.2,0.0*32
+gpsd: =&gt; client(4): $PGRME,17.90,0.00,0.00*40
+gpsd: &lt;= GPS:
+$GPGGA,062246,4845.8632,N,916.2203,E,3,05,2.20,306.9,M,,,,,*0D
+$GPRMC,062246,A,4845.8632,N,916.2203,E,1.2980,242.734,310305,,*24
+$GPGSA,A,3,26,22,05,29,28,,,,,,,,0.0,2.2,0.0*32
+$PGRME,17.90,0.00,0.00*40
+gpsd: THR 0x09: SegStatMax=0.000, SegStatLat=  0, AveTrkTime=1.000, Last
+MS=  0
+gpsd: =&gt; client(4):
+$GPGSV,3,1,10,26,79,193,42,22,12,325,27,05,09,222,27,29,65,159,37*75
+gpsd: =&gt; client(4):
+$GPGSV,3,2,10,28,40,055,00,09,38,277,30,07,33,108,40,18,29,300,00*7F
+gpsd: =&gt; client(4): $GPGSV,3,3,10,08,06,084,00,124,32,163,34*4F
+gpsd: MTD 0x04: 10 satellites
+gpsd: &lt;= GPS:
+$GPGSV,3,1,10,26,79,193,42,22,12,325,27,05,09,222,27,29,65,159,37*75
+$GPGSV,3,2,10,28,40,055,00,09,38,277,30,07,33,108,40,18,29,300,00*7F
+$GPGSV,3,3,10,08,06,084,00,124,32,163,34*4F
+gpsd: MND 0x02: Navtype = 0x4, Status = 1, mode = 3
+gpsd: =&gt; client(4):
+$GPGGA,062247,4845.8628,N,916.2201,E,3,05,2.20,307.2,M,,,,,*0F
+gpsd: =&gt; client(4):
+$GPRMC,062247,A,4845.8628,N,916.2201,E,1.2980,242.734,310305,,*2C
+gpsd: =&gt; client(4): $GPGSA,A,3,26,22,05,29,,,,,,,,,0.0,7.2,0.0*3D
+gpsd: =&gt; client(4): $PGRME,17.90,0.00,0.00*40
+gpsd: &lt;= GPS:
+$GPGGA,062247,4845.8628,N,916.2201,E,3,05,2.20,307.2,M,,,,,*0F
+$GPRMC,062247,A,4845.8628,N,916.2201,E,1.2980,242.734,310305,,*2C
+$GPGSA,A,3,26,22,05,29,,,,,,,,,0.0,7.2,0.0*3D
+$PGRME,17.90,0.00,0.00*40
+gpsd: THR 0x09: SegStatMax=0.000, SegStatLat=  0, AveTrkTime=1.000, Last
+MS=  0
+gpsd: MND 0x02: Navtype = 0x4, Status = 1, mode = 3
+gpsd: =&gt; client(4):
+$GPGGA,062248,4845.8625,N,916.2192,E,3,04,7.20,308.2,M,,,,,*0F
+gpsd: =&gt; client(4):
+$GPRMC,062248,A,4845.8625,N,916.2192,E,1.2980,242.734,310305,,*27
+gpsd: =&gt; client(4): $GPGSA,A,3,26,22,05,29,28,,,,,,,,0.0,3.2,0.0*33
+gpsd: =&gt; client(4): $PGRME,58.60,0.00,0.00*44
+gpsd: &lt;= GPS:
+$GPGGA,062248,4845.8625,N,916.2192,E,3,04,7.20,308.2,M,,,,,*0F
+$GPRMC,062248,A,4845.8625,N,916.2192,E,1.2980,242.734,310305,,*27
+$GPGSA,A,3,26,22,05,29,28,,,,,,,,0.0,3.2,0.0*33
+$PGRME,58.60,0.00,0.00*44
+gpsd: THR 0x09: SegStatMax=0.000, SegStatLat=  0, AveTrkTime=1.000, Last
+MS=  0
+gpsd: EID 0x0a type 2: Subframe error on PRN 5
+gpsd: MND 0x02: Navtype = 0x4, Status = 1, mode = 3
+gpsd: =&gt; client(4):
+$GPGGA,062249,4845.8625,N,916.2192,E,3,05,3.20,308.5,M,,,,,*0C
+gpsd: =&gt; client(4):
+$GPRMC,062249,A,4845.8625,N,916.2192,E,1.2980,242.734,310305,,*26
+gpsd: =&gt; client(4): $GPGSA,A,3,26,22,05,29,,,,,,,,,0.0,7.2,0.0*3D
+gpsd: =&gt; client(4): $PGRME,26.04,0.00,0.00*4F
+gpsd: &lt;= GPS:
+$GPGGA,062249,4845.8625,N,916.2192,E,3,05,3.20,308.5,M,,,,,*0C
+$GPRMC,062249,A,4845.8625,N,916.2192,E,1.2980,242.734,310305,,*26
+$GPGSA,A,3,26,22,05,29,,,,,,,,,0.0,7.2,0.0*3D
+$PGRME,26.04,0.00,0.00*4F
+gpsd: THR 0x09: SegStatMax=0.000, SegStatLat=  0, AveTrkTime=1.000, Last
+MS=  0
+gpsd: MND 0x02: Navtype = 0x4, Status = 1, mode = 3
+gpsd: =&gt; client(4):
+$GPGGA,062250,4845.8621,N,916.2191,E,3,04,7.20,308.5,M,,,,,*06
+gpsd: =&gt; client(4):
+$GPRMC,062250,A,4845.8621,N,916.2191,E,1.2980,242.734,310305,,*29
+gpsd: =&gt; client(4): $GPGSA,A,3,26,22,05,29,,,,,,,,,0.0,7.2,0.0*3D
+gpsd: =&gt; client(4): $PGRME,58.60,0.00,0.00*44
+gpsd: &lt;= GPS:
+$GPGGA,062250,4845.8621,N,916.2191,E,3,04,7.20,308.5,M,,,,,*06
+$GPRMC,062250,A,4845.8621,N,916.2191,E,1.2980,242.734,310305,,*29
+$GPGSA,A,3,26,22,05,29,,,,,,,,,0.0,7.2,0.0*3D
+$PGRME,58.60,0.00,0.00*44
+gpsd: THR 0x09: SegStatMax=0.000, SegStatLat=  0, AveTrkTime=1.000, Last
+MS=  0
+gpsd: MND 0x02: Navtype = 0x4, Status = 1, mode = 3
+gpsd: =&gt; client(4):
+$GPGGA,062251,4845.8621,N,916.2183,E,3,04,7.20,308.6,M,,,,,*07
+gpsd: =&gt; client(4):
+$GPRMC,062251,A,4845.8621,N,916.2183,E,1.2980,242.734,310305,,*2B
+gpsd: =&gt; client(4): $GPGSA,A,3,26,22,05,29,28,,,,,,,,0.0,3.2,0.0*33
+gpsd: =&gt; client(4): $PGRME,58.60,0.00,0.00*44
+gpsd: &lt;= GPS:
+$GPGGA,062251,4845.8621,N,916.2183,E,3,04,7.20,308.6,M,,,,,*07
+$GPRMC,062251,A,4845.8621,N,916.2183,E,1.2980,242.734,310305,,*2B
+$GPGSA,A,3,26,22,05,29,28,,,,,,,,0.0,3.2,0.0*33
+$PGRME,58.60,0.00,0.00*44
+gpsd: THR 0x09: SegStatMax=0.000, SegStatLat=  0, AveTrkTime=1.000, Last
+MS=  0
+gpsd: =&gt; client(4):
+$GPGSV,3,1,10,26,79,193,42,22,12,325,28,05,09,222,27,29,65,159,38*75
+gpsd: =&gt; client(4):
+$GPGSV,3,2,10,28,40,055,00,09,38,277,30,07,33,108,40,18,29,300,00*7F
+gpsd: =&gt; client(4): $GPGSV,3,3,10,08,06,084,00,124,32,163,34*4F
+gpsd: MTD 0x04: 10 satellites
+gpsd: &lt;= GPS:
+$GPGSV,3,1,10,26,79,193,42,22,12,325,28,05,09,222,27,29,65,159,38*75
+$GPGSV,3,2,10,28,40,055,00,09,38,277,30,07,33,108,40,18,29,300,00*7F
+$GPGSV,3,3,10,08,06,084,00,124,32,163,34*4F
+gpsd: MND 0x02: Navtype = 0x4, Status = 1, mode = 3
+gpsd: =&gt; client(4):
+$GPGGA,062252,4845.8614,N,916.2181,E,3,05,3.20,309.0,M,,,,,*02
+gpsd: =&gt; client(4):
+$GPRMC,062252,A,4845.8614,N,916.2181,E,1.2980,242.734,310305,,*2C
+gpsd: =&gt; client(4): $GPGSA,A,3,26,22,05,29,28,,,,,,,,0.0,3.2,0.0*33
+gpsd: =&gt; client(4): $PGRME,26.04,0.00,0.00*4F
+gpsd: &lt;= GPS:
+$GPGGA,062252,4845.8614,N,916.2181,E,3,05,3.20,309.0,M,,,,,*02
+$GPRMC,062252,A,4845.8614,N,916.2181,E,1.2980,242.734,310305,,*2C
+$GPGSA,A,3,26,22,05,29,28,,,,,,,,0.0,3.2,0.0*33
+$PGRME,26.04,0.00,0.00*4F
+gpsd: THR 0x09: SegStatMax=0.000, SegStatLat=  0, AveTrkTime=1.000, Last
+MS=  0
+gpsd: =&gt; client(4):
+$GPGSV,3,1,10,26,79,193,41,22,12,325,28,05,09,222,27,29,65,159,38*76
+gpsd: =&gt; client(4):
+$GPGSV,3,2,10,28,40,055,00,09,38,277,29,07,33,108,40,18,29,300,00*77
+gpsd: =&gt; client(4): $GPGSV,3,3,10,08,06,084,00,124,32,163,34*4F
+gpsd: MTD 0x04: 10 satellites
+gpsd: &lt;= GPS:
+$GPGSV,3,1,10,26,79,193,41,22,12,325,28,05,09,222,27,29,65,159,38*76
+$GPGSV,3,2,10,28,40,055,00,09,38,277,29,07,33,108,40,18,29,300,00*77
+$GPGSV,3,3,10,08,06,084,00,124,32,163,34*4F
+gpsd: MND 0x02: Navtype = 0x4, Status = 1, mode = 3
+gpsd: =&gt; client(4):
+$GPGGA,062253,4845.8613,N,916.2180,E,3,05,3.20,309.8,M,,,,,*0D
+gpsd: =&gt; client(4):
+$GPRMC,062253,A,4845.8613,N,916.2180,E,1.2980,242.734,310305,,*2B
+gpsd: =&gt; client(4): $GPGSA,A,3,26,22,05,29,28,,,,,,,,0.0,3.2,0.0*33
+gpsd: =&gt; client(4): $PGRME,26.04,0.00,0.00*4F
+gpsd: &lt;= GPS:
+$GPGGA,062253,4845.8613,N,916.2180,E,3,05,3.20,309.8,M,,,,,*0D
+$GPRMC,062253,A,4845.8613,N,916.2180,E,1.2980,242.734,310305,,*2B
+$GPGSA,A,3,26,22,05,29,28,,,,,,,,0.0,3.2,0.0*33
+$PGRME,26.04,0.00,0.00*4F
+gpsd: THR 0x09: SegStatMax=0.000, SegStatLat=  0, AveTrkTime=1.000, Last
+MS=  0
+gpsd: MND 0x02: Navtype = 0x13, Status = 1, mode = 2
+gpsd: =&gt; client(4):
+$GPGGA,062254,4845.8609,N,916.2179,E,2,05,3.20,310.2,M,,,,,*04
+gpsd: =&gt; client(4):
+$GPRMC,062254,A,4845.8609,N,916.2179,E,6.0928,103.886,310305,,*26
+gpsd: =&gt; client(4): $GPGSA,A,2,26,22,05,,,,,,,,,,0.0,12.8,0.0*09
+gpsd: =&gt; client(4): $PGRME,26.04,0.00,0.00*4F
+gpsd: &lt;= GPS:
+$GPGGA,062254,4845.8609,N,916.2179,E,2,05,3.20,310.2,M,,,,,*04
+$GPRMC,062254,A,4845.8609,N,916.2179,E,6.0928,103.886,310305,,*26
+$GPGSA,A,2,26,22,05,,,,,,,,,,0.0,12.8,0.0*09
+$PGRME,26.04,0.00,0.00*4F
+gpsd: THR 0x09: SegStatMax=0.000, SegStatLat=  0, AveTrkTime=1.000, Last
+MS=  0
+gpsd: EID 0x0a type 2: Subframe error on PRN 5
+gpsd: EID 0x0a type 2: Subframe error on PRN 18
+gpsd: MND 0x02: Navtype = 0x13, Status = 1, mode = 2
+gpsd: =&gt; client(4):
+$GPGGA,062255,4845.8609,N,916.2187,E,2,03,12.80,310.6,M,,,,,*3C
+gpsd: =&gt; client(4):
+$GPRMC,062255,A,4845.8609,N,916.2187,E,24.8162,154.521,310305,,*1A
+gpsd: =&gt; client(4): $GPGSA,A,2,26,22,05,,,,,,,,,,0.0,12.8,0.0*09
+gpsd: =&gt; client(4): $PGRME,104.17,0.00,0.00*7C
+gpsd: &lt;= GPS:
+$GPGGA,062255,4845.8609,N,916.2187,E,2,03,12.80,310.6,M,,,,,*3C
+$GPRMC,062255,A,4845.8609,N,916.2187,E,24.8162,154.521,310305,,*1A
+$GPGSA,A,2,26,22,05,,,,,,,,,,0.0,12.8,0.0*09
+$PGRME,104.17,0.00,0.00*7C
+gpsd: THR 0x09: SegStatMax=0.000, SegStatLat=  0, AveTrkTime=1.000, Last
+MS=  0
+gpsd: MND 0x02: Navtype = 0x13, Status = 1, mode = 2
+
+
+
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="000465.html">[Gpsd-users] gpsd 2.19 still reporting crazy / incorrect speeds
+</A></li>
+	<LI>Next message: <A HREF="000466.html">[Gpsd-users] Preparing for 2.20 -- take 2
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#478">[ date ]</a>
+              <a href="thread.html#478">[ thread ]</a>
+              <a href="subject.html#478">[ subject ]</a>
+              <a href="author.html#478">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

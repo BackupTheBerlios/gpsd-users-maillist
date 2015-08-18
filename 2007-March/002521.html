@@ -1,0 +1,127 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] Setting the listener address,	and future design direction
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2007-March/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Setting%20the%20listener%20address%2C%0A%09and%20future%20design%20direction&In-Reply-To=%3C20070327175435.GA11268%40thyrsus.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="002515.html">
+   <LINK REL="Next"  HREF="002522.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] Setting the listener address,	and future design direction</H1>
+    <B>Eric S. Raymond</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Setting%20the%20listener%20address%2C%0A%09and%20future%20design%20direction&In-Reply-To=%3C20070327175435.GA11268%40thyrsus.com%3E"
+       TITLE="[Gpsd-users] Setting the listener address,	and future design direction">esr at thyrsus.com
+       </A><BR>
+    <I>Tue Mar 27 19:54:35 CEST 2007</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="002515.html">[Gpsd-users] [Gpsd-dev] What does your application need from	the config variables?
+</A></li>
+        <LI>Next message: <A HREF="002522.html">[Gpsd-users] Question on Motorola Oncore GPS and gpsd
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2521">[ date ]</a>
+              <a href="thread.html#2521">[ thread ]</a>
+              <a href="subject.html#2521">[ subject ]</a>
+              <a href="author.html#2521">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Chris just posted a patch implementing an -l option to change the
+gpsd listener address, which is now 0.0.0.0 (accept connections on
+any socket). 
+
+Chris has made a strong privacy case that the default listener address
+ought to be 127.0.0.1, so that your client has to be running on the same
+machine that's hosting the GPS.  Those of you doing remote-telemetry things
+would have to set a more promiscuous listener address.
+
+I think the arguments for the ability to change this address, and the 
+new default, are sound.  But this would be a significant user-visible 
+change in behavior, so I'm posting well in advance of implementation
+as an invitation to discussion and objections (if any).
+
+Actually, I think the larger issue isn't whether to have this option 
+but where to control it from.  I'm not happy with the idea of a
+command-line option, for two reasons:
+
+(1) It would be no help to most Linux users, for which gpsd is normally 
+    launched by a hotplug script.  I'm dead-set against anything that would
+    require users to edit that script.
+
+(2) The expected lifetime of the administrator's choice about the listener 
+    address doesn't match the time scope of a command-line option.  Making 
+    it an entry in a /etc/gpsd.conf config file always read at gpsd startup 
+    would be a better fit.
+
+We also have the option of implementing a listener-address command
+passed through the gpsd control socket, the way device-open
+notifications are passed from the hotplug system now.  This would have
+the same lifetime-mismatch problem as a command-line option.
+
+We could put this option in an optional /etc/gpsd.conf config file.  But then
+we'd have to write an interpreter for the config file syntax.  I dislike the
+thought of adding that much complexity overhead.
+
+However, while brainstorming with Chris on IRC I came up with a better
+variation on this theme.  We've been talking for a while about
+GPSD-NG, an extension of the GPSD command interpreter to support
+commands more than one letter long.  We're going to need this to
+support things like ephemeris and pseudorange queries.  The design
+proposal is here: &lt;<A HREF="http://gpsd.berlios.de/hacking.html#protov4">http://gpsd.berlios.de/hacking.html#protov4</A>&gt;.
+
+So.  Now, let's suppose that we implement &quot;listen-to&quot; as a protocol
+command taking a listener-address argument.  Then, we add an option
+(say, -c) that reads protocol commands from standard input at startup time.
+
+Now, to get the effect of a config file, we invoke gpsd as 
+&quot;gpsd -c &lt;/etc/gpsd.conf&quot; and we're done.  There's no separate
+config-file interpreter; anything you can configure can be set 
+via a normal session, and vice-versa.  Some configuration stuff,
+including listen-to, would be gated by the existing code for 
+recognizing privileged users.
+
+If we go this route, some command-line options options that exist
+now will probably be given the axe in favor of NG protocol commands.  
+Instead of saying
+
+	gpsd -S 1200 -b
+
+you'll say something like 'echo &quot;!port=1200;noconfig;&quot; | gpsd -c'.
+
+Again, since this would be a user-visible change, I'm posting well in
+advance of implementation so it can be discussed and criticized.
+-- 
+		&lt;a href=&quot;<A HREF="http://www.catb.org/~esr/">http://www.catb.org/~esr/</A>&quot;&gt;Eric S. Raymond&lt;/a&gt;
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="002515.html">[Gpsd-users] [Gpsd-dev] What does your application need from	the config variables?
+</A></li>
+	<LI>Next message: <A HREF="002522.html">[Gpsd-users] Question on Motorola Oncore GPS and gpsd
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2521">[ date ]</a>
+              <a href="thread.html#2521">[ thread ]</a>
+              <a href="subject.html#2521">[ subject ]</a>
+              <a href="author.html#2521">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

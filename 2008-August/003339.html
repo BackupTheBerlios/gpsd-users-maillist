@@ -1,0 +1,175 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] Data send
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2008-August/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Data%20send&In-Reply-To=%3C48B2B9C2.7010502%40keynote-sigos.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="003337.html">
+   <LINK REL="Next"  HREF="003341.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] Data send</H1>
+    <B>Jens Oberender</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Data%20send&In-Reply-To=%3C48B2B9C2.7010502%40keynote-sigos.com%3E"
+       TITLE="[Gpsd-users] Data send">jens.oberender at keynote-sigos.com
+       </A><BR>
+    <I>Mon Aug 25 15:55:14 CEST 2008</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="003337.html">[Gpsd-users] GPSD, NTP
+</A></li>
+        <LI>Next message: <A HREF="003341.html">[Gpsd-users] Data send
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3339">[ date ]</a>
+              <a href="thread.html#3339">[ thread ]</a>
+              <a href="subject.html#3339">[ subject ]</a>
+              <a href="author.html#3339">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hello
+
+I'm working with a uBlox device and have the problem, that it is
+detected wrong as a True North and with the wrong speed (it should be 4800).
+
+After some time the device stops working, I guess because of the
+commands send to it. To avoid this I added the -b parameter to gpsd now.
+But in /var/log/messages I can see, the following line
+gpsd: =&gt; GPS: @BA=15*3A\x0d FAILED
+about 16 times per second. Probably the tty is opened read only and
+therefore those messages appear. I know, I can ignore them, but they
+fill up the log
+
+Can I force the device in the right mode?
+Or do I have to change the source for the right detection?
+
+Below is some output about the gps.
+
+Best regards,
+	Jens Oberender
+
+The output of gpsprof:
+
+gpsprof -f cycle
+gpsprof: looking for fix...first fix in 0.34sec, gathering
+samples......(14.38 sec) done.
+Cycle report Mon Aug 25 15:42:15 2008, True North, 38400N1, cycle 20sThe
+sentence set emitted by this GPS is: GSA RMC GGA GLL GSV
+GSA: is probably emitted once every 0 seconds.
+RMC: is probably emitted once a second.
+GGA: is probably emitted once every 0 seconds.
+GLL: is probably emitted once every 0 seconds.
+GSV: is probably emitted once every 0 seconds.
+Send cycle is once per 0 seconds.
+
+/var/log/messages from the start of gpsd:
+
+Aug 25 14:48:56 mlu2 gpsd[1659]: gpsd: launching (Version 2.37)
+Aug 25 14:48:56 mlu2 gpsd[1659]: gpsd: listening on port gpsd
+Aug 25 14:48:56 mlu2 gpsd[1659]: gpsd: shmat(0,0,0) succeeded
+Aug 25 14:48:56 mlu2 gpsd[1659]: gpsd: shmat(0,0,0) succeeded
+Aug 25 14:48:56 mlu2 gpsd[1659]: gpsd: shmat(0,0,0) succeeded
+Aug 25 14:48:56 mlu2 gpsd[1659]: gpsd: shmat(0,0,0) succeeded
+Aug 25 14:48:56 mlu2 gpsd[1659]: gpsd: changing to group 10
+Aug 25 14:48:56 mlu2 gpsd[1659]: gpsd: running with effective group ID 10
+Aug 25 14:48:56 mlu2 gpsd[1659]: gpsd: running with effective user ID 65534
+Aug 25 14:48:56 mlu2 gpsd[1659]: gpsd: opening read-only GPS data source
+at '/dev/gps'
+Aug 25 14:48:57 mlu2 gpsd[1659]: gpsd: speed 9600, 8N1
+Aug 25 14:48:57 mlu2 gpsd[1659]: gpsd: garmin_gps not active.
+Aug 25 14:48:57 mlu2 gpsd[1659]: gpsd: Probing TrueNorth Compass
+Aug 25 14:48:57 mlu2 gpsd[1659]: gpsd: hunting at speed 38400
+Aug 25 14:48:57 mlu2 gpsd[1659]: gpsd: speed 38400, 8N1
+Aug 25 14:48:57 mlu2 gpsd[1659]: gpsd: tnt_packet_sniff begins
+Aug 25 14:48:57 mlu2 gpsd[1659]: gpsd: =&gt; GPS: @X?*67\x0d FAILED
+Aug 25 14:48:57 mlu2 gpsd[1659]: gpsd: sleep(1)
+Aug 25 14:48:58 mlu2 gpsd[1659]: gpsd: =&gt; GPS: @X?*67\x0d FAILED
+Aug 25 14:48:58 mlu2 gpsd[1659]: gpsd: tnt_packet_sniff returns 1
+Aug 25 14:48:58 mlu2 gpsd[1659]: gpsd: probe found True North driver...
+Aug 25 14:48:58 mlu2 gpsd[1659]: gpsd: ntpd_link_activate: 0
+Aug 25 14:48:58 mlu2 gpsd[1659]: gpsd: gpsd_activate(1): opened GPS (5)
+Aug 25 14:48:58 mlu2 gpsd[1659]: gpsd: =&gt; GPS: @BA=15*3A\x0d FAILED
+Aug 25 14:48:58 mlu2 gpsd[1659]: gpsd: =&gt; GPS: @BA=15*3A\x0d FAILED
+Aug 25 14:48:58 mlu2 gpsd[1659]: gpsd: Create Thread gpsd_ppsmonitor
+Aug 25 14:48:59 mlu2 gpsd[1659]: gpsd: =&gt; GPS: @BA=15*3A\x0d FAILED
+Aug 25 14:48:59 mlu2 gpsd[1659]: gpsd: =&gt; GPS: @BA=15*3A\x0d FAILED
+Aug 25 14:48:59 mlu2 gpsd[1659]: gpsd: &lt;= GPS: $GPTXT,01,01,02,HW
+UBX-G5xxx  00040005 FFF1FFFFp*1C
+Aug 25 14:48:59 mlu2 gpsd[1659]: gpsd: unknown sentence:
+&quot;$GPTXT,01,01,02,HW  UBX-G5xxx  00040005 FFF1FFFFp*1C\x0d\x0a&quot;
+Aug 25 14:48:59 mlu2 gpsd[1659]: gpsd: =&gt; GPS: @BA=15*3A\x0d FAILED
+Aug 25 14:48:59 mlu2 gpsd[1659]: gpsd: =&gt; GPS: @BA=15*3A\x0d FAILED
+Aug 25 14:48:59 mlu2 gpsd[1659]: gpsd: &lt;= GPS: $GPTXT,01,01,02,ROM CORE
+4.00 (25682) Jan 14 2008 16:29:23*41
+Aug 25 14:48:59 mlu2 gpsd[1659]: gpsd: unknown sentence:
+&quot;$GPTXT,01,01,02,ROM CORE 4.00 (25682) Jan 14 2008 16:29:23*41\x0d\x0a&quot;
+Aug 25 14:48:59 mlu2 gpsd[1659]: gpsd: =&gt; GPS: @BA=15*3A\x0d FAILED
+Aug 25 14:48:59 mlu2 gpsd[1659]: gpsd: =&gt; GPS: @BA=15*3A\x0d FAILED
+Aug 25 14:48:59 mlu2 gpsd[1659]: gpsd: &lt;= GPS:
+$GPTXT,01,01,02,ANTSUPERV=AC SD PDoS SR*20
+Aug 25 14:48:59 mlu2 gpsd[1659]: gpsd: unknown sentence:
+&quot;$GPTXT,01,01,02,ANTSUPERV=AC SD PDoS SR*20\x0d\x0a&quot;
+Aug 25 14:48:59 mlu2 gpsd[1659]: gpsd: =&gt; GPS: @BA=15*3A\x0d FAILED
+Aug 25 14:49:00 mlu2 gpsd[1659]: gpsd: =&gt; GPS: @BA=15*3A\x0d FAILED
+Aug 25 14:49:00 mlu2 gpsd[1659]: gpsd: &lt;= GPS:
+$GPTXT,01,01,02,ANTSTATUS=OK*3B
+Aug 25 14:49:00 mlu2 gpsd[1659]: gpsd: unknown sentence:
+&quot;$GPTXT,01,01,02,ANTSTATUS=OK*3B\x0d\x0a&quot;
+Aug 25 14:49:00 mlu2 gpsd[1659]: gpsd: =&gt; GPS: @BA=15*3A\x0d FAILED
+Aug 25 14:49:00 mlu2 gpsd[1659]: gpsd: =&gt; GPS: @BA=15*3A\x0d FAILED
+Aug 25 14:49:00 mlu2 gpsd[1659]: gpsd: &lt;= GPS:
+$GPRMC,124735.00,A,4928.54076,N,01106.64426,E,0.126,,250808,,,A*77
+Aug 25 14:49:00 mlu2 gpsd[1659]: gpsd: GPRMC starts a reporting cycle.
+Aug 25 14:49:00 mlu2 gpsd[1659]: gpsd: GPRMC sets mode 2
+Aug 25 14:49:00 mlu2 gpsd[1659]: gpsd: ntpshm_put: Clock: 1219668455 @
+1219668540.346280
+Aug 25 14:49:00 mlu2 gpsd[1659]: gpsd: =&gt; GPS: @BA=15*3A\x0d FAILED
+Aug 25 14:49:00 mlu2 gpsd[1659]: gpsd: =&gt; GPS: @BA=15*3A\x0d FAILED
+Aug 25 14:49:00 mlu2 gpsd[1659]: gpsd: &lt;= GPS:
+$GPVTG,,T,,M,0.126,N,0.234,K,A*23
+Aug 25 14:49:00 mlu2 gpsd[1659]: gpsd: =&gt; GPS: @BA=15*3A\x0d FAILED
+
+-- 
+Keynote SIGOS GmbH
+ - TESTING IS OUR COMPETENCE -
+Klingenhofstrasse 50d
+D-90411 Nuernberg
+Fon +49 911 95168-0
+www.keynote-sigos.com
+
+HRB 9323 Nuernberg
+Gerichtsstand: Nuernberg
+Geschaeftsfuehrer: Adil Kaya, Martin Loehlein, Johannes Reis, Umang
+Gupta, Andrew Hamer
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="003337.html">[Gpsd-users] GPSD, NTP
+</A></li>
+	<LI>Next message: <A HREF="003341.html">[Gpsd-users] Data send
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3339">[ date ]</a>
+              <a href="thread.html#3339">[ thread ]</a>
+              <a href="subject.html#3339">[ subject ]</a>
+              <a href="author.html#3339">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

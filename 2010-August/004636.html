@@ -1,0 +1,121 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] gpsd and Opensuse 11.3
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2010-August/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20gpsd%20and%20Opensuse%2011.3&In-Reply-To=%3C4C6D94BC.2070609%40wambach-web.de%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="004635.html">
+   <LINK REL="Next"  HREF="004637.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] gpsd and Opensuse 11.3</H1>
+    <B>Volker Wambach</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20gpsd%20and%20Opensuse%2011.3&In-Reply-To=%3C4C6D94BC.2070609%40wambach-web.de%3E"
+       TITLE="[Gpsd-users] gpsd and Opensuse 11.3">vw at wambach-web.de
+       </A><BR>
+    <I>Thu Aug 19 22:31:56 CEST 2010</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="004635.html">[Gpsd-users] OT- Shapefile to bitmap tools
+</A></li>
+        <LI>Next message: <A HREF="004637.html">[Gpsd-users] gpsd and Opensuse 11.3
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#4636">[ date ]</a>
+              <a href="thread.html#4636">[ thread ]</a>
+              <a href="subject.html#4636">[ subject ]</a>
+              <a href="author.html#4636">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hello,
+
+last weekend i mad the update, sorry new install, from opensuse 11.2 to 11.3
+
+On OS 11.2 i had no problems with gpsd an my GPS-logger Wintec G-Rays 2.
+gpsctl says: ... identified as Generic NMEA at 57600
+
+
+On OS 11.3 i had with same hardware problems
+
+
+gpsctl
+gpsctl: /dev/ttyUSB0 identified as  at -1
+
+
+
+dmesg seems to be OK
+--------------------
+ 6599.457043] usb 6-1: new full speed USB device using uhci_hcd and
+address 10
+[ 6599.607374] usb 6-1: New USB device found, idVendor=10c4, idProduct=ea60
+[ 6599.607383] usb 6-1: New USB device strings: Mfr=1, Product=2,
+SerialNumber=3
+[ 6599.607390] usb 6-1: Product: CP2102 USB to UART Bridge Controller
+[ 6599.607396] usb 6-1: Manufacturer: Silicon Labs
+
+[ 6599.607400] usb 6-1: SerialNumber: 0001
+[ 6599.612474] cp210x 6-1:1.0: cp210x converter detected
+[ 6599.715070] usb 6-1: reset full speed USB device using uhci_hcd and
+address 10
+[ 6599.848611] usb 6-1: cp210x converter now attached to ttyUSB0
+
+
+lsmod also
+----------
+lsmod | grep usb
+usbserial              34513  1 cp210x
+btusb                  15667  2
+bluetooth              96350  9 rfcomm,sco,bnep,l2cap,btusb
+
+
+an stty also   (on OS 11.2 where are some lines more)
+------------
+stty &lt; /dev/ttyUSB0
+speed 57600 baud; line = 0;
+eof = ^A; min = 1; time = 0;
+-brkint -icrnl -imaxbel
+-opost -onlcr
+-icanon -echo -echoe
+
+
+
+any ideas???
+
+
+Best whishes from germany
+
+
+
+	Volker
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="004635.html">[Gpsd-users] OT- Shapefile to bitmap tools
+</A></li>
+	<LI>Next message: <A HREF="004637.html">[Gpsd-users] gpsd and Opensuse 11.3
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#4636">[ date ]</a>
+              <a href="thread.html#4636">[ thread ]</a>
+              <a href="subject.html#4636">[ subject ]</a>
+              <a href="author.html#4636">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

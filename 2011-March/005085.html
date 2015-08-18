@@ -1,0 +1,122 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] [Gpsd-dev] The state of RTCM2 and RTCM3
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2011-March/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20%5BGpsd-dev%5D%20The%20state%20of%20RTCM2%20and%20RTCM3&In-Reply-To=%3C20110303165133.GB21305%40thyrsus.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="005084.html">
+   <LINK REL="Next"  HREF="005088.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] [Gpsd-dev] The state of RTCM2 and RTCM3</H1>
+    <B>Eric Raymond</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20%5BGpsd-dev%5D%20The%20state%20of%20RTCM2%20and%20RTCM3&In-Reply-To=%3C20110303165133.GB21305%40thyrsus.com%3E"
+       TITLE="[Gpsd-users] [Gpsd-dev] The state of RTCM2 and RTCM3">esr at thyrsus.com
+       </A><BR>
+    <I>Thu Mar  3 17:51:33 CET 2011</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="005084.html">[Gpsd-users] [Gpsd-dev] The state of RTCM2 and RTCM3
+</A></li>
+        <LI>Next message: <A HREF="005088.html">[Gpsd-users] [Gpsd-dev] The state of RTCM2 and RTCM3
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#5085">[ date ]</a>
+              <a href="thread.html#5085">[ thread ]</a>
+              <a href="subject.html#5085">[ subject ]</a>
+              <a href="author.html#5085">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Andre Naujoks &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">nautsch2 at googlemail.com</A>&gt;:
+&gt;<i> &gt; 1. An Ntrip RTCM2 log you gave me (test/daemon/naujoks-ntrip.log) begins
+</I>&gt;<i> &gt; with a type 14 sentence.  I'm pretty sure my decode of it is good
+</I>&gt;<i> &gt; because it ends with leapsecs:15.  Of course it's still possible I
+</I>&gt;<i> &gt; have got previous bitfield boundaries wrong.  Note that I do *not*
+</I>&gt;<i> &gt; know that any of the following type 1 messages in that file are decoded
+</I>&gt;<i> &gt; correctly, and I have no idea why I'm seeing type 31s.
+</I>&gt;<i> 
+</I>&gt;<i> Type 14 you say? The Sourcetable says it should contain only 1, 3, 16 and 31
+</I>
+I think the sourcetable is wrong.  Type 14s are expected to be shipped
+at start of data transmission in order to provide a time reference
+that disambiguates the zcount fields in following sentences. So that
+type 14 is appearing where it's expected and has data in it that
+looks right.
+ 
+&gt;<i> You have to remove the first 4 bytes of the binary part.
+</I>&gt;<i> The rest should be pure rtcm2. I'll try to get you something bigger.
+</I>
+Thanks.  Do you have any idea what's in the Type 31s?
+
+&gt;<i> &gt;&gt;   I think I remember some tool out there, that decodes rtcm2. I may be
+</I>&gt;<i> &gt;&gt; able to use that to offer some help.
+</I>&gt;<i> 
+</I>&gt;<i> It may have been called rtcmdecode and may have been written by you ... so 
+</I>&gt;<i> kudos to you. It doesn't help in this case however. :-)
+</I>
+No.  That's gpsdecode from back before it did AIS.  The dump format was
+an idiosyncratic non-JSON thing designed by John Sager (it's gone now).
+
+&gt;<i> I meant extraction of single packets from a stream to use as test data.
+</I>&gt;<i> If the driver_rtcm2 could dump the data, the task would indeed be almost
+</I>&gt;<i> trivial.
+</I>
+I don't need the binary part of the test pair to be packetized.  A raw
+RTCM2 stream and a correponding dump of the packet sequence will do, if we
+can find anything that will generate that.
+
+&gt;<i> I looked through this one a little. It looks documented, but I am not
+</I>&gt;<i> seeing a complete rtcm parser with all the kinks and bits.
+</I>&gt;<i> 
+</I>&gt;<i> <A HREF="http://igs.bkg.bund.de/ntrip/download">http://igs.bkg.bund.de/ntrip/download</A>
+</I>&gt;<i> 
+</I>&gt;<i> Under &quot;Multi-Function Ntrip Software and Assisting Tools&quot; The first tool.
+</I>&gt;<i> theres C++ Source code under GPL. 
+</I>&gt;<i> 
+</I>&gt;<i> <A HREF="http://igs.bkg.bund.de/root_ftp/NTRIP/software/Bnc25-Source.zip">http://igs.bkg.bund.de/root_ftp/NTRIP/software/Bnc25-Source.zip</A>
+</I>
+That's BNC.  It's part of the tree I downloaded.  The whole thing seems to
+have beenm produced by some German federal agency in charge of mapping
+and geodesics.
+
+If you found documentation for it you are doing better than I did.
+What's the URL for the documentation?
+
+&gt;<i> There is also an rtcm windows binary. I am not sure what exactly it does,
+</I>&gt;<i> but maybe its worth looking at.
+</I>
+I have no Windows machines handy.
+-- 
+		&lt;a href=&quot;<A HREF="http://www.catb.org/~esr/">http://www.catb.org/~esr/</A>&quot;&gt;Eric S. Raymond&lt;/a&gt;
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="005084.html">[Gpsd-users] [Gpsd-dev] The state of RTCM2 and RTCM3
+</A></li>
+	<LI>Next message: <A HREF="005088.html">[Gpsd-users] [Gpsd-dev] The state of RTCM2 and RTCM3
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#5085">[ date ]</a>
+              <a href="thread.html#5085">[ thread ]</a>
+              <a href="subject.html#5085">[ subject ]</a>
+              <a href="author.html#5085">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

@@ -1,0 +1,131 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] problem compiling using libgps
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2005-December/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20problem%20compiling%20using%20libgps&In-Reply-To=%3Cp0623090abfd6f23cd267%40%5B192.168.11.10%5D%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="001190.html">
+   <LINK REL="Next"  HREF="001192.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] problem compiling using libgps</H1>
+    <B>Robin L Darroch</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20problem%20compiling%20using%20libgps&In-Reply-To=%3Cp0623090abfd6f23cd267%40%5B192.168.11.10%5D%3E"
+       TITLE="[Gpsd-users] problem compiling using libgps">robin at spade-men.com
+       </A><BR>
+    <I>Tue Dec 27 14:36:51 CET 2005</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="001190.html">[Gpsd-users] Problems getting started with gpsd
+</A></li>
+        <LI>Next message: <A HREF="001192.html">[Gpsd-users] Error on Start
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1191">[ date ]</a>
+              <a href="thread.html#1191">[ thread ]</a>
+              <a href="subject.html#1191">[ subject ]</a>
+              <a href="author.html#1191">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi folks,
+
+I have what is - I hope - a very simple question, which no doubt 
+displays my profound ignorance in some basic techniques of working 
+with extra libraries in simple C programs.
+
+I'm trying to write a program which will use libgps to provide a 
+constantly updated KML file to Google Earth (i.e. real-time tracking 
+on Google Earth)... but I can't even get the simple test program to 
+compile (or, more accurately, link)
+
+Here's the source code:
+
+#include &lt;stdio.h&gt;
+#include &quot;gps.h&quot;
+
+int main(void) {
+	struct gps_data_t *gps1;
+	int result;
+	double lat,lon;
+     char *server = NULL, *port = DEFAULT_GPSD_PORT;
+
+	gps1 = gps_open(server,port);
+
+	gps_query(gps1, &quot;o\n&quot;);
+
+	result = gps_poll(gps1);
+
+	printf(&quot;Result: %d\n&quot;,result);
+
+	switch (gps1-&gt;status) {
+		case STATUS_NO_FIX:
+			printf(&quot;No fix.\n&quot;);
+			break;
+
+		case STATUS_FIX:
+		case STATUS_DGPS_FIX:
+			lat = gps1-&gt;fix.latitude;
+			lon = gps1-&gt;fix.longitude;
+
+			printf(&quot;Location: %f %f\n&quot;,lat,lon);
+	}
+
+	return(0);
+}
+
+And here's the attempt to compile it:
+
+21:34 [~/src] robin&gt; gcc -o gpspoll gpspoll.c
+/usr/bin/ld: Undefined symbols:
+_gps_open
+_gps_poll
+_gps_query
+collect2: ld returned 1 exit status
+21:36 [~/src] robin&gt;
+
+As far as I can tell, that means the compiler can find everything it 
+needs in the gps.h file, but it then can't find the relevant library? 
+I've installed gpsd-2.30, using &quot;./configure&quot;, &quot;make&quot; and then &quot;sudo 
+make install&quot; to set it up.  The daemon runs well, so it's just using 
+the library to compile that doesn't appear to work.  Any suggestions?
+
+Thanks,
+Robin
+-- 
+
+-------------------------------------------------------------------------
+  Robin L. Darroch - PO Box 2715, South Hedland WA 6722 - +61 421 503 966
+       <A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">robin at darroch.id.au</A> - <A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">robin at nyca.org.au</A> - <A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">robin at spade-men.com</A>
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="001190.html">[Gpsd-users] Problems getting started with gpsd
+</A></li>
+	<LI>Next message: <A HREF="001192.html">[Gpsd-users] Error on Start
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1191">[ date ]</a>
+              <a href="thread.html#1191">[ thread ]</a>
+              <a href="subject.html#1191">[ subject ]</a>
+              <a href="author.html#1191">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

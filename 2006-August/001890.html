@@ -1,0 +1,162 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] Fwd: NTP Problems
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2006-August/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Fwd%3A%20NTP%20Problems&In-Reply-To=%3C7e272c5c0608281820t7268abdchc242c0db2e3b7af8%40mail.gmail.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="001889.html">
+   <LINK REL="Next"  HREF="001891.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] Fwd: NTP Problems</H1>
+    <B>Karl von Muller</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Fwd%3A%20NTP%20Problems&In-Reply-To=%3C7e272c5c0608281820t7268abdchc242c0db2e3b7af8%40mail.gmail.com%3E"
+       TITLE="[Gpsd-users] Fwd: NTP Problems">vertigok at gmail.com
+       </A><BR>
+    <I>Tue Aug 29 03:20:12 CEST 2006</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="001889.html">[Gpsd-users] Fwd: NTP Problems
+</A></li>
+        <LI>Next message: <A HREF="001891.html">[Gpsd-users] Fwd: NTP Problems
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1890">[ date ]</a>
+              <a href="thread.html#1890">[ thread ]</a>
+              <a href="subject.html#1890">[ subject ]</a>
+              <a href="author.html#1890">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Gary,
+
+On 8/29/06, Gary E. Miller &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">gem at rellim.com</A>&gt; wrote:
+&gt;<i>
+</I>&gt;<i> -----BEGIN PGP SIGNED MESSAGE-----
+</I>&gt;<i> Hash: SHA1
+</I>&gt;<i>
+</I>&gt;<i> Yo Karl!
+</I>&gt;<i>
+</I>&gt;<i> On Tue, 29 Aug 2006, Karl von Muller wrote:
+</I>&gt;<i>
+</I>&gt;<i> &gt; Looks like gpsd isnt creating/writing to the shared memory.
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; [<A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">root at gumstix</A> ~]# gpsd /dev/ttyS0
+</I>&gt;<i> &gt; [<A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">root at gumstix</A> ~]# cat /proc/sysvipc/shm
+</I>&gt;<i> &gt;       key      shmid perms       size  cpid  lpid nattch   uid
+</I>&gt;<i> gid  cuid
+</I>&gt;<i> &gt; cgid      atime      dtime      ctime
+</I>&gt;<i>
+</I>&gt;<i> Do the shared memory segments get created when you start ntpd?  Both gpsd
+</I>&gt;<i> and ntp will create the shared memory segment if it does not exist yet.
+</I>
+
+It appears they do.
+
+[<A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">root at gumstix</A> ~]# ntpd
+[<A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">root at gumstix</A> ~]# cat /proc/sysvipc/shm
+       key      shmid perms       size  cpid  lpid nattch   uid   gid  cuid
+cgid      atime      dtime      ctime
+1314148400          0   700         80  1289  1289      1     0     0
+0     0 1156814081          0 1156814081
+[<A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">root at gumstix</A> ~]# ps
+  PID  Uid     VmSize Stat Command
+    1 root        336 S   init
+    2 root            SWN [ksoftirqd/0]
+    3 root            SW  [watchdog/0]
+    4 root            SW&lt; [events/0]
+    5 root            SW&lt; [khelper]
+    6 root            SW&lt; [kthread]
+   20 root            SW&lt; [kblockd/0]
+   34 root            SW  [pdflush]
+   35 root            SW  [pdflush]
+   36 root            SW  [kswapd0]
+   37 root            SW&lt; [aio/0]
+   47 root            SW  [mtdblockd]
+   54 root            SWN [jffs2_gcd_mtd1]
+   85 root        260 S &lt; /sbin/udevd --daemon
+  109 root            SW  [pccardd]
+  207 root        284 S   udhcpc -b -p /var/run/udhcpc.usb0.pid -i usb0
+  231 root        300 S   udhcpc -b -p /var/run/udhcpc.eth0.pid -i eth0
+  252 root        308 S   /usr/sbin/dropbear
+  255 www-data    276 S   /usr/sbin/boa
+  258 root        328 S   /sbin/getty -L ttySA0 115200 vt100
+  259 root        328 S   /sbin/syslogd -n -m 0
+  260 root        320 S   /sbin/klogd -n
+  269 root        376 S   /usr/sbin/mDNSResponder -f /etc/bonjour.conf -b
+  271 root        476 S   /usr/sbin/dropbear
+  272 root        960 S   -sh
+  281 nobody     4480 S   gpsd /dev/ttyS0
+ 1279 root        508 S   /usr/sbin/dropbear
+ 1280 root        984 S   -sh
+ 1289 root        996 S   ntpd
+ 1294 root        312 R   ps
+
+&gt;<i> that was even after leaving gpsd running for 20 minutes or so.
+</I>&gt;<i>
+</I>&gt;<i> The shared memory is created during the startup of gpsd, before any
+</I>&gt;<i> NMEA is processed.  So either it happens right away or not at all.
+</I>&gt;<i>
+</I>&gt;<i> &gt; Hmm, im not sure how correct this is, but have just done some quick
+</I>&gt;<i> digging
+</I>&gt;<i> &gt; and it appears that ntpshm_put is only called when running/using a
+</I>&gt;<i> garmin,
+</I>&gt;<i> &gt; sirf, tsip or zodiac gps.
+</I>&gt;<i>
+</I>&gt;<i> I use it with an NMEA only gps.  That is all you need, as long as you
+</I>&gt;<i> compiled
+</I>&gt;<i> in the ntp support.
+</I>
+
+I believe i have compiled it in, as long as all as i need is --enable-pps \
+        --enable-ntpshm \
+
+RGDS
+&gt;<i> GARY
+</I>&gt;<i> -
+</I>&gt;<i> ---------------------------------------------------------------------------
+</I>&gt;<i> Gary E. Miller Rellim 20340 Empire Blvd, Suite E-3, Bend, OR 97701
+</I>&gt;<i>         <A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">gem at rellim.com</A>  Tel:+1(541)382-8588
+</I>&gt;<i>
+</I>&gt;<i> -----BEGIN PGP SIGNATURE-----
+</I>&gt;<i> Version: GnuPG v1.4.3 (GNU/Linux)
+</I>&gt;<i>
+</I>&gt;<i> iD8DBQFE85M28KZibdeR3qURAnEzAJ9oUwmty9WrxUvdGqK99qPaDPWZqgCfQ+hy
+</I>&gt;<i> ipom2stowzAbOeJWpsLmM8g=
+</I>&gt;<i> =oU0W
+</I>&gt;<i> -----END PGP SIGNATURE-----
+</I>&gt;<i>
+</I>&gt;<i>
+</I>-------------- next part --------------
+An HTML attachment was scrubbed...
+URL: &lt;<A HREF="https://lists.berlios.de/pipermail/gpsd-users/attachments/20060829/d8225e22/attachment.html">https://lists.berlios.de/pipermail/gpsd-users/attachments/20060829/d8225e22/attachment.html</A>&gt;
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="001889.html">[Gpsd-users] Fwd: NTP Problems
+</A></li>
+	<LI>Next message: <A HREF="001891.html">[Gpsd-users] Fwd: NTP Problems
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1890">[ date ]</a>
+              <a href="thread.html#1890">[ thread ]</a>
+              <a href="subject.html#1890">[ subject ]</a>
+              <a href="author.html#1890">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

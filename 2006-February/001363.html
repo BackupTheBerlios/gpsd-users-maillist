@@ -1,0 +1,139 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] Re: magellan explorist 210
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2006-February/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Re%3A%20magellan%20explorist%20210&In-Reply-To=%3CPine.LNX.4.64.0602271521460.5657%40catbert.rellim.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="001362.html">
+   <LINK REL="Next"  HREF="001364.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] Re: magellan explorist 210</H1>
+    <B>Gary E. Miller</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Re%3A%20magellan%20explorist%20210&In-Reply-To=%3CPine.LNX.4.64.0602271521460.5657%40catbert.rellim.com%3E"
+       TITLE="[Gpsd-users] Re: magellan explorist 210">gem at rellim.com
+       </A><BR>
+    <I>Tue Feb 28 00:28:20 CET 2006</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="001362.html">[Gpsd-users] Re: magellan explorist 210
+</A></li>
+        <LI>Next message: <A HREF="001364.html">[Gpsd-users] Re: magellan explorist 210
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1363">[ date ]</a>
+              <a href="thread.html#1363">[ thread ]</a>
+              <a href="subject.html#1363">[ subject ]</a>
+              <a href="author.html#1363">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>-----BEGIN PGP SIGNED MESSAGE-----
+Hash: SHA1
+
+Yo Brett!
+
+I found the eXplorist USB interface spec here:
+	<A HREF="http://www.magellangps.com/en/interfaceSolutions/explorist_IS.asp">http://www.magellangps.com/en/interfaceSolutions/explorist_IS.asp</A>
+
+Should be most of what you need.
+
+As I recently suspected, the eXplorist by default comes up as a standard
+USB storage device (page 3).  So Linux should just work fine with it out
+of the box like a thumb drive.  Not sure why your hotplug is not working
+for you.  Probably you are not building the required modules.
+
+There is not even an eXplorist storage driver for windows.  There is
+a serial NMEA driver for windows, not sure why.
+
+Manual confirms that you need to place the exPlorist in NMEA mode, and
+reboot it, before the USB interface for NMEA mode will be seen on your
+laptop.  The doc does not specify why they felt the need to ship an
+eXplorist specific serial NMEA driver.
+
+RGDS
+GARY
+- ---------------------------------------------------------------------------
+Gary E. Miller Rellim 20340 Empire Blvd, Suite E-3, Bend, OR 97701
+	<A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">gem at rellim.com</A>  Tel:+1(541)382-8588 Fax: +1(541)382-8676
+
+On Mon, 27 Feb 2006, Gary E. Miller wrote:
+
+&gt;<i> Date: Mon, 27 Feb 2006 15:14:06 -0800 (PST)
+</I>&gt;<i> From: Gary E. Miller &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">gem at rellim.com</A>&gt;
+</I>&gt;<i> To: Brett Barton &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">archer36 at chartermi.net</A>&gt;
+</I>&gt;<i> Cc: <A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">gpsd-users at lists.berlios.de</A>
+</I>&gt;<i> Subject: Re: [Gpsd-users] Re: magellan explorist 210
+</I>&gt;<i>
+</I>&gt;<i> Yo Brett!
+</I>&gt;<i>
+</I>&gt;<i> I grabbed a copy of the eXplorist manual.  Check out page 65.  Looks like
+</I>&gt;<i> the eXplorist by default comes up in some sort of File Transfer mode,
+</I>&gt;<i> not in NMEA mode.  You need to follow the &quot;Changing Modes&quot; procedure on
+</I>&gt;<i> page 65 and see if that allows you to install a serial driver and see
+</I>&gt;<i> NMEA.
+</I>&gt;<i>
+</I>&gt;<i> Looks to me like the &quot;File Transfer&quot; mode may be a simple usb storage
+</I>&gt;<i> mode (Page 66).  Have you compiled the USB storage drivers as modules or
+</I>&gt;<i> static in your kernel?
+</I>&gt;<i>
+</I>&gt;<i> Have you talked to Magellan tech support yet?
+</I>&gt;<i>
+</I>&gt;<i> RGDS
+</I>&gt;<i> GARY
+</I>&gt;<i> ---------------------------------------------------------------------------
+</I>&gt;<i> Gary E. Miller Rellim 20340 Empire Blvd, Suite E-3, Bend, OR 97701
+</I>&gt;<i> 	<A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">gem at rellim.com</A>  Tel:+1(541)382-8588 Fax: +1(541)382-8676
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i> _______________________________________________
+</I>&gt;<i> Gpsd-users mailing list
+</I>&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">Gpsd-users at lists.berlios.de</A>
+</I>&gt;<i> <A HREF="http://lists.berlios.de/mailman/listinfo/gpsd-users">http://lists.berlios.de/mailman/listinfo/gpsd-users</A>
+</I>&gt;<i>
+</I>&gt;<i> ------------ Output from gpg ------------
+</I>&gt;<i> gpg: WARNING: unsafe enclosing directory permissions on configuration file `/home/gem/.gnupg/gpg.conf'
+</I>&gt;<i> gpg: Signature made Mon Feb 27 15:14:10 2006 PST using DSA key ID D791DEA5
+</I>&gt;<i> gpg: Good signature from &quot;Gary E. Miller &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">gem at rellim.biz</A>&gt;&quot;
+</I>&gt;<i> gpg:                 aka &quot;Gary E. Miller &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">gem at rellim.com</A>&gt;&quot;
+</I>&gt;<i>
+</I>&gt;<i>
+</I>-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v1.4.2.1 (GNU/Linux)
+
+iD8DBQFEA4sX8KZibdeR3qURAj/OAKCBxb1aZoMpbDhdH7ZzX92gvFAYTgCfat0P
+Y6ITUBm5/VZEKzlZH7jfxy4=
+=SHpA
+-----END PGP SIGNATURE-----
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="001362.html">[Gpsd-users] Re: magellan explorist 210
+</A></li>
+	<LI>Next message: <A HREF="001364.html">[Gpsd-users] Re: magellan explorist 210
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1363">[ date ]</a>
+              <a href="thread.html#1363">[ thread ]</a>
+              <a href="subject.html#1363">[ subject ]</a>
+              <a href="author.html#1363">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

@@ -1,0 +1,178 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] Debian bug #329259: xgpsspeed: just flashing blob
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2006-January/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Debian%20bug%20%23329259%3A%20xgpsspeed%3A%20just%20flashing%20blob&In-Reply-To=%3C200601241851.01316.marr%40flex.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="001245.html">
+   <LINK REL="Next"  HREF="001253.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] Debian bug #329259: xgpsspeed: just flashing blob</H1>
+    <B>Marr</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Debian%20bug%20%23329259%3A%20xgpsspeed%3A%20just%20flashing%20blob&In-Reply-To=%3C200601241851.01316.marr%40flex.com%3E"
+       TITLE="[Gpsd-users] Debian bug #329259: xgpsspeed: just flashing blob">marr at flex.com
+       </A><BR>
+    <I>Wed Jan 25 00:51:00 CET 2006</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="001245.html">[Gpsd-users] Debian bug #329259: xgpsspeed: just flashing blob
+</A></li>
+        <LI>Next message: <A HREF="001253.html">[Gpsd-users] Debian bug #329259: xgpsspeed: just flashing blob
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1247">[ date ]</a>
+              <a href="thread.html#1247">[ thread ]</a>
+              <a href="subject.html#1247">[ subject ]</a>
+              <a href="author.html#1247">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>On Tuesday 24 January 2006 02:29am, Gary E. Miller wrote:
+&gt;<i> Yo Hamish!
+</I>&gt;<i>
+</I>&gt;<i> That bug pretty much describes what I see as well...
+</I>&gt;<i>
+</I>&gt;<i> RGDS
+</I>&gt;<i> GARY
+</I>&gt;<i>
+</I>&gt;<i> On Tue, 24 Jan 2006, Hamish wrote:
+</I>&gt;<i> &gt; Hi, I am wondering if xgpsspeed is working for anybody outside of the
+</I>&gt;<i> &gt; Debian world?
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; see  <A HREF="http://bugs.debian.org/cgi-bin/bugreport.cgi?bug=329259">http://bugs.debian.org/cgi-bin/bugreport.cgi?bug=329259</A>
+</I>
+Greetings all,
+
+I had noticed odd behavior a while ago too but ignored it. Since seeing these 
+messages (and after recalling that 'xgpsspeed' had worked fine for me long 
+ago [gpsd-1.x-era]), I took a quick look into this and (apparently) solved 
+the problem described by the Debian bug report. 
+
+The fix merely involved the addition of a couple boundary checks. Without 
+these, the 'update_display()' routine in 'xgpsspeed.c' spins in what 
+essentially turns out to be a never-ending loop as a result of the fact that 
+'gpsd' seems to be reporting 'NaN' for 'fix.speed' for the first few passes 
+when 'xgpsspeed' is run (at least on my system). This results in a ridiculous 
+value (-2147483648) after the conversion to (e.g.) MPH, which sends the 
+tachometer update routine into &quot;crazy-land&quot;. Essentially, the 
+tachometer-widget's needle is spinning all over the place, which looks 
+predictably odd.
+
+While perusing the 'xgpsspeed' code and doing patch testing, I noticed that 
+there are a couple of other bugs in 'xgpsspeed' as well, which I've also 
+fixed.
+
+------------------------------
+
+Attached is a patch against 'xgpsspeed.c' in the 2.30 release of 'gpsd'. It 
+fixes the following bugs in the 'xgpsspeed' application:
+
+(1) Missing limit-checks on the tachometer widget can result in the tachometer 
+needle spinning madly if invalid vehicle speeds are reported by 'gpsd'.
+
+(2) The display of speed units (e.g. &quot;Miles per Hour&quot;) above the &quot;speedometer&quot; 
+was erroneously always displaying &quot;Km per Hour&quot;, regardless of the speed 
+units in use. Furthermore, although there was already a provision to select 
+&quot;knots&quot; as the speed units (&quot;-speedunits knots&quot;), there was never any code to 
+display the proper text!
+
+(3) An erroneous conversion factor (the reciprocal of the correct value) was 
+used to convert the native 'meters per second' GPS-reported speed into knots. 
+This results in an erroneous needle position when &quot;-speedunits knots&quot; has 
+been specified on the command line.
+
+------------------------------
+
+Although 'xgpsspeed' is a rather silly application (especially since it's 
+limited to 0-100, given that it uses a 'tachometer percentage' widget to 
+mimic a speedometer), if we're going to distribute it with 'gpsd', it might 
+as well work as correctly as possible.
+
+Therefore, I'd appreciate it if someone (Gary?) with check-in privileges could 
+apply this patch for the next revision of 'gpsd'.
+
+Thanks!
+
+By the way, does anybody know when the next release of 'gpsd' will be out?
+
+P.S. Hamish, assuming this patch is accepted, could you please add a follow-up 
+note to your existing one on the Debian Bug Tracking System to address this? 
+(Thanks for bringing this bug to our attention in the first place too!) Also, 
+is there some reason why the needle is orange on Debian? Mine is black, 
+unless I use (e.g.) 'xgpsspeed -nc red', which results in a nice-looking red 
+needle. Just curious. :^)
+
+Bill Marr
+-------------- next part --------------
+--- ../gpsd-2.30/xgpsspeed.c	2005-06-14 23:11:49.000000000 -0400
++++ ./xgpsspeed.c	2006-01-24 17:42:19.000000000 -0500
+@@ -35,7 +35,12 @@
+ static void update_display(struct gps_data_t *gpsdata, 
+ 			   char *buf UNUSED, size_t len UNUSED, int level UNUSED)
+ {
+-    (void)TachometerSetValue(tacho, (int)rint(gpsdata-&gt;fix.speed*speedfactor));
++    int temp_int = (int)rint(gpsdata-&gt;fix.speed * speedfactor);
++
++    if (temp_int &lt; 0) temp_int = 0;
++    else if (temp_int &gt; 100) temp_int = 100;
++
++    (void)TachometerSetValue(tacho, temp_int);
+ }
+ 
+ static void handle_input(XtPointer client_data UNUSED,
+@@ -87,7 +92,7 @@
+     if (strcmp(speedunits, &quot;kph&quot;)==0) 
+ 	speedfactor = MPS_TO_KPH;
+     else if (strcmp(speedunits, &quot;knots&quot;)==0)
+-	speedfactor = 1/MPS_TO_KNOTS;
++	speedfactor = MPS_TO_KNOTS;
+ 
+     while ((option = getopt(argc, argv, &quot;hv&quot;)) != -1) {
+ 	switch (option) {
+@@ -139,10 +144,13 @@
+     (void)XtCreateManagedWidget(&quot;title&quot;, labelWidgetClass, base, args, 1);
+ 
+     /**** Label widget ****/
+-    if (speedfactor == KNOTS_TO_MPH)
++    if (speedfactor == MPS_TO_MPH)
+         (void)XtSetArg(args[0], XtNlabel, &quot;Miles per Hour&quot;);
+-    else
++    else if (speedfactor == MPS_TO_KPH)
+         (void)XtSetArg(args[0], XtNlabel, &quot;Km per Hour&quot;);
++    else 
++        (void)XtSetArg(args[0], XtNlabel, &quot;Knots&quot;);
++
+     /*@ +immediatetrans +usedef +observertrans +statictrans @*/
+     (void)XtCreateManagedWidget(&quot;name&quot;, labelWidgetClass, base, args, 1);
+     
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="001245.html">[Gpsd-users] Debian bug #329259: xgpsspeed: just flashing blob
+</A></li>
+	<LI>Next message: <A HREF="001253.html">[Gpsd-users] Debian bug #329259: xgpsspeed: just flashing blob
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1247">[ date ]</a>
+              <a href="thread.html#1247">[ thread ]</a>
+              <a href="subject.html#1247">[ subject ]</a>
+              <a href="author.html#1247">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

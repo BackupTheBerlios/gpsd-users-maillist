@@ -1,0 +1,139 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] Re: Re: multiple devices
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2005-May/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Re%3A%20Re%3A%20multiple%20devices&In-Reply-To=%3C20050517195845.GA11551%40thyrsus.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="000638.html">
+   <LINK REL="Next"  HREF="000639.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] Re: Re: multiple devices</H1>
+    <B>Eric S. Raymond</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Re%3A%20Re%3A%20multiple%20devices&In-Reply-To=%3C20050517195845.GA11551%40thyrsus.com%3E"
+       TITLE="[Gpsd-users] Re: Re: multiple devices">esr at thyrsus.com
+       </A><BR>
+    <I>Tue May 17 21:58:45 CEST 2005</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="000638.html">[Gpsd-users] Re: Re: multiple devices
+</A></li>
+        <LI>Next message: <A HREF="000639.html">[Gpsd-users] gpsd and RTCM
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#640">[ date ]</a>
+              <a href="thread.html#640">[ thread ]</a>
+              <a href="subject.html#640">[ subject ]</a>
+              <a href="author.html#640">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Tobias Hebel &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">thebel at uni-koblenz.de</A>&gt;:
+&gt;<i> &gt; So please tell me
+</I>&gt;<i> &gt; what about the following is not clear:
+</I>&gt;<i> 
+</I>&gt;<i> I think, the only problem is, that I don't know, where gpsd's internal 
+</I>&gt;<i> device list is and how I can alter it.
+</I>&gt;<i> If I understand the manpage correctly, I can start gpsd with two 
+</I>&gt;<i> recievers plugged in and can use both of them, when they are listed in 
+</I>&gt;<i> the internal device list.
+</I>&gt;<i> Only, if I want to alter this list during runtime, I need this control 
+</I>&gt;<i> socket thing with &quot;-F&quot;...?
+</I>&gt;<i> 
+</I>&gt;<i> Thinks that made it uneasy to understand the manpage are:
+</I>&gt;<i> 1. You use &quot;f&quot; and &quot;F&quot; for the same thing, though &quot;f&quot; and &quot;F&quot; have 
+</I>&gt;<i> different meanings in other circomstances of the program.
+</I>&gt;<i> 2. What is a control socket?
+</I>
+Is this better?
+
+&lt;para&gt;Internally, the daemon maintains a device list holding the
+pathnames of GPSes known to the daemon. At any given time, each client
+will be listening to only one of these.  By default, a client's device
+is the one that most recently shipped information to the daemon at the
+time the client first requests GPS information (that is, issues any
+comand other than F, K, W=0 or R=0).&lt;/para&gt;
+
+&lt;varlistentry&gt;
+&lt;term&gt;f&lt;/term&gt;
+&lt;listitem&gt;&lt;para&gt;Gets or sets the active GPS device name. The bare
+command 'f' requests a response containing 'F=' followed by the name
+of the active GPS device.  The other form of the command is 'f=', in
+which case all following printable characters up to but not including
+the next CR/LF are interpreted as the name of a trial GPS device. If
+the trial device is in &lt;application&gt;gpsd&lt;/application&gt;'s device list,
+it is opened and read to see if a GPS can be found there.  If it can,
+the trial device becomes the active device for this client.&lt;/para&gt;
+
+&lt;para&gt;The 'f=' command may fail if the specified device name is not on
+the daemon's device list.  This device list is initialized with the
+path given in the -f command-line option, if that was specified.  For
+security reasons, ordinary clients cannot change this device list;
+instead, this must be done via the daemon's local control socket
+declared with the -F option.&lt;/para&gt;
+
+&lt;para&gt;Once an 'f=' command succeeds, the client is tied to the
+specified device until the client disconnects.&lt;/para&gt;
+
+&lt;para&gt;Whether the command is 'f' or 'f=' or not, and whether it succeeds
+or not, the response always lists the name of the client's device.&lt;/para&gt;
+
+&lt;para&gt;(At protocol level 1, the F command failed if more than one
+client was attached, and multiple devices were not supported.)&lt;/para&gt;
+&lt;/listitem&gt;
+&lt;/varlistentry&gt;
+
+&lt;para&gt;&lt;application&gt;gpsd&lt;/application&gt; maintains an internal list of
+GPS devices.  If you specify an -f option, the list is initialized
+with that pathname as its only member; otherwuse the list starts
+empty.  Commands to add and remove GPS device paths from the daemon's
+device list must be written to a local Unix-domain socket which will
+be accessible only to programs running as root.  This control socket
+will be located wherever the -F option specifies it.&lt;/para&gt;
+
+&lt;para&gt;To point &lt;application&gt;gpsd&lt;/application&gt; at a device that may be
+a GPS, write to the control socket a plus sign ('+') followed by the
+device name followed by LF or CR-LF.  Thus, to point the daemon at
+&lt;filename&gt;/dev/foo&lt;/filename&gt;. send &quot;+/dev/foo\n&quot;.  To tell the daemon
+that a device has been disconnected and is no longer available, send a
+minus sign ('-') followed by the device name followed by LF or
+CR-LF. Thus, to remove &lt;filename&gt;/dev/foo&lt;/filename&gt; from the search
+list. send &quot;-/dev/foo\n&quot;. Your client may await a response, which
+will be a line beginning with either &quot;OK&quot; or &quot;ERROR&quot;.  An ERROR reponse
+to an add command means the device did not emit data recognizable as
+GPS packets; an ERROR response to a remove command means the specified
+device was not in &lt;application&gt;gpsd&lt;/application&gt;'s device list,&lt;/para&gt;
+
+-- 
+		&lt;a href=&quot;<A HREF="http://www.catb.org/~esr/">http://www.catb.org/~esr/</A>&quot;&gt;Eric S. Raymond&lt;/a&gt;
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="000638.html">[Gpsd-users] Re: Re: multiple devices
+</A></li>
+	<LI>Next message: <A HREF="000639.html">[Gpsd-users] gpsd and RTCM
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#640">[ date ]</a>
+              <a href="thread.html#640">[ thread ]</a>
+              <a href="subject.html#640">[ subject ]</a>
+              <a href="author.html#640">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

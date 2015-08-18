@@ -1,0 +1,113 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] Air2u bluetooth GPS support (MTK extensions)
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2008-April/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Air2u%20bluetooth%20GPS%20support%20%28MTK%20extensions%29&In-Reply-To=%3C480F5953.9040808%40edantech.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="003209.html">
+   <LINK REL="Next"  HREF="003206.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] Air2u bluetooth GPS support (MTK extensions)</H1>
+    <B>Santiago Aguiar</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Air2u%20bluetooth%20GPS%20support%20%28MTK%20extensions%29&In-Reply-To=%3C480F5953.9040808%40edantech.com%3E"
+       TITLE="[Gpsd-users] Air2u bluetooth GPS support (MTK extensions)">santiago.aguiar at edantech.com
+       </A><BR>
+    <I>Wed Apr 23 17:44:19 CEST 2008</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="003209.html">[Gpsd-users] Air2u bluetooth GPS support (MTK extensions)
+</A></li>
+        <LI>Next message: <A HREF="003206.html">[Gpsd-users] Air2u bluetooth GPS support (MTK extensions)
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3205">[ date ]</a>
+              <a href="thread.html#3205">[ thread ]</a>
+              <a href="subject.html#3205">[ subject ]</a>
+              <a href="author.html#3205">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hello everyone,
+
+I started using gpsd a few days ago with a Air2u bluetooth GPS (or at 
+least that what hcitool info says, since the device doesn't even have a 
+label ;)).
+
+I get the following log:
+
+gpsd: opening GPS data source at '/dev/rfcomm0'
+gpsd: speed 9600, 8N1
+gpsd: =&gt; GPS: $PASHQ,RID*28\x0d
+gpsd: =&gt; GPS: 0299661c0800040200001203 FAILED
+gpsd: Navcom: sent command 0x1c (Test Support Block)
+gpsd: Navcom: command 0x1c mode = 02, length = 0
+gpsd: =&gt; GPS: 029966200e000001ae02000071000000f203
+gpsd: Navcom: sent command 0x20 (Data Request) - data block id = ae at
+rate 00
+gpsd: =&gt; GPS: 029966200e00000186020a0071000000d003 FAILED
+gpsd: Navcom: sent command 0x20 (Data Request) - data block id = 86 at
+rate 0a
+gpsd: garmin_gps not active.
+gpsd: no probe matched...
+gpsd: gpsd_activate(0): opened GPS (4)
+gpsd: switch_driver(Generic NMEA) called...
+gpsd: selecting Generic NMEA driver...
+gpsd: ntpd_link_activate: 0
+gpsd: =&gt; GPS: $PSRF100,0,9600,8,1,0*0C\x0d
+gpsd: &lt;= GPS: $PMTK010,001*2E
+gpsd: unknown sentence: &quot;$PMTK010,001*2E\x0d\x0a&quot;
+gpsd: closing GPS=/dev/rfcomm0 (4)
+
+I think the PMTK might be a MTK extension command as defined in
+<A HREF="http://www.sparkfun.com/datasheets/GPS/EB-230-Data-Sheet-V1.2.pdf">http://www.sparkfun.com/datasheets/GPS/EB-230-Data-Sheet-V1.2.pdf</A>
+(specially since sending a $PMTK000*32\r\n gets a $PMTK001,101,0*33\r\n
+response).
+
+I'm not familiar with GPS hardware, but should gpsd support or at least
+recognize this extensions to figure out it should use a standard NMEA
+driver? (intead of testing for all the others NMEA subtypes?).
+
+Anyway, gpsd seems to works ok with the device  since it defaults to
+NMEA (it sends the rest of the probes when connecting to gpsd and
+reopening the device).
+
+Thanks for any input since I'm just starting to learn about GPS soft+hard!
+
+Thanks,
+
+-- 
+Santiago Aguiar
+Edantech
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="003209.html">[Gpsd-users] Air2u bluetooth GPS support (MTK extensions)
+</A></li>
+	<LI>Next message: <A HREF="003206.html">[Gpsd-users] Air2u bluetooth GPS support (MTK extensions)
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3205">[ date ]</a>
+              <a href="thread.html#3205">[ thread ]</a>
+              <a href="subject.html#3205">[ subject ]</a>
+              <a href="author.html#3205">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

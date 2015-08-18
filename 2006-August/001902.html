@@ -1,0 +1,258 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] Fwd: NTP Problems
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2006-August/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Fwd%3A%20NTP%20Problems&In-Reply-To=%3C7e272c5c0608300431u3af94cf2id1d9d915566977d1%40mail.gmail.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="001898.html">
+   <LINK REL="Next"  HREF="001903.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] Fwd: NTP Problems</H1>
+    <B>Karl von Muller</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Fwd%3A%20NTP%20Problems&In-Reply-To=%3C7e272c5c0608300431u3af94cf2id1d9d915566977d1%40mail.gmail.com%3E"
+       TITLE="[Gpsd-users] Fwd: NTP Problems">vertigok at gmail.com
+       </A><BR>
+    <I>Wed Aug 30 13:31:51 CEST 2006</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="001898.html">[Gpsd-users] Fwd: NTP Problems
+</A></li>
+        <LI>Next message: <A HREF="001903.html">[Gpsd-users] Fwd: NTP Problems
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1902">[ date ]</a>
+              <a href="thread.html#1902">[ thread ]</a>
+              <a href="subject.html#1902">[ subject ]</a>
+              <a href="author.html#1902">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hey guys,
+
+On 8/30/06, Gary E. Miller &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">gem at rellim.com</A>&gt; wrote:
+&gt;<i>
+</I>&gt;<i> -----BEGIN PGP SIGNED MESSAGE-----
+</I>&gt;<i> Hash: SHA1
+</I>&gt;<i>
+</I>&gt;<i> Yo Karl!
+</I>&gt;<i>
+</I>&gt;<i> On Wed, 30 Aug 2006, Karl von Muller wrote:
+</I>&gt;<i>
+</I>&gt;<i> &gt; seems weird to me. I'm thinking its possible that for some reason the
+</I>&gt;<i> struct
+</I>&gt;<i> &gt; isn't being intialised?
+</I>&gt;<i>
+</I>&gt;<i> Are you sure you have ntp compiled in?  Can you send us your configure
+</I>&gt;<i> options and the configure status report you get?
+</I>&gt;<i>
+</I>&gt;<i> To be sure ntpshm_init is getting called you might want to add a
+</I>&gt;<i> gpsd_report() at the start of the function.
+</I>
+
+
+Configure options
+
+ ./configure \
+        --target=arm-linux \
+        --host=arm-linux \
+        --build=i386-pc-linux-gnu \
+        --prefix=/usr \
+        --exec-prefix=/usr \
+        --bindir=/usr/bin \
+        --sbindir=/usr/sbin \
+        --libexecdir=/usr/lib \
+        --sysconfdir=/etc \
+        --datadir=/usr/share \
+        --localstatedir=/var \
+        --mandir=/usr/man \
+        --infodir=/usr/info \
+        --enable-shared \
+        --enable-static \
+        --without-x \
+        --disable-nls \
+        --disable-tsip \
+        --disable-fv18 \
+        --disable-tripmate \
+        --disable-earthmate \
+        --disable-itrax \
+        --disable-italk \
+        --disable-garmin \
+        --disable-evermore \
+        --enable-pps \
+        --enable-ntpshm \
+
+Configure status
+
+==========================================
+gpsd 2.30
+------------------------------------------
+NMEA                    : yes
+FV-18                   : no
+SiRF-II                 : yes
+Trimble TSIP            : no
+Tripmate                : no
+Earthmate               : no
+iTrax                   : no
+iTalk                   : no
+Garmin                  : no
+True North              : no
+Evermore                :
+RTCM104 support         : yes
+NTP SHM                 : yes
+NTP PPS                 : yes
+Enable shared libraries : yes
+Enable DBUS support     : no
+------------------------------------------
+
+
+&gt;<i> I couldn't see it being called in a strace I ran either. Geoffrey, could
+</I>&gt;<i> you
+</I>&gt;<i> &gt; post a little more from either side of your strace please?
+</I>&gt;<i>
+</I>&gt;<i> This should help you find it.  My gps is on /dev/ttyS1 and the shm is
+</I>&gt;<i> set up just before the gps device is opened..
+</I>&gt;<i>
+</I>&gt;<i> # strace gpsd -Nn /dev/ttyS1
+</I>&gt;<i>
+</I>&gt;<i> [...]
+</I>&gt;<i>
+</I>&gt;<i> open(&quot;/etc/protocols&quot;, O_RDONLY)        = 3
+</I>&gt;<i> fcntl64(3, F_GETFD)                     = 0
+</I>&gt;<i> fcntl64(3, F_SETFD, FD_CLOEXEC)         = 0
+</I>&gt;<i> fstat64(3, {st_mode=S_IFREG|0644, st_size=5748, ...}) = 0
+</I>&gt;<i> old_mmap(NULL, 4096, PROT_READ|PROT_WRITE, MAP_PRIVATE|MAP_ANONYMOUS, -1,
+</I>&gt;<i> 0) = 0
+</I>&gt;<i> xb7f93000
+</I>&gt;<i> read(3, &quot;#\n# Internet protocols\n#\n# $Free&quot;..., 4096) = 4096
+</I>&gt;<i> close(3)                                = 0
+</I>&gt;<i> munmap(0xb7f93000, 4096)                = 0
+</I>&gt;<i> socket(PF_INET, SOCK_STREAM, IPPROTO_TCP) = 3
+</I>&gt;<i> setsockopt(3, SOL_SOCKET, SO_REUSEADDR, [1], 4) = 0
+</I>&gt;<i> bind(3, {sin_family=AF_INET, sin_port=htons(2947), sin_addr=inet_addr(&quot;
+</I>&gt;<i> 0.0.0.0&quot;)
+</I>&gt;<i> }}, 16) = 0
+</I>&gt;<i> listen(3, 5)                            = 0
+</I>&gt;<i> getuid32()                              = 0
+</I>&gt;<i> getpriority(PRIO_PROCESS, 0)            = 20
+</I>&gt;<i> setpriority(PRIO_PROCESS, 0, -10)       = 0
+</I>&gt;<i> getpriority(PRIO_PROCESS, 0)            = 30
+</I>&gt;<i> shmget(1314148400, 80, IPC_CREAT|0x1a4|0644) = 0
+</I>&gt;<i> shmat(0, 0, 0)                          = 0xb7f93000
+</I>&gt;<i> shmget(1314148401, 80, IPC_CREAT|0x1a4|0644) = 32769
+</I>&gt;<i> shmat(32769, 0, 0)                      = 0xb7f92000
+</I>&gt;<i> shmget(1314148402, 80, IPC_CREAT|0x1a4|0644) = 65538
+</I>&gt;<i> shmat(65538, 0, 0)                      = 0xb7f91000
+</I>&gt;<i> shmget(1314148403, 80, IPC_CREAT|0x1a4|0644) = 98307
+</I>&gt;<i> shmat(98307, 0, 0)                      = 0xb7f90000
+</I>&gt;<i> getuid32()                              = 0
+</I>&gt;<i> getegid32()                             = 0
+</I>&gt;<i> geteuid32()                             = 0
+</I>&gt;<i> rt_sigaction(SIGHUP, {0x8049660, [HUP], SA_RESTART|0x4000000}, {SIG_DFL},
+</I>&gt;<i> 8) = 0
+</I>&gt;<i> rt_sigaction(SIGINT, {0x8049660, [INT], SA_RESTART|0x4000000}, {SIG_DFL},
+</I>&gt;<i> 8) = 0
+</I>&gt;<i> rt_sigaction(SIGTERM, {0x8049660, [TERM], SA_RESTART|0x4000000},
+</I>&gt;<i> {SIG_DFL}, 8) =
+</I>&gt;<i> 0
+</I>&gt;<i> rt_sigaction(SIGQUIT, {0x8049660, [QUIT], SA_RESTART|0x4000000},
+</I>&gt;<i> {SIG_DFL}, 8) =
+</I>&gt;<i> 0
+</I>&gt;<i> rt_sigaction(SIGPIPE, {SIG_IGN}, {SIG_DFL}, 8) = 0
+</I>&gt;<i> time(NULL)                              = 1156889543
+</I>&gt;<i> open(&quot;/dev/ttyS1&quot;, O_RDWR|O_NONBLOCK|O_NOCTTY) = 4
+</I>&gt;<i> ioctl(4, SNDCTL_TMR_TIMEBASE, {B19200 opost isig icanon echo ...}) = 0
+</I>&gt;<i> ioctl(4, 0x540b, 0x2)                   = 0
+</I>
+
+Hmm, i seem to be missing a lot in my strace compared to yours..
+
+strace gpsd -Nn /dev/ttyS0
+execve(&quot;/usr/bin/gpsd&quot;, [&quot;gpsd&quot;, &quot;-Nn&quot;, &quot;/dev/ttyS0&quot;], [/* 18 vars */]) = 0
+old_mmap(NULL, 20, PROT_READ|PROT_WRITE, MAP_PRIVATE|MAP_ANONYMOUS, -1, 0) =
+0x40005000
+stat(&quot;/etc/ld.so.cache&quot;, {st_mode=S_IFREG|0644, st_size=1010, ...}) = 0
+
+[...]
+
+open(&quot;/etc/protocols&quot;, O_RDONLY)        = 3
+ioctl(3, SNDCTL_TMR_TIMEBASE or TCGETS, 0xbe8db7f8) = -1 ENOTTY
+(Inappropriate ioctl for device)
+read(3, &quot;# /etc/protocols:\n# $Id: protoco&quot;..., 4096) = 1191
+close(3)                                = 0
+mq_notify(2, ptrace: umoven: Input/output error
+{...})                     = 3
+SYS_294(0x3, 0x1, 0x2, 0xbe8db914, 0x4) = 0
+mq_getsetattr(3, {mq_flags=O_RDWR|O_DIRECT|O_LARGEFILE|0x83080000,
+mq_maxmsg=0, mq_msgsize=0, mq_curmsg=0}, ptrace: umoven: Input/output error
+{...}) = 0
+waitid(0x3 /* P_??? */, 5, ptrace: umoven: Input/output error
+{???}, __WCLONE|__WNOTHREAD|0x1e8db914, NULL) = 0
+getuid()                                = 0
+getegid()                               = 0
+geteuid()                               = 0
+rt_sigaction(SIGHUP, {0x9e90, [HUP], SA_RESTART|0x4000000}, {SIG_DFL}, 8) =
+0
+rt_sigaction(SIGINT, {0x9e90, [INT], SA_RESTART|0x4000000}, {SIG_DFL}, 8) =
+0
+rt_sigaction(SIGTERM, {0x9e90, [TERM], SA_RESTART|0x4000000}, {SIG_DFL}, 8)
+= 0
+rt_sigaction(SIGQUIT, {0x9e90, [QUIT], SA_RESTART|0x4000000}, {SIG_DFL}, 8)
+= 0
+rt_sigaction(SIGPIPE, {SIG_IGN}, {SIG_DFL}, 8) = 0
+time(NULL)                              = 48974
+open(&quot;/dev/ttyS0&quot;, O_RDWR|O_NOCTTY)     = 4
+ioctl(4, SNDCTL_TMR_TIMEBASE or TCGETS, {B9600 opost isig icanon echo ...})
+= 0
+ioctl(4, TCFLSH, 0x2)                   = 0
+
+
+RGDS
+&gt;<i> GARY
+</I>&gt;<i> -
+</I>&gt;<i> ---------------------------------------------------------------------------
+</I>&gt;<i> Gary E. Miller Rellim 20340 Empire Blvd, Suite E-3, Bend, OR 97701
+</I>&gt;<i>         <A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">gem at rellim.com</A>  Tel:+1(541)382-8588
+</I>&gt;<i>
+</I>&gt;<i> -----BEGIN PGP SIGNATURE-----
+</I>&gt;<i> Version: GnuPG v1.4.3 (GNU/Linux)
+</I>&gt;<i>
+</I>&gt;<i> iD8DBQFE9L1E8KZibdeR3qURAmlpAKCziotvItMokcdhpiUNPqxRtu0nTwCg6oGh
+</I>&gt;<i> XZ5VUn0o4S8ByodppyZh9Ik=
+</I>&gt;<i> =zK/G
+</I>&gt;<i> -----END PGP SIGNATURE-----
+</I>&gt;<i>
+</I>&gt;<i>
+</I>-------------- next part --------------
+An HTML attachment was scrubbed...
+URL: &lt;<A HREF="https://lists.berlios.de/pipermail/gpsd-users/attachments/20060830/d938c10e/attachment.html">https://lists.berlios.de/pipermail/gpsd-users/attachments/20060830/d938c10e/attachment.html</A>&gt;
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="001898.html">[Gpsd-users] Fwd: NTP Problems
+</A></li>
+	<LI>Next message: <A HREF="001903.html">[Gpsd-users] Fwd: NTP Problems
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1902">[ date ]</a>
+              <a href="thread.html#1902">[ thread ]</a>
+              <a href="subject.html#1902">[ subject ]</a>
+              <a href="author.html#1902">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

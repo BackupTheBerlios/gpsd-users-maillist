@@ -1,0 +1,81 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] Possible bug in gpsd-2.30
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2006-February/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Possible%20bug%20in%20gpsd-2.30&In-Reply-To=%3C00e301c635fc%242582d600%24211015ca%40DevLaptop%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="001367.html">
+   <LINK REL="Next"  HREF="001349.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] Possible bug in gpsd-2.30</H1>
+    <B>Ben Martel</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Possible%20bug%20in%20gpsd-2.30&In-Reply-To=%3C00e301c635fc%242582d600%24211015ca%40DevLaptop%3E"
+       TITLE="[Gpsd-users] Possible bug in gpsd-2.30">benm at symmetric.co.nz
+       </A><BR>
+    <I>Mon Feb 20 10:00:50 CET 2006</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="001367.html">[Gpsd-users] tar file corruption?
+</A></li>
+        <LI>Next message: <A HREF="001349.html">[Gpsd-users] Possible bug in gpsd-2.30
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1329">[ date ]</a>
+              <a href="thread.html#1329">[ thread ]</a>
+              <a href="subject.html#1329">[ subject ]</a>
+              <a href="author.html#1329">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi there,
+
+Can anyone confirm that this is a bug in libgps.c in v2.30?
+
+I believe the gps_data_t.status value is not correctly updated when parsing the output of the O= records of watcher mode.
+
+I have pasted a diff with a suggested fix in it.
+
+   ~benm
+
+298a299
+&gt;<i>             gpsdata-&gt;status = STATUS_NO_FIX;
+</I>341a343,344
+&gt;<i>                 gpsdata-&gt;status = STATUS_FIX;
+</I>&gt;<i>                           gpsdata-&gt;set |= STATUS_SET;
+</I>
+
+
+-------------- next part --------------
+An HTML attachment was scrubbed...
+URL: &lt;<A HREF="https://lists.berlios.de/pipermail/gpsd-users/attachments/20060220/93f848de/attachment.html">https://lists.berlios.de/pipermail/gpsd-users/attachments/20060220/93f848de/attachment.html</A>&gt;
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="001367.html">[Gpsd-users] tar file corruption?
+</A></li>
+	<LI>Next message: <A HREF="001349.html">[Gpsd-users] Possible bug in gpsd-2.30
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1329">[ date ]</a>
+              <a href="thread.html#1329">[ thread ]</a>
+              <a href="subject.html#1329">[ subject ]</a>
+              <a href="author.html#1329">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

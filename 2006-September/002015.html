@@ -1,0 +1,161 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] Low Budget Bathymetry
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2006-September/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Low%20Budget%20Bathymetry&In-Reply-To=%3C20060927202211.17b6ca24.hamish_nospam%40yahoo.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="001954.html">
+   <LINK REL="Next"  HREF="001955.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] Low Budget Bathymetry</H1>
+    <B>Hamish</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Low%20Budget%20Bathymetry&In-Reply-To=%3C20060927202211.17b6ca24.hamish_nospam%40yahoo.com%3E"
+       TITLE="[Gpsd-users] Low Budget Bathymetry">hamish_nospam at yahoo.com
+       </A><BR>
+    <I>Wed Sep 27 10:22:11 CEST 2006</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="001954.html">[Gpsd-users] Low Budget Bathymetry
+</A></li>
+        <LI>Next message: <A HREF="001955.html">[Gpsd-users] NMEA_CYCLE_START
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2015">[ date ]</a>
+              <a href="thread.html#2015">[ thread ]</a>
+              <a href="subject.html#2015">[ subject ]</a>
+              <a href="author.html#2015">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Carl wrote:
+&gt;<i> I hooked up a Humminbird fishfinder with an attached GPS unit which
+</I>&gt;<i> both speak  NMEA0183. The GPS talks to the fishfinder, which in turn
+</I>&gt;<i> outputs groups of  sentences in the following sequence, with an &quot;IN&quot;
+</I>&gt;<i> prefix:
+</I>&gt;<i> 
+</I>&gt;<i> DPT (depth)
+</I>..
+&gt;<i> MTW (water temperature)
+</I>..
+&gt;<i> [...] Also, neither gpsd nor gpsbabel can parse the DPT sentences, 
+</I>&gt;<i> which makes gpsd useful only as a serial port communication tool for
+</I>&gt;<i> my application, and renders gpsbabel useless, since it aborts with an
+</I>&gt;<i> error upon its first encounter with a DPT sentence.
+</I>
++1 RFE, please add parsing for these sentences. :)
+
+&gt;<i> Of course I can capture the raw NMEA output, but since my intent is to
+</I>&gt;<i> pipe  this data into a GIS, some parsing and reformatting along the
+</I>&gt;<i> way would be quite helpful. The timestamps that gpsd could add, for
+</I>&gt;<i> example, would provide valuable position interpolation information
+</I>&gt;<i> for more precisely positioning the depth readings between position
+</I>&gt;<i> readings. Boat speed may be as fast as 10m/s, so not compensating for
+</I>&gt;<i> the delays between depth and position readings could misplace the
+</I>&gt;<i> depth readings on the map by as much as 30m.
+</I>
+In my experience boat tracks are quite smooth, so interpolation works 
+very well. Beware sub-second soundings -- the ping can take some time
+to travel through the water &amp; return to the sounder, and who knows about
+processing time within the unit. Thus you need a time correction factor
+proportional to the water depth; as the unit has a thermistor built in,
+perhaps it is doing some sort of rough water density (speed of sound)
+correction already..? (of course without salinity &amp; knowledge of the
+structure of the water column, using surface values are dubious anyway)
+
+
+&gt;<i> Ideally, I would have the incoming sentences parsed on arrival at the
+</I>&gt;<i> laptop, with position translated from lat-lon to UTM.
+</I>
+Pipe through cs2cs from PROJ4, or easier m.proj in GRASS.
+
+
+&gt;<i> Then the bathymetry would be compensated to MSL elevation using the
+</I>&gt;<i> known water surface elevation,
+</I>
+&quot;known water surface elevation&quot; using telemetered tide gauge data or
+astronomically calculated?
+
+You can use xtide, but be sure that the harmonics are current (check
+results vs. local tide tables). For me they were somewhat old/off &amp; I
+had to recalculate them. Simrad+Olex uses xtide:
+  <A HREF="http://www.olex.no/index_e_NY.html">http://www.olex.no/index_e_NY.html</A>
+
+Note many parts of the world use Lowest-low tide as the bathymetric
+datum, not MSL.
+
+
+&gt;<i> compensated for position change, then a point would be added to a
+</I>&gt;<i> vector point map in QGIS or GRASS, all in nearly real time. 
+</I>
+Perhaps a good solution is to add the point to a PostGIS database (ie
+PostgreSQL with spatial module). Then use QGIS, GRASS, or
+GRASS+GpsDrive for display.
+
+I have already done something like this using gpsd 1.10 and GRASS 5 sites.
+(just position, not depth) I called it m.realtime_gps:
+  <A HREF="http://lists.alioth.debian.org/pipermail/pkg-grass-general/2005-January/000452.html">http://lists.alioth.debian.org/pipermail/pkg-grass-general/2005-January/000452.html</A>
+
+For GRASS 6 I have abandoned that, I now use gpsdrive instead + a custom
+gpsd client to log position every 10 sec for post-processing/interpolation
+of postion for various water chemisty sensors. Use d.out.gpsdrive in GRASS 6
+in the background to update the gpsdrive backdrop at some interval if you
+want real-time display.
+
+
+&gt;<i> See: &lt;gis.esri.com/library/userconf/proc03/p0750.pdf&gt; for an example
+</I>&gt;<i> of this  type of data collection in Nebraska using proprietary
+</I>&gt;<i> software, although it appears that the bulk of the processing was not
+</I>&gt;<i> done on the spot.
+</I>&gt;<i> 
+</I>&gt;<i> Is anyone already doing anything like this with Free software? 
+</I>
+Yes, Bob Covill has already used the Hummingbird for this:
+  <A HREF="http://www.tekmap.ns.ca/Gallery/shls_multibeam.html">http://www.tekmap.ns.ca/Gallery/shls_multibeam.html</A>
+
+The simrad/olex solution does this sort of thing in real time. It is
+built using free software tools, but is not free software itself.
+
+And I do various bathymetry stuff on demand for work, see:
+  <A HREF="http://hamish.bowman.googlepages.com/grassfiles#xyz">http://hamish.bowman.googlepages.com/grassfiles#xyz</A>
+there'll be other stuff along these lines by David Finlayson, search the
+link at the bottom of that page.
+
+
+Certainly it can be done without too much pain using tools already
+mentioned by you &amp; a bit of scripting.
+
+
+good luck,
+Hamish
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="001954.html">[Gpsd-users] Low Budget Bathymetry
+</A></li>
+	<LI>Next message: <A HREF="001955.html">[Gpsd-users] NMEA_CYCLE_START
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2015">[ date ]</a>
+              <a href="thread.html#2015">[ thread ]</a>
+              <a href="subject.html#2015">[ subject ]</a>
+              <a href="author.html#2015">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

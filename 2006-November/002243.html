@@ -1,0 +1,176 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] Epic tale of the VOM and the wall wart -- and so,	it begins
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2006-November/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Epic%20tale%20of%20the%20VOM%20and%20the%20wall%20wart%20--%20and%20so%2C%0A%09it%20begins&In-Reply-To=%3CPine.LNX.4.64.0611121923180.2020%40birdbird.example.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="002241.html">
+   <LINK REL="Next"  HREF="002244.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] Epic tale of the VOM and the wall wart -- and so,	it begins</H1>
+    <B>Matt Roberds</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Epic%20tale%20of%20the%20VOM%20and%20the%20wall%20wart%20--%20and%20so%2C%0A%09it%20begins&In-Reply-To=%3CPine.LNX.4.64.0611121923180.2020%40birdbird.example.com%3E"
+       TITLE="[Gpsd-users] Epic tale of the VOM and the wall wart -- and so,	it begins">mattroberds at cox.net
+       </A><BR>
+    <I>Mon Nov 13 03:22:05 CET 2006</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="002241.html">[Gpsd-users] Epic tale of the VOM and the wall wart -- and so,	it begins
+</A></li>
+        <LI>Next message: <A HREF="002244.html">[Gpsd-users] Epic tale of the VOM and the wall wart -- and so,	it begins
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2243">[ date ]</a>
+              <a href="thread.html#2243">[ thread ]</a>
+              <a href="subject.html#2243">[ subject ]</a>
+              <a href="author.html#2243">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>On Sun, 12 Nov 2006, Eric S. Raymond wrote:
+&gt;<i> INPUT: AC100-240V 50/60Hz 0.5a.
+</I>&gt;<i>
+</I>&gt;<i> If I'm reconstructing the theory behind your statement above correctly,
+</I>&gt;<i> that spec says REGULATED! in a loud, clear voice.
+</I>
+Yep, it's most likely regulated.
+
+This is perhaps a little far afield from GPS software development, but
+here goes...
+
+&gt;<i> There's a cheap Micronta digital VOM in the piles 'o stuff somewhere
+</I>&gt;<i> downstairs, my father dropped it on me many Christmases ago and I am
+</I>&gt;<i> deeply inexperienced in its uses.
+</I>
+Micronta == Radio Shack.  For all their many failings, Radio Shack is
+fairly good about having manuals for older products online.  The model
+number will be either on the face of the meter or on a sticker on the
+back and will probably be of the form 22-[0-9][0-9][0-9] .  Put that
+model number in the search box at radioshack.com and you'll probably get
+a PDF of the manual.
+
+&gt;<i> OUTPUT                             +DC1200
+</I>&gt;<i> AC 1200V                           +DC 600V
+</I>&gt;<i> -COM (500V Max ground)             +V - Ohms - A
+</I>
+Most of the time you will have the black one plugged into -COM and the
+red one plugged into +V - Omega - A.  You might plug the red one into
+AC 1200V, +DC1200, or +DC 600V if you are measuring really high
+voltages.
+
+The (500V Max ground) on -COM means that the -COM terminal shouldn't be
+more than 500 V above earth potential.  In practice it will be hard for
+a mild-mannered computer hacker to exceed this, as long as he stays out
+of microwave ovens, CRT monitors and TVs, and the circuit breaker panels
+at a commercial office building or factory.
+
+&gt;<i> The bottom pair of jacks have a sort of tie symbol between 'em
+</I>&gt;<i> with text in the middle reading:
+</I>&gt;<i>
+</I>&gt;<i> 600V AC  300V DC  300mA DC  MAX
+</I>
+This is the maximum voltage or current you should apply to these two
+jacks.
+
+&gt;<i> There are a couple of red lightning bolts next to the AC 1200V and
+</I>&gt;<i> +DC 1200V symbols, which I'm guessing translate as &quot;be fucking careful
+</I>&gt;<i> or you'll die&quot;.
+</I>
+If you're lucky you can kill yourself with a 1.5 V alkaline cell, but
+yeah, the higher the voltage the easier it is.
+
+&gt;<i> Finally, a control wheel off to the right.  It's got four modes on it,
+</I>&gt;<i> &quot;DC A&quot;, &quot;DC V&quot;, &quot;OHMS&quot;, and &quot;AC V&quot; with ranges on each.  Somewhat to my
+</I>&gt;<i> own surprise I think I understand that, and want DC V with the range set
+</I>&gt;<i> to 3 volts (the stops are 0.6, 3, 15, and 60).
+</I>
+Basically, you want to select range = ceil(expected_input).  The 3 V
+range would be OK for an alkaline cell (1.5 V or less) but won't work
+very well on a 5 V power supply.  The 15 V range would be better for the
+5 V supply.  The 60 V range would also work, but it'll be pretty hard to
+tell the difference between 5 V and 10 V, since it'll all be squished
+down in one end of the range.  If expected_input is unknown, you start
+at the highest range and work down.
+
+&gt;<i> Selecting the ohmmeter mode and touching the probes to each other
+</I>&gt;<i> kicks the needle from its rest position at the left to 0 ohms on the
+</I>&gt;<i> extreme right.  It would appear the instrument is not dead.
+</I>
+There is an internal battery that makes the ohms range work, and this is
+indeed a sign that it is good.  Even without the battery, the meter
+should still work on volts and amps.
+
+&gt;<i> Which pair of jacks to use?  I'm thinking the bottom pair looks right,
+</I>&gt;<i> except that 300mA DC MAX notation worries me.
+</I>
+I think you're right.  The 300 mA max refers to a current measurement
+(DC A) which you don't want to do - you want to measure voltage, DC V.
+
+The other part of using an analog meter is figuring out which of the
+several parallel scales to read.  The best advice I can give is to find
+some known voltages and fool around until you understand it.  A fresh
+alkaline cell is 1.5 V, a freshly-charged NiCd or NiMH battery is 1.2 to
+1.3 V, a fresh 9 volt battery is guess what, a car battery is about 12.6 v
+with the engine not running or up to 14 V or so with the engine running,
+etc.  The disk drive power connectors in a desktop computer will likely
+have +5 V and +12 V on them.  A POTS (telephone) line will be something
+like -48 V on-hook, down to as low as -5 or -10 V off-hook.  You probably
+have some other wall warts that you can measure, too.  As long as you
+stick to the &quot;DC V&quot; and &quot;AC V&quot; ranges and measure things that are 60 V
+or less, you probably won't blow up your meter or yourself.  Read the
+manual before venturing on to &quot;DC A&quot; or &quot;OHMS&quot;.
+
+&gt;<i> Gadzooks.  I actually understood that!
+</I>
+There's nothing more dangerous than a programmer with a screwdriver.  :)
+
+&gt;<i> It doesn't have the heavy, clumsy look and cryptic badly-translated-
+</I>&gt;<i> from-some-random-Asian-language English I associate with cheapo parts.
+</I>
+That can also be a good clue.  However, as time goes on, the fake
+Chinese parts are getting better and better at having nice-looking
+(but fake) labels, plausible-looking (but fake) UL marks, etc.
+
+If you want to get into basic trouble, get the book described at
+<A HREF="http://www.forrestmims.com/">http://www.forrestmims.com/</A> .  Radio Shack doesn't sell this any more,
+but you can get it online from other sources.  Once you've done everything
+in that book, get into advanced trouble with this one:
+<A HREF="http://www.artofelectronics.com/">http://www.artofelectronics.com/</A> .
+
+Standard disclaimers apply; I don't get money or other considerations
+from any of the companies mentioned.
+
+Matt Roberds
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="002241.html">[Gpsd-users] Epic tale of the VOM and the wall wart -- and so,	it begins
+</A></li>
+	<LI>Next message: <A HREF="002244.html">[Gpsd-users] Epic tale of the VOM and the wall wart -- and so,	it begins
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2243">[ date ]</a>
+              <a href="thread.html#2243">[ thread ]</a>
+              <a href="subject.html#2243">[ subject ]</a>
+              <a href="author.html#2243">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

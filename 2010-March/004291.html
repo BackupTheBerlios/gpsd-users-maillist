@@ -1,0 +1,123 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] gpds, ntpd, pps, and shared memory (oh my)
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2010-March/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20gpds%2C%20ntpd%2C%20pps%2C%20and%20shared%20memory%20%28oh%20my%29&In-Reply-To=%3Calpine.LNX.1.10.1003221228420.14620%40catbert.rellim.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="004290.html">
+   <LINK REL="Next"  HREF="004292.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] gpds, ntpd, pps, and shared memory (oh my)</H1>
+    <B>Gary E. Miller</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20gpds%2C%20ntpd%2C%20pps%2C%20and%20shared%20memory%20%28oh%20my%29&In-Reply-To=%3Calpine.LNX.1.10.1003221228420.14620%40catbert.rellim.com%3E"
+       TITLE="[Gpsd-users] gpds, ntpd, pps, and shared memory (oh my)">gem at rellim.com
+       </A><BR>
+    <I>Mon Mar 22 20:34:03 CET 2010</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="004290.html">[Gpsd-users] gpds, ntpd, pps, and shared memory (oh my)
+</A></li>
+        <LI>Next message: <A HREF="004292.html">[Gpsd-users] gpds, ntpd, pps, and shared memory (oh my)
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#4291">[ date ]</a>
+              <a href="thread.html#4291">[ thread ]</a>
+              <a href="subject.html#4291">[ subject ]</a>
+              <a href="author.html#4291">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>-----BEGIN PGP SIGNED MESSAGE-----
+Hash: SHA1
+
+Yo Alexander!
+
+On Mon, 22 Mar 2010, Alexander Carver wrote:
+
+&gt;<i> &gt; No need for ldattach.  Just start gpsd first, let it control the GPS and
+</I>&gt;<i> &gt; then let ntpd get all the data it needs from the shared memory segment.
+</I>&gt;<i>
+</I>&gt;<i> I need ldattach to get PPS data.  Is this not correct?
+</I>
+Nope, not at all.  PPS just comes in on the normal serial device to gpsd.
+Just start gpsd reading the basic tty device and do not have ntpd touch
+any serial device.
+
+There are some advanced reasons to maybe use ldattach, but you are not
+close to that yet.
+
+&gt;<i> &gt; &gt; First ntpd complains that it gets a permission denied when attaching to
+</I>&gt;<i> &gt; &gt; shared
+</I>&gt;<i> &gt; &gt; memory.  The config reads:
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; What version of gpsd are you running?
+</I>&gt;<i>
+</I>&gt;<i> 2.90  But I think I figured it out by deleting all the shared memory hooks
+</I>&gt;<i> with ipcrm and letting ntp and gpsd recreate them.  So right now I'm getting
+</I>&gt;<i> the straight GPS time but not the PPS time.
+</I>
+Shared memory segments can persist and so if created wrong will stay
+wrong.  gpsd 2.91 handles this a bit better then 2.90.
+
+Try to get gpsd to see the PPS before you start ntpd.  Also, what does
+your ntpd.conf look like?  This is about all you need in it:
+
+	driftfile /var/lib/ntp/ntp.drift
+	logfile /var/log/ntp.log
+
+	# for gpsd
+	server 127.127.28.0 minpoll 4 maxpoll 4
+	fudge 127.127.28.0 time1 0.0  refid GPS
+
+	# for PPS and gpsd
+	server 127.127.28.1 minpoll 4 maxpoll 4 prefer
+	fudge 127.127.28.1 refid GPS1
+
+
+
+RGDS
+GARY
+- ---------------------------------------------------------------------------
+Gary E. Miller Rellim 109 NW Wilmington Ave., Suite E, Bend, OR 97701
+	<A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">gem at rellim.com</A>  Tel:+1(541)382-8588
+
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v1.4.3 (GNU/Linux)
+
+iD8DBQFLp8YtBmnRqz71OvMRAuh7AJ0c2D8f9L/TW4BKkiOdz7enKi0ztwCdHPdV
+1mktSqsId7h8B8MxTqADKQE=
+=nmaq
+-----END PGP SIGNATURE-----
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="004290.html">[Gpsd-users] gpds, ntpd, pps, and shared memory (oh my)
+</A></li>
+	<LI>Next message: <A HREF="004292.html">[Gpsd-users] gpds, ntpd, pps, and shared memory (oh my)
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#4291">[ date ]</a>
+              <a href="thread.html#4291">[ thread ]</a>
+              <a href="subject.html#4291">[ subject ]</a>
+              <a href="author.html#4291">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

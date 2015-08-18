@@ -1,0 +1,123 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] Cannot get Garmin 18x LVC NMEA to work right with ntp
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2010-December/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Cannot%20get%20Garmin%2018x%20LVC%20NMEA%20to%20work%20right%20with%0A%20ntp&In-Reply-To=%3Calpine.LNX.1.00.1012311125410.21114%40catbert.rellim.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="004866.html">
+   <LINK REL="Next"  HREF="004864.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] Cannot get Garmin 18x LVC NMEA to work right with ntp</H1>
+    <B>Gary E. Miller</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Cannot%20get%20Garmin%2018x%20LVC%20NMEA%20to%20work%20right%20with%0A%20ntp&In-Reply-To=%3Calpine.LNX.1.00.1012311125410.21114%40catbert.rellim.com%3E"
+       TITLE="[Gpsd-users] Cannot get Garmin 18x LVC NMEA to work right with ntp">gem at rellim.com
+       </A><BR>
+    <I>Fri Dec 31 21:15:25 CET 2010</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="004866.html">[Gpsd-users] Cannot get Garmin 18x LVC NMEA to work right with ntp
+</A></li>
+        <LI>Next message: <A HREF="004864.html">[Gpsd-users] Cannot get Garmin 18x LVC NMEA to work right with ntp
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#4862">[ date ]</a>
+              <a href="thread.html#4862">[ thread ]</a>
+              <a href="subject.html#4862">[ subject ]</a>
+              <a href="author.html#4862">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>-----BEGIN PGP SIGNED MESSAGE-----
+Hash: SHA1
+
+Yo Gary!
+
+On Fri, 31 Dec 2010, Gary Eheman wrote:
+
+&gt;<i> In my reading of the GPS 18 Technical Specifications (Rev. D) pdf from Garmin
+</I>
+Best to read the doc for your unit (18x, not 18):
+	<A HREF="http://www8.garmin.com/manuals/GPS18x_TechnicalSpecifications.pdf">http://www8.garmin.com/manuals/GPS18x_TechnicalSpecifications.pdf</A>
+
+&gt;<i> So 19200 baud appears to be the max for my model.
+</I>
+Confirmed.
+
+&gt;<i> # gpsctl -f -s 19200 /dev/ttyS1
+</I>&gt;<i> gpsctl: /dev/ttyS1 identified as a Generic NMEA at 4800.
+</I>&gt;<i> gpsctl: Generic NMEA devices have no speed switch.
+</I>&gt;<i> #
+</I>
+Uh, oh.  gpsctl got broken, again.
+
+&gt;<i> # gpsd -nND 7 /dev/ttyS1 2&gt;&amp;1 | egrep 'PPS|NTP'
+</I>&gt;<i> and then started ntp.  Trace can be viewed at:
+</I>&gt;<i> <A HREF="http://pastebin.com/0Mf8vc8P">http://pastebin.com/0Mf8vc8P</A>
+</I>
+That looks good.  You just need to adjust your time1 (fudge):
+
+gpsd: NTPD ntpshm_put: Clock: 1293812417.000000 @ 1293812417.417598, fudge: 0.000
+                                                            ^^^^^^^
+
+That shows your NMEA time is coming in about 400-500mS after the tick. So
+set your time1 to about 0.450.
+
+When you get that, send us the output of:
+	 ntpdc -p
+
+NMEA time will be swinging about horribly, so it will only be used as a
+last resort by ntpd.
+
+&gt;<i> In case it makes a difference, I should disclose that when making my DE9
+</I>&gt;<i>  cable
+</I>&gt;<i> connector, I inserted a 25 foot cat-3 cable as an extension.
+</I>
+I do that all the time, works great.
+
+
+RGDS
+GARY
+- ---------------------------------------------------------------------------
+Gary E. Miller Rellim 109 NW Wilmington Ave., Suite E, Bend, OR 97701
+	<A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">gem at rellim.com</A>  Tel:+1(541)382-8588
+
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v1.4.3 (GNU/Linux)
+
+iD8DBQFNHjniBmnRqz71OvMRAqCUAJ0UwvRVzOLlm228lt3G4zvXCC70/ACffhHU
+1hQ/lPIzVch3enzNKOr41eU=
+=aiZZ
+-----END PGP SIGNATURE-----
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="004866.html">[Gpsd-users] Cannot get Garmin 18x LVC NMEA to work right with ntp
+</A></li>
+	<LI>Next message: <A HREF="004864.html">[Gpsd-users] Cannot get Garmin 18x LVC NMEA to work right with ntp
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#4862">[ date ]</a>
+              <a href="thread.html#4862">[ thread ]</a>
+              <a href="subject.html#4862">[ subject ]</a>
+              <a href="author.html#4862">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

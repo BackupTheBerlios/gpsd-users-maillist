@@ -1,0 +1,132 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] Incompatibility between gpsd and Fedora 12
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2010-March/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Incompatibility%20between%20gpsd%20and%20Fedora%2012&In-Reply-To=%3C1268929576.3693.7.camel%40localhost%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="004278.html">
+   <LINK REL="Next"  HREF="004280.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] Incompatibility between gpsd and Fedora 12</H1>
+    <B>Tom Smith</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Incompatibility%20between%20gpsd%20and%20Fedora%2012&In-Reply-To=%3C1268929576.3693.7.camel%40localhost%3E"
+       TITLE="[Gpsd-users] Incompatibility between gpsd and Fedora 12">smitty at smittypaddler.com
+       </A><BR>
+    <I>Thu Mar 18 17:26:15 CET 2010</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="004278.html">[Gpsd-users] Problem running GPSD
+</A></li>
+        <LI>Next message: <A HREF="004280.html">[Gpsd-users] ZX4125 module and 1PPS
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#4279">[ date ]</a>
+              <a href="thread.html#4279">[ thread ]</a>
+              <a href="subject.html#4279">[ subject ]</a>
+              <a href="author.html#4279">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Back in January I posted a work-around for a problem I've had with
+gpsd not reporting a position after I upgraded to Fedora Core 12,
+namely to add some blanks to the print &quot;p\n&quot; statement sent to gpsd.
+This worked at home for me in Wisconsin, but didn't work when I was
+on my boat in Florida and actually trying to navigate.  There were
+no suggestions as to why gpsd doesn't seem to work in FC12, but a
+fellow named Hamish posted a reply that was very useful regarding the
+BSB-format charts available from NOAA's website.  Based on his info,
+I was able to create a utility I call bsbtocv that automates the
+process of converting and scaling the large files from NOAA into the
+JPEG format I prefer, and it also creates automatically the calibration
+information I need in my chart plotting program, chartview.
+
+I never got gpsd earlier than version 2.92 to give me a position from
+a print &quot;p\n&quot; query, e.g. -
+
+        query:       &quot;p\n&quot;
+        reply:       &quot;GPSD,P=36.000000 123.000000\r\n&quot;
+
+but I finally got gpsd earlier than version 2.92 to give me position
+information by asking it for NMEA raw mode with print &quot;r+\n&quot;, and the
+problem seems to be fixed in 2.92, where the raw NMEA data contains
+fixes ($GPGGA). Chartview now handles either version of gpsd.
+It wasn't a trivial change.  I had to fork a process to handle the
+NMEA data stream read from gpsd, The child process establishes the
+connection with gpsd, asks for the raw NMEA data stream, which it reads
+continuously, sending the most recent position encountered back to the
+parent only when the parent requests it by signalling SIGUSR1 to the
+child.  I know this seems overkill, and $socket-&gt;autoflush(1) should
+make the connection to gpsd unbuffered, but during testing I discovered
+I could get position information from gpsd for several minutes after
+I'd killed the gpsd daemon, or unplugged the gps antenna; someone,
+somewhere, is still doing buffering.  In order to get the most recent
+position one must read continuously from the socket connected to gpsd.
+I couldn't do this in the parent, since it's busy interacting with
+the user at the display and responding to his requests.
+
+At any rate, forking the child process to handle it is working, and I've
+been able to test it by navigating on a cruise in my boat.  All of
+the code, including bsbtocv, chartview itself, and a utility called
+gpspos which illustrates using fork and the child/parent processes to
+talk to gpsd and print the latest position on stdout, are available
+in the tarball named chartview.tgz at -
+
+<A HREF="http://smittypaddler.com/chartview/index.htm">http://smittypaddler.com/chartview/index.htm</A>
+
+I'm convinced THERE IS SOME INCOMPATIBILITY BETWEEN FEDORA CORE 12
+AND GPSD EARLIER THAN 2.92.  When I upgraded to Fedora Core 12, I
+ran xgps repeatedly, once for 24 hours and it couldn't get a &quot;FIX&quot;
+even though it showed at least six satellites in the green, which I
+presume means there's a solid signal.  I had another machine still
+running Fedora Core 9 sitting right next to the one on FC12, and I
+could unplug the usb/gps antenna from the fc12 machine, plug it into
+the fc9 machine, and gpsd would show a position. The fc9 system had
+gpsd-2.37-2.fc9.i386, and the fc12 had gpsd-2.39-5.fc12.i686, so I
+tried downgrading the fc12 system to gpsd-2.27; same result.
+
+I also tried upgrading to gpsd-2.92, and the daemon works, and the
+NMEA data stream contains fix data ($GPGGA), but none of the ancillary
+utilities except gpsmon work. xgps, for example, dies with the message
+&quot;wrong ELF class: ELFCLASS64.&quot; But I can get gpsd to feed me raw data
+with e.g. -
+
+        telnet localhost 2947
+        ?WATCH={&quot;class&quot;:&quot;WATCH&quot;,&quot;raw&quot;:1,&quot;nmea&quot;:true}
+
+
+It prints the NMEA data in ASCII, intermixed with stuff in hexadecimal
+But I can ignore the hex stuff and just grab the NMEA.
+
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="004278.html">[Gpsd-users] Problem running GPSD
+</A></li>
+	<LI>Next message: <A HREF="004280.html">[Gpsd-users] ZX4125 module and 1PPS
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#4279">[ date ]</a>
+              <a href="thread.html#4279">[ thread ]</a>
+              <a href="subject.html#4279">[ subject ]</a>
+              <a href="author.html#4279">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

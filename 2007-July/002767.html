@@ -1,0 +1,116 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] Cross Compile on Gumstix issue
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2007-July/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Cross%20Compile%20on%20Gumstix%20issue&In-Reply-To=%3C4.3.2.7.2.20070717075836.036c6018%40postoffice.creativesilicon.com.au%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="002764.html">
+   <LINK REL="Next"  HREF="002769.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] Cross Compile on Gumstix issue</H1>
+    <B>Dave C</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Cross%20Compile%20on%20Gumstix%20issue&In-Reply-To=%3C4.3.2.7.2.20070717075836.036c6018%40postoffice.creativesilicon.com.au%3E"
+       TITLE="[Gpsd-users] Cross Compile on Gumstix issue">gpsd at creativesilicon.com.au
+       </A><BR>
+    <I>Tue Jul 17 00:08:47 CEST 2007</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="002764.html">[Gpsd-users] Cross Compile on Gumstix issue
+</A></li>
+        <LI>Next message: <A HREF="002769.html">[Gpsd-users] Strange NMEA Output
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2767">[ date ]</a>
+              <a href="thread.html#2767">[ thread ]</a>
+              <a href="subject.html#2767">[ subject ]</a>
+              <a href="author.html#2767">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi Adam,
+
+&gt;<i>Sorry I didn't a chance to comment on your original message over the 
+</I>&gt;<i>weekend.
+</I>
+It was the weekend - only people with a deadline (like me!) are working on 
+the weekend rather than doing more optimal weekend things!
+
+&gt;<i>with no hardcore tweaking and/or patching (and worked!).
+</I>
+I was happy too. The patches I ended up applying were just the existing 
+Gumstix patches modified to fit the new code (i.e. move them 
+forward/backwards in the files). Got no idea why 2.34 won't run on my target.
+
+&gt;<i>   I assume you're using
+</I>&gt;<i>the gumstix-builtroot's cross compiler?
+</I>
+Yep. Their latest from SVN. (Mostly) works like a charm. These guys seem to 
+be keeping right on top of keeping the latest and greatest kernel &amp; dev 
+tools running on their hardware. As opposed to another ARM vendor I've 
+recently been involved with.....
+
+&gt;<i>I'm no embedded arm development guru,
+</I>
+That makes two of us. I'm more at home using low power micros like the PIC 
+&amp; MSP430.
+
+&gt;<i>  but when I've had an issue similar to that
+</I>&gt;<i>working with some ARM boards I tinker with, I've rigged up some funky kernel
+</I>&gt;<i>logging into the app and/or just add more low-level application side debug 
+</I>&gt;<i>lines
+</I>&gt;<i>on the software side (e.g. for gpsd's sake, gpsd_report(LOG_INF,&quot;blah&quot;) ).
+</I>
+I tried this (in an extremely basic form - printf is my friend!), but when 
+I couldn't even get an empty main() function to execute I gave up. Talking 
+to some colleagues suggests that I should start looking to see if there are 
+issues with static structure &amp; class members. Once I got the SVN version 
+going, I never bothered though. One of the Gumstix patches modifies the 
+Makefile not to build any C++ components - so maybe there's an issue here.
+
+&gt;<i>Might be a bit rudimentary, but it's a good start to find out where it's
+</I>&gt;<i>fizzling out.  I've also used `strace` on the target as well.
+</I>
+Never used strace. I should learn, I guess...
+
+
+&gt;<i>-Adam
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i>__________ NOD32 2400 (20070716) Information __________
+</I>&gt;<i>
+</I>&gt;<i>This message was checked by NOD32 antivirus system.
+</I>&gt;<i><A HREF="http://www.eset.com">http://www.eset.com</A>
+</I>
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="002764.html">[Gpsd-users] Cross Compile on Gumstix issue
+</A></li>
+	<LI>Next message: <A HREF="002769.html">[Gpsd-users] Strange NMEA Output
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2767">[ date ]</a>
+              <a href="thread.html#2767">[ thread ]</a>
+              <a href="subject.html#2767">[ subject ]</a>
+              <a href="author.html#2767">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

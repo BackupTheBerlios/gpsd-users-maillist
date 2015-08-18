@@ -1,0 +1,107 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] First request is unknown, but subsequently works
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2005-July/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20First%20request%20is%20unknown%2C%20but%20subsequently%20works&In-Reply-To=%3C20050713212808.GD14519%40thyrsus.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="000837.html">
+   <LINK REL="Next"  HREF="000839.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] First request is unknown, but subsequently works</H1>
+    <B>Eric S. Raymond</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20First%20request%20is%20unknown%2C%20but%20subsequently%20works&In-Reply-To=%3C20050713212808.GD14519%40thyrsus.com%3E"
+       TITLE="[Gpsd-users] First request is unknown, but subsequently works">esr at thyrsus.com
+       </A><BR>
+    <I>Wed Jul 13 23:28:08 CEST 2005</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="000837.html">[Gpsd-users] First request is unknown, but subsequently works
+</A></li>
+        <LI>Next message: <A HREF="000839.html">[Gpsd-users] First request is unknown, but subsequently works
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#838">[ date ]</a>
+              <a href="thread.html#838">[ thread ]</a>
+              <a href="subject.html#838">[ subject ]</a>
+              <a href="author.html#838">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Alastair Battrick &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">al at battrick.org</A>&gt;:
+&gt;<i> I have a problem with gpsd and my gps unit. I am using gpsd 2.28 
+</I>&gt;<i> installed via rpm on a RH Fedora 4 box. The USB GPS unit is apparenly 
+</I>&gt;<i> based on an Evermore chip, this one:
+</I>&gt;<i> <A HREF="http://www.mapfactor.com/products/gps/mpfc22usb.html">http://www.mapfactor.com/products/gps/mpfc22usb.html</A>
+</I>
+Evermore chip in NMEA mode.  We're working on Evermore binary support now.
+
+&gt;<i> The problem I am having: When I connect to the daemon via telnet, the 
+</I>&gt;<i> first 'P' or 'O' always gives a &quot;GPSD,P=?&quot; response, but subsequent 
+</I>&gt;<i> requests work fine. If I quit from telnet and then reconnect, the first 
+</I>&gt;<i> request is again met with an unknown response, but further requests work 
+</I>&gt;<i> fine. The time left between any of these requests does not seem to matter
+</I>
+(Eric stares at the code and thinks for a while...)
+
+Hm.  Thank you, you've just turned up a minor bug in the architecture,
+To understand what's going on, you need to know that gpsd does not
+immediately assign you a GPS from its pool of known devices when you
+connect your client.  Rather, it waits until you issue a command that
+requires GPS information.
+
+The reason for this goes back to when I added multi-device support in 2.21, 
+I realized then that what the client might want to do is list available
+GPSes (with K) and choose one (with F).  There is also at least one other
+command, L, that doesn't require a GPS.  And in general, waiting until 
+a GPS is really needed to wake one up is a good idea -- saves power,
+which can be important because GPS-equipped computers are more than
+likely running off a battery.
+
+So I deferred binding the device.  Your first P command triggers the
+action of binding a GPS to your channel, but *at that time* no GPS is
+yet bound.  The GPS doesn't have a fix, so you get ?.  But by the time
+of your *next* request gpsd has polled the daemon and has a fix.
+
+I hadn't noticed that deferring binding guaranteed a first P response
+of ? previously because the test clients all use watcher mode.  In
+watcher mode you get 'O' updates whenever the GPS ships a recognized
+sentence.  The old-style individual requests are obsolete, really.
+
+I'm divided in my mind whether to fix this bug or document it.  I suppose
+I could make the device-binding logic do an immediate poll of the
+device it binds.  That would complicate the code some.  Not sure
+it's worth it.
+-- 
+		&lt;a href=&quot;<A HREF="http://www.catb.org/~esr/">http://www.catb.org/~esr/</A>&quot;&gt;Eric S. Raymond&lt;/a&gt;
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="000837.html">[Gpsd-users] First request is unknown, but subsequently works
+</A></li>
+	<LI>Next message: <A HREF="000839.html">[Gpsd-users] First request is unknown, but subsequently works
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#838">[ date ]</a>
+              <a href="thread.html#838">[ thread ]</a>
+              <a href="subject.html#838">[ subject ]</a>
+              <a href="author.html#838">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

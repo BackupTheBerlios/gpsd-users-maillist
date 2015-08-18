@@ -1,0 +1,139 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] Release plans for 3.0
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2011-April/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Release%20plans%20for%203.0&In-Reply-To=%3C20110408164142.DB48A20C2C5%40snark.thyrsus.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="005179.html">
+   <LINK REL="Next"  HREF="005185.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] Release plans for 3.0</H1>
+    <B>Eric Raymond</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Release%20plans%20for%203.0&In-Reply-To=%3C20110408164142.DB48A20C2C5%40snark.thyrsus.com%3E"
+       TITLE="[Gpsd-users] Release plans for 3.0">esr at snark.thyrsus.com
+       </A><BR>
+    <I>Fri Apr  8 18:41:42 CEST 2011</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="005179.html">[Gpsd-users] [Gpsd-dev] Please test the new scons-based build	system
+</A></li>
+        <LI>Next message: <A HREF="005185.html">[Gpsd-users] [Gpsd-dev] Release plans for 3.0
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#5180">[ date ]</a>
+              <a href="thread.html#5180">[ thread ]</a>
+              <a href="subject.html#5180">[ subject ]</a>
+              <a href="author.html#5180">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>When we shipped 2.96, I expressed the intention that the next release
+cycle to 3.0 would be a short one.  Personally, I had two goals for
+this cycle: (1) build a working shared-memory export, and (2) migrate
+the build system off autotools. The first one is achieved, and the
+second one nearly so - only building the Qt binding remains to be solved
+and we have two devs actively working that problem.
+
+For those of you who haven't been following it, by the way, the scons
+conversion has gone so smoothly it's almost ridiculous.  Discussion
+here: &lt;<A HREF="http://esr.ibiblio.org/?p=3089">http://esr.ibiblio.org/?p=3089</A>&gt;.  I am *extremely* pleased with
+the result, both in terms of the expected effect on long-term
+maintainance burden and the actual performance of the build.
+
+More good news: We've barely disturbed the core code at all.  I made
+one moderately intrusive change to revert the client and daemon to using
+the same set of status-flag masks; this was to support the shared-memory
+interface, which will actually expose the daemon-side flags.  I ripped 
+out a bunch of gps_maskdump() calls for performance reasons.  I glued
+about 60 lines of code into daemon and client for the shared-memory
+export, and then refactored the client code. And that is about it!
+
+I think now is a good time to begin planning for the 3.0 release. The
+bugtracker is nearly empty, the core code is in good shape, the 
+API cleanup is done, and we have a manageably small number of cleanup
+and finishing tasks still pending.  Here's how I prioritize them:
+
+-------------------------------------------------------------------
+1. Test, test, test.  I'd like 3.0 to be bulletproof even by our
+historical standards, which aren't low.  Bernd Zeimetz, I'd like your
+help in getting flocktest to play nice with the Debian test farm so we
+can qualify GPSD on a bunch of non-x86 architectures. You and I need to
+hammer at this together via IRC; fortunately it's unlikely to take
+long.
+
+2. Finish the build-system conversion to scons.  Jon Schleuter and Bernd
+Zeimetz are on top of this one.
+
+3. Sweet-talk Coverity into running another code analysis and fix any 
+reports that generates.  This is my job.
+
+4. We have a longstanding bug that mode-change doesn't work on UBX.
+This one is Chris Kuethe's to fix.
+
+5. (Tracker bug #17800) ntpshm more than four.  Gary Miller owns the ntpshm
+code. We should dispose of this feature request either with implementation
+or a reasoned decision not to do it.
+
+6. (Tracker bug #18003) Python path setting.  This one's mine.
+
+7. Make subframe reports available in the C API.  This one is Gary Miller's.
+
+Past this point we get into &quot;it would be nice&quot; items.  These are things
+that can wait until 3.1 but can be pursued opportunistically before 3.0
+without destabilizing the code.
+
+8. Use Dirk Stocker's test pairs to debug and verify the RTCM3 analyzer.
+This one's mine.
+
+9. Reporting code for specialized Type 6 and 8 AIS messages.  Mine and
+Kurt Schwehr's.  Kurt: I still need Area Notice and Environmental
+descriptions merged into AIVDM.txt before I can complete this.
+
+10. Finish and test the TNT Revolution driver.  This one is mine and 
+Jon Schleuter's.
+-------------------------------------------------------------------
+
+My major question is: What if anything is missing from this list? 
+Are there any urgent bugs I don't know about?  Easy feature requests?
+What else, if anything, should  we be planning for 3.0?
+
+I'd also like to hear time estimates on these tasks from the people 
+who own them.
+-- 
+		&lt;a href=&quot;<A HREF="http://www.catb.org/~esr/">http://www.catb.org/~esr/</A>&quot;&gt;Eric S. Raymond&lt;/a&gt;
+
+Every Communist must grasp the truth, 'Political power grows out of
+the barrel of a gun.'
+        -- Mao Tse-tung, 1938, inadvertently endorsing the Second Amendment.
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="005179.html">[Gpsd-users] [Gpsd-dev] Please test the new scons-based build	system
+</A></li>
+	<LI>Next message: <A HREF="005185.html">[Gpsd-users] [Gpsd-dev] Release plans for 3.0
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#5180">[ date ]</a>
+              <a href="thread.html#5180">[ thread ]</a>
+              <a href="subject.html#5180">[ subject ]</a>
+              <a href="author.html#5180">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

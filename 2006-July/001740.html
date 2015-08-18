@@ -1,0 +1,139 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] problem with BU-353 and gpsd-2.33
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2006-July/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20problem%20with%20BU-353%20and%20gpsd-2.33&In-Reply-To=%3C20060707045300.25176.qmail%40web32503.mail.mud.yahoo.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="001739.html">
+   <LINK REL="Next"  HREF="001744.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] problem with BU-353 and gpsd-2.33</H1>
+    <B>Michael R. Davis</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20problem%20with%20BU-353%20and%20gpsd-2.33&In-Reply-To=%3C20060707045300.25176.qmail%40web32503.mail.mud.yahoo.com%3E"
+       TITLE="[Gpsd-users] problem with BU-353 and gpsd-2.33">mrdvt92 at yahoo.com
+       </A><BR>
+    <I>Fri Jul  7 06:53:00 CEST 2006</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="001739.html">[Gpsd-users] problem with BU-353 and gpsd-2.33
+</A></li>
+        <LI>Next message: <A HREF="001744.html">[Gpsd-users] Re: problem with BU-353 and gpsd-2.33
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1740">[ date ]</a>
+              <a href="thread.html#1740">[ thread ]</a>
+              <a href="subject.html#1740">[ subject ]</a>
+              <a href="author.html#1740">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>I put a Trouble Shooting Page together.  Anyone want to add?
+
+<A HREF="http://gpsd.davisnetworks.com/bin/view/Main/TroubleShootingGuide">http://gpsd.davisnetworks.com/bin/view/Main/TroubleShootingGuide</A>
+
+
+--- &quot;Amadeus W. M.&quot; &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">amadeus84 at cablespeed.com</A>&gt; wrote:
+
+&gt;<i> I used the BS-353 receiver with gpsd and roadmap without problems for
+</I>&gt;<i> a
+</I>&gt;<i> while, on Fedora Core 4. Then I haven't used it for a while, and
+</I>&gt;<i> upgraded
+</I>&gt;<i> the kernel a few times, and now it doesn't work anymore.
+</I>&gt;<i> 
+</I>&gt;<i> This is what happens. 
+</I>&gt;<i> 
+</I>&gt;<i> 1) The receiver blinks continuously when I plug it in. 
+</I>&gt;<i> 
+</I>&gt;<i> 2) These are the kernel messages:
+</I>&gt;<i> 
+</I>&gt;<i> Jul  6 19:58:32 phoenix kernel: usb 5-1: new full speed USB device
+</I>&gt;<i> using uhci_hcd and address 2
+</I>&gt;<i> Jul  6 19:58:32 phoenix kernel: drivers/usb/serial/usb-serial.c: USB
+</I>&gt;<i> Serial support registered for generic
+</I>&gt;<i> Jul  6 19:58:32 phoenix kernel: drivers/usb/serial/usb-serial.c: USB
+</I>&gt;<i> Serial Driver core
+</I>&gt;<i> Jul  6 19:58:32 phoenix kernel: drivers/usb/serial/usb-serial.c: USB
+</I>&gt;<i> Serial support registered for pl2303
+</I>&gt;<i> Jul  6 19:58:32 phoenix kernel: usb 5-1: pl2303 converter now
+</I>&gt;<i> attached to ttyUSB0
+</I>&gt;<i> Jul  6 19:58:32 phoenix kernel: drivers/usb/serial/pl2303.c: Prolific
+</I>&gt;<i> PL2303 USB to serial adaptor driver
+</I>&gt;<i> Jul  6 19:58:33 phoenix gpsd.hotplug: waiting for /dev/ttyUSB0
+</I>&gt;<i> Jul  6 20:00:33 phoenix gpsd.hotplug: /dev/ttyUSB0 has gone active
+</I>&gt;<i> Jul  6 20:00:33 phoenix gpsd.hotplug: gpsd_control(action=add,
+</I>&gt;<i> arg=/dev/ttyUSB0)
+</I>&gt;<i> 
+</I>&gt;<i> 3) roadmap says:
+</I>&gt;<i> 
+</I>&gt;<i>  == roadmap_gps.c, line 678: cannot access GPS source
+</I>&gt;<i> <A HREF="gpsd://localhost">gpsd://localhost</A>
+</I>&gt;<i> 
+</I>&gt;<i> 4) xgps says:
+</I>&gt;<i> 
+</I>&gt;<i> xgps: no gpsd running or network error: -6, can't connect to host
+</I>&gt;<i> 
+</I>&gt;<i> which is normal, because no gpsd is running. 
+</I>&gt;<i> 
+</I>&gt;<i> I remember vaguely, when I had it working, that gpsd was somehow
+</I>&gt;<i> being
+</I>&gt;<i> started automatically. At any rate, I don't recall having to start it
+</I>&gt;<i> manually. 
+</I>&gt;<i> 
+</I>&gt;<i> I don't know how the gps hardware works, but I don't suppose it's
+</I>&gt;<i> normal
+</I>&gt;<i> to blink continuously, and I suspect that's probably the reason gpsd
+</I>&gt;<i> is
+</I>&gt;<i> not starting. Is there anything I can do? Buy a new/better receiver?
+</I>&gt;<i> I'm
+</I>&gt;<i> in Maryland, USA, and I (used to) have good reception. 
+</I>&gt;<i> 
+</I>&gt;<i> Currently running gpsd-2.33-1 built from src.rpm on 
+</I>&gt;<i> Linux phoenix 2.6.17-1.2141_FC4smp #1 SMP Fri Jun 30 15:08:52 EDT
+</I>&gt;<i> 2006 i686 i686 i386 GNU/Linux
+</I>&gt;<i> 
+</I>&gt;<i> Thanks!
+</I>&gt;<i> 
+</I>&gt;<i> 
+</I>&gt;<i> _______________________________________________
+</I>&gt;<i> Gpsd-users mailing list
+</I>&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">Gpsd-users at lists.berlios.de</A>
+</I>&gt;<i> <A HREF="http://lists.berlios.de/mailman/listinfo/gpsd-users">http://lists.berlios.de/mailman/listinfo/gpsd-users</A>
+</I>&gt;<i> 
+</I>
+
+__________________________________________________
+Do You Yahoo!?
+Tired of spam?  Yahoo! Mail has the best spam protection around 
+<A HREF="http://mail.yahoo.com">http://mail.yahoo.com</A> 
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="001739.html">[Gpsd-users] problem with BU-353 and gpsd-2.33
+</A></li>
+	<LI>Next message: <A HREF="001744.html">[Gpsd-users] Re: problem with BU-353 and gpsd-2.33
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1740">[ date ]</a>
+              <a href="thread.html#1740">[ thread ]</a>
+              <a href="subject.html#1740">[ subject ]</a>
+              <a href="author.html#1740">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

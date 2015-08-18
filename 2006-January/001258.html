@@ -1,0 +1,211 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] Rikaline 6010  Problem
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2006-January/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Rikaline%206010%20%20Problem&In-Reply-To=%3C200601311247.30719.david%40optixx.org%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="001257.html">
+   <LINK REL="Next"  HREF="001259.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] Rikaline 6010  Problem</H1>
+    <B>David Voswinkel</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Rikaline%206010%20%20Problem&In-Reply-To=%3C200601311247.30719.david%40optixx.org%3E"
+       TITLE="[Gpsd-users] Rikaline 6010  Problem">david at optixx.org
+       </A><BR>
+    <I>Tue Jan 31 12:47:30 CET 2006</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="001257.html">[Gpsd-users] Updating: NO issues with bu303
+</A></li>
+        <LI>Next message: <A HREF="001259.html">[Gpsd-users] Rikaline 6010  Problem
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1258">[ date ]</a>
+              <a href="thread.html#1258">[ thread ]</a>
+              <a href="subject.html#1258">[ subject ]</a>
+              <a href="author.html#1258">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hello List,
+
+Iam new to gpsd an try to get my Rikaline 6010 to work.
+As i launch gpsd in debug mode i get this:
+
+gpsd: launching (Version 2.30)
+gpsd: listening on port 2947
+gpsd: running with effective group ID 0
+gpsd: running with effective user ID 0
+gpsd: opening GPS data source at '/dev/ttyUSB0'
+gpsd: no probe matched...
+gpsd: speed 4800, 8N1
+gpsd: gpsd_activate: opened GPS (4)
+gpsd: packet sniff finds type -1
+gpsd: packet sniff finds type 0
+gpsd: Selecting Generic NMEA driver...
+gpsd: =&gt; GPS: $PFEC,GPint,GSA01,DTM00,ZDA01,RMC01,GLL00,VTG00,GSV05*3B\x0d
+
+gpsd: =&gt; GPS: @NC10151010\x0d
+
+gpsd: =&gt; GPS: $PMOTG,ZDA,1*2F\x0d
+
+gpsd: =&gt; GPS: $PGRMCE*0E\x0d
+
+gpsd: =&gt; GPS: $PSRF105,1*3E\x0d
+
+gpsd: =&gt; GPS: $PFST*11\x0d
+
+gpsd: &lt;= GPS: $GPGSA,A,1,,,,,,,,,,,,,50.0,50.0,50.0*05
+gpsd: GPGSA sets mode 1
+gpsd: closing GPS=/dev/ttyUSB0 (4)
+gpsd: client connect on 4
+gpsd: checking client(4)
+gpsd: &lt;= client(4): a
+gpsd: User requires 2, channel type is 0
+gpsd: closing GPS=/dev/ttyUSB0 (-1)
+gpsd: opening GPS data source at '/dev/ttyUSB0'
+
+
+
+
+As i connect via telnet an send some arbitrary command like 'a' or 'p'
+the device start to talk in binary mode. Or gpsd might things it's binary. As 
+i understood the protocal correct each sentence encapsulated by an $ and 
+\0x0d\0a, and it looks wrong then...
+
+
+gpsd: Selecting SiRF-II binary driver...
+gpsd: Switching chip mode to SiRF binary.
+gpsd: =&gt; GPS: $PSRF100,0,4800,8,1,0*0F\x0d
+
+gpsd: &lt;= GPS: 
+$GPRMC,235948,V,0000.0000,S,00000.0000,W,0.0000,0.000,260102,,*33\x0d\x0a$GPGSA,A,1,,,,,,,,,,,,,,,,*32\x0d\x0a$PGRME,400.00,0.00,400.00*7F
+gpsd: &lt;= GPS: 
+$GPRMC,235948,V,0000.0000,S,00000.0000,W,0.0000,0.000,260102,,*33\x0d\x0a$GPGSA,A,1,,,,,,,,,,,,,,,,*32\x0d\x0a$PGRME,400.00,0.00,400.00*7F
+gpsd: &lt;= GPS: 
+$GPRMC,235949,V,0000.0000,S,00000.0000,W,0.0000,0.000,260102,,*32\x0d\x0a$GPGSA,A,1,,,,,,,,,,,,,,,,*32\x0d\x0a$PGRME,400.00,0.00,400.00*7F
+gpsd: &lt;= GPS: $GPRMC,235950,V,0000.0000,S
+
+
+So i tried to switch the driver mode via 'N=0' , the the output looks like 
+this.
+
+
+gpsd: &lt;= GPS: $POS: 6378137  0        0       
+gpsd: unknown sentence: &quot;$POS: 6378137  0        0       \x0d\x0a&quot;
+gpsd: &lt;= GPS: 
+$GPGGA,235948.000,0000.0000,N,00000.0000,E,0,00,50.0,0.0,M,,,,0000*3A
+gpsd: GPGGA sets status 0
+gpsd: &lt;= GPS: $GPGSA,A,1,,,,,,,,,,,,,50.0,50.0,50.0*05
+gpsd: GPGSA sets mode 1
+gpsd: &lt;= GPS: $GPRMC,235948.000,V,0000.0000,N,00000.0000,E,0.00,,260102,,*0C
+gpsd: &lt;= GPS: 
+$GPGGA,235948.999,0000.0000,N,00000.0000,E,0,00,50.0,0.0,M,,,,0000*33
+gpsd: GPGGA sets status 0
+gpsd: &lt;= GPS: $GPGSA,A,1,,,,,,,,,,,,,50.0,50.0,50.0*05
+gpsd: GPGSA sets mode 1
+gpsd: &lt;= GPS: $GPRMC,235948.999,V,0000.0000,N,00000.0000,E,0.00,,260102,,*05
+gpsd: &lt;= GPS: 
+$GPGGA,235949.999,0000.0000,N,00000.0000,E,0,00,50.0,0.0,M,,,,0000*32
+gpsd: GPGGA sets status 0
+gpsd: &lt;= GPS: $GPGSA,A,1,,,,,,,,,,,,,50.0,50.0,50.0*05
+gpsd: GPGSA sets mode 1
+gpsd: &lt;= GPS: $GPRMC,235949.999,V,0000.0000,N,00000.0000,E,0.00,,260102,,*04
+gpsd: &lt;= GPS: 
+$GPGGA,235950.999,0000.0000,N,00000.0000,E,0,00,50.0,0.0,M,,,,0000*3A
+gpsd: GPGGA sets status 0
+gpsd: &lt;= GPS: $GPGSA,A,1,,,,,,,,,,,,,50.0,50.0,50.0*05
+gpsd: GPGSA sets mode 1
+gpsd: &lt;= GPS: $GPRMC,235950.999,V,0000.0000,N,00000.0000,E,0.00,,260102,,*0C
+gpsd: &lt;= GPS: 
+$GPGGA,235951.999,0000.0000,N,00000.0000,E,0,00,50.0,0.0,M,,,,0000*3B
+gpsd: GPGGA sets status 0
+gpsd: &lt;= GPS: $GPGSA,A,1,,,,,,,,,,,,,50.0,50.0,50.0*05
+gpsd: GPGSA sets mode 1
+gpsd: &lt;= GPS: $GPGSV,1,1,01,08,00,000,*40
+gpsd: Satellite data no good.
+gpsd: &lt;= GPS: $GPRMC,235951.999,V,0000.0000,N,00000.0000,E,0.00,,260102,,*0D
+gpsd: &lt;= GPS: 
+$GPGGA,235952.999,0000.0000,N,00000.0000,E,0,00,50.0,0.0,M,,,,0000*38
+gpsd: GPGGA sets status 0
+gpsd: &lt;= GPS: $GPGSA,A,1,,,,,,,,,,,,,50.0,50.0,50.0*05
+gpsd: GPGSA sets mode 1
+gpsd: &lt;= GPS: $GPRMC,235952.999,V,0000.0000,N,00000.0000,E,0.00,,260102,,*0E
+gpsd: &lt;= GPS: 
+$GPGGA,235953.999,0000.0000,N,00000.0000,E,0,00,50.0,0.0,M,,,,0000*39
+gpsd: GPGGA sets status 0
+gpsd: &lt;= GPS: $GPGSA,A,1,,,,,,,,,,,,,50.0,50.0,50.0*05
+gpsd: GPGSA sets mode 1
+gpsd: &lt;= GPS: $GPRMC,235953.999,V,0000.0000,N,00000.0000,E,0.00,,260102,,*0F
+gpsd: &lt;= GPS: 
+$GPGGA,235954.999,0000.0000,N,00000.0000,E,0,00,50.0,0.0,M,,,,0000*3E
+gpsd: GPGGA sets status 0
+gpsd: &lt;= GPS: $GPGSA,A,1,,,,,,,,,,,,,50.0,50.0,50.0*05
+gpsd: GPGSA sets mode 1
+gpsd: &lt;= GPS: $GPRMC,235954.999,V,0000.0000,N,00000.0000,E,0.00,,260102,,*08
+gpsd: &lt;= GPS: 
+$GPGGA,235955.999,0000.0000,N,00000.0000,E,0,00,50.0,0.0,M,,,,0000*3F
+gpsd: GPGGA sets status 0
+gpsd: &lt;= GPS: $GPGSA,A,1,,,,,,,,,,,,,50.0,50.0,50.0*05
+gpsd: GPGSA sets mode 1
+gpsd: &lt;= GPS: $GPRMC,235955.999,V,0000.0000,N,00000.0000,E,0.00,,260102,,*09
+gpsd: &lt;= GPS: 
+$GPGGA,235956.999,0000.0000,N,00000.0000,E,0,00,50.0,0.0,M,,,,0000*3C
+gpsd: GPGGA sets status 0
+gpsd: &lt;= GPS: $GPGSA,A,1,,,,,,,,,,,,,50.0,50.0,50.0*05
+gpsd: GPGSA sets mode 1
+gpsd: &lt;= GPS: $GPGSV,1,1,01,06,00,000,*4E
+gpsd: Satellite data no good.
+
+
+But  gpsd says to valid satellite data. Iam doing something complety wrong 
+with this device ? I never used any gps driven device before and hardly 
+understand the protocol, so cann't figure out what's going wrong here.
+
+
+Any help would be appriciated.
+
+Regards David
+
+
+
+
+-- 
+David Voswinkel
+______________________
+
+<A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">david at optixx.org</A>
+www.optixx.org
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="001257.html">[Gpsd-users] Updating: NO issues with bu303
+</A></li>
+	<LI>Next message: <A HREF="001259.html">[Gpsd-users] Rikaline 6010  Problem
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1258">[ date ]</a>
+              <a href="thread.html#1258">[ thread ]</a>
+              <a href="subject.html#1258">[ subject ]</a>
+              <a href="author.html#1258">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

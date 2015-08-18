@@ -1,0 +1,122 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] Trying to set up a HAICOM GPS HI-204S on Arch	Linux
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2009-March/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Trying%20to%20set%20up%20a%20HAICOM%20GPS%20HI-204S%20on%20Arch%09Linux&In-Reply-To=%3C20090305232237.GC18382%40thyrsus.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="003624.html">
+   <LINK REL="Next"  HREF="003625.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] Trying to set up a HAICOM GPS HI-204S on Arch	Linux</H1>
+    <B>Eric S. Raymond</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Trying%20to%20set%20up%20a%20HAICOM%20GPS%20HI-204S%20on%20Arch%09Linux&In-Reply-To=%3C20090305232237.GC18382%40thyrsus.com%3E"
+       TITLE="[Gpsd-users] Trying to set up a HAICOM GPS HI-204S on Arch	Linux">esr at thyrsus.com
+       </A><BR>
+    <I>Fri Mar  6 00:22:37 CET 2009</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="003624.html">[Gpsd-users] Trying to set up a HAICOM GPS HI-204S on Arch Linux
+</A></li>
+        <LI>Next message: <A HREF="003625.html">[Gpsd-users] Trying to set up a HAICOM GPS HI-204S on Arch Linux
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3626">[ date ]</a>
+              <a href="thread.html#3626">[ thread ]</a>
+              <a href="subject.html#3626">[ subject ]</a>
+              <a href="author.html#3626">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Robin Thomas &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">robin1552004 at gmail.com</A>&gt;:
+&gt;<i> Steps I made:
+</I>&gt;<i> Installed gpsd
+</I>&gt;<i> Loaded garmin_gps module (readed it in a forum)
+</I>
+I use a Haicom-204S, in fact it's my main test gps. The garmin_gps
+module is not required.  Let's start with the basics: when you plug in
+the device and type `lsusb' to the command line, does the following
+
+	Prolific Technology, Inc. PL2303 Serial Port
+
+appear in the output?
+
+Here's what it looks likw when I fire up my GPSD. How does yours differ?
+
+<A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">esr at snark</A>:~/svn/gpsd/trunk$ gpsd -D 4 -N /dev/ttyUSB0
+gpsd: launching (Version 2.39dev)
+gpsd: listening on port gpsd
+gpsd: Unable to start ntpshm.  gpsd must run as root.
+gpsd: running with effective group ID 23
+gpsd: running with effective user ID 23
+gpsd: opening GPS data source at '/dev/ttyUSB0'
+gpsd: speed 4800, 8N1
+gpsd: =&gt; GPS: 2450415348512c5249442a32380d0a
+gpsd: =&gt; GPS: 0299661c0800040200001203
+gpsd: Navcom: sent command 0x1c (Test Support Block)
+gpsd: Navcom: command 0x1c mode = 02, length = 0
+gpsd: =&gt; GPS: 029966200e000001ae02000071000000f203
+gpsd: Navcom: sent command 0x20 (Data Request) - data block id = ae at rate 00
+gpsd: =&gt; GPS: 029966200e00000186020a0071000000d003
+gpsd: Navcom: sent command 0x20 (Data Request) - data block id = 86 at rate 0a
+gpsd: writing superstar2 control type 3f len 14:013fc008554750532d3030300403
+gpsd: =&gt; GPS: 013fc008554750532d3030300403
+gpsd: writing superstar2 control type 2d len 6:012dd2000001
+gpsd: =&gt; GPS: 012dd2000001
+gpsd: garmin_gps not active.
+gpsd: no probe matched...
+gpsd: gpsd_activate(1): opened GPS (4)
+gpsd: switch_driver(Generic NMEA) called...
+gpsd: selecting Generic NMEA driver...
+gpsd: ntpd_link_activate: 0
+gpsd: =&gt; Probing device subtype 0
+gpsd: =&gt; GPS: 245047524d43452a30450d0a
+gpsd: &lt;= GPS: $GPGGA,232242.129,4002.1047,N,07531.2124,W,2,06,1.7,103.2,M,-33.8,M,3.8,0000*41
+gpsd: can't use GGA time until after ZDA or RMC has supplied a year.
+gpsd: GPGGA sets status 2 and mode 3 (changed)
+gpsd: =&gt; Probing device subtype 1
+gpsd: =&gt; GPS: 24505352463130302c302c343830302c382c312c302a30460d0a
+gpsd: &lt;= GPS: $GPGSA,A,3,30,14,05,31,22,12,,,,,,,3.9,1.7,3.5*3A
+gpsd: GPGSA sets mode 3
+gpsd: =&gt; Probing device subtype 2
+gpsd: =&gt; GPS: 24504645432c4750696e742a35380d0a
+gpsd: &lt;= GPS: $GPRMC,232242.129,A,4002.1047,N,07531.2124,W,0.29,83.53,050309,,*24
+gpsd: GPRMC starts a reporting cycle.
+gpsd: GPRMC sets mode 2
+^Cgpsd: Received terminating signal 2. Exiting...
+
+
+
+-- 
+		&lt;a href=&quot;<A HREF="http://www.catb.org/~esr/">http://www.catb.org/~esr/</A>&quot;&gt;Eric S. Raymond&lt;/a&gt;
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="003624.html">[Gpsd-users] Trying to set up a HAICOM GPS HI-204S on Arch Linux
+</A></li>
+	<LI>Next message: <A HREF="003625.html">[Gpsd-users] Trying to set up a HAICOM GPS HI-204S on Arch Linux
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3626">[ date ]</a>
+              <a href="thread.html#3626">[ thread ]</a>
+              <a href="subject.html#3626">[ subject ]</a>
+              <a href="author.html#3626">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

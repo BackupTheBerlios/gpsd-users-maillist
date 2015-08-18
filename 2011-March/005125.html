@@ -1,0 +1,81 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] Release is imminent - last call for issues
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2011-March/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Release%20is%20imminent%20-%20last%20call%20for%20issues&In-Reply-To=%3C20110310205204.A2DF920C2C0%40snark.thyrsus.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="005124.html">
+   <LINK REL="Next"  HREF="005126.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] Release is imminent - last call for issues</H1>
+    <B>Eric Raymond</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Release%20is%20imminent%20-%20last%20call%20for%20issues&In-Reply-To=%3C20110310205204.A2DF920C2C0%40snark.thyrsus.com%3E"
+       TITLE="[Gpsd-users] Release is imminent - last call for issues">esr at snark.thyrsus.com
+       </A><BR>
+    <I>Thu Mar 10 21:52:04 CET 2011</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="005124.html">[Gpsd-users] GPS in (not) offline
+</A></li>
+        <LI>Next message: <A HREF="005126.html">[Gpsd-users] [Gpsd-dev] Release is imminent - last call for	issues
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#5125">[ date ]</a>
+              <a href="thread.html#5125">[ thread ]</a>
+              <a href="subject.html#5125">[ subject ]</a>
+              <a href="author.html#5125">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>We entered condition Yellow a week ago. In reviewing the git log, I
+find that Thomas Sprinkmeier's March 8 bug fix to GST is the only
+core logic change in the last week. On March 5 Jon Schlueter had made
+a small change in GSV logging. I'm not worried about either.
+
+On gps_waiting(), POLL_BLOCK, and the possibility of giving gps_read()
+a third argument: I've decided to leave things as they are.  Yes, the
+third argument to gps_read() could work, but the present arrangement
+makes better error checks possible - by putting one between the 
+gps_waiting() call and the gps_read() you can potentially catch things 
+that went wrong with the internal select(2) in the former.
+
+There are to my knowledge no other open issues that can't wait until
+after shipping.  Accordingly, we are now in condition Green for 2.96
+release.  This is the last call for any remaining pre-release issues.
+-- 
+		&lt;a href=&quot;<A HREF="http://www.catb.org/~esr/">http://www.catb.org/~esr/</A>&quot;&gt;Eric S. Raymond&lt;/a&gt;
+
+&quot;To disarm the people... was the best and most effectual way to enslave them.&quot;
+        -- George Mason, speech of June 14, 1788
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="005124.html">[Gpsd-users] GPS in (not) offline
+</A></li>
+	<LI>Next message: <A HREF="005126.html">[Gpsd-users] [Gpsd-dev] Release is imminent - last call for	issues
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#5125">[ date ]</a>
+              <a href="thread.html#5125">[ thread ]</a>
+              <a href="subject.html#5125">[ subject ]</a>
+              <a href="author.html#5125">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

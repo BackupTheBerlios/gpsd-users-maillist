@@ -1,0 +1,114 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] Python - Current Location
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2011-September/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Python%20-%20Current%20Location&In-Reply-To=%3C2BECD7BE-0ADD-4385-B835-49ED4C62D83E%40sky.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="005491.html">
+   <LINK REL="Next"  HREF="005493.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] Python - Current Location</H1>
+    <B>Neil Greenough</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Python%20-%20Current%20Location&In-Reply-To=%3C2BECD7BE-0ADD-4385-B835-49ED4C62D83E%40sky.com%3E"
+       TITLE="[Gpsd-users] Python - Current Location">neilgreenough at sky.com
+       </A><BR>
+    <I>Wed Sep 28 01:10:02 CEST 2011</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="005491.html">[Gpsd-users] Python - Current Location
+</A></li>
+        <LI>Next message: <A HREF="005493.html">[Gpsd-users] Python - Current Location
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#5492">[ date ]</a>
+              <a href="thread.html#5492">[ thread ]</a>
+              <a href="subject.html#5492">[ subject ]</a>
+              <a href="author.html#5492">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Ben,
+
+Thanks for the reply. I've used Kismet quite a bit and this is what actually inspired me to get coding albeit in Python. The reason I'm looking to implement this is simply to develop my knowledge of Python by doing. I just query whether you need a loop to refresh the location using gpsd. My feeling is that you do 
+
+Sent from my iPhone
+
+On 27 Sep 2011, at 23:59, Ben Smith &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">thex1le at gmail.com</A>&gt; wrote:
+
+&gt;<i> Why not just use gpsd and kismet? Provided your wifi card supports monitor mode.
+</I>&gt;<i> 
+</I>&gt;<i> On Sep 27, 2011 5:01 PM, &quot;Neil Greenough&quot; &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">neilgreenough at sky.com</A>&gt; wrote:
+</I>&gt;<i> &gt; Hi folks.
+</I>&gt;<i> &gt; 
+</I>&gt;<i> &gt; I'm currently putting together a Python (v2.6) script to be run on Linux.
+</I>&gt;<i> &gt; This scripts uses the gpsd module (gps) to grab the location of laptop
+</I>&gt;<i> &gt; running the script as well as access points in the vicinity.
+</I>&gt;<i> &gt; 
+</I>&gt;<i> &gt; To scan for the access points, I have a continual loop in a function. Now to
+</I>&gt;<i> &gt; get the current GPS location for each time an access point is located, I'm
+</I>&gt;<i> &gt; just wondering how is best to do this? At present I have a continual while
+</I>&gt;<i> &gt; loop also grabbing the GPS function. The problem is, as I now have two
+</I>&gt;<i> &gt; loops, I have to threads running - one with the GPS loop and the other with
+</I>&gt;<i> &gt; the wifi loop. Here's the code I'm using so far for the GPS function:-
+</I>&gt;<i> &gt; 
+</I>&gt;<i> &gt; *#!/usr/bin/python*
+</I>&gt;<i> &gt; 
+</I>&gt;<i> &gt; *import gps, os, time*
+</I>&gt;<i> &gt; 
+</I>&gt;<i> &gt; *session = gps.gps()
+</I>&gt;<i> &gt; session.poll()
+</I>&gt;<i> &gt; session.stream()*
+</I>&gt;<i> &gt; 
+</I>&gt;<i> &gt; *while 1:
+</I>&gt;<i> &gt; session.poll()*
+</I>&gt;<i> &gt; 
+</I>&gt;<i> &gt; * print session.fix.latitude*
+</I>&gt;<i> &gt; 
+</I>&gt;<i> &gt; * print session.fix.longitude*
+</I>&gt;<i> &gt; 
+</I>&gt;<i> &gt; 
+</I>&gt;<i> &gt; Is there a way of embedding a call within my wifi loop to grab the current
+</I>&gt;<i> &gt; location? So for example, whilst my wifi scanning is running, if an access
+</I>&gt;<i> &gt; point is detected, print the coordinates. I think the only way to do this
+</I>&gt;<i> &gt; (without a delay each time for polling / streaming) is to have the code
+</I>&gt;<i> &gt; running in the background in another thread but just wondering if anyone
+</I>&gt;<i> &gt; knows of an alternative way?
+</I>&gt;<i> &gt; 
+</I>&gt;<i> &gt; 
+</I>&gt;<i> &gt; Thanks
+</I>&gt;<i> &gt; _______________________________________________
+</I>&gt;<i> &gt; Gpsd-users mailing list
+</I>&gt;<i> &gt; <A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">Gpsd-users at lists.berlios.de</A>
+</I>&gt;<i> &gt; <A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">https://lists.berlios.de/mailman/listinfo/gpsd-users</A>
+</I>
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="005491.html">[Gpsd-users] Python - Current Location
+</A></li>
+	<LI>Next message: <A HREF="005493.html">[Gpsd-users] Python - Current Location
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#5492">[ date ]</a>
+              <a href="thread.html#5492">[ thread ]</a>
+              <a href="subject.html#5492">[ subject ]</a>
+              <a href="author.html#5492">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

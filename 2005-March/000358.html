@@ -1,0 +1,120 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] Call for GPS behavioral reports
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2005-March/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Call%20for%20GPS%20behavioral%20reports&In-Reply-To=%3C200503152044.j2FKicQL015134%40snark.thyrsus.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="000357.html">
+   <LINK REL="Next"  HREF="000359.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] Call for GPS behavioral reports</H1>
+    <B>Eric S. Raymond</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Call%20for%20GPS%20behavioral%20reports&In-Reply-To=%3C200503152044.j2FKicQL015134%40snark.thyrsus.com%3E"
+       TITLE="[Gpsd-users] Call for GPS behavioral reports">esr at snark.thyrsus.com
+       </A><BR>
+    <I>Tue Mar 15 21:44:38 CET 2005</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="000357.html">[Gpsd-users] There is a new N command
+</A></li>
+        <LI>Next message: <A HREF="000359.html">[Gpsd-users] Re: [Gpsd-dev] Call for GPS behavioral reports
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#358">[ date ]</a>
+              <a href="thread.html#358">[ thread ]</a>
+              <a href="subject.html#358">[ subject ]</a>
+              <a href="author.html#358">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>I have spotted an opportunity to drastically simplify the library
+interface.  It depends on being able to assign a single timestamp 
+to all the components of a fix -- even when it's reported through
+multiple NMEA sentences.
+
+So I eyeballed the log from one of my SiRF GPSes.
+
+$GPGGA,202730.584,4002.1057,N,07531.2053,W,1,05,1.4,140.0,M,-33.8,M,0.0,0000*4C
+$GPGLL,4002.1057,N,07531.2053,W,202730.584,A*2A
+$GPGSA,A,3,10,26,21,08,06,,,,,,,,2.4,1.4,2.0*3B
+$GPRMC,202730.584,A,4002.1057,N,07531.2053,W,0.00,47.44,150305,,*2C
+$GPVTG,0.00,T,,M,0.00,N,0.0,K*60
+$GPGGA,202731.584,4002.1055,N,07531.2052,W,1,05,1.4,140.9,M,-33.8,M,0.0,0000*47
+$GPGLL,4002.1055,N,07531.2052,W,202731.584,A*28
+$GPGSA,A,3,10,26,21,08,06,,,,,,,,2.4,1.4,2.0*3B
+$GPRMC,202731.584,A,4002.1055,N,07531.2052,W,0.00,47.44,150305,,*2E
+$GPVTG,0.00,T,,M,0.00,N,0.0,K*60
+$GPGGA,202732.584,4002.1053,N,07531.2050,W,1,05,1.4,142.0,M,-33.8,M,0.0,0000*4B
+$GPGLL,4002.1053,N,07531.2050,W,202732.584,A*2F
+$GPGSA,A,3,10,26,21,08,06,,,,,,,,2.4,1.4,2.0*3B
+$GPRMC,202732.584,A,4002.1053,N,07531.2050,W,0.00,47.44,150305,,*29
+
+If we group these by timestamp, it looks like the basic cycles break
+up like this:
+
+-- fix computed --
+$GPGGA,202730.584,4002.1057,N,07531.2053,W,1,05,1.4,140.0,M,-33.8,M,0.0,0000*4C
+$GPGLL,4002.1057,N,07531.2053,W,202730.584,A*2A
+$GPGSA,A,3,10,26,21,08,06,,,,,,,,2.4,1.4,2.0*3B
+$GPRMC,202730.584,A,4002.1057,N,07531.2053,W,0.00,47.44,150305,,*2C
+$GPVTG,0.00,T,,M,0.00,N,0.0,K*60
+-- fix computed --
+$GPGGA,202731.584,4002.1055,N,07531.2052,W,1,05,1.4,140.9,M,-33.8,M,0.0,0000*47
+$GPGLL,4002.1055,N,07531.2052,W,202731.584,A*28
+$GPGSA,A,3,10,26,21,08,06,,,,,,,,2.4,1.4,2.0*3B
+$GPRMC,202731.584,A,4002.1055,N,07531.2052,W,0.00,47.44,150305,,*2E
+$GPVTG,0.00,T,,M,0.00,N,0.0,K*60
+-- fix computed --
+$GPGGA,202732.584,4002.1053,N,07531.2050,W,1,05,1.4,142.0,M,-33.8,M,0.0,0000*4B
+$GPGLL,4002.1053,N,07531.2050,W,202732.584,A*2F
+$GPGSA,A,3,10,26,21,08,06,,,,,,,,2.4,1.4,2.0*3B
+$GPRMC,202732.584,A,4002.1053,N,07531.2050,W,0.00,47.44,150305,,*29
+$GPVTG,0.00,T,,M,0.00,N,0.0,K*60
+
+That is, it looks like GGA is the first report issued each cycle.
+
+Are there any exceptions to this?  I'm particularly interested in
+hearing from people with non-SiRF GPS engines -- FV18s, iBLoxes 
+and the like.  Tell me what your GPS does.
+
+And if your GPS ever seems to report different timestamps for
+sentences in the same cycle, I need to know that too.
+-- 
+		&lt;a href=&quot;<A HREF="http://www.catb.org/~esr/">http://www.catb.org/~esr/</A>&quot;&gt;Eric S. Raymond&lt;/a&gt;
+
+You [should] not examine legislation in the light of the benefits it will
+convey if properly administered, but in the light of the wrongs it
+would do and the harm it would cause if improperly administered
+	-- Lyndon Johnson, former President of the U.S.
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="000357.html">[Gpsd-users] There is a new N command
+</A></li>
+	<LI>Next message: <A HREF="000359.html">[Gpsd-users] Re: [Gpsd-dev] Call for GPS behavioral reports
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#358">[ date ]</a>
+              <a href="thread.html#358">[ thread ]</a>
+              <a href="subject.html#358">[ subject ]</a>
+              <a href="author.html#358">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

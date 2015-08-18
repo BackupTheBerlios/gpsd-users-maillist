@@ -1,0 +1,109 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] debian packages of gpsd 2.25
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2005-June/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20debian%20packages%20of%20gpsd%202.25&In-Reply-To=%3C200506301145.32195.jim%40mcdonagh.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="000799.html">
+   <LINK REL="Next"  HREF="000800.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] debian packages of gpsd 2.25</H1>
+    <B>jim mcdonagh</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20debian%20packages%20of%20gpsd%202.25&In-Reply-To=%3C200506301145.32195.jim%40mcdonagh.com%3E"
+       TITLE="[Gpsd-users] debian packages of gpsd 2.25">jim at mcdonagh.com
+       </A><BR>
+    <I>Thu Jun 30 18:45:31 CEST 2005</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="000799.html">[Gpsd-users] debian packages of gpsd 2.25
+</A></li>
+        <LI>Next message: <A HREF="000800.html">[Gpsd-users] compile error with dbus 0.23.4 and gpsd 2.26
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#803">[ date ]</a>
+              <a href="thread.html#803">[ thread ]</a>
+              <a href="subject.html#803">[ subject ]</a>
+              <a href="author.html#803">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>On Wednesday 29 June 2005 03:33 pm, Tilman Koschnick wrote:
+&gt;<i> On Wed, 2005-06-29 at 13:03 -0400, Eric S. Raymond wrote:
+</I>&gt;<i> &gt; jim mcdonagh &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">jim at mcdonagh.com</A>&gt;:
+</I>&gt;<i> &gt; &gt; I've tried the 2.25 debian package and I've built a 2.26 debian package
+</I>&gt;<i> &gt; &gt; and the hotplug doesn't seem to work for me (with either version).  I
+</I>&gt;<i> &gt; &gt; get a broken pipe error when running the gpsd.hotplug script.
+</I>&gt;<i>
+</I>&gt;<i> Try the 2.26 package from &lt;<A HREF="http://www.subnetz.org/debian/gpsd/">http://www.subnetz.org/debian/gpsd/</A>&gt;. It's
+</I>&gt;<i> 2.26 plus a patch pulled from SVN, labeled &quot;Fixes for the
+</I>&gt;<i> hotplug/control-socket mechanism.&quot;
+</I>
+I tried your latest package.  The hotplug script works.
+
+There is a problem in the order that the hotplug scripts run.  The udev script 
+to create /dev/ttyUSB0 waits to run until after the gpsd.hotplug script runs, 
+which is of course, waiting for /dev/ttyUSB0 to be created.
+
+I minor detail, is that now the gpsd doesn't actually connect to the gps.. 
+hmm..
+--------------------------
+gpsd: &lt;= control(6): adding /dev/ttyUSB0
+gpsd: opening GPS data source at '/dev/ttyUSB0'
+gpsd: garmin_gps not active.
+gpsd: no probe matched...
+gpsd: speed 9600, 8N1
+gpsd: gpsd_activate: opened GPS (7)
+gpsd: GPS has 0 chars waiting
+gpsd: closing GPS=/dev/ttyUSB0
+----------------------------------------------
+
+and started with the explicit /dev/ttyUSB0
+
+illimani:~# gpsd -N -D1 -n /dev/ttyUSB0
+gpsd: launching (Version 2.26)
+gpsd: listening on port gpsd
+gpsd: opening GPS data source at '/dev/ttyUSB0'
+gpsd: speed 9600, 8N1
+gpsd: gpsd_activate: opened GPS (5)
+gpsd: speed 4800, 8N1
+gpsd: LOS matrix is singular, can't calculate DOPs.
+
+--------------
+
+must be something with the speed?  probably sorted out in the latest SVN head?
+
+regards,
+jim
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="000799.html">[Gpsd-users] debian packages of gpsd 2.25
+</A></li>
+	<LI>Next message: <A HREF="000800.html">[Gpsd-users] compile error with dbus 0.23.4 and gpsd 2.26
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#803">[ date ]</a>
+              <a href="thread.html#803">[ thread ]</a>
+              <a href="subject.html#803">[ subject ]</a>
+              <a href="author.html#803">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

@@ -1,0 +1,142 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] proprietary Magellan Status
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2006-May/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20proprietary%20Magellan%20Status&In-Reply-To=%3C447DEF86.6020302%40boilerbots.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="001637.html">
+   <LINK REL="Next"  HREF="001568.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] proprietary Magellan Status</H1>
+    <B>maillist</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20proprietary%20Magellan%20Status&In-Reply-To=%3C447DEF86.6020302%40boilerbots.com%3E"
+       TITLE="[Gpsd-users] proprietary Magellan Status">maillist at boilerbots.com
+       </A><BR>
+    <I>Wed May 31 21:33:26 CEST 2006</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="001637.html">[Gpsd-users] proprietary Magellan Status
+</A></li>
+        <LI>Next message: <A HREF="001568.html">[Gpsd-users] Gpsd-users at lists.berlios.de
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1641">[ date ]</a>
+              <a href="thread.html#1641">[ thread ]</a>
+              <a href="subject.html#1641">[ subject ]</a>
+              <a href="author.html#1641">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Massimo Burcheri wrote:
+&gt;<i> Hello Curt,
+</I>&gt;<i>
+</I>&gt;<i> Am Samstag, den 27.05.2006, 14:05 -0700 schrieb maillist:
+</I>&gt;<i>
+</I>&gt;<i>   
+</I>&gt;&gt;<i> The original True North uses a capcitive fluid sensor to determine pitch and yaw. 
+</I>&gt;&gt;<i> Because the fluid can slosh around when a vehicle is moving this doesn't 
+</I>&gt;&gt;<i> work well above certain speeds. 
+</I>&gt;&gt;<i>     
+</I>&gt;<i>
+</I>&gt;<i> You mean pitch and roll?
+</I>&gt;<i>   
+</I>Yeah, that is what I meant. I was thinking one thing and typing 
+something else.
+&gt;<i>   
+</I>&gt;&gt;<i> We wanted the compass to appear as a GPS 
+</I>&gt;&gt;<i> unit providing heading information when our vehicle was moving slow, 
+</I>&gt;&gt;<i> less than 2 mph slow.
+</I>&gt;&gt;<i>     
+</I>&gt;<i>
+</I>&gt;<i> So what are you using the TNTC for if you don't use the magnetometer?
+</I>&gt;<i>
+</I>&gt;<i>   
+</I>We used it as a device to supply heading information for a vehicle. When 
+a gps is moving slow it doesn't provide good heading information which 
+is important to determine how to steer a vehicle. Also when the heading 
+from the compass and the heading from a gps are opposite you know you 
+are rolling backwards. That is also important for going up hills.
+
+&gt;<i> As far as the antenna positioner isn't moving fast, I can use the fluid
+</I>&gt;<i> sensor for leveling.
+</I>&gt;<i>   
+</I>Yes that is correct.
+&gt;<i> But the magnetometer could be affected by the metal environment. There I
+</I>&gt;<i> would more prefer a 2 antenna GPS for northing, as I picked up in
+</I>&gt;<i> another thread of this list.
+</I>&gt;<i>
+</I>&gt;<i>   
+</I>Yes this is a possibility but you need a special GPS unit to do this. 
+The gps is not determining the position of it's two antennas but instead 
+measuring the phase difference of the signals that it receives from both 
+antennas. This is how it can determine heading information more 
+precisely. This kind of GPS is going to cost a lot of money.
+
+&gt;<i> gpsd: Which variable did you use for heading? The devel list was
+</I>&gt;<i> discussing not to use COG for it but the existing heading value.
+</I>&gt;<i> Pitch and Roll wasn't part of the basic NMEA (?) so did you add them?
+</I>&gt;<i> Thanks for this part of code.
+</I>&gt;<i>
+</I>&gt;<i>   
+</I>I didn't add pitch and roll to gpsd because I didn't need it at the time.
+&gt;<i> Using the TNTC: For calibrating the magnetometer one has to use the
+</I>&gt;<i> MSWindows Software. Is that only necessary once?
+</I>&gt;<i> I thought about doing a differential angle measurement at azimuth 0 and
+</I>&gt;<i> 180 degree with (a-b)/2 without calibration. Then only gpsd would be
+</I>&gt;<i> needed.
+</I>&gt;<i>   
+</I>It is only necessary to re-calibrate if the environment around the 
+compass changes because metal was introduced or removed. If it is 
+mounted away from metal and electrical current then it isn't necessary 
+to recalibrate ever. The user manual that comes from True North is top 
+notch and very detailed. There is so much that goes into making these 
+compasses work accurately and reliably and the guys at True North 
+definitely know what they are doing. The TNT device considers hard iron, 
+software iron and static fields when it is calibrated. To much to 
+discuss here but it is complex to say the least. With the TN compass we 
+had 0.1 degree accuracy for heading which is far better than a gps could 
+provide.
+
+A cheaper alternative might be a development kit I found at Silicon 
+Labs:  
+<A HREF="http://www.silabs.com/tgwWebApp/public/web_content/products/Microcontrollers/en/F350-COMPASS-RD.htm">http://www.silabs.com/tgwWebApp/public/web_content/products/Microcontrollers/en/F350-COMPASS-RD.htm</A>
+
+If it is still available it might be worth checking out. This is a lot 
+less expensive than the True North device and has an LCD screen. I doubt 
+it has as sophisticated calibration but I don't know what you are 
+looking for.
+
+Curt
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="001637.html">[Gpsd-users] proprietary Magellan Status
+</A></li>
+	<LI>Next message: <A HREF="001568.html">[Gpsd-users] Gpsd-users at lists.berlios.de
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1641">[ date ]</a>
+              <a href="thread.html#1641">[ thread ]</a>
+              <a href="subject.html#1641">[ subject ]</a>
+              <a href="author.html#1641">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

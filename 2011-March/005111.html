@@ -1,0 +1,137 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] gps_read() does not block
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2011-March/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20gps_read%28%29%20does%20not%20block&In-Reply-To=%3C20110308222847.06760f12%40yendi%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="005110.html">
+   <LINK REL="Next"  HREF="005112.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] gps_read() does not block</H1>
+    <B>Charles Curley</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20gps_read%28%29%20does%20not%20block&In-Reply-To=%3C20110308222847.06760f12%40yendi%3E"
+       TITLE="[Gpsd-users] gps_read() does not block">charlescurley at charlescurley.com
+       </A><BR>
+    <I>Wed Mar  9 06:28:47 CET 2011</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="005110.html">[Gpsd-users] gps_read() does not block
+</A></li>
+        <LI>Next message: <A HREF="005112.html">[Gpsd-users] gps_read() does not block
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#5111">[ date ]</a>
+              <a href="thread.html#5111">[ thread ]</a>
+              <a href="subject.html#5111">[ subject ]</a>
+              <a href="author.html#5111">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>On Tue, 8 Mar 2011 23:31:08 -0500
+Eric Raymond &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">esr at thyrsus.com</A>&gt; wrote:
+
+&gt;<i> Charles Curley &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">charlescurley at charlescurley.com</A>&gt;:
+</I>&gt;<i> &gt; However, the man page for select(2) says:
+</I>&gt;<i> &gt; 
+</I>&gt;<i> &gt;    On Linux, select() modifies timeout to reflect the amount of time
+</I>&gt;<i> &gt;    not slept; most other implementations do not do this.
+</I>&gt;<i> &gt;    (POSIX.1-2001 permits either behavior.)  This causes problems
+</I>&gt;<i> &gt; both when Linux code which reads timeout is ported to other
+</I>&gt;<i> &gt; operating systems, and when code is ported to Linux that reuses a
+</I>&gt;<i> &gt; struct timeval for multiple select()s in a loop without
+</I>&gt;<i> &gt; reinitializing it. Consider timeout to be undefined after select()
+</I>&gt;<i> &gt; returns.
+</I>&gt;<i> &gt; 
+</I>&gt;<i> &gt; So who (on Linux) gets to reset the timeout before every call, the
+</I>&gt;<i> &gt; client or gps_waiting ()? In other words, does gps_waiting () just
+</I>&gt;<i> &gt; take the value passed in and hand it to select(), allowing select()
+</I>&gt;<i> &gt; to modify the original value? Or does gps_waiting() pass a copy, so
+</I>&gt;<i> &gt; that select() modifies that copy, which gps_waiting then discards?
+</I>&gt;<i> 
+</I>&gt;<i> I think perhaps you have misunderstood the docs.  The struct timeval
+</I>&gt;<i> may be modified on *exit* from select(2) to reflect the amount of
+</I>&gt;<i> time elapsed until an fd in the set went active.  But since the
+</I>&gt;<i> select(2) call inside gps_waiting() is not called in a loop, the
+</I>&gt;<i> portability issue as to whether it was actually modified never
+</I>&gt;<i> arises.
+</I>
+Right. But a client programmer could call it in a loop. On Linux.
+
+Here's my concern. If I hadn't read the man page, I might set up my
+time structure outside a loop which calls gps_wait (), followed by a
+call to gps_read () and then my display code. I'd initialize it once
+and forget it. This is good practice for a variable I do not expect
+the called function to change.
+
+--------------------------------------------------
+
+struct timeval tv;
+
+/* set up tv for 300 ms */
+tv.tv_sec = 0;
+tv.tv_usec = 300;
+
+while (1) {
+  if (gps_wait(&amp;gps_data, &amp;tv) == true) {
+    if (gps_read (&amp;gps_data) == -1) {
+      ...
+    }
+    ...
+  }
+  if (hell_frozen_over == true) {
+    break;
+  }
+}
+
+--------------------------------------------------
+
+If I understand the man page, every time the call to gps_wait ()
+returns early, it will reduce the timeout value in tv. This will
+eventually bring it pretty close to 0. So the processor would be
+spending more time running around in my loop and less time doing other
+more useful things.
+
+The proper way to code it, not knowing whether gps_wait () will muck
+with my tv, is to initialize it inside the loop just before I call
+gps_wait ().
+
+-- 
+
+Charles Curley                  /&quot;\    ASCII Ribbon Campaign
+Looking for fine software       \ /    Respect for open standards
+and/or writing?                  X     No HTML/RTF in email
+<A HREF="http://www.charlescurley.com">http://www.charlescurley.com</A>    / \    No M$ Word docs in email
+
+Key fingerprint = CE5C 6645 A45A 64E4 94C0  809C FFF6 4C48 4ECD DFDB
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="005110.html">[Gpsd-users] gps_read() does not block
+</A></li>
+	<LI>Next message: <A HREF="005112.html">[Gpsd-users] gps_read() does not block
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#5111">[ date ]</a>
+              <a href="thread.html#5111">[ thread ]</a>
+              <a href="subject.html#5111">[ subject ]</a>
+              <a href="author.html#5111">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

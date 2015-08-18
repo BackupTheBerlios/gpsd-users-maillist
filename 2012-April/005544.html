@@ -1,0 +1,90 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] Geolocation database
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2012-April/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Geolocation%20database&In-Reply-To=%3C4F78607A.3020102%40seiner.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   
+   <LINK REL="Next"  HREF="005545.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] Geolocation database</H1>
+    <B>Yan Seiner</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Geolocation%20database&In-Reply-To=%3C4F78607A.3020102%40seiner.com%3E"
+       TITLE="[Gpsd-users] Geolocation database">yan at seiner.com
+       </A><BR>
+    <I>Sun Apr  1 16:04:42 CEST 2012</I>
+    <P><UL>
+        
+        <LI>Next message: <A HREF="005545.html">[Gpsd-users] Availability of 1PPS for Laptop users
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#5544">[ date ]</a>
+              <a href="thread.html#5544">[ thread ]</a>
+              <a href="subject.html#5544">[ subject ]</a>
+              <a href="author.html#5544">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>I've been playing around with a geo-location database.  I have a camera 
+mounted on our travel van.  Periodically, it takes pictures of where we 
+are.  I've written (OK, mostly re-written) various code I've found to 
+tag the pics with location, lat/lon, date, time, direction, speed, and 
+outside temp.
+
+The temp code is written for the TEMPer1 and TEMPer2 usb sensors 
+available from <A HREF="http://www.pcsensor.com">http://www.pcsensor.com</A> .  The makefile is for Openwrt 
+(<A HREF="http://www.openwrt.org">http://www.openwrt.org</A>)
+
+To get the geo-location working, you need to download the data from here:
+
+<A HREF="http://geonames.usgs.gov/domestic/download_data.htm">http://geonames.usgs.gov/domestic/download_data.htm</A>
+
+There is a parse utility that will create the sql database.  Feed that 
+to sqlite3.  I ended up using rtrees so make sure your sqlite is built 
+with rtree support.
+
+Anyway, for what it's worth, the tarball is at 
+http:/www.seiner.com/cz/locate.tar.bz2 .  It's not quite plug and play; 
+you probably need to adapt it to your application.  It depends on 
+fswebcam to actually take the picture and label it.
+
+It's a fun project.  I'd appreciate patches and such but I suspect it's 
+too specialized to really be a &quot;project&quot;.
+
+-- 
+Honoring our vets.
+
+<A HREF="http://www.bataanmarch.com/">http://www.bataanmarch.com/</A>
+
+</PRE>
+
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	
+	<LI>Next message: <A HREF="005545.html">[Gpsd-users] Availability of 1PPS for Laptop users
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#5544">[ date ]</a>
+              <a href="thread.html#5544">[ thread ]</a>
+              <a href="subject.html#5544">[ subject ]</a>
+              <a href="author.html#5544">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

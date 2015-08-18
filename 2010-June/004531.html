@@ -1,0 +1,149 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] GPS loses lock (funny GPGSA line?) - reboot fixes
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2010-June/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20GPS%20loses%20lock%20%28funny%20GPGSA%20line%3F%29%20-%20reboot%20fixes&In-Reply-To=%3C58796.149.5.32.254.1276175400.squirrel%40www.rivertowermail.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="004530.html">
+   <LINK REL="Next"  HREF="004532.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] GPS loses lock (funny GPGSA line?) - reboot fixes</H1>
+    <B>Derek C</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20GPS%20loses%20lock%20%28funny%20GPGSA%20line%3F%29%20-%20reboot%20fixes&In-Reply-To=%3C58796.149.5.32.254.1276175400.squirrel%40www.rivertowermail.com%3E"
+       TITLE="[Gpsd-users] GPS loses lock (funny GPGSA line?) - reboot fixes">derekgpsd at hssl.ie
+       </A><BR>
+    <I>Thu Jun 10 15:10:00 CEST 2010</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="004530.html">[Gpsd-users] GPS loses lock (funny GPGSA line?) - reboot fixes
+</A></li>
+        <LI>Next message: <A HREF="004532.html">[Gpsd-users] GPS loses lock (funny GPGSA line?) - reboot fixes
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#4531">[ date ]</a>
+              <a href="thread.html#4531">[ thread ]</a>
+              <a href="subject.html#4531">[ subject ]</a>
+              <a href="author.html#4531">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi Greg,
+
+I've tried stopping and starting gpsd with no effect.
+
+I think its not gpsd's fault because the funny commas (missing data?) on
+the GPGSA line (data below) - unless gpsd can talk to (reset?) the GPS
+somehow.
+
+What I do notice is that after a &quot;reboot&quot; (just a reboot not a power
+cycle) the gps fix comes from gpsd and also I can see more data on the
+DPGSA line when I &quot;cat /dev/ttyUSBX&quot; which is funny
+
+Derek
+
+
+Before reboot (no fix):
+$GPGSA,A,2,15,18,22,,,,,,,,,,3.3,3.2,0.8*37
+$GPGSV,3,1,12,27,81,285,28,26,74,153,27,15,58,150,41,18,40,267,39*78
+$GPGSV,3,2,12,22,28,307,43,23,00,084,29,29,00,212,26,01,00,240,29*76
+$GPGSV,3,3,12,02,00,151,26,16,00,295,26,20,00,034,28,13,00,119,30*73
+$GPRMC,143620.177,A,5317.9003,N,00608.2502,W,000.0,213.3,020610,,,A*78
+$GPVTG,213.3,T,,M,000.0,N,000.0,K,A*0E
+$GPGGA,143621.177,5317.9003,N,00608.2502,W,1,03,3.2,6.3,M,56.2,M,,0000*4B
+$GPGSA,A,2,15,18,22,,,,,,,,,,3.3,3.2,0.8*37
+$GPGSV,3,1,12,27,81,285,28,26,74,153,27,15,58,150,41,18,40,267,39*78
+$GPGSV,3,2,12,22,28,307,43,23,00,084,29,29,00,212,27,01,00,240,29*77
+$GPG?u&#65533;&#65533;,3,12,02,00,151,26,16,00,295,25,20,00,034,27,13,00,119,30*7F
+$GPRMC,143621.177,A,5317.9003,N,00608.2502,W,000.0,213.3,020610,,,A*79
+$GPVTG,213.3,T,,M,000.0,N,000.0,K,A*0E
+$GPGGA,143622.177,5317.9003,N,00608.2502,W,1,03,3.2,6.3,M,56.2,M,,0000*48
+$GPGSA,A,2,15,18,22,,,,,,,,,,3.3,3.2,0.8*37
+$GPGSV,3,1,12,27,81,285,28,26,74,153,28,15,58,150,41,18,40,267,39*77
+$GPGSV,3,2,12,22,28,307,43,23,00,084,29,29,00,212,27,01,00,240,29*77
+$GPGSV,3,3,12,02,00,151,26,16,00,295,26,20,00,034,27,13,00,119,30*7C
+$GPRMC,143622.177,A,5317.9003,N,00608.2502,W,000.0,213.3,020610,,,A*7A
+
+
+
+
+After reboot (with fix):
+<A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">root at OpenWrt</A>:~# cat /dev/ttyGPS
+*35
+$GPGSV,3,1,12,27,86,026,42,09,79,288,45,26,62,152,40,15,47,152,41*73
+$GPGSV,3,2,12,18,36,254,37,22,31,296,44,17,30,076,36,12,30,207,42*7D
+$GPGSV,3,3,12,28,12,046,28,14,04,310,31,11,01,021,,30,00,219,*71
+$GPRMC,150050.805,A,5317.8940,N,00608.2581,W,000.0,000.0,020610,,,A*70
+$GPVTG,000.0,T,,M,000.0,N,000.0,K,A*0D
+$GPGGA,150051.805,5317.8940,N,00608.2580,W,1,09,1.0,3.4,M,56.2,M,,0000*49
+$GPGSA,A,3,09,27,26,15,17,12,28,22,18,,,,1.8,1.0,1.4*35
+$GPGSV,3,1,12,27,86,026,42,09,79,288,45,26,62,152,41,15,47,152,41*72
+$GPGSV,3,2,12,18,36,254,37,22,31,296,44,17,30,076,36,12,30,207,42*7D
+$GPGSV,3,3,12,28,12,046,31,14,04,310,31,11,01,020,,30,00,219,*78
+$GPRMC,150051.805,A,5317.8940,N,00608.2580,W,000.0,000.0,020610,,,A*70
+$GPVTG,000.0,T,,M,000.0,N,000.0,K,A*0D
+$GPGGA,150052.805,5317.8940,N,00608.2582,W,1,09,1.0,3.5,M,56.2,M,,0000*49
+$GPGSA,A,3,09,27,26,15,17,12,28,22,18,,,,1.8,1.0,1.4*35
+$GPGSV,3,1,12,27,86,026,41,09,79,288,45,26,62,152,40,15,47,152,41*70
+$GPGSV,3,2,12,18,36,254,37,22,31,296,44,17,30,076,36,12,30,207,42*7D
+$GPGSV,3,3,12,28,12,046,33,14,04,310,30,11,01,020,,30,00,219,*7B
+$GPRMC,150052.805,A,5317.8940,N,00608.2582,W,000.0,000.0,020610,,,A*71
+$GPVTG,000.0,T,,M,000.0,N,000.0,K,A*0D
+$GPGGA,150053.805,5317.8940,N,00608.2582,W,1,09,1.0,3.5,M,56.2,M,,0000*48
+$GPGSA,A,3,09,27,26,15,17,12,28,22,18,,,,1.8,1.0,1.4*35
+$GPGSV,3,1,12,27,86,026,41,09,79,288,45,26,62,152,40,15,47,152,41*70
+$GPGSV,3,2,12,18,36,254,38,22,31,296,44,17,30,076,36,12,30,207,42*72
+$GPGSV,3,3,12,28,12,046,32,14,04,310,29,11,01,020,,30,00,219,*72
+$GPRMC,150053.805,A,5317.8940,N,00608.2582,W,000.0,000.0,020610,,,A*70
+$GPVTG,000.0,T,,M,000.0,N,000.0,K,A*0D
+$GPGGA,150054.805,5317.8939,N,00608.2582,W,1,09,1.0,3.6,M,56.2,M,,0000*42
+$GPGSA,A,3,09,27,26,15,17,12,28,22,18,,,,1.8,1.0,1.4*35
+$GPGSV,3,1,12,27,86,026,41,09,79,288,45,26,62,152,40,15,47,152,42*73
+$GPGSV,3,2,12,18,36,254,37,22,31,296,44,17,30,076,36,12,30,207,41*7E
+$GPGSV,3,3,12,28,12,046,32,14,05,310,31,11,01,020,,30,00,219,*7A
+
+
+On Thu, June 10, 2010 12:50 pm, Greg Troxel wrote:
+&gt;<i>
+</I>
+&gt;<i> Check if closing and reopening the USB device helps.
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i>
+</I>
+
+-- 
+Derek C
+In Ireland
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="004530.html">[Gpsd-users] GPS loses lock (funny GPGSA line?) - reboot fixes
+</A></li>
+	<LI>Next message: <A HREF="004532.html">[Gpsd-users] GPS loses lock (funny GPGSA line?) - reboot fixes
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#4531">[ date ]</a>
+              <a href="thread.html#4531">[ thread ]</a>
+              <a href="subject.html#4531">[ subject ]</a>
+              <a href="author.html#4531">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

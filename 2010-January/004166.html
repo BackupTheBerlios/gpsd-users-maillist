@@ -1,0 +1,95 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] lost signal
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2010-January/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20lost%20signal&In-Reply-To=%3C20100114190924.GA27008%40thyrsus.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="004160.html">
+   <LINK REL="Next"  HREF="004161.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] lost signal</H1>
+    <B>Eric Raymond</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20lost%20signal&In-Reply-To=%3C20100114190924.GA27008%40thyrsus.com%3E"
+       TITLE="[Gpsd-users] lost signal">esr at thyrsus.com
+       </A><BR>
+    <I>Thu Jan 14 20:09:24 CET 2010</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="004160.html">[Gpsd-users] lost signal
+</A></li>
+        <LI>Next message: <A HREF="004161.html">[Gpsd-users] gpsd 2.39 and --disable-python
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#4166">[ date ]</a>
+              <a href="thread.html#4166">[ thread ]</a>
+              <a href="subject.html#4166">[ subject ]</a>
+              <a href="author.html#4166">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Christopher Piggott &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">cpiggott at gmail.com</A>&gt;:
+&gt;<i> What does gpsd do with respect to reporting the date/time if it a SiRF
+</I>&gt;<i> device loses signals (e.g. lost antenna, drove into a garage)?
+</I>
+It will contibue repoorting sentences, but with mode=1 set to indicate no fix.
+
+&gt;<i> How about if it loses the GPS itself (i.e. it does, loses power)?
+</I>
+It will, stop reporting sentences.
+
+&gt;<i> There reason I ask is that there have been a few field failures with
+</I>&gt;<i> some of our experiments where the GPS time (as reported by gpsd) seems
+</I>&gt;<i> to FREEZE.
+</I>&gt;<i> 
+</I>&gt;<i> What I do is this:
+</I>&gt;<i> 
+</I>&gt;<i> 			/* Request &quot;w+x&quot; data from gpsd. */
+</I>&gt;<i> 			if (gps_query(gpsdata, &quot;w+x\n&quot;) == 0) {
+</I>&gt;<i> 				if (isnan(gpsdata-&gt;fix.time) == 0) {
+</I>&gt;<i> 					/* Put time in shared memory. */
+</I>&gt;<i> 					now = (time_t) gpsdata-&gt;fix.time;
+</I>&gt;<i> 					/* do something special with the time here */
+</I>&gt;<i> 					printf(&quot;%s\n&quot;, unix_to_iso8601_time(gpsdata-&gt;fix.time, time_str,
+</I>&gt;<i> (int)sizeof(s)));
+</I>&gt;<i> 				}
+</I>&gt;<i> 			}
+</I>&gt;<i> 
+</I>&gt;<i> Is my error-checking simply inadequate?  If so, what do I need to
+</I>&gt;<i> check for from that report?
+</I>
+Check the mode field. If it coes below 2, you have no fix and the
+time is invalid.
+-- 
+		&lt;a href=&quot;<A HREF="http://www.catb.org/~esr/">http://www.catb.org/~esr/</A>&quot;&gt;Eric S. Raymond&lt;/a&gt;
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="004160.html">[Gpsd-users] lost signal
+</A></li>
+	<LI>Next message: <A HREF="004161.html">[Gpsd-users] gpsd 2.39 and --disable-python
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#4166">[ date ]</a>
+              <a href="thread.html#4166">[ thread ]</a>
+              <a href="subject.html#4166">[ subject ]</a>
+              <a href="author.html#4166">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

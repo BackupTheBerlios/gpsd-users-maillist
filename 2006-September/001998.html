@@ -1,0 +1,135 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] [PATCH] Re: Garmin GPS almost never sends new position data
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2006-September/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20%5BPATCH%5D%20Re%3A%20Garmin%20GPS%20almost%20never%20sends%20new%0A%20position%20data&In-Reply-To=%3CPine.LNX.4.64.0609241533030.30456%40catbert.rellim.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="001995.html">
+   <LINK REL="Next"  HREF="001984.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] [PATCH] Re: Garmin GPS almost never sends new position data</H1>
+    <B>Gary E. Miller</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20%5BPATCH%5D%20Re%3A%20Garmin%20GPS%20almost%20never%20sends%20new%0A%20position%20data&In-Reply-To=%3CPine.LNX.4.64.0609241533030.30456%40catbert.rellim.com%3E"
+       TITLE="[Gpsd-users] [PATCH] Re: Garmin GPS almost never sends new position data">gem at rellim.com
+       </A><BR>
+    <I>Mon Sep 25 00:47:05 CEST 2006</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="001995.html">[Gpsd-users] [PATCH] Re: Garmin GPS almost never sends new	position data
+</A></li>
+        <LI>Next message: <A HREF="001984.html">[Gpsd-users] Garmin GPS almost never sends new position data
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1998">[ date ]</a>
+              <a href="thread.html#1998">[ thread ]</a>
+              <a href="subject.html#1998">[ subject ]</a>
+              <a href="author.html#1998">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>-----BEGIN PGP SIGNED MESSAGE-----
+Hash: SHA1
+
+Yo Eivind!
+
+On Mon, 25 Sep 2006, Eivind Tagseth wrote:
+
+&gt;<i> &gt; Mike's problem is not remotely in the least bit like yours.  Your
+</I>&gt;<i> &gt; packets are clearly corrupted.  He is getting good packets.  The packets
+</I>&gt;<i> &gt; that Mike is getting are just not documented, so we need to reverse
+</I>&gt;<i> &gt; engineer a bit.
+</I>&gt;<i>
+</I>&gt;<i> Are you sure about this?  His GPS identifies as the same GPS as mine,
+</I>&gt;<i> and his symptoms are very similar to mine, just a bit worse.  I think
+</I>&gt;<i> his problems could be explained the same way as mine.
+</I>
+I just double checked, you are right.  I was thinking of the problems with
+Michael (not Mike) was having with his forerunner.
+
+Have Mike (and everyone) try your patch, at least that is another data
+point.  If it &quot;works&quot; then we are stuffed badly.
+
+&gt;<i> Well, all parts of the read buffer are _real_ parts, they are just
+</I>&gt;<i> concatenated into one.
+</I>
+Well that is better than what I thought you meant.  But still a problem.
+
+&gt;<i>  &quot;Madness&quot; is stretching it a bit I think.
+</I>&gt;<i> The kernel driver is pushing the data up into the tty layer just fine,
+</I>&gt;<i> and just as the garmin protocol directs.  But they are concatenated into
+</I>&gt;<i> one part within the tty layer iff the user space program isn't reading
+</I>&gt;<i> the data fast enough.
+</I>
+There are no packet delimieters in the Garmin protocol.  If you view the
+garmin data as a stream there is never a way to reliably determine the
+start/end of each packet.  That is why when the garmin binary is used
+over serial links DLE and ETX packets are used to frame the data.
+
+Without the DLE/ETX and with the packets mashed together you may stay
+in sync a while, but any glitch (like restarting id packet) can never
+be recovered from.
+
+There are 2 modes to the kernel driver (mode 0 and mode 1).  If the
+kernel folks really broke the way the packet mode returns data to
+user space then I will have to change the mode that gpsd uses.
+
+It is just not possible to reliably use paceket boundaries when the
+packets are mushed together.
+
+&gt;<i> Yes, but you're confusing which parts of the kernel do what here:
+</I>
+I don't really care.  It is all &quot;the kerne;&quot; to me.
+
+&gt;<i> Garmin can only document and implement what's going on between
+</I>&gt;<i> garmin_gps and usb device.
+</I>
+I am not talking about Garmin, I am talking about the garmin usb kernel
+driver doc.  Which seems to mysteiouslyu disappeared like the test
+prgrams that came with the driver.
+
+
+RGDS
+GARY
+- ---------------------------------------------------------------------------
+Gary E. Miller Rellim 20340 Empire Blvd, Suite E-3, Bend, OR 97701
+	<A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">gem at rellim.com</A>  Tel:+1(541)382-8588
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v1.4.3 (GNU/Linux)
+
+iD8DBQFFFwrs8KZibdeR3qURAns+AJ9t8nZjyoA22hTvk0E+/agn/Tg/xACgyivx
+xV3cnhKlk+oHi9YEvHCBfmM=
+=bQyG
+-----END PGP SIGNATURE-----
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="001995.html">[Gpsd-users] [PATCH] Re: Garmin GPS almost never sends new	position data
+</A></li>
+	<LI>Next message: <A HREF="001984.html">[Gpsd-users] Garmin GPS almost never sends new position data
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1998">[ date ]</a>
+              <a href="thread.html#1998">[ thread ]</a>
+              <a href="subject.html#1998">[ subject ]</a>
+              <a href="author.html#1998">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

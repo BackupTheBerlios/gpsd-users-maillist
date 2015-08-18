@@ -1,0 +1,125 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] Bug or feature in GPSD &gt;=2.24
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2005-May/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Bug%20or%20feature%20in%20GPSD%20%3E%3D2.24&In-Reply-To=%3C428F4E2C.30602%40gmail.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="000697.html">
+   <LINK REL="Next"  HREF="000687.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] Bug or feature in GPSD &gt;=2.24</H1>
+    <B>J.D. Schmidt</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Bug%20or%20feature%20in%20GPSD%20%3E%3D2.24&In-Reply-To=%3C428F4E2C.30602%40gmail.com%3E"
+       TITLE="[Gpsd-users] Bug or feature in GPSD &gt;=2.24">jdsmobile at gmail.com
+       </A><BR>
+    <I>Sat May 21 17:05:16 CEST 2005</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="000697.html">[Gpsd-users] Re: GPS Simulator for gpsd
+</A></li>
+        <LI>Next message: <A HREF="000687.html">[Gpsd-users] Bug or feature in GPSD &gt;=2.24
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#684">[ date ]</a>
+              <a href="thread.html#684">[ thread ]</a>
+              <a href="subject.html#684">[ subject ]</a>
+              <a href="author.html#684">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>After the gpsdrive package have stopped including the forked version of 
+gpsd, and the debian packages accordingly recommend the gpsd package, 
+i've noticed the following after building gpsd 2.24 and 2.25 from 
+source, due to the version in the debian positories being quite old and 
+without Sirf native support.
+I'm not sure if it's a bug in gpsd, gpsdrive or a feature ;)
+
+GPS: holux GM210 USB.
+Application : gpsdrive 2.09.
+When running with old gpsd in nmea mode, positions are correct for my 
+location.
+When running with gpsd 2.24 or 2.25 in nmea mode, positions are correct 
+for my location
+When running with gpsd 2.24 or 2.25 in SiRF binary mode, positions are 
+off by 6164.8 Km.... ;)
+
+NMEA output from gpsd follows below
+gpsd 2.25, gps in SiRF NMEA mode :
+n0
+GPSD,N=0
+i
+GPSD,I=SiRF-II NMEA
+r
+GPSD,R=1
+$GPGGA,142731.406,5538.4208,N,01238.2571,E,1,05,7.6,33.3,M,41.4,M,230.6,0000*4F
+$GPGSA,A,3,24,10,08,04,02,,,,,,,,8.1,7.6,3.0*30
+$GPRMC,142731.406,A,5538.4208,N,01238.2571,E,0.000000,126.91,210505,,*01
+$GPGGA,142732.406,5538.4220,N,01238.2629,E,1,05,7.6,31.1,M,41.4,M,230.6,0000*48
+$GPGSA,A,3,24,10,08,04,02,,,,,,,,8.1,7.6,3.0*30
+$GPGSV,3,1,10,13,80,077,00,23,45,077,00,02,41,284,45,04,40,221,41*7C
+$GPGSV,3,2,10,16,20,053,00,10,17,299,41,08,14,194,34,24,14,184,34*75
+$GPGSV,3,3,10,20,11,126,00,06,07,344,00*7D
+
+gpsd 2.25, gps in Sirf binary mode:
+n1
+GPSD,N=1
+i
+GPSD,I=SiRF-II binary
+r
+GPSD,R=1
+$GPGGA,143042,5538.4198,N,1238.2528,E,3,05,8.20,-5.5,M,40.387,M,,*60
+$GPRMC,143042,A,5538.4198,N,1238.2528,E,0.2953,55.686,210505,,*21
+$GPGSA,A,3,20,13,24,16,10,,,,,,,,1.9,8.2,0.8*38
+$PGRME,65.60,0.00,0.00*4A
+$GPGSV,3,1,11,20,09,126,00,13,78,076,00,24,13,183,34,16,20,051,00*71
+$GPGSV,3,2,11,10,18,298,41,23,43,076,00,06,07,343,00,08,16,193,32*71
+$GPGSV,3,3,11,04,39,219,41,02,41,282,45,124,24,169,00*79
+$GPGGA,143043,5538.4154,N,1238.2367,E,3,05,8.20,-13.3,M,40.387,M,,*5D
+$GPRMC,143043,A,5538.4154,N,1238.2367,E,0.2953,55.686,210505,,*2D
+
+As shown above the coordinates differ between the two outputs, where the 
+SiRF NMEA output has a leading zero for the longitude.
+This means that when using SiRF binary mode and the gpsd sirf-to-nmea 
+translation, gpsdrive thinks the location is 55.640325N 123.13333E 
+(somewhere north of Ust' Urkima in Russia), but when using the native 
+SiRF NMEA mode, gpsdrive correctly shows the location as 55.640325N 
+12.63780E (a bit north of Copenhagen Airport, Denmark).
+
+Bug or Feature ?
+
+J.D. Schmidt
+
+
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="000697.html">[Gpsd-users] Re: GPS Simulator for gpsd
+</A></li>
+	<LI>Next message: <A HREF="000687.html">[Gpsd-users] Bug or feature in GPSD &gt;=2.24
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#684">[ date ]</a>
+              <a href="thread.html#684">[ thread ]</a>
+              <a href="subject.html#684">[ subject ]</a>
+              <a href="author.html#684">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

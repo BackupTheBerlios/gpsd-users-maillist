@@ -1,0 +1,142 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] telnet is not working with gpsd 2.95
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2011-August/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20telnet%20is%20not%20working%20with%20gpsd%202.95&In-Reply-To=%3C1312218594.79320.YahooMailNeo%40web161219.mail.bf1.yahoo.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   
+   <LINK REL="Next"  HREF="005406.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] telnet is not working with gpsd 2.95</H1>
+    <B>Reza Salehi</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20telnet%20is%20not%20working%20with%20gpsd%202.95&In-Reply-To=%3C1312218594.79320.YahooMailNeo%40web161219.mail.bf1.yahoo.com%3E"
+       TITLE="[Gpsd-users] telnet is not working with gpsd 2.95">rezsalehi at yahoo.com
+       </A><BR>
+    <I>Mon Aug  1 19:09:54 CEST 2011</I>
+    <P><UL>
+        
+        <LI>Next message: <A HREF="005406.html">[Gpsd-users] telnet is not working with gpsd 2.95
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#5405">[ date ]</a>
+              <a href="thread.html#5405">[ thread ]</a>
+              <a href="subject.html#5405">[ subject ]</a>
+              <a href="author.html#5405">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>HI All,
+
+I installed &#160; gpsd 2.95 on Linux debian lenny machine using apt-get command.
+
+My GPS ( ITS300 fasttrax) is connected to USB port.
+
+I can see NMEA messages coming in via &#160; &#160;cat /dev/ttyUSB2 &#160;command.
+
+I ran gpsd that you can see the output below.
+
+
+Then I connected &#160;via telnet &#160; to the gpsd but I can't get &#160;any data out of it ( like r switch) .It seems not working at all.
+
+I appreciate if someone can give me some hints.
+
+Regards,
+Reza&#160;
+
+
+<A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">root at DOT-TRC</A>:~# telnet localhost 2947
+Trying 127.0.0.1...
+Connected to localhost.
+Escape character is '^]'.
+{&quot;class&quot;:&quot;VERSION&quot;,&quot;release&quot;:&quot;2.95&quot;,&quot;rev&quot;:&quot;2010-11-16T21:12:35&quot;,&quot;proto_major&quot;:3,&quot;proto_minor&quot;:3}
+
+r
+
+
+
+
+
+
+<A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">root at DOT-TRC</A>:~# gpsd -n -N -D 2 /dev/ttyUSB2
+gpsd: launching (Version 2.95)
+gpsd: listening on port gpsd
+gpsd: running with effective group ID 0
+gpsd: running with effective user ID 0
+gpsd: opening GPS data source type 3 at '/dev/ttyUSB2'
+gpsd: speed 9600, 8N1
+gpsd: attempting USB device enumeration.
+gpsd: 1d6b:0002 (bus 1, device 1)
+gpsd: 1d6b:0001 (bus 2, device 1)
+gpsd: 1d6b:0001 (bus 3, device 1)
+gpsd: 1d6b:0001 (bus 4, device 1)
+gpsd: 08e4:0150 (bus 1, device 2)
+gpsd: 0403:6011 (bus 1, device 10)
+gpsd: 04f2:0402 (bus 3, device 2)
+gpsd: vendor/product match with 091e:0003 not found
+gpsd: speed 9600, 8O1
+gpsd: speed 9600, 8N1
+gpsd: gpsd_activate(): opened GPS (fd 6)
+gpsd: NTPD ntpd_link_activate: 1
+gpsd: /dev/ttyUSB2 identified as type Generic NMEA (0.554056 sec @ 9600bps)
+gpsd: =&gt; Probing device subtype 0
+gpsd: can't use GGA time until after ZDA or RMC has supplied a year.
+gpsd: =&gt; Probing device subtype 1
+gpsd: GPS on /dev/ttyUSB2 is offline (0.001627 sec since data)
+gpsd: =&gt; Probing device subtype 2
+gpsd: GPS on /dev/ttyUSB2 is offline (0.001588 sec since data)
+gpsd: =&gt; Probing device subtype 3
+gpsd: SiRF binary packet seen when NMEA expected.
+gpsd: NTPD ntpd_link_activate: 1
+gpsd: GPS on /dev/ttyUSB2 is offline (0.000091 sec since data)
+gpsd: GPS on /dev/ttyUSB2 is offline (0.000087 sec since data)
+gpsd: GPS on /dev/ttyUSB2 is offline (0.000081 sec since data)
+gpsd: GPS on /dev/ttyUSB2 is offline (0.000085 sec since data)
+gpsd: GPS on /dev/ttyUSB2 is offline (0.000114 sec since data)
+gpsd: GPS on /dev/ttyUSB2 is offline (0.000087 sec since data)
+gpsd: GPS on /dev/ttyUSB2 is offline (0.000084 sec since data)
+gpsd: GPS on /dev/ttyUSB2 is offline (0.000082 sec since data)
+gpsd: GPS on /dev/ttyUSB2 is offline (0.000088 sec since data)
+gpsd: GPS on /dev/ttyUSB2 is offline (0.000116 sec since data)
+gpsd: GPS on /dev/ttyUSB2 is offline (0.000099 sec since data)
+gpsd: GPS on /dev/ttyUSB2 is offline (0.000086 sec since data)
+gpsd: GPS on /dev/ttyUSB2 is offline (0.000081 sec since data)
+gpsd: GPS on /dev/ttyUSB2 is offline (0.000091 sec since data)
+gpsd: GPS on /dev/ttyUSB2 is offline (0.000119 sec since data)
+gpsd: GPS on /dev/ttyUSB2 is offline (0.000089 sec since data)
+gpsd: GPS on /dev/ttyUSB2 is offline (0.000088 sec since data)
+gpsd: GPS on /dev/ttyUSB2 is offline (0.000083 sec since data)
+^Cgpsd: received terminating signal 2.
+gpsd: closing GPS=/dev/ttyUSB2 (6)
+gpsd: exiting.
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	
+	<LI>Next message: <A HREF="005406.html">[Gpsd-users] telnet is not working with gpsd 2.95
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#5405">[ date ]</a>
+              <a href="thread.html#5405">[ thread ]</a>
+              <a href="subject.html#5405">[ subject ]</a>
+              <a href="author.html#5405">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

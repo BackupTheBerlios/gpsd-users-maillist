@@ -1,0 +1,118 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] Getting GPSD to pick up PPS from Delorme Earthmate Serial GPS
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2007-July/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Getting%20GPSD%20to%20pick%20up%20PPS%20from%20Delorme%20Earthmate%0A%20Serial%20GPS&In-Reply-To=%3CPine.LNX.4.64.0707021814160.6784%40birdbird.example.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="002737.html">
+   <LINK REL="Next"  HREF="002740.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] Getting GPSD to pick up PPS from Delorme Earthmate Serial GPS</H1>
+    <B>Matt Roberds</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Getting%20GPSD%20to%20pick%20up%20PPS%20from%20Delorme%20Earthmate%0A%20Serial%20GPS&In-Reply-To=%3CPine.LNX.4.64.0707021814160.6784%40birdbird.example.com%3E"
+       TITLE="[Gpsd-users] Getting GPSD to pick up PPS from Delorme Earthmate Serial GPS">mattroberds at cox.net
+       </A><BR>
+    <I>Tue Jul  3 01:40:09 CEST 2007</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="002737.html">[Gpsd-users] Getting GPSD to pick up PPS from Delorme Earthmate Serial GPS
+</A></li>
+        <LI>Next message: <A HREF="002740.html">[Gpsd-users] Getting GPSD to pick up PPS from Delorme Earthmate	Serial GPS
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2738">[ date ]</a>
+              <a href="thread.html#2738">[ thread ]</a>
+              <a href="subject.html#2738">[ subject ]</a>
+              <a href="author.html#2738">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>On Mon, 2 Jul 2007, Adam Dosch wrote:
+&gt;<i> My problem is getting GPSD to defect PPS from the DCD (Carrier Detect)
+</I>&gt;<i> pin.  I've whipped together a tiny circuit that will show an LED light
+</I>&gt;<i> pulse every time PPS is detected on the DCD pin on the serial port
+</I>&gt;<i> (pin 1), and I can see it happening, although I have no real way to
+</I>&gt;<i> measure the pulse length or anything like that.
+</I>
+If you're on Linux, then the last time I looked, the kernel scheduler
+ran at 100 Hz, or a 10 millisec interval, so pulses close to or shorter
+than 10 millisec long might get missed.  I suspect, though, that if you
+can perceive the LED being on, the pulse length is almost surely longer
+than 10 millisec.  I agree with Gary Miller that you should check to see
+if your gpsd was compiled with pps support; if not or if you're not
+sure, you may want to build it from source yourself.
+
+&gt;<i> I'm open to any suggestions or comments to track down why `gpsd` might
+</I>&gt;<i> not be detecting PPS on the DCD pin on my GPS.
+</I>
+I don't remember whether it's looking for a mark or a space on DCD.
+You could leave the GPS hooked up only to TXD, RXD, and ground, and
+connect your own stuff (more in a minute) to the DCD pin.  Then fire up
+gpsd in debug mode and apply known pulses to DCD to see if they show up
+in the log.
+
+The &quot;stuff&quot; you need is a way to apply something more positive than +3 V
+or less than -3 V to the DCD pin.  This could be as simple as a jumper
+that you could touch to either the +12 V or -12 V lines from the power
+supply inside your computer (assuming a desktop), or a fresh 9 V battery
+with snap connector.
+
+With the jumper wire, you'd hook one end to DCD, then touch the other
+end for about half a second (so you _know_ the pulse is long enough) to
++12 V, then leave the other end hanging for about half a second, then
+touch the other end to +12 V again, and so on.  If that doesn't impress
+gpsd, try the -12 V line.
+
+With the 9 V battery, first plug the red wire into DCD, and touch the
+black wire to ground - the metal shell of the serial port connector, or
+one of the case screws - for about half a second, then leave it hanging
+for about half a second, then touch it to ground again, and so on.  If
+that doesn't impress gpsd, plug the black wire into DCD and touch the
+red wire to ground.
+
+Another way would be to plug in your GPS like normal, and use a terminal
+program like Minicom to monitor the status of the serial port.  Or, use
+a small utility like statserial (available as a Debian package, or get
+the source from <A HREF="http://packages.qa.debian.org/s/statserial.html">http://packages.qa.debian.org/s/statserial.html</A> ) to
+monitor the serial port.  If the DCD indicator in the program flickers,
+then it's possible to detect the PPS signal on your hardware.  If this
+software can't detect the PPS pulses from the GPS, see if it can detect
+pulses from you, using a jumper wire or battery as above.  If nothing
+works, maybe you're on the wrong pin, or your serial port is broken.  (I
+found out the hard way that parallel ports don't really like to have
+12 V AC applied to them...)
+
+Matt Roberds
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="002737.html">[Gpsd-users] Getting GPSD to pick up PPS from Delorme Earthmate Serial GPS
+</A></li>
+	<LI>Next message: <A HREF="002740.html">[Gpsd-users] Getting GPSD to pick up PPS from Delorme Earthmate	Serial GPS
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2738">[ date ]</a>
+              <a href="thread.html#2738">[ thread ]</a>
+              <a href="subject.html#2738">[ subject ]</a>
+              <a href="author.html#2738">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

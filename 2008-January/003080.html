@@ -1,0 +1,94 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] gpsd.h uses &quot;typename&quot; - OK for C, NG for C++
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2008-January/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20gpsd.h%20uses%20%22typename%22%20-%20OK%20for%20C%2C%20NG%20for%20C%2B%2B&In-Reply-To=%3CPine.LNX.4.64.0801130508250.7363%40birdbird.example.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="003078.html">
+   <LINK REL="Next"  HREF="003107.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] gpsd.h uses &quot;typename&quot; - OK for C, NG for C++</H1>
+    <B>Matt Roberds</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20gpsd.h%20uses%20%22typename%22%20-%20OK%20for%20C%2C%20NG%20for%20C%2B%2B&In-Reply-To=%3CPine.LNX.4.64.0801130508250.7363%40birdbird.example.com%3E"
+       TITLE="[Gpsd-users] gpsd.h uses &quot;typename&quot; - OK for C, NG for C++">mattroberds at cox.net
+       </A><BR>
+    <I>Sun Jan 13 12:21:23 CET 2008</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="003078.html">[Gpsd-users] Ntpd not reading gpsd shm
+</A></li>
+        <LI>Next message: <A HREF="003107.html">[Gpsd-users] gpsd.h uses &quot;typename&quot; - OK for C, NG for C++
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3080">[ date ]</a>
+              <a href="thread.html#3080">[ thread ]</a>
+              <a href="subject.html#3080">[ subject ]</a>
+              <a href="author.html#3080">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hello all!
+
+I am doing a little hacking around on a C++ program that is attempting
+to use gpsd.  This is partly my fault, but I managed to include gpsd.h
+(as installed by 2.36) in a C++ file.  The compiler was emitting some
+odd errors:
+
+--- cut here ---
+/usr/local/include/gpsd.h:217: error: expected unqualified-id before 'typename'
+/usr/local/include/gpsd.h:217: error: abstract declarator 'char*' used as declaration
+/usr/local/include/gpsd.h:217: error: expected ';' before 'typename'
+--- cut here ---
+
+Looking at the offending lines, we have:
+
+--- cut here ---
+struct gps_type_t {
+/* GPS method table, describes how to talk to a particular GPS type */
+     /* @observer@ */char* typename;
+     /*@observer@*//*@null@*/ char *trigger;
+     int channels;
+--- cut here ---
+
+I scratched my head a little until I figured it out: 'typename' is a
+keyword in C++ (like 'int' or 'while'), but it's a legal variable name
+in C.  In the gpsd code, typename is a string used to hold the name of
+the driver type, like &quot;SiRF binary&quot; or &quot;Generic NMEA&quot;.
+
+Again, this is mostly my fault, but I figured it might save someone else
+a few minutes of confusion.
+
+Matt Roberds
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="003078.html">[Gpsd-users] Ntpd not reading gpsd shm
+</A></li>
+	<LI>Next message: <A HREF="003107.html">[Gpsd-users] gpsd.h uses &quot;typename&quot; - OK for C, NG for C++
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3080">[ date ]</a>
+              <a href="thread.html#3080">[ thread ]</a>
+              <a href="subject.html#3080">[ subject ]</a>
+              <a href="author.html#3080">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

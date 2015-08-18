@@ -1,0 +1,114 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] Problem with GARMIN GPS 18x LVC (and gpsd + ntpd)
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2009-December/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Problem%20with%20GARMIN%20GPS%2018x%20LVC%20%28and%20gpsd%20%2B%20ntpd%29&In-Reply-To=%3Calpine.LNX.1.10.0912220017260.30021%40catbert.rellim.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="004134.html">
+   <LINK REL="Next"  HREF="004136.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] Problem with GARMIN GPS 18x LVC (and gpsd + ntpd)</H1>
+    <B>Gary E. Miller</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Problem%20with%20GARMIN%20GPS%2018x%20LVC%20%28and%20gpsd%20%2B%20ntpd%29&In-Reply-To=%3Calpine.LNX.1.10.0912220017260.30021%40catbert.rellim.com%3E"
+       TITLE="[Gpsd-users] Problem with GARMIN GPS 18x LVC (and gpsd + ntpd)">gem at rellim.com
+       </A><BR>
+    <I>Tue Dec 22 09:23:59 CET 2009</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="004134.html">[Gpsd-users] Problem with GARMIN GPS 18x LVC (and gpsd + ntpd)
+</A></li>
+        <LI>Next message: <A HREF="004136.html">[Gpsd-users] Problem with GARMIN GPS 18x LVC (and gpsd + ntpd)
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#4135">[ date ]</a>
+              <a href="thread.html#4135">[ thread ]</a>
+              <a href="subject.html#4135">[ subject ]</a>
+              <a href="author.html#4135">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>-----BEGIN PGP SIGNED MESSAGE-----
+Hash: SHA1
+
+Yo H&#229;kan!
+
+On Tue, 22 Dec 2009, H&#229;kan Johansson wrote:
+
+&gt;<i> &gt; We have never seen a 5Hz model.  Either you need to figure out how to
+</I>&gt;<i> &gt; get your GPS in 1Hz mode or we need a way to tell which pulse is the
+</I>&gt;<i> &gt; right one.  At the moment I have no idea if either is possible.
+</I>&gt;<i>
+</I>&gt;<i> according to the manual
+</I>&gt;<i>
+</I>&gt;<i> <A HREF="http://www8.garmin.com/manuals/425_TechnicalSpecification.pdf">http://www8.garmin.com/manuals/425_TechnicalSpecification.pdf</A>
+</I>&gt;<i>
+</I>&gt;<i> section 4.4.2, the default pulse width (also in 5 Hz mode) is 100 ms. Just
+</I>&gt;<i> making it a square wave :-(  But it is supposed to be reprogrammable in from
+</I>&gt;<i> 20 ms to 180 ms ($PGRMC).  If it is just made shorter, the normal logics for
+</I>&gt;<i> picking the right edge would work.
+</I>
+A 100mS pulse (square wave) is what the logs showed, so that is
+confirmed.  I have no doubt that gpsd is already on the correct edge.
+The problem is in getting the right pulse of the 5 pulses per second.
+
+&gt;<i> Gary, do I remember correctly that you have experience playing with garmin
+</I>&gt;<i> pulse lengths?
+</I>
+Yes, but never seen, or heard, of a 5Hz unit being used with gpsd.  The
+problem is the 5Hz, not the cycle/duration.  The cycle/duration look fine.
+
+&gt;<i> Then, if the serial time stamp info comes as the manual says between all
+</I>&gt;<i> pulses, it should be possible to use them all.  (The egrep &quot;NTPD|PPS&quot; log
+</I>&gt;<i> messages are needed).
+</I>
+Then I would expect gpsd to be stable between runs, and the logs
+submitted do not show that.  I hope we can find a pattern in the logs we
+can use, but for now it has never worked and we have not seen any data.
+
+So I am not saying it is impossible, or even hard, just that we have not
+enough data.  Your log request should help us figure it out.
+
+RGDS
+GARY
+- ---------------------------------------------------------------------------
+Gary E. Miller Rellim 109 NW Wilmington Ave., Suite E, Bend, OR 97701
+	<A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">gem at rellim.com</A>  Tel:+1(541)382-8588
+
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v1.4.3 (GNU/Linux)
+
+iD8DBQFLMIIjBmnRqz71OvMRAjnlAJwOOikY3OC9icCsISoOHLRCxUMfjACdHtwn
+utk4UjaS/H3HbEyv/3SF7tA=
+=nKmB
+-----END PGP SIGNATURE-----
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="004134.html">[Gpsd-users] Problem with GARMIN GPS 18x LVC (and gpsd + ntpd)
+</A></li>
+	<LI>Next message: <A HREF="004136.html">[Gpsd-users] Problem with GARMIN GPS 18x LVC (and gpsd + ntpd)
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#4135">[ date ]</a>
+              <a href="thread.html#4135">[ thread ]</a>
+              <a href="subject.html#4135">[ subject ]</a>
+              <a href="author.html#4135">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

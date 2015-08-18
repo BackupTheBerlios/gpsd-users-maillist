@@ -1,0 +1,138 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] Garmin USB device
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2005-June/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Garmin%20USB%20device&In-Reply-To=%3C42A00E42.1030006%40wisloff.no%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="000731.html">
+   <LINK REL="Next"  HREF="000733.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] Garmin USB device</H1>
+    <B>Ragnar Wisloff</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Garmin%20USB%20device&In-Reply-To=%3C42A00E42.1030006%40wisloff.no%3E"
+       TITLE="[Gpsd-users] Garmin USB device">ragnar at wisloff.no
+       </A><BR>
+    <I>Fri Jun  3 10:01:06 CEST 2005</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="000731.html">[Gpsd-users] Garmin USB device
+</A></li>
+        <LI>Next message: <A HREF="000733.html">[Gpsd-users] Garmin USB device
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#732">[ date ]</a>
+              <a href="thread.html#732">[ thread ]</a>
+              <a href="subject.html#732">[ subject ]</a>
+              <a href="author.html#732">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Gary E. Miller skrev:
+&gt;<i> -----BEGIN PGP SIGNED MESSAGE-----
+</I>&gt;<i> Hash: SHA1
+</I>&gt;<i> 
+</I>&gt;<i> Yo Ragnar!
+</I>&gt;<i> 
+</I>&gt;<i> On Fri, 3 Jun 2005, Ragnar Wisloff wrote:
+</I>&gt;<i> 
+</I>&gt;<i> 
+</I>&gt;&gt;<i>I have a Garmin Etrex Legend C which is a USB only and Garmin binary protocol
+</I>&gt;&gt;<i>only device. I saw in the changelog that this should now work with gpsd, but
+</I>&gt;&gt;<i>that it required the kernel module garmin_usb.
+</I>&gt;<i> 
+</I>&gt;<i> 
+</I>&gt;<i> Yes, you need garmin_usb.
+</I>&gt;<i> 
+</I>&gt;<i> 
+</I>&gt;&gt;<i>I cannot find any trace of such a module on Google. There is a garmin_gps
+</I>&gt;&gt;<i>module, is that the one? That seems to come from the project that also
+</I>&gt;&gt;<i>produced the workaround garminusb2nmea. Using garmin_gps and garminusb2nmea I
+</I>&gt;&gt;<i>made this device talk to gpsd in the past.
+</I>&gt;<i> 
+</I>&gt;<i> 
+</I>&gt;<i> Yes, that is the driver.  It is built in to Linux kernels 2.6.8.1 and
+</I>&gt;<i> higher.  Just compile it in to your kernel.
+</I>
+Ummm, you've got me sightly confused. I need garmin_usb or garmin_gps? 
+It seems to work using garmin_gps though :)
+
+&gt;<i> 
+</I>&gt;<i> 
+</I>&gt;&gt;<i>My laptop running Debian Sarge finds the device, loads the garmin_gps module
+</I>&gt;&gt;<i>successfully and attaches it to /dev/ttyUSB0. At least so it says in the
+</I>&gt;&gt;<i>syslog.
+</I>&gt;<i> 
+</I>&gt;<i> 
+</I>&gt;<i> Sounds good.  If you download hte driver source that you found on Google it
+</I>&gt;<i> has a simple dump test progeam in it called: garmin_gps_test.  That is a
+</I>&gt;<i> good independent validation that things are configed properly.
+</I>
+Great. It does indeed:
+
+$ ./garmin_gps_test
+Driver version 0.19, mode=1, serial=3024031084
+Got response for start-session, serial=3024031084
+Got time from gps: 07:50:52 3.6. 2005 UTC
+Got 2x time from gps.
+
+&gt;<i> 
+</I>&gt;<i> 
+</I>&gt;&gt;<i>Starting gpsd then says
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i>$ gpsd-2.25/gpsd
+</I>&gt;&gt;<i>gpsd: can't run with neither control socket nor devices
+</I>&gt;<i> 
+</I>&gt;<i> 
+</I>&gt;<i> You need to start gpsd as root this way:
+</I>&gt;<i> 
+</I>&gt;<i> gpsd -nN -p /dev/ttyUSB0 -D 5
+</I>&gt;<i> 
+</I>
+Hey, you guys cheat, -p is not in the man page ;)
+
+Anyway, it works :)
+
+&lt;snip&gt;
+gpsd: Garmin Product ID: 315, SoftVer: 2.00
+gpsd: Garmin Product Desc: Etrex Legend C Software Version 2.00
+&lt;snip&gt;
+
+I will test a little more later on, but so far this looks good :)
+
+Thanks, Gary!
+
+
+Ragnar Wisl&#248;ff
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="000731.html">[Gpsd-users] Garmin USB device
+</A></li>
+	<LI>Next message: <A HREF="000733.html">[Gpsd-users] Garmin USB device
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#732">[ date ]</a>
+              <a href="thread.html#732">[ thread ]</a>
+              <a href="subject.html#732">[ subject ]</a>
+              <a href="author.html#732">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

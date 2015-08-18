@@ -1,0 +1,118 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] How to use GPSFeed+ with GPSD
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2009-May/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20How%20to%20use%20GPSFeed%2B%20with%20GPSD&In-Reply-To=%3CNEENICADAJACNKJHICGDKELHCKAA.mark63%40azurebell.co.nz%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="003722.html">
+   <LINK REL="Next"  HREF="003724.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] How to use GPSFeed+ with GPSD</H1>
+    <B>Mark Easton</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20How%20to%20use%20GPSFeed%2B%20with%20GPSD&In-Reply-To=%3CNEENICADAJACNKJHICGDKELHCKAA.mark63%40azurebell.co.nz%3E"
+       TITLE="[Gpsd-users] How to use GPSFeed+ with GPSD">mark63 at azurebell.co.nz
+       </A><BR>
+    <I>Thu May  7 05:13:23 CEST 2009</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="003722.html">[Gpsd-users]  How to use GPSFeed+ with GPSD
+</A></li>
+        <LI>Next message: <A HREF="003724.html">[Gpsd-users] WBT-201
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3723">[ date ]</a>
+              <a href="thread.html#3723">[ thread ]</a>
+              <a href="subject.html#3723">[ subject ]</a>
+              <a href="author.html#3723">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Note please, that I dont have a gps unit with me right now. I was just
+hoping to do some testing today without a gps unit. I see that the the
+recommended test harness is gpsfake, but I dont have a logfile for it. So,
+that puts me back to square 1 of needing a gps unit.
+
+Can gpsfeed generate a logfile for gpsfake?
+
+
+
+-----Original Message-----
+From: <A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">gpsd-users-bounces at lists.berlios.de</A>
+[mailto:<A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">gpsd-users-bounces at lists.berlios.de</A>]On Behalf Of Robert Easton
+Sent: Thursday, 7 May 2009 3:03 p.m.
+To: <A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">gpsd-users at lists.berlios.de</A>
+Subject: [Gpsd-users] How to use GPSFeed+ with GPSD
+
+
+
+I want to run gpsd without a gps unit, to test my app. So I need some sort
+of
+nmea simulator. I see that gpsfeed+ provides this functionality. How can I
+get gpsfeed+ to feed into gpsd on a linux computer? I saw a post about using
+fifos by Chris ...
+
+gpsd can read from a fifo.
+
+pc1% gpsfeed+ | nc -l 2947
+
+pc2% mkfifo /tmp/gps
+pc2% gpsd -n /tmp/gps
+pc2% nc pc1 2947 &gt; /tmp/gps
+
+I know nothing about fifos. When I tried this I had two problems.
+
+1. gpsfeed keeps putting up a gui, so I cant get it to pipe (I think)
+2. the last command (nc pc1 ...) times out because it cant get a connection
+
+Anyway, the main point is to get some nmea feed into gpsd on a linux
+computer. What is the best/easiest way to proceed?
+
+TIA
+Mark
+--
+View this message in context:
+<A HREF="http://www.nabble.com/How-to-use-GPSFeed%2B-with-GPSD-tp23419423p23419423.ht">http://www.nabble.com/How-to-use-GPSFeed%2B-with-GPSD-tp23419423p23419423.ht</A>
+ml
+Sent from the GPSd - Users mailing list archive at Nabble.com.
+
+_______________________________________________
+Gpsd-users mailing list
+<A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">Gpsd-users at lists.berlios.de</A>
+<A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">https://lists.berlios.de/mailman/listinfo/gpsd-users</A>
+No virus found in this incoming message.
+Checked by AVG - www.avg.com
+Version: 8.5.287 / Virus Database: 270.12.19/2099 - Release Date: 05/06/09
+17:58:00
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="003722.html">[Gpsd-users]  How to use GPSFeed+ with GPSD
+</A></li>
+	<LI>Next message: <A HREF="003724.html">[Gpsd-users] WBT-201
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3723">[ date ]</a>
+              <a href="thread.html#3723">[ thread ]</a>
+              <a href="subject.html#3723">[ subject ]</a>
+              <a href="author.html#3723">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

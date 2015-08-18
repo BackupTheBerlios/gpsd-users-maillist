@@ -1,0 +1,99 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] getting ntpd to work with gpsd
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2010-February/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20getting%20ntpd%20to%20work%20with%20gpsd&In-Reply-To=%3Calpine.LNX.1.10.1002161419230.31223%40catbert.rellim.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="004234.html">
+   <LINK REL="Next"  HREF="004229.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] getting ntpd to work with gpsd</H1>
+    <B>Gary E. Miller</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20getting%20ntpd%20to%20work%20with%20gpsd&In-Reply-To=%3Calpine.LNX.1.10.1002161419230.31223%40catbert.rellim.com%3E"
+       TITLE="[Gpsd-users] getting ntpd to work with gpsd">gem at rellim.com
+       </A><BR>
+    <I>Tue Feb 16 23:26:09 CET 2010</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="004234.html">[Gpsd-users] getting ntpd to work with gpsd
+</A></li>
+        <LI>Next message: <A HREF="004229.html">[Gpsd-users] Detecting a loss of GPS fix
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#4235">[ date ]</a>
+              <a href="thread.html#4235">[ thread ]</a>
+              <a href="subject.html#4235">[ subject ]</a>
+              <a href="author.html#4235">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>-----BEGIN PGP SIGNED MESSAGE-----
+Hash: SHA1
+
+Yo Ryan!
+
+On Tue, 16 Feb 2010, Ryan Turcotte 10E wrote:
+
+&gt;<i> Silly of ntpd
+</I>&gt;<i> to ignore gpsd data when the time is that far off, IMO.
+</I>
+ntpd, by default, ignores time sources that are more  than 1000s off at
+startup.  They decided better to have no time than a badtime.
+
+You can use the -g option to allow the first bump to be be anything
+goes, but as you see that does not seem to work well with gpsd.  Not sure
+why that is the case.  There  have been NTP  tweaks in gpsd since 2.90 so
+a later version might work a bit better for you.
+
+gpsd has been known to go wonky so best to also have other time sources
+available and to let ntpd sort out the best of them.
+
+For example, the SiRF leap second detection in current gpsd will just
+go off int he weedsand best not to have ntpd follow that!
+
+RGDS
+GARY
+- ---------------------------------------------------------------------------
+Gary E. Miller Rellim 109 NW Wilmington Ave., Suite E, Bend, OR 97701
+	<A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">gem at rellim.com</A>  Tel:+1(541)382-8588
+
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v1.4.3 (GNU/Linux)
+
+iD8DBQFLexuDBmnRqz71OvMRAvTDAKCEXYWgRNh+E+4Maj+0r+nLnrcZSwCg0Nnh
+ES0UJ17eE4CQ4K5vQbFOseA=
+=PzB/
+-----END PGP SIGNATURE-----
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="004234.html">[Gpsd-users] getting ntpd to work with gpsd
+</A></li>
+	<LI>Next message: <A HREF="004229.html">[Gpsd-users] Detecting a loss of GPS fix
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#4235">[ date ]</a>
+              <a href="thread.html#4235">[ thread ]</a>
+              <a href="subject.html#4235">[ subject ]</a>
+              <a href="author.html#4235">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

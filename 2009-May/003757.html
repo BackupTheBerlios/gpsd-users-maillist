@@ -1,0 +1,236 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] Garmin GPS 60 USB - real time acquisition
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2009-May/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Garmin%20GPS%2060%20USB%20-%20real%20time%20acquisition&In-Reply-To=%3C6970F23E-6866-45F8-A3A4-14A06FA83AE9%40gmail.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="003756.html">
+   <LINK REL="Next"  HREF="003758.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] Garmin GPS 60 USB - real time acquisition</H1>
+    <B>TheMrOrange</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Garmin%20GPS%2060%20USB%20-%20real%20time%20acquisition&In-Reply-To=%3C6970F23E-6866-45F8-A3A4-14A06FA83AE9%40gmail.com%3E"
+       TITLE="[Gpsd-users] Garmin GPS 60 USB - real time acquisition">themrorange at gmail.com
+       </A><BR>
+    <I>Fri May 22 00:50:55 CEST 2009</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="003756.html">[Gpsd-users] Garmin GPS 60 USB - real time acquisition
+</A></li>
+        <LI>Next message: <A HREF="003758.html">[Gpsd-users] Garmin GPS 60 USB - real time acquisition
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3757">[ date ]</a>
+              <a href="thread.html#3757">[ thread ]</a>
+              <a href="subject.html#3757">[ subject ]</a>
+              <a href="author.html#3757">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>one step forward...
+
+It seems the garmin_gps module wasn't loaded...
+
+# dmesg
+[   59.260238] usb 5-1: new full speed USB device using uhci_hcd and  
+address 3
+[   59.410695] usb 5-1: configuration #1 chosen from 1 choice
+
+I tried to load the module using
+# /sbin/modprobe garmin_gps
+
+the module seems to be loaded succesfully and my device get the  
+&quot;ttyUSB0&quot;
+
+# dmesg
+[  107.060571] USB Serial support registered for Garmin GPS usb/tty
+[  107.060616] garmin_gps 5-1:1.0: Garmin GPS usb/tty converter detected
+[  107.060766] usb 5-1: Garmin GPS usb/tty converter now attached to  
+ttyUSB0
+[  107.060797] usbcore: registered new interface driver garmin_gps
+[  107.060803] garmin_gps: v0.31:garmin gps driver
+
+now there is another obscure mistake:
+
+# gpsd -N -D 6 /dev/ttyUSB0
+gpsd: Can't open /proc/bus/usb/devices
+gpsd: no probe matched...
+gpsd: gpsd_activate(1): opened GPS (5)
+
+I tried to mount the file system
+# mount -t usbfs none /proc/bus/usb/
+
+finally it works fine:
+# gpsd -N -D 2 /dev/ttyUSB0
+gpsd: launching (Version 2.38)
+gpsd: listening on port gpsd
+gpsd: Priority sertting failed.
+gpsd: successfully connected to the DBUS system bus
+gpsd: running with effective group ID 0
+gpsd: running with effective user ID 0
+gpsd: opening GPS data source at '/dev/ttyUSB0'
+gpsd: speed 9600, 8N1
+gpsd: ntpd_link_activate: 0
+gpsd: gpsd_activate(1): opened GPS (5)
+gpsd: Garmin Product ID: 289, SoftVer: 2.40
+gpsd: Garmin Product Desc: GPS60 Software Version 2.40
+gpsd: Appl, Product Capability, sz: 111
+gpsd:   P000
+gpsd:   L001
+gpsd:   A010
+gpsd:   T001
+gpsd:   A100
+gpsd:   D109
+gpsd:   A201
+gpsd:   D202
+gpsd:   D109
+gpsd:   D210
+gpsd:   A301
+gpsd:   D310
+gpsd:   D301
+gpsd:   A400
+gpsd:   D109
+gpsd:   A500
+gpsd:   D501
+gpsd:   A600
+gpsd:   D600
+gpsd:   A601
+gpsd:   D601
+gpsd:   A700
+gpsd:   D700
+gpsd:   A800
+gpsd:   D800
+gpsd:   A900
+gpsd:   A902
+gpsd:   A903
+gpsd:   A904
+gpsd:   A907
+gpsd:   D907
+gpsd:   D908
+gpsd:   D909
+gpsd:   D910
+gpsd:   A914
+gpsd:   A1010
+gpsd:   A1011
+gpsd: UTC Time: 1242923667.000000
+gpsd: Geoid Separation (MSL-WGS84): from garmin 56.921867, calculated  
+56.921936
+gpsd: Alt: 73.483, Epe: 32.796, Eph: 24.840, Epv: 21.413, Fix: 3,  
+Gps_tow: 405282.000001, Lat: 51.883, Lon: -8.536, LonVel: -0.004,  
+LatVel: -0.030, AltVel: -0.007, MslHgt: -56.922, Leap: 15, GarminDays:  
+7077
+gpsd: UTC Time: 1242923668.000000
+gpsd: Geoid Separation (MSL-WGS84): from garmin 56.921867, calculated  
+56.921938
+gpsd: Alt: 73.342, Epe: 32.796, Eph: 24.840, Epv: 21.413, Fix: 3,  
+Gps_tow: 405283.000001, Lat: 51.883, Lon: -8.536, LonVel: 0.002,  
+LatVel: -0.002, AltVel: -0.006, MslHgt: -56.922, Leap: 15, GarminDays:  
+7077
+gpsd: UTC Time: 1242923669.000000
+gpsd: Geoid Separation (MSL-WGS84): from garmin 56.921867, calculated  
+56.921941
+gpsd: Alt: 73.205, Epe: 32.796, Eph: 24.840, Epv: 21.413, Fix: 3,  
+Gps_tow: 405284.000002, Lat: 51.883, Lon: -8.536, LonVel: -0.002,  
+LatVel: -0.024, AltVel: -0.008, MslHgt: -56.922, Leap: 15, GarminDays:  
+7077
+gpsd: UTC Time: 1242923670.000000
+gpsd: Geoid Separation (MSL-WGS84): from garmin 56.921867, calculated  
+56.921942
+gpsd: Alt: 73.118, Epe: 32.796, Eph: 24.840, Epv: 21.413, Fix: 3,  
+Gps_tow: 405285.000002, Lat: 51.883, Lon: -8.536, LonVel: 0.001,  
+LatVel: -0.011, AltVel: -0.007, MslHgt: -56.922, Leap: 15, GarminDays:  
+7077
+gpsd: UTC Time: 1242923671.000000
+gpsd: Geoid Separation (MSL-WGS84): from garmin 56.921867, calculated  
+56.921944
+gpsd: Alt: 73.047, Epe: 32.796, Eph: 24.840, Epv: 21.413, Fix: 3,  
+Gps_tow: 405286.000002, Lat: 51.883, Lon: -8.536, LonVel: -0.001,  
+LatVel: 0.002, AltVel: -0.008, MslHgt: -56.922, Leap: 15, GarminDays:  
+7077
+^Cgpsd: Received terminating signal 2. Exiting...
+gpsd: closing GPS=/dev/ttyUSB0 (5)
+
+Now you know where I am!
+
+thanks a million
+
+
+Davide
+
+
+On 21/mag/09, at 12:05, johnr wrote:
+
+&gt;<i> John R. wrote:
+</I>&gt;&gt;<i> TheMrOrange wrote:
+</I>&gt;&gt;&gt;<i> This is a big problem for me because I bought two Garmin GPS 60
+</I>&gt;&gt;&gt;<i> because I found it in <A HREF="http://gpsd.berlios.de/hardware.html">http://gpsd.berlios.de/hardware.html</A>
+</I>&gt;&gt;&gt;<i> It's tested using USB and gpsd 2.33
+</I>&gt;&gt;&gt;<i> Garmin GPS 60 handset Garmin USB, RS232 2.33 3.01 Reported by Diego
+</I>&gt;&gt;&gt;<i> Berge (contact)
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> The 60csx is supported.  My lsmod shows the following two modules:
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> garmin_gps             14488  0
+</I>&gt;&gt;<i> usbserial              24264  1 garmin_gps
+</I>&gt;<i>
+</I>&gt;<i> Logged after attaching gps:
+</I>&gt;<i>
+</I>&gt;<i> May 21 05:58:37 comp usb 2-2: new full speed USB device using uhci_hcd
+</I>&gt;<i> and address 2
+</I>&gt;<i> May 21 05:58:37 comp usb 2-2: configuration #1 chosen from 1 choice
+</I>&gt;<i> May 21 05:58:37 comp garmin_gps 2-2:1.0: Garmin GPS usb/tty converter
+</I>&gt;<i> detected
+</I>&gt;<i> May 21 05:58:37 comp usb 2-2: Garmin GPS usb/tty converter now  
+</I>&gt;<i> attached
+</I>&gt;<i> to ttyUSB0
+</I>&gt;<i>
+</I>&gt;<i> gpsd info:
+</I>&gt;<i>
+</I>&gt;<i> GPSD,I=Garmin USB binary 292: 3.30
+</I>&gt;<i>
+</I>&gt;<i> gpsd -V:
+</I>&gt;<i>
+</I>&gt;<i> gpsd 2.39dev
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i> _______________________________________________
+</I>&gt;<i> Gpsd-users mailing list
+</I>&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">Gpsd-users at lists.berlios.de</A>
+</I>&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">https://lists.berlios.de/mailman/listinfo/gpsd-users</A>
+</I>
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="003756.html">[Gpsd-users] Garmin GPS 60 USB - real time acquisition
+</A></li>
+	<LI>Next message: <A HREF="003758.html">[Gpsd-users] Garmin GPS 60 USB - real time acquisition
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3757">[ date ]</a>
+              <a href="thread.html#3757">[ thread ]</a>
+              <a href="subject.html#3757">[ subject ]</a>
+              <a href="author.html#3757">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

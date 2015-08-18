@@ -1,0 +1,80 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] gpsd and gstreamer?
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2007-January/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20gpsd%20and%20gstreamer%3F&In-Reply-To=%3C20070106171947.2f3662b6%40frodo.mittelerde%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="002374.html">
+   <LINK REL="Next"  HREF="002376.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] gpsd and gstreamer?</H1>
+    <B>Andreas Volz</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20gpsd%20and%20gstreamer%3F&In-Reply-To=%3C20070106171947.2f3662b6%40frodo.mittelerde%3E"
+       TITLE="[Gpsd-users] gpsd and gstreamer?">lists at brachttal.net
+       </A><BR>
+    <I>Sat Jan  6 17:19:47 CET 2007</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="002374.html">[Gpsd-users] gpsd and gstreamer?
+</A></li>
+        <LI>Next message: <A HREF="002376.html">[Gpsd-users] gpsd and gstreamer?
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2375">[ date ]</a>
+              <a href="thread.html#2375">[ thread ]</a>
+              <a href="subject.html#2375">[ subject ]</a>
+              <a href="author.html#2375">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Am Sat, 6 Jan 2007 16:07:49 +0100 schrieb Andreas Volz:
+
+&gt;<i> Hello,
+</I>&gt;<i> 
+</I>&gt;<i> I'm writing an application that uses Gtk+ and gstreamer[1]. Now I like
+</I>&gt;<i> to add support for gpsd in my application. Some example programms with
+</I>&gt;<i> gpsd C and C++ API run well, but I've problems to integrate it into my
+</I>&gt;<i> application. This is what I do currently:
+</I>&gt;<i> ...
+</I>
+Forget my question. I found the solution. I forgot that glib or gtk
+init functions set locale. Because of this functions like sscanf don't
+work as expected. A setlocale(LC_NUMERIC, &quot;C&quot;) did it. Perhaps gpsd
+should add a fprintf on stderr or a errno that tells the user that the
+sscanf in gps_unpack() wasn't successful. Or perhaps a solution that
+isn't influenced by the users locale.
+
+regards
+Andreas
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="002374.html">[Gpsd-users] gpsd and gstreamer?
+</A></li>
+	<LI>Next message: <A HREF="002376.html">[Gpsd-users] gpsd and gstreamer?
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2375">[ date ]</a>
+              <a href="thread.html#2375">[ thread ]</a>
+              <a href="subject.html#2375">[ subject ]</a>
+              <a href="author.html#2375">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

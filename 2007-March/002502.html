@@ -1,0 +1,96 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] gpslib stops yielding data
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2007-March/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20gpslib%20stops%20yielding%20data&In-Reply-To=%3C91981b3e0703250900q287b9ecel6db7b51781040bc2%40mail.gmail.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="002500.html">
+   <LINK REL="Next"  HREF="002524.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] gpslib stops yielding data</H1>
+    <B>Chris Kuethe</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20gpslib%20stops%20yielding%20data&In-Reply-To=%3C91981b3e0703250900q287b9ecel6db7b51781040bc2%40mail.gmail.com%3E"
+       TITLE="[Gpsd-users] gpslib stops yielding data">chris.kuethe at gmail.com
+       </A><BR>
+    <I>Sun Mar 25 18:00:36 CEST 2007</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="002500.html">[Gpsd-users] gpslib stops yielding data
+</A></li>
+        <LI>Next message: <A HREF="002524.html">[Gpsd-users] gpslib stops yielding data
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2502">[ date ]</a>
+              <a href="thread.html#2502">[ thread ]</a>
+              <a href="subject.html#2502">[ subject ]</a>
+              <a href="author.html#2502">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>On 3/24/07, Yang &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">wtfc2m902 at sneakemail.com</A>&gt; wrote:
+&gt;<i> I wrote a simple C++ program, pasted below, which uses libgps'
+</I>&gt;<i> set_callback. However, after running for some time, it stops producing
+</I>&gt;<i> output (no more callbacks). Another connection or command to gpsd
+</I>&gt;<i> seems to make the callbacks resume again.
+</I>
+Oy.... this again! We've heard this happens, but have never got a good
+description of the circumstances.
+
+&gt;<i> This has happened to me twice (in one day of usage). The first time, I
+</I>&gt;<i> figured something was wrong, so I asked my colleague to check it out.
+</I>&gt;<i> He telnet-ed in (from his own terminal), entered 'r', and I saw my
+</I>&gt;<i> program resume (on my terminal). We hadn't made the connection at that
+</I>&gt;<i> point. The second time (several minutes after it resumed), I thought
+</I>&gt;<i> it would resume on its own, but after several hours, I tried
+</I>&gt;<i> telnet+'r' myself, and that's when I realized what was happening. FWIW
+</I>&gt;<i> (not much with just 2 data ponits), each time a hangup happened, the
+</I>&gt;<i> last one or two gps_data_t had online==0. I haven't since seen another
+</I>&gt;<i> hangup, but I also haven't seen another message where online==0.
+</I>&gt;<i>
+</I>&gt;<i> Is this a bug in libgps or gpsd? How can I work around this? Should I
+</I>&gt;<i> use a periodic gps_query instead? I'm using gpsd 2.34 on FC5.
+</I>
+How are you invoking gpsd? If it's not too much trouble, could you
+perhaps add &quot;-N -D4&quot; to your gpsd command line and capture the ouput
+with &quot;tee&quot; or &quot;script&quot;... I'd like to see what happens in the time
+leading up to the gps going offline.
+
+This could be a fairly large log, but so long as it's under 10MB,
+compressed, you can send it directly to my email.
+
+CK
+
+-- 
+GDB has a 'break' feature; why doesn't it have 'fix' too?
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="002500.html">[Gpsd-users] gpslib stops yielding data
+</A></li>
+	<LI>Next message: <A HREF="002524.html">[Gpsd-users] gpslib stops yielding data
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2502">[ date ]</a>
+              <a href="thread.html#2502">[ thread ]</a>
+              <a href="subject.html#2502">[ subject ]</a>
+              <a href="author.html#2502">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

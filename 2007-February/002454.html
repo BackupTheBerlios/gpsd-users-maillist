@@ -1,0 +1,225 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] NTP problem
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2007-February/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20NTP%20problem&In-Reply-To=%3C20070205141144.150790%40gmx.net%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="002453.html">
+   <LINK REL="Next"  HREF="002474.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] NTP problem</H1>
+    <B>Ulrich Voigt</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20NTP%20problem&In-Reply-To=%3C20070205141144.150790%40gmx.net%3E"
+       TITLE="[Gpsd-users] NTP problem">ulrich.voigt at gmx.de
+       </A><BR>
+    <I>Mon Feb  5 15:11:44 CET 2007</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="002453.html">[Gpsd-users] 2.34
+</A></li>
+        <LI>Next message: <A HREF="002474.html">[Gpsd-users] NTP problem
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2454">[ date ]</a>
+              <a href="thread.html#2454">[ thread ]</a>
+              <a href="subject.html#2454">[ subject ]</a>
+              <a href="author.html#2454">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hello,
+
+I have problems to sync my clock to my GPS clock. I have read some posts about but couldn&quot;t find the answer. 
+I am running gpsd 2.34 on Suse linux 10.1.
+My GPS receiver has a SIRF III chip.
+
+1: /etc/ntp.conf
+++++++++++++++++
+server 127.127.1.0  # local clock (LCL)
+fudge 127.127.1.0  stratum 10 # LCL is unsynchronized
+driftfile /var/lib/ntp/drift/ntp.drift # path for drift file
+logfile /var/log/ntp            # alternate log file
+server 127.127.28.0
+fudge 127.127.28.0
+
+I start ntpd manually as root:
+/usr/sbin/ntpd -p /var/lib/ntp/var/run/ntp/ntpd.pid -i /var/lib/ntp -d -d
+
+The output of this is:
+ntpd <A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">4.2.0a at 1.1196-r</A> Thu Jun 29 17:56:19 UTC 2006 (1)
+addto_syslog: ntpd <A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">4.2.0a at 1.1196-r</A> Thu Jun 29 17:56:19 UTC 2006 (1)
+addto_syslog: set_process_priority: Leave priority alone: priority_done is &lt;2&gt;
+addto_syslog: precision = 1.000 usec
+create_sockets(123)
+bind() fd 5, family 2, port 123, addr 0.0.0.0, flags=8
+flags for fd 5: 04002
+addto_syslog: Listening on interface wildcard, 0.0.0.0#123
+bind() fd 6, family 10, port 123, addr ::, flags=0
+flags for fd 6: 04002
+addto_syslog: Listening on interface wildcard, ::#123
+bind() fd 7, family 2, port 123, addr 127.0.0.1, flags=0
+flags for fd 7: 04002
+addto_syslog: Listening on interface lo, 127.0.0.1#123
+bind() fd 8, family 2, port 123, addr 192.27.11.233, flags=8
+flags for fd 8: 04002
+addto_syslog: Listening on interface eth0, 192.27.11.233#123
+bind() fd 9, family 2, port 123, addr 192.168.1.2, flags=8
+flags for fd 9: 04002
+addto_syslog: Listening on interface eth1, 192.168.1.2#123
+create_sockets: ninterfaces=5
+interface 0:  fd=5,  bfd=-1,  name=wildcard,  flags=0x8,  scope=0
+              sin=0.0.0.0  bcast=0.0.0.0,  mask=255.255.255.255
+interface 1:  fd=6,  bfd=-1,  name=wildcard,  flags=0x0,  scope=0
+              sin=::  mask=ffff:ffff:ffff:ffff:ffff:ffff:ffff:ffff
+interface 2:  fd=7,  bfd=-1,  name=lo,  flags=0x5,  scope=0
+              sin=127.0.0.1  mask=255.0.0.0
+interface 3:  fd=8,  bfd=-1,  name=eth0,  flags=0x9,  scope=0
+              sin=192.27.11.233  bcast=192.27.11.255,  mask=255.255.255.0
+interface 4:  fd=9,  bfd=-1,  name=eth1,  flags=0x9,  scope=0
+              sin=192.168.1.2  bcast=192.168.1.255,  mask=255.255.255.0
+init_io: maxactivefd 9
+local_clock: time 0 clock 0.000000 offset 0.000000 freq 0.000 state 0
+getnetnum given 127.127.1.0, got 127.127.1.0
+key_expire: at 0
+peer_clear: at 0 assoc ID 16940 refid INIT
+newpeer: 127.0.0.1-&gt;127.127.1.0 mode 3 vers 4 poll 6 10 flags 0x21 0x1 ttl 0 key 00000000
+getnetnum given 127.127.1.0, got 127.127.1.0
+addto_syslog: frequency initialized 62.745 PPM from /var/lib/ntp/drift/ntp.drift
+local_clock: time 0 clock 0.000000 offset 0.000000 freq 62.745 state 1
+getnetnum given 127.127.28.0, got 127.127.28.0
+key_expire: at 0
+peer_clear: at 0 assoc ID 16941 refid INIT
+newpeer: 127.0.0.1-&gt;127.127.28.0 mode 3 vers 4 poll 6 10 flags 0x21 0x1 ttl 0 key 00000000
+getnetnum given 127.127.28.0, got 127.127.28.0
+report_event: system event 'event_restart' (0x01) status 'sync_alarm, sync_unspec, 1 event, event_unspec' (0xc010)
+refclock_transmit: at 1 127.127.1.0
+refclock_receive: at 1 127.127.1.0
+peer LOCAL(0) event 'event_reach' (0x84) status 'unreach, conf, 1 event, event_reach' (0x8014)
+refclock_sample: n 1 offset 0.000000 disp 0.010000 jitter 0.000001
+clock_filter: n 1 off 0.000000 del 0.000000 dsp 7.937500 jit 0.000001, age 1
+poll_update: at 1 127.127.1.0 flags 0021 poll 6 burst 0 last 1 next 65
+auth_agekeys: at 1 keys 1 expired 0
+timer: refresh ts 0
+refclock_transmit: at 2 127.127.28.0
+clock SHM(0) event 'clk_noreply' (0x01)
+poll_update: at 2 127.127.28.0 flags 0021 poll 6 burst 0 last 2 next 65
+receive: at 35 127.0.0.1&lt;-127.0.0.1 restrict 000
+sendpkt(fd=7 dst=127.0.0.1, src=127.0.0.1, ttl=-6, len=20)
+...
+auth_agekeys: at 60 keys 1 expired 0
+refclock_transmit: at 65 127.127.28.0
+refclock_receive: at 65 127.127.28.0
+peer SHM(0) event 'event_reach' (0x84) status 'unreach, conf, 1 event, event_rea
+ch' (0x8014)
+refclock_sample: n 1 offset -139.038486 disp 0.000000 jitter 0.000001
+clock_filter: popcorn 139.038486 0.000975
+poll_update: at 65 127.127.28.0 flags 0021 poll 6 burst 0 last 65 next 131
+.....
+
+++++++++++++++++++++++++++++
+I start gpsd as root with
+gpsd -n -N -D 5 /dev/ttyUSB0 
+
+The output is:
+gpsd: launching (Version 2.34)
+gpsd: listening on port gpsd
+gpsd: shmat(0,0,0) succeeded
+gpsd: shmat(0,0,0) succeeded
+gpsd: shmat(0,0,0) succeeded
+gpsd: shmat(0,0,0) succeeded
+gpsd: running with effective group ID 0
+gpsd: running with effective user ID 0
+gpsd: opening GPS data source at '/dev/ttyUSB0'
+gpsd: speed 9600, 8N1
+gpsd: garmin_gps not active.
+gpsd: no probe matched...
+gpsd: gpsd_activate(1): opened GPS (5)
+gpsd: packet sniff finds type -1
+gpsd: packet sniff finds type -1
+.....
+gpsd: packet sniff finds type 2
+gpsd: switch_driver(SiRF binary) called...
+gpsd: selecting SiRF binary driver...
+gpsd: configuring for SiRF binary...
+gpsd: Requesting periodic ecef reports...
+gpsd: Writing SiRF control type a6:a0a20008a60002010000000000a9b0b3
+gpsd: Requesting periodic tracker reports...
+gpsd: Writing SiRF control type a6:a0a20008a60004030000000000adb0b3
+gpsd: Setting DGPS control to use SBAS...
+gpsd: Writing SiRF control type 85:a0a20007850100000000000086b0b3
+gpsd: Setting SBAS to auto/integrity mode...
+gpsd: Writing SiRF control type aa:a0a20006aa000100000000abb0b3
+gpsd: Probing for firmware version...
+gpsd: Writing SiRF control type 84:a0a2000284000084b0b3
+gpsd: Requesting navigation parameters...
+gpsd: Writing SiRF control type 98:a0a2000298000098b0b3
+gpsd: Raw SiRF packet type 0x04 length 188: 04018500ce0ff30c03684400bf2c2c2c2b2b2b2b2b2b2b0bb95f00bf27272727272626262626136f8300bf2a2a2a2a2a2a2a29292914931300bf212121212120202020200e444600bf1e1e1e1e1d1d1d1d1d1d16254900ad151515151515151514141cce2f00bf25252525252525242424091203000000000000000000000000016220002d1d1c1c1c1c1c1c1c1c1c121f0a00ad15151515151515151414000000000000000000000000000000000000000000000000000000000000
+gpsd: valid time in message 0x04, seen=0x00
+gpsd: MTD 0x04: 10 satellites
+gpsd: &lt;= GPS: $GPGSV,3,1,10,03,34,156,43,11,47,277,38,19,65,166,41,20,09,220,32*74\x0d\x0a$GPGSV,3,2,10,14,35,102,29,22,36,055,20,28,23,309,36,09,01,027,00*7C\x0d\x0a$GPGSV,3,3,10,01,16,147,28,18,05,046,20*7A^M
+gpsd: Raw SiRF packet type 0x02 length 41: 02003cc6f600072d67004b6bba000000000000040502018500ce0ff40713030b141c160e0000000000
+gpsd: MND 0x02: Navtype = 0x4, Status = 1, mode = 3
+gpsd: valid time in message 0x02, seen=0x01
+....
+
+Ok, I stop here. I think that's enough logfile :-)
+
+I have read something about shared memory problems. Here is the 
+cat /proc/sysvipc/shm
+
+       key      shmid perms       size  cpid  lpid nattch   uid   gid  cuid  cgid      atime      dtime      ctime
+1314148400     589829   700                    96  5393  5394      2     0     0     0     0 1170682373          0 1170682371
+1314148401     622599   644                    96  5394  5394      1     0     0     0     0 1170682373          0 1170682373
+1314148402     655368   644                    96  5394  5394      1     0     0     0     0 1170682373          0 1170682373
+1314148403     688137   644                    96  5394  5394      1     0     0     0     0 1170682373          0 1170682373
+
+Process 5393 is the ntpd, 5394 is gpsd.
+
+Last but not least the ntpq -p output (after some time):
+     remote           refid      st t when poll reach   delay   offset  jitter
+==============================================================================
+*LOCAL(0)        LOCAL(0)        10 l   25   64   17    0.000    0.000   0.001
+ SHM(0)          .SHM.            0 l  154   64    4    0.000  -139038   0.001
+
+I have no idea what I can do to get it run :-( 
+
+Can someone take a look on it and tell me what's wrong?
+
+Cheers
+Ulrich
+
+-- 
+&quot;Feel free&quot; - 10 GB Mailbox, 100 FreeSMS/Monat ...
+Jetzt GMX TopMail testen: <A HREF="http://www.gmx.net/de/go/topmail?ac=OM.GX.GX003K11713T4783a">http://www.gmx.net/de/go/topmail?ac=OM.GX.GX003K11713T4783a</A>
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="002453.html">[Gpsd-users] 2.34
+</A></li>
+	<LI>Next message: <A HREF="002474.html">[Gpsd-users] NTP problem
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2454">[ date ]</a>
+              <a href="thread.html#2454">[ thread ]</a>
+              <a href="subject.html#2454">[ subject ]</a>
+              <a href="author.html#2454">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

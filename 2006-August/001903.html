@@ -1,0 +1,128 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] Fwd: NTP Problems
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2006-August/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Fwd%3A%20NTP%20Problems&In-Reply-To=%3C20060830140524.GE22844%40space.mit.edu%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="001902.html">
+   <LINK REL="Next"  HREF="001904.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] Fwd: NTP Problems</H1>
+    <B>Geoffrey B. Crew</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Fwd%3A%20NTP%20Problems&In-Reply-To=%3C20060830140524.GE22844%40space.mit.edu%3E"
+       TITLE="[Gpsd-users] Fwd: NTP Problems">gbc at space.mit.edu
+       </A><BR>
+    <I>Wed Aug 30 16:05:25 CEST 2006</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="001902.html">[Gpsd-users] Fwd: NTP Problems
+</A></li>
+        <LI>Next message: <A HREF="001904.html">[Gpsd-users] Fwd: NTP Problems
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1903">[ date ]</a>
+              <a href="thread.html#1903">[ thread ]</a>
+              <a href="subject.html#1903">[ subject ]</a>
+              <a href="author.html#1903">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>On Wed, Aug 30, 2006 at 09:31:51PM +1000, Karl von Muller wrote:
+&gt;<i> On 8/30/06, Gary E. Miller &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">gem at rellim.com</A>&gt; wrote:
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt;To be sure ntpshm_init is getting called you might want to add a
+</I>&gt;<i> &gt;gpsd_report() at the start of the function.
+</I>&gt;<i> 
+</I>&gt;<i> Hmm, i seem to be missing a lot in my strace compared to yours..
+</I>
+Not surprising, since the oses aren't the same.
+
+&gt;<i> strace gpsd -Nn /dev/ttyS0
+</I>&gt;<i> execve(&quot;/usr/bin/gpsd&quot;, [&quot;gpsd&quot;, &quot;-Nn&quot;, &quot;/dev/ttyS0&quot;], [/* 18 vars */]) = 0
+</I>&gt;<i> old_mmap(NULL, 20, PROT_READ|PROT_WRITE, MAP_PRIVATE|MAP_ANONYMOUS, -1, 0) =
+</I>&gt;<i> 0x40005000
+</I>&gt;<i> stat(&quot;/etc/ld.so.cache&quot;, {st_mode=S_IFREG|0644, st_size=1010, ...}) = 0
+</I>&gt;<i> 
+</I>&gt;<i> [...]
+</I>&gt;<i> 
+</I>&gt;<i> open(&quot;/etc/protocols&quot;, O_RDONLY)        = 3
+</I>&gt;<i> ioctl(3, SNDCTL_TMR_TIMEBASE or TCGETS, 0xbe8db7f8) = -1 ENOTTY
+</I>&gt;<i> (Inappropriate ioctl for device)
+</I>&gt;<i> read(3, &quot;# /etc/protocols:\n# $Id: protoco&quot;..., 4096) = 1191
+</I>&gt;<i> close(3)                                = 0
+</I>&gt;<i> mq_notify(2, ptrace: umoven: Input/output error
+</I>&gt;<i> {...})                     = 3
+</I>&gt;<i> SYS_294(0x3, 0x1, 0x2, 0xbe8db914, 0x4) = 0
+</I>&gt;<i> mq_getsetattr(3, {mq_flags=O_RDWR|O_DIRECT|O_LARGEFILE|0x83080000,
+</I>&gt;<i> mq_maxmsg=0, mq_msgsize=0, mq_curmsg=0}, ptrace: umoven: Input/output error
+</I>&gt;<i> {...}) = 0
+</I>&gt;<i> waitid(0x3 /* P_??? */, 5, ptrace: umoven: Input/output error
+</I>&gt;<i> {???}, __WCLONE|__WNOTHREAD|0x1e8db914, NULL) = 0
+</I>&gt;<i> getuid()                                = 0
+</I>
+So it should have executed these here:
+
+  if (getuid() == 0) {
+	  (void)nice(-10); 
+	  (void)ntpshm_init(&amp;context, nowait);
+  }
+
+but no system calls were generated.  As Gary said, you can/should
+verify with printf() that ntpshm_init() is indeed getting called.
+If it is, the implication is that the shm calls themselves are stubbed
+out, which perhaps points to some linkage problem, but I'm guessing.
+
+&gt;<i> getegid()                               = 0
+</I>&gt;<i> geteuid()                               = 0
+</I>&gt;<i> rt_sigaction(SIGHUP, {0x9e90, [HUP], SA_RESTART|0x4000000}, {SIG_DFL}, 8) =
+</I>&gt;<i> 0
+</I>&gt;<i> rt_sigaction(SIGINT, {0x9e90, [INT], SA_RESTART|0x4000000}, {SIG_DFL}, 8) =
+</I>&gt;<i> 0
+</I>&gt;<i> rt_sigaction(SIGTERM, {0x9e90, [TERM], SA_RESTART|0x4000000}, {SIG_DFL}, 8)
+</I>&gt;<i> = 0
+</I>&gt;<i> rt_sigaction(SIGQUIT, {0x9e90, [QUIT], SA_RESTART|0x4000000}, {SIG_DFL}, 8)
+</I>&gt;<i> = 0
+</I>&gt;<i> rt_sigaction(SIGPIPE, {SIG_IGN}, {SIG_DFL}, 8) = 0
+</I>&gt;<i> time(NULL)                              = 48974
+</I>&gt;<i> open(&quot;/dev/ttyS0&quot;, O_RDWR|O_NOCTTY)     = 4
+</I>&gt;<i> ioctl(4, SNDCTL_TMR_TIMEBASE or TCGETS, {B9600 opost isig icanon echo ...})
+</I>&gt;<i> = 0
+</I>&gt;<i> ioctl(4, TCFLSH, 0x2)                   = 0
+</I>
+
+-- 
+
+		Geoff
+		<A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">gbc at space.mit.edu</A>
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="001902.html">[Gpsd-users] Fwd: NTP Problems
+</A></li>
+	<LI>Next message: <A HREF="001904.html">[Gpsd-users] Fwd: NTP Problems
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1903">[ date ]</a>
+              <a href="thread.html#1903">[ thread ]</a>
+              <a href="subject.html#1903">[ subject ]</a>
+              <a href="author.html#1903">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

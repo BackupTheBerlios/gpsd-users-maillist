@@ -1,0 +1,185 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] Your NTP Server Using A Garmin 18 LVC
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2006-October/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Your%20NTP%20Server%20Using%20A%20Garmin%2018%20LVC&In-Reply-To=%3C4.3.2.7.2.20061024081913.02a8afd0%40postoffice.creativesilicon.com.au%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="002115.html">
+   <LINK REL="Next"  HREF="002121.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] Your NTP Server Using A Garmin 18 LVC</H1>
+    <B>Dave C</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Your%20NTP%20Server%20Using%20A%20Garmin%2018%20LVC&In-Reply-To=%3C4.3.2.7.2.20061024081913.02a8afd0%40postoffice.creativesilicon.com.au%3E"
+       TITLE="[Gpsd-users] Your NTP Server Using A Garmin 18 LVC">gpsd at creativesilicon.com.au
+       </A><BR>
+    <I>Tue Oct 24 00:22:20 CEST 2006</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="002115.html">[Gpsd-users] Your NTP Server Using A Garmin 18 LVC
+</A></li>
+        <LI>Next message: <A HREF="002121.html">[Gpsd-users] Your NTP Server Using A Garmin 18 LVC
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2120">[ date ]</a>
+              <a href="thread.html#2120">[ thread ]</a>
+              <a href="subject.html#2120">[ subject ]</a>
+              <a href="author.html#2120">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>
+Hi Eric &amp; Gary,
+
+
+Please also note that you might have to enable the PPS output from the 
+18LVC using the (windows based) Garmin configuration software. I've used a 
+few 18LVC now and my experience is that they don't always come with PPS 
+factory enabled.
+
+If you're turning this into a FAQ, it's probably a good idea to stress that 
+ONLY the 18LVC has a PPS output - the other two (18USB &amp; 18PC?) don't bring 
+out the PPS line.
+
+ciao, Dave
+
+
+At 04:25 PM 23/10/2006 -0400, you wrote:
+&gt;<i>Gary E. Miller &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">gem at rellim.com</A>&gt;:
+</I>&gt;<i> &gt; -----BEGIN PGP SIGNED MESSAGE-----
+</I>&gt;<i> &gt; Hash: SHA1
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; Yo Tom!
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; On Sat, 16 Sep 2006, tom kayser wrote:
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; &gt; How did you manage to get PPS output from gpsd, and how did you get this
+</I>&gt;<i> &gt; &gt; output into ntp.  I have tried several other methods to get PPS time, but
+</I>&gt;<i> &gt; &gt; have settled on gpsd for now.   The gps, Garmin 18, with RS232 
+</I>&gt;<i> soldered on
+</I>&gt;<i> &gt; &gt; from scratch, is working in NMEA mode; and offsets are in the 5.000 to
+</I>&gt;<i> &gt; &gt; 200.000 range.  So, I have ntp working with the gps time, but not 
+</I>&gt;<i> with PPS.
+</I>&gt;<i> &gt; &gt; Could you tell me how you made gpsd work with PPS and ntp?
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; First, you need the latest SVN.  It has an important patch in it for PPS.
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; Second, you need to remove a broken sanity check in the current code.
+</I>&gt;<i> &gt; In ntpshm.c change this:
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; #define PUT_MAX_OFFSET        500000          /* microseconds for lost 
+</I>&gt;<i> lock */
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; To this:
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; #define PUT_MAX_OFFSET  600000          /* microseconds for lost lock */
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; Third add these in your /etc/ntp.conf:
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; # for gpsd
+</I>&gt;<i> &gt; server 127.127.28.0 minpoll 4 maxpoll 4
+</I>&gt;<i> &gt; # for when gpsd uses default 0.675 internal fudge
+</I>&gt;<i> &gt; fudge 127.127.28.0 time1 -0.575  refid GPS
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; # for PPS and gpsd
+</I>&gt;<i> &gt; server 127.127.28.1 minpoll 4 maxpoll 4 prefer
+</I>&gt;<i> &gt; fudge 127.127.28.1 time1 -0.0004 refid GPS1
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; My GPS-18/LVC is running at 19200 bps to cut latncy down.  A slower
+</I>&gt;<i> &gt; speed will increase the latency and jitter of the NMEA based time.
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; Not all GPS-18 output the PPS pulse and in those that do it can be
+</I>&gt;<i> &gt; enabled/disabled by a config option.  So be sure yours is outputing the
+</I>&gt;<i> &gt; PPS signal.
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; Fourth, start ntpd and gpsd.  To be sure gpsd is running all the time
+</I>&gt;<i> &gt; use the 'n' option like this:
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt;       gpsd -n /dev/ttyS0
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; Try adding '-D 5' if you want to see some ntp debug info.
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; After an hour or two of settling time I get good results like this:
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; # ntpdc -p
+</I>&gt;<i> &gt;      remote           local      st poll reach  delay   offset    disp
+</I>&gt;<i> &gt; =======================================================================
+</I>&gt;<i> &gt; =SHM(0)          127.0.0.1        0   16  377 0.00000  0.016318 0.01581
+</I>&gt;<i> &gt; *SHM(1)          127.0.0.1        0   16  377 0.00000  0.000002 0.01578
+</I>&gt;<i> &gt; =time.windows.co 204.17.205.18    5   64  377 0.03427 -0.021193 0.13976
+</I>&gt;<i> &gt; =time-nw.nist.go 204.17.205.18    1   64  377 0.03362  0.006493 0.07304
+</I>&gt;<i> &gt; =bigben.cac.wash 204.17.205.18    1   64  377 0.03288  0.000474 0.06416
+</I>&gt;<i> &gt; =clock.isc.org   204.17.205.18    1   64  377 0.05524  0.000208 0.07469
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; Otherwise local time is now in agreement with (most) remote chimers by a
+</I>&gt;<i> &gt; handfull of mS.  Notice that time.windows.com is off in its own separate
+</I>&gt;<i> &gt; reality.  The M$ chimer never agrees with other chimers on the time.
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; Here is my ntp sysinfo:
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; ntpdc&gt; sysinfo
+</I>&gt;<i> &gt; system peer:          SHM(1)
+</I>&gt;<i> &gt; system peer mode:     client
+</I>&gt;<i> &gt; leap indicator:       00
+</I>&gt;<i> &gt; stratum:              1
+</I>&gt;<i> &gt; precision:            -20
+</I>&gt;<i> &gt; root distance:        0.00000 s
+</I>&gt;<i> &gt; root dispersion:      0.00056 s
+</I>&gt;<i> &gt; reference ID:         [GPS1]
+</I>&gt;<i> &gt; reference time:       c8b819d0.535be5d9  Sun, Sep 17 2006 12:00:32.325
+</I>&gt;<i> &gt; system flags:         bclient auth monitor ntp kernel stats
+</I>&gt;<i> &gt; jitter:               0.000000 s
+</I>&gt;<i> &gt; stability:            0.009 ppm
+</I>&gt;<i> &gt; broadcastdelay:       0.007996 s
+</I>&gt;<i> &gt; authdelay:            0.000002 s
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; Notice the 0.009 ppm stability!
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; Some folks like to &quot;nice -n -20&quot; the gpsd and ntp process, but on this host
+</I>&gt;<i> &gt; which is lightly loaded I find no improvement.  YMMV.
+</I>&gt;<i>
+</I>&gt;<i>Gary, would you please polish this up and turn it into a FAQ entry?
+</I>&gt;<i>--
+</I>&gt;<i>                 &lt;a href=&quot;<A HREF="http://www.catb.org/~esr/">http://www.catb.org/~esr/</A>&quot;&gt;Eric S. Raymond&lt;/a&gt;
+</I>&gt;<i>_______________________________________________
+</I>&gt;<i>Gpsd-users mailing list
+</I>&gt;<i><A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">Gpsd-users at lists.berlios.de</A>
+</I>&gt;<i><A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">https://lists.berlios.de/mailman/listinfo/gpsd-users</A>
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i>__________ NOD32 1.1826 (20061023) Information __________
+</I>&gt;<i>
+</I>&gt;<i>This message was checked by NOD32 antivirus system.
+</I>&gt;<i><A HREF="http://www.eset.com">http://www.eset.com</A>
+</I>
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="002115.html">[Gpsd-users] Your NTP Server Using A Garmin 18 LVC
+</A></li>
+	<LI>Next message: <A HREF="002121.html">[Gpsd-users] Your NTP Server Using A Garmin 18 LVC
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2120">[ date ]</a>
+              <a href="thread.html#2120">[ thread ]</a>
+              <a href="subject.html#2120">[ subject ]</a>
+              <a href="author.html#2120">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

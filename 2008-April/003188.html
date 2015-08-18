@@ -1,0 +1,145 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] gpsd gives ?? for time queries
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2008-April/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20gpsd%20gives%20%3F%3F%20for%20time%20queries&In-Reply-To=%3C7ead676c0804110416uc09429dkde651901d087e670%40mail.gmail.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="003187.html">
+   <LINK REL="Next"  HREF="003189.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] gpsd gives ?? for time queries</H1>
+    <B>Nathaniel Cohen</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20gpsd%20gives%20%3F%3F%20for%20time%20queries&In-Reply-To=%3C7ead676c0804110416uc09429dkde651901d087e670%40mail.gmail.com%3E"
+       TITLE="[Gpsd-users] gpsd gives ?? for time queries">ncohen.sts+gpsd-users at gmail.com
+       </A><BR>
+    <I>Fri Apr 11 13:16:22 CEST 2008</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="003187.html">[Gpsd-users] Help w/gpsd-2.37 and Garmin eTrex Venture HC on Fedora 8
+</A></li>
+        <LI>Next message: <A HREF="003189.html">[Gpsd-users] CentOS 5 NTPD - permissions on shared memory blocks
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3188">[ date ]</a>
+              <a href="thread.html#3188">[ thread ]</a>
+              <a href="subject.html#3188">[ subject ]</a>
+              <a href="author.html#3188">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi - I'm having a problem getting gpsd to understand GGA and ZDA sentences
+correctly.  I've got the output of an ASHTECH adu2 gps receiver wired up to
+a serial repeater box that connects only the transmit and ground serial
+lines (so gpsd can not talk back to my receiver).  My goal is to setup a gps
+backed ntp server.
+
+gpsd seems to have trouble getting time from my receiver...  It gets
+position fine but it appears not to like the order in which the GGA and ZDA
+sentences are output ...  Any ideas?  Output shown below...
+
+[<A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">root at ntp</A> ~]# gpsd -bn -N -D 3 /dev/ttyS0
+gpsd: launching (Version 2.37)
+gpsd: listening on port gpsd
+gpsd: shmat(0,0,0) succeeded
+gpsd: shmat(0,0,0) succeeded
+gpsd: shmat(0,0,0) succeeded
+gpsd: shmat(0,0,0) succeeded
+gpsd: running with effective group ID 0
+gpsd: running with effective user ID 0
+gpsd: opening read-only GPS data source at '/dev/ttyS0'
+gpsd: speed 9600, 8N1
+gpsd: garmin_gps not active.
+gpsd: no probe matched...
+gpsd: gpsd_activate(1): opened GPS (4)
+gpsd: switch_driver(Generic NMEA) called...
+gpsd: selecting Generic NMEA driver...
+gpsd: ntpd_link_activate: 0
+gpsd: Create Thread gpsd_ppsmonitor
+gpsd: =&gt; GPS: $PGRMCE*0E\x0d\x0a FAILED
+gpsd: can't use GGA time until after ZDA or RMC has supplied a year.
+gpsd: GPGGA sets status 1 and mode 3 (changed)
+gpsd: =&gt; GPS: $PFEC,GPint*58\x0d\x0a FAILED
+gpsd: =&gt; GPS: $PFST*11\x0d\x0a FAILED
+gpsd: =&gt; GPS: $PFEC,GPsrq*5B\x0d\x0a FAILED
+gpsd: can't use GGA time until after ZDA or RMC has supplied a year.
+gpsd: GPGGA sets status 1 and mode 3 (changed)
+gpsd: =&gt; GPS: $PASHQ,RID*28\x0d\x0a FAILED
+gpsd: can't use GGA time until after ZDA or RMC has supplied a year.
+gpsd: GPGGA sets status 1 and mode 3 (changed)
+gpsd: can't use GGA time until after ZDA or RMC has supplied a year.
+gpsd: GPGGA sets status 1 and mode 3 (changed)
+gpsd: can't use GGA time until after ZDA or RMC has supplied a year.
+gpsd: GPGGA sets status 1 and mode 3 (changed)
+gpsd: can't use GGA time until after ZDA or RMC has supplied a year.
+gpsd: GPGGA sets status 1 and mode 3 (changed)
+gpsd: can't use GGA time until after ZDA or RMC has supplied a year.
+gpsd: GPGGA sets status 1 and mode 3 (changed)
+.
+.
+(keeps repeating last two messages every cycle)
+
+and here is what a client sees
+
+[<A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">root at ntp</A> ~]# telnet localhost 2947
+Trying 127.0.0.1...
+Connected to localhost.localdomain (127.0.0.1).
+Escape character is '^]'.
+p
+GPSD,P=13.565120 144.612635
+d
+GPSD,D=?
+r
+GPSD,R=1
+$GPZDA,002142.00,11,04,2008,+00,00*46
+$PASHR,ATT,433316.0000,63.0947,1.5941,-4.5093,0.0022,0.0316,0*0C
+$GPGGA,002142.00,1333.90753,N,14436.75817,E,1,13,0.7,13.86,M,55.85,M,,*5F
+$GPVTG,354.17,T,352.74,M,000.34,N,000.63,K,A*22
+$GPZDA,002143.00,11,04,2008,+00,00*47
+$PASHR,ATT,433317.0000,63.4079,1.2706,-3.5181,0.0026,0.0365,0*02
+$GPGGA,002143.00,1333.90756,N,14436.75818,E,1,13,0.7,14.21,M,55.85,M,,*5E
+$GPVTG,142.72,T,141.29,M,000.14,N,000.26,K,A*2F
+$GPZDA,002144.00,11,04,2008,+00,00*40
+$PASHR,ATT,433318.0000,63.7276,0.0000,0.0000,0.0025,0.0572,1*20
+$GPGGA,002144.00,1333.90748,N,14436.75821,E,1,13,0.7,14.71,M,55.85,M,,*59
+$GPVTG,174.36,T,172.93,M,000.43,N,000.80,K,A*25
+$GPZDA,002145.00,11,04,2008,+00,00*41
+$PASHR,ATT,433319.0000,63.9059,0.2544,-0.1759,0.0023,0.0365,0*07
+$GPGGA,002145.00,1333.90730,N,14436.75823,E,1,13,0.7,15.14,M,55.85,M,,*57
+$GPVTG,176.77,T,175.34,M,000.75,N,001.39,K,A*2E
+$GPZDA,002146.00,11,04,2008,+00,00*42
+$PASHR,ATT,433320.0000,63.8757,0.2261,1.5180,0.0022,0.0331,0*2F
+$GPGGA,002146.00,1333.90708,N,14436.75823,E,1,13,0.7,15.42,M,55.85,M,,*5C
+$GPVTG,180.71,T,179.28,M,000.77,N,001.42,K,A*2E
+$GPZDA,002147.00,11,04,2008,+00,00*43
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="003187.html">[Gpsd-users] Help w/gpsd-2.37 and Garmin eTrex Venture HC on Fedora 8
+</A></li>
+	<LI>Next message: <A HREF="003189.html">[Gpsd-users] CentOS 5 NTPD - permissions on shared memory blocks
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3188">[ date ]</a>
+              <a href="thread.html#3188">[ thread ]</a>
+              <a href="subject.html#3188">[ subject ]</a>
+              <a href="author.html#3188">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

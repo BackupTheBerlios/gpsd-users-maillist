@@ -1,0 +1,144 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] gpsd &amp; holux240
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2007-August/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20gpsd%20%26%20holux240&In-Reply-To=%3C46B214E9.3060300%40cern.ch%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="002803.html">
+   <LINK REL="Next"  HREF="002805.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] gpsd &amp; holux240</H1>
+    <B>Stijn De Weirdt</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20gpsd%20%26%20holux240&In-Reply-To=%3C46B214E9.3060300%40cern.ch%3E"
+       TITLE="[Gpsd-users] gpsd &amp; holux240">Stijn.De.Weirdt at cern.ch
+       </A><BR>
+    <I>Thu Aug  2 19:31:21 CEST 2007</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="002803.html">[Gpsd-users] gpsd &amp; holux240
+</A></li>
+        <LI>Next message: <A HREF="002805.html">[Gpsd-users] gpsd &amp; holux240
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2804">[ date ]</a>
+              <a href="thread.html#2804">[ thread ]</a>
+              <a href="subject.html#2804">[ subject ]</a>
+              <a href="author.html#2804">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>hi claus,
+
+ &gt; Sounds like you got it paired. If not then what I used is the
+ &gt; program &quot;passkey-agent&quot; (it's in the gpsd tar).
+i'll take a look at passkey-agent later. thanks for the tip.
+
+&gt;<i> Could this be a baud rate or a NMEA vs. binary issue? I used the 
+</I>if it is a baudrate issue, i shouldn't be able to do anything with 
+minicom i guess.
+i'm alos thinking about the nmea vs binary. but it doesn't explain why i 
+can't connect with eg sirfmon
+&gt;<i> program &quot;SiRFDemo&quot; (free - but Windows only) to verify and set my gps device.
+</I>the ppc version doesn't see my pda's bluetooth com port ;) tomorrow i'll 
+look for a windows laptop.
+
+many thanks,
+
+stijn
+
+&gt;<i> Regards
+</I>&gt;<i> Claus
+</I>&gt;<i> 
+</I>&gt;<i> On Thursday 02 August 2007 07:39:38 Stijn De Weirdt wrote:
+</I>&gt;&gt;<i> hi all,
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> i'm very new to gps on linux, and i bought myself a Holux GPSlim240
+</I>&gt;&gt;<i> adaptor. (it's a bluetooth adaptor, has an usb interface but the
+</I>&gt;&gt;<i> usb-to-serial converter is not in the device, so normal usb cables don't
+</I>&gt;&gt;<i> work for setting up serial connection).
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> so i'm trying to get it working with linux (and WM5, which also fails)
+</I>&gt;&gt;<i> but in linux i'm unable to get gpsd connected to the device.
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> using bluetooth and rfcomm, i can setup a serial device that is supposed
+</I>&gt;&gt;<i> to be connected to the gps receiver. (the receiver has a blue led that
+</I>&gt;&gt;<i> flashes slowly in case of connection (dixit the manual)).
+</I>&gt;&gt;<i> another proof i guess is that
+</I>&gt;&gt;<i> cat /dev/rfcomm0 returns something, and with minicom i can connect and
+</I>&gt;&gt;<i> see the same gibbersih (example below ;)
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> (btw, the connection is made by rfcomm connect 0)
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> but starting gpsd -N -D 2 /dev/rfcomm0 i see that gpsd tries to connect
+</I>&gt;&gt;<i> but fails (even when it uses the mode it's supposed to find and the one
+</I>&gt;&gt;<i> i used with minicom).
+</I>&gt;&gt;<i> same for gpsctl.
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> my questions:
+</I>&gt;&gt;<i> a. is the rfcomm really connected? (and is my gps really running and not
+</I>&gt;&gt;<i> affected by the bug listed on the
+</I>&gt;&gt;<i> <A HREF="http://gpsd.berlios.de/upstream-bugs.html#bluetooth">http://gpsd.berlios.de/upstream-bugs.html#bluetooth</A>)
+</I>&gt;&gt;<i> b. how can get i gpsd  to do something useful?
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> many thanks,
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> stijn
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> --------------------------------------------------------------------------
+</I>&gt;&gt;<i> cat /dev/rfcomm0
+</I>&gt;&gt;<i> ?????x?x?x??x
+</I>???x??x??????x???????????x????????????xx??x
+x?????x
+x?x
+????x
+&gt;&gt;<i> ??x??x??x?x?x???x
+</I>???x???x
+x
+???????????x???x?x?x???x
+&gt;&gt;<i>
+</I>&gt;&gt;<i> _______________________________________________
+</I>&gt;&gt;<i> Gpsd-users mailing list
+</I>&gt;&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">Gpsd-users at lists.berlios.de</A>
+</I>&gt;&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">https://lists.berlios.de/mailman/listinfo/gpsd-users</A>
+</I>&gt;<i> 
+</I>&gt;<i> 
+</I>&gt;<i> _______________________________________________
+</I>&gt;<i> Gpsd-users mailing list
+</I>&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">Gpsd-users at lists.berlios.de</A>
+</I>&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">https://lists.berlios.de/mailman/listinfo/gpsd-users</A>
+</I>&gt;<i> 
+</I>
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="002803.html">[Gpsd-users] gpsd &amp; holux240
+</A></li>
+	<LI>Next message: <A HREF="002805.html">[Gpsd-users] gpsd &amp; holux240
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2804">[ date ]</a>
+              <a href="thread.html#2804">[ thread ]</a>
+              <a href="subject.html#2804">[ subject ]</a>
+              <a href="author.html#2804">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

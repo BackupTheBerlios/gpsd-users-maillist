@@ -1,0 +1,159 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] Trimble Placer 450 GPS
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2010-October/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Trimble%20Placer%20450%20GPS&In-Reply-To=%3C201010261201.o9QC1jIE020142%40heartache.daihls.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="004712.html">
+   <LINK REL="Next"  HREF="004714.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] Trimble Placer 450 GPS</H1>
+    <B>Bruce Dale</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Trimble%20Placer%20450%20GPS&In-Reply-To=%3C201010261201.o9QC1jIE020142%40heartache.daihls.com%3E"
+       TITLE="[Gpsd-users] Trimble Placer 450 GPS">bdale at stny.rr.com
+       </A><BR>
+    <I>Tue Oct 26 14:01:53 CEST 2010</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="004712.html">[Gpsd-users] gpsd sync to ntpd under large offset conditions
+</A></li>
+        <LI>Next message: <A HREF="004714.html">[Gpsd-users] GPSD with High Speed UART
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#4713">[ date ]</a>
+              <a href="thread.html#4713">[ thread ]</a>
+              <a href="subject.html#4713">[ subject ]</a>
+              <a href="author.html#4713">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hey Gary,
+
+At 03:25 PM 10/24/2010, you wrote:
+&gt;<i>-----BEGIN PGP SIGNED MESSAGE-----
+</I>&gt;<i>Hash: SHA1
+</I>&gt;<i>
+</I>&gt;<i>Yo Bruce!
+</I>&gt;<i>
+</I>&gt;<i>On Fri, 22 Oct 2010, Bruce Dale wrote:
+</I>&gt;<i>
+</I>&gt;<i> &gt; I
+</I>&gt;<i> &gt; am using gpsd to provide a Pulse Per Second to ntpd over the shared memory
+</I>&gt;<i> &gt; interface.
+</I>&gt;<i>
+</I>&gt;<i>Cool, what version of gpsd?
+</I>
+version 2.95
+
+
+&gt;<i> &gt; I am also using a Trimble Placer 450 GPS receiver that is configured to
+</I>&gt;<i> &gt; generate NMEA sentances. I understand that the maintainers of 
+</I>&gt;<i> gpsd requested
+</I>&gt;<i> &gt; notification regarding the use of new GPS receivers and if this is not the
+</I>&gt;<i> &gt; correct forum to do so, please let me know.
+</I>&gt;<i>
+</I>&gt;<i>I see that is not on our hardware page.  Please fill out this form:
+</I>&gt;<i>
+</I>&gt;<i><A HREF="https://www.mainframe.cx/cgi-bin/gps_report.cgi">https://www.mainframe.cx/cgi-bin/gps_report.cgi</A>
+</I>
+I completed the form but when I sent it, I received an error:
+Can't use string (&quot;berlios.de&quot;) as an ARRAY ref while &quot;strict refs&quot; 
+in use at /var/www/cgi-bin/gps_report.cgi line 40.
+
+I reported the error to <A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">root at mainframe.cx</A> as requested but I don't 
+know if the gps_report was accepted.
+
+
+&gt;<i> &gt; If the antenna is disconnected, the
+</I>&gt;<i> &gt; time in the GLL, GGA and RMC sentences stops advancing as the data reported
+</I>&gt;<i> &gt; becomes stale. The time in the ZDA sentence continues to advance.
+</I>&gt;<i>
+</I>&gt;<i>Ugly.
+</I>&gt;<i>
+</I>&gt;<i> &gt; This creates a problem for ntpd as gpsd reports the time in all 4 
+</I>&gt;<i> sentences to
+</I>&gt;<i> &gt; ntpd as the current time of day.
+</I>&gt;<i>
+</I>&gt;<i>Odd, does the NMEA still report the fix as valid?
+</I>
+Yes, NMEA GSA reports a 2D fix while, in the same sentence, reports 0 
+satellites, and that seemed odd to me. I expected no fix if no 
+satellite signals are being received.
+
+
+&gt;<i> &gt; Ntpd sees this as time running backwards and
+</I>&gt;<i> &gt; becomes very confused.
+</I>&gt;<i>
+</I>&gt;<i>gpsd tries to never report time to ntpd if the GPS reports no fix.
+</I>&gt;<i>
+</I>&gt;<i> &gt; This problem was corrected by modifying the source code
+</I>&gt;<i> &gt; (driver_nmea.c) to report only the time in the ZDA sentence to ntpd.
+</I>&gt;<i>
+</I>&gt;<i>That will not work as a general solution.  Many GPS do not send a 
+</I>&gt;<i>ZDA sentence.
+</I>&gt;<i>
+</I>&gt;<i>Better is to find a way to not report the bad times to ntpd.but allow them to
+</I>&gt;<i>be used when valid.
+</I>
+The code modification was a work-around for my case, I understand it 
+would not be acceptable as a general solution. Maybe gpsd should 
+require a fix and signal from 1 or more satellites, for the Placer 
+450. I don't know if reporting a fix with 0 satellites is typical of 
+Trimble NMEA capable receivers.
+
+&gt;<i> &gt; I also noticed a daily cycle in the time offset data (loopstats) from ntpd,
+</I>&gt;<i> &gt; almost 200 us peak-peak. Does anyone know if this performance is typical?
+</I>&gt;<i>
+</I>&gt;<i>Your PPS should be stable to around 1uS depending on several factors it
+</I>&gt;<i>could be 2x or 3x better or worse.
+</I>&gt;<i>
+</I>&gt;<i>I suspect the PPS is stable, but your system clock is not.  Daily fluctuations
+</I>&gt;<i>in the temperature of your motherboard clock cam easily be in the 10mS range
+</I>&gt;<i>or more if left uncorrected.  Things like room temperature, airflow, sunlight,
+</I>&gt;<i>CPU load factor can easily swing the local clock.  That is why we use gpsd
+</I>&gt;<i>and ntpd to discipline the local clock.
+</I>
+I have been plotting loopstats data with CPU load, line voltage and 
+number of satellites in view to try to determine the cause of the 
+clock variation. I see only a small correlation with CPU load and I 
+assume it is due to the latency between a DCD change and the return 
+from the select() call.
+
+Thanks for your help.
+
+Regards,
+Bruce
+
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="004712.html">[Gpsd-users] gpsd sync to ntpd under large offset conditions
+</A></li>
+	<LI>Next message: <A HREF="004714.html">[Gpsd-users] GPSD with High Speed UART
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#4713">[ date ]</a>
+              <a href="thread.html#4713">[ thread ]</a>
+              <a href="subject.html#4713">[ subject ]</a>
+              <a href="author.html#4713">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

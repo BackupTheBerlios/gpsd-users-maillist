@@ -1,0 +1,191 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] Waiting data is the same as already read before
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2010-January/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Waiting%20data%20is%20the%20same%20as%20already%20read%20before&In-Reply-To=%3Cbdca99241001180821j63371c7cga557a0e5b136ad2f%40mail.gmail.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="004169.html">
+   <LINK REL="Next"  HREF="004171.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] Waiting data is the same as already read before</H1>
+    <B>Sebastian Schuberth</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Waiting%20data%20is%20the%20same%20as%20already%20read%20before&In-Reply-To=%3Cbdca99241001180821j63371c7cga557a0e5b136ad2f%40mail.gmail.com%3E"
+       TITLE="[Gpsd-users] Waiting data is the same as already read before">sschuberth at gmail.com
+       </A><BR>
+    <I>Mon Jan 18 17:21:07 CET 2010</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="004169.html">[Gpsd-users] Compile gpsd without C++ support
+</A></li>
+        <LI>Next message: <A HREF="004171.html">[Gpsd-users] Waiting data is the same as already read before
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#4170">[ date ]</a>
+              <a href="thread.html#4170">[ thread ]</a>
+              <a href="subject.html#4170">[ subject ]</a>
+              <a href="author.html#4170">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi,
+
+I'm quite new to gpsd (using v2.90) and GPS in general. I've written a
+simple test program that reads GPS data in a loop and prints it to the
+console until a key is pressed. If there's currently no (new) data
+waiting, the program should not block but print the current /
+previously polled data. See below for the source code. The program
+works just fine, but there's one thing that I do not really
+understand. As you can see from the source code, I print the string
+&quot;polled&quot; to the console if the data was freshly polled, and not just
+read from a previously polled &quot;data&quot; structure. This is what I get:
+
+mode: 3, lat: 52.452878, long: 13.336405, speed: 0.149000  (polled)
+mode: 3, lat: 52.452878, long: 13.336405, speed: 0.149000
+mode: 3, lat: 52.452878, long: 13.336405, speed: 0.149000
+mode: 3, lat: 52.452878, long: 13.336405, speed: 0.149000
+mode: 3, lat: 52.452878, long: 13.336405, speed: 0.149000
+mode: 3, lat: 52.452878, long: 13.336405, speed: 0.149000
+mode: 3, lat: 52.452878, long: 13.336405, speed: 0.149000
+mode: 3, lat: 52.452878, long: 13.336405, speed: 0.149000
+mode: 3, lat: 52.452878, long: 13.336405, speed: 0.149000
+mode: 3, lat: 52.452878, long: 13.336405, speed: 0.149000
+mode: 3, lat: 52.452878, long: 13.336405, speed: 0.149000
+mode: 3, lat: 52.452878, long: 13.336405, speed: 0.149000
+mode: 3, lat: 52.452878, long: 13.336405, speed: 0.149000
+mode: 3, lat: 52.452878, long: 13.336405, speed: 0.149000
+mode: 3, lat: 52.452878, long: 13.336405, speed: 0.149000
+mode: 3, lat: 52.452878, long: 13.336405, speed: 0.149000
+mode: 3, lat: 52.452878, long: 13.336405, speed: 0.149000
+mode: 3, lat: 52.452878, long: 13.336405, speed: 0.149000
+mode: 3, lat: 52.452878, long: 13.336405, speed: 0.149000
+mode: 3, lat: 52.452878, long: 13.336405, speed: 0.149000  (polled)
+mode: 3, lat: 52.452873, long: 13.336415, speed: 0.278000  (polled)
+mode: 3, lat: 52.452873, long: 13.336415, speed: 0.278000
+mode: 3, lat: 52.452873, long: 13.336415, speed: 0.278000
+mode: 3, lat: 52.452873, long: 13.336415, speed: 0.278000
+mode: 3, lat: 52.452873, long: 13.336415, speed: 0.278000
+mode: 3, lat: 52.452873, long: 13.336415, speed: 0.278000
+mode: 3, lat: 52.452873, long: 13.336415, speed: 0.278000
+mode: 3, lat: 52.452873, long: 13.336415, speed: 0.278000
+mode: 3, lat: 52.452873, long: 13.336415, speed: 0.278000
+mode: 3, lat: 52.452873, long: 13.336415, speed: 0.278000
+mode: 3, lat: 52.452873, long: 13.336415, speed: 0.278000
+mode: 3, lat: 52.452873, long: 13.336415, speed: 0.278000
+mode: 3, lat: 52.452873, long: 13.336415, speed: 0.278000
+mode: 3, lat: 52.452873, long: 13.336415, speed: 0.278000
+mode: 3, lat: 52.452873, long: 13.336415, speed: 0.278000
+mode: 3, lat: 52.452873, long: 13.336415, speed: 0.278000
+mode: 3, lat: 52.452873, long: 13.336415, speed: 0.278000
+mode: 3, lat: 52.452873, long: 13.336415, speed: 0.278000
+mode: 3, lat: 52.452873, long: 13.336415, speed: 0.278000
+mode: 3, lat: 52.452873, long: 13.336415, speed: 0.278000  (polled)
+mode: 3, lat: 52.452870, long: 13.336420, speed: 0.134000  (polled)
+mode: 3, lat: 52.452870, long: 13.336420, speed: 0.134000
+mode: 3, lat: 52.452870, long: 13.336420, speed: 0.134000
+[...]
+
+As you can see, the first polled data matches the second polled data,
+third matches fourth and so on. So it seems to me as if gpsd says
+there is data waiting, but then the first gps_poll() after
+gps_waiting() still returns the old data. Calling gps_waiting() and
+gps_poll() again then returns the new data. Of course, it might be
+that some data changed that I do not print to the console, so I'll
+never see a change. But I think it's very odd that there always are
+two poll attempts directly following each other, then no data waiting,
+and then again data waiting for two consecutive polls.
+
+Any idea what's causing this? Is it normal? A bug in my program? A bug in gpsd?
+
+---8&lt;---
+
+#include &lt;curses.h&gt;
+#include &lt;errno.h&gt;
+#include &lt;unistd.h&gt;
+
+#include &lt;gps.h&gt;
+
+#define GPS_DATA_SET (MODE_SET|LATLON_SET|SPEED_SET)
+
+int main()
+{
+	WINDOW* win=initscr();
+	nodelay(win,true);
+	scrollok(win,true);
+
+	struct gps_data_t* data=gps_open(&quot;192.168.1.30&quot;,&quot;2947&quot;);
+	if (!data) {
+		perror(gps_errstr(errno));
+		return -1;
+	}
+
+	int poll=-1;
+	gps_stream(data,WATCH_ENABLE/*|POLL_NONBLOCK*/,NULL);
+
+	while (getch()==ERR) {
+		// Only do a blocking read if there is data waiting or if we
+		// never read any data before yet.
+		if (gps_waiting(data) || poll&lt;0)  {
+			gps_poll(data);
+			poll=1;
+		}
+		else {
+			poll=0;
+		}
+
+		// Only print data if it is valid. This skips the invalid
+		// data at program startup.
+		if (data-&gt;status&gt;0 &amp;&amp; (data-&gt;set&amp;GPS_DATA_SET)==GPS_DATA_SET) {
+			printw(&quot;mode: %d, lat: %f, long: %f, speed: %f %s\n&quot;
+			,	data-&gt;fix.mode
+			,	data-&gt;fix.latitude
+			,	data-&gt;fix.longitude
+			,	data-&gt;fix.speed
+			,	poll?&quot; (polled)&quot;:&quot;&quot;
+			);
+		}
+		usleep(50000);
+	}
+
+	gps_close(data);
+
+	endwin();
+
+	return 0;
+}
+
+---8&lt;---
+
+-- 
+Sebastian Schuberth
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="004169.html">[Gpsd-users] Compile gpsd without C++ support
+</A></li>
+	<LI>Next message: <A HREF="004171.html">[Gpsd-users] Waiting data is the same as already read before
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#4170">[ date ]</a>
+              <a href="thread.html#4170">[ thread ]</a>
+              <a href="subject.html#4170">[ subject ]</a>
+              <a href="author.html#4170">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

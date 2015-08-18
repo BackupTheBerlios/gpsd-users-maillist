@@ -1,0 +1,122 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] Compiling as root?
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2010-March/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Compiling%20as%20root%3F&In-Reply-To=%3C20100324174339.0b02b366%40dragon.localdomain%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="004312.html">
+   <LINK REL="Next"  HREF="004311.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] Compiling as root?</H1>
+    <B>Charles Curley</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Compiling%20as%20root%3F&In-Reply-To=%3C20100324174339.0b02b366%40dragon.localdomain%3E"
+       TITLE="[Gpsd-users] Compiling as root?">charlescurley at charlescurley.com
+       </A><BR>
+    <I>Thu Mar 25 00:43:39 CET 2010</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="004312.html">[Gpsd-users] Number of upported channels/sats?
+</A></li>
+        <LI>Next message: <A HREF="004311.html">[Gpsd-users] A question on versioning
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#4308">[ date ]</a>
+              <a href="thread.html#4308">[ thread ]</a>
+              <a href="subject.html#4308">[ subject ]</a>
+              <a href="author.html#4308">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>On Wed, 24 Mar 2010 17:15:56 -0400
+Greg Troxel &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">gdt at ir.bbn.com</A>&gt; wrote:
+
+&gt;<i> 
+</I>&gt;<i> Charles Curley &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">charlescurley at charlescurley.com</A>&gt; writes:
+</I>&gt;<i> 
+</I>&gt;<i> &gt; On Tue, 23 Mar 2010 19:17:23 -0400
+</I>&gt;<i> &gt; Greg Troxel &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">gdt at ir.bbn.com</A>&gt; wrote:
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt;&gt; That doesn't really solve the problem you have, though.
+</I>&gt;<i> &gt;&gt; I suppose it's time to take a log and find the problem and send a
+</I>&gt;<i> &gt;&gt; patch....
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; I'm afraid I haven't the foggiest idea how to do that.
+</I>&gt;<i> 
+</I>&gt;<i> * get a clean sourcedir
+</I>&gt;<i> * make &gt; OUT.make 2&gt;&amp;1
+</I>&gt;<i> * check for root-owned files (should not happen and seems it didn't)
+</I>&gt;<i>    if found, grovel through commands in OUT.make to find out how
+</I>&gt;<i> * sudo make install &gt; OUT.install 2&gt;&amp;1
+</I>&gt;<i> * check for root-owned files
+</I>&gt;<i>    if found, grovel through commands in OUT.install to find out how
+</I>&gt;<i>    the root-owned in-tree files  were created
+</I>&gt;<i> 
+</I>&gt;<i> But, I get the same list on netbsd i386 5.0ish, and it seems to be a
+</I>&gt;<i> python issue.
+</I>&gt;<i> Probably it's this make rule:
+</I>&gt;<i> 
+</I>&gt;<i> # Install Python modules
+</I>&gt;<i> install-exec-local:
+</I>&gt;<i>         $(PYTHON) setup.py install --prefix=${prefix} #
+</I>&gt;<i> --root=$(DESTDIR)
+</I>&gt;<i> 
+</I>&gt;<i> which looks fine - I'm not a python guru.
+</I>&gt;<i> 
+</I>
+Thanks, that helped.
+
+Whatever is going on, it's early in the &quot;sudo make install&quot; process.
+
+I'm no python guru either, but I looked at the the code in setup.py,
+and I see where it creates the build directory, around line 44 or so. I
+don't see anything that indicates that it sets the owner back to the
+unprivileged user. Since it runs as root, it will create files and
+directories as root:root.
+
+Maybe the part that creates the build tree should be part of the
+regular &quot;make&quot; run, and &quot;make install&quot; should copy it into place
+under /usr/local?
+
+And why are we compiling as root anyway? I always thought that was a
+serious no-no.
+
+-- 
+
+Charles Curley                  /&quot;\    ASCII Ribbon Campaign
+Looking for fine software       \ /    Respect for open standards
+and/or writing?                  X     No HTML/RTF in email
+<A HREF="http://www.charlescurley.com">http://www.charlescurley.com</A>    / \    No M$ Word docs in email
+
+Key fingerprint = CE5C 6645 A45A 64E4 94C0  809C FFF6 4C48 4ECD DFDB
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="004312.html">[Gpsd-users] Number of upported channels/sats?
+</A></li>
+	<LI>Next message: <A HREF="004311.html">[Gpsd-users] A question on versioning
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#4308">[ date ]</a>
+              <a href="thread.html#4308">[ thread ]</a>
+              <a href="subject.html#4308">[ subject ]</a>
+              <a href="author.html#4308">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

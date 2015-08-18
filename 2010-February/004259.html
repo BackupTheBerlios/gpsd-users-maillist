@@ -1,0 +1,132 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] ntpd and gpsd 2.90
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2010-February/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20ntpd%20and%20gpsd%202.90&In-Reply-To=%3Calpine.LNX.1.10.1002251541390.20296%40catbert.rellim.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="004257.html">
+   <LINK REL="Next"  HREF="004261.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] ntpd and gpsd 2.90</H1>
+    <B>Gary E. Miller</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20ntpd%20and%20gpsd%202.90&In-Reply-To=%3Calpine.LNX.1.10.1002251541390.20296%40catbert.rellim.com%3E"
+       TITLE="[Gpsd-users] ntpd and gpsd 2.90">gem at rellim.com
+       </A><BR>
+    <I>Fri Feb 26 00:48:13 CET 2010</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="004257.html">[Gpsd-users] ntpd and gpsd 2.90
+</A></li>
+        <LI>Next message: <A HREF="004261.html">[Gpsd-users] ntpd and gpsd 2.90
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#4259">[ date ]</a>
+              <a href="thread.html#4259">[ thread ]</a>
+              <a href="subject.html#4259">[ subject ]</a>
+              <a href="author.html#4259">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>-----BEGIN PGP SIGNED MESSAGE-----
+Hash: SHA1
+
+Yo Yan!
+
+On Thu, 25 Feb 2010, Yan Seiner wrote:
+
+&gt;<i> I'm struggling to get ntpd and gpsd 2.90 to play nice.
+</I>
+It happens.
+
+&gt;<i> The API to gpsd
+</I>&gt;<i> has changed, and I can't figure out how to get ntpd to talk to it.
+</I>
+The API from gpsd to ntpd has NOT changed in 2.90.  2.90dev tweaked a
+bit to allow on-root gpsd to talk to root ntpd, but is not the issue here.
+
+&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">root at OpenWrt</A>:~# ntpq -p
+</I>&gt;<i>      remote           refid      st t when poll reach   delay   offset
+</I>&gt;<i> jitter
+</I>&gt;<i> ==============================================================================
+</I>&gt;<i>  SHM(0)          .PPS.            0 l    -   16    0    0.000    0.000
+</I>&gt;<i> 0.000
+</I>&gt;<i>  SHM(1)          .PPS.            0 l    -   16    0    0.000    0.000
+</I>
+Ah, that looks wrong.  The SHM(0) PPS should be GPS and the SHM(1) should
+be GPS1. The rewfid is how the client and server of the shm find each other.
+
+&gt;<i> the right stuff seems to be in /proc
+</I>
+Nope, wrong key there too.
+
+&gt;<i> My ntp.conf file:
+</I>
+Ah, the core problem.
+
+&gt;<i> # SMA PPS
+</I>&gt;<i> server 127.127.28.0 minpoll 4
+</I>&gt;<i> fudge 127.127.28.0 refid PPS flag3 1
+</I>                           ^^^
+
+PPS -&gt; GPS
+
+&gt;<i> server 127.127.28.1 minpoll 4 prefer
+</I>&gt;<i> fudge 127.127.28.1 refid PPS flag3 1
+</I>                           ^^^
+
+PPS-&gt; GPS1
+
+refid's must be unique and match between ntpd and the client (in this
+case gpsd).  gpsd has fixed them to GPS and GPS1 (when run as root).
+
+&gt;<i> Lastly, if I enable NMEA in ntp.conf it is ignored.
+</I>
+That is a whole different kettle of fish that has nothing to do with gpsd.
+
+
+RGDS
+GARY
+- ---------------------------------------------------------------------------
+Gary E. Miller Rellim 109 NW Wilmington Ave., Suite E, Bend, OR 97701
+	<A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">gem at rellim.com</A>  Tel:+1(541)382-8588
+
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v1.4.3 (GNU/Linux)
+
+iD8DBQFLhwxBBmnRqz71OvMRAlJUAJwNrN/eC+Cn04Waf/qxkcmaA6NQVwCffp2y
+A7vLWpYtbz4rsh+Hke/yAsg=
+=cIEF
+-----END PGP SIGNATURE-----
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="004257.html">[Gpsd-users] ntpd and gpsd 2.90
+</A></li>
+	<LI>Next message: <A HREF="004261.html">[Gpsd-users] ntpd and gpsd 2.90
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#4259">[ date ]</a>
+              <a href="thread.html#4259">[ thread ]</a>
+              <a href="subject.html#4259">[ subject ]</a>
+              <a href="author.html#4259">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

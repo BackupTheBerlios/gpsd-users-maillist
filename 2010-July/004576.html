@@ -1,0 +1,95 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] Crosscompling for Arm
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2010-July/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Crosscompling%20for%20Arm&In-Reply-To=%3C20100707043205.GG8859%40armageddon%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="004572.html">
+   <LINK REL="Next"  HREF="004577.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] Crosscompling for Arm</H1>
+    <B>Thorsten</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Crosscompling%20for%20Arm&In-Reply-To=%3C20100707043205.GG8859%40armageddon%3E"
+       TITLE="[Gpsd-users] Crosscompling for Arm">gpsd-users at mailings.zweimeter.de
+       </A><BR>
+    <I>Wed Jul  7 06:32:05 CEST 2010</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="004572.html">[Gpsd-users] Garmin Geko 201 + serial to USB
+</A></li>
+        <LI>Next message: <A HREF="004577.html">[Gpsd-users] Crosscompling for Arm
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#4576">[ date ]</a>
+              <a href="thread.html#4576">[ thread ]</a>
+              <a href="subject.html#4576">[ subject ]</a>
+              <a href="author.html#4576">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi,
+
+ i had the silly idea of trying to (try) to crosscompile the latest gpsd
+(2.94) on Arm. Specifically i'm trying to build it for a Moxa UC-7110.
+According to cpuinfo, this device is a 
+Processor       : ARM922T rev 1 (v4l)
+BogoMIPS        : 75.98
+
+ Moxa delivers a toolchain with the device with limited libraries and a 
+really old gcc:
+gcc version 2.95.3 20010315 (release)(ColdFire patches - 20010318 from
+<A HREF="http://fiddes.net/coldfire/">http://fiddes.net/coldfire/</A>)(uClinux XIP and shared lib patches from
+<A HREF="http://www.snapgear.com/">http://www.snapgear.com/</A>)
+
+ Problems started with trying to run configure with this toolchain,
+which i tried with setting the following flags
+declare -x CC=&quot;/usr/local/arm-elf/bin/gcc&quot;
+declare -x CPP=&quot;/usr/local/arm-elf/bin/gcc -E&quot;
+declare -x LDFLAGS=&quot; -Wl,-elf2flt&quot;
+
+ With those options, this gcc produces no a.out, but a file called -r
+instead. Looking through the configure Script i believe this happens
+where configure tries to figure out using -o or not, and i believe in
+case the first doesn't work it tries again with the wrong variable...
+anyway, after making a small adjustment there (Changing line 3815 to
+(eval &quot;$ac_link&quot;) 2&gt;&amp;5 ) at least make configure run through.
+
+ However, make doesn't get very far...  anyway: I'm trying to figure out
+if getting this running is even remotely possible :) or if i should save
+my time and look for different hardware. Suggestions? 
+
+Thanks for your input,
+ Thorsten 
+-- 
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="004572.html">[Gpsd-users] Garmin Geko 201 + serial to USB
+</A></li>
+	<LI>Next message: <A HREF="004577.html">[Gpsd-users] Crosscompling for Arm
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#4576">[ date ]</a>
+              <a href="thread.html#4576">[ thread ]</a>
+              <a href="subject.html#4576">[ subject ]</a>
+              <a href="author.html#4576">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

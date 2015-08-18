@@ -1,0 +1,92 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] gpsd opens multiple ports
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2007-August/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20gpsd%20opens%20multiple%20ports&In-Reply-To=%3C91981b3e0708210842s212ceb31x756d6254e1113101%40mail.gmail.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="002820.html">
+   <LINK REL="Next"  HREF="002821.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] gpsd opens multiple ports</H1>
+    <B>Chris Kuethe</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20gpsd%20opens%20multiple%20ports&In-Reply-To=%3C91981b3e0708210842s212ceb31x756d6254e1113101%40mail.gmail.com%3E"
+       TITLE="[Gpsd-users] gpsd opens multiple ports">chris.kuethe at gmail.com
+       </A><BR>
+    <I>Tue Aug 21 17:42:14 CEST 2007</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="002820.html">[Gpsd-users] gpsd opens multiple ports
+</A></li>
+        <LI>Next message: <A HREF="002821.html">[Gpsd-users] libgpsmm - query, poll and request strings.	How?
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2822">[ date ]</a>
+              <a href="thread.html#2822">[ thread ]</a>
+              <a href="subject.html#2822">[ subject ]</a>
+              <a href="author.html#2822">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Huh. That's really odd. GPSD does not aggressively attempt to attach
+all devices - only the ones you tell it to.
+
+If I'm reading you right, you're doing something like
+        gpsd [flags] /dev/ttyS0
+but somehow ttyS1 is also opened...
+
+The only way I could see that happening is if you're also running with
+-F /path/to/gpsd.sock, and perhaps your system's hotplug system is
+telling gpsd to also open ttyS1.
+
+Could you turn on more logging - perhaps this might reveal why gpsd
+opened ttyS1 too...
+
+CK
+
+On 8/21/07, Marshall Crocker &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">crocker at cavs.msstate.edu</A>&gt; wrote:
+&gt;<i> I'm having a problem with gpsd opening multiple ports.  I have a gps connected to ttyS0 and a vehicle diagnostic interface on ttyS1 that uses an ASCII protocol.  Even though I start gpsd with /dev/ttyS0, sometimes gpsd will open both ttyS0 and ttyS1.  I assume I need to compile with --disable-reconfigure to fix this?
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i> Marshall
+</I>&gt;<i>
+</I>&gt;<i> _______________________________________________
+</I>&gt;<i> Gpsd-users mailing list
+</I>&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">Gpsd-users at lists.berlios.de</A>
+</I>&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">https://lists.berlios.de/mailman/listinfo/gpsd-users</A>
+</I>&gt;<i>
+</I>
+
+-- 
+GDB has a 'break' feature; why doesn't it have 'fix' too?
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="002820.html">[Gpsd-users] gpsd opens multiple ports
+</A></li>
+	<LI>Next message: <A HREF="002821.html">[Gpsd-users] libgpsmm - query, poll and request strings.	How?
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2822">[ date ]</a>
+              <a href="thread.html#2822">[ thread ]</a>
+              <a href="subject.html#2822">[ subject ]</a>
+              <a href="author.html#2822">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

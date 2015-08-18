@@ -1,0 +1,107 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] NTRIP Issue patch
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2011-February/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20NTRIP%20Issue%20patch&In-Reply-To=%3C4D6372AC.6030902%40googlemail.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="005039.html">
+   <LINK REL="Next"  HREF="005046.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] NTRIP Issue patch</H1>
+    <B>Andre Naujoks</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20NTRIP%20Issue%20patch&In-Reply-To=%3C4D6372AC.6030902%40googlemail.com%3E"
+       TITLE="[Gpsd-users] NTRIP Issue patch">nautsch2 at googlemail.com
+       </A><BR>
+    <I>Tue Feb 22 09:24:12 CET 2011</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="005039.html">[Gpsd-users] NTRIP Issue patch
+</A></li>
+        <LI>Next message: <A HREF="005046.html">[Gpsd-users] NTRIP Issue patch
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#5042">[ date ]</a>
+              <a href="thread.html#5042">[ thread ]</a>
+              <a href="subject.html#5042">[ subject ]</a>
+              <a href="author.html#5042">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Am 21.02.2011 20:09, schrieb Eric Raymond:
+&gt;<i> Andre Naujoks &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">nautsch2 at googlemail.com</A>&gt;:
+</I>&gt;&gt;&gt;&gt;<i> What it does is the following.
+</I>&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;<i> - workaround for some kind of bug in the python client.
+</I>&gt;&gt;&gt;&gt;<i>   This is probably wrong, but I don't know what to fix there with my 
+</I>&gt;&gt;&gt;&gt;<i>   limited python abilities. X-)
+</I>&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;<i> Would you describe the bug to me, please?  Preferably including a 
+</I>&gt;&gt;&gt;<i> backtrace.  That last line - the change to the dictwrapper call -
+</I>&gt;&gt;&gt;<i> doesn't look quite right to me.
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> certainly. As soon as a json rtcm2 message arrives, this traceback is
+</I>&gt;&gt;<i> generated from xgps:
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> Traceback (most recent call last):
+</I>&gt;&gt;<i>   File &quot;./xgps&quot;, line 696, in handle_response
+</I>&gt;&gt;<i>     if self.daemon.read() == -1:
+</I>&gt;&gt;<i>   File &quot;/home/nautsch/test/gpsd/gpsd-git-taint/gps/gps.py&quot;, line 303, in read
+</I>&gt;&gt;<i>     self.json_unpack(self.response)
+</I>&gt;&gt;<i>   File &quot;/home/nautsch/test/gpsd/gpsd-git-taint/gps/client.py&quot;, line 151, in json_unpack
+</I>&gt;&gt;<i>     self.data = dictwrapper(**asciify(json.loads(buf.strip(), )))
+</I>&gt;&gt;<i>   File &quot;/home/nautsch/test/gpsd/gpsd-git-taint/gps/client.py&quot;, line 145, in asciify
+</I>&gt;&gt;<i>     va = map(asciify, v)
+</I>&gt;&gt;<i>   File &quot;/home/nautsch/test/gpsd/gpsd-git-taint/gps/client.py&quot;, line 138, in asciify
+</I>&gt;&gt;<i>     for (k, v) in d.items():
+</I>&gt;&gt;<i> AttributeError: 'unicode' object has no attribute 'items'
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> After this xgps stands still. My patch was a workaround for something I am
+</I>&gt;&gt;<i> definitely missing in the depth of the python code :-). And I heard from a
+</I>&gt;&gt;<i> colleague, that the issue was not completely gone.
+</I>&gt;<i> 
+</I>&gt;<i> Yes, I cannot quite figure out what is gouing on here.  Is there anty way 
+</I>&gt;<i> you can supply me with a logfile which, when fed to gpsfake, will present
+</I>&gt;<i> RTCM2 JSON to a client?
+</I>
+Hmm. I had a look at the manpages for gpsfake, but it nowhere says, that
+(or how) I can just include rtcm data into a logfile.
+
+Would a gpspipe output help? I attached a very short one, which should
+trigger the error immediately.
+
+Andre
+-------------- next part --------------
+An embedded and charset-unspecified text was scrubbed...
+Name: gpspipe.out
+URL: &lt;<A HREF="https://lists.berlios.de/pipermail/gpsd-users/attachments/20110222/d45c6c41/attachment.ksh">https://lists.berlios.de/pipermail/gpsd-users/attachments/20110222/d45c6c41/attachment.ksh</A>&gt;
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="005039.html">[Gpsd-users] NTRIP Issue patch
+</A></li>
+	<LI>Next message: <A HREF="005046.html">[Gpsd-users] NTRIP Issue patch
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#5042">[ date ]</a>
+              <a href="thread.html#5042">[ thread ]</a>
+              <a href="subject.html#5042">[ subject ]</a>
+              <a href="author.html#5042">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

@@ -1,0 +1,341 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] Altitude not always being reported
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2006-March/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Altitude%20not%20always%20being%20reported&In-Reply-To=%3Cp06230913c046fda5db38%40%5B58.163.136.223%5D%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="001454.html">
+   <LINK REL="Next"  HREF="001460.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] Altitude not always being reported</H1>
+    <B>Robin L Darroch</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Altitude%20not%20always%20being%20reported&In-Reply-To=%3Cp06230913c046fda5db38%40%5B58.163.136.223%5D%3E"
+       TITLE="[Gpsd-users] Altitude not always being reported">robin at spade-men.com
+       </A><BR>
+    <I>Wed Mar 22 14:13:56 CET 2006</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="001454.html">[Gpsd-users] Altitude not always being reported
+</A></li>
+        <LI>Next message: <A HREF="001460.html">[Gpsd-dev] Re: [Gpsd-users] Altitude not always being reported
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1455">[ date ]</a>
+              <a href="thread.html#1455">[ thread ]</a>
+              <a href="subject.html#1455">[ subject ]</a>
+              <a href="author.html#1455">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Updated patch for svn trunk revision 3276:
+
+Index: nmea_parse.c
+===================================================================
+--- nmea_parse.c        (revision 3276)
++++ nmea_parse.c        (working copy)
+@@ -121,46 +121,49 @@
+     gps_mask_t mask = 0;
+ 
+     if (strcmp(field[2], &quot;V&quot;)==0) {
+-       /* copes with Magellan EC-10X, see below */
+-       if (session-&gt;gpsdata.status != STATUS_NO_FIX) {
+-           session-&gt;gpsdata.status = STATUS_NO_FIX;
+-           mask |= STATUS_SET;
+-       }
+-       if (session-&gt;gpsdata.newdata.mode &gt;= MODE_2D) {
+-           session-&gt;gpsdata.newdata.mode = MODE_NO_FIX;
+-           mask |= MODE_SET;
+-       }
+-       /* set something nz, so it won't look like an unknown sentence */
+-       mask |= ONLINE_SET;
++               /* copes with Magellan EC-10X, see below */
++               if (session-&gt;gpsdata.status != STATUS_NO_FIX) {
++                       session-&gt;gpsdata.status = STATUS_NO_FIX;
++                       mask |= STATUS_SET;
++               }
++               if (session-&gt;gpsdata.fix.mode &gt;= MODE_2D) {
++                       session-&gt;gpsdata.newdata.mode = MODE_NO_FIX;
++                       mask |= MODE_SET;
++               }
++               /* set something nz, so it won't look like an unknown sentence */
++               mask |= ONLINE_SET;
+     } else if (strcmp(field[2], &quot;A&quot;)==0) {
+-       if (count &gt; 9) {
+-           merge_ddmmyy(field[9], session);
+-           merge_hhmmss(field[1], session);
+-           mask |= TIME_SET;
+-           session-&gt;gpsdata.newdata.time = (double)mkgmtime(&amp;session-&gt;driver.nmea.date)+session-&gt;driver.nmea.subseconds;
+-           if (session-&gt;gpsdata.sentence_time != session-&gt;gpsdata.newdata.time)
+-               mask |= CYCLE_START_SET;
+-           session-&gt;gpsdata.sentence_time = session-&gt;gpsdata.newdata.time;
+-       }
+-       do_lat_lon(&amp;field[3], &amp;session-&gt;gpsdata);
+-       mask |= LATLON_SET;
+-       session-&gt;gpsdata.newdata.speed = atof(field[7]) * KNOTS_TO_MPS;
+-       session-&gt;gpsdata.newdata.track = atof(field[8]);
+-       mask |= (TRACK_SET | SPEED_SET);
+-       /*
+-        * This copes with GPSes like the Magellan EC-10X that *only* emit
+-        * GPRMC. In this case we set mode and status here so the client
+-        * code that relies on them won't mistakenly believe it has never
+-        * received a newdata.
+-        */
+-       if (session-&gt;gpsdata.status == STATUS_NO_FIX) {
+-           session-&gt;gpsdata.status = STATUS_FIX;       /* could be DGPS_FIX, we can't tell */
+-           mask |= STATUS_SET;
+-       }
+-       if (session-&gt;gpsdata.newdata.mode &lt; MODE_2D) {
+-           session-&gt;gpsdata.newdata.mode = MODE_2D;
+-           mask |= MODE_SET;
+-       }
++               if (count &gt; 9) {
++                       merge_ddmmyy(field[9], session);
++                       merge_hhmmss(field[1], session);
++                       mask |= TIME_SET;
++                       session-&gt;gpsdata.newdata.time = (double)mkgmtime(&amp;session-&gt;driver.nmea.date)+session-&gt;driver.nmea.subseconds;
++                       gpsd_report(4, &quot;RMC at time %f, last sentence time %f\n&quot;,session-&gt;gpsdata.newdata.time,session-&gt;gpsdata.sentence_time);
++                       if (session-&gt;gpsdata.sentence_time != session-&gt;gpsdata.newdata.time) {
++                               mask |= CYCLE_START_SET;
++                               gpsd_report(2, &quot;RMC received at start of cycle - may lose mode &amp; altitude data\n&quot;);
++                       }
++                       session-&gt;gpsdata.sentence_time = session-&gt;gpsdata.newdata.time;
++               }
++               do_lat_lon(&amp;field[3], &amp;session-&gt;gpsdata);
++               mask |= LATLON_SET;
++               session-&gt;gpsdata.newdata.speed = atof(field[7]) * KNOTS_TO_MPS;
++               session-&gt;gpsdata.newdata.track = atof(field[8]);
++               mask |= (TRACK_SET | SPEED_SET);
++               /*
++                * This copes with GPSes like the Magellan EC-10X that *only* emit
++                * GPRMC. In this case we set mode and status here so the client
++                * code that relies on them won't mistakenly believe it has never
++                * received a newdata.
++                */
++               if (session-&gt;gpsdata.status == STATUS_NO_FIX) {
++                       session-&gt;gpsdata.status = STATUS_FIX;   /* could be DGPS_FIX, we can't tell */
++                       mask |= STATUS_SET;
++               }
++               if (session-&gt;gpsdata.fix.mode &lt; MODE_2D) {
++                       session-&gt;gpsdata.newdata.mode = MODE_2D;
++                       mask |= MODE_SET;
++               }
+     }
+ 
+     return mask;
+@@ -206,7 +209,7 @@
+            mask = TIME_SET;
+            session-&gt;gpsdata.newdata.time = (double)mkgmtime(&amp;session-&gt;driver.nmea.date)+session-&gt;driver.nmea.subseconds;
+            if (session-&gt;gpsdata.sentence_time != session-&gt;gpsdata.newdata.time)
+-               mask |= CYCLE_START_SET;
++                       mask |= CYCLE_START_SET;
+            session-&gt;gpsdata.sentence_time = session-&gt;gpsdata.newdata.time;
+        }
+        do_lat_lon(&amp;field[1], &amp;session-&gt;gpsdata);
+@@ -249,55 +252,59 @@
+     gpsd_report(3, &quot;GPGGA sets status %d\n&quot;, session-&gt;gpsdata.status);
+     mask = STATUS_SET;
+     if (session-&gt;gpsdata.status &gt; STATUS_NO_FIX) {
+-       char *altitude;
+-       double oldfixtime = session-&gt;gpsdata.newdata.time;
+-
+-       merge_hhmmss(field[1], session);
+-       if (session-&gt;driver.nmea.date.tm_year == 0) 
+-           gpsd_report(1, &quot;can't use GGA/GGL time until after ZDA or RMC has supplied a year.\n&quot;);
+-       else {
+-           mask |= TIME_SET;
+-           session-&gt;gpsdata.newdata.time = (double)mkgmtime(&amp;session-&gt;driver.nmea.date)+session-&gt;driver.nmea.subseconds;
+-       }
+-       do_lat_lon(&amp;field[2], &amp;session-&gt;gpsdata);
+-       mask |= LATLON_SET;
++               char *altitude;
++               double oldfixtime = session-&gt;gpsdata.newdata.time;
++
++               merge_hhmmss(field[1], session);
++               if (session-&gt;driver.nmea.date.tm_year == 0) 
++                       gpsd_report(1, &quot;can't use GGA/GGL time until after ZDA or RMC has supplied a year.\n&quot;);
++               else {
++                   mask |= TIME_SET;
++                   session-&gt;gpsdata.newdata.time = (double)mkgmtime(&amp;session-&gt;driver.nmea.date)+session-&gt;driver.nmea.subseconds;
++                       gpsd_report(4, &quot;GGA at time %f, last sentence time %f\n&quot;,session-&gt;gpsdata.newdata.time,session-&gt;gpsdata.sentence_time);
++                       if (session-&gt;gpsdata.sentence_time != session-&gt;gpsdata.newdata.time)
++                               mask |= CYCLE_START_SET;
++                       session-&gt;gpsdata.sentence_time = session-&gt;gpsdata.newdata.time;
++               }
++               do_lat_lon(&amp;field[2], &amp;session-&gt;gpsdata);
++               mask |= LATLON_SET;
+         session-&gt;gpsdata.satellites_used = atoi(field[7]);
+-       altitude = field[9];
+-       /*
+-        * SiRF chipsets up to version 2.2 report a null altitude field.
+-        * See &lt;<A HREF="http://www.sirf.com/Downloads/Technical/apnt0033.pdf">http://www.sirf.com/Downloads/Technical/apnt0033.pdf</A>&gt;.
+-        * If we see this, force mode to 2D at most.
+-        */
+-       if (altitude[0] == '\0') {
+-           if (session-&gt;gpsdata.newdata.mode == MODE_3D) {
+-               session-&gt;gpsdata.newdata.mode = session-&gt;gpsdata.status ? MODE_2D : MODE_NO_FIX; 
+-               mask |= MODE_SET;
+-           }
+-       } else {
+-           double oldaltitude = session-&gt;gpsdata.newdata.altitude;
+-
+-           session-&gt;gpsdata.newdata.altitude = atof(altitude);
+-           mask |= ALTITUDE_SET;
+-
+-
+-           /*
+-            * Compute climb/sink in the simplest possible way.
+-            * This substitutes for the climb report provided by
+-            * SiRF and Garmin chips, which might have some smoothing
+-            * going on.
+-            */
+-           if (isnan(oldaltitude)==0 || session-&gt;gpsdata.newdata.time==oldfixtime)
+-               session-&gt;gpsdata.newdata.climb = 0;
+-           else {
+-               session-&gt;gpsdata.newdata.climb = (session-&gt;gpsdata.newdata.altitude-oldaltitude)/(session-&gt;gpsdata.newdata.time-oldfixtime);
+-           }
+-           mask |= CLIMB_SET;
+-       }
+-       if (strlen(field[11]) &gt; 0) {
+-          session-&gt;gpsdata.separation = atof(field[11]);
+-       } else {
+-          session-&gt;gpsdata.separation = wgs84_separation(session-&gt;gpsdata.newdata.latitude,session-&gt;gpsdata.newdata.longitude);
+-       }
++               altitude = field[9];
++               /*
++                * SiRF chipsets up to version 2.2 report a null altitude field.
++                * See &lt;<A HREF="http://www.sirf.com/Downloads/Technical/apnt0033.pdf">http://www.sirf.com/Downloads/Technical/apnt0033.pdf</A>&gt;.
++                * If we see this, force mode to 2D at most.
++                */
++               if (altitude[0] == '\0') {
++                       if (session-&gt;gpsdata.newdata.mode == MODE_3D) {
++                               session-&gt;gpsdata.newdata.mode = session-&gt;gpsdata.status ? MODE_2D : MODE_NO_FIX; 
++                               mask |= MODE_SET;
++                       }
++               } else {
++                       double oldaltitude = session-&gt;gpsdata.newdata.altitude;
++
++                       session-&gt;gpsdata.newdata.altitude = atof(altitude);
++                       mask |= ALTITUDE_SET;
++
++
++                       /*
++                        * Compute climb/sink in the simplest possible way.
++                        * This substitutes for the climb report provided by
++                        * SiRF and Garmin chips, which might have some smoothing
++                        * going on.
++                        */
++                       if (isnan(oldaltitude)==0 || session-&gt;gpsdata.newdata.time==oldfixtime)
++                       session-&gt;gpsdata.newdata.climb = 0;
++                       else {
++                       session-&gt;gpsdata.newdata.climb = (session-&gt;gpsdata.newdata.altitude-oldaltitude)/(session-&gt;gpsdata.newdata.time-oldfixtime);
++                       }
++                       mask |= CLIMB_SET;
++               }
++               if (strlen(field[11]) &gt; 0) {
++                  session-&gt;gpsdata.separation = atof(field[11]);
++               } else {
++                  session-&gt;gpsdata.separation = wgs84_separation(session-&gt;gpsdata.newdata.latitude,session-&gt;gpsdata.newdata.longitude);
++               }
+     }
+     return mask;
+ }
+Index: report.c
+===================================================================
+--- report.c    (revision 3276)
++++ report.c    (working copy)
+@@ -2,8 +2,9 @@
+ #include &lt;stdarg.h&gt;
+ #include &quot;gpsd.h&quot;
+ 
++/* stub logger for clients that don't supply one */
++/* can we remove this?  getting multiple definition warnings and no control over debug level 
+ void gpsd_report(int errlevel UNUSED, const char *fmt, ... )
+-/* stub logger for clients that don't supply one */
+ {
+     va_list ap;
+ 
+@@ -12,3 +13,5 @@
+     va_end(ap);
+ }
+ 
++ */
++ 
+\ No newline at end of file
+Index: libgpsd_core.c
+===================================================================
+--- libgpsd_core.c      (revision 3276)
++++ libgpsd_core.c      (working copy)
+@@ -533,16 +533,16 @@
+     /* update the scoreboard structure from the GPS */
+     gpsd_report(7, &quot;GPS sent %d new characters\n&quot;, newdata);
+     if (newdata == -1) {               /* read error */
+-       session-&gt;gpsdata.online = 0;
+-       return 0;
++               session-&gt;gpsdata.online = 0;
++               return 0;
+     } else if (newdata == 0) {         /* no new data */
+-       if (session-&gt;device_type != NULL &amp;&amp; timestamp()&gt;session-&gt;gpsdata.online+session-&gt;device_type-&gt;cycle+1){
+-               gpsd_report(3, &quot;GPS is offline (%lf sec since data)\n&quot;, 
+-                       timestamp() - session-&gt;gpsdata.online);
+-           session-&gt;gpsdata.online = 0;
+-           return 0;
+-       } else
+-           return ONLINE_SET;
++               if (session-&gt;device_type != NULL &amp;&amp; timestamp()&gt;session-&gt;gpsdata.online+session-&gt;device_type-&gt;cycle+1){
++                       gpsd_report(3, &quot;GPS is offline (%lf sec since data)\n&quot;, 
++                               timestamp() - session-&gt;gpsdata.online);
++               session-&gt;gpsdata.online = 0;
++               return 0;
++               } else
++               return ONLINE_SET;
+     } else if (session-&gt;outbuflen == 0) {   /* got new data, but no packet */
+            gpsd_report(8, &quot;New data, not yet a packet\n&quot;);
+            return ONLINE_SET;
+@@ -556,7 +556,7 @@
+                                      (char *)session-&gt;outbuffer,
+                                      (size_t)session-&gt;outbuflen, 2);
+        /*@ -nullstate @*/
+-       session-&gt;gpsdata.sentence_time = NAN;
++//     session-&gt;gpsdata.sentence_time = NAN;
+        session-&gt;gpsdata.sentence_length = session-&gt;outbuflen;
+        session-&gt;gpsdata.d_recv_time = timestamp();
+ 
+
+-- 
+
+-------------------------------------------------------------------------
+ Robin L. Darroch - PO Box 2715, South Hedland WA 6722 - +61 421 503 966
+      <A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">robin at darroch.id.au</A> - <A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">robin at nyca.org.au</A> - <A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">robin at spade-men.com</A>
+     
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="001454.html">[Gpsd-users] Altitude not always being reported
+</A></li>
+	<LI>Next message: <A HREF="001460.html">[Gpsd-dev] Re: [Gpsd-users] Altitude not always being reported
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1455">[ date ]</a>
+              <a href="thread.html#1455">[ thread ]</a>
+              <a href="subject.html#1455">[ subject ]</a>
+              <a href="author.html#1455">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

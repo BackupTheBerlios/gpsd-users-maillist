@@ -1,0 +1,115 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] GPSd blocks device?
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2008-November/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20GPSd%20blocks%20device%3F&In-Reply-To=%3C91981b3e0811030835l4a4e67e3rb97f7de154ee9967%40mail.gmail.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="003433.html">
+   <LINK REL="Next"  HREF="003436.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] GPSd blocks device?</H1>
+    <B>Chris Kuethe</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20GPSd%20blocks%20device%3F&In-Reply-To=%3C91981b3e0811030835l4a4e67e3rb97f7de154ee9967%40mail.gmail.com%3E"
+       TITLE="[Gpsd-users] GPSd blocks device?">chris.kuethe at gmail.com
+       </A><BR>
+    <I>Mon Nov  3 17:35:55 CET 2008</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="003433.html">[Gpsd-users] GPSd blocks device?
+</A></li>
+        <LI>Next message: <A HREF="003436.html">[Gpsd-users] GPSd blocks device?
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3435">[ date ]</a>
+              <a href="thread.html#3435">[ thread ]</a>
+              <a href="subject.html#3435">[ subject ]</a>
+              <a href="author.html#3435">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>On Mon, Nov 3, 2008 at 6:10 AM, Jens Oberender
+&lt;<A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">jens.oberender at keynote-sigos.com</A>&gt; wrote:
+&gt;<i> Hi
+</I>&gt;<i>
+</I>&gt;<i> I have a problem with some hardware here.
+</I>&gt;<i> It looks like gpsd blocks the gps device after some time.
+</I>&gt;<i> After about two days of uptime the gpsd hangs.
+</I>&gt;<i>
+</I>&gt;<i> When I do 'cat /dev/gps' I get no output.
+</I>
+you shouldn't get output. serial devices are not for shared access.
+
+&gt;<i> strace on the process shows a select that runs in a timeout, one of the
+</I>&gt;<i> fds is the gps device.
+</I>&gt;<i>
+</I>&gt;<i> When I stop gpsd I get output on the device again (cat /dev/gps).
+</I>&gt;<i>
+</I>&gt;<i> The device is a u-blox UBX-G5xxx chip, with an integrated USB-Serial
+</I>&gt;<i> interface, detected as ttyACM0 under Linux.
+</I>&gt;<i>
+</I>&gt;<i> Do you think that is a hardware problem? Or some bug in gpsd?
+</I>
+could be a whole lot of things. turn up the debug level, send it all
+to a file and wait 2 days... i don't think it's a gpsd bug, since i
+have both ublox and non-ublox receivers that have been connected to
+gpsd instances for more than a month. but without more data, it's hard
+to know what to look at next.
+
+&gt;<i> I use gpsd 2.37 with that u-blox patch posted on the list here, some
+</I>&gt;<i> time ago.
+</I>&gt;<i>
+</I>&gt;<i> Bye
+</I>&gt;<i>        Jens
+</I>&gt;<i> --
+</I>&gt;<i> Keynote SIGOS GmbH
+</I>&gt;<i>  - TESTING IS OUR COMPETENCE -
+</I>&gt;<i> Klingenhofstrasse 50d
+</I>&gt;<i> D-90411 Nuernberg
+</I>&gt;<i> Fon +49 911 95168-0
+</I>&gt;<i> www.keynote-sigos.com
+</I>&gt;<i>
+</I>&gt;<i> HRB 9323 Nuernberg
+</I>&gt;<i> Gerichtsstand: Nuernberg
+</I>&gt;<i> Geschaeftsfuehrer: Adil Kaya, Martin Loehlein, Umang Gupta, Andrew Hamer
+</I>&gt;<i> _______________________________________________
+</I>&gt;<i> Gpsd-users mailing list
+</I>&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">Gpsd-users at lists.berlios.de</A>
+</I>&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">https://lists.berlios.de/mailman/listinfo/gpsd-users</A>
+</I>&gt;<i>
+</I>
+
+
+-- 
+GDB has a 'break' feature; why doesn't it have 'fix' too?
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="003433.html">[Gpsd-users] GPSd blocks device?
+</A></li>
+	<LI>Next message: <A HREF="003436.html">[Gpsd-users] GPSd blocks device?
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3435">[ date ]</a>
+              <a href="thread.html#3435">[ thread ]</a>
+              <a href="subject.html#3435">[ subject ]</a>
+              <a href="author.html#3435">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

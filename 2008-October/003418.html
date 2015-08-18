@@ -1,0 +1,142 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] gpsd dbus
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2008-October/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20gpsd%20dbus&In-Reply-To=%3C50917.75257.qm%40web1113.biz.mail.sk1.yahoo.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="003417.html">
+   <LINK REL="Next"  HREF="003419.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] gpsd dbus</H1>
+    <B>Kevron Rees</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20gpsd%20dbus&In-Reply-To=%3C50917.75257.qm%40web1113.biz.mail.sk1.yahoo.com%3E"
+       TITLE="[Gpsd-users] gpsd dbus">tripzero at nextabyte.com
+       </A><BR>
+    <I>Fri Oct 10 05:41:28 CEST 2008</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="003417.html">[Gpsd-users] Fwd: UBX protocol
+</A></li>
+        <LI>Next message: <A HREF="003419.html">[Gpsd-users] gpsd dbus
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3418">[ date ]</a>
+              <a href="thread.html#3418">[ thread ]</a>
+              <a href="subject.html#3418">[ subject ]</a>
+              <a href="author.html#3418">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>
+
+ &gt; On Wed, 2008-10-08 21:01:00 -0700, Kevron Rees  wrote:
+ 
+ &gt; &gt; This is more ubuntu related I guess.  Can anyone confirm that the
+ &gt; &gt; version that ubuntu uses has dbus compiled in?  It depends on
+ &gt; &gt; libdbus-1.3 but when using dbus-explorer, org.gpsd doesn't appear in
+ &gt; &gt; the session, nor the system dbus bus lists.  According to the actual
+ &gt; &gt; code, it should be under system.  
+ &gt; &gt; 
+ &gt; &gt; At any rate, i'm not getting any dbus-signals from gpsd from my app
+ &gt; &gt; that tries to use it so I'm not sure if I'm doing something wrong,
+ &gt; &gt; or if dbus is even enabled on it....
+ &gt; 
+ &gt; GPSD will only send DBUS fixes if a GPS device is currently active. If
+ &gt; you didn't give the `-n' option at startup, you won't see any DBUS
+ &gt; activity unless you additionally have one network connection open with
+ &gt; DBUS, receiving data.
+ &gt; 
+ 
+Okay, I started gpsd with the -n option, my app still doesn't receive any 
+signals.  Does anyone have a sample python script or something I can try to 
+verify that dbus in gpsd is working?
+
+for anyone interested, here is my code that I'm using:
+
+using System;
+using NDesk.DBus;
+using org.freedesktop.DBus;
+
+
+namespace ngpsd
+{
+
+    public class GPS
+    {
+        private Connection DbusConnection;
+        public Fix gpsfix;
+        public GPS()
+        {
+            DbusConnection = Bus.System;
+            gpsfix = DbusConnection.GetObject(&quot;org.gpsd.fix&quot;, new 
+ObjectPath(&quot;/org/gpsd&quot;));
+        }
+
+        
+    }
+    
+    public struct GPSFix
+    {
+        public double time;
+        public int mode;
+        public double ept;
+        public double latitude;
+        public double longitude;
+        public double eph;
+        public double altitude;
+        public double epv;
+        public double track;
+        public double epd;
+        public double speed;
+        public double eps;
+        public double climb;
+        public double epc;
+    }
+
+&gt;<i>     public delegate void GPSPositionChangedHandler(GPSFix fix);
+</I>&gt;<i>     
+</I>&gt;<i>     [Interface(&quot;org.gpsd.fix&quot;)]
+</I>&gt;<i>     public interface Fix
+</I>&gt;<i>     {
+</I>&gt;<i>         event GPSPositionChangedHandler GPSPositionChanged;    
+</I>&gt;<i>     }
+</I>&gt;<i>     
+</I>&gt;<i> }
+</I>&gt;<i> 
+</I>&gt;<i> in main() I subscribe the the gpsfix.GPSPositionChanged event and wait forever 
+</I>&gt;<i> until I get the signal...
+</I>&gt;<i> 
+</I>&gt;<i> thanks
+</I>
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="003417.html">[Gpsd-users] Fwd: UBX protocol
+</A></li>
+	<LI>Next message: <A HREF="003419.html">[Gpsd-users] gpsd dbus
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3418">[ date ]</a>
+              <a href="thread.html#3418">[ thread ]</a>
+              <a href="subject.html#3418">[ subject ]</a>
+              <a href="author.html#3418">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

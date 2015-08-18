@@ -1,0 +1,185 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] [Gpsd-dev]   Gpsd configuration files
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2011-June/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20%5BGpsd-dev%5D%20%20%20Gpsd%20configuration%20files&In-Reply-To=%3C4DE56C1D.9070508%40open-t.co.uk%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   
+   <LINK REL="Next"  HREF="005278.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] [Gpsd-dev]   Gpsd configuration files</H1>
+    <B>Sebastian Arcus</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20%5BGpsd-dev%5D%20%20%20Gpsd%20configuration%20files&In-Reply-To=%3C4DE56C1D.9070508%40open-t.co.uk%3E"
+       TITLE="[Gpsd-users] [Gpsd-dev]   Gpsd configuration files">shop at open-t.co.uk
+       </A><BR>
+    <I>Wed Jun  1 00:30:53 CEST 2011</I>
+    <P><UL>
+        
+        <LI>Next message: <A HREF="005278.html">[Gpsd-users] [Gpsd-dev]     Gpsd configuration files
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#5276">[ date ]</a>
+              <a href="thread.html#5276">[ thread ]</a>
+              <a href="subject.html#5276">[ subject ]</a>
+              <a href="author.html#5276">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>
+
+On 31/05/11 22:42, Eric Raymond wrote:
+&gt;<i> Sebastian Arcus&lt;<A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">shop at open-t.co.uk</A>&gt;:
+</I>&gt;&gt;<i> OK - if you prefer some separation of tasks, why don't you at least
+</I>&gt;&gt;<i> simplify the interface between udev/hotplug system and gpsd. Why
+</I>&gt;&gt;<i> don't you modify the behaviour of the --add switch so that at least
+</I>&gt;&gt;<i> can cope with both situations:
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> a. If gpsd is not running, it will start it and add the device to
+</I>&gt;&gt;<i> it's pool of devices.
+</I>&gt;&gt;<i> b. If it can find a gpsd process already running, add the device to
+</I>&gt;&gt;<i> it's pool.
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> At the moment it is impossible to just have a simple udev rule such
+</I>&gt;&gt;<i> as &quot;RUN+=&quot;gpsd /ttyUSB0&quot; because it can't cope if there is already a
+</I>&gt;&gt;<i> daemon running. Thus you end up with scripts which check if the gpsd
+</I>&gt;&gt;<i> is already running, and pass commands through gpsdctl, or if it is
+</I>&gt;&gt;<i> not running, start it.
+</I>&gt;<i>
+</I>&gt;<i> It already works this way.  That is, &quot;gpsd.hotplug add /dev/foo&quot;
+</I>&gt;<i> starts a damon instance required before shipping the add command.
+</I>&gt;<i> If you are not seeing this behavior, you may have a bug at udev level.
+</I>
+Why not modify gpsctl so that &quot;gpsctl add /dev/foo&quot; can start gpsd if it 
+is not already started. That would get rid of at least one script file. 
+One thing I learned about IT systems (and any other systems) is that the 
+potential for fowl up rises with any extra component. You promote the 
+idea that config files are &quot;evil&quot; and complicate things - but you 
+certainly have no qualms with 5 different scripts and programs (udevd -&gt; 
+gpsd.hotplug.wrapper -&gt; gpsd.hotplug -&gt; gpsctl -&gt; /var/run/gpsd.sock -&gt; 
+gpsd) handling a single task. It certainly points to a rather narrow 
+approach.
+
+&gt;<i>
+</I>&gt;&gt;<i>     What you are basically doing is keeping gpsd
+</I>&gt;&gt;<i> pure from a programming point of view, with as little options as
+</I>&gt;&gt;<i> possible - while dumping the mess of controlling it and starting it
+</I>&gt;&gt;<i> to system packagers and end users by providing an inappropriate
+</I>&gt;&gt;<i> interface.
+</I>&gt;<i>
+</I>&gt;<i> That's all correct, except for the conjuct &quot;end users&quot; annd the
+</I>&gt;<i> adjective &quot;inappropriate&quot;. End users never see this; that's the point
+</I>&gt;<i> of zero configuration.
+</I>
+Well, on Linux the line between &quot;end users&quot; and &quot;system administrators&quot; 
+and &quot;software packagers&quot; is never a clear cut one. That is the whole 
+point of open source, with people being encouraged to setup and maintain 
+their own systems. So, sooner or later, the end users of gpsd come into 
+equation by having to deal with the issue of configuring the gpsd 
+hotplug/startup one way or another.
+
+And by the way - your concept of zero-configuration is a rather limited 
+one. Gpsd does an excellent job of identifying and configuring gps 
+devices *once* it is being fed the actual device name. But the job of 
+actually getting that device name to gpsd is a major pain in the a$%$&#163; - 
+as that part of the interface is completely unhelpful. This is 
+demonstrated by the need of one bash script and one Python script simply 
+for udev to tell gpsd that a new device has been plugged in.
+
+So please, stop using the expression &quot;zero-configuration&quot;. What you 
+really mean is &quot;zero-configuration once gpsd knows exactly which device 
+it needs to look at&quot;. Unless my gps device is on /dev/ttyUSB0 *and* it 
+is plugged in before gpsd is started - gpsd is helpless without all 
+sorts of extra scripts. That is not zero-configuration. Zero 
+configuration would be for me to be able to just type &quot;gpsd&quot; at the 
+command line - and the rest to happen magically, regardless of which 
+device name my gps dongle is using - be it that I have already a gps 
+device plugged in, or plug it later.
+
+&gt;<i>
+</I>&gt;<i> Controlling gpsd and starting gpsd *is* a mess; that's unavoidable due
+</I>&gt;<i> to platform issues.  When you can code a mess like that in Python or
+</I>&gt;<i> shell rather than C, it's an excellent idea to do so and *not* to have
+</I>&gt;<i> that mess commingled with your core code.
+</I>&gt;<i>
+</I>&gt;&gt;<i> Well, so instead of having &quot;evil&quot; config files, you prefer to have a
+</I>&gt;&gt;<i> chain of 4 other pieces of software doing what one single, well
+</I>&gt;&gt;<i> designed one could have done. Seems to me like taking a pretty
+</I>&gt;&gt;<i> narrow view of hight quality programming.
+</I>&gt;<i>
+</I>&gt;<i> If you think a single, well-designed script can replace all four of
+</I>&gt;<i> those files, I think you have no idea how udev actually works.  But
+</I>&gt;<i> I would be happy if you proved me wrong by writing that script and
+</I>&gt;<i> submitting it.
+</I>&gt;<i>
+</I>&gt;&gt;<i> Fine - in that case find a way so that the hotplug system can pass a
+</I>&gt;&gt;<i> single, simple command line to gpsd when a new device is plugged in
+</I>&gt;&gt;<i> - instead of requiring two different scripts which don't even work
+</I>&gt;&gt;<i> properly on all distributions.
+</I>&gt;<i>
+</I>&gt;<i> If you explain how they're failing, perhaps they can be fixed.
+</I>
+I've spent most of the weekend trying to get gpsd working properly on 
+Slackware. In Slackware, the first pass of udev during boot is done 
+while the file system is read-only. I've implemented your scripts and 
+the udev rule - but gpsd can't start because it needs RW access to 
+create /var/run/gpsd.sock. I've tried modifying gpsd.hotplug.wrapper to 
+fail if the file system in read-only - so that udev can re-run it on the 
+second pass - to no avail. I ended up having to write another rc.gpsd 
+startup script - which starts gpsd later after the fs is mounted 
+read-write - but also had to keep the udev rule and the two hotplug 
+scripts - to cope with the case of inserting my gps device after the 
+system is booted. All in all, to have things running on Slackware you need:
+
+/etc/udev/rules.d/gpsd.rules
+/etc/default/gpsd
+/lib/udev/gpsd.hotplug.wrapper
+/lib/udev/gpsd.hotplug
+/etc/rc.d/rc.gpsd
+
+
+That's five different config and script files just to start gpsd. I'm 
+sorry, but all those evil pieces of software you talked about earlier 
+which use config files manage on only one or two config files. Somehow, 
+you've managed to keep the mess out of your code and dump it all over 
+the place elsewhere.
+
+I agree with software being able to do one thing, and do it well. But in 
+that case provide a simpler interface, so that udev can notify gpsd or 
+gpsctl directly of new devices - without using a chain of scripts and 
+configs ridiculously long. And maybe include some of that mess inside 
+gpsd - for the sake of providing a simpler and cleaner interface to the 
+world. It's called compromise and it's called making your software 
+useful and simpler for users - not only clean and pure inside for the 
+programmers working on it.
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	
+	<LI>Next message: <A HREF="005278.html">[Gpsd-users] [Gpsd-dev]     Gpsd configuration files
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#5276">[ date ]</a>
+              <a href="thread.html#5276">[ thread ]</a>
+              <a href="subject.html#5276">[ subject ]</a>
+              <a href="author.html#5276">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

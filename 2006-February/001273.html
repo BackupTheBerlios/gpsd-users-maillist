@@ -1,0 +1,129 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] Kismet, GPSDrive, and GPSD 2.30
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2006-February/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Kismet%2C%20GPSDrive%2C%20and%20GPSD%202.30&In-Reply-To=%3Cp06230913c00b1dbfdc39%40%5B192.168.11.10%5D%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="001276.html">
+   <LINK REL="Next"  HREF="001275.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] Kismet, GPSDrive, and GPSD 2.30</H1>
+    <B>Robin L Darroch</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Kismet%2C%20GPSDrive%2C%20and%20GPSD%202.30&In-Reply-To=%3Cp06230913c00b1dbfdc39%40%5B192.168.11.10%5D%3E"
+       TITLE="[Gpsd-users] Kismet, GPSDrive, and GPSD 2.30">robin at spade-men.com
+       </A><BR>
+    <I>Sun Feb  5 04:16:22 CET 2006</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="001276.html">[Gpsd-users] Kismet, GPSDrive, and GPSD 2.30
+</A></li>
+        <LI>Next message: <A HREF="001275.html">[Gpsd-users] Kismet, GPSDrive, and GPSD 2.30
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1273">[ date ]</a>
+              <a href="thread.html#1273">[ thread ]</a>
+              <a href="subject.html#1273">[ subject ]</a>
+              <a href="author.html#1273">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi Erik,
+
+There is a bug in the speed reporting of gpsd 2.30 which I reported 
+(and posted a patch for) a couple of weeks back.  Basically, it's 
+doing a completely incorrect unit conversion.  Here's the diff output 
+(which also fixes the connection timeout bug I reported about a month 
+ago):
+
+20:54 [~/src/gpsd-2.30] robin&gt; diff -u gpsd-orig.c gpsd.c
+--- gpsd-orig.c 2006-01-04 10:25:48.000000000 +0800
++++ gpsd.c      2006-01-18 20:56:09.000000000 +0800
+@@ -866,7 +866,7 @@
+             break;
+         case 'V':
+             if (assign_channel(whoami) &amp;&amp; have_fix(whoami-&gt;device) &amp;&amp; 
+isnan(whoami-&gt;device-&gt;gpsdata.fix.track)==0)
+-               (void)snprintf(phrase, sizeof(phrase), &quot;,V=%.3f&quot;, 
+whoami-&gt;device-&gt;gpsdata.fix.speed / KNOTS_TO_KPH);
++               (void)snprintf(phrase, sizeof(phrase), &quot;,V=%.3f&quot;, 
+whoami-&gt;device-&gt;gpsdata.fix.speed * MPS_TO_KNOTS);
+             else
+                 (void)strcpy(phrase, &quot;,V=?&quot;);
+             break;
+@@ -1479,7 +1479,9 @@
+                 } else {
+                     buf[buflen] = '\0';
+                     gpsd_report(1, &quot;&lt;= client(%d): %s&quot;, cfd, buf);
+-
++                       // added to prevent timeouts
++                       subscribers[cfd].active = timestamp();
++
+  #ifdef RTCM104_SERVICE
+                     if (subscribers[cfd].rtcm) {
+                         if (handle_dgpsip_request(cfd, buf, buflen) &lt; 0)
+
+
+
+&gt;<i>I recently tried out gpsd 2.30 on a long drive to see how well it worked
+</I>&gt;<i>with Kismet and GPSdrive. In general, things work well with my GPS Unit
+</I>&gt;<i>(DeLorme Earthmate USB), but one notable problem was the speed reporting
+</I>&gt;<i>in Kismet and GPSdrive.  The velocity numbers these two programs
+</I>&gt;<i>reported were quite close to each other (good precision) but they were
+</I>&gt;<i>wildly inaccurate compared to the values reported by the speedometer and
+</I>&gt;<i>xgps (which were pretty close to each other).  The Kismet/GPSDrive
+</I>&gt;<i>figures were only about 1/3 to 1/2 the true values. 
+</I>&gt;<i>
+</I>&gt;<i>I realize that GPSDrive and Kismet were designed around a much older
+</I>&gt;<i>gpsd, but is there a short term workaround until these programs are
+</I>&gt;<i>updated to work with gpsd 2.30?  I tried to look at (linked to the gpsd
+</I>&gt;<i>faq page) <A HREF="http://gpsd.berlios.de/start-kismet">http://gpsd.berlios.de/start-kismet</A> to see if it might suggest
+</I>&gt;<i>something, but the link is busted.
+</I>&gt;<i>
+</I>&gt;<i>Thanks,
+</I>&gt;<i>
+</I>&gt;<i>Erik
+</I>&gt;<i>
+</I>&gt;<i>_______________________________________________
+</I>&gt;<i>Gpsd-users mailing list
+</I>&gt;<i><A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">Gpsd-users at lists.berlios.de</A>
+</I>&gt;<i><A HREF="http://lists.berlios.de/mailman/listinfo/gpsd-users">http://lists.berlios.de/mailman/listinfo/gpsd-users</A>
+</I>
+
+-- 
+
+-------------------------------------------------------------------------
+  Robin L. Darroch - PO Box 2715, South Hedland WA 6722 - +61 421 503 966
+       <A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">robin at darroch.id.au</A> - <A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">robin at nyca.org.au</A> - <A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">robin at spade-men.com</A>
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="001276.html">[Gpsd-users] Kismet, GPSDrive, and GPSD 2.30
+</A></li>
+	<LI>Next message: <A HREF="001275.html">[Gpsd-users] Kismet, GPSDrive, and GPSD 2.30
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1273">[ date ]</a>
+              <a href="thread.html#1273">[ thread ]</a>
+              <a href="subject.html#1273">[ subject ]</a>
+              <a href="author.html#1273">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

@@ -1,0 +1,138 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] bu353 and cold start
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2010-November/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20bu353%20and%20cold%20start&In-Reply-To=%3C20101120080247.GA26824%40trane.vulkor.net%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="004756.html">
+   <LINK REL="Next"  HREF="004757.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] bu353 and cold start</H1>
+    <B>vwf</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20bu353%20and%20cold%20start&In-Reply-To=%3C20101120080247.GA26824%40trane.vulkor.net%3E"
+       TITLE="[Gpsd-users] bu353 and cold start">vwf at vulkor.net
+       </A><BR>
+    <I>Sat Nov 20 09:02:47 CET 2010</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="004756.html">[Gpsd-users] bu353 and cold start
+</A></li>
+        <LI>Next message: <A HREF="004757.html">[Gpsd-users] bu353 and cold start
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#4771">[ date ]</a>
+              <a href="thread.html#4771">[ thread ]</a>
+              <a href="subject.html#4771">[ subject ]</a>
+              <a href="author.html#4771">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>On Fri, Nov 19, 2010 at 02:05:55PM +0300, Gleb Smirnoff wrote:
+&gt;<i> 
+</I>&gt;<i> May be try firmware upgrade?
+</I>
+I contacted usglobalsat and they were very responsive (much better than
+I expected). The conversation (converted from html to plain text):
+
+
+&gt;<i> Dear Madam, Sir,
+</I>&gt;<i>
+</I>&gt;<i> Since a few days I own a BU353 receiver. It works fine but sometimes
+</I>&gt;<i> it seems to lock up: it fails to provide a position, none of the
+</I>&gt;<i> satellites in sight is &quot;used&quot;, and it does not aquire new satellites.
+</I>&gt;<i>
+</I>&gt;<i> A temporary solution was to do a cold-start with Gpsinfo util from
+</I>&gt;<i> the CD.  The FAQ page says: &quot;28.) A: First... you are required to
+</I>&gt;<i> download SiRF Demo programming utility here&quot;: Where is &quot;here&quot;?
+</I> 
+Sorry, the link seems to have disappeared, we'll have that updated.
+
+&gt;<i> After some searching I found a SiRFDemo tool from
+</I>&gt;<i> www.falcom.de/support/software-tools/sirf/
+</I>&gt;<i>
+</I>&gt;<i> SiRFDemo can set much more than Gpsinfo. However, the FAQ's say that
+</I>&gt;<i> the setting &quot;are temporary until the receiver has exhausted both the
+</I>&gt;<i> internal Super-Cap&quot;.  What does this mean?
+</I> 
+If you are to change any settings, like baud rate, Protocol,
+enable/disable WAAS/EGNOS, or any other setting, these settings are
+not permanent and will be erased once the device is away from power
+for about 72 hours.
+
+&gt;<i> How can the need of a cold-start or factory-reset be avoided: New
+</I>&gt;<i> firmware?
+</I> 
+&gt;<i>From the information you provided below, you have the latest firmware.
+</I>
+&gt;<i> I use the receiver with gpsd <A HREF="http://gpsd.berlios.de/">http://gpsd.berlios.de/</A> This deamon
+</I>&gt;<i> cannot reset. What would be needed if a cold-start or factory-reset
+</I>&gt;<i> cannot be avoided? (the programming details).  
+</I>
+We usually recommend a cold start or factory reset to solve any issues
+with GPS fix. If you continue to have these issues in a optimal
+environment (like at a place with an open sky), then it could be that
+your device is defective.
+
+&gt;<i> I did some logging and saw that WAAS/EGNOS is disabled. How can I
+</I>&gt;<i> enable this?
+</I>
+You can enable WAAS/EGNOS using our GPSInfo application
+(<A HREF="http://www.usglobalsat.com/downloads/GPSInfo.zip">http://www.usglobalsat.com/downloads/GPSInfo.zip</A>), Just check the box
+that says &quot;WAAS/EGNOS&quot; and then perform a Cold Start, which will then
+show you that WAAS is enabled. As I mentioned above, this is only
+temporary and the BU-353 will reset to it's factory settings (WAAS
+Disabled).
+ 
+To Permanently have WAAS/EGNOS enabled, you'll to burn a different
+firmware, which we can provide, but you'll need to perform the
+firmware update at your own risk!
+
+&gt;<i> SiRFDemo Version 3.87 log file opened 11/19/10 13:31:14
+</I>&gt;<i> SiRFDemo Build Date: June 20, 2007
+</I>&gt;<i> [...]
+</I>&gt;<i> SiRFDemo::Init Receiver: Sent NMEA serial data
+</I>&gt;<i> Tx PC Time=1290169882.000
+</I>&gt;<i> Tx: $PSRF105,0*3F^M
+</I>&gt;<i> 
+</I>&gt;<i> SiRFDemo::Init Receiver: Disabled NMEA debug messages
+</I>&gt;<i> $PSRFTXT,Version:GSW3.5.0_3.5.00.00-SDK-3EP2.01 *46
+</I>&gt;<i> $PSRFTXT,Version2:F-GPS-03-1005051*2D
+</I>&gt;<i> $PSRFTXT,WAAS Disable*13
+</I>&gt;<i> $PSRFTXT,TOW:  0*25
+</I>&gt;<i> $PSRFTXT,WK:   1519*69
+</I>&gt;<i> $PSRFTXT,POS:  6378137 0 0*2A
+</I>&gt;<i> $PSRFTXT,CLK:  96250*25
+</I>&gt;<i> $PSRFTXT,CHNL: 12*73
+</I>&gt;<i> $PSRFTXT,Baud rate: 4800*65
+</I>
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="004756.html">[Gpsd-users] bu353 and cold start
+</A></li>
+	<LI>Next message: <A HREF="004757.html">[Gpsd-users] bu353 and cold start
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#4771">[ date ]</a>
+              <a href="thread.html#4771">[ thread ]</a>
+              <a href="subject.html#4771">[ subject ]</a>
+              <a href="author.html#4771">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

@@ -1,0 +1,121 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] libgps documentation fix
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2007-April/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20libgps%20documentation%20fix&In-Reply-To=%3CPine.LNX.4.64.0704140150460.3117%40birdbird.example.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="002568.html">
+   <LINK REL="Next"  HREF="002566.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] libgps documentation fix</H1>
+    <B>Matt Roberds</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20libgps%20documentation%20fix&In-Reply-To=%3CPine.LNX.4.64.0704140150460.3117%40birdbird.example.com%3E"
+       TITLE="[Gpsd-users] libgps documentation fix">mattroberds at cox.net
+       </A><BR>
+    <I>Sat Apr 14 09:04:54 CEST 2007</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="002568.html">[Gpsd-users] Newbie help
+</A></li>
+        <LI>Next message: <A HREF="002566.html">[Gpsd-users] libgps documentation fix
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2565">[ date ]</a>
+              <a href="thread.html#2565">[ thread ]</a>
+              <a href="subject.html#2565">[ subject ]</a>
+              <a href="author.html#2565">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>All,
+
+I've noticed a couple of errors in the libgps.xml/libgps.3 man page.
+The SYNOPSIS section lists the correct name of the functions (such as
+gps_open()), but the DESCRIPTION section uses names with a leading
+&quot;gpsd_&quot; instead of &quot;gps_&quot; (such as gpsd_open()).
+
+It appears that the XML files are the master copies which are used to
+generate the man pages, so I have a provided a patch against the
+libgps.xml shipped with 2.34.
+
+The libgpsd.xml/libgpsd.3 man page appears to be OK.
+
+Matt Roberds
+
+------ diff - cut here - cut here - cut here ------
+--- libgps.xml.orig	2007-04-14 01:44:48.000000000 -0500
++++ libgps.xml	2007-04-14 01:47:31.000000000 -0500
+@@ -96,25 +96,25 @@
+  at
+  &lt;citerefentry&gt;&lt;refentrytitle&gt;libgpsd&lt;/refentrytitle&gt;&lt;manvolnum&gt;3&lt;/manvolnum&gt;&lt;/citerefentry&gt;.&lt;/para&gt;
+
+-&lt;para&gt;Calling &lt;function&gt;gpsd_open()&lt;/function&gt; initializes a GPS-data
++&lt;para&gt;Calling &lt;function&gt;gps_open()&lt;/function&gt; initializes a GPS-data
+  structure to hold the data collected by the GPS, and returns a socket
+  attached to
+  &lt;citerefentry&gt;&lt;refentrytitle&gt;gpsd&lt;/refentrytitle&gt;&lt;manvolnum&gt;1&lt;/manvolnum&gt;&lt;/citerefentry&gt;. 
+-&lt;function&gt;gpsd_open()&lt;/function&gt; returns NULL on errors.  errno is
++&lt;function&gt;gps_open()&lt;/function&gt; returns NULL on errors.  errno is
+  set depending on the error returned from the the socket layer; see
+  &lt;filename&gt;gps.h&lt;/filename&gt; for values and explanations.&lt;/para&gt;
+
+-&lt;para&gt;&lt;function&gt;gpsd_close()&lt;/function&gt; ends the session.&lt;/para&gt;
++&lt;para&gt;&lt;function&gt;gps_close()&lt;/function&gt; ends the session.&lt;/para&gt;
+
+-&lt;para&gt;&lt;function&gt;gpsd_poll()&lt;/function&gt; accepts a response, or sequence
++&lt;para&gt;&lt;function&gt;gps_poll()&lt;/function&gt; accepts a response, or sequence
+  of responses, from the daemon and interprets it as though it were a
+  query response (the return value is as for a query).
+-&lt;function&gt;gpsd_poll()&lt;/function&gt; returns the validity mask of the
++&lt;function&gt;gps_poll()&lt;/function&gt; returns the validity mask of the
+  received structure.  This function does a blocking read waiting for
+  data from the daemon; it returns 0 for success, or -1 on a Unix-level
+  read error. &lt;/para&gt;
+
+-&lt;para&gt;&lt;function&gt;gpsd_query()&lt;/function&gt; writes a command to the
++&lt;para&gt;&lt;function&gt;gps_query()&lt;/function&gt; writes a command to the
+  daemon, accepts a one-line response, and updates parts of the GPS-data
+  structure that correspond to data changed since the last call.  The
+  second argument must be a format string containing letters from the command
+@@ -128,7 +128,7 @@
+
+  &lt;para&gt;&lt;function&gt;gps_set_raw_hook()&lt;/function&gt; takes a function you
+  specify and run it (synchronously) on the raw data pulled by a
+-&lt;function&gt;gpsd_query()&lt;/function&gt; or &lt;function&gt;gpsd_poll()&lt;/function&gt;
++&lt;function&gt;gps_query()&lt;/function&gt; or &lt;function&gt;gps_poll()&lt;/function&gt;
+  call.  The arguments passed to this hook will be a pointer to a
+  structure containing parsed data, and a buffer containining the
+  raw &lt;application&gt;gpsd&lt;/application&gt; response.&lt;/para&gt;
+------ diff - cut here - cut here - cut here ------
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="002568.html">[Gpsd-users] Newbie help
+</A></li>
+	<LI>Next message: <A HREF="002566.html">[Gpsd-users] libgps documentation fix
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2565">[ date ]</a>
+              <a href="thread.html#2565">[ thread ]</a>
+              <a href="subject.html#2565">[ subject ]</a>
+              <a href="author.html#2565">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

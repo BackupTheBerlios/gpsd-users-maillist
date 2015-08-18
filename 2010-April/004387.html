@@ -1,0 +1,136 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] delay in gpsd boot
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2010-April/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20delay%20in%20gpsd%20boot&In-Reply-To=%3Ci2x94de9b221004150738vd57c77b4j66aaaabc83fea033%40mail.gmail.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="004386.html">
+   <LINK REL="Next"  HREF="004388.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] delay in gpsd boot</H1>
+    <B>rabin shahav</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20delay%20in%20gpsd%20boot&In-Reply-To=%3Ci2x94de9b221004150738vd57c77b4j66aaaabc83fea033%40mail.gmail.com%3E"
+       TITLE="[Gpsd-users] delay in gpsd boot">shahav at gmail.com
+       </A><BR>
+    <I>Thu Apr 15 16:38:38 CEST 2010</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="004386.html">[Gpsd-users] delay in gpsd boot
+</A></li>
+        <LI>Next message: <A HREF="004388.html">[Gpsd-users] delay in gpsd boot
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#4387">[ date ]</a>
+              <a href="thread.html#4387">[ thread ]</a>
+              <a href="subject.html#4387">[ subject ]</a>
+              <a href="author.html#4387">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Short update,
+Now i understand that on my system xubuntu, the gpsd need to be configured
+by the dpkg-reconfigure.
+I noticed that if i use a different program which attempt to open the
+ttyUSB0 with correct baud rate , suddenly gpsd is generating output.
+I know that gpsd is proud of a powerful auto configure engine, but as it
+seems now, this engain takes way too long to &quot;sync&quot; with the usb serial
+port.
+Rabin
+
+On Wed, Apr 14, 2010 at 9:00 PM, rabin shahav &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">shahav at gmail.com</A>&gt; wrote:
+
+&gt;<i> Eric, thank for your replay
+</I>&gt;<i>
+</I>&gt;<i> I doubt its being the gps device to blame.
+</I>&gt;<i> I think i tired to hook with telnet and ask for raw output, in which case
+</I>&gt;<i> noting come out....
+</I>&gt;<i>
+</I>&gt;<i> It could be that i used the dpkg-reconfigure to set the link /dev/gps... as
+</I>&gt;<i> the device of gpsd. whereas the usb hotplug will call for a second gpsd
+</I>&gt;<i> process.
+</I>&gt;<i> I'll check this by removing the boot time start of gpsd and let usb
+</I>&gt;<i> hotplugs to initiate a gpsd process. What does the hotplug do if two gpses
+</I>&gt;<i> are hooked? does it know to search for an existing gpds process and properly
+</I>&gt;<i> inform it of the new ports?
+</I>&gt;<i>
+</I>&gt;<i> any furthure help is well apreaicated.
+</I>&gt;<i> and yes, i'll use a different box, say a win box to check the gps.
+</I>&gt;<i> Rabin
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i> On Wed, Apr 14, 2010 at 6:28 PM, Eric Raymond &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">esr at thyrsus.com</A>&gt; wrote:
+</I>&gt;<i>
+</I>&gt;&gt;<i> rabin shahav &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">shahav at gmail.com</A>&gt;:
+</I>&gt;&gt;<i> &gt; Hi All,
+</I>&gt;&gt;<i> &gt; I've a problem in gpsd initial startup.
+</I>&gt;&gt;<i> &gt; The gps device report status &quot;fix&quot;, still no output is coming of gpsd
+</I>&gt;&gt;<i> for
+</I>&gt;&gt;<i> &gt; about two/three minutes, then suddenly it start working and i can see
+</I>&gt;&gt;<i> gpsd
+</I>&gt;&gt;<i> &gt; replies to xgps, telnet or my navigation software.
+</I>&gt;&gt;<i> &gt;
+</I>&gt;&gt;<i> &gt; I'm using global-sat nd-100 usb stick, gpsd 3.7x, xubuntu on a old 8086.
+</I>&gt;&gt;<i> &gt;
+</I>&gt;&gt;<i> &gt; Whats botters me, is that it is not consitent, sometime when i boot the
+</I>&gt;&gt;<i> &gt; system, there no problem, every thinkg works in few seconds.
+</I>&gt;&gt;<i> &gt; In other cases i find myself waiting too long, even though gps light
+</I>&gt;&gt;<i> show
+</I>&gt;&gt;<i> &gt; fix, therefore i unplug/replug the gps usb, it re-fixes after few
+</I>&gt;&gt;<i> seconds,
+</I>&gt;&gt;<i> &gt; but still no gpsd replies. i even tried to restart gpsd by
+</I>&gt;&gt;<i> /etc/init.d/gpsd
+</I>&gt;&gt;<i> &gt; restart , restart the clients, even though gps device show fix,  no info
+</I>&gt;&gt;<i> &gt; comming out the the gpsd ?
+</I>&gt;&gt;<i> &gt;
+</I>&gt;&gt;<i> &gt; After the initil time that gpsd works, it replay properly to usb
+</I>&gt;&gt;<i> plug/unplug
+</I>&gt;&gt;<i> &gt; events in seconds, just the initial case is problomatic, and not always.
+</I>&gt;&gt;<i> &gt;
+</I>&gt;&gt;<i> &gt; Any suggestions?
+</I>&gt;&gt;<i> &gt; 10x
+</I>&gt;&gt;<i> &gt; Rabin
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> I think your device's fix light is fibbing.  This sounds like normal
+</I>&gt;&gt;<i> warm-up
+</I>&gt;&gt;<i> delay on a low-end device.  The variability is a clue; if GPSD were
+</I>&gt;&gt;<i> imposing
+</I>&gt;&gt;<i> the lag, it would probably be more consistent.
+</I>&gt;&gt;<i> --
+</I>&gt;&gt;<i>                &lt;a href=&quot;<A HREF="http://www.catb.org/~esr/&lt;http://www.catb.org/%7Eesr/">http://www.catb.org/~esr/&lt;http://www.catb.org/%7Eesr/</A>&gt;&quot;&gt;Eric
+</I>&gt;&gt;<i> S. Raymond&lt;/a&gt;
+</I>&gt;&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i>
+</I>
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="004386.html">[Gpsd-users] delay in gpsd boot
+</A></li>
+	<LI>Next message: <A HREF="004388.html">[Gpsd-users] delay in gpsd boot
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#4387">[ date ]</a>
+              <a href="thread.html#4387">[ thread ]</a>
+              <a href="subject.html#4387">[ subject ]</a>
+              <a href="author.html#4387">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

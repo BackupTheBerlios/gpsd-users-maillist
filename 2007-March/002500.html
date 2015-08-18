@@ -1,0 +1,117 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] gpslib stops yielding data
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2007-March/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20gpslib%20stops%20yielding%20data&In-Reply-To=%3C19131-95705%40sneakemail.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="002501.html">
+   <LINK REL="Next"  HREF="002502.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] gpslib stops yielding data</H1>
+    <B>Yang</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20gpslib%20stops%20yielding%20data&In-Reply-To=%3C19131-95705%40sneakemail.com%3E"
+       TITLE="[Gpsd-users] gpslib stops yielding data">wtfc2m902 at sneakemail.com
+       </A><BR>
+    <I>Sun Mar 25 06:09:50 CEST 2007</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="002501.html">[Gpsd-users] gpslib stops yielding data
+</A></li>
+        <LI>Next message: <A HREF="002502.html">[Gpsd-users] gpslib stops yielding data
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2500">[ date ]</a>
+              <a href="thread.html#2500">[ thread ]</a>
+              <a href="subject.html#2500">[ subject ]</a>
+              <a href="author.html#2500">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi all,
+
+I wrote a simple C++ program, pasted below, which uses libgps'
+set_callback. However, after running for some time, it stops producing
+output (no more callbacks). Another connection or command to gpsd
+seems to make the callbacks resume again.
+
+This has happened to me twice (in one day of usage). The first time, I
+figured something was wrong, so I asked my colleague to check it out.
+He telnet-ed in (from his own terminal), entered 'r', and I saw my
+program resume (on my terminal). We hadn't made the connection at that
+point. The second time (several minutes after it resumed), I thought
+it would resume on its own, but after several hours, I tried
+telnet+'r' myself, and that's when I realized what was happening. FWIW
+(not much with just 2 data ponits), each time a hangup happened, the
+last one or two gps_data_t had online==0. I haven't since seen another
+hangup, but I also haven't seen another message where online==0.
+
+Is this a bug in libgps or gpsd? How can I work around this? Should I
+use a periodic gps_query instead? I'm using gpsd 2.34 on FC5.
+
+Thanks a lot,
+
+Yang
+
+#include &lt;unistd.h&gt;
+#include &lt;iostream&gt;
+#include &lt;gps.h&gt;
+
+using namespace std;
+
+void cb( struct gps_data_t * data,
+         char * buf,
+         size_t len,
+         int level ) {
+  const gps_fix_t &amp; f = data-&gt;fix;
+  cout
+    &lt;&lt; &quot;online: &quot; &lt;&lt; (data-&gt;online &gt; 0 ? &quot;true &quot; : &quot;false &quot;) &lt;&lt;
+data-&gt;online &lt;&lt; endl
+    &lt;&lt; &quot;mode: &quot; &lt;&lt; f.mode &lt;&lt; endl
+    &lt;&lt; &quot;lat: &quot; &lt;&lt; f.latitude &lt;&lt; endl
+    &lt;&lt; &quot;lon: &quot; &lt;&lt; f.longitude &lt;&lt; endl
+    &lt;&lt; &quot;spd: &quot; &lt;&lt; f.speed &lt;&lt; endl
+    &lt;&lt; &quot;buf: &quot; &lt;&lt; buf &lt;&lt; endl
+    &lt;&lt; endl;
+}
+
+int main() {
+  pthread_t handler;
+  struct gps_data_t * g = gps_open( &quot;golf&quot;, &quot;2947&quot; );
+  gps_set_callback( g, &amp;cb, &amp;handler );
+  while (true) {
+    sleep(1);
+  }
+  return 0;
+}
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="002501.html">[Gpsd-users] gpslib stops yielding data
+</A></li>
+	<LI>Next message: <A HREF="002502.html">[Gpsd-users] gpslib stops yielding data
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2500">[ date ]</a>
+              <a href="thread.html#2500">[ thread ]</a>
+              <a href="subject.html#2500">[ subject ]</a>
+              <a href="author.html#2500">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

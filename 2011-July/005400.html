@@ -1,0 +1,147 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] Update freuency
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2011-July/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Update%20freuency&In-Reply-To=%3C1311687792.4320.15.camel%40acme.pacific%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="005399.html">
+   <LINK REL="Next"  HREF="005401.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] Update freuency</H1>
+    <B>Roger Oberholtzer</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Update%20freuency&In-Reply-To=%3C1311687792.4320.15.camel%40acme.pacific%3E"
+       TITLE="[Gpsd-users] Update freuency">roger.oberholtzer at ramboll.se
+       </A><BR>
+    <I>Tue Jul 26 15:43:12 CEST 2011</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="005399.html">[Gpsd-users] Update freuency
+</A></li>
+        <LI>Next message: <A HREF="005401.html">[Gpsd-users] Update freuency
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#5400">[ date ]</a>
+              <a href="thread.html#5400">[ thread ]</a>
+              <a href="subject.html#5400">[ subject ]</a>
+              <a href="author.html#5400">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>On Tue, 2011-07-26 at 13:19 +0100, Ed W wrote:
+&gt;<i> Hi
+</I>&gt;<i> 
+</I>&gt;<i> &gt;&gt; Just be aware that 1Hz update freq is the norm for GPS.  There exist
+</I>&gt;<i> &gt;&gt; 3/5/10Hz devices, but they are not the norm and you should investigate
+</I>&gt;<i> &gt;&gt; if you get what you think you are getting...
+</I>&gt;<i> &gt; 
+</I>&gt;<i> &gt; or 100Hz or 250 HZ. These days, if you have the money, they have the
+</I>&gt;<i> &gt; report frequency.
+</I>&gt;<i> 
+</I>&gt;<i> Are there genuinely devices available with &gt;10Hz update speed?  I
+</I>&gt;<i> haven't heard of such a thing?
+</I>
+Yes. Many are augmented with inertial navigation hardware (INS) often
+consisting of gyroscopes and inclinometers. INS devices are very
+accurate in the short term. Unfortunately, they drift over time and, of
+course, cannot provide absolute locations. Enter the GPS. The better
+systems solve all this in a Kahlman filter. Such systems can have a
+surprisingly short delay for these calculations (milliseconds).
+
+&gt;<i> &gt; We track a high speed vehicle. In fact, we use the GPS to locate
+</I>&gt;<i> &gt; position in real time. Our systems require action when at certain
+</I>&gt;<i> &gt; locations (which we may only pass tangentially). We have found that with
+</I>&gt;<i> &gt; a 10 Hz receiver and 38400 baud (and Linux which can have respectable
+</I>&gt;<i> &gt; throughput for these sorts of things) the GPS information allows more
+</I>&gt;<i> &gt; accuracy/repeatability than the operator pressing a button.
+</I>&gt;<i> 
+</I>&gt;<i> This is somewhat confusing description of your system?  You say you have
+</I>&gt;<i> a high speed vehicle and are looking for better accuracy than a human
+</I>&gt;<i> pressing a button with less than 1m accuracy?  This seems crazy
+</I>&gt;<i> difficult for anything other than a very highly skilled operator to even
+</I>&gt;<i> approach?  Surely the computer does better nearly all the time?
+</I>
+Indeed it does. That is what I was trying to say. Still, don't
+underestimate the accuracy of the human. They are pressing the button at
+visible locations (e.g., at the start of an intersection). The main
+reason we have moved to GPS triggering is that some environments are now
+using non-visible or non-drive-past-able trigger points. This is much
+more difficult for the human to react to. Human reaction time is in the
+order of a couple milliseconds. Some humans can even be trained better
+than a monkey in this sort of task :)=
+
+&gt;<i> Also have you looked at devices with higher than 38400 baud? This is
+</I>&gt;<i> still quite a lag at 10Hz although I assume that the offset turns out to
+</I>&gt;<i> be fixed and can be corrected for?
+</I>&gt;<i> 
+</I>&gt;<i> 
+</I>&gt;<i> 
+</I>&gt;<i> &gt; in real time at a very high frequency. It also provides data over UDP
+</I>&gt;<i> &gt; broadcasts for even less delay.
+</I>&gt;<i> 
+</I>&gt;<i> Sounds interesting, of course my question would be how the processor
+</I>&gt;<i> which is transmitting is acquiring the data to transmit?  If it's
+</I>&gt;<i> reading it from the GPS at 38400, then sending it over UDP, then all you
+</I>&gt;<i> added was a few ms of variable latency to the signal?  You have to be
+</I>&gt;<i> sure that you are getting the data actually faster, not just over a
+</I>&gt;<i> faster medium...
+</I>&gt;<i> 
+</I>&gt;<i> I'm sure that I saw some definitions of when various sentences were
+</I>&gt;<i> emitted and the implied delays on some GPS spec sheets.  It actually
+</I>&gt;<i> sounds like an interesting problem for a (high precision) moving vehicle
+</I>&gt;<i> to understand exactly what timestamp a position applies to? (Plus what
+</I>&gt;<i> delay from that timestamp you get to hear about it)
+</I>
+This is one reason we use RS-232 GPS receivers: they have a
+pulse-per-second signal that allows greater connection between the
+system time and the time in the NMEA stream, which always lags in
+arrival. USB GPS receivers need not apply.
+
+
+Yours sincerely,
+Roger Oberholtzer
+
+Ramboll RST
+
+Office: Int +46 10-615 60 20
+Mobile: Int +46 70-815 1696
+<A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">roger.oberholtzer at ramboll.se</A>
+
+
+Ramb&#246;ll Sverige AB
+Krukmakargatan 21
+P.O. Box 17009
+SE-104 62 Stockholm, Sweden
+www.rambollrst.se
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="005399.html">[Gpsd-users] Update freuency
+</A></li>
+	<LI>Next message: <A HREF="005401.html">[Gpsd-users] Update freuency
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#5400">[ date ]</a>
+              <a href="thread.html#5400">[ thread ]</a>
+              <a href="subject.html#5400">[ subject ]</a>
+              <a href="author.html#5400">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

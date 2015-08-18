@@ -1,0 +1,97 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] Getting GPSD to pick up PPS from Delorme Earthmate	Serial GPS
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2007-July/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Getting%20GPSD%20to%20pick%20up%20PPS%20from%20Delorme%20Earthmate%0A%09Serial%20GPS&In-Reply-To=%3C1183408521.46896189a8761%40dev.getwebemail.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="002734.html">
+   <LINK REL="Next"  HREF="002736.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] Getting GPSD to pick up PPS from Delorme Earthmate	Serial GPS</H1>
+    <B>Adam Dosch</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Getting%20GPSD%20to%20pick%20up%20PPS%20from%20Delorme%20Earthmate%0A%09Serial%20GPS&In-Reply-To=%3C1183408521.46896189a8761%40dev.getwebemail.com%3E"
+       TITLE="[Gpsd-users] Getting GPSD to pick up PPS from Delorme Earthmate	Serial GPS">adamdosch at fdlinux.com
+       </A><BR>
+    <I>Mon Jul  2 22:35:21 CEST 2007</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="002734.html">[Gpsd-users] gpsd on a fedora system - problem
+</A></li>
+        <LI>Next message: <A HREF="002736.html">[Gpsd-users] Getting GPSD to pick up PPS from Delorme Earthmate Serial GPS
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2735">[ date ]</a>
+              <a href="thread.html#2735">[ thread ]</a>
+              <a href="subject.html#2735">[ subject ]</a>
+              <a href="author.html#2735">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi,
+
+I'm currently dabbling with getting GPSD fully working with my really old
+Delorme Earthmate Hyperformance serial GPS to set up a home-brew stratum-0 NTP
+server for my own gratification.
+
+Right now with `gpsd`, it does a good job of auto-probing my GPS and does start
+to query NMEA traffic, so I'm good in that sense.  My problem is getting GPSD to
+defect PPS from the DCD (Carrier Detect) pin.  I've whipped together a tiny
+circuit that will show an LED light pulse every time PPS is detected on the DCD
+pin on the serial port (pin 1), and I can see it happening, although I have no
+real way to measure the pulse length or anything like that.
+
+But when I run `gpsd` in a really verbose debug mode (using -D6 flag) looking
+for any &quot;pps&quot; signal lines that it's detected, I see nothing but gpsd probing
+for my GPS type, then I see about 10 or 12 line so of this:
+
+   gpsd:  packet sniff finds type -1 
+
+...then shortly after that, I start to see all the GP* type raw data lines
+coming down.
+
+After some googling, I did come to realize that different GPS's may have a
+shortened hardware pulse length that might not fit into the range that libgps
+might have outlined? (note:  I haven't looked at libgps code at all, just
+something I read)
+
+I'm open to any suggestions or comments to track down why `gpsd` might not be
+detecting PPS on the DCD pin on my GPS.
+
+Thanks alot,
+
+Adam Dosch
+
+
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="002734.html">[Gpsd-users] gpsd on a fedora system - problem
+</A></li>
+	<LI>Next message: <A HREF="002736.html">[Gpsd-users] Getting GPSD to pick up PPS from Delorme Earthmate Serial GPS
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2735">[ date ]</a>
+              <a href="thread.html#2735">[ thread ]</a>
+              <a href="subject.html#2735">[ subject ]</a>
+              <a href="author.html#2735">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

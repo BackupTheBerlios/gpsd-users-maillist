@@ -1,0 +1,105 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] NTP with only gpsd
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2010-May/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20NTP%20with%20only%20gpsd&In-Reply-To=%3C201005080306.AA15167%40wi-note2.rish.kyoto-u.ac.jp%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="004468.html">
+   <LINK REL="Next"  HREF="004469.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] NTP with only gpsd</H1>
+    <B>Mamoru Yamamoto</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20NTP%20with%20only%20gpsd&In-Reply-To=%3C201005080306.AA15167%40wi-note2.rish.kyoto-u.ac.jp%3E"
+       TITLE="[Gpsd-users] NTP with only gpsd">yamamoto at rish.kyoto-u.ac.jp
+       </A><BR>
+    <I>Sat May  8 05:06:23 CEST 2010</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="004468.html">[Gpsd-users] Garmin GPS 18 LVC on Debian lenny?
+</A></li>
+        <LI>Next message: <A HREF="004469.html">[Gpsd-users] NTP with only gpsd
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#4467">[ date ]</a>
+              <a href="thread.html#4467">[ thread ]</a>
+              <a href="subject.html#4467">[ subject ]</a>
+              <a href="author.html#4467">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Friends,
+
+I am new to this mailing list.  GPS receiver with gpsd + NTP 
+is very helpful/important for my observation network.
+Thank you very much for your effort and contribution.
+
+I have two quesiton on NTP with gpsd.
+
+I am using Garmin 18x LVC and for NTP with gpsd.
+I am using Ubuntu 9.04.  
+
+(1) NTP ON/OFF behavior
+When the NTP reference is gpsd SHM(0) and SHM(1) only, 
+the synchronization is ON/OFF frequently.
+(SHM(1) is ppt and SHM(0) is GPS serial data)
+It is recorded on syslog like this.
+
+May  5 07:52:05 beacon-SRI05 ntpd[3497]: synchronized to SHM(1), stratum 0
+May  5 07:52:23 beacon-SRI05 ntpd[3497]: no servers reachable
+May  5 07:53:31 beacon-SRI05 ntpd[3497]: synchronized to SHM(1), stratum 0
+May  5 07:53:48 beacon-SRI05 ntpd[3497]: no servers reachable
+...
+
+The ON time is short, and is sometimes only 1-2 times in an hour.
+Under this situation, the PC clock itself looks stable enough.
+When the NTP has another network reference, it is very nicely 
+synchronized to SHM(1).  Is this behavior correct?  
+
+(2) NTP start problem
+At the same condition (NTP only with gpsd), NTP synchronization 
+does not start if the PC clock is several minutes (maybe) or 
+further off the correct timing.  To overcome this problem, 
+I made another small program to set the PC clock to GPS clock 
+readings if they are 10s or more different.   
+Is this the normal behavior of NTP?
+
+Thank you for your help.
+
+----
+Mamoru Yamamoto
+Research Institute for Sustainable Humanosphere (RISH)
+Kyoto University
+<A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">yamamoto at rish.kyoto-u.ac.jp</A>
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="004468.html">[Gpsd-users] Garmin GPS 18 LVC on Debian lenny?
+</A></li>
+	<LI>Next message: <A HREF="004469.html">[Gpsd-users] NTP with only gpsd
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#4467">[ date ]</a>
+              <a href="thread.html#4467">[ thread ]</a>
+              <a href="subject.html#4467">[ subject ]</a>
+              <a href="author.html#4467">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

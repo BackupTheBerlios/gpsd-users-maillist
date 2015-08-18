@@ -1,0 +1,115 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] Re: Accessing GPSPipe w/ Serial
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2006-July/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Re%3A%20Accessing%20GPSPipe%20w/%20Serial&In-Reply-To=%3CPine.LNX.4.64.0607111241111.22577%40catbert.rellim.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="001747.html">
+   <LINK REL="Next"  HREF="001763.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] Re: Accessing GPSPipe w/ Serial</H1>
+    <B>Gary E. Miller</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Re%3A%20Accessing%20GPSPipe%20w/%20Serial&In-Reply-To=%3CPine.LNX.4.64.0607111241111.22577%40catbert.rellim.com%3E"
+       TITLE="[Gpsd-users] Re: Accessing GPSPipe w/ Serial">gem at rellim.com
+       </A><BR>
+    <I>Tue Jul 11 21:47:02 CEST 2006</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="001747.html">[Gpsd-users] Accessing GPSPipe w/ Serial
+</A></li>
+        <LI>Next message: <A HREF="001763.html">[Gpsd-users] Accessing GPSPipe w/ Serial
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1748">[ date ]</a>
+              <a href="thread.html#1748">[ thread ]</a>
+              <a href="subject.html#1748">[ subject ]</a>
+              <a href="author.html#1748">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>-----BEGIN PGP SIGNED MESSAGE-----
+Hash: SHA1
+
+Yo Andrew!
+
+I am copying the list since I will be gone for the rest of the week
+soon.
+
+On Tue, 11 Jul 2006, Andrew Kezys wrote:
+
+&gt;<i> Well, there's two things I need to do with gpsd. I need to tell my gps
+</I>&gt;<i> receiver to only give me GPGSV sentences at a rate of 1/sec. I know
+</I>&gt;<i> this is achievable through a certain NMEA command.  I'm guessing that
+</I>&gt;<i> I can tell the GPS to do this if I connect to gpsd through Python,
+</I>&gt;<i> however, I'm assuming that the gpspipe is only one-way? That is, I can
+</I>&gt;<i> get info from the receiver, but cannot send it back?
+</I>
+You can not sent commands to your GPS once gpsd is running with the
+GPS.  Either you need to send you config commands to the GPS before
+you start gpsd or you need to edit the initialization strings that
+gpsd sends to your GPS.
+
+&gt;<i> And if one can only connect to the serial port once, what is the
+</I>&gt;<i> usefulness of gpspipe being able to pipe the data to a serial port?
+</I>
+Some people use gpspipe to output NMEA data on a serial port for use
+by other devices that only accept NMEA from a serial port.  Others use
+the serial port as a way around virtual machine restrictions.  Neither
+applies to you.
+
+&gt;<i> So, overall, how does one go about connecting to gpsd through python?
+</I>&gt;<i> Do we use tcp/ip sockets, or something like pyserial to interface w/
+</I>&gt;<i> gpspipe?
+</I>
+The program gpspipe is intended for use from the command line.  If you
+are going to use Python you should use gps.py to connect to gpsd.  Look
+at the program gpsprof for a good example of how to do this.  In all
+cases the communication with the GPS device is one way.
+
+
+RGDS
+GARY
+- ---------------------------------------------------------------------------
+Gary E. Miller Rellim 20340 Empire Blvd, Suite E-3, Bend, OR 97701
+	<A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">gem at rellim.com</A>  Tel:+1(541)382-8588
+
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v1.4.3 (GNU/Linux)
+
+iD8DBQFEtAA58KZibdeR3qURAqZ0AJ9iIhRsnQWRJ3kbigEmOBVbF8O2AgCfRT17
+Tsm0iZBpEmO3gU7Fx4/wCfM=
+=FoaQ
+-----END PGP SIGNATURE-----
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="001747.html">[Gpsd-users] Accessing GPSPipe w/ Serial
+</A></li>
+	<LI>Next message: <A HREF="001763.html">[Gpsd-users] Accessing GPSPipe w/ Serial
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1748">[ date ]</a>
+              <a href="thread.html#1748">[ thread ]</a>
+              <a href="subject.html#1748">[ subject ]</a>
+              <a href="author.html#1748">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

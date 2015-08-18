@@ -1,0 +1,96 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] Ntp and gpsd problem oem4
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2006-September/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Ntp%20and%20gpsd%20problem%20oem4&In-Reply-To=%3CPine.LNX.4.64.0609291300200.4737%40catbert.rellim.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="002041.html">
+   <LINK REL="Next"  HREF="002043.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] Ntp and gpsd problem oem4</H1>
+    <B>Gary E. Miller</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Ntp%20and%20gpsd%20problem%20oem4&In-Reply-To=%3CPine.LNX.4.64.0609291300200.4737%40catbert.rellim.com%3E"
+       TITLE="[Gpsd-users] Ntp and gpsd problem oem4">gem at rellim.com
+       </A><BR>
+    <I>Fri Sep 29 22:06:38 CEST 2006</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="002041.html">[Gpsd-users] Ntp and gpsd problem oem4
+</A></li>
+        <LI>Next message: <A HREF="002043.html">[Gpsd-users] Ntp and gpsd problem oem4
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2042">[ date ]</a>
+              <a href="thread.html#2042">[ thread ]</a>
+              <a href="subject.html#2042">[ subject ]</a>
+              <a href="author.html#2042">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>-----BEGIN PGP SIGNED MESSAGE-----
+Hash: SHA1
+
+Yo George!
+
+On Fri, 29 Sep 2006, xterm wrote:
+
+&gt;<i> I 've managed to make gpsd work with Novatel oem4 gps receivers. I 've just
+</I>&gt;<i> changed the serial pin from dcd to cts for pps.I am writing commands to gpsd
+</I>&gt;<i> telnet port and i am getting the right time from the nmea messages.
+</I>
+For PPS to work on CTS you have to be using the latest SVN. 2.33 is not
+good enough.  You also need to set '--enable-pps-on-cts' in the config .
+
+It goes without saying that you are runnig both ntpd and gpsd as root.
+
+I suspect the problem is in your ntp or ntp.conf.  Even if gpsd has never
+run you should see SHM(0) and SHM(1) in the &quot;ntpdc -p&quot;.  Double check
+your config and be sure you have all the clock drivers compiled in to
+ntpd.
+
+RGDS
+GARY
+- ---------------------------------------------------------------------------
+Gary E. Miller Rellim 20340 Empire Blvd, Suite E-3, Bend, OR 97701
+	<A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">gem at rellim.com</A>  Tel:+1(541)382-8588
+
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v1.4.3 (GNU/Linux)
+
+iD8DBQFFHXzR8KZibdeR3qURAnqrAJ9xCTSkXcyE5TNaXaXhpJEy+Ikj1gCg7i0K
+MJsOig73h2NIjgNXPMb4GPI=
+=mPbU
+-----END PGP SIGNATURE-----
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="002041.html">[Gpsd-users] Ntp and gpsd problem oem4
+</A></li>
+	<LI>Next message: <A HREF="002043.html">[Gpsd-users] Ntp and gpsd problem oem4
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2042">[ date ]</a>
+              <a href="thread.html#2042">[ thread ]</a>
+              <a href="subject.html#2042">[ subject ]</a>
+              <a href="author.html#2042">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

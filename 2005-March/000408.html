@@ -1,0 +1,94 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] gpsd 2.17, Mac OS X 10.3.8, Bluetooth Ambicom/Leadtek 9537 GPS, review &amp; gpsd status
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2005-March/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20gpsd%202.17%2C%20Mac%20OS%20X%2010.3.8%2C%20Bluetooth%20Ambicom/Leadtek%209537%20GPS%2C%20review%20%26%20gpsd%20status&In-Reply-To=%3Cc37543ba4d3bc0ea7d9637aded2e0949%40nicholasfamilycentral.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="000398.html">
+   <LINK REL="Next"  HREF="000402.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] gpsd 2.17, Mac OS X 10.3.8, Bluetooth Ambicom/Leadtek 9537 GPS, review &amp; gpsd status</H1>
+    <B>Frank Nicholas</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20gpsd%202.17%2C%20Mac%20OS%20X%2010.3.8%2C%20Bluetooth%20Ambicom/Leadtek%209537%20GPS%2C%20review%20%26%20gpsd%20status&In-Reply-To=%3Cc37543ba4d3bc0ea7d9637aded2e0949%40nicholasfamilycentral.com%3E"
+       TITLE="[Gpsd-users] gpsd 2.17, Mac OS X 10.3.8, Bluetooth Ambicom/Leadtek 9537 GPS, review &amp; gpsd status">frank at nicholasfamilycentral.com
+       </A><BR>
+    <I>Wed Mar 23 21:14:58 CET 2005</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="000398.html">[Gpsd-users] gpsd 2.17, Mac OS X 10.3.8, Bluetooth Ambicom/Leadtek 9537 GPS, review &amp; gpsd status
+</A></li>
+        <LI>Next message: <A HREF="000402.html">Fwd: [Gpsd-users] gpsd segfaults when no fix is present
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#408">[ date ]</a>
+              <a href="thread.html#408">[ thread ]</a>
+              <a href="subject.html#408">[ subject ]</a>
+              <a href="author.html#408">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>The error message generated for 'stty -f /dev/tty.gps ispeed 4800' is:  
+&quot;stty: tcsetattr: invalid argument&quot;.
+
+I suspect this is because the Bluetooth serial device was defined as an 
+&quot;Outgoing&quot; port in the utility.  Remember, the GPS DOES connect &amp; work, 
+sometimes.
+
+If I try to define a Bluetooth serial device as an &quot;Incoming&quot; port, I 
+can't specify the Bluetooth device or service to connect it to.  It 
+expects the device to initiate the connection (which the GPS doesn't).  
+I tried creating a Bluetooth serial port &quot;Incoming&quot; device, and it 
+still gives the same error with 'stty -f /dev/tty.gpsi ispeed 4800'.  
+The &quot;Outgoing&quot; device DOES accept the 'stty -f /dev/tty.gps ospeed 
+4800' command, but appears to ignore it, and returns a 9600.
+
+BTW:  I am using &quot;ispeed&quot; &amp; &quot;ospeed&quot; WITHOUT the &quot;-&quot;.  There was a 
+mistake in my original post.  Also, Mac OS X requires a '-f' instead of 
+a '-F' for stty.
+
+On Mar 23, 2005, at 9:51 AM, Frank Nicholas wrote:
+
+When trying to use 'stty' to set the serial port speed ('stty -f 
+/dev/tty.gps ispeed 4800'), it usually fails (I don't think I've ever 
+seen it work, but I've done so much testing, I won't swear to it.)  The 
+error message is:  &quot;I NEED TO LOOKUP THE ERROR MESSAGE&quot;.  The speed is 
+reported back as 9600, no matter what I try to set it to.  'stty -f 
+/dev/tty.gps' almost always reports the speed at 9600, UNLESS 'gpsd', 
+'sirfmon', or KisMAC are running and working correctly.&quot;
+
+______________________________________________________________________
+This email has been scanned by the MessageLabs Email Security System.
+For more information please visit <A HREF="http://www.messagelabs.com/email">http://www.messagelabs.com/email</A> 
+______________________________________________________________________
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="000398.html">[Gpsd-users] gpsd 2.17, Mac OS X 10.3.8, Bluetooth Ambicom/Leadtek 9537 GPS, review &amp; gpsd status
+</A></li>
+	<LI>Next message: <A HREF="000402.html">Fwd: [Gpsd-users] gpsd segfaults when no fix is present
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#408">[ date ]</a>
+              <a href="thread.html#408">[ thread ]</a>
+              <a href="subject.html#408">[ subject ]</a>
+              <a href="author.html#408">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

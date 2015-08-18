@@ -1,0 +1,137 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] GPSD format
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2008-March/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20GPSD%20format&In-Reply-To=%3C20080321220643.DFE101F50B1%40ws1-2.us4.outblaze.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="003171.html">
+   <LINK REL="Next"  HREF="003173.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] GPSD format</H1>
+    <B>Marton Kadar</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20GPSD%20format&In-Reply-To=%3C20080321220643.DFE101F50B1%40ws1-2.us4.outblaze.com%3E"
+       TITLE="[Gpsd-users] GPSD format">marton.kadar at mail.com
+       </A><BR>
+    <I>Fri Mar 21 23:06:43 CET 2008</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="003171.html">[Gpsd-users] GPSD format
+</A></li>
+        <LI>Next message: <A HREF="003173.html">[Gpsd-users] gpsd compatible gps purchasing suggestions.
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3172">[ date ]</a>
+              <a href="thread.html#3172">[ thread ]</a>
+              <a href="subject.html#3172">[ subject ]</a>
+              <a href="author.html#3172">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>I can't verify at the moment if this would work, but I would 
+try something like this (you probably need to be root):
+
+$ /etc/init.d/gpsd stop
+$ tcplisten 2947 &lt;dump_file.gpsd
+$ cgpxlogger converted_file.gpx
+
+tcplisten is part of package tcputils in Ubuntu/Debian
+cgpxlogger is part of the gpsd-clients package
+
+first try cgpxlogger against a real gpsd, and when you get that
+right, try it against the one faked as above
+
+good luck, and don't be very frustrated with gpsd
+it is good software, but you need to learn to use it right
+try your ideas first and only when it works all the way
+including display/upload/further processing,
+then start the real recording
+I know how it is to lose such data, that's why I'm so &quot;wise&quot; now
+
+Marton
+
+My script for recording into gpx:
+#!/bin/bash
+
+# connect to gpsd on localhost and turn on raw mode
+# write the NMEA data to a timestamped file
+# stop when the user presses space/enter
+# then convert the file to GPX format
+
+ts=$(date +&quot;%Y%m%d_%H%M%S&quot;)
+
+{
+        echo r
+        dialog --stdout --msgbox &quot;press&quot; 5 12;
+        echo r
+}  | tcpconnect localhost 2947 &gt;file_$ts.nmea
+
+final=$(dialog --stdout --inputbox &quot;output filename without .gpx extension&quot; 10 50 &quot;file_$ts&quot;)
+gpsbabel -i nmea -o gpx -f file_$ts.nmea -F $final.gpx
+
+
+
+&gt;<i> ----- Original Message -----
+</I>&gt;<i> From: &quot;Alex Garbino&quot; &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">agarbino at gmail.com</A>&gt;
+</I>&gt;<i> To: <A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">gpsd-users at lists.berlios.de</A>
+</I>&gt;<i> Subject: [Gpsd-users] GPSD format
+</I>&gt;<i> Date: Fri, 21 Mar 2008 13:23:33 -0500
+</I>&gt;<i> 
+</I>&gt;<i> 
+</I>&gt;<i> Hello,
+</I>&gt;<i> 
+</I>&gt;<i> I'm just starting to use Gpsd and after reading the man page, I recorded a
+</I>&gt;<i> bunch of data using gpspipe -w, since it is recommended over the raw NMEA
+</I>&gt;<i> stream.
+</I>&gt;<i> 
+</I>&gt;<i> However, after a day of looking around, no other program, including
+</I>&gt;<i> gpsbabel, seems to recognize gpsd format. I'm now stuck with all my data in
+</I>&gt;<i> the wrong format.
+</I>&gt;<i> Is there a way to convert it back to something useful?
+</I>&gt;<i> 
+</I>&gt;<i> Regards,
+</I>&gt;<i> Alex
+</I>&gt;<i> (very frustrated with gpsd)
+</I>&gt;<i> _______________________________________________
+</I>&gt;<i> Gpsd-users mailing list
+</I>&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">Gpsd-users at lists.berlios.de</A>
+</I>&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">https://lists.berlios.de/mailman/listinfo/gpsd-users</A>
+</I>
+&gt;<i>
+</I>
+
+-- 
+Want an e-mail address like mine?
+Get a free e-mail account today at www.mail.com!
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="003171.html">[Gpsd-users] GPSD format
+</A></li>
+	<LI>Next message: <A HREF="003173.html">[Gpsd-users] gpsd compatible gps purchasing suggestions.
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3172">[ date ]</a>
+              <a href="thread.html#3172">[ thread ]</a>
+              <a href="subject.html#3172">[ subject ]</a>
+              <a href="author.html#3172">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

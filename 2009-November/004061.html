@@ -1,0 +1,256 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] Fw: GPSD Documentation
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2009-November/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Fw%3A%20GPSD%20Documentation&In-Reply-To=%3C518039.48471.qm%40web86509.mail.ird.yahoo.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="004067.html">
+   <LINK REL="Next"  HREF="004064.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] Fw: GPSD Documentation</H1>
+    <B>dofinch-aria at yahoo.co.uk</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Fw%3A%20GPSD%20Documentation&In-Reply-To=%3C518039.48471.qm%40web86509.mail.ird.yahoo.com%3E"
+       TITLE="[Gpsd-users] Fw: GPSD Documentation">dofinch-aria at yahoo.co.uk
+       </A><BR>
+    <I>Sat Nov 14 03:26:04 CET 2009</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="004067.html">[Gpsd-users] Ntp Problems
+</A></li>
+        <LI>Next message: <A HREF="004064.html">[Gpsd-users] Fw: GPSD Documentation
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#4061">[ date ]</a>
+              <a href="thread.html#4061">[ thread ]</a>
+              <a href="subject.html#4061">[ subject ]</a>
+              <a href="author.html#4061">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>
+ Hello,
+ 
+ I am using Viking GPS Manager running
+ under Ubuntu Linux on my laptop and connect it to a Garmin
+ handheld GPS 76 device to implement an excellent SatNav
+ system. 
+ 
+ Viking uses gpsd to provide real time 3D position
+ information. It's extremely easy, in principle, to set this
+ up and the results are first class. Tested by using xgps the
+ values shown on the xgps window are EXACTLY those displayed
+ on the GPS device. Testing using Viking, the cursor jumps
+ immediately to my present location on the displayed maps. 
+ 
+ I would like to thank ALL the collaborators for their work
+ in providing the truly excellent gpsd software!
+ 
+ Despite there being a trivial solution I COULD NOT by
+ myself get gpsd to communicate with the Garmin. There are so
+ many options and possibilities that it's necessary to know
+ exactly what you are doing or you get nowhere. In the end I
+ had to seek advice and I am grateful to Gary E Miller who
+ responded to my cry for help rapidly and with spot-on
+ information about what I should do.
+ 
+ My Solution
+ =================
+ 
+ My laptop is a Lenovo 3000 C200. The operating system is
+ Ubuntu Linux v 9.10 (Karmic Kaola!) My chosen GPS Manager is
+ Viking v0.98 and I am using gpsd v 2.39 (the most up-to-date
+ version that I could find on the berliOS website) so that 
+ Viking can obtain current position updates. 
+ 
+ My GPS device is a Garmin GPS 76
+ handheld which communicates to a PC through an RS232
+ interface. The Lenovo doesn't have an RS232 socket so I
+ connect via a USB-Serial Interface and install the usbserial
+ Linux driver module to enable it as /dev/ttyUSB0. 
+ 
+ I set the Garmin hardware's comms to &quot;NMEA&quot;.
+ 
+ I issue the command &quot;gpsd /dev/ttyUSB0&quot; to start the
+ daemon.
+ 
+ And that's it! Perfect operation - fast updates and very
+ accurate position reports.
+ 
+ What was my problem?
+ =============================
+ 
+ CAVEAT: I hope that the gpsd development collaborators
+ won't take offense about any of this but rather that this
+ mail will be of some assistance as the observations of a
+ happy and grateful, but not especially linux savvy, user 
+ of gpsd.
+ 
+ The first resource that I read was the on-line manual
+ viewed by issuing &quot;man gpsd&quot; at a terminal. With the benefit
+ of hindsight I've re-read the complete manual to see whether
+ I could have deduced the solution suggested by Gary. Sadly I
+ believe that I would not have succeeeded.
+ 
+ The manual has the following outline:
+ 
+ a) The SYNOPSIS (lines 9/10) - interesting but all I needed
+ was the much simpler syntax: &quot;gpsd source_name&quot;. IMPORTANT:
+ &quot;source_name&quot; is a KEY parameter. What this is, however, is
+ not explained anywhere in the document and only a few,
+ vague, clues appear MUCH further down. 
+ 
+ b) The DESCRIPTION - a useful introduction to the purpose
+ of gpsd. Interesting but not relevant to getting gpsd
+ talking to my Garmin. The suggested probe &quot;gpsd -l&quot; produces
+ a list of possible protocols - 22 in my case, many obviously
+ inappropriate - without any guidance as to which should be
+ used - not very helpful.
+ 
+ c) The OPTIONS (starting with the -F option) - Interesting
+ but not relevant. My solution needs NO options.
+ 
+ d) The remaining document - interesting but not helpful.
+ Line 146 warns that from then on a large chunk is deprecated
+ anyway!
+ 
+ The &quot;clues&quot;:
+ 
+ - in line 114! - it says that &quot;Normally, a data source is
+ the name of a local serial device from which the daemon may
+ expect GPS data.&quot; What is meant by &quot;name&quot; here is never
+ explained. 
+ 
+ -in line 702 and 763! - some passing references to
+ &quot;/dev/ttyS0&quot; in line 702 and 763! Flash of light! - the
+ source_name is just the Linux device file (thus &quot;gpsd
+ /dev/ttyUSB0&quot; for my solution.) 
+ 
+ How could this be changed?
+ ================================
+ I suggest that, to help people in my situation who &quot;just&quot;
+ need to get the daemon talking to a gps device as quickly
+ and easily as possible:
+ 
+ 1) Immediately after the section &quot;SYNOPSIS&quot; add a new
+ section &quot;EXAMPLES OF BASIC OPERATION&quot;. 
+ 
+ The examples would probably be something like &quot;gpsd
+ /dev/ttyS0&quot;. Perhaps half a dozen or so would suffice to
+ cover a majority of basic implementations.
+ 
+ 2) At the end of the &quot;EXAMPLES...&quot; section add the
+ paragraph:
+ 
+ &quot;For your first connection tests, set your GPS hardware
+ device comms to &quot;NMEA&quot; (check the User Manual of your GPS
+ hardware device to find out how to do this). Most devices
+ will talk this protocol. After you have successfully
+ communicated with your device using this protocol you can
+ try others to see whether they offer any speed or
+ functionality advantages.&quot;
+ 
+ Next point the reader to the &quot;Compatible Hardware&quot; table to
+ be found on the web at <A HREF="http:///gpsd.berlios.de/hardware.html.">http:///gpsd.berlios.de/hardware.html.</A> 
+ 
+ The following would also be helpful: 
+ 
+ &quot;You can test correct operation by first starting gpsd and
+ then xgps (the X-Windows test client for gpsd). You should
+ ensure that your GPS device has a good fix and that it is
+ displaying your current location. Then, if all is well, the
+ xgps x-window will display EXACTLY the same location data.&quot;
+ 
+ Finally, in case the user doesn't get the connection
+ working, make sure that the he/she knows about the
+ &quot;Troubleshooting&quot; document to be found (at least in the
+ Ubuntu distribution) at /usr/share/doc/gpds. To be honest
+ this document didn't help me either and I suggest that it
+ should be revised radically. But that's another subject.
+ 
+ 3) To be truly helpful the Compatible Hardware table should
+ be extended to show also HOW the hardware is to be used. A
+ few simple additions should suffice. In this context I would
+ like to see the following added to the Garmin GPS 76 entry:
+ 
+ In the Notes column: 
+ 
+ &quot;This device can be connected directly to a Serial RS232
+ port on the computer using the special PC connector lead
+ supplied by Garmin (a 9-pin RS232 connector is used at the
+ PC end). Issue the command 'gpsd /dev/ttyS0', or similar, in
+ a terminal window to start gpsd.
+ 
+ The device can also be connected to a USB socket on the PC
+ by using a USB-Serial converter lead. In this latter case,
+ in Linux, the usbserial Kernel Module must be loaded and
+ started with a command such as 'sudo modprobe usbserial
+ vendor=0&#215;1a86 product=0&#215;7523' (check the manual for your
+ usb-serial converter device for more information on this -
+ vendor and product number will most likely be different for
+ your device). Start gpsd by issuing the command 'gpsd
+ /dev/ttyUSB0' or similar in a terminal window. In this case
+ the Garmin GPS 76 comms MUST be set to 'NMEA'. The kernel
+ module garmin_gps is not needed and should not be specially
+ loaded.&quot;
+ 
+ 
+ ---End of addition---
+ 
+ Unfortunately, at present I believe that the table also has
+ some errors in its content for the Garmin GPS 76 device:
+ 
+ 1) The device interface should be shown as &quot;RS232&quot; not
+ &quot;USB&quot; (even if the connection is made via a usb-serial
+ converter lead.) Garmin supplies a lead for transferring
+ data to/from a computer. This lead connects between the GPS
+ 76 device and a 9-pin RS232 connector. I could not find any
+ reference in the user manual to a lead that can be connected
+ directly between the GPS device and a computer USB port.
+ 2) Because it's RS232 the exclamation icon in the &quot;tested
+ with&quot; column is not appropriate. Connecting the Garmin will
+ probably not start the gpsd daemon. Plugging the usb-serial
+ device lead into a computer socket WOULD load the usbserial
+ driver module and might start the daemon if the system was
+ set up to do that (mine isn't). Anyway NOT correct as it
+ stands.
+ 3) There's a coding bug in the html which makes the three
+ star designation in &quot;tested with&quot; column look wrong (see
+ attached image). For a long time I thought that the rating
+ was just ONE star or at best TWO and I nearly gave up!!!!
+ The image is copied from the Firefox browser but the page
+ displayed by IE7 is similarly corrupt.
+ 
+ Sincerely,
+ 
+ Geoff Childs
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="004067.html">[Gpsd-users] Ntp Problems
+</A></li>
+	<LI>Next message: <A HREF="004064.html">[Gpsd-users] Fw: GPSD Documentation
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#4061">[ date ]</a>
+              <a href="thread.html#4061">[ thread ]</a>
+              <a href="subject.html#4061">[ subject ]</a>
+              <a href="author.html#4061">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

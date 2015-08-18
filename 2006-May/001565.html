@@ -1,0 +1,98 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] Re: xgps: no data arriving
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2006-May/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Re%3A%20xgps%3A%20no%20data%20arriving&In-Reply-To=%3C1147424410.9012.6.camel%40mabupc.psk%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="001559.html">
+   <LINK REL="Next"  HREF="001571.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] Re: xgps: no data arriving</H1>
+    <B>Massimo Burcheri</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Re%3A%20xgps%3A%20no%20data%20arriving&In-Reply-To=%3C1147424410.9012.6.camel%40mabupc.psk%3E"
+       TITLE="[Gpsd-users] Re: xgps: no data arriving">burcheri at fgan.de
+       </A><BR>
+    <I>Fri May 12 11:00:10 CEST 2006</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="001559.html">[Gpsd-users] xgps: no data arriving
+</A></li>
+        <LI>Next message: <A HREF="001571.html">[Gpsd-users] Re: xgps: no data arriving
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1565">[ date ]</a>
+              <a href="thread.html#1565">[ thread ]</a>
+              <a href="subject.html#1565">[ subject ]</a>
+              <a href="author.html#1565">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Am Dienstag, den 09.05.2006, 13:16 +0200 schrieb Massimo Burcheri:
+
+&gt;<i> xgps doesn't find connection here, whereas gpsdrive and telnet are
+</I>&gt;<i> working fine with gpsd.
+</I>
+In order to start my own project based on gps.h, I'm going to take the
+xgps or cgps code as example.
+But these programs can't get connection. As user I do:
+
+$ gpsd -p /dev/ttyS0 -s 9600
+$ netstat -ap |grep gpsd
+tcp        0      0 *:2947                  *:*
+LISTEN      9834/gpsd
+
+$ netcat localhost 2947
+R
+GPSD,R=1
+,01,004,,131,11,117,,120,28,208,*70
+$PMGNST,05.40,2,T,955,08.3,+06368,23*4B
+$GPGLL,5036.9979,N,00707.9245,E,085748.236,A*31
+$GPGGA,085748.24,5036.9979,N,00707.9245,E,1,03,9.6,00264,M,,,,*29
+$GPRMC,085748.24,A,5036.9979,N,00707.9245,E,00.0,000.0,120506,00,E*42
+$GPGSA,A,2,28,11,20,,,,,,,,,,09.6,09.6,*15
+$GPGSV,3,1,10,11,76,280,36,01,44,124,,19,40,168,36,14,38,064,*78
+$GPGSV,3,2,10,20,37,233,,28,22,283,45,17,14,317,,22,12,056,*79
+$GPGSV,3,3,10,03,07,160,,09,01,004,,131,11,117,,120,28,208,*70
+$PMGNST,05.40,2,T,955,08.3,+06368,23*4B
+
+$ cgps localhost:2947
+[Command:  cgps: No data  ]
+
+gpsdrive works using the running gpsd.
+
+Maybe someone could give me a hint?
+Thanks,
+Massimo
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="001559.html">[Gpsd-users] xgps: no data arriving
+</A></li>
+	<LI>Next message: <A HREF="001571.html">[Gpsd-users] Re: xgps: no data arriving
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1565">[ date ]</a>
+              <a href="thread.html#1565">[ thread ]</a>
+              <a href="subject.html#1565">[ subject ]</a>
+              <a href="author.html#1565">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

@@ -1,0 +1,130 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] gpsd 2.37 - infinite loop &quot;Reconfiguring for Garmin	Serial...&quot;
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2008-April/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20gpsd%202.37%20-%20infinite%20loop%20%22Reconfiguring%20for%20Garmin%0A%09Serial...%22&In-Reply-To=%3C000401c8a047%24e36cf530%243701a8c0%40KOBAX40%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="003198.html">
+   <LINK REL="Next"  HREF="003197.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] gpsd 2.37 - infinite loop &quot;Reconfiguring for Garmin	Serial...&quot;</H1>
+    <B>Tetsuya KOBAYASHI</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20gpsd%202.37%20-%20infinite%20loop%20%22Reconfiguring%20for%20Garmin%0A%09Serial...%22&In-Reply-To=%3C000401c8a047%24e36cf530%243701a8c0%40KOBAX40%3E"
+       TITLE="[Gpsd-users] gpsd 2.37 - infinite loop &quot;Reconfiguring for Garmin	Serial...&quot;">t-kobayashi at circle.co.jp
+       </A><BR>
+    <I>Thu Apr 17 06:59:54 CEST 2008</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="003198.html">[Gpsd-users] Bluetooth GPS advice:  i.Trek M7
+</A></li>
+        <LI>Next message: <A HREF="003197.html">[Gpsd-users] gpsd 2.37 - infinite loop &quot;Reconfiguring for Garmin	Serial...&quot;
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3196">[ date ]</a>
+              <a href="thread.html#3196">[ thread ]</a>
+              <a href="subject.html#3196">[ subject ]</a>
+              <a href="author.html#3196">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi, all
+
+I just start use gpsd 2.37 on Fedora8 with Garmin GPS-16LVS (serial).
+But, gpsd start reconfiguring by &quot;$PGRMC&quot; that he send.
+I using gpsd with ntpd for reference clock. I guess ntp not accurate because of this loop.
+Some one know this issue ? and/or is there good walk around ?
+
+Thanks.
+
+------------------------------------------------------------------------------
+
+gpsd: packet sniff finds type -1
+gpsd: packet sniff finds type -1
+gpsd: packet sniff finds type 1
+gpsd: switch_driver(Generic NMEA) called...
+gpsd: selecting Generic NMEA driver...
+gpsd: ntpd_link_activate: 0
+gpsd: Create Thread gpsd_ppsmonitor
+gpsd: =&gt; GPS: $PSRF100,0,4800,8,1,0*0F\x0d
+
+gpsd: &lt;= GPS: $GPRMC,024520,A,3545.5338,N,13942.0143,E,000.0,250.4,170408,007.1,W*6B
+gpsd: GPRMC starts a reporting cycle.
+gpsd: GPRMC sets mode 2
+gpsd: ntpshm_put: Clock: 1208400320 @ 1208400320.313131
+gpsd: =&gt; GPS: $PGRMCE*0E\x0d
+
+gpsd: &lt;= GPS: $GPGGA,024520,3545.5338,N,13942.0143,E,1,06,5.6,10.1,M,39.1,M,,*7C
+gpsd: GPGGA sets status 1 and mode 3 (changed)
+gpsd: =&gt; GPS: $PFEC,GPint*58\x0d
+
+gpsd: &lt;= GPS: $GPGSA,A,2,,04,07,08,,13,25,,27,,,,5.7,5.6,1.0*38
+gpsd: GPGSA sets mode 2
+gpsd: =&gt; GPS: 1002128e7f0101000101010001000000000000131003
+gpsd: &lt;= GPS: $PGRMC,A,10.1,100,,,,,,A,3,1,2,1,30*66
+gpsd: GPRMC sets mode 0
+gpsd: found $PGRMC,.
+gpsd: switch_driver(Garmin Serial) called...
+gpsd: selecting Garmin Serial driver...
+gpsd: ntpd_link_activate: 1
+gpsd: configuring for Garmin Serial...
+gpsd: =&gt; GPS: $PGRMC,A,,100,,,,,,A,,1,2,1,30*4B\x0d
+
+gpsd: &lt;= GPS: $PGRMC,A,,100,,,,,,A,,1,2,1,30*4B
+gpsd: GPRMC sets mode 0
+gpsd: found $PGRMC,.
+gpsd: switch_driver(Garmin Serial) called...
+gpsd: Reconfiguring for Garmin Serial...
+gpsd: =&gt; GPS: $PGRMC,A,,100,,,,,,A,,1,2,1,30*4B\x0d
+
+gpsd: &lt;= GPS: $PGRMC,A,,100,,,,,,A,,1,2,1,30*4B
+gpsd: GPRMC sets mode 0
+gpsd: found $PGRMC,.
+gpsd: switch_driver(Garmin Serial) called...
+gpsd: Reconfiguring for Garmin Serial...
+gpsd: pps-detect (DCD) on /dev/ttyS0 changed to 1
+gpsd: PPS pulse rejected. No fix.
+gpsd: pps-detect (DCD) on /dev/ttyS0 changed to 0
+gpsd: PPS pulse rejected. No fix.
+gpsd: =&gt; GPS: $PGRMC,A,,100,,,,,,A,,1,2,1,30*4B\x0d
+
+gpsd: &lt;= GPS: $PGRMC,A,,100,,,,,,A,,1,2,1,30*4B
+gpsd: GPRMC sets mode 0
+gpsd: found $PGRMC,.
+gpsd: switch_driver(Garmin Serial) called...
+gpsd: Reconfiguring for Garmin Serial...
+gpsd: =&gt; GPS: $PGRMC,A,,100,,,,,,A,,1,2,1,30*4B\x0d
+
+
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="003198.html">[Gpsd-users] Bluetooth GPS advice:  i.Trek M7
+</A></li>
+	<LI>Next message: <A HREF="003197.html">[Gpsd-users] gpsd 2.37 - infinite loop &quot;Reconfiguring for Garmin	Serial...&quot;
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3196">[ date ]</a>
+              <a href="thread.html#3196">[ thread ]</a>
+              <a href="subject.html#3196">[ subject ]</a>
+              <a href="author.html#3196">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

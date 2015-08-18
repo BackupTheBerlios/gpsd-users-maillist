@@ -1,0 +1,117 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] Private-use fields vs. GPSD-NG queries
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2006-December/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Private-use%20fields%20vs.%20GPSD-NG%20queries&In-Reply-To=%3C457D95B4.2020201%40nippur.net%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="002320.html">
+   <LINK REL="Next"  HREF="002356.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] Private-use fields vs. GPSD-NG queries</H1>
+    <B>Diego Berge</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Private-use%20fields%20vs.%20GPSD-NG%20queries&In-Reply-To=%3C457D95B4.2020201%40nippur.net%3E"
+       TITLE="[Gpsd-users] Private-use fields vs. GPSD-NG queries">gpsd at nippur.net
+       </A><BR>
+    <I>Mon Dec 11 18:30:28 CET 2006</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="002320.html">[Gpsd-users] Private-use fields vs. GPSD-NG queries
+</A></li>
+        <LI>Next message: <A HREF="002356.html">[Gpsd-users] Private-use fields vs. GPSD-NG queries
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2325">[ date ]</a>
+              <a href="thread.html#2325">[ thread ]</a>
+              <a href="subject.html#2325">[ subject ]</a>
+              <a href="author.html#2325">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi there,
+
+    ...and greetings from Kosovo! :)
+
+Eric S. Raymond wrote:
+&gt;<i> Diego Berge &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">gpsd at nippur.net</A>&gt;:
+</I>
+&gt;&gt;<i> EXAMPLE=timestamp latitude longitude height course speed depth
+</I>&gt;&gt;<i> water_temp hrms vrms course_err speed_err depth_err water_temp_err
+</I>&gt;&gt;<i>
+</I>&gt;<i> Clever.  You've handwaved one big issue, though, which is how the 
+</I>&gt;<i> command interpreter knows which fields have associated error estamates,
+</I>&gt;<i> and how they get inserted in the reply.
+</I>
+   You will notice (from the example I gave above) that it is the
+client's responsibility to explicitly request them.  The trickish bit
+would be for gpsd to determine which capabilities the attached GPS has,
+so it can pass that info on to the client when requested.  I am thinking
+of something such as:
+
+ &lt;&lt;&lt; GET DATAFIELDS
+ &gt;&gt;&gt; DATAFIELDS=timestamp latitude longitude height altitude
+geoid_separation [...etc...] tfom hrms vrms geoid_separation_err [...etc...]
+
+   I am thinking of this as a (hopefully) possible way to allow
+different drivers to provide as many odd bits of information as they see
+fit without the main code needing to know about it.  Just an idea.  Does
+this sound too far fetched in principle?
+
+&gt;<i> But there's a larger problem.  This design doesn't actually solve any
+</I>&gt;<i> problem *except* that of satisfying a religious desire to keep &quot;extra&quot;
+</I>&gt;<i> information out of PVT reports.
+</I>
+   Actually, I thought about it as a mechanism for the drivers to
+provide arbitrary information to the clients, as described above.  It
+needn't be related to PVT in any way (e.g., battery charge info).
+
+&gt;<i>  In particular, it doesn't save us
+</I>&gt;<i> from being stuck with the nasty latency vs. jitter problem created by
+</I>&gt;<i> having more than one report per cycle.
+</I>
+   Hmm... As I described it above, the client could define its reports
+any way it likes, so it could lump every bit of info it needs in a
+single message.  Wouldn't that solve the jitter problem?  Additionally,
+if you trigger the report &quot;on change&quot;, defining &quot;change&quot; as a variation
+on *any* of the data contained in the report (perhaps other than time),
+then you would also solve the latency problem, albeit at the expense of
+having some potentially stale data on some reports.
+
+   I will have to think about it a bit more.  In any case, I am not
+passionate about any of the above, just throwing ideas into the wind in
+case they may actually make some kind of sense.
+
+
+Regards,
+Diego Berge.
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="002320.html">[Gpsd-users] Private-use fields vs. GPSD-NG queries
+</A></li>
+	<LI>Next message: <A HREF="002356.html">[Gpsd-users] Private-use fields vs. GPSD-NG queries
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2325">[ date ]</a>
+              <a href="thread.html#2325">[ thread ]</a>
+              <a href="subject.html#2325">[ subject ]</a>
+              <a href="author.html#2325">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

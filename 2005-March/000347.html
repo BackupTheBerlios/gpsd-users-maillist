@@ -1,0 +1,78 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] Disconnect/reconnect should work again
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2005-March/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Disconnect/reconnect%20should%20work%20again&In-Reply-To=%3C200503140041.j2E0fVx7001604%40snark.thyrsus.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="000355.html">
+   <LINK REL="Next"  HREF="000352.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] Disconnect/reconnect should work again</H1>
+    <B>Eric S. Raymond</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Disconnect/reconnect%20should%20work%20again&In-Reply-To=%3C200503140041.j2E0fVx7001604%40snark.thyrsus.com%3E"
+       TITLE="[Gpsd-users] Disconnect/reconnect should work again">esr at snark.thyrsus.com
+       </A><BR>
+    <I>Mon Mar 14 01:41:31 CET 2005</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="000355.html">[Gpsd-dev] Re: [Gpsd-users] Subsecond polling
+</A></li>
+        <LI>Next message: <A HREF="000352.html">[Gpsd-users] man am I going fast
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#347">[ date ]</a>
+              <a href="thread.html#347">[ thread ]</a>
+              <a href="subject.html#347">[ subject ]</a>
+              <a href="author.html#347">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>As promised, I made fixing disconnect/reconnect my top priority.  This
+turned out to require tearing apart the packet engine and rebuilding
+it, since the problem was triggered by disconnect during the blocking
+reads it had been using to fill the packet buffer.  
+
+SVN head has the new code in it.  Please test and report any problems.
+
+Gary has reported that the Garmin driver is busted.  It's probably
+some minor integration problem triggered by recent changes.  Once that
+is fixed, we can ship 2.17.
+-- 
+		&lt;a href=&quot;<A HREF="http://www.catb.org/~esr/">http://www.catb.org/~esr/</A>&quot;&gt;Eric S. Raymond&lt;/a&gt;
+
+Everything that is really great and inspiring is created by the
+individual who can labor in freedom.
+	-- Albert Einstein, in H. Eves Return to Mathematical Circles, 
+		Boston: Prindle, Weber and Schmidt, 1988.
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="000355.html">[Gpsd-dev] Re: [Gpsd-users] Subsecond polling
+</A></li>
+	<LI>Next message: <A HREF="000352.html">[Gpsd-users] man am I going fast
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#347">[ date ]</a>
+              <a href="thread.html#347">[ thread ]</a>
+              <a href="subject.html#347">[ subject ]</a>
+              <a href="author.html#347">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

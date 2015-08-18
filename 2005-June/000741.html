@@ -1,0 +1,131 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] cross-compiling make error
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2005-June/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20cross-compiling%20make%20error&In-Reply-To=%3CPine.LNX.4.63.0506090940530.12713%40catbert.rellim.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="000740.html">
+   <LINK REL="Next"  HREF="000742.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] cross-compiling make error</H1>
+    <B>Gary E. Miller</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20cross-compiling%20make%20error&In-Reply-To=%3CPine.LNX.4.63.0506090940530.12713%40catbert.rellim.com%3E"
+       TITLE="[Gpsd-users] cross-compiling make error">gem at rellim.com
+       </A><BR>
+    <I>Thu Jun  9 18:45:59 CEST 2005</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="000740.html">[Gpsd-users] cross-compiling make error
+</A></li>
+        <LI>Next message: <A HREF="000742.html">[Gpsd-users] cross-compiling make error
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#741">[ date ]</a>
+              <a href="thread.html#741">[ thread ]</a>
+              <a href="subject.html#741">[ subject ]</a>
+              <a href="author.html#741">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>-----BEGIN PGP SIGNED MESSAGE-----
+Hash: SHA1
+
+Yo Phillipe!
+
+SiRFs are a lot more common than garmin.  As long as that is not what
+you have you can bypass it this way:
+	--disable-sirfII
+
+What verion of gcc do you have?  Can you also post the contents of
+sirfmon.c lines 471 and 500?
+
+
+RGDS
+GARY
+- ---------------------------------------------------------------------------
+Gary E. Miller Rellim 20340 Empire Blvd, Suite E-3, Bend, OR 97701
+	<A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">gem at rellim.com</A>  Tel:+1(541)382-8588 Fax: +1(541)382-8676
+
+On Thu, 9 Jun 2005, Philipp H. Mohr wrote:
+
+&gt;<i> Date: Thu, 9 Jun 2005 17:23:24 +0100 (BST)
+</I>&gt;<i> From: Philipp H. Mohr &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">phm4 at kent.ac.uk</A>&gt;
+</I>&gt;<i> Cc: <A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">gpsd-users at lists.berlios.de</A>
+</I>&gt;<i> Subject: Re: [Gpsd-users] cross-compiling make error
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i> Hi,
+</I>&gt;<i>
+</I>&gt;<i> &gt; That is an odd one.  It looks like your gcc is emiting assembler code that
+</I>&gt;<i> &gt; your assembler can not grok.
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; Your quickest solution, unless you have a Garmin USB only gps connected
+</I>&gt;<i> &gt; to your Ipaq, is to add this to your configure &quot;--disable-garmin&quot;.
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; If that works, and you have some time left over, I would apprciate running
+</I>&gt;<i> &gt; some tests with you to narrow down the garmin error.
+</I>&gt;<i>
+</I>&gt;<i> That's fine.
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i> the garmin error is gone and it runns quite a bit further, but it stops at
+</I>&gt;<i> another error:
+</I>&gt;<i>
+</I>&gt;<i> sirfmon.c: In function `main':
+</I>&gt;<i> sirfmon.c:471: error: impossible constraint in `asm'
+</I>&gt;<i> sirfmon.c:500: error: impossible constraint in `asm'
+</I>&gt;<i> make[1]: *** [sirfmon.o] Error 1
+</I>&gt;<i> make[1]: Leaving directory `/home/phm4/handheld/gpsd-2.25'
+</I>&gt;<i> make: *** [all] Error 2
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i> Cheers,
+</I>&gt;<i> Phil
+</I>&gt;<i> _______________________________________________
+</I>&gt;<i> Gpsd-users mailing list
+</I>&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">Gpsd-users at lists.berlios.de</A>
+</I>&gt;<i> <A HREF="http://lists.berlios.de/mailman/listinfo/gpsd-users">http://lists.berlios.de/mailman/listinfo/gpsd-users</A>
+</I>&gt;<i>
+</I>&gt;<i>
+</I>-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v1.2.3 (GNU/Linux)
+
+iD8DBQFCqHJO8KZibdeR3qURAtweAKDBPYi5iVlwIPWYJKVgxbVF5zm7DACcCKXF
+sGv6dkm8xKu0MZMAYM0qsgI=
+=ycYo
+-----END PGP SIGNATURE-----
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="000740.html">[Gpsd-users] cross-compiling make error
+</A></li>
+	<LI>Next message: <A HREF="000742.html">[Gpsd-users] cross-compiling make error
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#741">[ date ]</a>
+              <a href="thread.html#741">[ thread ]</a>
+              <a href="subject.html#741">[ subject ]</a>
+              <a href="author.html#741">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

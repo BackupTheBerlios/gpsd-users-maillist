@@ -1,0 +1,100 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] cross-compiling make error
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2005-June/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20cross-compiling%20make%20error&In-Reply-To=%3CPine.LNX.4.63.0506090708100.7324%40catbert.rellim.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="000737.html">
+   <LINK REL="Next"  HREF="000740.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] cross-compiling make error</H1>
+    <B>Gary E. Miller</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20cross-compiling%20make%20error&In-Reply-To=%3CPine.LNX.4.63.0506090708100.7324%40catbert.rellim.com%3E"
+       TITLE="[Gpsd-users] cross-compiling make error">gem at rellim.com
+       </A><BR>
+    <I>Thu Jun  9 16:11:17 CEST 2005</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="000737.html">[Gpsd-users] cross-compiling make error
+</A></li>
+        <LI>Next message: <A HREF="000740.html">[Gpsd-users] cross-compiling make error
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#739">[ date ]</a>
+              <a href="thread.html#739">[ thread ]</a>
+              <a href="subject.html#739">[ subject ]</a>
+              <a href="author.html#739">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>-----BEGIN PGP SIGNED MESSAGE-----
+Hash: SHA1
+
+Yo Phillipe!
+
+That is an odd one.  It looks like your gcc is emiting assembler code that
+your assembler can not grok.
+
+Your quickest solution, unless you have a Garmin USB only gps connected
+to your Ipaq, is to add this to your configure &quot;--disable-garmin&quot;.
+
+If that works, and you have some time left over, I would apprciate running
+some tests with you to narrow down the garmin error.
+
+RGDS
+GARY
+- ---------------------------------------------------------------------------
+Gary E. Miller Rellim 20340 Empire Blvd, Suite E-3, Bend, OR 97701
+	<A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">gem at rellim.com</A>  Tel:+1(541)382-8588 Fax: +1(541)382-8676
+
+On Thu, 9 Jun 2005, Philipp H. Mohr wrote:
+&gt;<i>  arm-linux-gcc -DHAVE_CONFIG_H -I. -I. -I. -I/usr/X11R6/include
+</I>&gt;<i> -Wa,-mfpu=fpa11 -mcpu=xscale -Wall -Wcast-align -Wmissing-declarations
+</I>&gt;<i> -Wmissing-prototypes -Wstrict-prototypes -Wpointer-arith -Wreturn-type -W
+</I>&gt;<i> -I/usr/X11R6/include -MT garmin.lo -MD -MP -MF .deps/garmin.Tpo -c
+</I>&gt;<i> garmin.c -o garmin.o
+</I>&gt;<i> garmin.c: In function `garmin_probe':
+</I>&gt;<i> garmin.c:649: error: impossible constraint in `asm'
+</I>&gt;<i> make[1]: *** [garmin.lo] Error 1
+</I>&gt;<i> make[1]: Leaving directory `/home/phm4/handheld/gpsd-2.25'
+</I>&gt;<i> make: *** [all] Error 2
+</I>-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v1.2.3 (GNU/Linux)
+
+iD8DBQFCqE4J8KZibdeR3qURAvzdAKCxKWY/2gBufY1EeIUpg7LhAuMi6wCePOAt
+DjfdqJdWbEVdVxyjlZt1hPc=
+=sYpL
+-----END PGP SIGNATURE-----
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="000737.html">[Gpsd-users] cross-compiling make error
+</A></li>
+	<LI>Next message: <A HREF="000740.html">[Gpsd-users] cross-compiling make error
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#739">[ date ]</a>
+              <a href="thread.html#739">[ thread ]</a>
+              <a href="subject.html#739">[ subject ]</a>
+              <a href="author.html#739">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

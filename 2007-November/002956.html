@@ -1,0 +1,123 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] Lost PPS pulse
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2007-November/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Lost%20PPS%20pulse&In-Reply-To=%3C27198951.20071108012247%40gmail.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="002955.html">
+   <LINK REL="Next"  HREF="002957.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] Lost PPS pulse</H1>
+    <B>Askar Ibragimov</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Lost%20PPS%20pulse&In-Reply-To=%3C27198951.20071108012247%40gmail.com%3E"
+       TITLE="[Gpsd-users] Lost PPS pulse">askar.ibragimov at gmail.com
+       </A><BR>
+    <I>Thu Nov  8 00:22:47 CET 2007</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="002955.html">[Gpsd-users] Lost PPS pulse
+</A></li>
+        <LI>Next message: <A HREF="002957.html">[Gpsd-users] Lost PPS pulse
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2956">[ date ]</a>
+              <a href="thread.html#2956">[ thread ]</a>
+              <a href="subject.html#2956">[ subject ]</a>
+              <a href="author.html#2956">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>
+Hello again,
+
+first, Gary, thanks a lot for quick answers on my emails!
+
+actually, I am just a bit curious - if we got two sources of time, GPS
+(just) and GPS+PPS, what is wrong in accepting PPS pulse even it is
+far from second boundary? Since we would trust it, we just adjust the
+clock by assigning the start of current second, given by GPS messages,
+to the moment of time when PPS occurs. Moreover, my GPS even sends a
+special message telling when last PPS happened. Will gpsd consider
+such a special &quot;pps&quot; messages from receiver ($GPZDA in NMEA, or
+perhaps something similar in SiRF), or it just uses generic messages
+about time?
+
+And, the practical question - if I relax the condition: #define
+PPS_MAX_OFFSET 100000 /* microseconds the PPS can 'pull' */ in
+ntpshm.c - to make it, say, 500000 - will I have an effect of
+assigning the start of current second to the moment when PPS happened?
+
+
+
+P.S. so far gpsd captured the pulse, but I wonder how long it will
+last :)
+
+
+&gt;<i> -----BEGIN PGP SIGNED MESSAGE-----
+</I>&gt;<i> Hash: SHA1
+</I>
+&gt;<i> Yo Askar!
+</I>
+&gt;<i> On Thu, 8 Nov 2007, Askar Ibragimov wrote:
+</I>
+&gt;&gt;<i> Nov  7 15:23:01 sgo-klf ntpd[19755]: time reset +0.240966 s
+</I>&gt;&gt;<i> Nov  7 21:07:29 sgo-klf ntpd[19755]: time reset -0.470954 s
+</I>&gt;&gt;<i> Nov  7 21:27:52 sgo-klf ntpd[19755]: time reset +0.576009 s
+</I>
+&gt;<i> These are aweful numbers.  Over a second of jitter in 20 minutes.  PPS
+</I>&gt;<i> needs to be within a few hundred mS of the system clock to pull in the
+</I>&gt;<i> last bit.  Until you can get around 50mS stability w/o PPS no need to
+</I>&gt;<i> think of PPS.
+</I>
+&gt;<i> RGDS
+</I>&gt;<i> GARY
+</I>&gt;<i> -
+</I>&gt;<i> ---------------------------------------------------------------------------
+</I>&gt;<i> Gary E. Miller Rellim 109 NW Wilmington Ave., Suite E, Bend, OR 97701
+</I>&gt;<i>         <A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">gem at rellim.com</A>  Tel:+1(541)382-8588
+</I>
+&gt;<i> -----BEGIN PGP SIGNATURE-----
+</I>&gt;<i> Version: GnuPG v1.4.3 (GNU/Linux)
+</I>
+&gt;<i> iD8DBQFHMjvo8KZibdeR3qURAmkFAKDoAGLcHmDzX6IeRr+UFGuWluepkACfbItu
+</I>&gt;<i> tJBC25K4zza9XzfDhLVd6hc=
+</I>&gt;<i> =ZMt7
+</I>&gt;<i> -----END PGP SIGNATURE-----
+</I>
+
+8 &#1085;&#1086;&#1103;&#1073;&#1088;&#1103; 2007 &#1075;. 1:14
+ICQ 19576333  <A HREF="http://tsukasa.zenfolio.com">http://tsukasa.zenfolio.com</A> 
+In consilius nostris fatum nostrum est
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="002955.html">[Gpsd-users] Lost PPS pulse
+</A></li>
+	<LI>Next message: <A HREF="002957.html">[Gpsd-users] Lost PPS pulse
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2956">[ date ]</a>
+              <a href="thread.html#2956">[ thread ]</a>
+              <a href="subject.html#2956">[ subject ]</a>
+              <a href="author.html#2956">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

@@ -1,0 +1,135 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] Fw:  Error While Building This Morning's HEAD
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2011-February/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Fw%3A%20%20Error%20While%20Building%20This%20Morning%27s%20HEAD&In-Reply-To=%3C20110201034508.GA23127%40thyrsus.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="004992.html">
+   <LINK REL="Next"  HREF="004994.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] Fw:  Error While Building This Morning's HEAD</H1>
+    <B>Eric Raymond</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Fw%3A%20%20Error%20While%20Building%20This%20Morning%27s%20HEAD&In-Reply-To=%3C20110201034508.GA23127%40thyrsus.com%3E"
+       TITLE="[Gpsd-users] Fw:  Error While Building This Morning's HEAD">esr at thyrsus.com
+       </A><BR>
+    <I>Tue Feb  1 04:45:08 CET 2011</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="004992.html">[Gpsd-users] Fw:  Error While Building This Morning's HEAD
+</A></li>
+        <LI>Next message: <A HREF="004994.html">[Gpsd-users] Fw:  Error While Building This Morning's HEAD
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#4993">[ date ]</a>
+              <a href="thread.html#4993">[ thread ]</a>
+              <a href="subject.html#4993">[ subject ]</a>
+              <a href="author.html#4993">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Charles Curley &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">charlescurley at charlescurley.com</A>&gt;:
+&gt;<i> Gary Miller writes:
+</I>&gt;<i> &gt; Hash: SHA1
+</I>&gt;<i> &gt; 
+</I>&gt;<i> &gt; Yo Eric!
+</I>&gt;<i> &gt; 
+</I>&gt;<i> &gt; I can reproduce from a complete clone of git head.
+</I>&gt;<i> &gt; 
+</I>&gt;<i> &gt; No XML processor, omitting manual-page installation.
+</I>&gt;<i> &gt; Traceback (most recent call last):
+</I>&gt;<i> &gt;   File &quot;setup.py&quot;, line 63, in &lt;module&gt;
+</I>&gt;<i> &gt;     version=os.environ['version'],
+</I>&gt;<i> &gt;   File &quot;/usr/lib64/python2.6/UserDict.py&quot;, line 22, in __getitem__
+</I>&gt;<i> &gt;     raise KeyError(key)
+</I>&gt;<i> &gt; KeyError: 'version'
+</I>&gt;<i> &gt; make[2]: *** [install-exec-local] Error 1
+</I>&gt;<i> &gt; make[2]: Leaving directory `/usr/local/src/GPS/gpsd/gpsd'
+</I>&gt;<i> &gt; make[1]: *** [install-am] Error 2
+</I>&gt;<i> &gt; make[1]: Leaving directory `/usr/local/src/GPS/gpsd/gpsd'
+</I>&gt;<i> &gt; make: *** [install] Error 2
+</I>&gt;<i> &gt; 
+</I>&gt;<i> &gt; 
+</I>&gt;<i> &gt; And I DO have the required XML installed too.
+</I>&gt;<i> 
+</I>&gt;<i> Thanks, Gary.
+</I>&gt;<i> 
+</I>&gt;<i> As far as I know, I have them all.
+</I>
+It's clear what's happening here. What mysterious is why it's happening, and 
+why it's *not* happening to me.  The XML files aren't the problem.
+
+Look at this production in Makefile.am, which runs setup.py to make the 
+Python modules.
+
+# TODO:  Should the dependency on libgps.la be enforced inside
+# setup.py?  (See the variable 'needed_files' in setup.py.)
+stamp-python: gpspacket.c gpsclient.c libgps.la setup.py $(PYTHONMODULES_DIST) $(PYTHONSCRIPTS_DIST)
+# Build Python modules and scripts using distutils via setup.py.
+# We define build-lib and build-scripts as distutils might have been
+# configured to use different directories, but we want to use the
+# produced files within the regress-driver script - therefore we
+# need to build them in directories we know about.
+# See configure.ac for the definition of PYTHON_DISTUTILS_LIBDIR
+# and PYTHON_DISTUTILS_SCRIPTDIR.
+	@rm -f '$@' '$@.tmp'
+	@echo 'timestamp for $@' &gt; '$@.tmp'
+	(cd '$(srcdir)' &amp;&amp; \
+	env version='$(VERSION)' abs_builddir='$(abs_builddir)' \
+	    MAKE='$(MAKE)' \
+		$(PYTHON) setup.py build \
+			--build-lib '$(srcdir)/$(PYTHON_DISTUTILS_LIBDIR)' \
+			--build-scripts '$(srcdir)/$(PYTHON_DISTUTILS_SCRIPTDIR)' \
+			--mangenerator '$(XMLPROC)') &amp;&amp; \
+	(cd '$(srcdir)/gps' &amp;&amp; \
+	    rm -f *.so &amp;&amp; \
+	    ln -s ../$(PYTHON_DISTUTILS_LIBDIR)/gps/*.so . ) &amp;&amp; \
+	mv -f '$@.tmp' '$@'
+CLEANFILES += stamp-python stamp-python.tmp
+
+See where it says &quot;env version='$(VERSION)' abs_builddir='$(abs_builddir)'&quot;?
+That's supposed to be setting the environment variables version, abs_builddir,
+and MAKE. From inside setup.py, these key-value pairs should appear in the 
+dictionary os.environ.
+
+The error you're getting is Python complaining that &quot;version&quot; isn't in that 
+dictionary. This is quite unlikely to be a Python failure; rather, the problem
+appears to be that this Makefile production is failing to initialize setup.py's
+environment correctly.
+
+Why this is happening I have no idea, especially since it works just fine 
+for me. All I can suggest is running a bisection search on recent commits
+to idenify which one caused you a problem.
+-- 
+		&lt;a href=&quot;<A HREF="http://www.catb.org/~esr/">http://www.catb.org/~esr/</A>&quot;&gt;Eric S. Raymond&lt;/a&gt;
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="004992.html">[Gpsd-users] Fw:  Error While Building This Morning's HEAD
+</A></li>
+	<LI>Next message: <A HREF="004994.html">[Gpsd-users] Fw:  Error While Building This Morning's HEAD
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#4993">[ date ]</a>
+              <a href="thread.html#4993">[ thread ]</a>
+              <a href="subject.html#4993">[ subject ]</a>
+              <a href="author.html#4993">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

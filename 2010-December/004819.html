@@ -1,0 +1,98 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] Ubuntu 10.10 Udev package problems
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2010-December/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Ubuntu%2010.10%20Udev%20package%20problems&In-Reply-To=%3C20101222224926.434b0432%40dragon%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="004816.html">
+   <LINK REL="Next"  HREF="004840.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] Ubuntu 10.10 Udev package problems</H1>
+    <B>Charles Curley</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Ubuntu%2010.10%20Udev%20package%20problems&In-Reply-To=%3C20101222224926.434b0432%40dragon%3E"
+       TITLE="[Gpsd-users] Ubuntu 10.10 Udev package problems">charlescurley at charlescurley.com
+       </A><BR>
+    <I>Thu Dec 23 06:49:26 CET 2010</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="004816.html">[Gpsd-users] Which receiver updates faster then once a second?
+</A></li>
+        <LI>Next message: <A HREF="004840.html">[Gpsd-users] Ubuntu 10.10 Udev package problems
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#4819">[ date ]</a>
+              <a href="thread.html#4819">[ thread ]</a>
+              <a href="subject.html#4819">[ subject ]</a>
+              <a href="author.html#4819">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>I just got a new udev package on Ubuntu 10.10, udev 162-2.2. Knowing
+that udev changes out from under us from time to time, I did some
+checking. After removing the socket and shutting down the gpsd daemon:
+
+* There seems to be a problem running the gpsd udev code. It fires up a
+  daemon, the socket created, and my client can connect to the daemon.
+  But my client never sees any message indicating that there is a GPS
+  receiver. Similarly with xgps.
+
+* I can run the hotplug script manually,
+
+  ./gpsd.hotplug add /dev/ttyUSB0
+
+  and the daemon runs, the client gets the receiver message almost
+  immediately, and then gets fixes, etc. as usual. This makes me wonder
+  if in the first case, gpsd isn't opening the device file correctly.
+  The script is getting the correct device file as an argument.
+
+* I found that the build process (&quot;make install&quot;)
+  installs /etc/default/gpsd, and this (START_DAEMON=&quot;true&quot;) tells the
+  startup code to run gpsd as a daemon. Launching gpsd at boot as a
+  daemon works correctly. So it is possible this has been going on for
+  a while.
+
+  (Since the idea is to run gpsd from udev, perhaps this line should be
+  &quot;false&quot;?)
+
+My receiver is a BU-353, and it appears as a pl2303 serial device.
+
+-- 
+
+Charles Curley                  /&quot;\    ASCII Ribbon Campaign
+Looking for fine software       \ /    Respect for open standards
+and/or writing?                  X     No HTML/RTF in email
+<A HREF="http://www.charlescurley.com">http://www.charlescurley.com</A>    / \    No M$ Word docs in email
+
+Key fingerprint = CE5C 6645 A45A 64E4 94C0  809C FFF6 4C48 4ECD DFDB
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="004816.html">[Gpsd-users] Which receiver updates faster then once a second?
+</A></li>
+	<LI>Next message: <A HREF="004840.html">[Gpsd-users] Ubuntu 10.10 Udev package problems
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#4819">[ date ]</a>
+              <a href="thread.html#4819">[ thread ]</a>
+              <a href="subject.html#4819">[ subject ]</a>
+              <a href="author.html#4819">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

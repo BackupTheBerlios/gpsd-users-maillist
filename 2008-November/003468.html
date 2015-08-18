@@ -1,0 +1,164 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] gpspipe and gpsbabel
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2008-November/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20gpspipe%20and%20gpsbabel&In-Reply-To=%3C492DF21E.9070205%40gmail.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="003464.html">
+   <LINK REL="Next"  HREF="003450.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] gpspipe and gpsbabel</H1>
+    <B>Rod Stewart</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20gpspipe%20and%20gpsbabel&In-Reply-To=%3C492DF21E.9070205%40gmail.com%3E"
+       TITLE="[Gpsd-users] gpspipe and gpsbabel">roderick.stewart at gmail.com
+       </A><BR>
+    <I>Thu Nov 27 02:04:30 CET 2008</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="003464.html">[Gpsd-users] gpspipe and gpsbabel
+</A></li>
+        <LI>Next message: <A HREF="003450.html">[Gpsd-users] gpspipe and gpsbabel
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3468">[ date ]</a>
+              <a href="thread.html#3468">[ thread ]</a>
+              <a href="subject.html#3468">[ subject ]</a>
+              <a href="author.html#3468">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hamish,
+
+The file i showed last time had no fixes at the start but had them
+later. Also there are 1s for the quality. Below shows the start of
+another file that gives me the same null results.
+
+Rod
+
+GPSD,R=1
+$GPGGA,135732.367,1644.8760,N,06212.7744,W,0,03,,258.0,M,-45.0,M,,0000*4B
+$GPGSA,A,1,11,13,23,,,,,,,,,,,,*1D
+$GPGSV,3,1,12,25,68,315,,11,55,191,40,19,52,006,,07,48,325,*7D
+$GPGSV,3,2,12,13,33,238,36,27,32,323,,23,27,208,35,03,26,034,*7B
+$GPGSV,3,3,12,06,16,039,,16,12,083,,08,09,325,,32,06,160,*7B
+$GPRMC,135732.367,V,1644.8760,N,06212.7744,W,,,251108,,,N*61
+$GPGGA,135733.367,1644.9094,N,06212.7653,W,1,03,5.0,258.0,M,-45.0,M,,0000*6A 
+
+
+$GPGSA,A,2,11,13,23,,,,,,,,,,5.1,5.0,1.0*30
+$GPGSV,3,1,12,25,68,315,,11,55,191,41,19,52,006,,07,48,325,*7C
+$GPGSV,3,2,12,13,33,238,37,27,32,323,,23,27,208,37,03,26,034,*78
+$GPGSV,3,3,12,06,16,039,,16,12,083,,08,09,325,,32,06,160,*7B
+$GPRMC,135733.367,A,1644.9094,N,06212.7653,W,0.14,27.41,251108,,,A*47
+$GPGGA,135734.367,1644.9200,N,06212.7638,W,1,03,5.0,258.0,M,-45.0,M,,0000*6F 
+
+
+$GPGSA,A,2,11,13,23,,,,,,,,,,5.1,5.0,1.0*30
+$GPGSV,3,1,12,25,68,315,,11,55,191,41,19,52,006,,07,48,325,*7C
+$GPGSV,3,2,12,13,33,238,37,27,32,323,,23,27,208,37,03,26,034,*78
+$GPGSV,3,3,12,06,16,039,,16,12,083,,08,09,325,,32,06,160,*7B
+$GPRMC,135734.367,A,1644.9200,N,06212.7638,W,0.18,334.81,251108,,,A*73
+.
+.
+.
+.
+
+
+Hamish wrote:
+&gt;<i> Rod Stewart wrote:
+</I>&gt;&gt;<i> cpxlogger works fine, but gpsbabel wont read the resulting
+</I>&gt;&gt;<i> gpx file. Not sure why.
+</I>&gt;<i> 
+</I>&gt;<i> ....
+</I>&gt;&gt;<i> head 2008-11-23-gpsd.nmea------------------
+</I>&gt;&gt;<i> GPSD,R=1
+</I>&gt;&gt;<i> GPSD,R=1
+</I>&gt;&gt;<i> $GPGGA,233328.691,,,,,0,00,,,M,0.0,M,,0000*53
+</I>&gt;&gt;<i> $GPGSA,A,1,,,,,,,,,,,,,,,*1E
+</I>&gt;<i> 
+</I>&gt;<i> are there any valid fixes in there to extract? at the beginning as posted
+</I>&gt;<i> above, $GPGSA sees no satellites (all commas), and $GPGGA is without
+</I>&gt;<i> position.
+</I>&gt;<i> 
+</I>&gt;<i> if you do:
+</I>&gt;<i> 
+</I>&gt;<i>    grep 'GPGGA' 2008-11-23-gpsd.nmea | cut -f7 -d',' | uniq
+</I>&gt;<i> 
+</I>&gt;<i> do you see any 1s or is the &quot;quality indicator&quot; always zero?
+</I>&gt;<i> 
+</I>&gt;<i> 
+</I>&gt;<i> 
+</I>&gt;<i> Hamish
+</I>&gt;<i> 
+</I>&gt;<i> 
+</I>&gt;<i> 
+</I>&gt;<i> [from gpsdrive's NMEA.txt:]
+</I>&gt;<i>  GGA - Global Positioning System Fix Data
+</I>&gt;<i>  Time, Position and fix related data fora GPS receiver.
+</I>&gt;<i> 
+</I>&gt;<i>                                                       11
+</I>&gt;<i>         1         2       3 4        5 6 7  8   9  10 |  12 13  14   15
+</I>&gt;<i>         |         |       | |        | | |  |   |   | |   | |   |    |
+</I>&gt;<i>  $--GGA,hhmmss.ss,llll.ll,a,yyyyy.yy,a,x,xx,x.x,x.x,M,x.x,M,x.x,xxxx*hh&lt;CR&gt;&lt;LF&gt;
+</I>&gt;<i> 
+</I>&gt;<i>  Field Number: 
+</I>&gt;<i>   1) Universal Time Coordinated (UTC)
+</I>&gt;<i>   2) Latitude
+</I>&gt;<i>   3) N or S (North or South)
+</I>&gt;<i>   4) Longitude
+</I>&gt;<i>   5) E or W (East or West)
+</I>&gt;<i>   6) GPS Quality Indicator,
+</I>&gt;<i>      0 - fix not available,
+</I>&gt;<i>      1 - GPS fix,
+</I>&gt;<i>      2 - Differential GPS fix
+</I>&gt;<i>   7) Number of satellites in view, 00 - 12
+</I>&gt;<i>   8) Horizontal Dilution of precision
+</I>&gt;<i>   9) Antenna Altitude above/below mean-sea-level (geoid) 
+</I>&gt;<i>  10) Units of antenna altitude, meters
+</I>&gt;<i>  11) Geoidal separation, the difference between the WGS-84 earth
+</I>&gt;<i>      ellipsoid and mean-sea-level (geoid), &quot;-&quot; means mean-sea-level
+</I>&gt;<i>      below ellipsoid
+</I>&gt;<i>  12) Units of geoidal separation, meters
+</I>&gt;<i>  13) Age of differential GPS data, time in seconds since last SC104
+</I>&gt;<i>      type 1 or 9 update, null field when DGPS is not used
+</I>&gt;<i>  14) Differential reference station ID, 0000-1023
+</I>&gt;<i>  15) Checksum
+</I>&gt;<i> 
+</I>&gt;<i> 
+</I>&gt;<i> 
+</I>&gt;<i>       
+</I>&gt;<i> 
+</I>&gt;<i> 
+</I>
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="003464.html">[Gpsd-users] gpspipe and gpsbabel
+</A></li>
+	<LI>Next message: <A HREF="003450.html">[Gpsd-users] gpspipe and gpsbabel
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3468">[ date ]</a>
+              <a href="thread.html#3468">[ thread ]</a>
+              <a href="subject.html#3468">[ subject ]</a>
+              <a href="author.html#3468">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

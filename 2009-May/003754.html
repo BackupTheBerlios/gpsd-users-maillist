@@ -1,0 +1,173 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] Garmin GPS 60 USB - real time acquisition
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2009-May/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Garmin%20GPS%2060%20USB%20-%20real%20time%20acquisition&In-Reply-To=%3CAABD8639-1893-40B0-943B-03B973B51D90%40gmail.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="003753.html">
+   <LINK REL="Next"  HREF="003752.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] Garmin GPS 60 USB - real time acquisition</H1>
+    <B>TheMrOrange</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Garmin%20GPS%2060%20USB%20-%20real%20time%20acquisition&In-Reply-To=%3CAABD8639-1893-40B0-943B-03B973B51D90%40gmail.com%3E"
+       TITLE="[Gpsd-users] Garmin GPS 60 USB - real time acquisition">themrorange at gmail.com
+       </A><BR>
+    <I>Thu May 21 12:12:34 CEST 2009</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="003753.html">[Gpsd-users] Garmin GPS 60 USB - real time acquisition
+</A></li>
+        <LI>Next message: <A HREF="003752.html">[Gpsd-users] Garmin GPS 60 USB - real time acquisition
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3754">[ date ]</a>
+              <a href="thread.html#3754">[ thread ]</a>
+              <a href="subject.html#3754">[ subject ]</a>
+              <a href="author.html#3754">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi,
+Garmin didn't give me serial cable and it's not easy to find one now  
+but I'll try...
+
+I'm going to downgrade gpsd to 2.33 but, like alla version, first  
+installation step is to check device using
+$ stty -F /dev/ttyXXX ispeed 4800 &amp;&amp; cat &lt;/dev/ttyXXX
+It doesn't work perhaps for wrong driver!
+My question is: Why system associate uhci_hcd (instead garmin_gps  
+driver) to device when GPS60 is plugged?
+&gt;<i> # dmesg
+</I>&gt;<i> [22793.600226] usb 4-1: USB disconnect, address 5
+</I>&gt;<i> [22798.800104] usb 4-1: new full speed USB device using uhci_hcd and  
+</I>&gt;<i> address 6
+</I>&gt;<i> [22798.952314] usb 4-1: configuration #1 chosen from 1 choice
+</I>
+
+Because of Kernel version, garmin_gps driver is included in kernel but  
+system says:
+&quot;configuration #1 chosen from 1 choice&quot;
+What does it mean? why there is not another?
+
+Can somebody of you check if his garmin gps is associated to  
+garmin_gps driver?
+
+Do you know how I can force system to use garmin_gps driver?
+
+I'm a newbie Linux user but I can't give up. I really need to make it  
+works
+
+Thanks
+
+Davide
+
+On 21/mag/09, at 10:33, Diego Berge wrote:
+
+&gt;<i> -----BEGIN PGP SIGNED MESSAGE-----
+</I>&gt;<i> Hash: SHA1
+</I>&gt;<i>
+</I>&gt;<i> Gary E. Miller wrote:
+</I>&gt;<i>
+</I>&gt;&gt;&gt;<i> Reported by Diego Berge (contact)
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> Maybe you should use his contact info?
+</I>&gt;<i>
+</I>&gt;<i>   No need, one is always on the ball :)
+</I>&gt;<i>
+</I>&gt;<i>   I remember that unit (picture attached, for off-list recipients).   
+</I>&gt;<i> It
+</I>&gt;<i> had a USB and a serial interface, and both seemed to work OK as far as
+</I>&gt;<i> gpsd receiving PVT data was concerned.  At least with the reported  
+</I>&gt;<i> version.
+</I>&gt;<i>
+</I>&gt;<i>   One obvious thing to try would be to use the serial connection  
+</I>&gt;<i> (via a
+</I>&gt;<i> serial to USB adapter if required), with output set to NMEA mode.
+</I>&gt;<i> Lowest common denominator and all that.
+</I>&gt;<i>
+</I>&gt;<i>   If that fails, downgrade to gpsd 2.33 and see what happens.
+</I>&gt;<i>
+</I>&gt;<i>   I no longer have access to any such unit, so I am unable to test on
+</I>&gt;<i> the latest gpsd.
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i> Regards,
+</I>&gt;<i> Diego Berge.
+</I>&gt;<i>
+</I>&gt;<i> P.S.: for those with repository write access, kindly update my contact
+</I>&gt;<i> details on the hardware page.  Patch follows.
+</I>&gt;<i>
+</I>&gt;<i> Index: gpscap.ini
+</I>&gt;<i> ===================================================================
+</I>&gt;<i> - --- gpscap.ini  (revision 5567)
+</I>&gt;<i> +++ gpscap.ini  (working copy)
+</I>&gt;<i> @@ -628,8 +628,8 @@
+</I>&gt;<i> tested = 2.33
+</I>&gt;<i> nmea = 3.01
+</I>&gt;<i> notes = Reported by Diego Berge
+</I>&gt;<i> - -      (&lt;a href=&quot;<A HREF="http://www.nippur.net/survey/xuc/contact">http://www.nippur.net/survey/xuc/contact</A>&quot;
+</I>&gt;<i> - -      title=&quot;Contact page for D. Berge&quot; hreflang=&quot;ca&quot;&gt;contact&lt;/a&gt;)
+</I>&gt;<i> +      (&lt;a href=&quot;<A HREF="http://www.navlost.eu/contact">http://www.navlost.eu/contact</A>&quot;
+</I>&gt;<i> +      title=&quot;Contact page for D. Berge&quot;&gt;contact&lt;/a&gt;)
+</I>&gt;<i>
+</I>&gt;<i> [Garmin GPS 76]
+</I>&gt;<i> type = device
+</I>&gt;<i> @@ -1067,8 +1067,8 @@
+</I>&gt;<i> status = good
+</I>&gt;<i> nmea = 3.0
+</I>&gt;<i> notes = Reported by Diego Berge (&lt;a
+</I>&gt;<i> - -      href=&quot;<A HREF="http://www.nippur.net/survey/xuc/contact">http://www.nippur.net/survey/xuc/contact</A>&quot;  
+</I>&gt;<i> title=&quot;Contact page
+</I>&gt;<i> - -      for D. Berge&quot; hreflang=&quot;ca&quot;&gt;contact&lt;/a&gt;)
+</I>&gt;<i> +      href=&quot;<A HREF="http://www.navlost.eu/contact">http://www.navlost.eu/contact</A>&quot; title=&quot;Contact page
+</I>&gt;<i> +      for D. Berge&quot;&gt;contact&lt;/a&gt;)
+</I>&gt;<i>
+</I>&gt;<i> #% Navius
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i> -----BEGIN PGP SIGNATURE-----
+</I>&gt;<i> Version: GnuPG v1.4.6 (GNU/Linux)
+</I>&gt;<i> Comment: Using GnuPG with Mozilla - <A HREF="http://enigmail.mozdev.org">http://enigmail.mozdev.org</A>
+</I>&gt;<i>
+</I>&gt;<i> iD8DBQFKFR/hmlKEtSWrbj0RAurLAJoCf5rtg5zAZcGk2tbzhf4K+KozJwCeNCmI
+</I>&gt;<i> iwcJqRMNcE1YVnN5a/XwZfE=
+</I>&gt;<i> =BtdJ
+</I>&gt;<i> -----END PGP SIGNATURE-----
+</I>&gt;<i> _______________________________________________
+</I>&gt;<i> Gpsd-users mailing list
+</I>&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">Gpsd-users at lists.berlios.de</A>
+</I>&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">https://lists.berlios.de/mailman/listinfo/gpsd-users</A>
+</I>
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="003753.html">[Gpsd-users] Garmin GPS 60 USB - real time acquisition
+</A></li>
+	<LI>Next message: <A HREF="003752.html">[Gpsd-users] Garmin GPS 60 USB - real time acquisition
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3754">[ date ]</a>
+              <a href="thread.html#3754">[ thread ]</a>
+              <a href="subject.html#3754">[ subject ]</a>
+              <a href="author.html#3754">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

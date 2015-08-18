@@ -1,0 +1,85 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] Using TCP data sources (Round 2)
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2010-July/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Using%20TCP%20data%20sources%20%28Round%202%29&In-Reply-To=%3C50A08F88-A6DF-4D5D-B01B-77D80BE90BF0%40mac.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="004608.html">
+   <LINK REL="Next"  HREF="004600.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] Using TCP data sources (Round 2)</H1>
+    <B>Rick Workman</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Using%20TCP%20data%20sources%20%28Round%202%29&In-Reply-To=%3C50A08F88-A6DF-4D5D-B01B-77D80BE90BF0%40mac.com%3E"
+       TITLE="[Gpsd-users] Using TCP data sources (Round 2)">ridgeworks at mac.com
+       </A><BR>
+    <I>Fri Jul 23 22:46:57 CEST 2010</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="004608.html">[Gpsd-users] Change to new API
+</A></li>
+        <LI>Next message: <A HREF="004600.html">[Gpsd-users] Using TCP data sources (Round 2)
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#4599">[ date ]</a>
+              <a href="thread.html#4599">[ thread ]</a>
+              <a href="subject.html#4599">[ subject ]</a>
+              <a href="author.html#4599">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Following up on an earlier post a couple of months ago, I'm trying to connect gpsd to an NMEA message server program using tcp. (I know the server program works in practice because I've used in conjunction with another client.) When I try the following (server runs on same processor as gpsd) on OS X 10.6 (Snow Leopard):
+
+$gpsd -n -N -D2 <A HREF="tcp://127.0.0.1:10110">tcp://127.0.0.1:10110</A>
+
+I get the following diagnostic messages:
+
+gpsd: launching (Version 2.94)
+gpsd: listening on port gpsd
+gpsd: running with effective group ID 502
+gpsd: running with effective user ID 502
+gpsd: opening read-only GPS data source type 0 and at '<A HREF="tcp://127.0.0.1:10110">tcp://127.0.0.1:10110</A>'
+gpsd: device open failed: No such file or directory - retrying read-only
+gpsd: read-only device open failed: No such file or directory
+gpsd: GPS device <A HREF="tcp://127.0.0.1:10110">tcp://127.0.0.1:10110</A> nonexistent or can't be read
+
+
+Looking at the source, it appears to be failing in gpsd_open (serial.c) when it calls open(&lt;filename&gt;,&lt;mode&gt;) with the tcp URL.
+
+My knowledge of C and low level I/O is minimal, so can anybody confirm that a tcp URL (e.g., <A HREF="tcp://127.0.0.1:10110">tcp://127.0.0.1:10110</A>)  should work as a filename argument for open, and this works on OS X?
+
+Thanks for any info or guidance,
+
+Rick
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="004608.html">[Gpsd-users] Change to new API
+</A></li>
+	<LI>Next message: <A HREF="004600.html">[Gpsd-users] Using TCP data sources (Round 2)
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#4599">[ date ]</a>
+              <a href="thread.html#4599">[ thread ]</a>
+              <a href="subject.html#4599">[ subject ]</a>
+              <a href="author.html#4599">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

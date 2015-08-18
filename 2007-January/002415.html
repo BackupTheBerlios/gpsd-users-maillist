@@ -1,0 +1,99 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] Off-topic: Linux handhelds
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2007-January/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Off-topic%3A%20Linux%20handhelds&In-Reply-To=%3C91981b3e0701170953p499c6f29q1b73cf35b50c6023%40mail.gmail.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="002414.html">
+   <LINK REL="Next"  HREF="002408.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] Off-topic: Linux handhelds</H1>
+    <B>Chris Kuethe</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Off-topic%3A%20Linux%20handhelds&In-Reply-To=%3C91981b3e0701170953p499c6f29q1b73cf35b50c6023%40mail.gmail.com%3E"
+       TITLE="[Gpsd-users] Off-topic: Linux handhelds">chris.kuethe at gmail.com
+       </A><BR>
+    <I>Wed Jan 17 18:53:59 CET 2007</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="002414.html">[Gpsd-users] Off-topic: Linux handhelds
+</A></li>
+        <LI>Next message: <A HREF="002408.html">[Gpsd-users] Off-topic: Linux handhelds
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2415">[ date ]</a>
+              <a href="thread.html#2415">[ thread ]</a>
+              <a href="subject.html#2415">[ subject ]</a>
+              <a href="author.html#2415">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>On 1/17/07, Diego Berge &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">gpsd at nippur.net</A>&gt; wrote:
+&gt;<i> Not a lot in fact... You load a full database of points[1] you want
+</I>&gt;<i> staked out and then you select one of those at a time, walk up to it,
+</I>&gt;<i> press the RECORD key and it stores an observation, then you move to
+</I>&gt;<i> the next point and the process is restarted.  You are talking max.
+</I>&gt;<i> 1000 writes per day at a rate of one every 2-3 min.
+</I>
+What, no path solver to find the most efficient path to visit all the
+points? ;) And what about tetris... I demand you make it play tetris!
+
+&gt;<i> With a track
+</I>&gt;<i> logging function (i.e., record automatically on distance/time) it
+</I>&gt;<i> could be more but still not an outrageous lot.
+</I>
+track logs are tiny... ~100B for an O message and less than 32B if you
+want binary records. You can probably buffer the track log to be
+written only when the RECORD key is pressed.
+
+&gt;<i> [1] It needn't be points, it could also be a geometry (e.g., a road
+</I>&gt;<i> centreline) which takes very little storage.  OTOH, if I'm going to
+</I>&gt;<i> store the design as points (some features do not have a definite
+</I>&gt;<i> geometry, other than being discrete points), it needs to be a huge
+</I>&gt;<i> amount of them---100,000 would be the minimum.  Very roughly you are
+</I>&gt;<i> talking 100Mb all-up.
+</I>
+sqlite would work, assuming you have a sane schema... which is pretty
+critical for any database.
+
+there was a commercial navigator product that used sqlite3 as its
+datastore, and put about 1.5M records (~1GB) into the database: roads,
+&quot;administrative boundaries&quot;, points of interest, location names...
+Incidentally, that product was also running a 200-300MHz ARM with 64MB
+of memory. It also ran gpsd...
+
+CK
+
+-- 
+GDB has a 'break' feature; why doesn't it have 'fix' too?
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="002414.html">[Gpsd-users] Off-topic: Linux handhelds
+</A></li>
+	<LI>Next message: <A HREF="002408.html">[Gpsd-users] Off-topic: Linux handhelds
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2415">[ date ]</a>
+              <a href="thread.html#2415">[ thread ]</a>
+              <a href="subject.html#2415">[ subject ]</a>
+              <a href="author.html#2415">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

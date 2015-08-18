@@ -1,0 +1,149 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] problem of altitude with gpsd-2.37
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2009-March/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20problem%20of%20altitude%20with%20gpsd-2.37&In-Reply-To=%3CFED4CD95710D97448362E8C37814C66B01DA90%40SINFRA0-HUB001.MTQ.MIN.INTRA%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="003630.html">
+   <LINK REL="Next"  HREF="003637.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] problem of altitude with gpsd-2.37</H1>
+    <B>Lapointe, Claude</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20problem%20of%20altitude%20with%20gpsd-2.37&In-Reply-To=%3CFED4CD95710D97448362E8C37814C66B01DA90%40SINFRA0-HUB001.MTQ.MIN.INTRA%3E"
+       TITLE="[Gpsd-users] problem of altitude with gpsd-2.37">Claude.Lapointe at mtq.gouv.qc.ca
+       </A><BR>
+    <I>Mon Mar  9 14:10:24 CET 2009</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="003630.html">[Gpsd-users] problem of altitude with gpsd-2.37
+</A></li>
+        <LI>Next message: <A HREF="003637.html">[Gpsd-users] problem of altitude with gpsd-2.37
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3635">[ date ]</a>
+              <a href="thread.html#3635">[ thread ]</a>
+              <a href="subject.html#3635">[ subject ]</a>
+              <a href="author.html#3635">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi Eric,
+
+Excuse me for my english, I am a french Canadian and it's not my mother
+lang.
+
+Does with libgps library we can connect remotly to a gpsd daemon on other
+computer on the port 2947?
+
+We try the watcher mode W=1 and try the O command to read the altitude and
+position.
+
+I have exactly the same problem.  The altitude value is &quot;nan&quot; when we wait 5
+seconds to start gpsd at the booting process of the computer and gpsd start
+after my master program for data acquisition.
+
+My expression &quot;board effect&quot; is a english translation for the french
+expression:  &quot;Effet de bord&quot;.
+
+When I put a 5 sec of delay into the script that start gpsd we find when I
+start gpsd in debug mode :  /usr/sbin/gpsd -N -D5 gpsd /dev/usb/tts/1
+
+That gpsd write the clock value into the share memory shm for ntp before
+sending the response to the client request &quot;ap&quot; and the altitude value was
+A=nan and the position have correct value.
+
+When I remove the delay into the script that start gpsd, ghe gpsd write the
+clock value only one time at the starting of the gpsd and never after write
+the clock value into the share memory shm and the altitude value was correct
+like A=138m and the position have also correct value.
+
+The value of altitude seem to be correlated by the fact that gpsd write into
+share memory or not write in share memory.
+
+When gpsd write into share memory the clock value for ntp, the parsing for
+altidue give bad value of nan.
+
+We don't know why gpsd decide to write or not into share memory on /dev/shm
+if we put a delay of 5 sec into the script that start gpsd but when they do
+that, the board effect is that the altitude parsing is not good and we have
+all the time a value of nan.
+
+
+Claude Lapointe, ing. 
+Transport Qu&#233;bec
+Chef du secteur des technologies d'exploitation
+Direction du soutien aux op&#233;rations 
+Service de l'exploitation
+
+700, boulevard Ren&#233; L&#233;vesque Est, 22e &#233;tage 
+Qu&#233;bec (Qu&#233;bec) G1R 5H1 
+T&#233;l.  :   418 644-4490, poste 2478 
+T&#233;l&#233;c.:  418 644-6963 
+Courriel: <A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">Claude.Lapointe at mtq.gouv.qc.ca</A>
+
+-----Message d'origine-----
+De : Eric S. Raymond [mailto:<A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">esr at thyrsus.com</A>] 
+Envoy&#233; : 6 mars 2009 17:18
+&#192; : Lapointe, Claude
+Cc : <A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">gpsd-users at lists.berlios.de</A>; Sifi, Hocine
+Objet : Re: [Gpsd-users] problem of altitude with gpsd-2.37
+
+Lapointe, Claude &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">Claude.Lapointe at mtq.gouv.qc.ca</A>&gt;:
+&gt;<i> Hi Eric,
+</I>&gt;<i> 
+</I>&gt;<i> We don't understand where are my problem.
+</I>&gt;<i> 
+</I>&gt;<i> We connect to the gpsd socket and send the AP command to have altitude and
+</I>&gt;<i> position repeatly, not only one time.
+</I>&gt;<i> 
+</I>&gt;<i> If I start my master program before gpsd daemon, we have all the time the
+</I>&gt;<i> value nan for the altitude.
+</I>&gt;<i> 
+</I>&gt;<i> If I start the gpsd daemon before my master program, we have all the time
+</I>&gt;<i> the altitude value.
+</I>&gt;<i> 
+</I>&gt;<i> Where is the board effect in gpsd?
+</I>&gt;<i> 
+</I>&gt;<i> Can you explain more.
+</I>
+I'm having trouble understanding your English.  I don't know what
+you mean by &quot;board effect&quot;.  It sounds to me like you have a problem
+in your client code.
+
+I suggest you link with the libgps libray and use watcher mode. The
+old-style single-shot commands have odd behaviors that we have tried
+to document, but we don't recommend using them.
+-- 
+		&lt;a href=&quot;<A HREF="http://www.catb.org/~esr/">http://www.catb.org/~esr/</A>&quot;&gt;Eric S. Raymond&lt;/a&gt;
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="003630.html">[Gpsd-users] problem of altitude with gpsd-2.37
+</A></li>
+	<LI>Next message: <A HREF="003637.html">[Gpsd-users] problem of altitude with gpsd-2.37
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3635">[ date ]</a>
+              <a href="thread.html#3635">[ thread ]</a>
+              <a href="subject.html#3635">[ subject ]</a>
+              <a href="author.html#3635">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

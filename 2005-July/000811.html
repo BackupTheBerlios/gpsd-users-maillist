@@ -1,0 +1,120 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] Roadmap for 2.28
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2005-July/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Roadmap%20for%202.28&In-Reply-To=%3C200507061242.j66CgoYl021410%40snark.thyrsus.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="000810.html">
+   <LINK REL="Next"  HREF="000813.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] Roadmap for 2.28</H1>
+    <B>Eric S. Raymond</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Roadmap%20for%202.28&In-Reply-To=%3C200507061242.j66CgoYl021410%40snark.thyrsus.com%3E"
+       TITLE="[Gpsd-users] Roadmap for 2.28">esr at snark.thyrsus.com
+       </A><BR>
+    <I>Wed Jul  6 14:42:50 CEST 2005</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="000810.html">[Gpsd-users] Announcing release 2.27 of gpsd
+</A></li>
+        <LI>Next message: <A HREF="000813.html">[Gpsd-users] Roadmap for 2.28
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#811">[ date ]</a>
+              <a href="thread.html#811">[ thread ]</a>
+              <a href="subject.html#811">[ subject ]</a>
+              <a href="author.html#811">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>I've shipped 2.27.  Here's what I see as the roadmap for 2.28:
+
+** Nail down Daryl Ross's SiRF bugs
+
+Daryl Ross is reporting some very odd bugs on the BU-303 that I can't
+reproduce with my almost identical test setup.  This bothers me, and
+I want to understand why it is happening.
+
+** Evermore driver
+
+Petr Slansky wants Evermore chipset support.  His email reads as
+though he is competent to write it.  An unanswered question is whether
+there is a probe string that can elicit a PEMT or other unique
+response from the Evermore chipset.
+
+** SiRF firmware uploader
+
+Chris Kuethe appears to be well along on this.  It is not yet 
+resolved whether SiRF Technology will allow us to ship the 
+binary loader code needed to do it.
+
+** Decide what to do about RTCM support.
+
+With WAAS and EGNOS delivering differential-GPS corrections in-band 
+to most modern GPSes (and, in particular, to SiRF GPSses) there may
+no longer be any point to supporting out-of-band RTCM104 and DGPSIP.
+
+If there is still a point to this, here is the elegant way to do it:
+
+1) Add code to packet.c that can recognize RTCM104 data packets.  This
+   would be the hard part -- that format is *nasty*.
+
+2) Write a trivial RTCM104 driver that just copies recognized packets
+   into a save buffer.  Now we have RTCM104 sessions integrated into
+   the gpsd architecture; we can hand RTCM104 sources like DGPS radios 
+   to gpsd on the command line or via the control socket, just like GPSes.
+
+3) Arrange for packets from any attached RTCM104 sessions to get
+   automatically copied from their save buffers to any GPSes attached.
+
+4) When there are attached RTCM104 sources, tell the daemon to serve
+   these packets on port 2101.  At this point we will have replaced
+   dgpsip's server function, through not yet its RTCM dumper function.
+
+5) Get rid of the -d option by hacking open_device() so that when it
+   sees a command-line option of the form server:port (with no
+   embedded backslashes) it opens a socket to read from that server.
+   Now any GPS-packet and RTCM data sources given on the command line
+   can be remote as well as local.
+
+6) Write a rtcmmon equivalent to sirfmon that disassembles and dumps
+   RTCM packets.
+-- 
+		&lt;a href=&quot;<A HREF="http://www.catb.org/~esr/">http://www.catb.org/~esr/</A>&quot;&gt;Eric S. Raymond&lt;/a&gt;
+
+The day will come when the mystical generation of Jesus by the Supreme
+Being as his father, in the womb of a virgin, will be classed with the
+fable of the generation of Minerva in the brain of Jupiter.
+	-- Thomas Jefferson, 1823
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="000810.html">[Gpsd-users] Announcing release 2.27 of gpsd
+</A></li>
+	<LI>Next message: <A HREF="000813.html">[Gpsd-users] Roadmap for 2.28
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#811">[ date ]</a>
+              <a href="thread.html#811">[ thread ]</a>
+              <a href="subject.html#811">[ subject ]</a>
+              <a href="author.html#811">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

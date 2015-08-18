@@ -1,0 +1,114 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] Infinite loop with gps_query() on dropped	connection
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2010-June/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Infinite%20loop%20with%20gps_query%28%29%20on%20dropped%0A%09connection&In-Reply-To=%3CAANLkTilu2Z37cWgcMwMQCt8p7KhB38cOr1GKyACvLARN%40mail.gmail.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="004539.html">
+   <LINK REL="Next"  HREF="004541.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] Infinite loop with gps_query() on dropped	connection</H1>
+    <B>Adam Boggs</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Infinite%20loop%20with%20gps_query%28%29%20on%20dropped%0A%09connection&In-Reply-To=%3CAANLkTilu2Z37cWgcMwMQCt8p7KhB38cOr1GKyACvLARN%40mail.gmail.com%3E"
+       TITLE="[Gpsd-users] Infinite loop with gps_query() on dropped	connection">boggs-gpsd at aircrafter.org
+       </A><BR>
+    <I>Fri Jun 18 02:04:17 CEST 2010</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="004539.html">[Gpsd-users] Infinite loop with gps_query() on dropped connection
+</A></li>
+        <LI>Next message: <A HREF="004541.html">[Gpsd-users] Cross compiling GPSD for ARM
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#4540">[ date ]</a>
+              <a href="thread.html#4540">[ thread ]</a>
+              <a href="subject.html#4540">[ subject ]</a>
+              <a href="author.html#4540">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>On Thu, Jun 17, 2010 at 4:55 PM, Charles Curley &lt;
+<A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">charlescurley at charlescurley.com</A>&gt; wrote:
+
+&gt;<i> I am not seeing gpsd running wild in my testing. Are you using the
+</I>&gt;<i> latest version (git HEAD)? 2.39 and some of the 2.9x versions have a
+</I>&gt;<i> bug, which has since been handled. I see it in the debian gpsd
+</I>&gt;<i> 2.90.1~svn6819-1 package. gpsd goes hog wild after I unplug the
+</I>&gt;<i> receiver.
+</I>&gt;<i> If the GPS is deactivated (which is what the code I showed you
+</I>&gt;<i> detects), you need only send a &quot;watch&quot;. This alerts the daemon to send
+</I>&gt;<i> you an update when it sees the receiver again.
+</I>&gt;<i>
+</I>&gt;<i> In a bit of testing, I just added a call to sendWatch () right after
+</I>&gt;<i> the code that sets up the &quot;GPS Found&quot; message for display, and that
+</I>&gt;<i> helps. So I begin to suspect that you have to call sendWatch () every
+</I>&gt;<i> time you get a DEVICE_SET message. If not, it's a harmless bit of
+</I>&gt;<i> overhead.
+</I>&gt;<i>
+</I>&gt;<i> But if you want to close down the socket and re-open it, you can do
+</I>&gt;<i> that, and it also works. I think it's overkill, though.
+</I>&gt;<i>
+</I>&gt;<i> I have been assuming that you should only look at gps_data from your
+</I>&gt;<i> callback. Any other time it could be modified out from under you. If
+</I>&gt;<i> you need data from it elsewhere, stuff the data you need into a separate
+</I>&gt;<i> buffer you control.
+</I>&gt;<i>
+</I>&gt;<i> --
+</I>&gt;<i>
+</I>&gt;<i> Charles Curley                  /&quot;\    ASCII Ribbon Campaign
+</I>&gt;<i> Looking for fine software       \ /    Respect for open standards
+</I>&gt;<i> and/or writing?                  X     No HTML/RTF in email
+</I>&gt;<i> <A HREF="http://www.charlescurley.com">http://www.charlescurley.com</A>    / \    No M$ Word docs in email
+</I>&gt;<i>
+</I>&gt;<i>
+</I>The gpsd output in my original message suggests 2.92 (Ubuntu 10.04).
+
+Just to be clear, gpsd is not going hogwild.  It just closes the connection
+to the client after a minute when no GPS is plugged in.  This causes my
+callback in the client to get called in a tight loop, and it is the first
+time my callback is called.  Once the socket is closed by the server, I
+think all the client can do is shut it down and re-open it, right?  It does
+seem extreme, but I'm not sure what the other options are.
+
+I guess the fundamental question is, is gpsd supposed to be closing the
+socket after 1 minute?  And if so, what's the appropriate way to handle it?
+I'm not sure I understand your comments about DEVICE_SET messages and
+sendWatch(), because there is no connection to gpsd to send it over once my
+callback is called for the first time.
+
+Hope this clarifies the problem some. Thanks again for your attention to
+this, Charles.
+
+-Adam
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="004539.html">[Gpsd-users] Infinite loop with gps_query() on dropped connection
+</A></li>
+	<LI>Next message: <A HREF="004541.html">[Gpsd-users] Cross compiling GPSD for ARM
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#4540">[ date ]</a>
+              <a href="thread.html#4540">[ thread ]</a>
+              <a href="subject.html#4540">[ subject ]</a>
+              <a href="author.html#4540">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

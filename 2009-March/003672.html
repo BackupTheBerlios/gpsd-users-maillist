@@ -1,0 +1,96 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] Announcing AIVDM support.
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2009-March/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Announcing%20AIVDM%20support.&In-Reply-To=%3C20090316074929.C9DC48314FA%40snark.thyrsus.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="003673.html">
+   <LINK REL="Next"  HREF="003674.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] Announcing AIVDM support.</H1>
+    <B>Eric S. Raymond</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Announcing%20AIVDM%20support.&In-Reply-To=%3C20090316074929.C9DC48314FA%40snark.thyrsus.com%3E"
+       TITLE="[Gpsd-users] Announcing AIVDM support.">esr at snark.thyrsus.com
+       </A><BR>
+    <I>Mon Mar 16 08:49:29 CET 2009</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="003673.html">[Gpsd-users] Multiple GPSes connected to one gpsd
+</A></li>
+        <LI>Next message: <A HREF="003674.html">[Gpsd-users]  Howto create a regression test?
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3672">[ date ]</a>
+              <a href="thread.html#3672">[ thread ]</a>
+              <a href="subject.html#3672">[ subject ]</a>
+              <a href="author.html#3672">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>The rtcmdecode utility, formerly a filter that turned RTCM2 and RTCM3 
+packets into readable text dumps, has been renammed &quot;gpsdecode&quot; and 
+now has tha ability to un-armor and text-dump common AIVDM sentences 
+as well.
+
+Specifically, it can crack types 1, 2, 3, 4, 5, 9, and 18.  I'd love
+to support others as well but I don't have regression tests for them.
+Tip of the hat to Kurt Schwehr of New Hampshire University for
+supplying test data and text dumps for these.
+
+The GPSD references page now includes a detailed description of how to
+interpret AIDVM, This is significant because public documentation on
+this has previously been quite poor.  Many of the relevant standards
+are locked up behaind paywalls. Even if they were not, it turns out
+that assembling a complete picture of how both layers of the protocol
+work (not to mentional regional variants like St. Lawrence Seaway's
+AIS extensions like the Coast Guards's PAWSS) is a significant effort.
+
+The gpsd daemon itself does not yet do anything with AIVDM packets,
+though the analysis code in its driver is fully working and it could
+do anything we want with the data.  I could reduce AIS message types
+1, 3, 4, 9, and 18 (everything but 5) to O reports, but I'm far from
+sure this would actually be useful.
+
+I think it would make more sense to extend the GPSD protocol so it can
+report tagged locations (and associated data) from different sensors
+in the vicinity, including both GPSes and AIS receivers.  I'll have
+more to say about this in an upcoming request for discussion on the
+protocol redesign.
+-- 
+		&lt;a href=&quot;<A HREF="http://www.catb.org/~esr/">http://www.catb.org/~esr/</A>&quot;&gt;Eric S. Raymond&lt;/a&gt;
+
+The whole aim of practical politics is to keep the populace alarmed (and
+hence clamorous to be led to safety) by menacing it with an endless series
+of hobgoblins, all of them imaginary.		-- H.L. Mencken
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="003673.html">[Gpsd-users] Multiple GPSes connected to one gpsd
+</A></li>
+	<LI>Next message: <A HREF="003674.html">[Gpsd-users]  Howto create a regression test?
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3672">[ date ]</a>
+              <a href="thread.html#3672">[ thread ]</a>
+              <a href="subject.html#3672">[ subject ]</a>
+              <a href="author.html#3672">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

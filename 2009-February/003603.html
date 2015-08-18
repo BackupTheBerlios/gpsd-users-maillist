@@ -1,0 +1,162 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] Garmin GPS 60 - Mac OS X
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2009-February/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Garmin%20GPS%2060%20-%20Mac%20OS%20X&In-Reply-To=%3Ccc5a04a605759b3d6c6105ee0dce642b%40s3.nexpaserver.de%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="003602.html">
+   <LINK REL="Next"  HREF="003604.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] Garmin GPS 60 - Mac OS X</H1>
+    <B>skyout at wired-security.net</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Garmin%20GPS%2060%20-%20Mac%20OS%20X&In-Reply-To=%3Ccc5a04a605759b3d6c6105ee0dce642b%40s3.nexpaserver.de%3E"
+       TITLE="[Gpsd-users] Garmin GPS 60 - Mac OS X">skyout at wired-security.net
+       </A><BR>
+    <I>Thu Feb 12 04:25:59 CET 2009</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="003602.html">[Gpsd-users] Garmin GPS 60 - Mac OS X
+</A></li>
+        <LI>Next message: <A HREF="003604.html">[Gpsd-users] Garmin GPS 60 - Mac OS X
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3603">[ date ]</a>
+              <a href="thread.html#3603">[ thread ]</a>
+              <a href="subject.html#3603">[ subject ]</a>
+              <a href="author.html#3603">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>
+&gt;<i> i hope so. gpsd on my friend's machine wasn't getting anything because
+</I>&gt;<i> select() didn't work. minicom did.
+</I>
+so, ehm, to make it short: no success till now, but here some details:
+
+- i used pl2303 driver, patched idVendor and idProduct and BEEP
+
+- i installed minicom, through fink i got version 2.1, through ports
+i got version 2.3
+
+- no matter what serial device i choose, minicom always complains about
+&quot;no such file or directory&quot;, interesting: if the file is REALLY not there
+it prints out this information within a second, if the device is there it
+takes about a minute until it prints out this information, maybe its
+connected
+to the strings it sends and hopes to find a modem instead of a gps adapter?
+
+- when i plug in my gps adapter into the first usb port the device is
+called
+/dev/cu.PL2303-0000101D, the second port is called /dev/cu.PL2303-0000103D
+(macbook). same for the tty devices, that get created as well.
+
+then i tried with a tool called &quot;GPS Tool for Garmin&quot; and said &quot;Download
+GPX&quot;
+-&gt; &quot;Tracks&quot; and it connected, made two times BEEP and I got the following
+file:
+
+--- bla.gpx ---
+&lt;?xml version=&quot;1.0&quot;?&gt;
+&lt;gpx
+ version=&quot;1.0&quot;
+creator=&quot;GPSBabel - <A HREF="http://www.gpsbabel.org">http://www.gpsbabel.org</A>&quot;
+xmlns:xsi=&quot;<A HREF="http://www.w3.org/2001/XMLSchema-instance">http://www.w3.org/2001/XMLSchema-instance</A>&quot;
+xmlns=&quot;<A HREF="http://www.topografix.com/GPX/1/0">http://www.topografix.com/GPX/1/0</A>&quot;
+xsi:schemaLocation=&quot;<A HREF="http://www.topografix.com/GPX/1/0">http://www.topografix.com/GPX/1/0</A>
+<A HREF="http://www.topografix.com/GPX/1/0/gpx.xsd">http://www.topografix.com/GPX/1/0/gpx.xsd</A>&quot;&gt;
+&lt;time&gt;2009-02-12T02:55:28Z&lt;/time&gt;
+&lt;trk&gt;
+  &lt;name&gt;ACTIVE LOG&lt;/name&gt;
+&lt;trkseg&gt;
+&lt;trkpt lat=&quot;50.057467&quot; lon=&quot;8.293182&quot;&gt;
+  &lt;ele&gt;155.870972&lt;/ele&gt;
+&lt;time&gt;2009-02-05T03:24:19Z&lt;/time&gt;
+&lt;/trkpt&gt;
+&lt;/trkseg&gt;
+&lt;/trk&gt;
+&lt;trk&gt;
+  &lt;name&gt;ACTIVE LOG #2&lt;/name&gt;
+&lt;number&gt;1&lt;/number&gt;
+&lt;trkseg&gt;
+&lt;trkpt lat=&quot;50.057303&quot; lon=&quot;8.292919&quot;&gt;
+  &lt;ele&gt;154.909546&lt;/ele&gt;
+&lt;time&gt;2009-02-05T03:27:37Z&lt;/time&gt;
+&lt;/trkpt&gt;
+&lt;trkpt lat=&quot;50.057459&quot; lon=&quot;8.293125&quot;&gt;
+  &lt;ele&gt;160.196899&lt;/ele&gt;
+&lt;time&gt;2009-02-05T03:57:59Z&lt;/time&gt;
+&lt;/trkpt&gt;
+&lt;trkpt lat=&quot;50.057459&quot; lon=&quot;8.293043&quot;&gt;
+  &lt;ele&gt;137.125244&lt;/ele&gt;
+&lt;time&gt;2009-02-05T04:37:17Z&lt;/time&gt;
+&lt;/trkpt&gt;
+&lt;trkpt lat=&quot;50.057502&quot; lon=&quot;8.293176&quot;&gt;
+  &lt;ele&gt;165.484131&lt;/ele&gt;
+&lt;time&gt;2009-02-05T05:15:15Z&lt;/time&gt;
+&lt;/trkpt&gt;
+&lt;trkpt lat=&quot;50.057501&quot; lon=&quot;8.293177&quot;&gt;
+  &lt;ele&gt;154.428955&lt;/ele&gt;
+&lt;time&gt;2009-02-05T05:20:46Z&lt;/time&gt;
+&lt;/trkpt&gt;
+&lt;/trkseg&gt;
+&lt;/trk&gt;
+[... and so on ...]
+&lt;/gpx&gt;
+--- bla.gpx ---
+
+then i read an old post on this list connected to tty devices
+on mac os x and tried to change the speed by saying
+stty -f /dev/cu.PL2303-0000101D speed 4800, which should change
+in and out speed to 4800 ... nevertheless the output of this
+command is always &quot;9600&quot;, but in this post it says, that this
+does not mean anything. well, hmm, here is what i got:
+
+---
+sh-3.2# stty -f /dev/cu.PL2303-0000101D
+speed 9600 baud;
+lflags: -icanon -isig -iexten -echo
+iflags: -icrnl -ixon -ixany -imaxbel -brkint
+oflags: -opost -onlcr -oxtabs
+cflags: cs8 -parenb
+sh-3.2# stty -f /dev/cu.PL2303-0000101D speed 4800
+9600
+sh-3.2# 
+---
+
+okay, another 2 or 3 hours try&amp;error =/ and again, no success ...
+it begins to make me go mad.
+
+nice greets,
+skyout
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="003602.html">[Gpsd-users] Garmin GPS 60 - Mac OS X
+</A></li>
+	<LI>Next message: <A HREF="003604.html">[Gpsd-users] Garmin GPS 60 - Mac OS X
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3603">[ date ]</a>
+              <a href="thread.html#3603">[ thread ]</a>
+              <a href="subject.html#3603">[ subject ]</a>
+              <a href="author.html#3603">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

@@ -1,0 +1,103 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] NTRIP Issue patch
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2011-February/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20NTRIP%20Issue%20patch&In-Reply-To=%3C20110219004730.GA485%40thyrsus.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="005029.html">
+   <LINK REL="Next"  HREF="005033.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] NTRIP Issue patch</H1>
+    <B>Eric Raymond</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20NTRIP%20Issue%20patch&In-Reply-To=%3C20110219004730.GA485%40thyrsus.com%3E"
+       TITLE="[Gpsd-users] NTRIP Issue patch">esr at thyrsus.com
+       </A><BR>
+    <I>Sat Feb 19 01:47:30 CET 2011</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="005029.html">[Gpsd-users] NTRIP Issue patch
+</A></li>
+        <LI>Next message: <A HREF="005033.html">[Gpsd-users] NTRIP Issue patch
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#5031">[ date ]</a>
+              <a href="thread.html#5031">[ thread ]</a>
+              <a href="subject.html#5031">[ subject ]</a>
+              <a href="author.html#5031">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Andre Naujoks &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">nautsch2 at googlemail.com</A>&gt;:
+&gt;<i> As promised here is a huge patch which *should* apply to the current git head.
+</I>
+Alas, it did not.  Almost all bands other than the change to gps/client.py
+failed with patch -p1.  The exceptions were one band for gpsd.h-tail and
+one for net_ntrip.c.
+
+I may try applying some of these by hand if I decide I understand them.
+But we really ought to figure out why the patch was bad.
+ 
+&gt;<i> What it does is the following.
+</I>&gt;<i> 
+</I>&gt;<i> - workaround for some kind of bug in the python client.
+</I>&gt;<i>   This is probably wrong, but I don't know what to fix there with my 
+</I>&gt;<i>   limited python abilities. X-)
+</I>
+Would you describe the bug to me, please?  Preferably including a 
+backtrace.  That last line - the change to the dictwrapper call -
+doesn't look quite right to me.
+
+&gt;<i> - simplify the way add_device and open_device are used
+</I>
+Hm.  I want to know more about this before I apply it.  There
+may be subtleties you are missing, and I'm reluctabt to destabilize 
+core code when we're gearing up for a release.  
+
+Can you separate this patch fromn the NTRIP fixes? I consider
+those much less risky.
+
+&gt;<i> - the context-&gt;dsock is now unset when an ntrip server disconnects
+</I>&gt;<i> - the ntrip connection is reestablished, when it worked but got 
+</I>&gt;<i>   disconnected by the server. This is done only, when the connection
+</I>&gt;<i>   was good the last time.
+</I>&gt;<i> - the ntrip connection is now multistaged. the gps_open just 
+</I>&gt;<i>   initializes the connection process. The remaining connection is done
+</I>&gt;<i>   from consume_packet
+</I>&gt;<i> - The patch from the earlier mails, which does an NMEA update to an 
+</I>&gt;<i>   ntrip server in a semi regular interval.
+</I>
+These certainly sound like theyt're heading in a good direction.
+-- 
+		&lt;a href=&quot;<A HREF="http://www.catb.org/~esr/">http://www.catb.org/~esr/</A>&quot;&gt;Eric S. Raymond&lt;/a&gt;
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="005029.html">[Gpsd-users] NTRIP Issue patch
+</A></li>
+	<LI>Next message: <A HREF="005033.html">[Gpsd-users] NTRIP Issue patch
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#5031">[ date ]</a>
+              <a href="thread.html#5031">[ thread ]</a>
+              <a href="subject.html#5031">[ subject ]</a>
+              <a href="author.html#5031">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

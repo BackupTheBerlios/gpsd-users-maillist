@@ -1,0 +1,109 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] gpsd-2.34, globalsat BC-337 and usb
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2007-December/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20gpsd-2.34%2C%20globalsat%20BC-337%20and%20usb&In-Reply-To=%3C200712211130.44844.dennisveatch%40bellsouth.net%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="003033.html">
+   <LINK REL="Next"  HREF="003035.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] gpsd-2.34, globalsat BC-337 and usb</H1>
+    <B>Dennis Veatch</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20gpsd-2.34%2C%20globalsat%20BC-337%20and%20usb&In-Reply-To=%3C200712211130.44844.dennisveatch%40bellsouth.net%3E"
+       TITLE="[Gpsd-users] gpsd-2.34, globalsat BC-337 and usb">dennisveatch at bellsouth.net
+       </A><BR>
+    <I>Fri Dec 21 17:30:44 CET 2007</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="003033.html">[Gpsd-users] gpsd 2.34 and 2.35 not building on FreeBSD 6.2
+</A></li>
+        <LI>Next message: <A HREF="003035.html">[Gpsd-users] gpsd-2.34, globalsat BC-337 and usb
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3034">[ date ]</a>
+              <a href="thread.html#3034">[ thread ]</a>
+              <a href="subject.html#3034">[ subject ]</a>
+              <a href="author.html#3034">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>After realizing I needed kernel module serial_cs, got gpsd to work on my T60 
+laptop using the pcmcia slot and gpsd worked fine.
+
+So now I am trying to get gpsd to see this device as a USB device on a 
+different machine using a SanDisk 12-in-1 reader. Except when plugging in the 
+BC-337 nothing happens. I am fairly sure all the needed USB kernel modules 
+are loaded, etc as doing a lsusb gives me;
+
+Bus 002 Device 005: ID 22b8:2a62 Motorola PCS E815 GSM Phone (AT)
+Bus 002 Device 004: ID 22b8:0850 Motorola PCS
+Bus 002 Device 003: ID 046d:c01e Logitech, Inc. MX518 Optical Mouse
+Bus 002 Device 002: ID 046d:08a2 Logitech, Inc. Labtec WebCam Pro
+Bus 002 Device 001: ID 0000:0000
+Bus 001 Device 002: ID 0781:8919 SanDisk Corp.
+Bus 001 Device 001: ID 0000:0000
+
+and those all work fine.
+
+Googling about it seems a /dev/ttyUSB(some number) should be created which 
+doesn't happen. On the T60+pcmcia I was using /dev/ttyS0 and catting that 
+device would output NEMA sentances.
+
+So going with that on this box and using &quot;gpsd -N -n -D 2 /dev/ttyS0&quot; gives;
+
+gpsd: launching (Version 2.34)
+gpsd: listening on port 2947
+gpsd: successfully connected to the DBUS system bus
+gpsd: running with effective group ID 0
+gpsd: running with effective user ID 0
+gpsd: opening GPS data source at '/dev/ttyS0'
+gpsd: speed 9600, 8N1
+gpsd: garmin_gps not active.
+gpsd: speed 38400, 8N1
+gpsd: speed 19200, 8N1
+gpsd: speed 2400, 8N1
+gpsd: speed 4800, 8N1
+gpsd: speed 9600, 8N1
+
+But I never see any sentances. Using any thing other than /dev/ttyS0 gives 
+errors along the lines of &quot;gpsd: =&gt; GPS: @X?*67\x0d FAILED&quot;.
+
+So what am I missing? Is there another kernel USB driver that I need? 
+
+-- 
+You can tuna piano but you can't tune a fish.
+
+<A HREF="http://www.lunar-linux.org/">http://www.lunar-linux.org/</A>
+It's worth the spin.
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="003033.html">[Gpsd-users] gpsd 2.34 and 2.35 not building on FreeBSD 6.2
+</A></li>
+	<LI>Next message: <A HREF="003035.html">[Gpsd-users] gpsd-2.34, globalsat BC-337 and usb
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3034">[ date ]</a>
+              <a href="thread.html#3034">[ thread ]</a>
+              <a href="subject.html#3034">[ subject ]</a>
+              <a href="author.html#3034">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

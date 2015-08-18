@@ -1,0 +1,100 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] bu353 and cold start
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2010-November/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20bu353%20and%20cold%20start&In-Reply-To=%3Calpine.LNX.1.00.1011191158500.6816%40catbert.rellim.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="004766.html">
+   <LINK REL="Next"  HREF="004772.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] bu353 and cold start</H1>
+    <B>Gary E. Miller</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20bu353%20and%20cold%20start&In-Reply-To=%3Calpine.LNX.1.00.1011191158500.6816%40catbert.rellim.com%3E"
+       TITLE="[Gpsd-users] bu353 and cold start">gem at rellim.com
+       </A><BR>
+    <I>Fri Nov 19 21:20:17 CET 2010</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="004766.html">[Gpsd-users] bu353 and cold start
+</A></li>
+        <LI>Next message: <A HREF="004772.html">[Gpsd-users] modeling errors: mode 0
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#4768">[ date ]</a>
+              <a href="thread.html#4768">[ thread ]</a>
+              <a href="subject.html#4768">[ subject ]</a>
+              <a href="author.html#4768">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>-----BEGIN PGP SIGNED MESSAGE-----
+Hash: SHA1
+
+Yo Tomalak!
+
+On Fri, 19 Nov 2010, Tomalak Geret'kal wrote:
+
+&gt;<i> &gt; The frame formats are fixed, but the other items, like repeat rates and
+</I>&gt;<i> &gt; actual number of satellites in the constellation (thus the size of the
+</I>&gt;<i> &gt; ephemeris) are not.
+</I>&gt;<i>
+</I>&gt;<i> Also, it was my understanding that SVs only transmitted their own ephemeris.
+</I>
+Yes, each SV only transmits its own FULL ephemeris (section 30.3.3.1.1
+).  In addition each sat transmits the reduced precision ephemeris,
+called the Reduced Almanac (message 31 or 12) and the Midi Almanac
+(message 37), for the full constellation (section 30.3.3.4 ). So each SV
+is transmitting the reduced precision ephemeris for all SVs.
+
+Sadly the term 'ephermeris' in the spec is not used consistently in the
+spec.  Their definition is all data for all sats, but then they use the
+term as shorthand for the individual full ephemeris data for individual sats
+and also applied to the reduced precision epehermeris data from the
+almanacs when describing the calculations.
+
+RGDS
+GARY
+- ---------------------------------------------------------------------------
+Gary E. Miller Rellim 109 NW Wilmington Ave., Suite E, Bend, OR 97701
+	<A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">gem at rellim.com</A>  Tel:+1(541)382-8588
+
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v1.4.3 (GNU/Linux)
+
+iD8DBQFM5twEBmnRqz71OvMRAiZlAJ9j2mKdRRUeXLEzsulU9JfSmGYNewCfSYkl
+LffIPOXLR+F5tf3Rz24DFkc=
+=NzKv
+-----END PGP SIGNATURE-----
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="004766.html">[Gpsd-users] bu353 and cold start
+</A></li>
+	<LI>Next message: <A HREF="004772.html">[Gpsd-users] modeling errors: mode 0
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#4768">[ date ]</a>
+              <a href="thread.html#4768">[ thread ]</a>
+              <a href="subject.html#4768">[ subject ]</a>
+              <a href="author.html#4768">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

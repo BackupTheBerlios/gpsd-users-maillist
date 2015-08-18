@@ -1,0 +1,81 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] Input buffer overrun
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2005-July/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Input%20buffer%20overrun&In-Reply-To=%3C42EAC23A.5020908%40boilerbots.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="000915.html">
+   <LINK REL="Next"  HREF="000908.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] Input buffer overrun</H1>
+    <B>maillist</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Input%20buffer%20overrun&In-Reply-To=%3C42EAC23A.5020908%40boilerbots.com%3E"
+       TITLE="[Gpsd-users] Input buffer overrun">maillist at boilerbots.com
+       </A><BR>
+    <I>Sat Jul 30 01:56:42 CEST 2005</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="000915.html">[Gpsd-users] Lost packet problem
+</A></li>
+        <LI>Next message: <A HREF="000908.html">[Gpsd-users] Input buffer overrun
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#907">[ date ]</a>
+              <a href="thread.html#907">[ thread ]</a>
+              <a href="subject.html#907">[ subject ]</a>
+              <a href="author.html#907">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hello Eric,
+
+It is me again with another issue. With the high data rates my GPS is 
+producing it appears that sometimes the input buffer overflows and it 
+crashes. I looked at the code and can't see anything obvious that would 
+cause it to crash and haven't tried to catch it yet with a debugger.
+
+Anyway, what it looks like is that sometimes a long/slow context switch 
+will cause the next read from the serial device to be very big. I 
+sometimes see a read of 250 characters or more. This exceeds the size of 
+the input buffer because it already contained partial packet data.
+
+I have re-defined MAX_PACKET_LENGTH to 512 and I have not yet had a crash.
+
+I can send you my gpsd output logs at level 6 showing the input buffer 
+growing very large sometimes and it takes a few cycles to empty out what 
+it has accumulated.
+
+Curt
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="000915.html">[Gpsd-users] Lost packet problem
+</A></li>
+	<LI>Next message: <A HREF="000908.html">[Gpsd-users] Input buffer overrun
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#907">[ date ]</a>
+              <a href="thread.html#907">[ thread ]</a>
+              <a href="subject.html#907">[ subject ]</a>
+              <a href="author.html#907">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

@@ -1,0 +1,74 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] Channel assignment fails
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2007-March/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Channel%20assignment%20fails&In-Reply-To=%3C91981b3e0703010805i7fab39eev8ac8d9b308b9d296%40mail.gmail.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="002481.html">
+   <LINK REL="Next"  HREF="002483.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] Channel assignment fails</H1>
+    <B>Chris Kuethe</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Channel%20assignment%20fails&In-Reply-To=%3C91981b3e0703010805i7fab39eev8ac8d9b308b9d296%40mail.gmail.com%3E"
+       TITLE="[Gpsd-users] Channel assignment fails">chris.kuethe at gmail.com
+       </A><BR>
+    <I>Thu Mar  1 17:05:24 CET 2007</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="002481.html">[Gpsd-users] Channel assignment fails
+</A></li>
+        <LI>Next message: <A HREF="002483.html">[Gpsd-users] An algorithm to prevent GPS from jumping
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2482">[ date ]</a>
+              <a href="thread.html#2482">[ thread ]</a>
+              <a href="subject.html#2482">[ subject ]</a>
+              <a href="author.html#2482">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>On 3/1/07, Orliac Etienne &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">isxejo at nottingham.ac.uk</A>&gt; wrote:
+&gt;<i> [<A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">root at pisven</A> ~]# gpsd -n -N -F /dev/ttyUSB0 -D 4 -S 2947
+</I>
+This obviously does not do what you think it will. Specifically, it
+tries to use /dev/ttyUSB0 as the control socket, which is probably not
+what you want
+
+gpsd -n -N -D 4 -F /var/run/gpsd.sock /dev/ttyUSB0
+
+might be closer to what you need.
+
+-- 
+GDB has a 'break' feature; why doesn't it have 'fix' too?
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="002481.html">[Gpsd-users] Channel assignment fails
+</A></li>
+	<LI>Next message: <A HREF="002483.html">[Gpsd-users] An algorithm to prevent GPS from jumping
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2482">[ date ]</a>
+              <a href="thread.html#2482">[ thread ]</a>
+              <a href="subject.html#2482">[ subject ]</a>
+              <a href="author.html#2482">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

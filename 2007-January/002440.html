@@ -1,0 +1,125 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] FreeBSD / Serial Earthmate
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2007-January/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20FreeBSD%20/%20Serial%20Earthmate&In-Reply-To=%3C200701310422.l0V4MmKZ040643%40himinbjorg.tucs-beachin-obx-house.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="002437.html">
+   <LINK REL="Next"  HREF="002441.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] FreeBSD / Serial Earthmate</H1>
+    <B>Tuc at T-B-O-H.NET</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20FreeBSD%20/%20Serial%20Earthmate&In-Reply-To=%3C200701310422.l0V4MmKZ040643%40himinbjorg.tucs-beachin-obx-house.com%3E"
+       TITLE="[Gpsd-users] FreeBSD / Serial Earthmate">ml at t-b-o-h.net
+       </A><BR>
+    <I>Wed Jan 31 05:22:48 CET 2007</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="002437.html">[Gpsd-users] Mac OS X not supported due to an unfixed bug?
+</A></li>
+        <LI>Next message: <A HREF="002441.html">[Gpsd-users] gpstk library
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2440">[ date ]</a>
+              <a href="thread.html#2440">[ thread ]</a>
+              <a href="subject.html#2440">[ subject ]</a>
+              <a href="author.html#2440">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi,
+
+	I just came upon a Serial Earthmate, and having issues getting things
+to go under FreeBSD.
+
+	I connect the unit and start kermit :
+
+himinbjorg# kermit
+C-Kermit 8.0.211, 10 Apr 2004, for FreeBSD 4.0
+ Copyright (C) 1985, 2004,
+  Trustees of Columbia University in the City of New York.
+Type ? or HELP for help.
+(/usr/home/root/) C-Kermit&gt;set line /dev/cuaa0
+(/usr/home/root/) C-Kermit&gt;set spe 9600
+/dev/cuaa0, 9600 bps
+(/usr/home/root/) C-Kermit&gt;conn
+Connecting to /dev/cuaa0, speed 9600
+ Escape character: Ctrl-\ (ASCII 28, FS): enabled
+Type the escape character followed by C to get back,
+or followed by ? to see other options.
+----------------------------------------------------
+&#255;&#243;5&#217;y&#200;1201.9806/08/9800039&#206;$'EARTHA
+EARTHA
+EARTHA
+EARTHA
+EARTHA
+EARTHA
+
+	At this point I type &quot;EARTHA&quot; and get alot of binary strings. So
+it looks like its working...
+
+	I start gpsd and telnet :
+
+himinbjorg# gpsd /dev/cuaa0
+himinbjorg# telnet localhost 2947
+Trying ::1...
+telnet: connect to address ::1: Connection refused
+Trying 127.0.0.1...
+Connected to localhost.tucs-beachin-obx-house.com.
+Escape character is '^]'.
+f
+GPSD,F=?
+
+	Not sure why it didn't get the port, but I set it and check again:
+
+f=/dev/cuaa0
+GPSD,F=/dev/cuaa0
+f
+GPSD,F=/dev/cuaa0
+
+	Ok, now I put into &quot;wr&quot;
+
+wr
+GPSD,X=1170217284.016473
+GPSD,W=1,R=1
+$GPRMC,235948,V,4045.8399,N,07430.0682,W,0.0000,0.000,280697,,*29
+GPSD,O=?
+GPSD,Y=?
+EARTHAEARTHAEARTHAEARTHAEARTHAEARTHAEARTHAEARTHAEARTHAEARTHAEARTHAEARTHAEARTHAEARTHAEARTHAEARTHA
+
+	and it just keeps with the &quot;EARTHA&quot;. Shouldn't it be doing something
+else, more of the $ type lines?
+
+			Thanks, Tuc
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="002437.html">[Gpsd-users] Mac OS X not supported due to an unfixed bug?
+</A></li>
+	<LI>Next message: <A HREF="002441.html">[Gpsd-users] gpstk library
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2440">[ date ]</a>
+              <a href="thread.html#2440">[ thread ]</a>
+              <a href="subject.html#2440">[ subject ]</a>
+              <a href="author.html#2440">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

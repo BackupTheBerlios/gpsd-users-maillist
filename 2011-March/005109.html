@@ -1,0 +1,95 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] gps_read() does not block
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2011-March/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20gps_read%28%29%20does%20not%20block&In-Reply-To=%3C000301cbddf8%24bfa32880%243ee97980%24%40net%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="005114.html">
+   <LINK REL="Next"  HREF="005113.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] gps_read() does not block</H1>
+    <B>Brad Morgan</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20gps_read%28%29%20does%20not%20block&In-Reply-To=%3C000301cbddf8%24bfa32880%243ee97980%24%40net%3E"
+       TITLE="[Gpsd-users] gps_read() does not block">b-morgan at concentric.net
+       </A><BR>
+    <I>Wed Mar  9 02:24:32 CET 2011</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="005114.html">[Gpsd-users] gps_read() does not block
+</A></li>
+        <LI>Next message: <A HREF="005113.html">[Gpsd-users] gps_read() does not block
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#5109">[ date ]</a>
+              <a href="thread.html#5109">[ thread ]</a>
+              <a href="subject.html#5109">[ subject ]</a>
+              <a href="author.html#5109">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>&gt;&gt;<i> What about a flag like POLL_NONBLOCK but the other way around?
+</I>POLL_BLOCK?
+
+&gt;<i> 1.  Do nothing.  gps_waiting isn't actually useless, you get a 1 msec
+</I>delay
+&gt;<i> out of it that you don't from spinning in a gps_read().  Everybody keeps
+</I>&gt;<i> using select(2).
+</I>
+&gt;<i> 2. Add a POLL_BLOCK flag.  Very easy, I could do it in 5 minutes.
+</I>
+I've been silently following this discussion and I think I understand the
+issue. The OP wants gps_read() to block the process until it returns some
+data. I assume this is what a POLL_BLOCK flag would do.
+
+&gt;<i> 3. Add an argument to gps_waiting to specify the interval on the timeout
+</I>&gt;<i> it uses in its internal select(2).
+</I>
+Does this mean that gps_waiting will return as soon as there is data to be
+read or if there is no data, the timeout interval has expired? If so this
+would prevent the process from getting hung when the gps is never going to
+send any data.
+
+&gt;<i> I lean towards 3, but I'm open to persuasion.
+</I>
+I'd suggest implementing both 2 &amp; 3. To me, doing nothing leaves a hole in
+the implementation. I think the library needs to provide what I see as a
+basic way of interfacing with the gps. Either of these implementations
+extend the existing functionality in an upward compatible way (assuming the
+argument to gps_waiting is optional).
+
+Regards,
+
+Brad Morgan
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="005114.html">[Gpsd-users] gps_read() does not block
+</A></li>
+	<LI>Next message: <A HREF="005113.html">[Gpsd-users] gps_read() does not block
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#5109">[ date ]</a>
+              <a href="thread.html#5109">[ thread ]</a>
+              <a href="subject.html#5109">[ subject ]</a>
+              <a href="author.html#5109">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

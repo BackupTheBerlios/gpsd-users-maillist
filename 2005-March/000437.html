@@ -1,0 +1,102 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] man am I going fast
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2005-March/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20man%20am%20I%20going%20fast&In-Reply-To=%3C42456CFE.7040300%40ozob.net%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="000404.html">
+   <LINK REL="Next"  HREF="000439.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] man am I going fast</H1>
+    <B>Gene Imes</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20man%20am%20I%20going%20fast&In-Reply-To=%3C42456CFE.7040300%40ozob.net%3E"
+       TITLE="[Gpsd-users] man am I going fast">ebi6 at ozob.net
+       </A><BR>
+    <I>Sat Mar 26 15:09:02 CET 2005</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="000404.html">[Gpsd-users] man am I going fast
+</A></li>
+        <LI>Next message: <A HREF="000439.html">[Gpsd-users] man am I going fast
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#437">[ date ]</a>
+              <a href="thread.html#437">[ thread ]</a>
+              <a href="subject.html#437">[ subject ]</a>
+              <a href="author.html#437">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Eric S. Raymond wrote:
+
+&gt;<i> OK.  The next thing to do is to try switching the GPS back to NMEA mode
+</I>&gt;<i> using the N comand that I added recently.  See if you still get crazy speeds.
+</I>&gt;<i> 
+</I>&gt;<i> This should enable us to localize the problem to either the SiRF binary
+</I>&gt;<i> driver alone or the code above driver level.
+</I>
+gpsd seems to select SiRF mode no matter what. I put the gps in NMEA 
+mode and then started gpsd. gpsd then selected SiRF mode:
+
+gpsd: launching (Version 2.18)
+gpsd: listening on port 2947
+gpsd: client connect on 4
+gpsd: closed GPS
+gpsd: opening GPS data source at /dev/rfcomm0
+gpsd: No USB serial drivers found.
+gpsd: no probe matched...
+gpsd: hunting at speed 4800, 8N1
+gpsd: gpsd_activate: opened GPS (5)
+gpsd: Selecting Generic NMEA driver...
+gpsd: =&gt; GPS: $PFEC,GPint,GSA01,DTM00,ZDA00,RMC01,GLL01,GSV05*52
+
+...
+
+gpsd: &lt;= GPS: $GPVTG,,T,,M,0.000000,N,0.000000,K*4E
+gpsd: =&gt; client(6): $GPVTG,,T,,M,0.000000,N,0.000000,K*4E
+gpsd: &lt;= GPS: $Ack Input105.
+gpsd: found $Ack Input105..
+gpsd: Selecting SiRF-II binary driver...
+gpsd: Switching chip mode to SiRF binary.
+gpsd: =&gt; GPS: $PSRF100,0,4800,8,1,0*0F
+
+The above is from the same session.
+
+Is there a way to force NMEA?
+
+Thanks,
+
+-- 
+Gene Imes                               www.ozob.net
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="000404.html">[Gpsd-users] man am I going fast
+</A></li>
+	<LI>Next message: <A HREF="000439.html">[Gpsd-users] man am I going fast
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#437">[ date ]</a>
+              <a href="thread.html#437">[ thread ]</a>
+              <a href="subject.html#437">[ subject ]</a>
+              <a href="author.html#437">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

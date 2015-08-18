@@ -1,0 +1,236 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] Some problems? too many satellites?
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2006-August/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Some%20problems%3F%20too%20many%20satellites%3F&In-Reply-To=%3Cc32efac40608102109qa1a5906jb5e5a701e8434c9f%40mail.gmail.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="001847.html">
+   <LINK REL="Next"  HREF="001839.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] Some problems? too many satellites?</H1>
+    <B>Dave Hylands</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Some%20problems%3F%20too%20many%20satellites%3F&In-Reply-To=%3Cc32efac40608102109qa1a5906jb5e5a701e8434c9f%40mail.gmail.com%3E"
+       TITLE="[Gpsd-users] Some problems? too many satellites?">dhylands at gmail.com
+       </A><BR>
+    <I>Fri Aug 11 06:09:07 CEST 2006</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="001847.html">[Gpsd-users] Some problems? too many satellites?
+</A></li>
+        <LI>Next message: <A HREF="001839.html">[Gpsd-users] hotplug script - remover
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1851">[ date ]</a>
+              <a href="thread.html#1851">[ thread ]</a>
+              <a href="subject.html#1851">[ subject ]</a>
+              <a href="author.html#1851">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi Gary,
+
+&gt;<i> &gt; I put a much larger snippet (about 1/2 Mb) on
+</I>&gt;<i> &gt; my web site:
+</I>&gt;<i> &gt; <A HREF="http://www.DaveHylands.com/Misc/gps/nmea.log">http://www.DaveHylands.com/Misc/gps/nmea.log</A>
+</I>&gt;<i>
+</I>&gt;<i> Probably a bit too complete.  Can you cut it down to a cycle or
+</I>&gt;<i> two of each state you have?  Don't worry about the time stamps
+</I>&gt;<i> as long as you have complete cycles and are increasing.  Then Eric
+</I>&gt;<i> can add them to the regressions.
+</I>
+OK - A smaller one (only 19k):
+<A HREF="http://www.DaveHylands.com/Misc/gps/nmea-abbrev.log">http://www.DaveHylands.com/Misc/gps/nmea-abbrev.log</A>
+
+&gt;<i> &gt; So I tried changing the .channels from 12 to 14 and 16 and ran it on
+</I>&gt;<i> &gt; my gumstix (ARM XScale).
+</I>&gt;<i>
+</I>&gt;<i> Since the sats in GPGSV's come in 4 at a time we prolly need this too:
+</I>&gt;<i>
+</I>&gt;<i> - --- gps.h       (revision 3369)
+</I>&gt;<i> +++ gps.h       (working copy)
+</I>&gt;<i> @@ -18,7 +18,7 @@
+</I>&gt;<i>  #endif
+</I>&gt;<i>
+</I>&gt;<i>  #define MAXTAGLEN      8       /* maximum length of sentence tag name */
+</I>&gt;<i> - -#define MAXCHANNELS    14      /* maximum GPS channels (*not* satellites!) */
+</I>&gt;<i> +#define MAXCHANNELS    16      /* maximum GPS channels (*not* satellites!) */
+</I>&gt;<i>  #define SIRF_CHANNELS  12      /* max channels allowed in SiRF format */
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i> Do any of the other devleopers see a problem with these two tweaks?
+</I>&gt;<i>
+</I>&gt;<i> &gt; # ./gpsd -n -N -D2 nmea.log
+</I>&gt;<i> [...]
+</I>&gt;<i> &gt; gpsd: &lt;= GPS: $GPGSA,A,1,,,,,,,,,,,,,99.99,99.99,99.99*30
+</I>&gt;<i> &gt; Segmentation fault
+</I>&gt;<i>
+</I>&gt;<i> Wow, you did not even get to the GPGSV this time.  Dunno what could
+</I>&gt;<i> be wrong with that GPGSA.  We have had problems with the ARM port before
+</I>&gt;<i> so not a big surprise either.  Can you run gdb on your gumstix?
+</I>
+I threw in some more prints into the processGPGSA function (after the
+one about GPGSA sets mode):
+
+    gpsd_report(3, &quot;GPGSA session-&gt;device_type-&gt;channels: %d\n&quot;,
+session-&gt;device_type-&gt;channels );
+    gpsd_report(3, &quot;GPGSA session-&gt;device_type-&gt;channels+3: %d\n&quot;,
+session-&gt;device_type-&gt;channels+3 );
+    gpsd_report(3, &quot;GPGSA field[session-&gt;device_type-&gt;channels+3]:
+'%s'\n&quot;, field[session-&gt;device_type-&gt;channels+3] );
+    gpsd_report(3, &quot;GPGSA
+atof(field[session-&gt;device_type-&gt;channels+3]): '%s'\n&quot;,
+atof(field[session-&gt;device_type-&gt;channels+3]) );
+
+and I see the following output:
+
+gpsd: &lt;= GPS: $GPGSA,A,1,,,,,,,,,,,,,99.99,99.99,99.99*30
+gpsd: GPGSA sets mode 1
+gpsd: GPGSA session-&gt;device_type-&gt;channels: 16
+gpsd: GPGSA session-&gt;device_type-&gt;channels+3: 19
+gpsd: GPGSA field[session-&gt;device_type-&gt;channels+3]: '(null)'
+Segmentation fault
+
+So it seems that the uClibc version of atof doesn't like being passed
+a null pointer.
+
+After making the .channels change and the MAXCHANNELS change (to 16),
+my FC5 copy started to segfault as well. With .channels set to 14 it
+doesn't segfault.
+
+&gt;<i> &gt; I did the same thing on my Fedora FC5 machine and it ran fine, producing
+</I>&gt;<i> &gt; <A HREF="http://www.davehylands.com/Misc/gps/gpsd-14.log">http://www.davehylands.com/Misc/gps/gpsd-14.log</A>
+</I>&gt;<i>
+</I>&gt;<i> So we are half way there, maybe.
+</I>
+I took a look at the docs for the GSA word and it says this:
+
+If less than 12 SVs are used for navigation, the remaining fields are
+left empty. If more than 12 SVs are used for navigation, only the IDs
+of the first 12 are being output.
+
+I looked at the Sirf-III manual (which can deal with upto 20 channels,
+and it's GSA command only reports 12 channels as well. So I'd propse
+the following patch:
+
+Index: gpsd-2.33/nmea_parse.c
+===================================================================
+--- gpsd-2.33/nmea_parse.c      2006-08-10 20:35:26.000000000 -0700
++++ gpsd-2.33/nmea_parse.c      2006-08-10 20:41:14.000000000 -0700
+@@ -322,6 +322,7 @@ static gps_mask_t processGPGSA(int count
+      */
+     gps_mask_t mask;
+     int i;
++    int num_channels;
+
+     /*
+      * One chipset called the i.Trek M3 issues GPGSA lines that look like
+@@ -344,12 +345,16 @@ static gps_mask_t processGPGSA(int count
+     else
+         mask = MODE_SET;
+     gpsd_report(3, &quot;GPGSA sets mode %d\n&quot;, session-&gt;gpsdata.newdata.mode);
+-    session-&gt;gpsdata.pdop = atof(field[session-&gt;device_type-&gt;channels+3]);
+-    session-&gt;gpsdata.hdop = atof(field[session-&gt;device_type-&gt;channels+4]);
+-    session-&gt;gpsdata.vdop = atof(field[session-&gt;device_type-&gt;channels+5]);
++
++    num_channels = session-&gt;device_type-&gt;channels;
++    if ( num_channels &gt; 12 )
++        num_channels = 12;
++    session-&gt;gpsdata.pdop = atof(field[num_channels+3]);
++    session-&gt;gpsdata.hdop = atof(field[num_channels+4]);
++    session-&gt;gpsdata.vdop = atof(field[num_channels+5]);
+     session-&gt;gpsdata.satellites_used = 0;
+     memset(session-&gt;gpsdata.used,0,sizeof(session-&gt;gpsdata.used));
+-    for (i = 0; i &lt; session-&gt;device_type-&gt;channels; i++) {
++    for (i = 0; i &lt; num_channels; i++) {
+         int prn = atoi(field[i+3]);
+         if (prn &gt; 0)
+            session-&gt;gpsdata.used[session-&gt;gpsdata.satellites_used++] = prn;
+
+&gt;<i> Here is what we need for the hardware matrix, can you fill out the rest:
+</I>&gt;<i>
+</I>&gt;<i>   1. The GPS model name
+</I>
+It isn't really a GPS. It's the gpsstix, which basically connects the
+gps module to the gumstix.
+
+&gt;<i>
+</I>&gt;<i>   2. Whether or not it works
+</I>&gt;<i>        Requires gpsd 2.34+
+</I>&gt;<i>
+</I>&gt;<i>   3. If possible, an URL to a technical reference on it
+</I>&gt;<i> <A HREF="http://www.u-blox.com/products/lea_4h.html">http://www.u-blox.com/products/lea_4h.html</A>
+</I>&gt;<i>
+</I>&gt;<i>   4. The GPS and (if applicable) USB-to-serial chip it uses. (Look at the output of lsusb(1), it may identify the USB-to-serial chip. If it gives a vendor and product ID, send us those numbers.)
+</I>&gt;<i>
+</I>&gt;<i> Antares LES-4H gps module.
+</I>&gt;<i>
+</I>&gt;<i>   5. The interface type (RS232, USB, CF)
+</I>
+Logic level serial (not RS232). It connects directly to the processor.
+
+&gt;<i>   6. The vendor
+</I>
+gumstix.com
+
+&gt;<i>   7. Version of gpsd you tested with
+</I>
+2.33 + patches
+
+&gt;<i>   8. NMEA version it emits, or '?' if the documentation doesn't say
+</I>
+2.3
+
+&gt;<i>   9. A list of NMEA sentences it emits
+</I>
+GGA
+GLL
+GSA
+GSV
+RMC
+VTG
+GRS
+GST
+ZDA
+GBS
+DTM
+TXT
+PUBXnn (proprietary)
+
+&gt;<i>  10. Notes on the device
+</I>
+-- 
+Dave Hylands
+Vancouver, BC, Canada
+<A HREF="http://www.DaveHylands.com/">http://www.DaveHylands.com/</A>
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="001847.html">[Gpsd-users] Some problems? too many satellites?
+</A></li>
+	<LI>Next message: <A HREF="001839.html">[Gpsd-users] hotplug script - remover
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1851">[ date ]</a>
+              <a href="thread.html#1851">[ thread ]</a>
+              <a href="subject.html#1851">[ subject ]</a>
+              <a href="author.html#1851">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

@@ -1,0 +1,111 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] Build bugs in 2.28
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2005-August/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Build%20bugs%20in%202.28&In-Reply-To=%3C20050824213933.GA26174%40thyrsus.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="001030.html">
+   <LINK REL="Next"  HREF="001033.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] Build bugs in 2.28</H1>
+    <B>Eric S. Raymond</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Build%20bugs%20in%202.28&In-Reply-To=%3C20050824213933.GA26174%40thyrsus.com%3E"
+       TITLE="[Gpsd-users] Build bugs in 2.28">esr at thyrsus.com
+       </A><BR>
+    <I>Wed Aug 24 23:39:33 CEST 2005</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="001030.html">[Gpsd-users] Build bugs in 2.28
+</A></li>
+        <LI>Next message: <A HREF="001033.html">[Gpsd-users] Compile Errors
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1031">[ date ]</a>
+              <a href="thread.html#1031">[ thread ]</a>
+              <a href="subject.html#1031">[ subject ]</a>
+              <a href="author.html#1031">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>David I S Mandala &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">davidm at them.com</A>&gt;:
+&gt;<i> Hello all,
+</I>&gt;<i> 
+</I>&gt;<i> I've found some build bugs that I suspect have been around for a while 
+</I>&gt;<i> simply because this is not something that normally most anyone would do. 
+</I>&gt;<i> I found this becasue we tried an old sirf GPS (it's new to us) and it 
+</I>&gt;<i> sometimes was detected as an fv18 and when that happens you get no 
+</I>&gt;<i> usable info from the gps. Since I'm critically short of time (I still 
+</I>&gt;<i> owe some debugging info on a different sirf GPS) I thought I simply turn 
+</I>&gt;<i> off all binary modes and run NEMA only. Only thing is you can't, gpsd 
+</I>&gt;<i> will not build, in fact there are several configurations that will not 
+</I>&gt;<i> build. As a side note, &quot;make clean&quot; was run between all tests.
+</I>&gt;<i> 
+</I>&gt;<i> Finally if someone whats to play the the specific sirf GPS that 
+</I>&gt;<i> sometimes is detected as a fv18 I have plenty of these and would be 
+</I>&gt;<i> happy to give one away in hopes of makeing GPSD better. It's an RS-232 
+</I>&gt;<i> device at normal RS-232 levels and can be connected to a PC with no 
+</I>&gt;<i> problems.
+</I>&gt;<i> 
+</I>&gt;<i> I'm still trying to get unburied so I can build test the other GPS and 
+</I>&gt;<i> figure out where the bug cropped up for it.
+</I>&gt;<i> 
+</I>&gt;<i> If you run configure with:
+</I>&gt;<i> --disable-sirfII
+</I>&gt;<i> --disable-tsip
+</I>&gt;<i> --disable-fv18
+</I>&gt;<i> --disable-tripmate
+</I>&gt;<i> --disable-earthmate
+</I>&gt;<i> --disable-garmin
+</I>&gt;<i> 
+</I>&gt;<i> and then try and make gpsd it will fail.
+</I>&gt;<i> 
+</I>&gt;<i> If you enable only sirfII the make will work.
+</I>&gt;<i> If you enable only tsip the build fails.
+</I>&gt;<i> If you enable only fv18 the build fails.
+</I>&gt;<i> If you enable only tripmate the build fails.
+</I>&gt;<i> If you enable only earthmate the build works.
+</I>&gt;<i> If you enable only garmin the build works.
+</I>
+I can't reproduce any of these build failures with svn head.  After
+2.28 there was a small change to the way private members are
+conditioned in gpsd.h that I believe fixed this problem.
+
+I'll take an FV18 test unit, if you're handing them out.  That
+would be good; all my current ones are SiRF-based.
+
+I have a pending bug from you about RoyalTek support being broken.
+Is it still?
+-- 
+		&lt;a href=&quot;<A HREF="http://www.catb.org/~esr/">http://www.catb.org/~esr/</A>&quot;&gt;Eric S. Raymond&lt;/a&gt;
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="001030.html">[Gpsd-users] Build bugs in 2.28
+</A></li>
+	<LI>Next message: <A HREF="001033.html">[Gpsd-users] Compile Errors
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1031">[ date ]</a>
+              <a href="thread.html#1031">[ thread ]</a>
+              <a href="subject.html#1031">[ subject ]</a>
+              <a href="author.html#1031">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

@@ -1,0 +1,129 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] Ntp and gpsd problem oem4
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2006-October/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Ntp%20and%20gpsd%20problem%20oem4&In-Reply-To=%3CPine.LNX.4.64.0610021331170.10379%40catbert.rellim.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="002067.html">
+   <LINK REL="Next"  HREF="002069.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] Ntp and gpsd problem oem4</H1>
+    <B>Gary E. Miller</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Ntp%20and%20gpsd%20problem%20oem4&In-Reply-To=%3CPine.LNX.4.64.0610021331170.10379%40catbert.rellim.com%3E"
+       TITLE="[Gpsd-users] Ntp and gpsd problem oem4">gem at rellim.com
+       </A><BR>
+    <I>Mon Oct  2 22:40:04 CEST 2006</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="002067.html">[Gpsd-users] Ntp and gpsd problem oem4
+</A></li>
+        <LI>Next message: <A HREF="002069.html">[Gpsd-users] Ntp and gpsd problem oem4
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2068">[ date ]</a>
+              <a href="thread.html#2068">[ thread ]</a>
+              <a href="subject.html#2068">[ subject ]</a>
+              <a href="author.html#2068">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>-----BEGIN PGP SIGNED MESSAGE-----
+Hash: SHA1
+
+Yo George!
+
+On Mon, 2 Oct 2006, xterm wrote:
+
+&gt;<i> &gt;Yours toggles from 1 to 0 at the top of the second.  then back at the
+</I>&gt;<i> &gt;top of the next second.
+</I>&gt;<i>
+</I>&gt;<i> So because i am a little bit confused, what is happening to me is this:
+</I>
+[...]
+
+&gt;<i> where the last number is seconds
+</I>&gt;<i> which is wrong.
+</I>
+Well, wrong is a strong word.  It is what it is and it is what you
+get.  Basically you get on edge per second.
+
+&gt;<i> The right thing should be
+</I>
+[...]
+
+Certainly that is the expected thing, one short pulse every second with
+the leading edge at the top of the second.  But it is not what you have.
+
+&gt;<i> Sorry for all these questions Gary, but I must solve this issue in the
+</I>&gt;<i> following days
+</I>
+We are real close here.  Understanding the problem is 90% of fixing
+odd bugs.  One of two things happens now:
+
+1.  You find a config option for your GPS that changes from square wave
+    to pulse.
+
+2.  We change gpsd to handle both cases: a pulse or a square wave.
+
+If you can look in to #1, and confirm that is not feasible, then I
+can do #2.
+
+As for #2, the hack I gave you to disable the duration check is a good
+start as it should prove the issue.  Then we can craft a better solution
+that handles a 1 second duration as a pulse and a 2 second duration as
+a square wave.
+
+I know you did, but could you please send me the details again on your
+GPS?  If your GPS can be identified then the PPS code can set things
+when it identifies your GPS for the proper PPS signal.  Otherwise I
+could add some code to look for a square wave in addition to a pulse and
+do the right thing for each.
+
+Keep up hope, we are real close.
+
+RGDS
+GARY
+- ---------------------------------------------------------------------------
+Gary E. Miller Rellim 20340 Empire Blvd, Suite E-3, Bend, OR 97701
+	<A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">gem at rellim.com</A>  Tel:+1(541)382-8588
+
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v1.4.3 (GNU/Linux)
+
+iD8DBQFFIXko8KZibdeR3qURAhLlAKDzWpxSHRg5/iqr92G0hZKAtSG/uQCg3sE4
+/99oHJ8g+cMwfJPojbAowqE=
+=y/kx
+-----END PGP SIGNATURE-----
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="002067.html">[Gpsd-users] Ntp and gpsd problem oem4
+</A></li>
+	<LI>Next message: <A HREF="002069.html">[Gpsd-users] Ntp and gpsd problem oem4
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2068">[ date ]</a>
+              <a href="thread.html#2068">[ thread ]</a>
+              <a href="subject.html#2068">[ subject ]</a>
+              <a href="author.html#2068">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

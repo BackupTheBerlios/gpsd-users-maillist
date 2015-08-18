@@ -1,0 +1,103 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] gpsd 2.28 bug report
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2005-July/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20gpsd%202.28%20bug%20report&In-Reply-To=%3C1121296861.22483.173.camel%40dmdesk%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="000845.html">
+   <LINK REL="Next"  HREF="000841.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] gpsd 2.28 bug report</H1>
+    <B>David I S Mandala</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20gpsd%202.28%20bug%20report&In-Reply-To=%3C1121296861.22483.173.camel%40dmdesk%3E"
+       TITLE="[Gpsd-users] gpsd 2.28 bug report">davidm at them.com
+       </A><BR>
+    <I>Thu Jul 14 01:21:01 CEST 2005</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="000845.html">[Gpsd-users] First request is unknown, but subsequently works
+</A></li>
+        <LI>Next message: <A HREF="000841.html">[Gpsd-users] gpsd 2.28 bug report
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#840">[ date ]</a>
+              <a href="thread.html#840">[ thread ]</a>
+              <a href="subject.html#840">[ subject ]</a>
+              <a href="author.html#840">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi folks, 
+
+This may be the lamest bug report I've ever put in but I have confirmed
+it does not work correctly several times so here goes.
+
+Upgraded to gpsd 2.28 from 2.25 (I think) using a RoyalTek RGM-2000 USB
+GPS. I have udev installed and whenever the GPS in plugged in it gets 2
+devices /dev/ttyUSB? and /dev/gps.
+
+If gpsd is compiled with the Sirf binary support it detects that the gps
+is indeed an Sirf chipset and switches to it. Sometimes (very rarely) it
+gets it correct and works. Most of the time it gets it wrong and in
+debug mode says unknown format for the Sirf input. (This did work on the
+earlier version of gpsd). If I rebuild gpsd without Sirf support and
+force the device back into NEMA mode all works as expected.
+
+An additional data point for what it's worth, Most of the time (99%)
+what ever that gpsd does to the gps it requires unplugging the gps and
+replugging it before sirfmon will connect to it directly to kick it back
+into NEMA mode. 
+
+This is odd no doubt but it's repeatable, I've spent the last two days
+tracking this down as I thought the problem was in my code, but once I
+recompiled leaving Sirf mode out of gpsd my app runs normally again.
+
+Very very odd. Sorry I wish I had more data but I don't. If you would
+like anything collected just tell me what and how to collect it and I
+will.
+
+Cheers,
+
+David
+-- 
+David Mandala &lt;davidm at them dot com&gt;
+www.them.com/~davidm Public Key id: 45B2D952
+Murphy TX, 75094 214.774.2569 HO 972.693.4007 C
+-------------- next part --------------
+A non-text attachment was scrubbed...
+Name: signature.asc
+Type: application/pgp-signature
+Size: 189 bytes
+Desc: This is a digitally signed message part
+URL: &lt;<A HREF="https://lists.berlios.de/pipermail/gpsd-users/attachments/20050713/b826bf34/attachment.pgp">https://lists.berlios.de/pipermail/gpsd-users/attachments/20050713/b826bf34/attachment.pgp</A>&gt;
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="000845.html">[Gpsd-users] First request is unknown, but subsequently works
+</A></li>
+	<LI>Next message: <A HREF="000841.html">[Gpsd-users] gpsd 2.28 bug report
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#840">[ date ]</a>
+              <a href="thread.html#840">[ thread ]</a>
+              <a href="subject.html#840">[ subject ]</a>
+              <a href="author.html#840">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

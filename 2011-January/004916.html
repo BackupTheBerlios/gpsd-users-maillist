@@ -1,0 +1,207 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] This Morning's Build
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2011-January/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20This%20Morning%27s%20Build&In-Reply-To=%3C20110113090610.5736c1ae%40yendi%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="004915.html">
+   <LINK REL="Next"  HREF="004923.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] This Morning's Build</H1>
+    <B>Charles Curley</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20This%20Morning%27s%20Build&In-Reply-To=%3C20110113090610.5736c1ae%40yendi%3E"
+       TITLE="[Gpsd-users] This Morning's Build">charlescurley at charlescurley.com
+       </A><BR>
+    <I>Thu Jan 13 17:06:10 CET 2011</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="004915.html">[Gpsd-users] libgps/gpsd interaction
+</A></li>
+        <LI>Next message: <A HREF="004923.html">[Gpsd-users] This Morning's Build
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#4916">[ date ]</a>
+              <a href="thread.html#4916">[ thread ]</a>
+              <a href="subject.html#4916">[ subject ]</a>
+              <a href="author.html#4916">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>While compiling this morning's build, I noticed the following.
+
+If I just run &quot;./autogen.sh&quot;, autogen does not find dbus
+support. Everything compiles with no errors, but . However:
+
+<A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">charles at yendi</A>:~/versioned/gpsd$ locate dbus.h
+/usr/include/dbus-1.0/dbus/dbus.h
+...
+<A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">charles at yendi</A>:~/versioned/gpsd$ 
+
+If I run my own configuration script, I get:
+
+<A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">charles at yendi</A>:~/versioned/gpsd$ make &gt; trace.txt
+libgpsd_core.c: In function &#8216;gpsd_ppsmonitor&#8217;:
+libgpsd_core.c:333: warning: unused variable &#8216;pulse_delay_ns&#8217;
+driver_aivdm.c:56: warning: no previous prototype for &#8216;aivdm_decode&#8217;
+monitor_nmea.c:305: warning: &#8216;monitor_nmea_send&#8217; defined but not used
+In file included from gpsd.c:44:
+gpsd_dbus.h:10: fatal error: dbus/dbus.h: No such file or directory
+compilation terminated.
+make[1]: *** [gpsd.o] Error 1
+make: *** [all] Error 2
+
+<A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">charles at yendi</A>:~/versioned/gpsd$
+
+The output from ./autogen.sh looks like:
+
+==========================================
+gpsd 2.96~dev
+------------------------------------------
+	Protocols
+	---------
+Ashtech                 : no
+Earthmate               : no
+EverMore                : no
+FV-18                   : no
+Garmin                  : no
+Garmin Simple Text      : no
+Geostar                 : no
+iTrax                   : no
+NMEA                    : yes
+NTRIP                   : no
+Navcom                  : no
+OnCore                  : no
+RTCM104V2               : no
+RTCM104V3               : no
+SiRF                    : yes
+SuperStarII             : no
+Trimble TSIP            : no
+Tripmate                : no
+True North              : no
+OceanServer             : no
+UBX                     : no
+GPSclock                : no
+AIVDM support           : no
+Timing support          : yes
+Client debugging support: yes
+MTK-3301                : no
+	Daemon Features
+	---------------
+NTP SHM                 : yes
+NTP PPS                 : yes
+PPS input on            : DCD
+Fixed port speed        : no
+Priv-drop user          : nobody
+Enable shared libraries : yes
+Enable DBUS support     : yes
+Enable BlueZ support    : no
+Enable IPv6 support     : no
+Limited max clients     : no
+Limited max devices     : no
+Allow device reconfig   : yes
+Allow control send      : yes
+Squelch logging/hexdump : no
+Raw Measurements        : yes
+libusb device discovery : no
+	Client Features
+	---------------
+Old protocol in libgps  : yes
+Build ncurses programs  : yes
+Enable Python support   : yes
+Enable C++ support      : yes
+Enable Qt support       : no
+------------------------------------------
+
+configure: creating ./config.status
+config.status: creating Makefile
+config.status: creating packaging/rpm/gpsd.spec
+config.status: creating libgps.pc
+config.status: creating libgpsd.pc
+config.status: creating jsongen.py
+config.status: creating maskaudit.py
+config.status: creating valgrind-audit
+config.status: creating gpsd_config.h
+config.status: executing depfiles commands
+config.status: executing libtool commands
+config.status: executing default commands
+Configure finished, type 'make' to build.
+
+and the config script looks like:
+
+#! /bin/bash
+
+# Time-stamp: &lt;2010-12-17 15:30:38 ccurley config.gpsd&gt;
+
+# assume we're in the gpsd build tree.
+
+./configure \
+  --disable-aivdm \
+  --disable-ashtech \
+  --disable-earthmate \
+  --disable-evermore \
+  --disable-fv18 \
+  --disable-garmin \
+  --disable-garmintxt \
+  --disable-geostar \
+  --disable-gpsclock \
+  --disable-ipv6 \
+  --disable-itrax \
+  --disable-libQgpsmm \
+  --disable-mtk3301 \
+  --disable-navcom \
+  --disable-ntrip \
+  --disable-oceanserver \
+  --disable-oncore \
+  --disable-rtcm104v2 \
+  --disable-rtcm104v3 \
+  --disable-superstar2 \
+  --disable-tnt \
+  --disable-tripmate \
+  --disable-tsip \
+  --disable-ubx \
+  --enable-dbus \
+
+exit
+
+
+
+-- 
+
+Charles Curley                  /&quot;\    ASCII Ribbon Campaign
+Looking for fine software       \ /    Respect for open standards
+and/or writing?                  X     No HTML/RTF in email
+<A HREF="http://www.charlescurley.com">http://www.charlescurley.com</A>    / \    No M$ Word docs in email
+
+Key fingerprint = CE5C 6645 A45A 64E4 94C0  809C FFF6 4C48 4ECD DFDB
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="004915.html">[Gpsd-users] libgps/gpsd interaction
+</A></li>
+	<LI>Next message: <A HREF="004923.html">[Gpsd-users] This Morning's Build
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#4916">[ date ]</a>
+              <a href="thread.html#4916">[ thread ]</a>
+              <a href="subject.html#4916">[ subject ]</a>
+              <a href="author.html#4916">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

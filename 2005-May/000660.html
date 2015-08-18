@@ -1,0 +1,105 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] A tail of how I use gpsd and a feature request.
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2005-May/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20A%20tail%20of%20how%20I%20use%20gpsd%20and%20a%20feature%20request.&In-Reply-To=%3C1116613279.8618.244.camel%40dmdesk.them.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="000659.html">
+   <LINK REL="Next"  HREF="000661.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] A tail of how I use gpsd and a feature request.</H1>
+    <B>David I S Mandala</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20A%20tail%20of%20how%20I%20use%20gpsd%20and%20a%20feature%20request.&In-Reply-To=%3C1116613279.8618.244.camel%40dmdesk.them.com%3E"
+       TITLE="[Gpsd-users] A tail of how I use gpsd and a feature request.">davidm at them.com
+       </A><BR>
+    <I>Fri May 20 20:21:19 CEST 2005</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="000659.html">[Gpsd-users] Any showstoppers blocking a GPSD release?
+</A></li>
+        <LI>Next message: <A HREF="000661.html">[Gpsd-users] A tail of how I use gpsd and a feature request.
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#660">[ date ]</a>
+              <a href="thread.html#660">[ thread ]</a>
+              <a href="subject.html#660">[ subject ]</a>
+              <a href="author.html#660">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hello all,
+
+Thought I'd drop in and say thanks, gpsd has really helped me out quite
+a lot. Several years ago I developed a line a products that used a GPS
+on an 8 bit CPU. All programming was done bare metal, from the TCP/IP
+stack to interpreting the return from the GPS. A great deal of that code
+I wrote (certainly not all of it).
+
+In the last year I was lucky enough to be asked to port the application
+to Linux. I went from more then 30k lines of C code to sub 10k. Mostly
+because the OS takes over much of the lower level communications
+functions, but some of that savings was also because of gpsd. It allowed
+me to quit parsing NEMA stream info and just ask for what data I want.
+
+So thanks for the great app.
+
+Now on to the feature request. Most of what I've done in the last 6
+months was done on X86 systems that have an on-board RTC clock and had
+fairly easy connection to the Internet so I could run ntp-date and set
+the PC's clock on startup daily. Since gpsd appears to use the on board
+clock for the year that worked well. 
+
+Well now I'm working with a Gumstix and it does not have a RTC so it has
+no idea of time from a cold boot. Once the GPS locks the time/date is
+correct except for the year. Somewhat of a problem. Sometimes I've been
+able to run ntp-date but not always, some networks I'm working from are
+very restricted and I can't connect via ntp-date to set the time/date of
+the gumstix.
+
+Here is the request. Add a flag to gpsd that will if started as root
+once the GPS gets lock set the time/date of the PC. Then go to normal
+GPSD operations getting the year from the system clock.
+
+Is this possible or do I need to request raw data and process the nema
+data so I can set the date myself?
+
+TIA,
+
+David
+-- 
+David Mandala &lt;davidm at them dot com&gt;
+www.them.com/~davidm Public Key id: 45B2D952
+Murphy TX, 75094 214.774.2569 HO 972.693.4007 C
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="000659.html">[Gpsd-users] Any showstoppers blocking a GPSD release?
+</A></li>
+	<LI>Next message: <A HREF="000661.html">[Gpsd-users] A tail of how I use gpsd and a feature request.
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#660">[ date ]</a>
+              <a href="thread.html#660">[ thread ]</a>
+              <a href="subject.html#660">[ subject ]</a>
+              <a href="author.html#660">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

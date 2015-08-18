@@ -1,0 +1,114 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] Garmin Forerunner 305 compatibility
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2006-September/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Garmin%20Forerunner%20305%20compatibility&In-Reply-To=%3C91981b3e0609211148l17f91abfn2c8e90151e48105%40mail.gmail.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="001964.html">
+   <LINK REL="Next"  HREF="001966.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] Garmin Forerunner 305 compatibility</H1>
+    <B>Chris Kuethe</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Garmin%20Forerunner%20305%20compatibility&In-Reply-To=%3C91981b3e0609211148l17f91abfn2c8e90151e48105%40mail.gmail.com%3E"
+       TITLE="[Gpsd-users] Garmin Forerunner 305 compatibility">chris.kuethe at gmail.com
+       </A><BR>
+    <I>Thu Sep 21 20:48:57 CEST 2006</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="001964.html">[Gpsd-users] Garmin Forerunner 305 compatibility
+</A></li>
+        <LI>Next message: <A HREF="001966.html">[Gpsd-users] Garmin Forerunner 305 compatibility
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1965">[ date ]</a>
+              <a href="thread.html#1965">[ thread ]</a>
+              <a href="subject.html#1965">[ subject ]</a>
+              <a href="author.html#1965">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>On 9/21/06, Michael Robbert &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">mrobbert at gmail.com</A>&gt; wrote:
+&gt;<i> Yes, sorry I wasn't more informative in my first message, but I am currently
+</I>&gt;<i> running Ubuntu Linux 6.06. When I plug the forerunner into the USB interface
+</I>&gt;<i> I see this in dmesg
+</I>&gt;<i> [17181296.116000] garmin_gps 2-2.2:1.0: Garmin GPS usb/tty converter
+</I>&gt;<i> detected
+</I>&gt;<i> [17181296.116000] usb 2-2.2: Garmin GPS usb/tty converter now attached to
+</I>&gt;<i> ttyUSB0
+</I>
+OK, that's a fairly good sign
+
+&gt;<i> So, the driver is loaded and I have a device file to interact with. I just
+</I>&gt;<i> now found a troubleshooting guide here:
+</I>&gt;<i> <A HREF="http://gpsd.davisnetworks.com/bin/view/Main/TroubleShootingGuide">http://gpsd.davisnetworks.com/bin/view/Main/TroubleShootingGuide</A>
+</I>&gt;<i> I got to testing gpsd and this command seems to work:
+</I>&gt;<i> $ echo L | nc localhost 2947
+</I>&gt;<i> GPSD,L=2 2.30 abcdefgiklmnopqrstuvwxyz
+</I>
+GPSD version 2.30, supporting protocol level 3, with the following
+command letters.... tells you that gpsd is running, but nothing about
+any devices
+
+&gt;<i> but I'm not sure this one does:
+</I>&gt;<i> $ echo S | nc localhost 2947
+</I>&gt;<i> GPSD,S=0
+</I>
+man gpsd
+says that your fix status is 0 ... ie. no fix.
+
+But that could be because the receiver doesn't have a fix or because
+it's not transmitting anything.
+
+&gt;<i> I'm going to do a little more reading through the docs to see if I can
+</I>&gt;<i> figure out what is wrong, but if anybody can point me to some info that'll
+</I>&gt;<i> help get support added for this new device that would be greatly
+</I>&gt;<i> appreciated.
+</I>
+Step back a bit and test the hardware. My old eTrex had a menu option
+that allowed me to set the output protocol to binary, nmea, or simple
+text. You might want to set your receiver to NMEA mode, and then
+connect directly to the tty with cu/tip/minicom or some other terminal
+emulator. See if you get NMEA coming out. The point of that is to
+verify that your receiver is capable of transmitting NMEA, and that
+you can even receive it off the tty correctly.
+
+Then, in one terminal, run &quot;gpsd -n -N -D3&quot;  which will be quite
+verbose, but it'll give you a good view to what gpsd is doing while
+starting up. This includes what gpsd is able to read from the tty.
+
+CK
+
+-- 
+GDB has a 'break' feature; why doesn't it have 'fix' too?
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="001964.html">[Gpsd-users] Garmin Forerunner 305 compatibility
+</A></li>
+	<LI>Next message: <A HREF="001966.html">[Gpsd-users] Garmin Forerunner 305 compatibility
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1965">[ date ]</a>
+              <a href="thread.html#1965">[ thread ]</a>
+              <a href="subject.html#1965">[ subject ]</a>
+              <a href="author.html#1965">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

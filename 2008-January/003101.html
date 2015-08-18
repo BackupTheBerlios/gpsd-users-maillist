@@ -1,0 +1,101 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] Looks like a BUG?? was PPS 5Hz + GPSClock square	wave pulse detection indefault nmea driver
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2008-January/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Looks%20like%20a%20BUG%3F%3F%20was%20PPS%205Hz%20%2B%20GPSClock%20square%0A%09wave%20pulse%20detection%20indefault%20nmea%20driver&In-Reply-To=%3C000301c857d1%2467e680c0%24fbc31eac%40tau%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="003100.html">
+   <LINK REL="Next"  HREF="003102.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] Looks like a BUG?? was PPS 5Hz + GPSClock square	wave pulse detection indefault nmea driver</H1>
+    <B>John Arthur</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Looks%20like%20a%20BUG%3F%3F%20was%20PPS%205Hz%20%2B%20GPSClock%20square%0A%09wave%20pulse%20detection%20indefault%20nmea%20driver&In-Reply-To=%3C000301c857d1%2467e680c0%24fbc31eac%40tau%3E"
+       TITLE="[Gpsd-users] Looks like a BUG?? was PPS 5Hz + GPSClock square	wave pulse detection indefault nmea driver">lists at davey.net.au
+       </A><BR>
+    <I>Wed Jan 16 00:50:21 CET 2008</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="003100.html">[Gpsd-users] Looks like a BUG?? was PPS 5Hz + GPSClock square wave pulse detection indefault nmea driver
+</A></li>
+        <LI>Next message: <A HREF="003102.html">[Gpsd-users] Looks like a BUG?? was PPS 5Hz + GPSClock square wave pulse detection indefault nmea driver
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3101">[ date ]</a>
+              <a href="thread.html#3101">[ thread ]</a>
+              <a href="subject.html#3101">[ subject ]</a>
+              <a href="author.html#3101">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>
+&gt;<i> -----Original Message-----
+</I>&gt;<i> From: Gary E. Miller [mailto:<A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">gem at rellim.com</A>] 
+</I>&gt;<i> 
+</I>&gt;<i> Sure you do.  You can check out the SVN, or use one of the 
+</I>&gt;<i> three web code browsers here.
+</I>&gt;<i> 
+</I>&gt;<i> <A HREF="http://developer.berlios.de/svn/?group_id=2116">http://developer.berlios.de/svn/?group_id=2116</A>
+</I>&gt;<i> 
+</I>
+OK I ran 
+
+svn checkout <A HREF="http://svn.berlios.de/svnroot/repos/gpsd/trunk">http://svn.berlios.de/svnroot/repos/gpsd/trunk</A>
+
+and found the following in trunk/libgpsd_core.c
+
+            if (800000 &gt; duration
+              &amp;&amp; !session-&gt;driver.nmea.ignore_trailing_edge) {
+                /* less than 800mS, duration too short for anything */
+                gpsd_report(LOG_RAW,
+                    &quot;PPS pulse rejected too short. cycle: %d, duration: %d\n&quot;,
+                    cycle, duration);
+            } else if (cycle &gt; 999000 &amp;&amp; cycle &lt; 1001000 ) {
+                /* looks like PPS pulse or square wave */
+               if (duration &gt; 499000 &amp;&amp; duration &lt; 501000            
+                  &amp;&amp; session-&gt;driver.nmea.ignore_trailing_edge) {
+                    /* looks like 1.0 Hz square wave, ignore trailing edge */
+                    if (state == 1) {
+                         (void)ntpshm_pps(session, &amp;tv);
+
+#ifdef SIRF_ENABLE               
+        session-&gt;driver.sirf.satcounter = 0;                  
+#endif /* SIRF_ENABLE */
+
+
+Obviously I do not understand svn because the codes (bug) still there.
+
+Regards John
+
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="003100.html">[Gpsd-users] Looks like a BUG?? was PPS 5Hz + GPSClock square wave pulse detection indefault nmea driver
+</A></li>
+	<LI>Next message: <A HREF="003102.html">[Gpsd-users] Looks like a BUG?? was PPS 5Hz + GPSClock square wave pulse detection indefault nmea driver
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3101">[ date ]</a>
+              <a href="thread.html#3101">[ thread ]</a>
+              <a href="subject.html#3101">[ subject ]</a>
+              <a href="author.html#3101">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

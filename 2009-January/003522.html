@@ -1,0 +1,87 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] gpsd in VMware
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2009-January/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20gpsd%20in%20VMware&In-Reply-To=%3C20090105013928.GA25591%40thyrsus.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="003521.html">
+   <LINK REL="Next"  HREF="003526.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] gpsd in VMware</H1>
+    <B>Eric S. Raymond</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20gpsd%20in%20VMware&In-Reply-To=%3C20090105013928.GA25591%40thyrsus.com%3E"
+       TITLE="[Gpsd-users] gpsd in VMware">esr at thyrsus.com
+       </A><BR>
+    <I>Mon Jan  5 02:39:28 CET 2009</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="003521.html">[Gpsd-users] gpsd in VMware
+</A></li>
+        <LI>Next message: <A HREF="003526.html">[Gpsd-users] gpsd in VMware
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3522">[ date ]</a>
+              <a href="thread.html#3522">[ thread ]</a>
+              <a href="subject.html#3522">[ subject ]</a>
+              <a href="author.html#3522">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Mike Pilkington &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">MPilkington at lgc.com</A>&gt;:
+&gt;<i> I'm using the BackTrack 3 LiveCD (based on Slackware 12) to run Kismet with gpsd.  My GPS receiver is a TripNav BU-353 USB GPS (details at <A HREF="http://www.usglobalsat.com/p-62-bu-353-w.aspx">http://www.usglobalsat.com/p-62-bu-353-w.aspx</A>).
+</I>&gt;<i> 
+</I>&gt;<i> gpsd and Kismet work flawlessly when I boot my laptop with the BackTrack CD, insert the GPS receiver, run 'gpsd /dev/ttyUSB0', and then start Kismet.
+</I>&gt;<i> 
+</I>&gt;<i> However, what I would also like to be able to do is use this setup with VMware.  I have VMware Workstation 6.5.1.  When I do the same routine within VMware, it fails.  Interestingly, I have the older version of this GPS receiver (model BU-303; details at <A HREF="http://www.usglobalsat.com/p-395-bu303a.aspx">http://www.usglobalsat.com/p-395-bu303a.aspx</A>) and it works fine within VMware.
+</I>&gt;<i> 
+</I>&gt;<i> Below is some information on each instance.  The first set of output is from my native LiveCD boot on the laptop.  The second set is from the VMware boot.  What I notice most is the following lines missing from the VMware boot:
+</I>&gt;<i> 
+</I>&gt;<i> Dec 26 13:45:32 (none) gpsd[6193]: gpsd: switch_driver(Generic NMEA) called...
+</I>&gt;<i> Dec 26 13:45:32 (none) gpsd[6193]: gpsd: selecting Generic NMEA driver...
+</I>&gt;<i> 
+</I>&gt;<i> It seems to me that the VMware needs to switch to this Generic NMEA driver, but it is not.
+</I>&gt;<i> 
+</I>&gt;<i> Any help you can provide is much appreciated!!
+</I>
+That's really odd.  Those ,missing messages aren't emitted by VMware, but
+by gpsd.  What they mean, basically, is that the packet-getter code in
+gpsd has collected a well-formed NMEA packet from the input source and
+knows the NMEA driver is the right thing.
+
+The fact that you *don't* see those in the VMware session suggests that
+gpsd is never seeing a packet from the source at all.  I suspect you have
+some lower-level issue with your VMware serial devices getting in the way.
+-- 
+		&lt;a href=&quot;<A HREF="http://www.catb.org/~esr/">http://www.catb.org/~esr/</A>&quot;&gt;Eric S. Raymond&lt;/a&gt;
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="003521.html">[Gpsd-users] gpsd in VMware
+</A></li>
+	<LI>Next message: <A HREF="003526.html">[Gpsd-users] gpsd in VMware
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3522">[ date ]</a>
+              <a href="thread.html#3522">[ thread ]</a>
+              <a href="subject.html#3522">[ subject ]</a>
+              <a href="author.html#3522">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

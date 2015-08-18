@@ -1,0 +1,121 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] Gpsd on a Zaurus SL-C3000
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2005-March/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Gpsd%20on%20a%20Zaurus%20SL-C3000&In-Reply-To=%3CPine.LNX.4.62.0503301415080.29902%40catbert.rellim.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="000473.html">
+   <LINK REL="Next"  HREF="000477.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] Gpsd on a Zaurus SL-C3000</H1>
+    <B>Gary E. Miller</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Gpsd%20on%20a%20Zaurus%20SL-C3000&In-Reply-To=%3CPine.LNX.4.62.0503301415080.29902%40catbert.rellim.com%3E"
+       TITLE="[Gpsd-users] Gpsd on a Zaurus SL-C3000">gem at rellim.com
+       </A><BR>
+    <I>Thu Mar 31 00:23:13 CEST 2005</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="000473.html">[Gpsd-users] Gpsd on a Zaurus SL-C3000
+</A></li>
+        <LI>Next message: <A HREF="000477.html">[Gpsd-users] Gpsd on a Zaurus SL-C3000
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#474">[ date ]</a>
+              <a href="thread.html#474">[ thread ]</a>
+              <a href="subject.html#474">[ subject ]</a>
+              <a href="author.html#474">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>-----BEGIN PGP SIGNED MESSAGE-----
+Hash: SHA1
+
+Yo Russel!
+
+On Wed, 30 Mar 2005, Russell Nelson wrote:
+
+&gt;<i> Gary E. Miller writes:
+</I>&gt;<i>  &gt; I do disagree on the portability of the pack and cast method, this is
+</I>&gt;<i>  &gt; how glibc does malloc internally.  Any time you can use structures instead
+</I>&gt;<i>  &gt; of offsets you increase readability and maintainability.
+</I>&gt;<i>
+</I>&gt;<i> Exactly the opposite.  A struct is how the C compiler stores data in
+</I>&gt;<i> memory.
+</I>
+Gotta disagree with you there.  I suggest you fire up your gdb and do
+some looking at assembly language.  All the C compiler does is turn C
+code into assembly code.  Then the assembler turns that in to machine
+code.  The structs are only to make things easier on the programmer, the
+machine code always uses offsets.
+
+&gt;<i> Offsets are how the data is presented to you off the network,
+</I>&gt;<i> serial port, or disk.
+</I>
+Correct, and we use reads to get back strings of bytes.  But the data
+in the packet is logically a structure.  So it is easier and less
+error promne to use the structures.
+
+Just looks at the current SVN for gpsd.  How many of the recent bugs
+have been off by one bugs in the hand coded offsets?  Just not a
+problem is you code the structure right once.
+
+&gt;<i> The offsets don't change between architecture,
+</I>&gt;<i> compiler, and operating system, whereas the internal layout of a
+</I>&gt;<i> struct does.
+</I>
+Yes and no.  If the compiler packs the structure and the item size
+is strictly specified, then it too is consistent across machine
+architecture.  It better be, because the Garmin data is specified as
+a structure in their doc.  That only works because the structure
+definition is universal.
+
+Don't get me wrong, both can work, both generate the same machine code.
+Either can be batched by a programmer or a flakey comiler.  But the
+structs are a lot easier to read.  Do some rooting around in the
+glibc code and you will see they agree with me.
+
+RGDS
+GARY
+- ---------------------------------------------------------------------------
+Gary E. Miller Rellim 20340 Empire Blvd, Suite E-3, Bend, OR 97701
+	<A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">gem at rellim.com</A>  Tel:+1(541)382-8588 Fax: +1(541)382-8676
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v1.2.3 (GNU/Linux)
+
+iD8DBQFCSybW8KZibdeR3qURAjOcAKCvvLgYauF3IM7LdAOeYg/dRsFW4QCgrBZ2
+4GYhnyooXxyoW7WAPLjL3D8=
+=TVGF
+-----END PGP SIGNATURE-----
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="000473.html">[Gpsd-users] Gpsd on a Zaurus SL-C3000
+</A></li>
+	<LI>Next message: <A HREF="000477.html">[Gpsd-users] Gpsd on a Zaurus SL-C3000
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#474">[ date ]</a>
+              <a href="thread.html#474">[ thread ]</a>
+              <a href="subject.html#474">[ subject ]</a>
+              <a href="author.html#474">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

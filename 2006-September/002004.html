@@ -1,0 +1,130 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] PPS on RTS?
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2006-September/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20PPS%20on%20RTS%3F&In-Reply-To=%3C1159283930.4380.16.camel%40owen.mi.titan.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="002003.html">
+   <LINK REL="Next"  HREF="002006.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] PPS on RTS?</H1>
+    <B>Wallace Owen</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20PPS%20on%20RTS%3F&In-Reply-To=%3C1159283930.4380.16.camel%40owen.mi.titan.com%3E"
+       TITLE="[Gpsd-users] PPS on RTS?">wallace.owen at L-3Com.com
+       </A><BR>
+    <I>Tue Sep 26 17:18:50 CEST 2006</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="002003.html">[Gpsd-users] PPS on RTS?
+</A></li>
+        <LI>Next message: <A HREF="002006.html">[Gpsd-users] PPS on RTS?
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2004">[ date ]</a>
+              <a href="thread.html#2004">[ thread ]</a>
+              <a href="subject.html#2004">[ subject ]</a>
+              <a href="author.html#2004">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi, Dave.
+
+Have you considered that there's nothing special about DCD other than
+voltage level?  If you have _any_ GPIO pin that can be configured to
+generate an interrupt on the rising edge, run it through a ttl&lt;-&gt;232
+level shifter and direct the ISR to signal your app.
+
+And if, as the end of your email indicates, you're not committed to a
+particular GPS vendor, get yourself a variant that uses ttl signaling
+instead of rs-232 (nearly all the OEM gps modules are available this
+way) and you don't need the level shifter at all, for either data or
+PPS.
+
+
+  // Wally
+
+On Tue, 2006-09-26 at 21:30 +1000, Dave C wrote:
+&gt;<i> Hi All,
+</I>&gt;<i> 
+</I>&gt;<i> First, some background....
+</I>&gt;<i> 
+</I>&gt;<i> I'm attempting to use a Garmin 18 LVC GPS as a time reference on a small 
+</I>&gt;<i> datalogger based around the Gumsitx Basix platform.
+</I>&gt;<i> 
+</I>&gt;<i> For those that haven't dealt with the Gumstix platform, it's based around 
+</I>&gt;<i> the Intel XSCALE PXA255 microcontroller that is also found in a number of 
+</I>&gt;<i> PDAs. GPSD 2.33 cross compiles with the Gumstix ARM tools with minimal 
+</I>&gt;<i> issues and I have the Garmin 18 and GPSD talking now.
+</I>&gt;<i> 
+</I>&gt;<i> The issue is that I want to use the PPS signal from the Garmin to provide a 
+</I>&gt;<i> time sync as I've done in the past. No problems - connect it up to DCD on 
+</I>&gt;<i> the serial port and all is well.
+</I>&gt;<i> 
+</I>&gt;<i> WRONG!
+</I>&gt;<i> 
+</I>&gt;<i> The XSCALE processor has four serial ports - but only one of them (the 
+</I>&gt;<i> FFUART - Full Function UART) has a full complement of serial port I/O. All 
+</I>&gt;<i> the others only have TxD/RxD/RTS/CTS. And the Gumstix designers didn't 
+</I>&gt;<i> bring out the FFUART DCD line onto their I/O connector....so I have no 
+</I>&gt;<i> access to the DCD line.
+</I>&gt;<i> 
+</I>&gt;<i> My question(s)
+</I>&gt;<i> 1. Has anyone else had thoughts about using the RTS line for the PPS 
+</I>&gt;<i> signal? I'm not sure if the Linux serial driver would allow it though. If 
+</I>&gt;<i> this is thought possible, any pointers to the PPS section(s) in the code 
+</I>&gt;<i> would be useful and I'll have a hack at it.
+</I>&gt;<i> 
+</I>&gt;<i> 2. Would I be better dropping the the Garmin and going to a SiRF based GPS? 
+</I>&gt;<i> I recall a passing mention in my trawling though the mailing lists that 
+</I>&gt;<i> using a binary protocol will allow greater time accuracy without using a 
+</I>&gt;<i> PPS signal? Is this true or am I confused?
+</I>&gt;<i> 
+</I>&gt;<i> 3. Am I completely hosed in trying to get accurate time-keeping without 
+</I>&gt;<i> access to a full-function serial port?
+</I>&gt;<i> 
+</I>&gt;<i> Any thoughts or pointers would be muchly appreciated.
+</I>&gt;<i> 
+</I>&gt;<i> 
+</I>&gt;<i> ciao, Dave
+</I>&gt;<i> 
+</I>&gt;<i> _______________________________________________
+</I>&gt;<i> Gpsd-users mailing list
+</I>&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">Gpsd-users at lists.berlios.de</A>
+</I>&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">https://lists.berlios.de/mailman/listinfo/gpsd-users</A>
+</I>-- 
+Your eyes are weary from staring at the CRT.  You feel sleepy.  Notice
+how restful it is to watch the cursor blink.  Close your eyes.  The   
+opinions stated above are yours.  You cannot imagine why you ever felt
+otherwise.
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="002003.html">[Gpsd-users] PPS on RTS?
+</A></li>
+	<LI>Next message: <A HREF="002006.html">[Gpsd-users] PPS on RTS?
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2004">[ date ]</a>
+              <a href="thread.html#2004">[ thread ]</a>
+              <a href="subject.html#2004">[ subject ]</a>
+              <a href="author.html#2004">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

@@ -1,0 +1,111 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] Unknown Sentences $IIMWV and $IIVWR
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2007-May/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Unknown%20Sentences%20%24IIMWV%20and%20%24IIVWR&In-Reply-To=%3CPine.LNX.4.64.0705062213160.21145%40birdbird.example.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="002603.html">
+   <LINK REL="Next"  HREF="002606.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] Unknown Sentences $IIMWV and $IIVWR</H1>
+    <B>Matt Roberds</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Unknown%20Sentences%20%24IIMWV%20and%20%24IIVWR&In-Reply-To=%3CPine.LNX.4.64.0705062213160.21145%40birdbird.example.com%3E"
+       TITLE="[Gpsd-users] Unknown Sentences $IIMWV and $IIVWR">mattroberds at cox.net
+       </A><BR>
+    <I>Mon May  7 06:00:36 CEST 2007</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="002603.html">[Gpsd-users] Unknown Sentences $IIMWV and $IIVWR
+</A></li>
+        <LI>Next message: <A HREF="002606.html">[Gpsd-users] Unknown Sentences $IIMWV and $IIVWR
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2605">[ date ]</a>
+              <a href="thread.html#2605">[ thread ]</a>
+              <a href="subject.html#2605">[ subject ]</a>
+              <a href="author.html#2605">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>On Sun, 6 May 2007, Mark Easton wrote:
+&gt;<i> I have a wind transmitter hooked up to a TackTick wireless interface
+</I>&gt;<i> which is passing through wind NMEA sentences $IIMWV and $IIVWR which
+</I>&gt;<i> GPSD says is unknown. This is a newby question I guess ... what do I
+</I>&gt;<i> do next to be able to use the data from these sentences (wind
+</I>&gt;<i> direction, wind velocity)?
+</I>
+I can think of two ways.
+
+The &quot;quick&quot; way is to let gpsd initialize the TackTick/GPS combination,
+and then have your code tell gpsd &quot;r1&quot; to get the raw sentences.  Then
+it's up to your code to parse the $IIMWV and $IIVWR sentences that gpsd
+doesn't understand.  I _think_ that you can do this and still use gpsd's
+'o' command to get a nice parsed version of the GPS information that
+gpsd does understand.  This is not the Right Thing (tm) to do (see
+<A HREF="http://gpsd.berlios.de/faq.html#why_not_parse_nmea">http://gpsd.berlios.de/faq.html#why_not_parse_nmea</A> ) but can probably be
+implemented relatively quickly if you know how to code.
+
+The &quot;correct&quot; way is to add parsing for the MWV and VWR sentences to
+gpsd, and then either add a gpsd protocol command or add fields to an
+existing command (probably 'o') so your code can get the new information
+about wind speed and direction.  There is a little discussion about this
+at <A HREF="http://gpsd.berlios.de/hacking.html#designahead">http://gpsd.berlios.de/hacking.html#designahead</A> .  This is a little
+more complicated to code, but more importantly requires some gpsd
+implementation decisions to be made.  That's not a bad thing in and of
+itself, but the process is not totally under your control... you have to
+get a bunch of hackers to agree on something.  :)
+
+In either case, there is one thing you can do that will help: log some
+$IIMWV and $IIVWR messages for test purposes.  Probably the simplest way
+to do this is to hook up minicom (or equal) as was previously discussed,
+tell it to log to a file, and let it rip for a while.  Preferably, while
+the logging is happening, you would also sail around, or drive around,
+or twirl the weather vane and anemometer cups yourself to provide some
+variation in the data.  Once you have some test data in a file, you (or
+anyone else you give the file to) can use the gpsfake command to feed
+the data in the file into gpsd, as if the data was actually coming from
+the TackTick/GPS combination.  This lets you debug your code without
+having to go sailing again.  (On the other hand, perhaps going sailing
+is a feature.  &quot;Sorry, honey, I have to go debug some code again.&quot; *)
+
+Matt Roberds
+
+* I work with a bunch of mechanical engineers and I keep trying to
+convince them that we need to investigate the effect of salt-water
+corrosion on thin-wall aluminum cylinders in the presence of organic
+solvents.  I think they like the idea but feel that the boss is smart
+enough to decode that and turn down the funding request to go drink
+beer on the beach.
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="002603.html">[Gpsd-users] Unknown Sentences $IIMWV and $IIVWR
+</A></li>
+	<LI>Next message: <A HREF="002606.html">[Gpsd-users] Unknown Sentences $IIMWV and $IIVWR
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2605">[ date ]</a>
+              <a href="thread.html#2605">[ thread ]</a>
+              <a href="subject.html#2605">[ subject ]</a>
+              <a href="author.html#2605">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

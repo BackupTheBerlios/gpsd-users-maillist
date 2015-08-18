@@ -1,0 +1,145 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] Lost packet problem
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2005-July/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Lost%20packet%20problem&In-Reply-To=%3C42EABE6D.3050707%40boilerbots.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="000903.html">
+   <LINK REL="Next"  HREF="000906.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] Lost packet problem</H1>
+    <B>maillist</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Lost%20packet%20problem&In-Reply-To=%3C42EABE6D.3050707%40boilerbots.com%3E"
+       TITLE="[Gpsd-users] Lost packet problem">maillist at boilerbots.com
+       </A><BR>
+    <I>Sat Jul 30 01:40:29 CEST 2005</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="000903.html">[Gpsd-users] Date, waypoints
+</A></li>
+        <LI>Next message: <A HREF="000906.html">[Gpsd-users] Lost packet problem
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#905">[ date ]</a>
+              <a href="thread.html#905">[ thread ]</a>
+              <a href="subject.html#905">[ subject ]</a>
+              <a href="author.html#905">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hey Eric,
+
+I hope this isn't another lack of sleep bug, but here is a problem that 
+I am seeing.
+
+I got this gps that outputs sentences at 20Hz. So with several of the 
+sentences turned on the data rate is getting pretty high and constant.
+
+What I see it that the function packet_parse() has a problem with the 
+high data rate. The while loop will proceed through the data that was 
+read in and then get out when it runs out of data. If it finds a match 
+then it removes that data and then usually exits the loop because there 
+isn't enough data for anything else to happen.
+
+Sometimes in my situation it happes that what is just read into the 
+buffer is the final remaining piece of one sentence and the a whole 
+complete new sentence (this usually occurs when the next sentence is a 
+short one). When this happens the while loop with identify the end of 
+the first sentence and accept the data but it will then continue in the 
+while loop and accept the next sentence, causing the previous one to be 
+lost.
+
+Normally this almost goes un-noticed except when it happens during a GSA 
+or other multi-part message. Sometimes one piece of the GSA is lost and 
+then poof, gpsd exits.
+
+You can probably solve this gracefully I hope. Meanwhile I am going to 
+hack on it.
+
+I am including some output showing where this failure occurred. You will 
+see the packet accepted, discarded then another immediately accepted and 
+discarded. Only the final packet is sent out, the GSV 3rd sentence, 
+loosing the 2nd sentence.
+
+Thanks,
+Curt
+
+gpsd: Read 11 chars to buffer offset 59 (total 70): 3331372c33312a37340d0a
+gpsd: Packet type 0 accepted 70 = 
+2447504753562c332c312c31302c30322c32362c3035332c34372c33302c36352c3232342c34372c31302c35312c3037362c34382c30362c35362c3331372c33312a37340d0a 
+
+gpsd: Packet discard of 70, chars remaining is 0 =
+gpsd: &lt;= GPS: 
+$GPGSV,3,1,10,02,26,053,47,30,65,224,47,10,51,076,48,06,56,317,31*74
+gpsd: Partial satellite data (1 of 3).
+gpsd: GPGSA pdop=2.200000 hdop=1.200000 vdop=1.800000
+gpsd: Read 12 chars to buffer offset 0 (total 12): 2447504753562c332c322c31
+gpsd: New data, not a packet.
+gpsd: Read 11 chars to buffer offset 12 (total 23): 302c32312c33322c323438
+gpsd: New data, not a packet.
+gpsd: Read 11 chars to buffer offset 23 (total 34): 2c34322c30352c33392c31
+gpsd: New data, not a packet.
+gpsd: Read 12 chars to buffer offset 34 (total 46): 
+37352c34322c32352c30382c
+gpsd: New data, not a packet.
+gpsd: Read 12 chars to buffer offset 46 (total 58): 
+3239342c30302c32392c3033
+gpsd: New data, not a packet.
+gpsd: Read 57 chars to buffer offset 58 (total 115): 
+2c3132362c30302a37340d0a2447504753562c332c332c31302c34372c31352c3235302c33382c33352c30392c3130342c30302a37390d0a24 
+
+gpsd: Packet type 0 accepted 70 = 
+2447504753562c332c322c31302c32312c33322c3234382c34322c30352c33392c3137352c34322c32352c30382c3239342c30302c32392c30332c3132362c30302a37340d0a 
+
+gpsd: Packet discard of 70, chars remaining is 45 = 
+2447504753562c332c332c31302c34372c31352c3235302c33382c33352c30392c3130342c30302a37390d0a24 
+
+gpsd: Packet type 0 accepted 44 = 
+2447504753562c332c332c31302c34372c31352c3235302c33382c33352c30392c3130342c30302a37390d0a 
+
+gpsd: Packet discard of 44, chars remaining is 1 = 24
+gpsd: &lt;= GPS: $GPGSV,3,3,10,47,15,250,38,35,09,104,00*79
+gpsd: Satellite data OK.
+gpsd: GPGSA pdop=2.200000 hdop=1.200000 vdop=1.800000
+gpsd: Satellite count 10 != PRN count 6
+gpsd: =&gt; client(4): GPSD,Y=GSV ? 10:2 26 53 47 1:30 65 224 47 1:10 51 76 
+48 1:6 56 317 31 1:47 15 250 38 1:35 9 104 0 0:
+gpsd: Read 34 chars to buffer offset 1 (total 35): 
+4750524d432c3039333930362e30302c412c333731332e34343839362c4e2c313231
+gpsd: New data, not a packet.
+gpsd: Read 12 chars to buffer offset 35 (total 47): 
+34352e39393533372c572c30
+gpsd: New data, not a packet.
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="000903.html">[Gpsd-users] Date, waypoints
+</A></li>
+	<LI>Next message: <A HREF="000906.html">[Gpsd-users] Lost packet problem
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#905">[ date ]</a>
+              <a href="thread.html#905">[ thread ]</a>
+              <a href="subject.html#905">[ subject ]</a>
+              <a href="author.html#905">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

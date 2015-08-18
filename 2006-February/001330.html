@@ -1,0 +1,168 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] u-blox Antaris with strange NMEA &quot;dialect&quot;
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2006-February/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20u-blox%20Antaris%20with%20strange%20NMEA%20%22dialect%22&In-Reply-To=%3C43F9CD03.1090008%40fela.ch%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="001349.html">
+   <LINK REL="Next"  HREF="001331.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] u-blox Antaris with strange NMEA &quot;dialect&quot;</H1>
+    <B>Andreas Stricker</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20u-blox%20Antaris%20with%20strange%20NMEA%20%22dialect%22&In-Reply-To=%3C43F9CD03.1090008%40fela.ch%3E"
+       TITLE="[Gpsd-users] u-blox Antaris with strange NMEA &quot;dialect&quot;">andreas.stricker at fela.ch
+       </A><BR>
+    <I>Mon Feb 20 15:06:59 CET 2006</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="001349.html">[Gpsd-users] Possible bug in gpsd-2.30
+</A></li>
+        <LI>Next message: <A HREF="001331.html">[Gpsd-users] u-blox Antaris with strange NMEA &quot;dialect&quot;
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1330">[ date ]</a>
+              <a href="thread.html#1330">[ thread ]</a>
+              <a href="subject.html#1330">[ subject ]</a>
+              <a href="author.html#1330">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi
+
+I recently played a bit with gpsd and u-blox NMEA Mode:
+
+ &gt; 1. Name (preferably with a URL to the vendor's product page or
+ &gt; spec sheet).
+
+ublox
+<A HREF="http://www.u-blox.de/products/antaris.html">http://www.u-blox.de/products/antaris.html</A>
+
+ &gt; 2. Chipset.  Ideally we'd like to know both the GPS engine chip and
+ &gt; the USB-to-serial chip the device uses.  80% of the time this will be
+ &gt; SiRF-II + PL2303, but it's the exceptions that are interesting.
+
+Antaris
+
+ &gt; 3. Interface type -- RS232, USB, CF, etc.
+
+RS232
+
+ &gt; 4. Vendor (preferably with a URL to the vendor's website).
+
+ublox
+<A HREF="http://www.u-blox.de/">http://www.u-blox.de/</A>
+
+ &gt; 5. gpsd type -- usually this will be 'n'.  If you had to specify
+ &gt; a non-NMEA driver type to make gpsd work, give it.
+
+n
+
+ &gt; 6. Version of gpsd you tested with.
+
+gpsd 2.13 (from debian sarge)
+
+ &gt; 7. NMEA protocol version.
+
+don't know exactly
+
+ &gt; 8. List of NMEA sentences the GPS emits.
+
+with deactivated GSA:
+
+$GPRMC,153739.00,A,4741.21478,N,00844.97006,E,0.000,0.00,160206,,,E*6D
+$GPVTG,0.00,T,,M,0.000,N,0.000,K,E*39
+$GPGGA,153739.00,4741.21478,N,00844.97006,E,6,0,0.72,408.5,M,48.0,M,,*6F
+$GPGSV,4,1,13,24,24,296,40,01,54,081,48,20,64,259,49,28,09,266,36*75
+$GPGSV,4,2,13,14,24,043,44,11,81,150,47,25,15,105,41,33,30,211,41*71
+$GPGSV,4,3,13,17,30,309,43,23,19,191,43,37,31,164,41,39,33,158,40*71
+$GPGSV,4,4,13,19,21,172,46*46
+
+with activated GSA (but no signal):
+
+$GPRMC,093712.00,A,4741.21478,N,00844.97006,E,0.000,0.00,170206,,,E*68
+$GPVTG,0.00,T,,M,0.000,N,0.000,K,E*39
+$GPGGA,093712.00,4741.21478,N,00844.97006,E,6,0,99.99,418.1,M,48.0,M,,*5B
+$GPGSA,A,E,,,,,,,,,,,,,99.99,99.99,99.99*44
+$GPGSV,1,1,00*79
+
+with activated GSA (an good signal):
+
+$GPRMC,115720.00,A,4741.21763,N,00844.96548,E,0.000,0.00,170206,,,E*61
+$GPVTG,0.00,T,,M,0.000,N,0.000,K,E*39
+$GPGGA,115720.00,4741.21763,N,00844.96548,E,6,7,1.32,407.1,M,48.0,M,,*6B
+$GPGSA,A,E,03,22,18,33,15,19,16,,,,,,2.55,1.32,2.18*7C
+$GPGSV,4,1,13,03,85,185,42,21,12,069,,11,08,261,,08,06,323,28*7E
+$GPGSV,4,2,13,14,05,135,,27,04,298,,22,61,109,39,18,37,055,39*7A
+$GPGSV,4,3,13,26,02,015,,33,30,211,34,15,37,064,39,19,50,301,40*7B
+$GPGSV,4,4,13,16,23,184,40*44
+
+ &gt; 9. Notes -- anything interesting or unusual about this GPS.
+
+I noticed that even if the GPS Signal was good and the position right,
+gpsd never send a position but said there is &quot;no fix&quot;. So I found out
+that the GPS send an invalid GSA record with the character 'E' at the
+second field. NMEA 0183 defines just the values '1', '2' and '3'.
+Looking at nmea_parse.c I found out that the field is converted by
+atoi() to an int, resulting in 0 if there is a 'E' character. This
+sets the mode to zero resulting in &quot;no fix&quot; mode.
+
+My first attempt was to disable the GSA record at all (with the u-blox
+software). This solution works. But thinking about 100 devices
+spread in busses I really don't want to manually change all of those.
+I thing about a software modification in nmea_parse.c that will do
+something like setting the mode to 2 or 3 if it found the 'E'.
+
+A similar problem occurs at the GGA record: The status field returns
+not &quot;0&quot; (no fix), &quot;1&quot; (GPS), &quot;2&quot; (DGPS) but &quot;6&quot;! don't know what this
+means, but finally it results in an unknown situation.
+
+Here is a quick and dirty hack for the mode problem:
+
+--- /tmp/testgps/nmea_parse.c   2005-02-22 00:14:58.000000000 +0100
++++ gpsd-2.13/nmea_parse.c      2006-02-17 13:30:57.000000000 +0100
+@@ -385,6 +385,8 @@
+      int i, changed = 0;
+
+      out-&gt;mode_stamp.changed = update_field_i(field[2], &amp;out-&gt;mode);
++    if ( toupper(field[2][0]) == 'E' )
++        out-&gt;mode = 2;
+      REFRESH(out-&gt;mode_stamp);
+      gpsd_report(3, &quot;GPGSA sets mode %d\n&quot;, out-&gt;mode);
+      changed |= update_field_f(field[15], &amp;out-&gt;pdop);
+
+
+I continue to work at this. You'll hear from me.
+
+Cheers, Andy
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="001349.html">[Gpsd-users] Possible bug in gpsd-2.30
+</A></li>
+	<LI>Next message: <A HREF="001331.html">[Gpsd-users] u-blox Antaris with strange NMEA &quot;dialect&quot;
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1330">[ date ]</a>
+              <a href="thread.html#1330">[ thread ]</a>
+              <a href="subject.html#1330">[ subject ]</a>
+              <a href="author.html#1330">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

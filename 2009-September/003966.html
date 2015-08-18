@@ -1,0 +1,113 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] How to start gpsd with fix baud rate of	serial	interface
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2009-September/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20How%20to%20start%20gpsd%20with%20fix%20baud%20rate%20of%0A%09serial%09interface&In-Reply-To=%3C20090925051810.GA29997%40thyrsus.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="003965.html">
+   <LINK REL="Next"  HREF="003967.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] How to start gpsd with fix baud rate of	serial	interface</H1>
+    <B>Eric S. Raymond</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20How%20to%20start%20gpsd%20with%20fix%20baud%20rate%20of%0A%09serial%09interface&In-Reply-To=%3C20090925051810.GA29997%40thyrsus.com%3E"
+       TITLE="[Gpsd-users] How to start gpsd with fix baud rate of	serial	interface">esr at thyrsus.com
+       </A><BR>
+    <I>Fri Sep 25 07:18:10 CEST 2009</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="003965.html">[Gpsd-users] How to start gpsd with fix baud rate	of	serial	interface
+</A></li>
+        <LI>Next message: <A HREF="003967.html">[Gpsd-users] How to start gpsd with fix baud rate of serial	interface
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3966">[ date ]</a>
+              <a href="thread.html#3966">[ thread ]</a>
+              <a href="subject.html#3966">[ subject ]</a>
+              <a href="author.html#3966">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Diego Berge &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">gpsd at navlost.eu</A>&gt;:
+&gt;<i> 
+</I>&gt;<i> Eric S. Raymond wrote:
+</I>&gt;<i> &gt; I'm concerned about false positive OKs.  It's only a two-character
+</I>&gt;<i> &gt; string; that means it's going to show up in random baud barf
+</I>&gt;<i> &gt; approximately once in every 65K characters...which may sound like a
+</I>&gt;<i> &gt; lot until you realize that at 9600bps it's just once every 68 seconds.
+</I>&gt;<i> 
+</I>&gt;<i>    ...while I have no stakes in this, I would like to point out that,
+</I>&gt;<i> strictly, the modem should be returning &quot;OK\r&quot; (IIRC), so that
+</I>&gt;<i> particular string would be seen once every about 4:50 hours. Of course,
+</I>&gt;<i> most serial devices don't just sit there sending random uniformly
+</I>&gt;<i> distributed 8 bit characters :)
+</I>
+They do if, like gpsd, you're running a hunt loop through various
+possible speeds and mode settings.  I actually don't know of any more
+effective way to encounter random baud barf than this. :-) You're
+right that the distribution might be nonrandom, but the nonrandomness
+could just as easily make the odds worse instead of better.
+
+And even 4.5 hours mean time between possible false positives is bad
+compared to the odds from CRC-32 checks, which essentially *never*
+fail - you'd need the noise burst to be spread out over more than, hm, I
+think it's 23 consecutive bits, and that doesn't happen on serial 
+lines that are even approximately functional.  
+
+When I said that potential tests had a really high reliability bar to
+climb over I wasn't kidding. If a probe is going to actually decrease the 
+expected time between false positives or false negatives, I don't want it;
+maximum time before throwing the device back in the pool with our
+existing method is not in my judgement long enough to justify taking on
+increased risk of failure to shorten it.
+
+&gt;<i>    What I don't like about the idea of detecting modems is that I don't
+</I>&gt;<i> see how that can be useful to gpsd, other than deciding that it's
+</I>&gt;<i> possibly not a GPS device
+</I>
+In principle that could be useful enough by itself, by shortening the time
+before gpsd gives up on the device.
+
+&gt;<i>                       (unless you are dealing with a Thuraya phone,
+</I>&gt;<i> which will respond to an &quot;AT\r&quot; as a modem, but will also give you its
+</I>&gt;<i> GPS position given the right AT command).  Detecting what specific
+</I>&gt;<i> device is on the serial port belongs somewhere else.
+</I>
+Probably in the HAL demon.  Back when that project was launching the
+lead tried to talk me into letting gpsd be subsumed into it.  I told him no,
+as I didn't want my nice clean small daemon to disappear into a gigantic
+gooey hairball of unmaintainable code.  But if HAL actually did that kind of
+device-fingerprint detection reliably I would happily outsource the job to it.
+-- 
+		&lt;a href=&quot;<A HREF="http://www.catb.org/~esr/">http://www.catb.org/~esr/</A>&quot;&gt;Eric S. Raymond&lt;/a&gt;
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="003965.html">[Gpsd-users] How to start gpsd with fix baud rate	of	serial	interface
+</A></li>
+	<LI>Next message: <A HREF="003967.html">[Gpsd-users] How to start gpsd with fix baud rate of serial	interface
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3966">[ date ]</a>
+              <a href="thread.html#3966">[ thread ]</a>
+              <a href="subject.html#3966">[ subject ]</a>
+              <a href="author.html#3966">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

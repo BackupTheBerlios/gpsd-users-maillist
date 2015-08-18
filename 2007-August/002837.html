@@ -1,0 +1,118 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] gpsd opens multiple ports
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2007-August/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20gpsd%20opens%20multiple%20ports&In-Reply-To=%3C46CC577F.4AAF.00BD.0%40cavs.msstate.edu%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="002836.html">
+   <LINK REL="Next"  HREF="002838.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] gpsd opens multiple ports</H1>
+    <B>Marshall Crocker</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20gpsd%20opens%20multiple%20ports&In-Reply-To=%3C46CC577F.4AAF.00BD.0%40cavs.msstate.edu%3E"
+       TITLE="[Gpsd-users] gpsd opens multiple ports">crocker at cavs.msstate.edu
+       </A><BR>
+    <I>Wed Aug 22 22:34:23 CEST 2007</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="002836.html">[Gpsd-users] gpsfake logfiles?
+</A></li>
+        <LI>Next message: <A HREF="002838.html">[Gpsd-users] Source in tar.gz
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2837">[ date ]</a>
+              <a href="thread.html#2837">[ thread ]</a>
+              <a href="subject.html#2837">[ subject ]</a>
+              <a href="author.html#2837">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>I will try to get some debug output but it may take some time since  gpsd is running on 8 embedded devices that are in vehicles in the field. I see this on at least 3 of them every day. Here is what I periodically see with lsof when this happens:
+
+vcom      1346   root    7u      CHR       4,65          1006 /dev/ttyS1
+vcom      1816   root    7u      CHR       4,65          1006 /dev/ttyS1
+vcom      1817   root    7u      CHR       4,65          1006 /dev/ttyS1
+vcom      1818   root    7u      CHR       4,65          1006 /dev/ttyS1
+vcom      1819   root    7u      CHR       4,65          1006 /dev/ttyS1
+vcom      1820   root    7u      CHR       4,65          1006 /dev/ttyS1
+gpsd      1979 nobody    5u      CHR       4,64          1003 /dev/ttyS0
+gpsd      1979 nobody    7u      CHR       4,65          1006 /dev/ttyS1
+
+vcom is my multithreaded app that connects to gpsd.  /dev/ttyS1 is where the vehicle diagnostic interface is connected and /dev/ttyS0 is the gps.  gpsd is started with  /usr/local/sbin/gpsd -P /var/run/gpsd.pid /dev/ttyS0.
+
+I will let you know once I get some debug output.
+
+Thanks for the help!
+Marshall
+
+
+&gt;&gt;&gt;<i> &quot;Chris Kuethe&quot; &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">chris.kuethe at gmail.com</A>&gt; 8/21/2007 10:42 AM &gt;&gt;&gt;
+</I>Huh. That's really odd. GPSD does not aggressively attempt to attach
+all devices - only the ones you tell it to.
+
+If I'm reading you right, you're doing something like
+        gpsd [flags] /dev/ttyS0
+but somehow ttyS1 is also opened...
+
+The only way I could see that happening is if you're also running with
+-F /path/to/gpsd.sock, and perhaps your system's hotplug system is
+telling gpsd to also open ttyS1.
+
+Could you turn on more logging - perhaps this might reveal why gpsd
+opened ttyS1 too...
+
+CK
+
+On 8/21/07, Marshall Crocker &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">crocker at cavs.msstate.edu</A>&gt; wrote:
+&gt;<i> I'm having a problem with gpsd opening multiple ports.  I have a gps connected to ttyS0 and a vehicle diagnostic interface on ttyS1 that uses an ASCII protocol.  Even though I start gpsd with /dev/ttyS0, sometimes gpsd will open both ttyS0 and ttyS1.  I assume I need to compile with --disable-reconfigure to fix this?
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i> Marshall
+</I>&gt;<i>
+</I>&gt;<i> _______________________________________________
+</I>&gt;<i> Gpsd-users mailing list
+</I>&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">Gpsd-users at lists.berlios.de</A> 
+</I>&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">https://lists.berlios.de/mailman/listinfo/gpsd-users</A> 
+</I>&gt;<i>
+</I>
+
+-- 
+GDB has a 'break' feature; why doesn't it have 'fix' too?
+_______________________________________________
+Gpsd-users mailing list
+<A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">Gpsd-users at lists.berlios.de</A> 
+<A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">https://lists.berlios.de/mailman/listinfo/gpsd-users</A> 
+
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="002836.html">[Gpsd-users] gpsfake logfiles?
+</A></li>
+	<LI>Next message: <A HREF="002838.html">[Gpsd-users] Source in tar.gz
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2837">[ date ]</a>
+              <a href="thread.html#2837">[ thread ]</a>
+              <a href="subject.html#2837">[ subject ]</a>
+              <a href="author.html#2837">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

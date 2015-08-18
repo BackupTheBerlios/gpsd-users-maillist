@@ -1,0 +1,121 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] qtGPSc -- new version 0.2.0
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2007-December/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20qtGPSc%20--%20new%20version%200.2.0&In-Reply-To=%3C476F8659.6070100%40nippur.net%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="003046.html">
+   <LINK REL="Next"  HREF="003042.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] qtGPSc -- new version 0.2.0</H1>
+    <B>Diego Berge</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20qtGPSc%20--%20new%20version%200.2.0&In-Reply-To=%3C476F8659.6070100%40nippur.net%3E"
+       TITLE="[Gpsd-users] qtGPSc -- new version 0.2.0">gpsd at nippur.net
+       </A><BR>
+    <I>Mon Dec 24 11:13:45 CET 2007</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="003046.html">[Gpsd-users] qtGPSc -- new version 0.2.0
+</A></li>
+        <LI>Next message: <A HREF="003042.html">[Gpsd-users] [Gpsd-dev] qtGPSc -- gpsd graphical interface (Qt	version of xgps )
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3047">[ date ]</a>
+              <a href="thread.html#3047">[ thread ]</a>
+              <a href="subject.html#3047">[ subject ]</a>
+              <a href="author.html#3047">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Claus,
+
+   thanks for taking the time to test the application.
+
+Claus Olesen wrote:
+&gt;<i> I tried it (with gpsd 2.34).
+</I>
+   That's encouraging.  I tested successfully with the libgps.so from 2.36.
+
+&gt;<i> 1. no-jitter - clicked the option but not sure what to look for. But 
+</I>&gt;<i> the &quot;Speed&quot; and &quot;Bearing&quot; fields are not blanked between updates.
+</I>
+   Yep, I think that's it.  One can see the effect when using at least
+some receivers in NMEA mode, where between updates some of the fields
+keep getting blanked as you describe--receivers which give an atomic PVT
+report will not show any difference.  In terms of user interface, the
+user knows whether no-jitter is on or off by looking at the toggle
+status of the relevant menu option, and obviously, by receiving a
+satisfactory display without &quot;blinking&quot; fields (the only exception to
+this would be if moving at a steady slow speed--the client has a min.
+speed threshold below which the GPS unit will appear as stationary.)
+
+   For reference, what the no-jitter option does is send a &quot;j1&quot; command
+to the daemon, either when clicked on, or when first connecting if it
+was already on. Conversely, it sends &quot;j0&quot; when clicked off.
+
+   Note that if you are streaming raw data (Raw Data -&gt; Format -&gt; GPSD)
+the no-jitter option has no effect on it.  This is by design, but not
+sure whether I made the correct decision--comments one way or the other
+are welcome (btw, it works that way because the raw data stream is in
+reality a completely independent connection to the gpsd server).
+
+&gt;<i> 2. copy position as text and KML. Both work. Nice. (Paste &quot;Copy Position&quot; 
+</I>&gt;<i> directly into the input field of Google Maps. Save &quot;Copy as KML&quot; to 
+</I>&gt;<i> somefile.KML and open in Google Earth)
+</I>
+   Good to know it works.  When using &quot;Copy As KML&quot;, you should be able
+to paste the selection directly rather than save to a file (although
+that is certainly an option).  Try for example, selecting the &quot;Temporary
+Places&quot; folder in the GEarth side pane, then press Ctrl+V (or Paste from
+either the context or the edit menu).
+
+&gt;<i> 3. gps data source as commandline argument. both work. <A HREF="gpsd://gpsd.rellim.com">gpsd://gpsd.rellim.com</A> 
+</I>&gt;<i> is from Bend, OR. qtgpsc /dev/rfcomm0 works but the &quot;Device&quot; dropdown list 
+</I>&gt;<i> lists 2 (identical) &quot;dev/rfcomm0&quot; entries.
+</I>
+   Aha.  Thanks for that.  I couldn't run a gpsd locally last night so
+was unable to test, and by reading the code I made the mistaken
+assumption that upon connecting it would clear the device list before
+repopulating.  I'll fix that.
+
+   Another thing I haven't been able to test is whether the device combo
+actually works when more than one gps is attached to the daemon.  If
+anyone finds it doesn't please drop me a line.
+
+   Cheers for the link to the Mapper thingy btw, I'll have a play with it.
+
+Regards,
+Diego Berge.
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="003046.html">[Gpsd-users] qtGPSc -- new version 0.2.0
+</A></li>
+	<LI>Next message: <A HREF="003042.html">[Gpsd-users] [Gpsd-dev] qtGPSc -- gpsd graphical interface (Qt	version of xgps )
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3047">[ date ]</a>
+              <a href="thread.html#3047">[ thread ]</a>
+              <a href="subject.html#3047">[ subject ]</a>
+              <a href="author.html#3047">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

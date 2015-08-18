@@ -1,0 +1,167 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] Gpsd on a Zaurus SL-C3000
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2005-April/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Gpsd%20on%20a%20Zaurus%20SL-C3000&In-Reply-To=%3C200503312212.08413.john%40jsjf.demon.co.uk%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   
+   <LINK REL="Next"  HREF="000513.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] Gpsd on a Zaurus SL-C3000</H1>
+    <B>John Foster</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Gpsd%20on%20a%20Zaurus%20SL-C3000&In-Reply-To=%3C200503312212.08413.john%40jsjf.demon.co.uk%3E"
+       TITLE="[Gpsd-users] Gpsd on a Zaurus SL-C3000">john at jsjf.demon.co.uk
+       </A><BR>
+    <I>Fri Apr  1 00:12:08 CEST 2005</I>
+    <P><UL>
+        
+        <LI>Next message: <A HREF="000513.html">[Gpsd-users] Gpsd on a Zaurus SL-C3000
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#512">[ date ]</a>
+              <a href="thread.html#512">[ thread ]</a>
+              <a href="subject.html#512">[ subject ]</a>
+              <a href="author.html#512">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>On Thursday 31 March 2005 7:41 pm, Gary E. Miller wrote:
+&gt;<i> Yo Eric!
+</I>&gt;<i>
+</I>&gt;<i> On Thu, 31 Mar 2005, Eric S. Raymond wrote:
+</I>&gt;<i> &gt; Gary E. Miller &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">gem at rellim.com</A>&gt;:
+</I>&gt;<i> &gt; &gt; Once again, if the compiler observes pragma pack then this does not
+</I>&gt;<i> &gt; &gt; apply.  Can someone prove the Zaurus CC is so brain dead it does not
+</I>&gt;<i> &gt; &gt; have a pragma pack?  Can someone find ANY modern compiler that does not
+</I>&gt;<i> &gt; &gt; observer pragma pack in some form?
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; Well, first, I thought we already had a bug report indicating that zgcc
+</I>&gt;<i> &gt; chokes on #pragma pack.
+</I>&gt;<i>
+</I>&gt;<i> No.  We have a report the zgcc issues a warning on a cast.
+</I>&gt;<i>
+</I>&gt;<i> &quot;warning: cast increases required alignment of target type&quot;
+</I>
+I hadn't intended to return to this thread until I had some substantive 
+progress to report, but I just read 86 mails from this list after a brief 
+absence, and most of them seem to have been started by my original post :-(
+
+Gary, can I just confirm that your comment there is exactly what I meant to 
+say. I didn't report a bug (at least, not in that part of the message), I 
+only wanted to add to the record a report from an architecture that didn't 
+seem to have been written about. Since the warnings were given, I mentioned 
+them.
+
+I'm nervous about raising my head at all in this expert company, but perhaps I 
+can introduce a quote from 'info gcc' about what that warning means:
+
+`-Wcast-align'
+     Warn whenever a pointer is cast such that the required alignment
+     of the target is increased.  For example, warn if a `char *' is
+     cast to an `int *' on machines where integers can only be accessed
+     at two- or four-byte boundaries.
+
+To me, that says the compiler will issue the warning, even if it's possible to 
+guarantee that the alignment will in fact be correct at run time. In other 
+words, it is not saying that the code won't work, only that you asked for 
+such warnings on the compile line and so you'll get them for each and every 
+widening cast.
+
+And while I'm here: Eric, some messages back you mentioned a report that zgcc 
+didn't honour #pragma pack. I didn't mean to suggest that (assuming you were 
+referring to my post), though I hadn't tested it. I have now tested it: here 
+is the program.
+
+#include &lt;stdio.h&gt;
+
+struct fred {
+  char a;
+  int b;
+} x;
+
+#pragma pack(1)
+struct joe {
+  char a;
+  int b;
+} y;
+
+struct sam {
+  char a;
+  short b;
+  char c;
+} z;
+
+int main() {
+  printf(&quot;Diff %d\n&quot;,((int)&amp;x.b) - ((int)&amp;x.a));
+  printf(&quot;Diff %d\n&quot;,((int)&amp;y.b) - ((int)&amp;y.a));
+  printf(&quot;Diff %d\n&quot;,((int)&amp;z.c) - ((int)&amp;z.a));
+  printf(&quot;z.b is %d\n&quot;,z.b);
+}
+
+On my Intel desktop, *and* on the Zaurus, it prints:
+
+Diff 4
+Diff 1
+Diff 3
+z.b is 0
+
+(fred wasn't packed; joe and sam were.)
+
+So I'd say that zgcc does recognise the pragma, and what's more, the Arm does 
+seem happy about the non-alignment of the short in struct sam.
+
+My humble conclusion: no need to change the code just yet. Wait til there's a 
+processor that does insist on alignment (compare struct sam with struct 
+cpo_sat_data in garmin.c), or one that is big-endian. When that does happen, 
+I reckon there'll be not much choice except to recode with offsets and 
+picking out bytes. But it doesn't look as though it's happened yet.
+
+BTW, as well as short, I've also tried struct sam with int, float and double. 
+They all worked ok.
+
+Incidentally, since my last post I did get gpsd running. The problem was that 
+the CF card needed to be woken up first (cardctl resume 0). My remaining 
+problem is that if the Z suspends itself, gpsd appears to hang after the 
+resume (though the card does wake up). After the last time, please let me 
+make it clear that this is a work-in-progress comment and not a bug report, 
+and it may have nothing to do with gpsd anyway! I'll look into it (but don't 
+hold your breath while waiting) and let you know if I find anything that 
+looks useful. But: on that architecture, it does run, and it does report 
+messages correctly.
+
+Hope (nay, pray) that this helps
+
+John Foster
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	
+	<LI>Next message: <A HREF="000513.html">[Gpsd-users] Gpsd on a Zaurus SL-C3000
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#512">[ date ]</a>
+              <a href="thread.html#512">[ thread ]</a>
+              <a href="subject.html#512">[ subject ]</a>
+              <a href="author.html#512">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

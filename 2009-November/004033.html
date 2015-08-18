@@ -1,0 +1,112 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] BU-303 Sporadic Fix Results
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2009-November/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20BU-303%20Sporadic%20Fix%20Results&In-Reply-To=%3Ce02c4a700911071134s7688cbc7r4cdc074257026cd3%40mail.gmail.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="004032.html">
+   <LINK REL="Next"  HREF="004034.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] BU-303 Sporadic Fix Results</H1>
+    <B>Brian Jenkins</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20BU-303%20Sporadic%20Fix%20Results&In-Reply-To=%3Ce02c4a700911071134s7688cbc7r4cdc074257026cd3%40mail.gmail.com%3E"
+       TITLE="[Gpsd-users] BU-303 Sporadic Fix Results">tenethor at gmail.com
+       </A><BR>
+    <I>Sat Nov  7 20:34:45 CET 2009</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="004032.html">[Gpsd-users] Garmin 60CSx on Debian Linux no data?
+</A></li>
+        <LI>Next message: <A HREF="004034.html">[Gpsd-users] TSIP patch
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#4033">[ date ]</a>
+              <a href="thread.html#4033">[ thread ]</a>
+              <a href="subject.html#4033">[ subject ]</a>
+              <a href="author.html#4033">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hello all:
+
+Just got a BU-303 and got it working with gpsd after a little trial
+and error. I can get a fix now but it is spotty. In watch mode every
+other O returns ?, also gpsd reports has a fix, then confused, then
+has a fix, then confused... see the snippet below. Also below that is
+a snippet from `gpsd -D3`
+
+This is workable but it makes navigation a bit of a hassle. Any advice
+on why this happens or how to fix it? Thanks
+
+GPSD,Y=MID4 1257618000.620 9:28 62 142 46 1:17 67 340 47 1:27 22 298
+36 0:2 9 226 0 0:11 19 55 36 1:4 41 223 44 1:20 36 84 41 1:9 19 307 38
+1:135 17 246 29 0:
+GPSD,O=MID2 1257618000.620 0.005 39.026015673 -77.029147885 95.730
+4.500 8.231 0.0000 0.000 0.000 ? ? ? 3
+GPSD,O=?
+GPSD,O=MID2 1257618001.620 0.005 39.026008873 -77.029139223 96.661
+4.500 8.231 98.2523 0.123 0.022 ? 7.05 ? 3
+GPSD,O=?
+GPSD,O=MID2 1257618002.620 0.005 39.026000562 -77.029158252 99.388
+4.500 8.231 0.0000 0.000 0.000 ? 7.05 ? 3
+GPSD,O=?
+GPSD,O=MID2 1257618003.620 0.005 39.025996506 -77.029163436 101.531
+4.500 8.231 0.0000 0.000 0.000 ? 7.05 ? 3
+GPSD,O=?
+GPSD,O=MID2 1257618004.620 0.005 39.025993920 -77.029171212 105.062
+4.500 8.231 0.0000 0.000 0.000 ? 7.05 ? 3
+GPSD,O=?
+
+
+# gpsd -n -N -D3 /dev/gps0
+...
+gpsd: GND 0x29: Navtype = 0x0, Status = 0, mode = 1
+gpsd: client(0): channel 5 already active.
+gpsd: GPS is confused about whether it has a fix (status=0, mode=3).
+gpsd: MTD 0x04: 9 satellites
+gpsd: MND 0x02: Navtype = 0x84, Status = 2, mode = 3
+gpsd: client(0): channel 5 already active.
+gpsd: GPS has a fix (status=2, mode=3).
+gpsd: THR 0x09: SegStatMax=0.048, SegStatLat=  0, AveTrkTime=0.048, Last MS=132
+gpsd: DGPSF1b01010101010101000000000000000004000a09ff320bffb311fff314ff6d1cfff7000000000000000000000000000000000000
+gpsd: GND 0x29: Navtype = 0x0, Status = 0, mode = 1
+gpsd: client(0): channel 5 already active.
+gpsd: GPS is confused about whether it has a fix (status=0, mode=3).
+gpsd: MTD 0x04: 9 satellites
+gpsd: MND 0x02: Navtype = 0x84, Status = 2, mode = 3
+gpsd: client(0): channel 5 already active.
+gpsd: GPS has a fix (status=2, mode=3).
+gpsd: THR 0x09: SegStatMax=0.027, SegStatLat=  0, AveTrkTime=0.027, Last MS=127
+gpsd: DGPSF1b01010101010101000000000000000004000a09ff340bffb111001014ff501cfff5000000000000000000000000000000000000
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="004032.html">[Gpsd-users] Garmin 60CSx on Debian Linux no data?
+</A></li>
+	<LI>Next message: <A HREF="004034.html">[Gpsd-users] TSIP patch
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#4033">[ date ]</a>
+              <a href="thread.html#4033">[ thread ]</a>
+              <a href="subject.html#4033">[ subject ]</a>
+              <a href="author.html#4033">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

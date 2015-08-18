@@ -1,0 +1,115 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] Turning on SiRF raw data at high port speeds (was:	[Gpsd-commit-watch] r3756 - trunk)
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2006-November/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Turning%20on%20SiRF%20raw%20data%20at%20high%20port%20speeds%20%28was%3A%0A%09%5BGpsd-commit-watch%5D%20r3756%20-%20trunk%29&In-Reply-To=%3C91981b3e0610311954t640825b3l6a4182505addf5c%40mail.gmail.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="002161.html">
+   <LINK REL="Next"  HREF="002163.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] Turning on SiRF raw data at high port speeds (was:	[Gpsd-commit-watch] r3756 - trunk)</H1>
+    <B>Chris Kuethe</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Turning%20on%20SiRF%20raw%20data%20at%20high%20port%20speeds%20%28was%3A%0A%09%5BGpsd-commit-watch%5D%20r3756%20-%20trunk%29&In-Reply-To=%3C91981b3e0610311954t640825b3l6a4182505addf5c%40mail.gmail.com%3E"
+       TITLE="[Gpsd-users] Turning on SiRF raw data at high port speeds (was:	[Gpsd-commit-watch] r3756 - trunk)">chris.kuethe at gmail.com
+       </A><BR>
+    <I>Wed Nov  1 04:54:23 CET 2006</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="002161.html">[Gpsd-users] Can't connect TNTC rev.3654 last working
+</A></li>
+        <LI>Next message: <A HREF="002163.html">[Gpsd-users] Suspected error in ligpsd_core.c
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2162">[ date ]</a>
+              <a href="thread.html#2162">[ thread ]</a>
+              <a href="subject.html#2162">[ subject ]</a>
+              <a href="author.html#2162">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Embedded users, please check that this doesn't break your applications, ok?
+
+CK
+
+---------- Forwarded message ----------
+From: ckuethe at BerliOS &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">ckuethe at mail.berlios.de</A>&gt;
+Date: Oct 31, 2006 8:52 PM
+Subject: [Gpsd-commit-watch] r3756 - trunk
+To: <A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">gpsd-commit-watch at lists.berlios.de</A>
+
+
+Author: ckuethe
+Date: 2006-11-01 04:52:17 +0100 (Wed, 01 Nov 2006)
+New Revision: 3756
+
+Modified:
+   trunk/sirf.c
+Log:
+Enable raw tracker data if the port speed is high enough.
+Embedded users, please tell me if this causes problems.
+
+
+Modified: trunk/sirf.c
+===================================================================
+--- trunk/sirf.c        2006-11-01 03:43:42 UTC (rev 3755)
++++ trunk/sirf.c        2006-11-01 03:52:17 UTC (rev 3756)
+@@ -294,7 +294,7 @@
+        gpsd_report(4, &quot;Driver state flags are: %0x\n&quot;,
+session-&gt;driver.sirf.driverstate);
+        session-&gt;driver.sirf.time_seen = 0;
+ #ifdef ALLOW_RECONFIGURE
+-       if ((session-&gt;context-&gt;valid &amp; LEAP_SECOND_VALID)==0) {
++       if (session-&gt;saved_baud &gt;= 38400){
+            gpsd_report(4, &quot;Enabling subframe transmission...\n&quot;);
+            (void)sirf_write(session-&gt;gpsdata.gps_fd, enablesubframe);
+        }
+@@ -333,7 +333,7 @@
+            gpsd_interpret_subframe(session, words);
+
+ #ifdef ALLOW_RECONFIGURE
+-           if (session-&gt;context-&gt;valid &amp; LEAP_SECOND_VALID) {
++           if (session-&gt;saved_baud &lt; 38400){
+                gpsd_report(4, &quot;Disabling subframe transmission...\n&quot;);
+                (void)sirf_write(session-&gt;gpsdata.gps_fd, disablesubframe);
+            }
+
+_______________________________________________
+Gpsd-commit-watch mailing list
+<A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">Gpsd-commit-watch at lists.berlios.de</A>
+<A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-commit-watch">https://lists.berlios.de/mailman/listinfo/gpsd-commit-watch</A>
+
+
+-- 
+GDB has a 'break' feature; why doesn't it have 'fix' too?
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="002161.html">[Gpsd-users] Can't connect TNTC rev.3654 last working
+</A></li>
+	<LI>Next message: <A HREF="002163.html">[Gpsd-users] Suspected error in ligpsd_core.c
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2162">[ date ]</a>
+              <a href="thread.html#2162">[ thread ]</a>
+              <a href="subject.html#2162">[ subject ]</a>
+              <a href="author.html#2162">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

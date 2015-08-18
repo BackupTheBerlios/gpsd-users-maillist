@@ -1,0 +1,112 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] gpsd with bluetooth mtk747
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2010-November/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20gpsd%20with%20bluetooth%20mtk747&In-Reply-To=%3C4CF1CAFE.8060404%40kera.name%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="004775.html">
+   <LINK REL="Next"  HREF="004777.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] gpsd with bluetooth mtk747</H1>
+    <B>Tomalak Geret'kal</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20gpsd%20with%20bluetooth%20mtk747&In-Reply-To=%3C4CF1CAFE.8060404%40kera.name%3E"
+       TITLE="[Gpsd-users] gpsd with bluetooth mtk747">tom at kera.name
+       </A><BR>
+    <I>Sun Nov 28 04:22:38 CET 2010</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="004775.html">[Gpsd-users] gpsd with bluetooth mtk747
+</A></li>
+        <LI>Next message: <A HREF="004777.html">[Gpsd-users] gpsd with bluetooth mtk747
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#4776">[ date ]</a>
+              <a href="thread.html#4776">[ thread ]</a>
+              <a href="subject.html#4776">[ subject ]</a>
+              <a href="author.html#4776">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>On 27/11/2010 23:35, Paolo Craveri wrote:
+&gt;<i> Hi to all
+</I>&gt;<i>
+</I>&gt;<i> perhaps a trivial question...
+</I>&gt;<i> I have a mtk 747 transystem connected through rfcomm port (ubuntu 10.10)
+</I>&gt;<i>
+</I>&gt;<i> gpscat works perfectly:
+</I>&gt;<i>
+</I>&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">paolo at laptop</A>:~$ gpscat  /dev/rfcomm4
+</I>&gt;<i> $GPGGA,230945.000,4439.1832,N,00723.3977,E,1,5,1.33,376.2,M,48.3,M,,*50
+</I>&gt;<i> $GPGSA,A,3,05,02,26,10,13,,,,,,,,1.58,1.33,0.85*02
+</I>&gt;<i>
+</I>&gt;<i> but I can't properly configure gpsd:
+</I>&gt;<i>
+</I>&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">paolo at laptop</A>:~$ gpsd killall
+</I>&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">paolo at laptop</A>:~$ gpsd -n -N -D2 /dev/rfcomm4
+</I>&gt;<i> gpsd: launching (Version 2.94)
+</I>&gt;<i> gpsd: can't bind to IPv4 port gpsd, Address already in use
+</I>&gt;<i> gpsd: maybe gpsd is already running!
+</I>&gt;<i> gpsd: can't bind to IPv6 port gpsd, Address already in use
+</I>&gt;<i> gpsd: maybe gpsd is already running!
+</I>&gt;<i>
+</I>&gt;<i> Where I'm wrong?
+</I>&gt;<i>
+</I>&gt;<i> many thanks in advance.
+</I>
+Hi Paolo,
+
+As the error message for your IPv4 binding indicates, you 
+are already running an instance of gpsd.
+
+I see that you have tried to kill it, but you have tried to 
+use some non-existent option of gpsd rather than the typical 
+Linux command `killall`.
+
+Instead of `gpsd killall`, you ought to have written 
+`killall gpsd`.
+
+If you perform `ps -al` to obtain a list of running 
+processes, you should see that currently you have a gpsd 
+instance running; after writing `killall gpsd` that should 
+no longer be the case.
+
+You should then be able to start your new instance of gpsd.
+
+For further information, consult your favourite POSIX/UNIX 
+manual on the `kill` and `killall` commands.
+
+Hope that helps,
+
+Tom
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="004775.html">[Gpsd-users] gpsd with bluetooth mtk747
+</A></li>
+	<LI>Next message: <A HREF="004777.html">[Gpsd-users] gpsd with bluetooth mtk747
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#4776">[ date ]</a>
+              <a href="thread.html#4776">[ thread ]</a>
+              <a href="subject.html#4776">[ subject ]</a>
+              <a href="author.html#4776">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

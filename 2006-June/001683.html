@@ -1,0 +1,85 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] Re: Setup gpsd to use pcmcia card
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2006-June/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Re%3A%20Setup%20gpsd%20to%20use%20pcmcia%20card&In-Reply-To=%3C20060612031549.83226.qmail%40web32509.mail.mud.yahoo.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="001682.html">
+   <LINK REL="Next"  HREF="001684.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] Re: Setup gpsd to use pcmcia card</H1>
+    <B>Michael R. Davis</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Re%3A%20Setup%20gpsd%20to%20use%20pcmcia%20card&In-Reply-To=%3C20060612031549.83226.qmail%40web32509.mail.mud.yahoo.com%3E"
+       TITLE="[Gpsd-users] Re: Setup gpsd to use pcmcia card">mrdvt92 at yahoo.com
+       </A><BR>
+    <I>Mon Jun 12 05:15:49 CEST 2006</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="001682.html">[Gpsd-users] Re: Setup gpsd to use pcmcia card
+</A></li>
+        <LI>Next message: <A HREF="001684.html">[Gpsd-users] Re: Setup gpsd to use pcmcia card
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1683">[ date ]</a>
+              <a href="thread.html#1683">[ thread ]</a>
+              <a href="subject.html#1683">[ subject ]</a>
+              <a href="author.html#1683">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Greg,
+--- Greg Sahli &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">sahlgre at iit.edu</A>&gt; wrote:
+&gt;<i> I also have no idea if my gpsd startup is right!
+</I>
+The -f switch is deprecated and not needed.  Try
+gpsd -n -D 5 -P /var/run/gpsd.pid /dev/ttyS4
+
+Then check the stdout to see if it's working correctly. Drop the -D 5
+after you get it working and the -n if you're concerned about battery.
+
+You can also try to 
+stty -F /dev/ttyS4 4800
+cat /dev/ttyS4
+If you get any NMEA output your at least working.  If you get binary
+then it is set to some other protocol.
+
+Also, I looked at the BC-307 on usglobalsat.com and it says it's a CF-I
+card not PCMCIA.
+Mike (mrdvt92)
+
+__________________________________________________
+Do You Yahoo!?
+Tired of spam?  Yahoo! Mail has the best spam protection around 
+<A HREF="http://mail.yahoo.com">http://mail.yahoo.com</A> 
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="001682.html">[Gpsd-users] Re: Setup gpsd to use pcmcia card
+</A></li>
+	<LI>Next message: <A HREF="001684.html">[Gpsd-users] Re: Setup gpsd to use pcmcia card
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1683">[ date ]</a>
+              <a href="thread.html#1683">[ thread ]</a>
+              <a href="subject.html#1683">[ subject ]</a>
+              <a href="author.html#1683">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

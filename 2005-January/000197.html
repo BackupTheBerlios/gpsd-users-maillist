@@ -1,0 +1,123 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] select: Invalid argument
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2005-January/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20select%3A%20Invalid%20argument&In-Reply-To=%3C1105551724.25141.388.camel%40owen.vsd.titan.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="000196.html">
+   <LINK REL="Next"  HREF="000198.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] select: Invalid argument</H1>
+    <B>Owen, Wallace</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20select%3A%20Invalid%20argument&In-Reply-To=%3C1105551724.25141.388.camel%40owen.vsd.titan.com%3E"
+       TITLE="[Gpsd-users] select: Invalid argument">Owen at vsd.titan.com
+       </A><BR>
+    <I>Wed Jan 12 18:42:05 CET 2005</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="000196.html">[Gpsd-users] select: Invalid argument
+</A></li>
+        <LI>Next message: <A HREF="000198.html">[Gpsd-users] select: Invalid argument
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#197">[ date ]</a>
+              <a href="thread.html#197">[ thread ]</a>
+              <a href="subject.html#197">[ subject ]</a>
+              <a href="author.html#197">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>We might want to try applying this patch:
+
+diff -r -u gpsd-2.6/gpsd.c gpsd-2.6-modified/gpsd.c
+--- gpsd-2.6/gpsd.c     2004-12-31 10:40:34.000000000 -0800
++++ gpsd-2.6-modified/gpsd.c    2005-01-12 09:41:05.500483904 -0800
+@@ -494,7 +494,7 @@
+ 
+     FD_ZERO(&amp;all_fds); FD_ZERO(&amp;nmea_fds); FD_ZERO(&amp;watcher_fds);
+     FD_SET(msock, &amp;all_fds);
+-    nfds = getdtablesize();
++    nfds = FD_SETSIZE;
+ 
+     session = gpsd_init(gpstype, dgpsserver);
+     if (gpsd_speed)
+@@ -522,7 +522,7 @@
+         * the file descriptors in the set goes ready. 
+         */
+        tv.tv_sec = 1; tv.tv_usec = 0;
+-       if (select(nfds, &amp;rfds, NULL, NULL, &amp;tv) &lt; 0) {
++       if (select(nfds+1, &amp;rfds, NULL, NULL, &amp;tv) &lt; 0) {
+            if (errno == EINTR)
+                continue;
+            gpsd_report(0, &quot;select: %s\n&quot;, strerror(errno));
+
+I've never seen getdtablesize() used to sen the max descriptors arg to
+select before.  This is the way I've always done it and it works for me.
+
+
+  // Wally
+
+On Wed, 2005-01-12 at 08:40, <A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">dalen.kruse at blacklion.org</A> wrote:
+&gt;<i> I'm have some problems running gpsd.  I'm running this on Solaris 9 on a SunFire
+</I>&gt;<i> V120 machine.  Here's the output that I'm getting:
+</I>&gt;<i> 
+</I>&gt;<i> gpsd: launching (Version 2.6)
+</I>&gt;<i> gpsd: listening on port 2947
+</I>&gt;<i> gpsd: open GPS data source at /dev/term/b
+</I>&gt;<i> gpsd: setting speed 4800, 8 bits, no parity
+</I>&gt;<i> gpsd: gpsd_activate: opened GPS (4)
+</I>&gt;<i> gpsd: select: Invalid argument
+</I>&gt;<i> 
+</I>&gt;<i> After that, gpsd just stops.  Here's the command that I'm using to run gpsd:
+</I>&gt;<i> gpsd -p /dev/term/b -s 4800 -D 2 -T n -S 2947 -n
+</I>&gt;<i> 
+</I>&gt;<i> I tried looking at the source code, but I'm not really sure what's going on at
+</I>&gt;<i> this point in the code.  If anyone can give me any pointers, I'd appreciate it.
+</I>&gt;<i>  I can also try to provide more debug data if that would be helpful.
+</I>&gt;<i> 
+</I>&gt;<i> Thanks,
+</I>&gt;<i> 
+</I>&gt;<i> Dalen Kruse
+</I>&gt;<i> 
+</I>&gt;<i> 
+</I>&gt;<i> _______________________________________________
+</I>&gt;<i> Gpsd-users mailing list
+</I>&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">Gpsd-users at lists.berlios.de</A>
+</I>&gt;<i> <A HREF="http://lists.berlios.de/mailman/listinfo/gpsd-users">http://lists.berlios.de/mailman/listinfo/gpsd-users</A>
+</I>-- 
+Your eyes are weary from staring at the CRT.  You feel sleepy.  Notice
+how restful it is to watch the cursor blink.  Close your eyes.  The   
+opinions stated above are yours.  You cannot imagine why you ever felt
+otherwise.
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="000196.html">[Gpsd-users] select: Invalid argument
+</A></li>
+	<LI>Next message: <A HREF="000198.html">[Gpsd-users] select: Invalid argument
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#197">[ date ]</a>
+              <a href="thread.html#197">[ thread ]</a>
+              <a href="subject.html#197">[ subject ]</a>
+              <a href="author.html#197">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

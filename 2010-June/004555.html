@@ -1,0 +1,108 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] How to manage reporting cycle in mixed NMEA/binary messages?
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2010-June/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20How%20to%20manage%20reporting%20cycle%20in%20mixed%20NMEA/binary%0A%20messages%3F&In-Reply-To=%3Calpine.LNX.1.10.1006291552300.9158%40catbert.rellim.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="004554.html">
+   <LINK REL="Next"  HREF="004553.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] How to manage reporting cycle in mixed NMEA/binary messages?</H1>
+    <B>Gary E. Miller</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20How%20to%20manage%20reporting%20cycle%20in%20mixed%20NMEA/binary%0A%20messages%3F&In-Reply-To=%3Calpine.LNX.1.10.1006291552300.9158%40catbert.rellim.com%3E"
+       TITLE="[Gpsd-users] How to manage reporting cycle in mixed NMEA/binary messages?">gem at rellim.com
+       </A><BR>
+    <I>Wed Jun 30 01:03:19 CEST 2010</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="004554.html">[Gpsd-users] How to manage reporting cycle in mixed NMEA/binary	messages?
+</A></li>
+        <LI>Next message: <A HREF="004553.html">[Gpsd-users]  sample AIVDM/AIVDO data?
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#4555">[ date ]</a>
+              <a href="thread.html#4555">[ thread ]</a>
+              <a href="subject.html#4555">[ subject ]</a>
+              <a href="author.html#4555">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>-----BEGIN PGP SIGNED MESSAGE-----
+Hash: SHA1
+
+Yo Roderick!
+
+On Tue, 29 Jun 2010, Roderick Medina wrote:
+
+&gt;<i> I appreciate the suggestion but the messages are completely custom to a
+</I>&gt;<i> new driver I am trying to develop.
+</I>
+And thus the fix, if any, in gpsd might be completely custom for your
+new driver, but I doubt it.  So don't ask us to help with one hand tied
+behind our backs.   Please supply test cases and debug output.
+
+&gt;<i> Somehow the year value is getting blown away and filled in with garbage
+</I>&gt;<i> (that giant negative number) and is not smart enough to figure out this
+</I>&gt;<i> is a horrible starting year. I could patch this in the nmea driver but
+</I>
+No buts about it, please send in a patch.  Input sanitization seems to
+be half of what gpsd is all about.  GPS makers are always inventing
+new ways to screw up.
+
+&gt;<i> My custom messages currently do not
+</I>&gt;<i> contribute anything to the TPV
+</I>
+Well that is part of the problem.  If you do not give gpsd a year then
+gpsd does not have a year and that is a big problem.
+
+&gt;<i> In looking at the code, I can't find a place where the year might be
+</I>&gt;<i> initialized to some particular value to start with.
+</I>
+Check out the big comment at line 56 in driver_nmea.c from git head.
+
+RGDS
+GARY
+- ---------------------------------------------------------------------------
+Gary E. Miller Rellim 109 NW Wilmington Ave., Suite E, Bend, OR 97701
+	<A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">gem at rellim.com</A>  Tel:+1(541)382-8588
+
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v1.4.3 (GNU/Linux)
+
+iD8DBQFMKnu5BmnRqz71OvMRAjOqAKCBepNQotYnRhhC9jW6yDIyJa7HYgCeONyO
+dOSF7WimNcnYtTHBzyU3V0o=
+=tEUJ
+-----END PGP SIGNATURE-----
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="004554.html">[Gpsd-users] How to manage reporting cycle in mixed NMEA/binary	messages?
+</A></li>
+	<LI>Next message: <A HREF="004553.html">[Gpsd-users]  sample AIVDM/AIVDO data?
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#4555">[ date ]</a>
+              <a href="thread.html#4555">[ thread ]</a>
+              <a href="subject.html#4555">[ subject ]</a>
+              <a href="author.html#4555">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

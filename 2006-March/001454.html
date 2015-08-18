@@ -1,0 +1,94 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] Altitude not always being reported
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2006-March/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Altitude%20not%20always%20being%20reported&In-Reply-To=%3Cp06230910c046fa50134a%40%5B58.163.136.223%5D%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="001450.html">
+   <LINK REL="Next"  HREF="001455.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] Altitude not always being reported</H1>
+    <B>Robin L Darroch</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Altitude%20not%20always%20being%20reported&In-Reply-To=%3Cp06230910c046fa50134a%40%5B58.163.136.223%5D%3E"
+       TITLE="[Gpsd-users] Altitude not always being reported">robin at spade-men.com
+       </A><BR>
+    <I>Wed Mar 22 14:05:28 CET 2006</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="001450.html">[Gpsd-users] Altitude not always being reported
+</A></li>
+        <LI>Next message: <A HREF="001455.html">[Gpsd-users] Altitude not always being reported
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1454">[ date ]</a>
+              <a href="thread.html#1454">[ thread ]</a>
+              <a href="subject.html#1454">[ subject ]</a>
+              <a href="author.html#1454">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>At 14:39 -0800 21/3/06, Gary E. Miller wrote:
+&gt;<i>-----BEGIN PGP SIGNED MESSAGE-----
+</I>&gt;<i>Hash: SHA1
+</I>&gt;<i>
+</I>&gt;<i>Yo Robin!
+</I>&gt;<i>
+</I>&gt;<i>On Wed, 22 Mar 2006, Robin L Darroch wrote:
+</I>&gt;<i>
+</I>&gt;&gt;<i>  I posted a patch for this bug a day or two ago - the problem is that gpsd
+</I>&gt;&gt;<i>  handles data in &quot;frames&quot; of several NMEA sentences,
+</I>&gt;<i>
+</I>&gt;<i>gpsd has no concept of frames.  We looked at that for a while but there
+</I>&gt;<i>was no consistency in the order that different GPS send NMEA sentences.
+</I>
+Well, it must have some concept of it (although I made up the name 
+&quot;frame&quot; to refer to a block of NMEA sentences with the same 
+timestamp), because the code was already in there to handle it... it 
+just happened to be wrong in a couple of key places.  I've patched 
+those, and it works exactly as it should now.
+
+&gt;<i>So gpsd just reports what it see, when it sees it.
+</I>
+If it really only did that, it would be no more use than a serial 
+port doubler, and we could do away with ever command except R.  In 
+fact, it reports all of what it has most recently seen, when a client 
+asks for it. :)  That means we can use V and P and A and other cool 
+commands like that.
+-- 
+
+-------------------------------------------------------------------------
+  Robin L. Darroch - PO Box 2715, South Hedland WA 6722 - +61 421 503 966
+       <A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">robin at darroch.id.au</A> - <A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">robin at nyca.org.au</A> - <A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">robin at spade-men.com</A>
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="001450.html">[Gpsd-users] Altitude not always being reported
+</A></li>
+	<LI>Next message: <A HREF="001455.html">[Gpsd-users] Altitude not always being reported
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1454">[ date ]</a>
+              <a href="thread.html#1454">[ thread ]</a>
+              <a href="subject.html#1454">[ subject ]</a>
+              <a href="author.html#1454">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

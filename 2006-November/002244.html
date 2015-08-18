@@ -1,0 +1,126 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] Epic tale of the VOM and the wall wart -- and so,	it begins
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2006-November/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Epic%20tale%20of%20the%20VOM%20and%20the%20wall%20wart%20--%20and%20so%2C%0A%09it%20begins&In-Reply-To=%3C20061113030229.GB22952%40thyrsus.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="002243.html">
+   <LINK REL="Next"  HREF="002245.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] Epic tale of the VOM and the wall wart -- and so,	it begins</H1>
+    <B>Eric S. Raymond</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Epic%20tale%20of%20the%20VOM%20and%20the%20wall%20wart%20--%20and%20so%2C%0A%09it%20begins&In-Reply-To=%3C20061113030229.GB22952%40thyrsus.com%3E"
+       TITLE="[Gpsd-users] Epic tale of the VOM and the wall wart -- and so,	it begins">esr at thyrsus.com
+       </A><BR>
+    <I>Mon Nov 13 04:02:29 CET 2006</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="002243.html">[Gpsd-users] Epic tale of the VOM and the wall wart -- and so,	it begins
+</A></li>
+        <LI>Next message: <A HREF="002245.html">[Gpsd-users] Epic tale of the VOM and the wall wart -- and so,	it begins
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2244">[ date ]</a>
+              <a href="thread.html#2244">[ thread ]</a>
+              <a href="subject.html#2244">[ subject ]</a>
+              <a href="author.html#2244">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Matt Roberds &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">mattroberds at cox.net</A>&gt;:
+&gt;<i> This is perhaps a little far afield from GPS software development, but
+</I>&gt;<i> here goes...
+</I>
+That's OK.  I'm having a learning experience.  Persons who object to this
+will be told to get stuffed.  Persons who do not object will be entertained by
+the vaguely Dave-Barryesque clowning that I employ as thin cover over 
+my atavistic terror of burning up Really Expensive Equipment.  (You
+see, electronics and computers really was Really Expensive Equipment in
+my formative years when dinosaurs roamed the earth -- that would have
+been the early 1970s).
+ 
+&gt;<i> Micronta == Radio Shack.  For all their many failings, Radio Shack is
+</I>&gt;<i> fairly good about having manuals for older products online.  The model
+</I>&gt;<i> number will be either on the face of the meter or on a sticker on the
+</I>&gt;<i> back and will probably be of the form 22-[0-9][0-9][0-9] .  Put that
+</I>&gt;<i> model number in the search box at radioshack.com and you'll probably get
+</I>&gt;<i> a PDF of the manual.
+</I>
+22-211.  No match; I guess it's too old.
+ 
+&gt;<i> &gt;OUTPUT                             +DC1200
+</I>&gt;<i> &gt;AC 1200V                           +DC 600V
+</I>&gt;<i> &gt;-COM (500V Max ground)             +V - Ohms - A
+</I>&gt;<i> 
+</I>&gt;<i> Most of the time you will have the black one plugged into -COM and the
+</I>&gt;<i> red one plugged into +V - Omega - A.  You might plug the red one into
+</I>&gt;<i> AC 1200V, +DC1200, or +DC 600V if you are measuring really high
+</I>&gt;<i> voltages.
+</I>
+That is enlightening.  I had thought they were arranged in horizontal pairs.
+ 
+&gt;<i> The (500V Max ground) on -COM means that the -COM terminal shouldn't be
+</I>&gt;<i> more than 500 V above earth potential.  In practice it will be hard for
+</I>&gt;<i> a mild-mannered computer hacker to exceed this, as long as he stays out
+</I>&gt;<i> of microwave ovens, CRT monitors and TVs, and the circuit breaker panels
+</I>&gt;<i> at a commercial office building or factory.
+</I>
+I'd actually figured out that part and the unlikelihood that I'd exceed 
+it unless I took apart a CRT.  Which I won't do -- I'm only ignorant, not 
+suicidally stupid.
+
+&gt;<i> Basically, you want to select range = ceil(expected_input).  The 3 V
+</I>&gt;<i> range would be OK for an alkaline cell (1.5 V or less) but won't work
+</I>&gt;<i> very well on a 5 V power supply.  The 15 V range would be better for the
+</I>&gt;<i> 5 V supply.  The 60 V range would also work, but it'll be pretty hard to
+</I>&gt;<i> tell the difference between 5 V and 10 V, since it'll all be squished
+</I>&gt;<i> down in one end of the range.  If expected_input is unknown, you start
+</I>&gt;<i> at the highest range and work down.
+</I>
+In fact, I managed to figure this out and measure 6 volts in the 15-volt range.
+
+&gt;<i> The other part of using an analog meter is figuring out which of the
+</I>&gt;<i> several parallel scales to read.
+</I>
+That part was easy.  The upper bounds on the 4 scales under DC are the numbers
+on the mode wheel.  Like I said, I'm only ignorant, not stupid.
+
+&gt;<i> &gt;Gadzooks.  I actually understood that!
+</I>&gt;<i> 
+</I>&gt;<i> There's nothing more dangerous than a programmer with a screwdriver.  :)
+</I>
+Easy.  Manager with a design idea :-).
+-- 
+		&lt;a href=&quot;<A HREF="http://www.catb.org/~esr/">http://www.catb.org/~esr/</A>&quot;&gt;Eric S. Raymond&lt;/a&gt;
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="002243.html">[Gpsd-users] Epic tale of the VOM and the wall wart -- and so,	it begins
+</A></li>
+	<LI>Next message: <A HREF="002245.html">[Gpsd-users] Epic tale of the VOM and the wall wart -- and so,	it begins
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2244">[ date ]</a>
+              <a href="thread.html#2244">[ thread ]</a>
+              <a href="subject.html#2244">[ subject ]</a>
+              <a href="author.html#2244">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

@@ -1,0 +1,116 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] Considering a 2.27 point release
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2005-June/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Considering%20a%202.27%20point%20release&In-Reply-To=%3C200506271851.j5RIpfLj021283%40snark.thyrsus.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="000785.html">
+   <LINK REL="Next"  HREF="000787.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] Considering a 2.27 point release</H1>
+    <B>Eric S. Raymond</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Considering%20a%202.27%20point%20release&In-Reply-To=%3C200506271851.j5RIpfLj021283%40snark.thyrsus.com%3E"
+       TITLE="[Gpsd-users] Considering a 2.27 point release">esr at snark.thyrsus.com
+       </A><BR>
+    <I>Mon Jun 27 20:51:41 CEST 2005</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="000785.html">[Gpsd-users] Roadmap for gpsd 2.27
+</A></li>
+        <LI>Next message: <A HREF="000787.html">[Gpsd-users] Re: [Gpsd-dev] Considering a 2.27 point release
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#786">[ date ]</a>
+              <a href="thread.html#786">[ thread ]</a>
+              <a href="subject.html#786">[ subject ]</a>
+              <a href="author.html#786">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>I'm considering doing a 2.27 point release.  Changes since 2.26 have been
+minor but include few bug fixes that users should get the benefit of.
+
+Since 2.26 I have devoted most of my energy to Wojciech Kazubski's
+report of a possible resource-exhaustion bug.  At the time I wrote
+that I thought we should attack this in at least two ways:
+
+1) Dynamic auditing using valgrind, ccmalloc, or Electric Fence.
+
+2) Build some test tools to script opening and closing multiple 
+   sessions to the daemon and see if we can detect and reproduce
+   a lockup.
+
+I have since done both these things.  The resulting greatly enhanced
+test framework, and the Valgrind torture test written using it, are
+now part of the distribution. The Valgrind audit found three bugs: (1)
+a very slow memory leak on device deallocation, (2) a possible but
+unconfirmed file-descriptor leak, and (3) a subtle error in the
+channel-assignment logic that only showed up with multiple overlapping
+sessions active.
+
+As a result of these tests, I am now confident that the svn head code
+has no dynamic-memory leaks.
+
+Known or suspected bugs:
+
+I remain concerned about Rob Janssen's report of possible
+state-machine lockups in the presence of heavy disk activity.
+He has also reported that xgps induces an X server memory leak,
+but I instrumented for this and did not see it under FC3.
+
+I expect Rob will be working on fixing the PPS code.  Odds are this
+is a pthreads bug that will have to be worked around.
+
+The known TSIP driver problems are still annoying but can still be lived with.
+
+Features still needed:
+
+Computation of a track error estimate.  The main issue here remains
+figuring out the applied mathematics.
+
+Chris Kuethe, I noted previously that the SiRF firmware loader is now
+increasing in importance. We're going to need to test new SiRF
+firmware versions, probably within months rather than years.
+
+
+If you know of any urgent bugs or any other reason not to ship 2.27,
+now would be a good time to tell me.
+-- 
+		&lt;a href=&quot;<A HREF="http://www.catb.org/~esr/">http://www.catb.org/~esr/</A>&quot;&gt;Eric S. Raymond&lt;/a&gt;
+
+&quot;This country, with its institutions, belongs to the people who inhabit it. 
+Whenever they shall grow weary of the existing government, they can exercise
+their constitutional right of amending it or their revolutionary right to 
+dismember it or overthrow it.&quot;	-- Abraham Lincoln, 4 April 1861
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="000785.html">[Gpsd-users] Roadmap for gpsd 2.27
+</A></li>
+	<LI>Next message: <A HREF="000787.html">[Gpsd-users] Re: [Gpsd-dev] Considering a 2.27 point release
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#786">[ date ]</a>
+              <a href="thread.html#786">[ thread ]</a>
+              <a href="subject.html#786">[ subject ]</a>
+              <a href="author.html#786">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

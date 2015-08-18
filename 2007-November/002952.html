@@ -1,0 +1,179 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] Lost PPS pulse
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2007-November/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Lost%20PPS%20pulse&In-Reply-To=%3C681580892.20071108001915%40gmail.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="002951.html">
+   <LINK REL="Next"  HREF="002953.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] Lost PPS pulse</H1>
+    <B>Askar Ibragimov</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Lost%20PPS%20pulse&In-Reply-To=%3C681580892.20071108001915%40gmail.com%3E"
+       TITLE="[Gpsd-users] Lost PPS pulse">askar.ibragimov at gmail.com
+       </A><BR>
+    <I>Wed Nov  7 23:19:15 CET 2007</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="002951.html">[Gpsd-users] Lost PPS pulse
+</A></li>
+        <LI>Next message: <A HREF="002953.html">[Gpsd-users] Lost PPS pulse
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2952">[ date ]</a>
+              <a href="thread.html#2952">[ thread ]</a>
+              <a href="subject.html#2952">[ subject ]</a>
+              <a href="author.html#2952">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>
+Hello Gary,
+
+
+here are the answers:
+[<A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">root at sgo-klf</A> ~]# ntpstat
+synchronised to modem at stratum 1 
+   time correct to within 88 ms
+   polling server every 1024 s
+
+This I understand ntp did from GPS\SiRF binary data, that come at
+38400 bps, which is following from &quot;modem&quot; source and from
+/var/log/messages:
+Nov  7 15:01:31 sgo-klf ntpd[19755]: synchronized to SHM(0), stratum 0
+Nov  7 15:23:01 sgo-klf ntpd[19755]: time reset +0.240966 s
+Nov  7 15:27:20 sgo-klf ntpd[19755]: synchronized to SHM(0), stratum 0
+Nov  7 21:07:29 sgo-klf ntpd[19755]: time reset -0.470954 s
+Nov  7 21:11:48 sgo-klf ntpd[19755]: synchronized to SHM(0), stratum 0
+Nov  7 21:26:47 sgo-klf ntpd[19755]: synchronized to SHM(0), stratum 0
+Nov  7 21:27:52 sgo-klf ntpd[19755]: synchronized to SHM(0), stratum 0
+Nov  7 21:27:52 sgo-klf ntpd[19755]: time reset +0.576009 s
+Nov  7 21:32:10 sgo-klf ntpd[19755]: synchronized to SHM(0), stratum 0
+
+My ntp.conf is like this (just copypasted from man page of gpsd, only
+uncommented lines left - and I SWITCHED OFF sync with timeservers on
+the internet - otherwise, system tries to use them instead of GPS, and
+my need is to make GPS main source of time. So I wonder if I need to
+modify something):
+
+[<A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">root at sgo-klf</A> ~]# cat /etc/ntp.conf
+restrict default nomodify notrap noquery
+restrict 127.0.0.1
+# GPSD defaults
+# just GPS
+server 127.127.28.0
+fudge 127.127.28.0 time1 0.420 refid GPS
+#gps+pps
+server 127.127.28.1  
+fudge 127.127.28.1 refid GPS1
+driftfile /var/lib/ntp/drift
+broadcastdelay  0.008
+keys            /etc/ntp/keys
+restrict None mask 255.255.255.255 nomodify notrap noquery
+restrict 127.127.28.1 mask 255.255.255.255 nomodify notrap noquery
+
+
+The actual output is like this:
+
+gpsd: ntpshm_pps: lost PPS lock
+gpsd: PPS pulse rejected too short. cycle: 1000092, duration: 99998
+gpsd: PPS pulse OK. cycle: 1000037, duration: 900039 diff: 99998
+gpsd: ntpshm_pps: lost PPS lock
+gpsd: PPS pulse rejected too short. cycle: 1000037, duration: 99998
+gpsd: PPS pulse OK. cycle: 1000101, duration: 900103 diff: 99998
+gpsd: ntpshm_pps: lost PPS lock
+gpsd: PPS pulse rejected too short. cycle: 1000112, duration: 100009
+gpsd: PPS pulse OK. cycle: 1000090, duration: 900081 diff: 100009
+gpsd: ntpshm_pps: lost PPS lock
+gpsd: PPS pulse rejected too short. cycle: 1000073, duration: 99992
+gpsd: PPS pulse OK. cycle: 1000089, duration: 900097 diff: 99992
+gpsd: ntpshm_pps: lost PPS lock
+gpsd: PPS pulse rejected too short. cycle: 1000091, duration: 99994
+gpsd: PPS pulse OK. cycle: 1000086, duration: 900092 diff: 99994
+gpsd: ntpshm_pps: lost PPS lock
+gpsd: PPS pulse rejected too short. cycle: 1000092, duration: 100000
+gpsd: PPS pulse OK. cycle: 1000107, duration: 900107 diff: 100000
+gpsd: ntpshm_pps: lost PPS lock
+gpsd: PPS pulse rejected too short. cycle: 1000091, duration: 99984
+gpsd: PPS pulse OK. cycle: 1000083, duration: 900099 diff: 99984
+gpsd: ntpshm_pps: lost PPS lock
+gpsd: PPS pulse rejected too short. cycle: 1000089, duration: 99990
+gpsd: PPS pulse OK. cycle: 1000099, duration: 900109 diff: 99990
+gpsd: PPS pulse rejected too short. cycle: 1000091, duration: 99982
+gpsd: PPS pulse OK. cycle: 1000094, duration: 900112 diff: 99982
+gpsd: ntpshm_pps: lost PPS lock
+
+
+&quot;cycle&quot; values can also be, eg., ~1000020.
+
+Cheers, Askar
+
+
+   
+&gt;<i> -----BEGIN PGP SIGNED MESSAGE-----
+</I>&gt;<i> Hash: SHA1
+</I>
+&gt;<i> Yo Askar!
+</I>
+&gt;<i> On Wed, 7 Nov 2007, Askar Ibragimov wrote:
+</I>
+&gt;&gt;<i> this list) is 1000020 cycles, but gpsd still rejectes it (Lost PPS
+</I>&gt;&gt;<i> pulse).
+</I>
+&gt;<i> That small a offset would not be the reason the pulse is rejected.
+</I>
+&gt;<i> What is your current jitter and offset without the PPS?  What does
+</I>&gt;<i> your ntpd.conf look like?
+</I>
+&gt;<i> RGDS
+</I>&gt;<i> GARY
+</I>&gt;<i> -
+</I>&gt;<i> ---------------------------------------------------------------------------
+</I>&gt;<i> Gary E. Miller Rellim 109 NW Wilmington Ave., Suite E, Bend, OR 97701
+</I>&gt;<i>         <A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">gem at rellim.com</A>  Tel:+1(541)382-8588
+</I>
+&gt;<i> -----BEGIN PGP SIGNATURE-----
+</I>&gt;<i> Version: GnuPG v1.4.3 (GNU/Linux)
+</I>
+&gt;<i> iD8DBQFHMjF18KZibdeR3qURAuITAKCwex9CbbegEtJTw8DJaHBuXfKHdQCg2loh
+</I>&gt;<i> RNIHV67JVh3i2HBgBqMtCaI=
+</I>&gt;<i> =RCaX
+</I>&gt;<i> -----END PGP SIGNATURE-----
+</I>
+
+8 &#1085;&#1086;&#1103;&#1073;&#1088;&#1103; 2007 &#1075;. 0:08
+ICQ 19576333  <A HREF="http://tsukasa.zenfolio.com">http://tsukasa.zenfolio.com</A> 
+God's in his heaven -  All's right with the world
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="002951.html">[Gpsd-users] Lost PPS pulse
+</A></li>
+	<LI>Next message: <A HREF="002953.html">[Gpsd-users] Lost PPS pulse
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2952">[ date ]</a>
+              <a href="thread.html#2952">[ thread ]</a>
+              <a href="subject.html#2952">[ subject ]</a>
+              <a href="author.html#2952">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

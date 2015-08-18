@@ -1,0 +1,162 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] Fwd: gpsfake fails
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2011-August/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Fwd%3A%20gpsfake%20fails&In-Reply-To=%3CCAMde4zanUeQpJoii3xdw3%3DQ2K6BajXv%3D9%2BwWr_o6GNguOgCpyg%40mail.gmail.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="005419.html">
+   <LINK REL="Next"  HREF="005425.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] Fwd: gpsfake fails</H1>
+    <B>Rusty Synate</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Fwd%3A%20gpsfake%20fails&In-Reply-To=%3CCAMde4zanUeQpJoii3xdw3%3DQ2K6BajXv%3D9%2BwWr_o6GNguOgCpyg%40mail.gmail.com%3E"
+       TITLE="[Gpsd-users] Fwd: gpsfake fails">k.saran.k at gmail.com
+       </A><BR>
+    <I>Sun Aug 21 14:36:52 CEST 2011</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="005419.html">[Gpsd-users] Fwd: gpsfake fails
+</A></li>
+        <LI>Next message: <A HREF="005425.html">[Gpsd-users] Fwd: gpsfake fails
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#5424">[ date ]</a>
+              <a href="thread.html#5424">[ thread ]</a>
+              <a href="subject.html#5424">[ subject ]</a>
+              <a href="author.html#5424">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi,
+
+I installed ubuntu 10.04 in my PC. Then download gpsd.
+
+I installed it from start. When i type gpsfake it said its not installed and
+
+you can install by typing sudo apt-get install python-gps.
+
+I installed python-gps and gpsfake is working fine.
+
+I am completely aware that, there is some python problem in
+fedora. Is there any tool like python-gps deb package in fedora also?
+
+
+
+2011/8/18 Ezequiel Garc&#237;a &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">elezegarcia at yahoo.com.ar</A>&gt;
+
+&gt;<i>
+</I>&gt;<i> Rusty,
+</I>&gt;<i>
+</I>&gt;<i> You tell the error is this, right?
+</I>&gt;<i>     import gps.fake
+</I>&gt;<i> ImportError: No module named gps.fake
+</I>&gt;<i>
+</I>&gt;<i> I think its clear; python can't find gps.py or fake.py.
+</I>&gt;<i> You need to tell him where it is.
+</I>&gt;<i> I dont know if gpsd needs python 2.6 or 2.7,
+</I>&gt;<i> but I dont think it has anything to do with it.
+</I>&gt;<i>
+</I>&gt;<i> You fake.py is here
+</I>&gt;<i>
+</I>&gt;<i> /usr/local/lib/python2.6/site-packages/gps/fake.py
+</I>&gt;<i>
+</I>&gt;<i> so you just need to add that path to python,
+</I>&gt;<i> again PYTHONPATH controls this. You could try reading a bit
+</I>&gt;<i> of python:
+</I>&gt;<i>
+</I>&gt;<i> <A HREF="http://docs.python.org/release/2.6/using/cmdline.html#envvar-PYTHONPATH">http://docs.python.org/release/2.6/using/cmdline.html#envvar-PYTHONPATH</A>
+</I>&gt;<i>
+</I>&gt;<i> So, after setting PYTHONPATH=/usr/local/lib/python2.6/site-packages/gps
+</I>&gt;<i> do this:
+</I>&gt;<i>
+</I>&gt;<i> python -c &quot;import sys; print sys.path&quot;
+</I>&gt;<i>
+</I>&gt;<i> To check the path python knows for its modules. This path must
+</I>&gt;<i> include gps directory for gps.py.
+</I>&gt;<i>
+</I>&gt;<i> Hope it helps.
+</I>&gt;<i>
+</I>&gt;<i> --- El jue 18-ago-11, Rusty Synate &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">k.saran.k at gmail.com</A>&gt; escribi&#243;:
+</I>&gt;<i>
+</I>&gt;<i> De: Rusty Synate &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">k.saran.k at gmail.com</A>&gt;
+</I>&gt;<i> Asunto: Re: [Gpsd-users] Fwd: gpsfake fails
+</I>&gt;<i> Para: &quot;Ezequiel Garc&#237;a&quot; &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">elezegarcia at yahoo.com.ar</A>&gt;,
+</I>&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">gpsd-users at lists.berlios.de</A>
+</I>&gt;<i> Fecha: jueves, 18 de agosto de 2011, 3:13
+</I>&gt;<i>
+</I>&gt;<i> Hi,
+</I>&gt;<i>
+</I>&gt;<i> I have done as told. Here is output for the locate.
+</I>&gt;<i>
+</I>&gt;<i> [<A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">root at uxchas233</A> ~]# locate gps.py
+</I>&gt;<i>
+</I>&gt;<i> /home/gpsd-2.96/build/lib.linux-i686-2.6/gps/gps.py
+</I>&gt;<i> /home/gpsd-2.96/gps/gps.py
+</I>&gt;<i>
+</I>&gt;<i> /usr/local/lib/python2.6/site-packages/gps/gps.py
+</I>&gt;<i> /usr/local/lib/python2.6/site-packages/gps/gps.pyc
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i> [<A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">root at uxchas233</A> ~]# locate fake.py
+</I>&gt;<i> /home/gpsd-2.96/build/lib.linux-i686-2.6/gps/fake.py
+</I>&gt;<i>
+</I>&gt;<i> /home/gpsd-2.96/gps/fake.py
+</I>&gt;<i> /usr/local/lib/python2.6/site-packages/gps/fake.py
+</I>&gt;<i>
+</I>&gt;<i> /usr/local/lib/python2.6/site-packages/gps/fake.pyc
+</I>&gt;<i>
+</I>&gt;<i> I even tried to add those to PYTHONPATH. But still it is showing the same
+</I>&gt;<i> error.
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i> [<A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">root at uxchas233</A> ~]# echo $PYTHONPATH
+</I>&gt;<i>
+</I>&gt;<i> :/usr/local/lib/python2.6/site-packages/gps/gps.py:/usr/local/lib/python2.6/site-packages/gps/gps.py:
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i> /usr/local/lib/python2.6/site-packages/gps/fake.py:/usr/local/lib/python2.6/site-packages/gps/
+</I>&gt;<i>
+</I>&gt;<i> My doubt is that does this version of gpsd require python2.7 ??
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i>
+</I>
+
+-- 
+Cheers
+
+Rusty Synate
++91 9952 940 841
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="005419.html">[Gpsd-users] Fwd: gpsfake fails
+</A></li>
+	<LI>Next message: <A HREF="005425.html">[Gpsd-users] Fwd: gpsfake fails
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#5424">[ date ]</a>
+              <a href="thread.html#5424">[ thread ]</a>
+              <a href="subject.html#5424">[ subject ]</a>
+              <a href="author.html#5424">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

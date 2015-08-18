@@ -1,0 +1,226 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] Build bugs in 2.28
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2005-August/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Build%20bugs%20in%202.28&In-Reply-To=%3C430CA3A2.3060709%40them.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="001023.html">
+   <LINK REL="Next"  HREF="001027.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] Build bugs in 2.28</H1>
+    <B>David I S Mandala</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Build%20bugs%20in%202.28&In-Reply-To=%3C430CA3A2.3060709%40them.com%3E"
+       TITLE="[Gpsd-users] Build bugs in 2.28">davidm at them.com
+       </A><BR>
+    <I>Wed Aug 24 18:43:14 CEST 2005</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="001023.html">[Gpsd-users] Usage of Haicom HI-204S
+</A></li>
+        <LI>Next message: <A HREF="001027.html">[Gpsd-users] Build bugs in 2.28
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1026">[ date ]</a>
+              <a href="thread.html#1026">[ thread ]</a>
+              <a href="subject.html#1026">[ subject ]</a>
+              <a href="author.html#1026">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hello all,
+
+I've found some build bugs that I suspect have been around for a while 
+simply because this is not something that normally most anyone would do. 
+I found this becasue we tried an old sirf GPS (it's new to us) and it 
+sometimes was detected as an fv18 and when that happens you get no 
+usable info from the gps. Since I'm critically short of time (I still 
+owe some debugging info on a different sirf GPS) I thought I simply turn 
+off all binary modes and run NEMA only. Only thing is you can't, gpsd 
+will not build, in fact there are several configurations that will not 
+build. As a side note, &quot;make clean&quot; was run between all tests.
+
+Finally if someone whats to play the the specific sirf GPS that 
+sometimes is detected as a fv18 I have plenty of these and would be 
+happy to give one away in hopes of makeing GPSD better. It's an RS-232 
+device at normal RS-232 levels and can be connected to a PC with no 
+problems.
+
+I'm still trying to get unburied so I can build test the other GPS and 
+figure out where the bug cropped up for it.
+
+If you run configure with:
+--disable-sirfII
+--disable-tsip
+--disable-fv18
+--disable-tripmate
+--disable-earthmate
+--disable-garmin
+
+and then try and make gpsd it will fail.
+
+If you enable only sirfII the make will work.
+If you enable only tsip the build fails.
+If you enable only fv18 the build fails.
+If you enable only tripmate the build fails.
+If you enable only earthmate the build works.
+If you enable only garmin the build works.
+
+I've listed the failure info below for each.
+
+Error output with all binary modes disabled:
+
+  gcc -DHAVE_CONFIG_H -I. -I. -I. -I/usr/X11R6/include -g -O2 -Wall 
+-Wcast-align -Wmissing-declarations -Wmissing-prototypes 
+-Wstrict-prototypes -Wpointer-arith -Wreturn-type -W -D_GNU_SOURCE 
+-I/usr/X11R6/include -MT libgpsd_core.lo -MD -MP -MF 
+.deps/libgpsd_core.Tpo -c libgpsd_core.c  -fPIC -DPIC -o 
+.libs/libgpsd_core.o
+libgpsd_core.c: In function `apply_error_model':
+libgpsd_core.c:408: error: structure has no member named `lastfix'
+libgpsd_core.c:410: error: structure has no member named `lastfix'
+libgpsd_core.c:412: error: structure has no member named `lastfix'
+libgpsd_core.c:413: error: structure has no member named `lastfix'
+libgpsd_core.c:419: error: structure has no member named `lastfix'
+libgpsd_core.c:421: error: structure has no member named `lastfix'
+libgpsd_core.c:423: error: structure has no member named `lastfix'
+libgpsd_core.c:424: error: structure has no member named `lastfix'
+libgpsd_core.c:443: error: structure has no member named `lastfix'
+libgpsd_core.c:445: error: structure has no member named `lastfix'
+libgpsd_core.c:446: error: structure has no member named `lastfix'
+libgpsd_core.c: In function `gpsd_poll':
+libgpsd_core.c:543: error: structure has no member named `lastfix'
+libgpsd_core.c:559: warning: implicit declaration of function 
+`gpsd_binary_fix_dump'
+libgpsd_core.c:563: warning: implicit declaration of function 
+`gpsd_binary_quality_dump'
+libgpsd_core.c:567: warning: implicit declaration of function 
+`gpsd_binary_satellite_dump'
+make[1]: *** [libgpsd_core.lo] Error 1
+make[1]: Leaving directory `/home/davidm/work/nsc/src/gpsd-2.28'
+make: *** [all] Error 2
+
+
+If you enable only tsip the build fails with:
+
+  gcc -DHAVE_CONFIG_H -I. -I. -I. -I/usr/X11R6/include -g -O2 -Wall 
+-Wcast-align -Wmissing-declarations -Wmissing-prototypes 
+-Wstrict-prototypes -Wpointer-arith -Wreturn-type -W -D_GNU_SOURCE 
+-I/usr/X11R6/include -MT tsip.lo -MD -MP -MF .deps/tsip.Tpo -c tsip.c 
+-fPIC -DPIC -o .libs/tsip.o
+tsip.c: In function `tsip_analyze':
+tsip.c:167: error: structure has no member named `tsip'
+tsip.c:172: error: structure has no member named `tsip'
+tsip.c:250: error: structure has no member named `tsip'
+tsip.c:252: error: structure has no member named `tsip'
+tsip.c:266: error: structure has no member named `tsip'
+tsip.c:275: error: structure has no member named `tsip'
+tsip.c:327: error: structure has no member named `tsip'
+tsip.c:347: error: structure has no member named `tsip'
+tsip.c:379: error: structure has no member named `tsip'
+tsip.c:463: error: structure has no member named `tsip'
+tsip.c:465: error: structure has no member named `tsip'
+tsip.c:542: error: structure has no member named `tsip'
+tsip.c:561: error: structure has no member named `tsip'
+tsip.c:610: error: structure has no member named `tsip'
+tsip.c:613: error: structure has no member named `tsip'
+tsip.c:616: error: structure has no member named `tsip'
+tsip.c:619: error: structure has no member named `tsip'
+tsip.c:622: error: structure has no member named `tsip'
+tsip.c:626: error: structure has no member named `tsip'
+
+If you enable only fv18 the build fails with:
+
+  gcc -DHAVE_CONFIG_H -I. -I. -I. -I/usr/X11R6/include -g -O2 -Wall 
+-Wcast-align -Wmissing-declarations -Wmissing-prototypes 
+-Wstrict-prototypes -Wpointer-arith -Wreturn-type -W -D_GNU_SOURCE 
+-I/usr/X11R6/include -MT libgpsd_core.lo -MD -MP -MF 
+.deps/libgpsd_core.Tpo -c libgpsd_core.c  -fPIC -DPIC -o 
+.libs/libgpsd_core.o
+libgpsd_core.c: In function `apply_error_model':
+libgpsd_core.c:408: error: structure has no member named `lastfix'
+libgpsd_core.c:410: error: structure has no member named `lastfix'
+libgpsd_core.c:412: error: structure has no member named `lastfix'
+libgpsd_core.c:413: error: structure has no member named `lastfix'
+libgpsd_core.c:419: error: structure has no member named `lastfix'
+libgpsd_core.c:421: error: structure has no member named `lastfix'
+libgpsd_core.c:423: error: structure has no member named `lastfix'
+libgpsd_core.c:424: error: structure has no member named `lastfix'
+libgpsd_core.c:443: error: structure has no member named `lastfix'
+libgpsd_core.c:445: error: structure has no member named `lastfix'
+libgpsd_core.c:446: error: structure has no member named `lastfix'
+libgpsd_core.c: In function `gpsd_poll':
+libgpsd_core.c:543: error: structure has no member named `lastfix'
+libgpsd_core.c:559: warning: implicit declaration of function 
+`gpsd_binary_fix_dump'
+libgpsd_core.c:563: warning: implicit declaration of function 
+`gpsd_binary_quality_dump'
+libgpsd_core.c:567: warning: implicit declaration of function 
+`gpsd_binary_satellite_dump'
+make[1]: *** [libgpsd_core.lo] Error 1
+make[1]: Leaving directory `/home/davidm/work/nsc/src/gpsd-2.28'
+make: *** [all] Error 2
+
+If you enable only tripmate the build fails with:
+
+  gcc -DHAVE_CONFIG_H -I. -I. -I. -I/usr/X11R6/include -g -O2 -Wall 
+-Wcast-align -Wmissing-declarations -Wmissing-prototypes 
+-Wstrict-prototypes -Wpointer-arith -Wreturn-type -W -D_GNU_SOURCE 
+-I/usr/X11R6/include -MT libgpsd_core.lo -MD -MP -MF 
+.deps/libgpsd_core.Tpo -c libgpsd_core.c  -fPIC -DPIC -o 
+.libs/libgpsd_core.o
+libgpsd_core.c: In function `apply_error_model':
+libgpsd_core.c:408: error: structure has no member named `lastfix'
+libgpsd_core.c:410: error: structure has no member named `lastfix'
+libgpsd_core.c:412: error: structure has no member named `lastfix'
+libgpsd_core.c:413: error: structure has no member named `lastfix'
+libgpsd_core.c:419: error: structure has no member named `lastfix'
+libgpsd_core.c:421: error: structure has no member named `lastfix'
+libgpsd_core.c:423: error: structure has no member named `lastfix'
+libgpsd_core.c:424: error: structure has no member named `lastfix'
+libgpsd_core.c:443: error: structure has no member named `lastfix'
+libgpsd_core.c:445: error: structure has no member named `lastfix'
+libgpsd_core.c:446: error: structure has no member named `lastfix'
+libgpsd_core.c: In function `gpsd_poll':
+libgpsd_core.c:543: error: structure has no member named `lastfix'
+libgpsd_core.c:559: warning: implicit declaration of function 
+`gpsd_binary_fix_dump'
+libgpsd_core.c:563: warning: implicit declaration of function 
+`gpsd_binary_quality_dump'
+libgpsd_core.c:567: warning: implicit declaration of function 
+`gpsd_binary_satellite_dump'
+make[1]: *** [libgpsd_core.lo] Error 1
+make[1]: Leaving directory `/home/davidm/work/nsc/src/gpsd-2.28'
+make: *** [all] Error 2
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="001023.html">[Gpsd-users] Usage of Haicom HI-204S
+</A></li>
+	<LI>Next message: <A HREF="001027.html">[Gpsd-users] Build bugs in 2.28
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1026">[ date ]</a>
+              <a href="thread.html#1026">[ thread ]</a>
+              <a href="subject.html#1026">[ subject ]</a>
+              <a href="author.html#1026">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

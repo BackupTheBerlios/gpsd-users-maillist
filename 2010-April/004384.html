@@ -1,0 +1,147 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] close... but not quite
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2010-April/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20close...%20but%20not%20quite&In-Reply-To=%3C20100414071700.2a1c5a87%40dragon.localdomain%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="004396.html">
+   <LINK REL="Next"  HREF="004397.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] close... but not quite</H1>
+    <B>Charles Curley</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20close...%20but%20not%20quite&In-Reply-To=%3C20100414071700.2a1c5a87%40dragon.localdomain%3E"
+       TITLE="[Gpsd-users] close... but not quite">charlescurley at charlescurley.com
+       </A><BR>
+    <I>Wed Apr 14 15:17:00 CEST 2010</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="004396.html">[Gpsd-users] delay in gpsd boot
+</A></li>
+        <LI>Next message: <A HREF="004397.html">[Gpsd-users] close... but not quite
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#4384">[ date ]</a>
+              <a href="thread.html#4384">[ thread ]</a>
+              <a href="subject.html#4384">[ subject ]</a>
+              <a href="author.html#4384">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Don't forget to send to the list rather than to me so that the list
+captures a record that might help others.
+
+On Wed, 14 Apr 2010 09:38:59 +0300
+Lucian Goron &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">luciangoron at gmail.com</A>&gt; wrote:
+
+&gt;<i> here is my output
+</I>&gt;<i> 
+</I>&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">goron at lucian</A>:/$ lsusb
+</I>&gt;<i> Bus 002 Device 001: ID 1d6b:0002 Linux Foundation 2.0 root hub
+</I>&gt;<i> Bus 007 Device 001: ID 1d6b:0001 Linux Foundation 1.1 root hub
+</I>&gt;<i> Bus 006 Device 001: ID 1d6b:0001 Linux Foundation 1.1 root hub
+</I>&gt;<i> Bus 005 Device 002: ID 067b:2303 Prolific Technology, Inc. PL2303
+</I>&gt;<i> Serial Port
+</I>&gt;<i> Bus 005 Device 001: ID 1d6b:0001 Linux Foundation 1.1 root hub
+</I>&gt;<i> Bus 001 Device 001: ID 1d6b:0002 Linux Foundation 2.0 root hub
+</I>&gt;<i> Bus 004 Device 002: ID 046d:c018 Logitech, Inc. Optical Wheel Mouse
+</I>&gt;<i> Bus 004 Device 001: ID 1d6b:0001 Linux Foundation 1.1 root hub
+</I>&gt;<i> Bus 003 Device 002: ID 147e:2016
+</I>&gt;<i> Bus 003 Device 001: ID 1d6b:0001 Linux Foundation 1.1 root hub
+</I>&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">goron at lucian</A>:/$
+</I>
+Good. I expect the PL2303 is the GPS receiver. So we know that's there
+and the kernel can detect it. The PL2303 is a well known serial to USB
+adapter chip, and the gpsd devs are well familiar with it. So far so
+good.
+
+
+&gt;<i> 
+</I>&gt;<i> then
+</I>&gt;<i> 
+</I>&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">goron at lucian</A>:/$ sudo modprobe usbserial vendor=0x067b product=0x2303
+</I>&gt;<i> [sudo] password for goron:
+</I>&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">goron at lucian</A>:/$
+</I>&gt;<i> 
+</I>&gt;<i> at the end
+</I>&gt;<i> 
+</I>&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">goron at lucian</A>:/$ sudo gpsd /dev/ttyUSB0
+</I>&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">goron at lucian</A>:/$
+</I>&gt;<i> 
+</I>&gt;<i> ...still no output.
+</I>
+Right; you shouldn't see any text output as gpsd runs. So you may
+actually have gpsd running but not know it. Try:
+
+ps aux | grep gps
+
+If that show you any results beyond showing the grep command itself,
+you have a running gpsd, and can shut it down with:
+
+killall gpsd
+
+
+&gt;<i> I've also tried this
+</I>&gt;<i> 
+</I>&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">goron at lucian</A>:/$ /etc/init.d/gpsd start
+</I>&gt;<i>  * Not starting GPS (Global Positioning System) daemon
+</I>&gt;<i> gpsd
+</I>&gt;<i> [ OK ]
+</I>&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">goron at lucian</A>:/$
+</I>&gt;<i> 
+</I>&gt;<i> any new ideas ?
+</I>
+Generally, anything that launches a daemon should be run as root. Try
+running it as root: prepend sudo.
+
+Also, in another window you can tail the system log to see what is
+going on:
+
+tail -f /var/log/syslog
+
+You may also want to edit /etc/default/gpsd, which you do with:
+
+sudo dpkg-reconfigure gpsd
+
+
+
+
+-- 
+
+Charles Curley                  /&quot;\    ASCII Ribbon Campaign
+Looking for fine software       \ /    Respect for open standards
+and/or writing?                  X     No HTML/RTF in email
+<A HREF="http://www.charlescurley.com">http://www.charlescurley.com</A>    / \    No M$ Word docs in email
+
+Key fingerprint = CE5C 6645 A45A 64E4 94C0  809C FFF6 4C48 4ECD DFDB
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="004396.html">[Gpsd-users] delay in gpsd boot
+</A></li>
+	<LI>Next message: <A HREF="004397.html">[Gpsd-users] close... but not quite
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#4384">[ date ]</a>
+              <a href="thread.html#4384">[ thread ]</a>
+              <a href="subject.html#4384">[ subject ]</a>
+              <a href="author.html#4384">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

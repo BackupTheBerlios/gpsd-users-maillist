@@ -1,0 +1,142 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] Fwd: NTP Problems
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2006-August/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Fwd%3A%20NTP%20Problems&In-Reply-To=%3C7e272c5c0608291813p501be799xef7fd283fda895ed%40mail.gmail.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="001900.html">
+   <LINK REL="Next"  HREF="001892.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] Fwd: NTP Problems</H1>
+    <B>Karl von Muller</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Fwd%3A%20NTP%20Problems&In-Reply-To=%3C7e272c5c0608291813p501be799xef7fd283fda895ed%40mail.gmail.com%3E"
+       TITLE="[Gpsd-users] Fwd: NTP Problems">vertigok at gmail.com
+       </A><BR>
+    <I>Wed Aug 30 03:13:35 CEST 2006</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="001900.html">[Gpsd-users] Fwd: NTP Problems
+</A></li>
+        <LI>Next message: <A HREF="001892.html">[Gpsd-users] Problems with a Haicom HI-305N
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1901">[ date ]</a>
+              <a href="thread.html#1901">[ thread ]</a>
+              <a href="subject.html#1901">[ subject ]</a>
+              <a href="author.html#1901">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Thanks guys,
+
+Busy day at work today so i'll have a look tonight at it all
+
+On 8/30/06, Geoffrey B. Crew &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">gbc at space.mit.edu</A>&gt; wrote:
+&gt;<i>
+</I>&gt;<i> &gt; Had a quick look in the code...seems there's a call to gpsd_report if
+</I>&gt;<i> shmid
+</I>&gt;<i> &gt; = -1, which looks like it should output something if it i does fail.
+</I>&gt;<i> &gt; So i started up gpsd with -D 9 and didnt see any mention of shm
+</I>&gt;<i> failing...
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; Jan  1 11:08:44 gumstix user.notice gpsd[332]: gpsd: launching (Version
+</I>&gt;<i> 2.30
+</I>&gt;<i> &gt; )
+</I>&gt;<i> &gt; Jan  1 11:08:44 gumstix user.notice gpsd[332]: gpsd: listening on port
+</I>&gt;<i> 2947
+</I>&gt;<i> &gt; Jan  1 11:08:44 gumstix user.notice gpsd[332]: gpsd: changing to group 0
+</I>&gt;<i> &gt; Jan  1 11:08:44 gumstix user.notice gpsd[332]: gpsd: running with
+</I>&gt;<i> effective
+</I>&gt;<i> &gt; group ID 0
+</I>&gt;<i> &gt; Jan  1 11:08:44 gumstix user.notice gpsd[332]: gpsd: running with
+</I>&gt;<i> effective
+</I>&gt;<i> &gt; user ID 99
+</I>&gt;<i> &gt; Jan  1 11:08:44 gumstix user.notice gpsd[332]: gpsd: opening GPS data
+</I>&gt;<i> source
+</I>&gt;<i> &gt; at '/dev/ttyS0'
+</I>&gt;<i> &gt; Jan  1 11:08:44 gumstix user.notice gpsd[332]: gpsd: no probe matched...
+</I>&gt;<i> &gt; Jan  1 11:08:44 gumstix user.notice gpsd[332]: gpsd: speed 9600, 8N1
+</I>&gt;<i> &gt; Jan  1 11:08:44 gumstix user.notice gpsd[332]: gpsd: gpsd_activate:
+</I>&gt;<i> opened
+</I>&gt;<i> &gt; GPS (5)
+</I>&gt;<i> &gt; Jan  1 11:08:44 gumstix user.notice gpsd[332]: gpsd: flagging descriptor
+</I>&gt;<i> 5
+</I>&gt;<i> &gt; in open_device
+</I>&gt;<i> &gt; Jan  1 11:08:44 gumstix user.notice gpsd[332]: gpsd: select waits
+</I>&gt;<i> &gt; Jan  1 11:08:44 gumstix user.notice gpsd[332]: gpsd: polling 5
+</I>&gt;<i> &gt; Jan  1 11:08:44 gumstix user.notice gpsd[332]: gpsd: Read 72 chars to
+</I>&gt;<i> buffer
+</I>&gt;<i> &gt; offset 0 (total 72):
+</I>&gt;<i> &gt;
+</I>&gt;<i> e08600788600787886e086e086e698e086007886007886e698e086e086007878787866667860e680988060786000e618e6e6981e1e861878e078e6781e1878788606781e78788678
+</I>&gt;<i> &gt; Jan  1 11:08:44 gumstix user.notice gpsd[332]: gpsd: ISGPS word tag not
+</I>&gt;<i> &gt; correct, skipping
+</I>&gt;<i> &gt; Jan  1 11:08:44 gumstix user.notice gpsd[332]: gpsd: 00000000: character
+</I>&gt;<i> '.'
+</I>&gt;<i> &gt; [e0], new state: GROUND_STATE
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; seems weird to me. I'm thinking its possible that for some reason the
+</I>&gt;<i> struct
+</I>&gt;<i> &gt; isn't being intialised?
+</I>&gt;<i> &gt; I couldn't see it being called in a strace I ran either. Geoffrey, could
+</I>&gt;<i> you
+</I>&gt;<i> &gt; post a little more from either side of your strace please?
+</I>&gt;<i>
+</I>&gt;<i> strace -f gpsd -n -D 9 -F /var/run/gpsd.sock 2&gt;&amp;1 | tee strace.gpsd-D9.out
+</I>&gt;<i>
+</I>&gt;<i> is attached.  messages has:
+</I>&gt;<i>
+</I>&gt;<i>   Aug 29 18:19:57 geselda gpsd[18951]: gpsd: launching (Version 2.34)
+</I>&gt;<i>   Aug 29 18:19:58 geselda gpsd[18951]: gpsd: listening on port 2947
+</I>&gt;<i>   Aug 29 18:19:58 geselda gpsd[18951]: gpsd: changing to group 14
+</I>&gt;<i>   Aug 29 18:19:58 geselda gpsd[18951]: gpsd: running with effective group
+</I>&gt;<i> ID 14
+</I>&gt;<i>   Aug 29 18:19:58 geselda gpsd[18951]: gpsd: running with effective user
+</I>&gt;<i> ID 99
+</I>&gt;<i>   Aug 29 18:19:58 geselda gpsd[18951]: gpsd: select waits
+</I>&gt;<i>
+</I>&gt;<i> There does seem to be something different happening with group/user id's.
+</I>&gt;<i> Other than checking that getuid() is returning 0, I'm not sure what else
+</I>&gt;<i> to suggest.
+</I>&gt;<i>
+</I>&gt;<i> --
+</I>&gt;<i>
+</I>&gt;<i>                 Geoff
+</I>&gt;<i>                 <A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">gbc at space.mit.edu</A>
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i>
+</I>-------------- next part --------------
+An HTML attachment was scrubbed...
+URL: &lt;<A HREF="https://lists.berlios.de/pipermail/gpsd-users/attachments/20060830/695ab689/attachment.html">https://lists.berlios.de/pipermail/gpsd-users/attachments/20060830/695ab689/attachment.html</A>&gt;
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="001900.html">[Gpsd-users] Fwd: NTP Problems
+</A></li>
+	<LI>Next message: <A HREF="001892.html">[Gpsd-users] Problems with a Haicom HI-305N
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1901">[ date ]</a>
+              <a href="thread.html#1901">[ thread ]</a>
+              <a href="subject.html#1901">[ subject ]</a>
+              <a href="author.html#1901">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

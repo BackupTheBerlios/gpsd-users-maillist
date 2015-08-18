@@ -1,0 +1,111 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] OT(?) - WAAS and (OT)GPS firmware upgrade
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2005-July/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20OT%28%3F%29%20-%20WAAS%20and%20%28OT%29GPS%20firmware%20upgrade&In-Reply-To=%3C91981b3e050706080212c1326a%40mail.gmail.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="000816.html">
+   <LINK REL="Next"  HREF="000818.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] OT(?) - WAAS and (OT)GPS firmware upgrade</H1>
+    <B>Chris Kuethe</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20OT%28%3F%29%20-%20WAAS%20and%20%28OT%29GPS%20firmware%20upgrade&In-Reply-To=%3C91981b3e050706080212c1326a%40mail.gmail.com%3E"
+       TITLE="[Gpsd-users] OT(?) - WAAS and (OT)GPS firmware upgrade">chris.kuethe at gmail.com
+       </A><BR>
+    <I>Wed Jul  6 17:02:09 CEST 2005</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="000816.html">[Gpsd-users] OT(?) - WAAS and (OT)GPS firmware upgrade
+</A></li>
+        <LI>Next message: <A HREF="000818.html">[Gpsd-users] OT(?) - WAAS and (OT)GPS firmware upgrade
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#817">[ date ]</a>
+              <a href="thread.html#817">[ thread ]</a>
+              <a href="subject.html#817">[ subject ]</a>
+              <a href="author.html#817">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>On 7/6/05, Eric S. Raymond &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">esr at thyrsus.com</A>&gt; wrote:
+&gt;<i> &gt; BTW, is there a way to update my firmware from Linux ?. I do not want
+</I>&gt;<i> &gt; to do it from that other evil OS... I am slowly leaving that die
+</I>&gt;<i> &gt; alone.
+</I>&gt;<i> 
+</I>&gt;<i> Chris Kuethe &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">chris.kuethe at gmail.com</A>&gt; is working on this.  I'm sure
+</I>&gt;<i> he'd welcome a beta tester.
+</I>
+Working on it. I don't feel like selling any more of my soul to the
+devil today, so I'll avoid the use of bold, blinking, red 144pt caps
+for this:
+
+=====================================
+Warning - this is highly untested. You could nuke your reciever while
+flashing it, just like I killed 2 of mine. New firmwares, while
+bringing shiny new features, can also radically alter the behaviour of
+your receiver (like setting the default protocol to <A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">SiRF at 38400</A>). I
+don't know that I can redistribute some of the required binary parts
+and I haven't received even a preliminary &quot;that's probably not
+completely wrong&quot; from SiRF. This is a path of great peril down which
+you travel.
+=====================================
+
+So yeah, I'd love to have beta testers, but be warned that I've
+already lost 2 receivers to firmware flashing, I'm scared to lose
+another, and while I'm trying to be as safe as I can, I'm not
+responsible if you nuke your receiver.
+
+With that out of the way, here's a brief status report:
+* Only POSIX standard interfaces are used. it should just work on your
+favorite linux or bsd or unix.
+* The software contains only original code written by be (except for
+one little bit I ripped out of gpsd's sirf.c) even though I have
+access to the source for SiRF's flash driver. Thus, it is free of IP
+entanglements and encumbrances.
+* I have some magic in place to allow the firmware to boost the port
+speed on the fly, while flashing to minimize the write time
+* The binary blob running on the receiver only supports transferring
+S-records, and S-record loading is interactive. I don't have the Arm
+Development Studio, and ADS seems to be required to build this sort of
+binary blob, so I can't build a better one of my own. and I hear ADS
+is really expensive.
+* Best time to push a new firmware across to my simulator is 0:01:33.
+I suspect that'll go up to about 0:01:45 once I put all the error
+checking and interactivity in.
+
+CK
+
+-- 
+GDB has a 'break' feature; why doesn't it have 'fix' too?
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="000816.html">[Gpsd-users] OT(?) - WAAS and (OT)GPS firmware upgrade
+</A></li>
+	<LI>Next message: <A HREF="000818.html">[Gpsd-users] OT(?) - WAAS and (OT)GPS firmware upgrade
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#817">[ date ]</a>
+              <a href="thread.html#817">[ thread ]</a>
+              <a href="subject.html#817">[ subject ]</a>
+              <a href="author.html#817">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

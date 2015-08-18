@@ -1,0 +1,122 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] Announcing release 2.22 of gpsd
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2005-April/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Announcing%20release%202.22%20of%20gpsd&In-Reply-To=%3C426DC6B4.5010003%40devour.co.nz%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="000588.html">
+   <LINK REL="Next"  HREF="000590.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] Announcing release 2.22 of gpsd</H1>
+    <B>Glen Barnes</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Announcing%20release%202.22%20of%20gpsd&In-Reply-To=%3C426DC6B4.5010003%40devour.co.nz%3E"
+       TITLE="[Gpsd-users] Announcing release 2.22 of gpsd">newsgroups at devour.co.nz
+       </A><BR>
+    <I>Tue Apr 26 06:42:28 CEST 2005</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="000588.html">[Gpsd-users] Announcing release 2.22 of gpsd
+</A></li>
+        <LI>Next message: <A HREF="000590.html">[Gpsd-users] Announcing release 2.22 of gpsd
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#589">[ date ]</a>
+              <a href="thread.html#589">[ thread ]</a>
+              <a href="subject.html#589">[ subject ]</a>
+              <a href="author.html#589">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Eric S. Raymond wrote:
+
+&gt;<i>Release 2.22 of gpsd is now available at:
+</I>&gt;<i>
+</I>&gt;<i>	<A HREF="http://developer.berlios.de/projects/gpsd/">http://developer.berlios.de/projects/gpsd/</A>
+</I>&gt;<i>
+</I>&gt;<i>Here are the most recent changes:
+</I>&gt;<i>
+</I>&gt;<i>- SiRF-binary driver can now get leap-second corrections from subframe data.
+</I>&gt;<i>  Device add/delete commands now send back OK or ERROR.  Error-modeling
+</I>&gt;<i>  corrections from the SiRF folks.  Higher precision in position reports.
+</I>&gt;<i>
+</I>&gt;<i>--
+</I>&gt;<i>                             shipper, acting for <A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">esr at snark.thyrsus.com</A>
+</I>&gt;<i>_______________________________________________
+</I>&gt;<i>Gpsd-users mailing list
+</I>&gt;<i><A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">Gpsd-users at lists.berlios.de</A>
+</I>&gt;<i><A HREF="http://lists.berlios.de/mailman/listinfo/gpsd-users">http://lists.berlios.de/mailman/listinfo/gpsd-users</A>
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i>  
+</I>&gt;<i>
+</I>Hi,
+
+I've just tried to compile this on my mac (OS X 10.3.9 with X11 
+development libraries) and got the following error (I downloaded the 
+source from subversion and was compiling in the gpsd/tags/release-2.22 
+directory):
+
+if gcc -DHAVE_CONFIG_H -I. -I. -I.     -g -O2 -Wall -Wcast-align 
+-Wmissing-declarations -Wmissing-prototypes -Wstrict-prototypes 
+-Wpointer-arith -Wreturn-type -W  -MT display.o -MD -MP -MF 
+&quot;.deps/display.Tpo&quot; \
+  -c -o display.o `test -f 'display.c' || echo './'`display.c; \
+then mv -f &quot;.deps/display.Tpo&quot; &quot;.deps/display.Po&quot;; \
+else rm -f &quot;.deps/display.Tpo&quot;; exit 1; \
+fi
+In file included from display.c:6:
+display.h:5:19: Xm/Xm.h: No such file or directory
+In file included from display.c:6:
+display.h:9: error: parse error before &quot;XmDrawingAreaCallbackStruct&quot;
+display.h:9: warning: function declaration isn't a prototype
+display.c: In function `register_canvas':
+display.c:40: error: `XmNwidth' undeclared (first use in this function)
+display.c:40: error: (Each undeclared identifier is reported only once
+display.c:40: error: for each function it appears in.)
+display.c:40: error: `XmNheight' undeclared (first use in this function)
+display.c: At top level:
+display.c:137: error: parse error before &quot;XmDrawingAreaCallbackStruct&quot;
+display.c:138: warning: function declaration isn't a prototype
+display.c: In function `redraw':
+display.c:140: error: `cbs' undeclared (first use in this function)
+make[1]: *** [display.o] Error 1
+make: *** [all] Error 2
+
+Looking around online it looks as though the Xm.h file is actually in 
+this folder: /usr/X11R6/include. Now that I've got this far I'm not sure 
+what to change and where to get this compiling.
+
+Thanks,
+Glen
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="000588.html">[Gpsd-users] Announcing release 2.22 of gpsd
+</A></li>
+	<LI>Next message: <A HREF="000590.html">[Gpsd-users] Announcing release 2.22 of gpsd
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#589">[ date ]</a>
+              <a href="thread.html#589">[ thread ]</a>
+              <a href="subject.html#589">[ subject ]</a>
+              <a href="author.html#589">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

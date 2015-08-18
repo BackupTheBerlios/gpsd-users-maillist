@@ -1,0 +1,120 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] gpsd and AGPS works with normal gps mouse?
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2010-January/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20gpsd%20and%20AGPS%20works%20with%20normal%20gps%20mouse%3F&In-Reply-To=%3C20100112110739.GB27434%40bitwizard.nl%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="004154.html">
+   <LINK REL="Next"  HREF="004158.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] gpsd and AGPS works with normal gps mouse?</H1>
+    <B>Rogier Wolff</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20gpsd%20and%20AGPS%20works%20with%20normal%20gps%20mouse%3F&In-Reply-To=%3C20100112110739.GB27434%40bitwizard.nl%3E"
+       TITLE="[Gpsd-users] gpsd and AGPS works with normal gps mouse?">R.E.Wolff at BitWizard.nl
+       </A><BR>
+    <I>Tue Jan 12 12:07:39 CET 2010</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="004154.html">[Gpsd-users] gpsd and AGPS works with normal gps mouse?
+</A></li>
+        <LI>Next message: <A HREF="004158.html">[Gpsd-users] gpsd and AGPS works with normal gps mouse?
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#4157">[ date ]</a>
+              <a href="thread.html#4157">[ thread ]</a>
+              <a href="subject.html#4157">[ subject ]</a>
+              <a href="author.html#4157">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>On Mon, Jan 11, 2010 at 01:09:11PM -0500, Eric Raymond wrote:
+&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">mail at reox-design.net</A> &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">mail at reox-design.net</A>&gt;:
+</I>&gt;<i> &gt; Hello,
+</I>&gt;<i> &gt; I just heared about assisted GPS and I'm now searching for a how2 or
+</I>&gt;<i> &gt; something else, how i could enable it with gpsd and a normal GPS mouse on
+</I>&gt;<i> &gt; my laptop.
+</I>&gt;<i> &gt; I found some discussions on the net that i should work, but not how it
+</I>&gt;<i> &gt; works.
+</I>&gt;<i> 
+</I>&gt;<i> We don't know how to do this.
+</I>&gt;<i> 
+</I>&gt;<i> It requires picking up and interpreting information broadcast by
+</I>&gt;<i> cellphone towers, so it would at minimum need another receiver
+</I>&gt;<i> (separate from the GPS mouse) operating in those frequency bands. Of
+</I>&gt;<i> course, a cellphone has one of those built in.
+</I>&gt;<i> 
+</I>&gt;<i> There's another level of the problem, too. Supposing we had the right sort
+</I>&gt;<i> of receiver, AGPS systems are carrier-dependent.  As far as we know 
+</I>&gt;<i> there isn't any standard for the format of the corrections.
+</I>&gt;<i> 
+</I>&gt;<i> I think you're the third person to bring this up.   I should probably
+</I>&gt;<i> do a FAQ entry on this.
+</I>
+As far as I know, there are two parts to A-GPS.... First there is the:
+&quot;which tower am I on, and where is it located?&quot; Somehow cellphones can
+do this, and provide a location estimate well before the GPS can have
+a signal lock.
+
+Secondly there is some information, which is transmitted from the GPS
+satelites at a low baud rate. If all goes well (an ideal signal), this
+information takes up to 2 minutes to transmit/recieve. This is
+neccesary to obtain a position fix. On the other hand, you can just as
+well download this information from the internet. It's the same all
+over the world (but changes fast enough that 3 hours later it's
+invalid enough for my GPS not to trust it anymore)
+
+Provided we'd know where to get this information, and in what format
+it is, we could download it with whatever internet link we happen to
+have.
+
+However sending it to the GPS unit poses another problem. There
+usually simply isn't any protocol to do this.... 
+
+(on the other hand, for example the SIRF chipset needs to be able to
+be built-into a cellphone. So the cellphone needs to be able to tell
+it the &quot;assist&quot; information. A GPS mouse need not consist of much more
+than a SIRF chipset, plus a bluetooth&lt;-&gt;serial chipset plus a
+battery. So therefore it is possible that sending the right strings
+over bluetooth works.)
+
+	Roger. 
+
+-- 
+** <A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">R.E.Wolff at BitWizard.nl</A> ** <A HREF="http://www.BitWizard.nl/">http://www.BitWizard.nl/</A> ** +31-15-2600998 **
+**    Delftechpark 26 2628 XH  Delft, The Netherlands. KVK: 27239233    **
+*-- BitWizard writes Linux device drivers for any device you may have! --*
+Q: It doesn't work. A: Look buddy, doesn't work is an ambiguous statement. 
+Does it sit on the couch all day? Is it unemployed? Please be specific! 
+Define 'it' and what it isn't doing. --------- Adapted from lxrbot FAQ
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="004154.html">[Gpsd-users] gpsd and AGPS works with normal gps mouse?
+</A></li>
+	<LI>Next message: <A HREF="004158.html">[Gpsd-users] gpsd and AGPS works with normal gps mouse?
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#4157">[ date ]</a>
+              <a href="thread.html#4157">[ thread ]</a>
+              <a href="subject.html#4157">[ subject ]</a>
+              <a href="author.html#4157">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

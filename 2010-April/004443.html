@@ -1,0 +1,79 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] Help on installing gpsd on a virtual or shared server
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2010-April/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Help%20on%20installing%20gpsd%20on%20a%20virtual%20or%20shared%0A%20server&In-Reply-To=%3C20100428003742.GA11715%40thyrsus.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="004442.html">
+   <LINK REL="Next"  HREF="004444.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] Help on installing gpsd on a virtual or shared server</H1>
+    <B>Eric Raymond</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Help%20on%20installing%20gpsd%20on%20a%20virtual%20or%20shared%0A%20server&In-Reply-To=%3C20100428003742.GA11715%40thyrsus.com%3E"
+       TITLE="[Gpsd-users] Help on installing gpsd on a virtual or shared server">esr at thyrsus.com
+       </A><BR>
+    <I>Wed Apr 28 02:37:42 CEST 2010</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="004442.html">[Gpsd-users] Help on installing gpsd on a virtual or shared server
+</A></li>
+        <LI>Next message: <A HREF="004444.html">[Gpsd-users] Help on installing gpsd on a virtual or shared server
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#4443">[ date ]</a>
+              <a href="thread.html#4443">[ thread ]</a>
+              <a href="subject.html#4443">[ subject ]</a>
+              <a href="author.html#4443">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>RODRIGO FERNANDEZ &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">refernandezm at hotmail.com</A>&gt;:
+&gt;<i> 1) How can I install and use gpsd on a virtual or shared server, I mean when you hire GoDaddy, Hostmonster or Bluehost. I have is a shared Linux (CentOS 5.3) server hosting plan with Hostmonster (hostmosnter.com) and a dedicated IP.
+</I>
+I don't know the answer to that.
+
+&gt;<i> 2) If the answer to question #1 is affirmative then, is it possible for the gpsd daemon to acquire GPS data not from receivers attached to the host computer through serial or USB ports, but from a TCP Socket. What I mean is: is there a way for a GPS receiver to send location data to a fixed IP address (SMS messages sent by a SIM card installed on the GPS receiver in a GPRS network), so that the gps daemon collects this data?
+</I>
+Yes.  Pull git head and read about using <A HREF="tcp://">tcp://</A> URLs as data sources.  I know
+this feature works because I use it to collect an AIS feed from AISHub. The
+code doesn't care what's in the packets, though. If you ship it GPS data, it'll
+treat the TCP stream as a GPS source.   
+
+In recent shipped versions we don't have <A HREF="tcp://">tcp://</A> URL support yet.  Tell it 
+<A HREF="ais://">ais://</A> instead, that feature used the same code and doesn't care.
+
+We're working on accepting UDP datagrams, too. That's not in yet.
+-- 
+		&lt;a href=&quot;<A HREF="http://www.catb.org/~esr/">http://www.catb.org/~esr/</A>&quot;&gt;Eric S. Raymond&lt;/a&gt;
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="004442.html">[Gpsd-users] Help on installing gpsd on a virtual or shared server
+</A></li>
+	<LI>Next message: <A HREF="004444.html">[Gpsd-users] Help on installing gpsd on a virtual or shared server
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#4443">[ date ]</a>
+              <a href="thread.html#4443">[ thread ]</a>
+              <a href="subject.html#4443">[ subject ]</a>
+              <a href="author.html#4443">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

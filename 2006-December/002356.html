@@ -1,0 +1,99 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] Private-use fields vs. GPSD-NG queries
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2006-December/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Private-use%20fields%20vs.%20GPSD-NG%20queries&In-Reply-To=%3C20061215030342.GA16819%40thyrsus.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="002325.html">
+   <LINK REL="Next"  HREF="002323.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] Private-use fields vs. GPSD-NG queries</H1>
+    <B>Eric S. Raymond</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Private-use%20fields%20vs.%20GPSD-NG%20queries&In-Reply-To=%3C20061215030342.GA16819%40thyrsus.com%3E"
+       TITLE="[Gpsd-users] Private-use fields vs. GPSD-NG queries">esr at thyrsus.com
+       </A><BR>
+    <I>Fri Dec 15 04:03:42 CET 2006</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="002325.html">[Gpsd-users] Private-use fields vs. GPSD-NG queries
+</A></li>
+        <LI>Next message: <A HREF="002323.html">[Gpsd-users] OT: Garmin data upload/download
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2356">[ date ]</a>
+              <a href="thread.html#2356">[ thread ]</a>
+              <a href="subject.html#2356">[ subject ]</a>
+              <a href="author.html#2356">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Diego Berge &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">gpsd at nippur.net</A>&gt;:
+&gt;<i>  &lt;&lt;&lt; GET DATAFIELDS
+</I>&gt;<i>  &gt;&gt;&gt; DATAFIELDS=timestamp latitude longitude height altitude
+</I>&gt;<i> geoid_separation [...etc...] tfom hrms vrms geoid_separation_err [...etc...]
+</I>&gt;<i> 
+</I>&gt;<i>    I am thinking of this as a (hopefully) possible way to allow
+</I>&gt;<i> different drivers to provide as many odd bits of information as they see
+</I>&gt;<i> fit without the main code needing to know about it.  Just an idea.  Does
+</I>&gt;<i> this sound too far fetched in principle?
+</I>
+No, actually, it doesn't.  And it ties in nicely to some of the
+discussion of GPSD-NG.  We start having a significant
+namespace-management problem, but maybe that was inevitable anyway.
+ 
+&gt;<i>    Hmm... As I described it above, the client could define its reports
+</I>&gt;<i> any way it likes, so it could lump every bit of info it needs in a
+</I>&gt;<i> single message.  Wouldn't that solve the jitter problem? 
+</I>
+Only if there is genuinely only one message per cycle.
+
+&gt;<i>                                                          Additionally,
+</I>&gt;<i> if you trigger the report &quot;on change&quot;, defining &quot;change&quot; as a variation
+</I>&gt;<i> on *any* of the data contained in the report (perhaps other than time),
+</I>&gt;<i> then you would also solve the latency problem, albeit at the expense of
+</I>&gt;<i> having some potentially stale data on some reports.
+</I>
+Oh, boy, does that open a can of worms.  Consider how roundoff errors 
+could make the presence of a report effectively random...
+
+I'm not shooting down your ideas. I'm pointing out that they seem to me 
+a bit half-baked and need more time in the oven.  
+
+For the near future I want to concentrate on merging the new drivers and
+cleaning up the known problems in the regression tests.  I think we should
+be looking at solving those problems and issuing a 2.35 before diving into
+a big redesign,
+-- 
+		&lt;a href=&quot;<A HREF="http://www.catb.org/~esr/">http://www.catb.org/~esr/</A>&quot;&gt;Eric S. Raymond&lt;/a&gt;
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="002325.html">[Gpsd-users] Private-use fields vs. GPSD-NG queries
+</A></li>
+	<LI>Next message: <A HREF="002323.html">[Gpsd-users] OT: Garmin data upload/download
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2356">[ date ]</a>
+              <a href="thread.html#2356">[ thread ]</a>
+              <a href="subject.html#2356">[ subject ]</a>
+              <a href="author.html#2356">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

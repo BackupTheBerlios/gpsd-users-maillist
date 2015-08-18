@@ -1,0 +1,103 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] NTRIP Issue patch
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2011-February/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20NTRIP%20Issue%20patch&In-Reply-To=%3C20110222140910.GA542%40thyrsus.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="005042.html">
+   <LINK REL="Next"  HREF="005035.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] NTRIP Issue patch</H1>
+    <B>Eric Raymond</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20NTRIP%20Issue%20patch&In-Reply-To=%3C20110222140910.GA542%40thyrsus.com%3E"
+       TITLE="[Gpsd-users] NTRIP Issue patch">esr at thyrsus.com
+       </A><BR>
+    <I>Tue Feb 22 15:09:10 CET 2011</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="005042.html">[Gpsd-users] NTRIP Issue patch
+</A></li>
+        <LI>Next message: <A HREF="005035.html">[Gpsd-users] NTRIP Issue patch
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#5046">[ date ]</a>
+              <a href="thread.html#5046">[ thread ]</a>
+              <a href="subject.html#5046">[ subject ]</a>
+              <a href="author.html#5046">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Andre Naujoks &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">nautsch2 at googlemail.com</A>&gt;:
+&gt;<i> Hmm. I had a look at the manpages for gpsfake, but it nowhere says, that
+</I>&gt;<i> (or how) I can just include rtcm data into a logfile.
+</I>
+&gt;<i>From packet.c:
+</I>
+ * 4) ISGPS packets. The input may be a bitstream containing IS-GPS-200
+ *    packets.  Each includes a fixed leader byte, a length, and check bits.
+ *    In this case, it is not guaranted that packet starts begin on byte
+ *    bounaries; the recognizer has to run a separate state machine against
+ *    each byte just to achieve synchronization lock with the bitstream.
+ *
+
+This logic is used to automatically sync up with and and interpret raw RTCM2
+feeds presented on a serial device, such as one might get from an RTCM2
+radio.  So a logfile containing raw RTCM2 packets will work - in fact, we 
+routinely regression-test exactly this case using the files test/sample.rtcm2
+and sample.rtcm2.chk.
+
+I don't know the format that NTRIP uses to pass back RTCM2 packets. If you
+explained that, we could probably come up with something.
+
+&gt;<i> Would a gpspipe output help? I attached a very short one, which should
+</I>&gt;<i> trigger the error immediately.
+</I>
+This will do for client testing.  I have a utility called gpsdfake that
+I can feed this to that will cycle through these lines, presenting them
+on port 2947.  
+
+It's not a completely satisfactory long-term solution, though, as it doesn't
+regression-test the NTRIP support in the daemon.  If you want that to be
+really stable, we need to figure out some way that gpsfake can fool the
+gpsd process it encloses into thinking it has opened an NTRIP session, and
+feed NTRIP data to the daemon in the same way the daemon would see it
+in a live session.
+
+(Yes, gpsfake is different from gpsdfake.  gpsdfake pretends to be an
+instance of gpsd to fool client programs. gpsfake creates fake serial devices
+using ptys and pretends to be a collection of GPS defices; it fools gpsd. The
+point in both cases is to enable testing under controlled conditions.)
+-- 
+		&lt;a href=&quot;<A HREF="http://www.catb.org/~esr/">http://www.catb.org/~esr/</A>&quot;&gt;Eric S. Raymond&lt;/a&gt;
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="005042.html">[Gpsd-users] NTRIP Issue patch
+</A></li>
+	<LI>Next message: <A HREF="005035.html">[Gpsd-users] NTRIP Issue patch
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#5046">[ date ]</a>
+              <a href="thread.html#5046">[ thread ]</a>
+              <a href="subject.html#5046">[ subject ]</a>
+              <a href="author.html#5046">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

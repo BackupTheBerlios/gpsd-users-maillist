@@ -1,0 +1,94 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] why does gpsd not decode my data?
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2011-June/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20why%20does%20gpsd%20not%20decode%20my%20data%3F&In-Reply-To=%3CBANLkTinDveo%2BhaO%3DX_-MW7y-uexDie5rEg%40mail.gmail.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="005307.html">
+   <LINK REL="Next"  HREF="005309.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] why does gpsd not decode my data?</H1>
+    <B>Chris Kuethe</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20why%20does%20gpsd%20not%20decode%20my%20data%3F&In-Reply-To=%3CBANLkTinDveo%2BhaO%3DX_-MW7y-uexDie5rEg%40mail.gmail.com%3E"
+       TITLE="[Gpsd-users] why does gpsd not decode my data?">chris.kuethe at gmail.com
+       </A><BR>
+    <I>Thu Jun  9 07:55:31 CEST 2011</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="005307.html">[Gpsd-users] why does gpsd not decode my data?
+</A></li>
+        <LI>Next message: <A HREF="005309.html">[Gpsd-users] why does gpsd not decode my data?
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#5308">[ date ]</a>
+              <a href="thread.html#5308">[ thread ]</a>
+              <a href="subject.html#5308">[ subject ]</a>
+              <a href="author.html#5308">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Two ugly solutions:
+
+- cat the gps device into a fifo and read the fifo.
+- edit serial.c to only try 8N1
+
+On Wed, Jun 8, 2011 at 22:49, vwf &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">vwf at vulkor.net</A>&gt; wrote:
+&gt;<i> Hello,
+</I>&gt;<i>
+</I>&gt;<i> The issue with a not working gpsd becomes clear. The Moxa UPort 1130
+</I>&gt;<i> seems to be the culprit: the UPort 1130 and gpsd do work nice together.
+</I>&gt;<i>
+</I>&gt;<i> Compiling gpsd with a fixed speed or setting the speed with stty does
+</I>&gt;<i> not work: gpsd still detects 38400 7N2 instead of the correct 38400 8N1.
+</I>&gt;<i>
+</I>&gt;<i> Saving the data with minicom and than feeding it to the system with
+</I>&gt;<i> gpsfake works fine. So my question: awayting a real fix, would a Quick &amp;
+</I>&gt;<i> Dirty fix be possible? I just want a (temporary) working solution so I
+</I>&gt;<i> can get on with my project. What about reading the serial port with
+</I>&gt;<i> another program and feeding the output to gpsfix; would that be
+</I>&gt;<i> possible?
+</I>&gt;<i>
+</I>&gt;<i> Thank you,
+</I>&gt;<i> Frits
+</I>&gt;<i> _______________________________________________
+</I>&gt;<i> Gpsd-users mailing list
+</I>&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">Gpsd-users at lists.berlios.de</A>
+</I>&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">https://lists.berlios.de/mailman/listinfo/gpsd-users</A>
+</I>&gt;<i>
+</I>
+
+
+-- 
+GDB has a 'break' feature; why doesn't it have 'fix' too?
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="005307.html">[Gpsd-users] why does gpsd not decode my data?
+</A></li>
+	<LI>Next message: <A HREF="005309.html">[Gpsd-users] why does gpsd not decode my data?
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#5308">[ date ]</a>
+              <a href="thread.html#5308">[ thread ]</a>
+              <a href="subject.html#5308">[ subject ]</a>
+              <a href="author.html#5308">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

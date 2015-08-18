@@ -1,0 +1,118 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] gpsd compatible hardware for FreeBSD 7.0R
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2008-October/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20gpsd%20compatible%20hardware%20for%20FreeBSD%207.0R&In-Reply-To=%3C91981b3e0810310901u3de0c697je52286d02e9d165d%40mail.gmail.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="003431.html">
+   
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] gpsd compatible hardware for FreeBSD 7.0R</H1>
+    <B>Chris Kuethe</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20gpsd%20compatible%20hardware%20for%20FreeBSD%207.0R&In-Reply-To=%3C91981b3e0810310901u3de0c697je52286d02e9d165d%40mail.gmail.com%3E"
+       TITLE="[Gpsd-users] gpsd compatible hardware for FreeBSD 7.0R">chris.kuethe at gmail.com
+       </A><BR>
+    <I>Fri Oct 31 17:01:45 CET 2008</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="003431.html">[Gpsd-users] gpsd compatible hardware for FreeBSD 7.0R
+</A></li>
+        
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3432">[ date ]</a>
+              <a href="thread.html#3432">[ thread ]</a>
+              <a href="subject.html#3432">[ subject ]</a>
+              <a href="author.html#3432">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>OS isn't quite as big a problem as you'd think. every unix-like OS
+i've seen has drivers for FTDI, Prolific, SiLabs and ACM usb devices.
+Those are by far the most common devices you'll see. oh, and
+bluetooth. There are some devices using a Cypress chip, and garmin usb
+devices are a whole 'nother kind of evil...
+
+We don't bother collecting OS since it's not really our problem -
+we're a layer or two up the stack. We trust the OS to hand us
+something that looks a lot like a tty that gratuitously emits byte
+that strongly resemble some well-known formats.
+
+While vendors may change the BOM depending on which of FTDI, PL or SL
+are cheaper this week, they tend not to. They find a reference design
+and stick with it. Also over the years that I've been supporting gpsd,
+pretty much every instance of an unsupported USB device has been
+traced back to not having the kernel module loaded. If a device was
+particularly difficult to get working, we'd mention that in the notes
+column, or give it a lower compatibility rating.
+
+That being said, you would probably find some decent receivers if you
+search for ones with OSX or linux compatibility.
+
+On Fri, Oct 31, 2008 at 3:14 AM, Matthias Apitz &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">guru at unixarea.de</A>&gt; wrote:
+&gt;<i>
+</I>&gt;<i> Hello,
+</I>&gt;<i>
+</I>&gt;<i> I'd like to use the gpsd in my eeePC 900 which runs FreeBSD 7.0R; there
+</I>&gt;<i> is a good list of compatible hardware in <A HREF="http://gpsd.berlios.de/hardware.html">http://gpsd.berlios.de/hardware.html</A>
+</I>&gt;<i> but I'm missing a column about the OS, i.e. the Linux or FreeBSD kernel,
+</I>&gt;<i> the device was tested; the problem is that not all USB devices are
+</I>&gt;<i> attaching to the driver (based on their vendor and product ID) and not
+</I>&gt;<i> all chips are supported by the USB to serial drivers.
+</I>&gt;<i>
+</I>&gt;<i> In short, any FreeBSD user out here in the list which could give me a
+</I>&gt;<i> hint about such a device (and even better if is is still in the German
+</I>&gt;<i> market :-))
+</I>&gt;<i>
+</I>&gt;<i> Thanks i advance
+</I>&gt;<i>
+</I>&gt;<i>        matthias
+</I>&gt;<i> --
+</I>&gt;<i> Matthias Apitz
+</I>&gt;<i> Manager Technical Support - OCLC GmbH
+</I>&gt;<i> Gruenwalder Weg 28g - 82041 Oberhaching - Germany
+</I>&gt;<i> t +49-89-61308 351 - f +49-89-61308 399 - m +49-170-4527211
+</I>&gt;<i> e &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">matthias.apitz at oclc.org</A>&gt; - w <A HREF="http://www.oclc.org/">http://www.oclc.org/</A> <A HREF="http://www.UnixArea.de/">http://www.UnixArea.de/</A>
+</I>&gt;<i> b <A HREF="http://gurucubano.blogspot.com/">http://gurucubano.blogspot.com/</A>
+</I>&gt;<i> A computer is like an air conditioner, it stops working when you open Windows
+</I>&gt;<i> Una computadora es como aire acondicionado, deja de funcionar si abres Windows
+</I>&gt;<i> _______________________________________________
+</I>&gt;<i> Gpsd-users mailing list
+</I>&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">Gpsd-users at lists.berlios.de</A>
+</I>&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">https://lists.berlios.de/mailman/listinfo/gpsd-users</A>
+</I>&gt;<i>
+</I>
+
+
+-- 
+GDB has a 'break' feature; why doesn't it have 'fix' too?
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="003431.html">[Gpsd-users] gpsd compatible hardware for FreeBSD 7.0R
+</A></li>
+	
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3432">[ date ]</a>
+              <a href="thread.html#3432">[ thread ]</a>
+              <a href="subject.html#3432">[ subject ]</a>
+              <a href="author.html#3432">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

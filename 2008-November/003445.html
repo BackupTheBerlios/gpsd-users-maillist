@@ -1,0 +1,209 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] GPS photo project
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2008-November/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20GPS%20photo%20project&In-Reply-To=%3C20081119202657.Q4UH8.307652.imail%40eastrmwml29%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="003443.html">
+   <LINK REL="Next"  HREF="003448.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] GPS photo project</H1>
+    <B>mattroberds at cox.net</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20GPS%20photo%20project&In-Reply-To=%3C20081119202657.Q4UH8.307652.imail%40eastrmwml29%3E"
+       TITLE="[Gpsd-users] GPS photo project">mattroberds at cox.net
+       </A><BR>
+    <I>Thu Nov 20 02:26:57 CET 2008</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="003443.html">[Gpsd-users] GPS photo project
+</A></li>
+        <LI>Next message: <A HREF="003448.html">[Gpsd-users] gpspipe and gpsbabel
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3445">[ date ]</a>
+              <a href="thread.html#3445">[ thread ]</a>
+              <a href="subject.html#3445">[ subject ]</a>
+              <a href="author.html#3445">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>--- Rick &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">rick at distavision.com</A>&gt; wrote: 
+&gt;<i> My technique requires me to know my subjects speed and distance
+</I>&gt;<i> from my camera.
+</I>&gt;<i> 
+</I>&gt;<i> With my subjects speed and distance I calculate the correct rpm to  
+</I>&gt;<i> program the motor that moves the film through the camera.
+</I>&gt;<i> 
+</I>&gt;<i> I would like to use a gps devise to acquire my subjects real time  
+</I>&gt;<i> speed, send it's speed to a computer, software in the computer will
+</I>&gt;<i> calculate the motors rpm to move the film through the camera at the
+</I>&gt;<i> correct speed to make a sharp image on film.
+</I>
+Initial thoughts:
+
+You are going to need two GPS receivers, one on your subject and one
+on your camera.  This is so you can compute the distance and speed
+between these two points.
+
+The hard part is the GPS on your subject.  For something like a race
+car it's not a big deal; for something like an athlete who is running
+or bicycling or whatever it might be.  The subject GPS doesn't have to
+be as big as a hand-held GPS of the type you might use while hiking - it
+doesn't need a display, and it probably doesn't need a long battery life.
+I have worked with a GPS module that was around 1&quot; x 3&quot; x 0.25&quot; (25 x
+75 x 6 mm) without an antenna; GPS antennae vary but one common shape is
+a disc or puck that is maybe 2&quot; diameter x 0.5&quot; thick (50 mm x 12 mm).
+You will also need some kind of wireless transmitter, but these are also
+available as relatively small modules.  The power requirements will
+probably be fairly modest, on the order of 5 or 10 watts or so.  If you
+can plug into a vehicle electrical system you are golden; if you need a
+battery, and it only has to work once during the race, you can probably
+use something like a single AA alkaline battery, or maybe even smaller.
+If it has to work more than once, you need a little more battery.
+
+One question is what protocol you will use to transmit the GPS data from
+the subject.  It looks like Bluetooth might not have the range that is
+required in your application.  You might be able to use plain old Wi-Fi,
+but there may be interference issues; you might not be the only person
+wanting to run Wi-Fi at the car race or the marathon.  :)  Also, if you
+use Wi-Fi, you probably need a small computer on the subject to get the
+location information over the GPS serial port and hand it off to the
+Wi-Fi transmitter.  Some vendors offer a &quot;wireless serial port&quot;;
+basically you have two radios that behave to the connected devices as if
+they were connected via a plain old serial port cable.  This would let
+you get away with no separate computer on the subject, saving space,
+weight, and power.
+
+The GPS on your camera is not as big of a deal.  If the camera lens
+doesn't move, it can be as simple as strapping a handheld GPS (from
+Garmin, etc) on top of your camera, and keying the coordinates that it
+reports into the computer.  For a more automated solution, you could use
+the same kind of GPS module that you are using on the subject.
+
+For both GPSes, an important point is that all of the hardware doesn't
+have to go in the same place.  The GPS antenna has to go somewhere where
+it has a good view of the sky, but the rest of the electronics can go
+elsewhere. This means that you have a 2&quot; diameter x 0.5&quot; thick &quot;puck&quot;
+on top of the race car, or on top of the runner's head, or on top of
+your camera, or whatever, and a thin coaxial cable (maybe 1/8&quot; or 3 mm
+diameter) to the rest of the electronics, which can be several feet away
+(6 to 10 feet (2 to 3.5 m) is easy and farther is possible.)
+
+At your camera, you are going to need a computer to do the math and set
+the speed of your camera motor.  This can be a laptop, or a single-board
+computer.  It will need a couple of serial ports (or USB-to-serial
+converters) to talk to the GPSes, plus whatever interface you need for
+your camera motor.  The user interface can be as simple as a big red
+button that you push to make it go, or as complex as a regular monitor
+and keyboard.  Often for applications like this, a small numeric keypad
+and alphanumeric LCD (think &quot;cell phone&quot;) is an OK interface.  Presumably
+you have more power available at the camera; it's easy to do all of this
+in 30 watts and probably possible to do it in 10 watts.  The packaging
+varies a lot (laptop vs. single-board computer) but you can probably do
+it in a box that is 6&quot; x 8&quot; x 2&quot; thick (150 x 200 x 50 mm).
+
+Some of the pitfalls you may face are:
+
+GPS accuracy.  It's a lot better than it used to be, but it still may not
+be as precise as you need.  There are techniques (differential GPS and
+WAAS) that improve the accuracy, but they are not available everywhere.
+Both of your GPSes have to support whatever accuracy-improvement
+technique that you use.
+
+GPS update rate/latency.  Most inexpensive GPS modules update once
+a second.  Some newer modules are available that update 5 times a
+second.  If you need faster updates than this, GPS may not be
+appropriate.
+
+GPS signal strength / sky view.  If you are filming a bicycle race out
+in the countryside, no problem.  If you are filming something like the
+New York Marathon, with tall buildings all around, the GPS receivers may
+not be able to see enough satellites to give you useful data.  GPS will
+also have trouble in enclosed stadiums.
+
+Note: For the above three issues, there are devices available that combine
+GPS receivers with accelerometers and solid-state gyroscopes to give
+you pretty good position and speed information even when the GPS
+signal is not great; basically they &quot;fill in the blanks&quot; between GPS
+updates via dead reckoning.  These were first designed to go in
+airplanes, so they aren't cheap, but you can get them.
+
+Putting your device on the subject.  For something like NASCAR this is
+probably easier; they won't complain *too* much about 10 watts and one
+or two pounds (0.5 to 1 kg).  For something like a marathon runner, this
+might be a deal-breaker.  You might have to have someone working for
+you to act as a &quot;pacer&quot;; he or she wears the GPS and runs/bicycles/skates/
+whatever along with the racers, but isn't actually participating in the
+race. This means that they only have to be fit enough to keep up with
+the pack for as long as it takes you to get the shot.  :)  You may have
+to &quot;sell&quot; this to the race sanctioning body, though.
+
+The place for gpsd in this is at the computer you are using at the
+camera, and possibly on the computer you are using at the subject, if
+you have one.  This does assume you are running Linux or some flavor of
+Unix (FreeBSD, etc) on these computers.  gpsd would deliver the position
+and speed information from the two GPS receivers to your application.
+Your application would do the math, compute a motor speed, give the
+speed to the motor control hardware, and handle whatever user interface
+you want.
+
+The version 0.0 prototype is probably an old junk PC or laptop (a
+Pentium-III is probably overkill), a cheap consumer GPS at the PC,
+another cheap consumer GPS sewed to a baseball hat, and a real long
+cable from the baseball hat to the PC.  First you see if the update rate
+and accuracy of the GPSes will work for you - can you compute RPM
+changes fast enough?  (You may have to use some film figuring this out,
+which is the not-cheap part.)  From there, you can decide if you have to
+buy higher-grade GPS receiver modules, or can get away with cheap ones;
+buy those and do it again.  Then cut the cable and implement the wireless
+link.  Finally, move to your production solution for the computer at the
+camera (laptop or single-board computer) and add the user interface - this
+comes relatively late in the game, because it's generally much nicer to
+develop, test, and debug with a full monitor and keyboard.  Then you
+mechanically package everything and go take some pictures.  :)
+
+You probably need to come up with some initial specifications on
+possible subject speeds and update rates - both how fast can the subject
+change speed, and how fast you need to know about the new speed to
+adjust the camera correctly.  You probably also need to decide how big
+of a package you can put on the subject.  Then, start shopping for a
+local engineering firm / electrical engineer / computer geek to assist
+with the software and hardware.  Some key words for this are probably
+&quot;embedded&quot;, &quot;GPS&quot;, and &quot;Linux&quot;.
+
+I hope this helps!
+
+Matt Roberds
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="003443.html">[Gpsd-users] GPS photo project
+</A></li>
+	<LI>Next message: <A HREF="003448.html">[Gpsd-users] gpspipe and gpsbabel
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3445">[ date ]</a>
+              <a href="thread.html#3445">[ thread ]</a>
+              <a href="subject.html#3445">[ subject ]</a>
+              <a href="author.html#3445">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

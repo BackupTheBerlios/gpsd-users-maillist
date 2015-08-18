@@ -1,0 +1,81 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] Problem GPSD 2.33 &amp; udev
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2007-March/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Problem%20GPSD%202.33%20%26%20udev&In-Reply-To=%3C002601c76723%243665b560%24d268a8c0%40Nekita.noip.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="002493.html">
+   <LINK REL="Next"  HREF="002495.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] Problem GPSD 2.33 &amp; udev</H1>
+    <B>Gert-Jan Prins</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Problem%20GPSD%202.33%20%26%20udev&In-Reply-To=%3C002601c76723%243665b560%24d268a8c0%40Nekita.noip.com%3E"
+       TITLE="[Gpsd-users] Problem GPSD 2.33 &amp; udev">golf at dds.nl
+       </A><BR>
+    <I>Thu Mar 15 17:58:53 CET 2007</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="002493.html">[Gpsd-users] Some assistance setting   up please
+</A></li>
+        <LI>Next message: <A HREF="002495.html">[Gpsd-users] GPSD is not setting the time via ntpd
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2494">[ date ]</a>
+              <a href="thread.html#2494">[ thread ]</a>
+              <a href="subject.html#2494">[ subject ]</a>
+              <a href="author.html#2494">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi all,
+
+The combination of udev hotplugging of my Globalsat bu-303 (with a Prolific 2303 chip) seems to be a big problem...
+
+I'm running GPSD version 2.33 as daemon with the following option: &quot;-F /var/run/gpsd.sock&quot; and I chmoded the /dev/ttyUSB0 to 666 so my GPS could be hotplugged after GPSD becomes &quot;nobody&quot;. However there is a problem, on boot GPSD seems to start after the prolific kernel module is loaded, while that module should be loaded after GPSD is started or the prolific module should start GPSD itself via the udev/hotplug files (from what I could decode from gpsd hotplugging files)... (Reinserting the GPS does register the GPS with GPSD)...
+
+Another problem is that GPSD does open a &quot;stealth&quot; port on my localhost interfase, but not my normal eth0 interfase. I've tried a load of -S ???? cobinations but none seem to work, any tips are welcome...
+
+So, to sum up the questions:
+
+-&gt; How do I get a USB udev hotplugged GPS registerd with GPSD without having to reinsert the GPS?
+-&gt; What are the correct parameters for the -S configuration option so I get a waiting socket on my eth0 interfase?
+
+I hope this post wan't to long and that someone can shed some light on these problems, 
+
+T.i.a. Gert-Jan C. Prins
+
+
+
+B.t.w.: The system is an Intel ARM based Linksys Nslu2 running Debian Etch RC1...
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="002493.html">[Gpsd-users] Some assistance setting   up please
+</A></li>
+	<LI>Next message: <A HREF="002495.html">[Gpsd-users] GPSD is not setting the time via ntpd
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2494">[ date ]</a>
+              <a href="thread.html#2494">[ thread ]</a>
+              <a href="subject.html#2494">[ subject ]</a>
+              <a href="author.html#2494">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

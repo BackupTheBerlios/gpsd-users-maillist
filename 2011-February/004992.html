@@ -1,0 +1,116 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] Fw:  Error While Building This Morning's HEAD
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2011-February/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Fw%3A%20%20Error%20While%20Building%20This%20Morning%27s%20HEAD&In-Reply-To=%3C20110131201008.17155ce1%40yendi%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="004991.html">
+   <LINK REL="Next"  HREF="004993.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] Fw:  Error While Building This Morning's HEAD</H1>
+    <B>Charles Curley</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Fw%3A%20%20Error%20While%20Building%20This%20Morning%27s%20HEAD&In-Reply-To=%3C20110131201008.17155ce1%40yendi%3E"
+       TITLE="[Gpsd-users] Fw:  Error While Building This Morning's HEAD">charlescurley at charlescurley.com
+       </A><BR>
+    <I>Tue Feb  1 04:10:08 CET 2011</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="004991.html">[Gpsd-users] Fw:  Error While Building This Morning's HEAD
+</A></li>
+        <LI>Next message: <A HREF="004993.html">[Gpsd-users] Fw:  Error While Building This Morning's HEAD
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#4992">[ date ]</a>
+              <a href="thread.html#4992">[ thread ]</a>
+              <a href="subject.html#4992">[ subject ]</a>
+              <a href="author.html#4992">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>On Mon, 31 Jan 2011 18:02:53 -0800 (PST)
+&quot;Gary E. Miller&quot; &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">gem at rellim.com</A>&gt; wrote:
+
+&gt;<i> -----BEGIN PGP SIGNED MESSAGE-----
+</I>&gt;<i> Hash: SHA1
+</I>&gt;<i> 
+</I>&gt;<i> Yo Eric!
+</I>&gt;<i> 
+</I>&gt;<i> I can reproduce from a complete clone of git head.
+</I>&gt;<i> 
+</I>&gt;<i> No XML processor, omitting manual-page installation.
+</I>&gt;<i> Traceback (most recent call last):
+</I>&gt;<i>   File &quot;setup.py&quot;, line 63, in &lt;module&gt;
+</I>&gt;<i>     version=os.environ['version'],
+</I>&gt;<i>   File &quot;/usr/lib64/python2.6/UserDict.py&quot;, line 22, in __getitem__
+</I>&gt;<i>     raise KeyError(key)
+</I>&gt;<i> KeyError: 'version'
+</I>&gt;<i> make[2]: *** [install-exec-local] Error 1
+</I>&gt;<i> make[2]: Leaving directory `/usr/local/src/GPS/gpsd/gpsd'
+</I>&gt;<i> make[1]: *** [install-am] Error 2
+</I>&gt;<i> make[1]: Leaving directory `/usr/local/src/GPS/gpsd/gpsd'
+</I>&gt;<i> make: *** [install] Error 2
+</I>&gt;<i> 
+</I>&gt;<i> 
+</I>&gt;<i> And I DO have the required XML installed too.
+</I>
+Thanks, Gary.
+
+As far as I know, I have them all.
+
+<A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">ccurley at dragon</A>:~/versioned/gpsd.head$ make xmllint
+for xml in gpsd.xml gps.xml libgps.xml libgpsmm.xml libgpsd.xml gpsmon.xml gpsdecode.xml gpsprof.xml gpsfake.xml gpsctl.xml gpscat.xml gpspipe.xml rtcm-104.xml srec.xml; do xmllint --nonet --noout --valid $xml; done
+<A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">ccurley at dragon</A>:~/versioned/gpsd.head$ sudo make install-man1
+test -z &quot;/usr/local/share/man/man1&quot; || /bin/mkdir -p &quot;/usr/local/share/man/man1&quot;
+ /usr/bin/install -c -m 644 gps.1 cgps.1 lcdgps.1 gpsmon.1 gpsctl.1 gpspipe.1 gpsdecode.1 gpsprof.1 gpsfake.1 gpscat.1 xgpsspeed.1 xgps.1 '/usr/local/share/man/man1'
+<A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">ccurley at dragon</A>:~/versioned/gpsd.head$ 
+
+Just for the halibut, I also took Eric's advice of cloning a new tree. I
+still see the error there.
+
+Ubuntu 10.10 as updated.
+
+<A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">ccurley at dragon</A>:~/versioned/gpsd$ python --version
+Python 2.6.6
+<A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">ccurley at dragon</A>:~/versioned/gpsd$ 
+
+
+-- 
+
+Charles Curley                  /&quot;\    ASCII Ribbon Campaign
+Looking for fine software       \ /    Respect for open standards
+and/or writing?                  X     No HTML/RTF in email
+<A HREF="http://www.charlescurley.com">http://www.charlescurley.com</A>    / \    No M$ Word docs in email
+
+Key fingerprint = CE5C 6645 A45A 64E4 94C0  809C FFF6 4C48 4ECD DFDB
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="004991.html">[Gpsd-users] Fw:  Error While Building This Morning's HEAD
+</A></li>
+	<LI>Next message: <A HREF="004993.html">[Gpsd-users] Fw:  Error While Building This Morning's HEAD
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#4992">[ date ]</a>
+              <a href="thread.html#4992">[ thread ]</a>
+              <a href="subject.html#4992">[ subject ]</a>
+              <a href="author.html#4992">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

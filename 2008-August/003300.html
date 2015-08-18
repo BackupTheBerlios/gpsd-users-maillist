@@ -1,0 +1,92 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] no speed data from sirf-III, sometimes
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2008-August/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20no%20speed%20data%20from%20sirf-III%2C%20sometimes&In-Reply-To=%3C7803.1217939498%40foxharp.boston.ma.us%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="003299.html">
+   <LINK REL="Next"  HREF="003301.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] no speed data from sirf-III, sometimes</H1>
+    <B>Paul Fox</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20no%20speed%20data%20from%20sirf-III%2C%20sometimes&In-Reply-To=%3C7803.1217939498%40foxharp.boston.ma.us%3E"
+       TITLE="[Gpsd-users] no speed data from sirf-III, sometimes">pgf at foxharp.boston.ma.us
+       </A><BR>
+    <I>Tue Aug  5 14:31:38 CEST 2008</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="003299.html">[Gpsd-users] no speed data from sirf-III, sometimes
+</A></li>
+        <LI>Next message: <A HREF="003301.html">[Gpsd-users] Navilock 209P and GPSd
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3300">[ date ]</a>
+              <a href="thread.html#3300">[ thread ]</a>
+              <a href="subject.html#3300">[ subject ]</a>
+              <a href="author.html#3300">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>chris wrote:
+ &gt; Off the cuff, I'm going to guess that your GPS is in NMEA mode. Try
+ &gt; enabling anti-jitter mode with J=1. I think I sent the roadnav
+ &gt; developer a patch to turn de-jittering on...
+
+thanks.  the docs claim this doesn't apply to SiRF chips, but
+maybe it only doesn't apply when they're in binary mode?  my
+device is reporting N=1 (i.e., binary) right now, and seems to do
+that whenever i start gpsd, but i suppose it might not always be.
+
+i assume you're referring to this:
+
+       j
+           Get or set buffering policy; this only matters for NMEA devices
+           which report fix data in several separate sentences during the poll
+           cycle (and in particular it doesn't matter for SiRF chips). The
+           default (j=0) is to clear all fix data at the start of each poll
+           cycle, so until the sentence that reports a given piece of data
+           arrives queries will report ?. Setting j=1 will disable this,
+           retaining data from the previous cycle. This is a per-user-channel
+           bit, not a per-device one. The j=0 setting is hyper-correct and
+           never displays stale data, but may produce a jittery display; the
+           j=1 setting allows stale data but smooths the display.
+
+           (At protocol level below 3, there was no J command. Note, this
+           command is experimental and its semantics are subject to change.)
+
+
+
+=---------------------
+ paul fox, <A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">pgf at foxharp.boston.ma.us</A> (arlington, ma, where it's 63.1 degrees)
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="003299.html">[Gpsd-users] no speed data from sirf-III, sometimes
+</A></li>
+	<LI>Next message: <A HREF="003301.html">[Gpsd-users] Navilock 209P and GPSd
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3300">[ date ]</a>
+              <a href="thread.html#3300">[ thread ]</a>
+              <a href="subject.html#3300">[ subject ]</a>
+              <a href="author.html#3300">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

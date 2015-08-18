@@ -1,0 +1,278 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] Request For Help Cannot gpsd to work on eeepc 901
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2008-September/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Request%20For%20Help%20Cannot%20gpsd%20to%20work%20on%20eeepc%20901&In-Reply-To=%3C48C767BA.5000601%40pipeline.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="003369.html">
+   <LINK REL="Next"  HREF="003364.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] Request For Help Cannot gpsd to work on eeepc 901</H1>
+    <B>Al Baker</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Request%20For%20Help%20Cannot%20gpsd%20to%20work%20on%20eeepc%20901&In-Reply-To=%3C48C767BA.5000601%40pipeline.com%3E"
+       TITLE="[Gpsd-users] Request For Help Cannot gpsd to work on eeepc 901">al.baker at pipeline.com
+       </A><BR>
+    <I>Wed Sep 10 08:22:50 CEST 2008</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="003369.html">[Gpsd-users] Data from a GPS device?
+</A></li>
+        <LI>Next message: <A HREF="003364.html">[Gpsd-users] Request For Help Cannot gpsd to work on eeepc 901
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3363">[ date ]</a>
+              <a href="thread.html#3363">[ thread ]</a>
+              <a href="subject.html#3363">[ subject ]</a>
+              <a href="author.html#3363">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hello
+I could use, and would greatly appreciate, assistance with a problem I 
+am having with gpsd on a *eeepc 901* running stock linux.
+I have worked on this problem for Days and wold really appreciate
+Any Thoughts/Ideas/Suggestions.  --- THX In Advance !
+
+Problem:  Stock 901 with Xandros
+               Installed gpsd,
+               Started gpsd with command of &quot;gpsd /dev/ttyUSB0&quot;   as 
+specified in the Document &quot;[[GPS on the Eee PC]] &quot; at
+                    <A HREF="http://wiki.eeeuser.com/howto:gpsd">http://wiki.eeeuser.com/howto:gpsd</A>
+               plugged in new GPS device &quot;GlobalSat BU-353 &quot;
+              Cannot get gpsd to recognize the device
+
+What I Have Tried:
+              I have tried plugging the GPS in on very port on the 901, 
+on All of the the little red light on the GPS come on and blinks
+           
+              While GPS is plugged in, as root I ran &quot;find / | grep USB&quot; 
+- No &quot;ttyUSB0&quot; exists on the system
+
+              I ran gpsd in Debug Mode as &quot;gpsd -N - D8 /dev/ttyUSB0&quot; 
+and I get
+                          gpsd:  launching (Version 2.33)
+                          gpsd: listening on port gpsd
+                          gpsd: unable to connect to the DBUS system bus
+                          gpsd: running with effective group ID 0
+                          gpsd: running with effective user ID 0
+                          gpsd: opening GPS data source at '/dev/ttyUSB0'
+                          gpsd: device open failed: No such file ordirectory
+                          gpsd:  GPS device /dev/ttyUSB0 nonexistent or 
+can't be read
+                          gpsd: select waits
+
+             On the SAME USB port,  If I plug in a USB MODEM, USRobitics 
+USR 5637, and go in Network under Hardware is shows
+                          Intel Coprporation ........       /dev/ttyySL0
+                          U.S Robotics - USB Modem   /dev/ttyACM0
+             And work great.
+
+            The GPS Puck is essentially the same as the one referenced 
+in the wiki &quot;<A HREF="http://wiki.eeeuser.com/howto:gpsd">http://wiki.eeeuser.com/howto:gpsd</A>&quot;, except he used a
+            &quot;BU-303 USB &quot; puck.                   
+
+I know I am probably missing something simple, but I would very much 
+like to get this working and any and all would would be greatly 
+appreciatted!!!
+
+Ok - *Here is the Nitty Gritty* of the problem
+Any And All Help Really Appreciatted - You can see that
+1) The GPS device shows up in &quot;*dmesg*&quot;
+2) The Deice show up on the &quot;USB&quot; device s via &quot;*lsusb*&quot;  with a VENDOR 
+ID and Product ID that matches the &quot;udev&quot; Rules File
+3) But the &quot;*/lib/udev/gpsd.hotplug.wrapper*&quot;  appears to NOT be getting 
+executed since none of the &quot;echo&quot; statements I put in the file appear to 
+be getting run
+
+Help Please - What I an Missing ??????  What else can I try ???
+Thanks In Advance
+
+
+===== *dmesg - when GPS Pluugged In *===
+[ 2395.950000] usb 2-2: new full speed USB device using uhci_hcd and 
+address 2
+[ 2396.110000] usb 2-2: configuration #1 chosen from 1 choice
+===================================
+===== *lsusb -  Before GPS Pluugged In* ===
+Bus 003 Device 001: ID 0000:0000
+Bus 004 Device 001: ID 0000:0000
+Bus 001 Device 001: ID 0000:0000
+Bus 002 Device 001: ID 0000:0000
+Bus 005 Device 001: ID 0000:0000
+===========================================================
+===== *lsusb -  When GPS Pluugged In* ===
+Bus 003 Device 001: ID 0000:0000
+Bus 004 Device 001: ID 0000:0000
+Bus 001 Device 001: ID 0000:0000
+Bus 002 Device 003: ID 067b:2303 Prolific Technology, Inc. PL2303 Serial 
+Port
+Bus 002 Device 001: ID 0000:0000
+Bus 005 Device 001: ID 0000:0000
+===========================================================
+===*/etc/udev/gpsd.rules*===
+# udev rules for gpsd
+#
+# GPSes don't have their own USB device class.  They're serial-over-USB
+# devices, so what you see is actually the ID of the serial-over-USB chip.
+# Fortunately, just two of these account for over 80% of consumer-grade
+# GPS sensors.  The gpsdplug script will tell a running gpsd that it should
+# look at the device that just went active, because it might be a GPS.
+
+# Prolific Technology, Inc. PL2303 Serial Port
+SUBSYSTEM==&quot;tty&quot;, SYSFS{idVendor}==&quot;067b&quot;, SYSFS{idProduct}==&quot;2303&quot;, 
+SYMLINK=&quot;gps%n&quot;, RUN+=&quot;/lib/udev/gpsd.hotplug.wrapper&quot;
+# ATEN International Co., Ltd UC-232A Serial Port [pl2303]
+SUBSYSTEM==&quot;tty&quot;, SYSFS{idVendor}==&quot;0557&quot;, SYSFS{idProduct}==&quot;2008&quot;, 
+SYMLINK=&quot;gps%n&quot;, RUN+=&quot;/lib/udev/gpsd.hotplug.wrapper&quot;
+# FTDI 8U232AM
+SUBSYSTEM==&quot;tty&quot;, SYSFS{idVendor}==&quot;0403&quot;, SYSFS{idProduct}==&quot;6001&quot;, 
+SYMLINK=&quot;gps%n&quot;, RUN+=&quot;/lib/udev/gpsd.hotplug.wrapper&quot;
+# Cypress M8/CY7C64013 (DeLorme uses these)
+SUBSYSTEM==&quot;tty&quot;, SYSFS{idVendor}==&quot;1163&quot;, SYSFS{idProduct}==&quot;0100&quot;, 
+SYMLINK=&quot;gps%n&quot;, RUN+=&quot;/lib/udev/gpsd.hotplug.wrapper&quot;
+# PS-360 OEM (Microsoft GPS sold with Street and Trips 2005)
+SUBSYSTEM==&quot;tty&quot;, SYSFS{idVendor}==&quot;067b&quot;, SYSFS{idProduct}==&quot;aaa0&quot;, 
+SYMLINK=&quot;gps%n&quot;, RUN+=&quot;/lib/udev/gpsd.hotplug.wrapper&quot;
+===========================================================
+===*/lib/udev/gpsd.hotplug.wrapper*===
+#! /bin/sh
+echo &quot;Before Call Hot Plug Functions&quot; &gt; /tmp/LOG
+. /lib/udev/hotplug.functions
+echo &quot;After Call Hot Plug Functions&quot; &gt;&gt; /tmp/LOG
+
+# wait for /usr &amp; /var to be mounted
+wait_for_file /usr/bin/python &amp;&amp; \
+wait_for_file /var/run &amp;&amp; \
+echo &quot;After 2 Calls To wait Action is $ACTION  Devname is $DEVNAME&quot; &gt;&gt; 
+/tmp/LOG
+  exec /lib/udev/gpsd.hotplug &quot;$ACTION&quot; &quot;$DEVNAME&quot;
+echo &quot;After Exec&quot; &gt;&gt; /tmp/LOG
+===========================================================
+===*udevmonitor output when GPS Plugged In*=========
+udevmonitor prints the received event from the kernel [UEVENT]
+and the event which udev sends out after rule processing [UDEV]
+
+UEVENT[1220933990.859513] add@/devices/pci0000:00/0000:00:1d.1/usb2/2-2
+ACTION=add
+DEVPATH=/devices/pci0000:00/0000:00:1d.1/usb2/2-2
+SUBSYSTEM=usb
+SEQNUM=1131
+DEVICE=/proc/bus/usb/002/004
+PRODUCT=67b/2303/300
+TYPE=0/0/0
+
+UEVENT[1220933990.859593] 
+add@/devices/pci0000:00/0000:00:1d.1/usb2/2-2/usbdev2.4_ep00
+ACTION=add
+DEVPATH=/devices/pci0000:00/0000:00:1d.1/usb2/2-2/usbdev2.4_ep00
+SUBSYSTEM=usb_endpoint
+SEQNUM=1132
+MAJOR=254
+MINOR=10
+UEVENT[1220933990.861650] 
+add@/devices/pci0000:00/0000:00:1d.1/usb2/2-2/2-2:1.0
+ACTION=add
+DEVPATH=/devices/pci0000:00/0000:00:1d.1/usb2/2-2/2-2:1.0
+SUBSYSTEM=usb
+SEQNUM=1133
+DEVICE=/proc/bus/usb/002/004
+PRODUCT=67b/2303/300
+TYPE=0/0/0
+INTERFACE=255/0/0
+MODALIAS=usb:v067Bp2303d0300dc00dsc00dp00icFFisc00ip00
+
+UEVENT[1220933990.861696] 
+add@/devices/pci0000:00/0000:00:1d.1/usb2/2-2/2-2:1.0/usb
+dev2.4_ep81
+ACTION=add
+DEVPATH=/devices/pci0000:00/0000:00:1d.1/usb2/2-2/2-2:1.0/usbdev2.4_ep81
+SUBSYSTEM=usb_endpoint
+SEQNUM=1134
+MAJOR=254
+MINOR=11
+
+UEVENT[1220933990.861714] 
+add@/devices/pci0000:00/0000:00:1d.1/usb2/2-2/2-2:1.0/usbdev2.4_ep02
+ACTION=add
+DEVPATH=/devices/pci0000:00/0000:00:1d.1/usb2/2-2/2-2:1.0/usbdev2.4_ep02
+SUBSYSTEM=usb_endpoint
+SEQNUM=1135
+MAJOR=254
+MINOR=12
+
+UEVENT[1220933990.861730] 
+add@/devices/pci0000:00/0000:00:1d.1/usb2/2-2/2-2:1.0/usbdev2.4_ep83
+ACTION=add
+DEVPATH=/devices/pci0000:00/0000:00:1d.1/usb2/2-2/2-2:1.0/usbdev2.4_ep83
+SUBSYSTEM=usb_endpoint
+SEQNUM=1136
+MAJOR=254
+MINOR=13
+
+UEVENT[1220933990.861746] 
+add@/devices/pci0000:00/0000:00:1d.1/usb2/2-2/usbdev2.4
+ACTION=add
+DEVPATH=/devices/pci0000:00/0000:00:1d.1/usb2/2-2/usbdev2.4
+SUBSYSTEM=usb_device
+SEQNUM=1137
+MAJOR=189
+MINOR=131
+
+===========================================================
+===*/etc/default/*gpsd===
+# Default settings for gpsd. This file is sourced from
+# /etc/init.d/gpsd.
+START_DAEMON=&quot;false&quot;
+DAEMON_OPTS=&quot;&quot;
+DEVICES=&quot;&quot;
+USBAUTO=&quot;&quot;
+==========================================================
+======= Output from *udevmonitor* when GPS is plugged in =====
+EVENT[1221026402.414488] add@/devices/pci0000:00/0000:00:1d.1/usb2/2-1
+UEVENT[1221026402.414541] 
+add@/devices/pci0000:00/0000:00:1d.1/usb2/2-1/usbdev2.13_ep00
+UEVENT[1221026402.416495] 
+add@/devices/pci0000:00/0000:00:1d.1/usb2/2-1/2-1:1.0
+UEVENT[1221026402.416543] 
+add@/devices/pci0000:00/0000:00:1d.1/usb2/2-1/2-1:1.0/usbdev2.13_ep81
+UEVENT[1221026402.416566] 
+add@/devices/pci0000:00/0000:00:1d.1/usb2/2-1/2-1:1.0/usbdev2.13_ep02
+UEVENT[1221026402.416588] 
+add@/devices/pci0000:00/0000:00:1d.1/usb2/2-1/2-1:1.0/usbdev2.13_ep83
+UEVENT[1221026402.416609] 
+add@/devices/pci0000:00/0000:00:1d.1/usb2/2-1/usbdev2.13
+====================================================================
+
+//
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="003369.html">[Gpsd-users] Data from a GPS device?
+</A></li>
+	<LI>Next message: <A HREF="003364.html">[Gpsd-users] Request For Help Cannot gpsd to work on eeepc 901
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3363">[ date ]</a>
+              <a href="thread.html#3363">[ thread ]</a>
+              <a href="subject.html#3363">[ subject ]</a>
+              <a href="author.html#3363">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

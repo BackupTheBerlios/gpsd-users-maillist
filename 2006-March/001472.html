@@ -1,0 +1,99 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] Not Getting Output from Garmin GPS-18 (USB)
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2006-March/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Not%20Getting%20Output%20from%20Garmin%20GPS-18%20%28USB%29&In-Reply-To=%3C89cb55a50603231925kc8c0de6s68d55b88486a7d2f%40mail.gmail.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="001463.html">
+   <LINK REL="Next"  HREF="001473.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] Not Getting Output from Garmin GPS-18 (USB)</H1>
+    <B>Adam VanBerlo</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Not%20Getting%20Output%20from%20Garmin%20GPS-18%20%28USB%29&In-Reply-To=%3C89cb55a50603231925kc8c0de6s68d55b88486a7d2f%40mail.gmail.com%3E"
+       TITLE="[Gpsd-users] Not Getting Output from Garmin GPS-18 (USB)">NiX0n at fragfest.cx
+       </A><BR>
+    <I>Fri Mar 24 04:25:32 CET 2006</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="001463.html">[Gpsd-users] Perl GPS::gpsd bug fix
+</A></li>
+        <LI>Next message: <A HREF="001473.html">[Gpsd-users] Not Getting Output from Garmin GPS-18 (USB)
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1472">[ date ]</a>
+              <a href="thread.html#1472">[ thread ]</a>
+              <a href="subject.html#1472">[ subject ]</a>
+              <a href="author.html#1472">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Ok, I'm lost.  I don't know what I'm not doing right.
+A little backround information:  I've tried using the rpm, and I've
+tried compiling it myself.  Both, the installs went without a hitch. 
+I'm running Fedora Core 5 x86_64
+
+I've been consulting this document
+<A HREF="http://pfranc.com/usb/Kismet/">http://pfranc.com/usb/Kismet/</A>
+
+I've got the garmin_usb kernel module installed.
+
+i've looked at dmesg, I do get:
+garmin_gps 1-2:1.0: Garmin GPS usb/tty converter detected
+usb 1-2: Garmin GPS usb/tty converter now attached to ttyUSB0
+
+afterwhich i've done the following
+
+&lt;--BEGIN--&gt;
+[<A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">root at epona</A> dev]# gpsd -f /dev/ttyUSB0
+[<A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">root at epona</A> dev]# telnet localhost 2947
+Trying 127.0.0.1...
+Connected to localhost.localdomain (127.0.0.1).
+Escape character is '^]'.
+
+GPSD
+r
+GPSD,R=1
+&lt;--END--&gt;
+why am I not getting data?  I've even tried R=2.  I'm sure this is
+important, as I cannot use gpsdrive either.  I've even tried after
+waiting a while for the receiver to aquire sattelites (even though I
+should get data nonetheless).
+
+The receiver works.  I've tested it on my windows box.
+
+Hopefully I've supplied enough information.  If not, I'll be happy to
+supply more.
+
+Adam &quot;NiX0n&quot;
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="001463.html">[Gpsd-users] Perl GPS::gpsd bug fix
+</A></li>
+	<LI>Next message: <A HREF="001473.html">[Gpsd-users] Not Getting Output from Garmin GPS-18 (USB)
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1472">[ date ]</a>
+              <a href="thread.html#1472">[ thread ]</a>
+              <a href="subject.html#1472">[ subject ]</a>
+              <a href="author.html#1472">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

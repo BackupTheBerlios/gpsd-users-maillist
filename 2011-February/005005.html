@@ -1,0 +1,93 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] GPSD blocks USB devices
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2011-February/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20GPSD%20blocks%20USB%20devices&In-Reply-To=%3C1296698723.2995.18.camel%40rudd%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="005019.html">
+   <LINK REL="Next"  HREF="005009.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] GPSD blocks USB devices</H1>
+    <B>Thomas Sprinkmeier</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20GPSD%20blocks%20USB%20devices&In-Reply-To=%3C1296698723.2995.18.camel%40rudd%3E"
+       TITLE="[Gpsd-users] GPSD blocks USB devices">thomas.sprinkmeier at cohdawireless.com
+       </A><BR>
+    <I>Thu Feb  3 03:05:23 CET 2011</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="005019.html">[Gpsd-users] question regarding FastraX IT430
+</A></li>
+        <LI>Next message: <A HREF="005009.html">[Gpsd-users] bluetooth GPS
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#5005">[ date ]</a>
+              <a href="thread.html#5005">[ thread ]</a>
+              <a href="subject.html#5005">[ subject ]</a>
+              <a href="author.html#5005">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>On Wed, 2011-01-26 at 12:34 +0100, <A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">ngoncalves at isr.ist.utl.pt</A> wrote:
+&gt;<i> Citando Thomas Sprinkmeier &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">thomas.sprinkmeier at cohdawireless.com</A>&gt;:
+</I>&gt;<i> 
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; You could either wait for GPSD to give up (assuming this is safe, i.e.
+</I>&gt;<i> &gt; the GPS discovery doesn't accidentally activate anything) or de-fang
+</I>&gt;<i> &gt; udev (/lib/udev/rules.d/40-gpsd.rules or something, depending on your
+</I>&gt;<i> &gt; distro).
+</I>&gt;<i> &gt;
+</I>&gt;<i> 
+</I>&gt;<i> What is &quot;de-fang&quot; udev ? I know where the udev/rules.d  files are, but  
+</I>&gt;<i> I don't know how to change them. I tried googling, but could not find  
+</I>&gt;<i> anything. Could you tell me how to put the gpsd to ignore a device  
+</I>&gt;<i> (/dev/ttyUBSx) or point me to where I can find it out ?
+</I>
+On my Ubuntu 10.04 box I would edit 
+	/lib/udev/rules.d/40-gpsd.rules
+and/or
+	/lib/udev/gpsd.hotplug.wrapper
+to try to detect your device and stop it being given to gpsd, e.g. run 
+	lsusb
+to find the vendor and device IDs for your serial port and comment out
+the matching lines in /lib/udev/rules.d/40-gpsd.rules 
+
+You may also need to edit
+	/etc/default/gpsd
+to set
+	USBAUTO=&quot;false&quot;
+
+
+Thomas
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="005019.html">[Gpsd-users] question regarding FastraX IT430
+</A></li>
+	<LI>Next message: <A HREF="005009.html">[Gpsd-users] bluetooth GPS
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#5005">[ date ]</a>
+              <a href="thread.html#5005">[ thread ]</a>
+              <a href="subject.html#5005">[ subject ]</a>
+              <a href="author.html#5005">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

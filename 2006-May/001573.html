@@ -1,0 +1,133 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] Navman Jupiter 20 Chipset works with gpsd
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2006-May/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Navman%20Jupiter%2020%20Chipset%20works%20with%20gpsd&In-Reply-To=%3C446833AC.1040000%40fela.ch%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="001570.html">
+   <LINK REL="Next"  HREF="001589.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] Navman Jupiter 20 Chipset works with gpsd</H1>
+    <B>Andreas Stricker</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Navman%20Jupiter%2020%20Chipset%20works%20with%20gpsd&In-Reply-To=%3C446833AC.1040000%40fela.ch%3E"
+       TITLE="[Gpsd-users] Navman Jupiter 20 Chipset works with gpsd">andreas.stricker at fela.ch
+       </A><BR>
+    <I>Mon May 15 09:54:20 CEST 2006</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="001570.html">[Gpsd-users] Navman Jupiter 20 Chipset works with gpsd
+</A></li>
+        <LI>Next message: <A HREF="001589.html">[Gpsd-users] Navman Jupiter 20 Chipset works with gpsd
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1573">[ date ]</a>
+              <a href="thread.html#1573">[ thread ]</a>
+              <a href="subject.html#1573">[ subject ]</a>
+              <a href="author.html#1573">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi Gary
+
+&gt;<i>    1. The GPS model name
+</I>
+Navman Jupiter 20
+
+&gt;<i>    2. Whether or not it works
+</I>
+It works.
+
+&gt;<i>    3. If possible, an URL to a technical reference on it
+</I>
+<A HREF="http://www.navman.com/Navman/Templates/productinformation____15665.aspx">http://www.navman.com/Navman/Templates/productinformation____15665.aspx</A>
+
+&gt;<i>    4. The GPS and (if applicable) USB-to-serial chip it uses. 
+</I>
+Navman Jupiter 20 Chipset with firmware from Jupiter 21
+
+&gt;<i>    5. The interface type (RS232, USB, CF)
+</I>
+RS232
+
+&gt;<i>    6. The vendor
+</I>
+Navman
+
+&gt;<i>    7. Version of gpsd you tested with
+</I>
+gpsd 2.32 (from subversion)
+
+&gt;<i>    8. NMEA version it emits, or '?' if the documentation doesn't say
+</I>
+? (Documentation say only NMEA 0183)
+
+&gt;<i>    9. A list of NMEA sentences it emits
+</I>
+GGA, GSA, GSV, RMC and (a propritary?) PTTK
+
+During driving with good signal:
+
+$GPGGA,084101.936,4741.1947,N,00844.9770,E,1,08,0.8,405.5,M,48.0,M,0.0,0000*76
+$GPGSA,A,3,11,19,14,01,20,28,03,22,,,,,1.9,0.8,1.7*33
+$GPGSV,2,1,08,11,64,291,49,19,52,170,46,01,40,131,46,14,40,071,45*7E
+$GPGSV,2,2,08,20,29,232,43,28,21,294,46,03,18,160,38,22,18,054,44*76
+$GPRMC,084101.936,A,4741.1947,N,00844.9770,E,1.833,3.20,110506,0.9,E*56
+$PTTK,DR,C,2.46,A*11
+
+In dead reckoning mode (Notice, that the heading field is empty):
+
+$GPGGA,065151.099,4741.1987,N,00844.9467,E,0,00,50.0,412.6,M,48.0,M,0.0,0000*48
+$GPGSA,A,1,,,,,,,,,,,,,50.0,50.0,50.0*05
+$GPGSV,3,1,09,03,69,153,27,19,69,299,00,22,58,077,21,18,24,047,00*7B
+$GPGSV,3,2,09,15,24,071,00,11,20,268,00,07,19,131,00,14,17,124,00*73
+$GPGSV,3,3,09,16,08,182,*44
+$GPRMC,065151.099,V,4741.1987,N,00844.9467,E,0.000,,110506,0.0,E*51
+$PTTK,DR,G,0.00,V*02
+
+&gt;<i>   10. Notes on the device
+</I>
+It's not a complete GPS, but a chipset. It's running with an external
+gyro on a our self developped board.
+
+The device is configured to send NMEA by default. But gpsd spots that
+it support Sirf-II and change to this protocol.
+But I can change the mode back to NMEA, both protocols work:
+
+n=0 -&gt; NMEA
+n=1 -&gt; Sirf-II (default)
+
+
+Cheers,
+Andy
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="001570.html">[Gpsd-users] Navman Jupiter 20 Chipset works with gpsd
+</A></li>
+	<LI>Next message: <A HREF="001589.html">[Gpsd-users] Navman Jupiter 20 Chipset works with gpsd
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1573">[ date ]</a>
+              <a href="thread.html#1573">[ thread ]</a>
+              <a href="subject.html#1573">[ subject ]</a>
+              <a href="author.html#1573">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

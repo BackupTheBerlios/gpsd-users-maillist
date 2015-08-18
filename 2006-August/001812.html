@@ -1,0 +1,151 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] bu-353 altitude problem
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2006-August/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20bu-353%20altitude%20problem&In-Reply-To=%3C86hd0waplq.fsf%40coulee.tdb.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   
+   <LINK REL="Next"  HREF="001813.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] bu-353 altitude problem</H1>
+    <B>Russell Senior</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20bu-353%20altitude%20problem&In-Reply-To=%3C86hd0waplq.fsf%40coulee.tdb.com%3E"
+       TITLE="[Gpsd-users] bu-353 altitude problem">seniorr at aracnet.com
+       </A><BR>
+    <I>Tue Aug  1 09:21:05 CEST 2006</I>
+    <P><UL>
+        
+        <LI>Next message: <A HREF="001813.html">[Gpsd-users] bu-353 altitude problem
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1812">[ date ]</a>
+              <a href="thread.html#1812">[ thread ]</a>
+              <a href="subject.html#1812">[ subject ]</a>
+              <a href="author.html#1812">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>
+I'd like to confirm the problem reported recently with confused
+altitude information from gpsd-2.33 connected to a bu-353 (a generic
+nmea device).  Here is a sample of the NMEA sentences emitted from
+gpsd in raw mode:
+
+$GPRMC,063927.000,A,4532.7947,N,12238.4289,W,0.17,119.64,010806,,*1A
+$GPGGA,063928.000,4532.7947,N,12238.4288,W,2,08,0.9,54.6,M,-19.3,M,0.8,0000*7C
+$GPGSA,A,3,02,05,10,04,30,09,24,06,,,,,1.5,0.9,1.2*34
+$GPRMC,063928.000,A,4532.7947,N,12238.4288,W,0.31,56.99,010806,,*28
+$GPGGA,063928.900,4532.7948,N,12238.4288,W,2,08,0.9,54.7,M,-19.3,M,0.8,0000*7B
+$GPGSA,A,3,02,05,10,04,30,09,24,06,,,,,1.5,0.9,1.2*34
+$GPGSV,3,1,09,05,78,205,33,02,71,083,34,30,49,302,46,04,33,051,28*70
+$GPGSV,3,2,09,06,20,273,40,10,17,144,20,09,15,200,31,24,12,045,15*7E
+$GPGSV,3,3,09,35,34,206,33*45
+$GPRMC,063928.900,A,4532.7948,N,12238.4288,W,0.07,158.14,010806,,*11
+$GPGGA,063930.000,4532.7948,N,12238.4288,W,2,08,0.9,54.7,M,-19.3,M,0.8,0000*7B
+$GPGSA,A,3,02,05,10,04,30,09,24,06,,,,,1.5,0.9,1.2*34
+$GPRMC,063930.000,A,4532.7948,N,12238.4288,W,0.11,23.07,010806,,*29
+$GPGGA,063931.000,4532.7948,N,12238.4287,W,2,08,0.9,54.7,M,-19.3,M,1.8,0000*74
+$GPGSA,A,3,02,05,10,04,30,09,24,06,,,,,1.5,0.9,1.2*34
+$GPRMC,063931.000,A,4532.7948,N,12238.4287,W,0.09,64.01,010806,,*2B
+$GPGGA,063932.000,4532.7947,N,12238.4287,W,2,08,0.9,54.7,M,-19.3,M,2.8,0000*7B
+$GPGSA,A,3,02,05,10,04,30,09,24,06,,,,,1.5,0.9,1.2*34
+$GPRMC,063932.000,A,4532.7947,N,12238.4287,W,0.05,165.35,010806,,*1C
+$GPGGA,063933.000,4532.7947,N,12238.4287,W,2,08,0.9,54.6,M,-19.3,M,3.8,0000*7A
+$GPGSA,A,3,02,05,10,04,30,09,24,06,,,,,1.5,0.9,1.2*34
+$GPRMC,063933.000,A,4532.7947,N,12238.4287,W,0.03,44.30,010806,,*2C
+
+If I query with an &quot;a&quot;, I sometimes get a valid altitude, but usually
+not.  E.g.:
+
+$ nc localhost 2947
+pavmh
+GPSD,P=?,A=?,V=?,M=0
+pavmh
+GPSD,P=45.546543 -122.640468,A=53.900,V=?,M=3
+pavmh
+GPSD,P=45.546545 -122.640467,A=?,V=0.040,M=0
+pavmh
+GPSD,P=45.546543 -122.640470,A=?,V=0.080,M=0
+pavmh
+GPSD,P=45.546542 -122.640472,A=54.700,V=?,M=3
+pavmh
+GPSD,P=45.546548 -122.640475,A=?,V=0.120,M=0
+pavmh
+GPSD,P=45.546548 -122.640475,A=?,V=0.030,M=0
+pavmh
+GPSD,P=45.546548 -122.640475,A=?,V=0.160,M=0
+pavmh
+GPSD,P=45.546548 -122.640477,A=?,V=?,M=0
+pavmh
+GPSD,P=45.546548 -122.640477,A=?,V=0.140,M=0
+pavmh
+GPSD,P=45.546550 -122.640477,A=?,V=0.100,M=0
+pavmh
+GPSD,P=45.546550 -122.640477,A=?,V=0.100,M=0
+pavmh
+GPSD,P=45.546550 -122.640477,A=?,V=0.060,M=0
+pavmh
+GPSD,P=45.546552 -122.640477,A=?,V=0.220,M=0
+pavmh
+GPSD,P=45.546552 -122.640475,A=54.300,V=?,M=3
+pavmh
+GPSD,P=45.546552 -122.640477,A=?,V=?,M=0
+pavmh
+GPSD,P=45.546552 -122.640477,A=?,V=0.230,M=0
+pavmh
+GPSD,P=45.546552 -122.640477,A=54.300,V=?,M=3
+pavmh
+GPSD,P=45.546552 -122.640477,A=?,V=0.130,M=0
+pavmh
+GPSD,P=45.546552 -122.640478,A=54.400,V=?,M=3
+pavmh
+GPSD,P=45.546555 -122.640480,A=?,V=0.090,M=0
+
+Running under gdb, I see that it seems to be failing the have_fix()
+text. E.g.:
+
+(gdb) print device-&gt;gpsdata.status
+$12 = 2
+(gdb) print device-&gt;gpsdata.fix.mode
+$13 = 0
+
+The associated VALIDATION_COMPLAINT verbage indicates &quot;GPS is confused
+about whether it has a fix&quot;.  I think, rather, it is gpsd that is
+confused!  ;-)
+
+
+-- 
+Russell Senior         ``I have nine fingers; you have ten.''
+<A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">seniorr at aracnet.com</A>
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	
+	<LI>Next message: <A HREF="001813.html">[Gpsd-users] bu-353 altitude problem
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1812">[ date ]</a>
+              <a href="thread.html#1812">[ thread ]</a>
+              <a href="subject.html#1812">[ subject ]</a>
+              <a href="author.html#1812">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

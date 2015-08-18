@@ -1,0 +1,80 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> No subject
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2012-March/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20No%20subject&In-Reply-To=%3Cmailman.0.1331733121.2493.gpsd-users%40lists.berlios.de%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   
+   <LINK REL="Next"  HREF="003645.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>No subject</H1>
+    <B></B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20No%20subject&In-Reply-To=%3Cmailman.0.1331733121.2493.gpsd-users%40lists.berlios.de%3E"
+       TITLE="No subject">
+       </A><BR>
+    <I>Wed Mar 14 14:51:36 CET 2012</I>
+    <P><UL>
+        
+        <LI>Next message: <A HREF="003645.html">No subject
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3261">[ date ]</a>
+              <a href="thread.html#3261">[ thread ]</a>
+              <a href="subject.html#3261">[ subject ]</a>
+              <a href="author.html#3261">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>simple.  GPSD, as awesome as it is, sounds like it's overkill for *your*
+application.  What you actually want is the information provided by the
+NMEA sentence &quot;GPRMC&quot;.  This single sentence issued once per second by
+most GPS units contains time and location.  Have a look at this:
+
+<A HREF="http://www.codepedia.com/1/The+GPRMC+Sentence">http://www.codepedia.com/1/The+GPRMC+Sentence</A>
+
+By default your unit probably spits out GPRMC and a whole bunch of other
+lines.  There are standard NMEA commands which let you turn off everything
+except for GPRMC.  I had to do this the other day to ease the text
+processing burden on an 8-bit based system I am working on which only
+needs time and location information.  Have a look at the PSRF103 command
+to disable all but GPRMC.  A little C based GPRMC parser is all you want
+and will be no more effort (probably less) than trying to install and
+interface to GPSD.
+
+If your time accuracy requirement is only to the second and not the milli
+or microsecond then GPRMC by itself is fine, otherwise I'd look into using
+the PPS signal that many (but not all) GPS units provide as well.
+
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	
+	<LI>Next message: <A HREF="003645.html">No subject
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3261">[ date ]</a>
+              <a href="thread.html#3261">[ thread ]</a>
+              <a href="subject.html#3261">[ subject ]</a>
+              <a href="author.html#3261">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

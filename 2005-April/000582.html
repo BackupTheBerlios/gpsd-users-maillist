@@ -1,0 +1,116 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] idea:  adding location/position to Linux kernel
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2005-April/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20idea%3A%20%20adding%20location/position%20to%20Linux%20kernel&In-Reply-To=%3C50747.158.140.2.102.1114451934.squirrel%40www.plumb.org%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="000601.html">
+   <LINK REL="Next"  HREF="000583.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] idea:  adding location/position to Linux kernel</H1>
+    <B>Andrew Plumb</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20idea%3A%20%20adding%20location/position%20to%20Linux%20kernel&In-Reply-To=%3C50747.158.140.2.102.1114451934.squirrel%40www.plumb.org%3E"
+       TITLE="[Gpsd-users] idea:  adding location/position to Linux kernel">andrew at plumb.org
+       </A><BR>
+    <I>Mon Apr 25 19:58:54 CEST 2005</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="000601.html">[Gpsd-users] gpsd with logfile
+</A></li>
+        <LI>Next message: <A HREF="000583.html">[Gpsd-users] idea:  adding location/position to Linux kernel
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#582">[ date ]</a>
+              <a href="thread.html#582">[ thread ]</a>
+              <a href="subject.html#582">[ subject ]</a>
+              <a href="author.html#582">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi Everyone,
+
+Well, I've been lurking for a while.  Figured it was to to make a first
+post. :-)
+
+Q:  Has anyone thought/tried to build location/position into the Linux
+kernel, beyond the rather static &quot;timezone&quot;?
+
+Here's the background thought-trail behind this question (and how it
+applies to gpsd):
+
+1.  I want to be reminded of errands and associated lists when near the
+location in question.  It's the position-equivalent of a Calendar
+alarm/reminder.
+
+2.  ...and maybe there are also files I need to work on at the location,
+like at work.  This sort of context-awareness could be built into each
+application, but then I'd have to work support into each application
+individually.  An easier way to fix this might be within the various file
+browser API to at least add support to sort files by proximity.
+
+3.  ...then I would need some sort of mechanism to track where a file was
+created, modified and/or accessed.  That's an OS/Filesystem level of file
+tracking.  The ext2/3 inode has ctime, atime, and mtime constructs to
+track this info, so the logical thing to do is extend the file system to
+also track &quot;clocation&quot;, &quot;alocation&quot;, and &quot;mlocation&quot;.
+
+4.  ... exploring the kernel source, current_kernel_time() seems to be one
+magic function used by filesystems to maintain inode time variables.  On
+the other hand, &quot;timezone sys_tz&quot; appears to be a global
+variable/structure.  What if the timezone were a function of real
+position?
+
+5.  ...when setting system timezone, the end user could either use the
+traditional pick-a-timezone approach and default location coordinates
+would be set behind the scenes, or one could specify coordinates and have
+the timezone set automagically.
+
+6.  ...or if GPS-enabled, any device, whether it's a laptop, desktop,
+cellphone or PDA, could update it dynamically via gpsd.
+
+...which is what led me to my question here, whether anyone has even tried
+patching the kernel in this manner.
+
+Thoughts?
+
+Andrew.
+
+-- 
+
+E-mail:    <A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">andrew at plumb.org</A>
+WWW:       <A HREF="http://www.plumb.org/tekmage/">http://www.plumb.org/tekmage/</A>
+Photos:    <A HREF="http://www.flickr.com/photos/aplumb/">http://www.flickr.com/photos/aplumb/</A>
+
+Victory!  The bits shall ring out, the message of my domain...
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="000601.html">[Gpsd-users] gpsd with logfile
+</A></li>
+	<LI>Next message: <A HREF="000583.html">[Gpsd-users] idea:  adding location/position to Linux kernel
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#582">[ date ]</a>
+              <a href="thread.html#582">[ thread ]</a>
+              <a href="subject.html#582">[ subject ]</a>
+              <a href="author.html#582">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

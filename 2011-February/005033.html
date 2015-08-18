@@ -1,0 +1,159 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] NTRIP Issue patch
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2011-February/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20NTRIP%20Issue%20patch&In-Reply-To=%3C4D622494.2060603%40googlemail.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="005031.html">
+   <LINK REL="Next"  HREF="005038.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] NTRIP Issue patch</H1>
+    <B>Andre Naujoks</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20NTRIP%20Issue%20patch&In-Reply-To=%3C4D622494.2060603%40googlemail.com%3E"
+       TITLE="[Gpsd-users] NTRIP Issue patch">nautsch2 at googlemail.com
+       </A><BR>
+    <I>Mon Feb 21 09:38:44 CET 2011</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="005031.html">[Gpsd-users] NTRIP Issue patch
+</A></li>
+        <LI>Next message: <A HREF="005038.html">[Gpsd-users] NTRIP Issue patch
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#5033">[ date ]</a>
+              <a href="thread.html#5033">[ thread ]</a>
+              <a href="subject.html#5033">[ subject ]</a>
+              <a href="author.html#5033">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Am 19.02.2011 01:47, schrieb Eric Raymond:
+&gt;<i> Andre Naujoks &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">nautsch2 at googlemail.com</A>&gt;:
+</I>&gt;&gt;<i> As promised here is a huge patch which *should* apply to the current git head.
+</I>&gt;<i> 
+</I>&gt;<i> Alas, it did not.  Almost all bands other than the change to gps/client.py
+</I>&gt;<i> failed with patch -p1.  The exceptions were one band for gpsd.h-tail and
+</I>&gt;<i> one for net_ntrip.c.
+</I>&gt;<i> 
+</I>
+Hmm. I don't know why that is (I could reproduce it though).
+
+This time I tried it against commit 0d077114f17012a3c609dab88dcfdcc71b9cbb44
+from Gary E. Miller and it applies. Sorry for the hassle.
+
+gpsd_ntrip.patch contains the whole patch including the gpsd_open.patch, which I
+attached for review on its own. If it breaks something, just leave it out. It
+should not interfere with the rest of the changes.
+
+I think it is better to not paste the whole patch into the mail-body. With the
+size you can probably view it better with some other viewer. At least I think so.
+
+&gt;<i> I may try applying some of these by hand if I decide I understand them.
+</I>&gt;<i> But we really ought to figure out why the patch was bad.
+</I>
+I will gladly walk you through each segment. :-)
+I am aware of the hugeness of the patch and the amount of code to review.
+
+Greg Troxel mentioned I should set up a git repository to do such things. I will
+do that the next time I try something like this. For this time I first tried to make
+gpsd work for me and then switched to using the git features. So I only have the changes
+in this inconvenient way.
+
+&gt;<i>  
+</I>&gt;&gt;<i> What it does is the following.
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> - workaround for some kind of bug in the python client.
+</I>&gt;&gt;<i>   This is probably wrong, but I don't know what to fix there with my 
+</I>&gt;&gt;<i>   limited python abilities. X-)
+</I>&gt;<i> 
+</I>&gt;<i> Would you describe the bug to me, please?  Preferably including a 
+</I>&gt;<i> backtrace.  That last line - the change to the dictwrapper call -
+</I>&gt;<i> doesn't look quite right to me.
+</I>
+certainly. As soon as a json rtcm2 message arrives, this traceback is
+generated from xgps:
+
+Traceback (most recent call last):
+  File &quot;./xgps&quot;, line 696, in handle_response
+    if self.daemon.read() == -1:
+  File &quot;/home/nautsch/test/gpsd/gpsd-git-taint/gps/gps.py&quot;, line 303, in read
+    self.json_unpack(self.response)
+  File &quot;/home/nautsch/test/gpsd/gpsd-git-taint/gps/client.py&quot;, line 151, in json_unpack
+    self.data = dictwrapper(**asciify(json.loads(buf.strip(), )))
+  File &quot;/home/nautsch/test/gpsd/gpsd-git-taint/gps/client.py&quot;, line 145, in asciify
+    va = map(asciify, v)
+  File &quot;/home/nautsch/test/gpsd/gpsd-git-taint/gps/client.py&quot;, line 138, in asciify
+    for (k, v) in d.items():
+AttributeError: 'unicode' object has no attribute 'items'
+
+After this xgps stands still. My patch was a workaround for something I am
+definitely missing in the depth of the python code :-). And I heard from a
+colleague, that the issue was not completely gone.
+
+I left this out of the big patch, because my workaround was probably the wrong thing
+to do to fix this.
+
+&gt;<i> 
+</I>&gt;&gt;<i> - simplify the way add_device and open_device are used
+</I>&gt;<i> 
+</I>&gt;<i> Hm.  I want to know more about this before I apply it.  There
+</I>&gt;<i> may be subtleties you are missing, and I'm reluctabt to destabilize 
+</I>&gt;<i> core code when we're gearing up for a release.  
+</I>&gt;<i> 
+</I>&gt;<i> Can you separate this patch fromn the NTRIP fixes? I consider
+</I>&gt;<i> those much less risky.
+</I>
+Yes. See attachment gpsd_open.patch. But I only compile tested this without the other changes.
+
+It basically removes the necessity to go through the whole device list again
+by giving a device as a parameter to gpsd_open instead of the path.
+
+&gt;<i> 
+</I>&gt;&gt;<i> - the context-&gt;dsock is now unset when an ntrip server disconnects
+</I>&gt;&gt;<i> - the ntrip connection is reestablished, when it worked but got 
+</I>&gt;&gt;<i>   disconnected by the server. This is done only, when the connection
+</I>&gt;&gt;<i>   was good the last time.
+</I>&gt;&gt;<i> - the ntrip connection is now multistaged. the gps_open just 
+</I>&gt;&gt;<i>   initializes the connection process. The remaining connection is done
+</I>&gt;&gt;<i>   from consume_packet
+</I>&gt;&gt;<i> - The patch from the earlier mails, which does an NMEA update to an 
+</I>&gt;&gt;<i>   ntrip server in a semi regular interval.
+</I>&gt;<i> 
+</I>&gt;<i> These certainly sound like theyt're heading in a good direction.
+</I>
+That sounds good to me.
+
+Regards
+  Andre
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="005031.html">[Gpsd-users] NTRIP Issue patch
+</A></li>
+	<LI>Next message: <A HREF="005038.html">[Gpsd-users] NTRIP Issue patch
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#5033">[ date ]</a>
+              <a href="thread.html#5033">[ thread ]</a>
+              <a href="subject.html#5033">[ subject ]</a>
+              <a href="author.html#5033">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

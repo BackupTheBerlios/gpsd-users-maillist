@@ -1,0 +1,97 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] tsip users, please test
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2009-July/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20tsip%20users%2C%20please%20test&In-Reply-To=%3C91981b3e0907012339t66d4752ah11ec4fd4075dc44c%40mail.gmail.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="003804.html">
+   <LINK REL="Next"  HREF="003806.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] tsip users, please test</H1>
+    <B>Chris Kuethe</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20tsip%20users%2C%20please%20test&In-Reply-To=%3C91981b3e0907012339t66d4752ah11ec4fd4075dc44c%40mail.gmail.com%3E"
+       TITLE="[Gpsd-users] tsip users, please test">chris.kuethe at gmail.com
+       </A><BR>
+    <I>Thu Jul  2 08:39:54 CEST 2009</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="003804.html">[Gpsd-users] problem with the haicom hi-204s
+</A></li>
+        <LI>Next message: <A HREF="003806.html">[Gpsd-users] WBT-201
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3805">[ date ]</a>
+              <a href="thread.html#3805">[ thread ]</a>
+              <a href="subject.html#3805">[ subject ]</a>
+              <a href="author.html#3805">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Some trimble devices *can* automatically output message 0x5c
+(satellite position). please test and report. Ideally I'd like to hear
+that you're getting messages 5c and 5a after this diff...
+
+
+Index: driver_tsip.c
+===================================================================
+--- driver_tsip.c	(revision 5685)
++++ driver_tsip.c	(working copy)
+@@ -283,7 +285,7 @@
+ 	    putbyte(buf,0,0x2c);		/* Position: SP, MSL */
+ 	    putbyte(buf,1,0x00);		/* Velocity: none (via SP) */
+ 	    putbyte(buf,2,0x00);		/* Time: GPS */
+-	    putbyte(buf,3,0x08);		/* Aux: dBHz */
++	    putbyte(buf,3,0x2c); /* Aux: dBHz, raw, signal, satpos */
+ 	    (void)tsip_write(session, 0x35, buf, 4);
+ 	    session-&gt;driver.tsip.superpkt = true;
+ 	}
+@@ -735,12 +737,14 @@
+ 	session-&gt;driver.tsip.last_6d = now;
+     }
+
++#if 0
+     if ((now - session-&gt;driver.tsip.last_5c) &gt;= 5) {
+ 	/* Request Current Satellite Tracking Status */
+ 	putbyte(buf,0,0x00);		/* All satellites */
+ 	(void)tsip_write(session, 0x3c, buf, 1);
+ 	session-&gt;driver.tsip.last_5c = now;
+     }
++#endif
+
+     if ((now - session-&gt;driver.tsip.last_46) &gt; 5) {
+ 	/* Request Health of Receiver */
+
+-- 
+GDB has a 'break' feature; why doesn't it have 'fix' too?
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="003804.html">[Gpsd-users] problem with the haicom hi-204s
+</A></li>
+	<LI>Next message: <A HREF="003806.html">[Gpsd-users] WBT-201
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3805">[ date ]</a>
+              <a href="thread.html#3805">[ thread ]</a>
+              <a href="subject.html#3805">[ subject ]</a>
+              <a href="author.html#3805">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

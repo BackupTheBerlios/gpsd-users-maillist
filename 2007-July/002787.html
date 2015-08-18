@@ -1,0 +1,104 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] gps_del_callback() hangs
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2007-July/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20gps_del_callback%28%29%20hangs&In-Reply-To=%3CPine.LNX.4.63.0707242038510.28728%40scorpion.aai.ee%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="002786.html">
+   <LINK REL="Next"  HREF="002780.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] gps_del_callback() hangs</H1>
+    <B>Joel Kuusk</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20gps_del_callback%28%29%20hangs&In-Reply-To=%3CPine.LNX.4.63.0707242038510.28728%40scorpion.aai.ee%3E"
+       TITLE="[Gpsd-users] gps_del_callback() hangs">joel at scorpion.aai.ee
+       </A><BR>
+    <I>Tue Jul 24 21:50:21 CEST 2007</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="002786.html">[Gpsd-users] gps_del_callback() hangs
+</A></li>
+        <LI>Next message: <A HREF="002780.html">[Gpsd-users] Uncooperative AmbiCom GPS-USB
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2787">[ date ]</a>
+              <a href="thread.html#2787">[ thread ]</a>
+              <a href="subject.html#2787">[ subject ]</a>
+              <a href="author.html#2787">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi!
+
+On Tue, 24 Jul 2007, Andreas Volz wrote:
+
+&gt;<i> I assume you are planing to use C++ later.
+</I>
+Yes, I am. 
+
+&gt;<i> &gt; When I execute it, I get the following result:
+</I>&gt;<i> &gt; in handler
+</I>&gt;<i> &gt; in handler
+</I>&gt;<i> &gt; in handler
+</I>&gt;<i> &gt; before gps_del_callback
+</I>&gt;<i> &gt; [and here it hangs]
+</I>
+I have worked with my code for a day now and this hanging is inconsistent. 
+Sometimes everything works OK and sometimes it doesn't. After I put all 
+the stuff into my project I have not seen this hanging any more. Since I 
+have to get this thing working ASAP I don't have time to dig any deeper 
+into this problem at the moment. Maybe in a few weeks.
+
+I switched from Fedora Core 6 rpm to gpsd-2.34.tar.gz but this did not 
+solve the hanging of my test program. I also tried the 2.35beta from SVN 
+but this had some serious problems (no altitude data, wrong timestamp). 
+
+I can also update the supported hardware information. I have Globalsat 
+BU-353 with firmware version 
+GPSD,I=SiRF binary GSW3.1.1TO_3.1.00.07-C23P1.00
+In the internet there are controversial data whether it supports WAAS or 
+not but to me it seems it does. I have seen EGNOS sattellite PRN-s 
+in satellite list and also status 2 which means DGPS-corrected fix.
+
+Also I would like to report some misleading information in gps.h. It 
+states that gps_data_t-&gt;used contains PRNs of satellites used in 
+solution. That is not true. used[i] = 1 if PRN[i] is used in solution and 
+used[i] = 0 otherwise. 
+
+And one last question - is there a possibility to capture dilution of 
+precision parameters while using callback function? As far as I understand 
+it uses watcher mode and captures only O and Y sentences.
+
+With best regards,
+Joel Kuusk
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="002786.html">[Gpsd-users] gps_del_callback() hangs
+</A></li>
+	<LI>Next message: <A HREF="002780.html">[Gpsd-users] Uncooperative AmbiCom GPS-USB
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2787">[ date ]</a>
+              <a href="thread.html#2787">[ thread ]</a>
+              <a href="subject.html#2787">[ subject ]</a>
+              <a href="author.html#2787">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

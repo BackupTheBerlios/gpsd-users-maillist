@@ -1,0 +1,99 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] gps_data_t.online always changes
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2007-May/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20gps_data_t.online%20always%20changes&In-Reply-To=%3C464D643A.4AAF.00BD.0%40cavs.msstate.edu%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="002650.html">
+   <LINK REL="Next"  HREF="002648.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] gps_data_t.online always changes</H1>
+    <B>Marshall Crocker</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20gps_data_t.online%20always%20changes&In-Reply-To=%3C464D643A.4AAF.00BD.0%40cavs.msstate.edu%3E"
+       TITLE="[Gpsd-users] gps_data_t.online always changes">crocker at cavs.msstate.edu
+       </A><BR>
+    <I>Fri May 18 15:30:50 CEST 2007</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="002650.html">[Gpsd-users] gps_data_t.online always changes
+</A></li>
+        <LI>Next message: <A HREF="002648.html">[Gpsd-users] gps_data_t.online always changes
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2651">[ date ]</a>
+              <a href="thread.html#2651">[ thread ]</a>
+              <a href="subject.html#2651">[ subject ]</a>
+              <a href="author.html#2651">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>I originally wrote the code to use the callback but I changed it to simplify my application.  In my gps collector thread, if I can't get gps data (because there is no fix, gps is unconnected, etc.)  I load the previous gps latitude and longitude coordinates and use the host's system time as the device's current position and time.  This is on a vehicle tracking system so it's important that the unit is always sending data even if the coordinates are not 100% correct (the time should be though).
+
+If I used the callback function, I would still need a separate thread to gather the data from the callback as well as substitute the time and position in the event the gps isn't working.  I decided to just stick with a single thread and forgo the callback function in order to simplify things.  I may have to use the callback function if I can't figure out another way to determine if gpsd is receiving data from the gps.
+
+Does the callback function get called if the gps does not have a fix?  Or does it get called every time  gpsd receives a data string from the gps?
+
+Marshall
+
+
+
+&gt;&gt;&gt;<i> Andreas Volz &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">lists at brachttal.net</A>&gt; 5/18/2007 2:42 AM &gt;&gt;&gt;
+</I>Am Thu, 17 May 2007 17:35:03 -0500 schrieb Marshall Crocker:
+
+&gt;<i> Actually, no that won't work because poll() blocks which is not the
+</I>&gt;<i> behavior I want.  Looks like I'll need to stick with query().  That
+</I>&gt;<i> means I still need to figure out how to use online or another member
+</I>&gt;<i> from the gps_data_t struct to tell if gpsd is getting NMEA strings
+</I>&gt;<i> from my gps.
+</I>
+Hello,
+
+I don't understand what you do. Why don't you use the callback function
+to get periodic information from gpsd? Or use my C++ interface here:
+
+<A HREF="http://tux-style.de/tmp/gpsd/">http://tux-style.de/tmp/gpsd/</A> 
+
+And use the signal to get informed about new gpsd data.
+
+Or did I missunderstood your question?
+
+regards
+Andreas
+_______________________________________________
+Gpsd-users mailing list
+<A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">Gpsd-users at lists.berlios.de</A> 
+<A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">https://lists.berlios.de/mailman/listinfo/gpsd-users</A> 
+
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="002650.html">[Gpsd-users] gps_data_t.online always changes
+</A></li>
+	<LI>Next message: <A HREF="002648.html">[Gpsd-users] gps_data_t.online always changes
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2651">[ date ]</a>
+              <a href="thread.html#2651">[ thread ]</a>
+              <a href="subject.html#2651">[ subject ]</a>
+              <a href="author.html#2651">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

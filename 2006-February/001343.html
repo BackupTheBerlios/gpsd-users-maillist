@@ -1,0 +1,115 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] u-blox Antaris with strange NMEA &quot;dialect&quot;
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2006-February/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20u-blox%20Antaris%20with%20strange%20NMEA%20%22dialect%22&In-Reply-To=%3C43FDDD65.1020100%40fela.ch%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="001340.html">
+   <LINK REL="Next"  HREF="001347.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] u-blox Antaris with strange NMEA &quot;dialect&quot;</H1>
+    <B>Andreas Stricker</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20u-blox%20Antaris%20with%20strange%20NMEA%20%22dialect%22&In-Reply-To=%3C43FDDD65.1020100%40fela.ch%3E"
+       TITLE="[Gpsd-users] u-blox Antaris with strange NMEA &quot;dialect&quot;">andreas.stricker at fela.ch
+       </A><BR>
+    <I>Thu Feb 23 17:05:57 CET 2006</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="001340.html">[Gpsd-users] u-blox Antaris with strange NMEA &quot;dialect&quot;
+</A></li>
+        <LI>Next message: <A HREF="001347.html">[Gpsd-users] u-blox Antaris with strange NMEA &quot;dialect&quot;
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1343">[ date ]</a>
+              <a href="thread.html#1343">[ thread ]</a>
+              <a href="subject.html#1343">[ subject ]</a>
+              <a href="author.html#1343">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi Gary
+
+&gt;<i> Can you send along to the list a 30 second capture of the NMEA from that
+</I>&gt;<i> unit?  Then I can feed that in on my end.  I would assume the E causes
+</I>&gt;<i> gpsd to crash?  If so I can fix that and probably map the E to 1 (no fix).
+</I>
+The 'E' don't crash gpsd: atoi() returns 0, that's the value of
+MODE_NOT_SEEN. It just behave strange: The mode alternate between
+MODE_NOT_SEEN and MODE_3D between received GSA and RMC records.
+
+I added a mapping from 'E' to MODE_NO_FIX (see attached patch:
+nmea_parse_nofix.patch).
+
+The result is not perfect: GSA sets mode to MODE_NO_FIX resulting
+in O=? then after the RMC record gpsd returns O=RMC..... Alternating
+again:
+
+gpsd: GPS is confused about whether it has a fix (status=6, mode=1).
+
+Ok, next try: I don't set the flag MODE_SET if I see 'E' (see
+attached patch: nmea_parse_noset.patch).
+
+This resulting in no alternating anymore. The mode value 'E' is
+simply ignored.
+
+There is still a problem: I don't have the chance to detect if
+there is a valid GPS signal or not. The device includes a gyro.
+The interpolation in gyro mode is transparent. The device always
+return a position (there are no empty coordinates in NMEA records).
+This is fine, but I should know if I have a good position or just
+an interpolated position.
+
+I don't know more about the device. I'm currently trying to get
+more information.
+
+Regards,
+Andy
+-------------- next part --------------
+An embedded and charset-unspecified text was scrubbed...
+Name: nmea30s.txt
+URL: &lt;<A HREF="https://lists.berlios.de/pipermail/gpsd-users/attachments/20060223/fe03e9c9/attachment.txt">https://lists.berlios.de/pipermail/gpsd-users/attachments/20060223/fe03e9c9/attachment.txt</A>&gt;
+-------------- next part --------------
+A non-text attachment was scrubbed...
+Name: nmea_parse_nofix.patch
+Type: text/x-patch
+Size: 546 bytes
+Desc: not available
+URL: &lt;<A HREF="https://lists.berlios.de/pipermail/gpsd-users/attachments/20060223/fe03e9c9/attachment.bin">https://lists.berlios.de/pipermail/gpsd-users/attachments/20060223/fe03e9c9/attachment.bin</A>&gt;
+-------------- next part --------------
+A non-text attachment was scrubbed...
+Name: nmea_parse_noset.patch
+Type: text/x-patch
+Size: 626 bytes
+Desc: not available
+URL: &lt;<A HREF="https://lists.berlios.de/pipermail/gpsd-users/attachments/20060223/fe03e9c9/attachment-0001.bin">https://lists.berlios.de/pipermail/gpsd-users/attachments/20060223/fe03e9c9/attachment-0001.bin</A>&gt;
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="001340.html">[Gpsd-users] u-blox Antaris with strange NMEA &quot;dialect&quot;
+</A></li>
+	<LI>Next message: <A HREF="001347.html">[Gpsd-users] u-blox Antaris with strange NMEA &quot;dialect&quot;
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1343">[ date ]</a>
+              <a href="thread.html#1343">[ thread ]</a>
+              <a href="subject.html#1343">[ subject ]</a>
+              <a href="author.html#1343">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

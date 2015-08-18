@@ -1,0 +1,149 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] [Gpsd-dev] Gpsd startup/hotplug system - new proposal
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2011-June/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20%5BGpsd-dev%5D%20Gpsd%20startup/hotplug%20system%20-%20new%0A%20proposal&In-Reply-To=%3C20110630111832.GB23878%40thyrsus.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="005376.html">
+   <LINK REL="Next"  HREF="005357.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] [Gpsd-dev] Gpsd startup/hotplug system - new proposal</H1>
+    <B>Eric Raymond</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20%5BGpsd-dev%5D%20Gpsd%20startup/hotplug%20system%20-%20new%0A%20proposal&In-Reply-To=%3C20110630111832.GB23878%40thyrsus.com%3E"
+       TITLE="[Gpsd-users] [Gpsd-dev] Gpsd startup/hotplug system - new proposal">esr at thyrsus.com
+       </A><BR>
+    <I>Thu Jun 30 13:18:32 CEST 2011</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="005376.html">[Gpsd-users] [Gpsd-dev] Gpsd startup/hotplug system - new	proposal
+</A></li>
+        <LI>Next message: <A HREF="005357.html">[Gpsd-users] [Gpsd-dev] Gpsd startup/hotplug system -	new	proposal
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#5378">[ date ]</a>
+              <a href="thread.html#5378">[ thread ]</a>
+              <a href="subject.html#5378">[ subject ]</a>
+              <a href="author.html#5378">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Ed W &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">lists at wildgooses.com</A>&gt;:
+&gt;<i> I think we are talking past each other again?
+</I>
+We must be, because every time I think I understand what you want and why
+you want it you say something that confuses me again.  
+
+And please stop using '?' as an end of sentence when it's not a
+question.  This is like an annoying verbal tic that makes it more 
+difficult to pay attention to what you are trying to say.
+
+&gt;<i> 
+</I>&gt;<i> We are digressing, but are we in dispute that for *any* linux package,
+</I>&gt;<i> the number of users who run the equivalent of &quot;make install&quot; is near
+</I>&gt;<i> zero, compared with the number of users who do &quot;yum/dpkg my_package&quot;?
+</I>&gt;<i> 
+</I>&gt;<i> I would presume not?
+</I>
+Correct.  But this ratio is completely irrelevant to the request I understand
+you to be making.
+
+&gt;<i> I would claim that just because few people use something, is not always
+</I>&gt;<i> a good reason for rendering it unimportant?  One person in the whole
+</I>&gt;<i> world might use &quot;python=no&quot;, but the result of running that might be a
+</I>&gt;<i> binary package for every android phone in the world?  The number of
+</I>&gt;<i> users can be large compared with the number using the source package?
+</I>
+Irrelevant.  The relevant number is the amount of effort and time the
+option would save per packaging operation, not the numbers of users
+on the other end.
+ 
+&gt;<i> Now, for sure I will eventually develop a series of patches to your
+</I>&gt;<i> build system that hack it support my choices, but since it appears like
+</I>&gt;<i> a trivial upstream inclusion, it would be great if that time could be
+</I>&gt;<i> spent programming other stuff?
+</I>
+You have yet to persuade me that python=no would do anything useful.
+ 
+&gt;<i> I think you are missing the point that binary packages are built on a
+</I>&gt;<i> different system to where they are installed (as a general rule)?
+</I>&gt;<i> Therefore step 3 above is not needed.  You do:
+</I>&gt;<i> 
+</I>&gt;<i> 1) scons install
+</I>&gt;<i> 2) Build package (python=no)
+</I>&gt;<i> 3) Distribute package to hundreds of other machines
+</I>&gt;<i> 4) Install package on hundreds of other machines
+</I>
+I get it. If you don't have Python, you're fucked at step 2; you can't build 
+the package without Python. If you do have Python, installing the Python
+support isn't a problem.  So I don't see how python=no is helpful.
+ 
+&gt;<i> The goal is to avoid as much as possible of step 2.5: Fixup built
+</I>&gt;<i> package to manually exclude redundant extra stuff
+</I>
+That goal doesn't interest me, because I don't believe you can eliminate
+that step in the general case and I'm not interested in complicating my
+build system to do a half-assed job of it. 
+ 
+&gt;<i> &gt; I ask again:  Where is the not-good experience in
+</I>&gt;<i> &gt; 
+</I>&gt;<i> &gt;    scons install
+</I>&gt;<i> &gt;    &lt;build package&gt;
+</I>&gt;<i> &gt;    scons uninstall
+</I>&gt;<i> &gt; 
+</I>&gt;<i> &gt; You've got Python on your build machine, by hypothesis, so what is so terrible
+</I>&gt;<i> &gt; about installing the Python support and uninstalling it after your package 
+</I>&gt;<i> &gt; build?  Has it got cooties or something?
+</I>&gt;<i> 
+</I>&gt;<i> I don't need to uninstall it from the build machine?
+</I>
+I don't care.  I'm not going to create python=no to save you typing a
+command you'd really have to do as cleanup anyway.
+
+&gt;<i> My build script at present looks something like:
+</I>&gt;<i> 
+</I>&gt;<i> 	./configure --prefix=/tmp/my_package
+</I>&gt;<i> 	make install
+</I>&gt;<i> 	rm /tmp/my_package/usr/lib/python2.{6,7}
+</I>&gt;<i> 	rm /tmp/my_package/usr/bin/*.py
+</I>&gt;<i> 	package_it /tmp/my_package
+</I>&gt;<i> 
+</I>&gt;<i> Please help me remove the &quot;rm&quot; steps in the middle?
+</I>
+I'm not persuaded.  First, you're going to have to rewrite that anyway
+because we're not using autotools anymore.  Second, since you have to have
+a build script, I prefer you writing remove commands in it to adding an
+scons configuration option that just begs to be set wrong.
+-- 
+		&lt;a href=&quot;<A HREF="http://www.catb.org/~esr/">http://www.catb.org/~esr/</A>&quot;&gt;Eric S. Raymond&lt;/a&gt;
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="005376.html">[Gpsd-users] [Gpsd-dev] Gpsd startup/hotplug system - new	proposal
+</A></li>
+	<LI>Next message: <A HREF="005357.html">[Gpsd-users] [Gpsd-dev] Gpsd startup/hotplug system -	new	proposal
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#5378">[ date ]</a>
+              <a href="thread.html#5378">[ thread ]</a>
+              <a href="subject.html#5378">[ subject ]</a>
+              <a href="author.html#5378">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

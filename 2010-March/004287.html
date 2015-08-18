@@ -1,0 +1,120 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] gpds, ntpd, pps, and shared memory (oh my)
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2010-March/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20gpds%2C%20ntpd%2C%20pps%2C%20and%20shared%20memory%20%28oh%20my%29&In-Reply-To=%3C4BA6C7AF.4060304%40acarver.net%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="004286.html">
+   <LINK REL="Next"  HREF="004290.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] gpds, ntpd, pps, and shared memory (oh my)</H1>
+    <B>Alexander Carver</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20gpds%2C%20ntpd%2C%20pps%2C%20and%20shared%20memory%20%28oh%20my%29&In-Reply-To=%3C4BA6C7AF.4060304%40acarver.net%3E"
+       TITLE="[Gpsd-users] gpds, ntpd, pps, and shared memory (oh my)">agcarver+gpsd at acarver.net
+       </A><BR>
+    <I>Mon Mar 22 02:28:15 CET 2010</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="004286.html">[Gpsd-users] some useful gpsd scripts
+</A></li>
+        <LI>Next message: <A HREF="004290.html">[Gpsd-users] gpds, ntpd, pps, and shared memory (oh my)
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#4287">[ date ]</a>
+              <a href="thread.html#4287">[ thread ]</a>
+              <a href="subject.html#4287">[ subject ]</a>
+              <a href="author.html#4287">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Ok, so I finally got my OpenBSD kernel recompiled with /dev/cua* 
+support.  It appears to be working since minicom can connect and display 
+the NMEA sentences.
+
+Also, I think ldattach is working but I'm not entirely sure.  It will 
+use /dev/ttya but just sits there if I try to use /dev/cuaa.  So for now 
+I left it with /dev/ttya.  The passthrough is working, though, because 
+gpsd sees data coming in from the PTY (/dev/ttyp0) that ldattach generated.
+
+Now, the problem is trying to get ntpd (from ntpd.org) and gpsd talking 
+to each other via shared memory plus getting PPS working.  Neither of 
+these is working right now.
+
+First ntpd complains that it gets a permission denied when attaching to 
+shared memory.  The config reads:
+
+server 127.127.1.0
+fudge  127.127.1.0 stratum 12
+
+server 127.127.28.0 minpoll 4 maxpoll 4
+fudge  127.127.28.0 time1 0.420 refid GPS
+
+server 127.127.28.1 minpoll 4 maxpoll 4 prefer
+fudge  127.127.28.1 refid GPS1
+
+
+However the log reads:
+
+SHM shmget (unit 0): Permission denied
+configuration of 127.127.28.0 failed
+SHM shmget (unit 1): Permission denied
+configuration of 127.127.28.1 failed
+
+
+I called ldattach as:
+
+ldattach -d -p -s 19200 -t dcd nmea /dev/ttya
+
+Then gpsd with:
+
+gpsd -bnND6 /dev/ttyp0
+
+I don't see any NTP messages from gpsd other than the first few at startup:
+
+NTPD shmat(65536,0,0) succeeded
+NTPD shmat(65537,0,0) succeeded
+NTPD shmat(65538,0,0) succeeded
+NTPD shmat(65539,0,0) succeeded
+
+and later:
+
+NTPD ntpd_link_activate: 0
+
+
+Also, I do not see any PPS messages anywhere even though the GPS has a 
+lock and is sending the PPS signal along to DCD.
+
+When running gpsd with debug level 6, I don't see any NTP messages.  I 
+also don't see any
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="004286.html">[Gpsd-users] some useful gpsd scripts
+</A></li>
+	<LI>Next message: <A HREF="004290.html">[Gpsd-users] gpds, ntpd, pps, and shared memory (oh my)
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#4287">[ date ]</a>
+              <a href="thread.html#4287">[ thread ]</a>
+              <a href="subject.html#4287">[ subject ]</a>
+              <a href="author.html#4287">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

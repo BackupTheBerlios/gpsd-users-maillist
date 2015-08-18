@@ -1,0 +1,134 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] Mapping NMEA Sentence name to tag
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2011-January/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Mapping%20NMEA%20Sentence%20name%20to%20tag&In-Reply-To=%3C20110125140003.2e8df47a%40yendi%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="004956.html">
+   <LINK REL="Next"  HREF="004966.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] Mapping NMEA Sentence name to tag</H1>
+    <B>Charles Curley</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Mapping%20NMEA%20Sentence%20name%20to%20tag&In-Reply-To=%3C20110125140003.2e8df47a%40yendi%3E"
+       TITLE="[Gpsd-users] Mapping NMEA Sentence name to tag">charlescurley at charlescurley.com
+       </A><BR>
+    <I>Tue Jan 25 22:00:03 CET 2011</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="004956.html">[Gpsd-users] reading reports with python blocked
+</A></li>
+        <LI>Next message: <A HREF="004966.html">[Gpsd-users] GPSD blocks USB devices
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#4961">[ date ]</a>
+              <a href="thread.html#4961">[ thread ]</a>
+              <a href="subject.html#4961">[ subject ]</a>
+              <a href="author.html#4961">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>On Tue, 25 Jan 2011 14:01:51 -0600
+Bill Lee &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">Bill at WRLee.com</A>&gt; wrote:
+
+Posting to the gpsd list to capture the response on the list, and in
+case I am wrong someone can correct me.
+
+&gt;<i> Charles, thanks for the response.
+</I>&gt;<i> 
+</I>&gt;<i> In trying to figure out how to make the FireFox geolocation using
+</I>&gt;<i> gpsd code work, I found that it was looking specifically for messages
+</I>&gt;<i> from gpsd  with tag o=RMC. Since I had looked at the gpsd debug log,
+</I>&gt;<i> I realized that FireFox was getting tag o=GND, which FireFox was
+</I>&gt;<i> ignoring. When I altered the FireFox code to look for GND, everything
+</I>&gt;<i> started to work. And now I also see that tag o=MID2 is also going to
+</I>&gt;<i> show up on occasion.
+</I>&gt;<i> 
+</I>&gt;<i> So what do I do now? I can make the FF code look for GND, MID2 and
+</I>&gt;<i> RMC (although I haven't ever seen an RMC AFAIK), But where does it
+</I>&gt;<i> end? How many OTHER tag o=XXX will I have to discover in order to be
+</I>&gt;<i> assured of seeing all?
+</I>&gt;<i> 
+</I>&gt;<i> That's why I was hoping I'd get some sort of mapping that is
+</I>&gt;<i> performed between the gps input to gpsd and the gpsd output to my
+</I>&gt;<i> client.
+</I>
+As others have already mentioned, those are SiRF only sentences. For
+the more general case, I would go with another solution.
+
+Here is what I would do to provide the most general solution right
+now for almost any general purpose client, i.e. where you don't know
+which version of gpsd you have:
+
+* Check to see if we are running on Windows. If so, tell the user to
+  get a real operating system and give up. As far as I know, gpsd does
+  not run on Windows and the maintainers have no plans to change that.
+
+* Check for a recent libgps. libgps19 is the current version. Once gpsd
+  3.0 is released, I'd look for that version. If I find it, use it and
+  turn on JSON. This mean a bit of C library loader hacking.
+
+* Failing that, try to connect using telnet (which the user should be
+  able to configure). Use NMEA. If telnet fails, warn the user, and
+  then give up.
+
+* Check the version of the protocol, and act accordingly.
+
+The NMEA situation is a mess, and gpsd &lt; 2.90 does a lot to clean it up
+and present a consistent NMEA dialect to the client. The JSON protocol
+is even better, and it is the one being maintained.
+
+There is a bug in the Mozilla issue tracker on this. Last I looked,
+no-one had taken it up. If you are hacking the Firefox code, please
+consider taking it on so that Firefox works with gpsd HEAD and 3.0 when
+it comes out.
+
+When you are comfortable that almost all of your users are using gpsd
+3.0+, the telnet/NMEA branch should go away. That may be a while.
+
+&gt;<i> 
+</I>&gt;<i> Regards,
+</I>&gt;<i> 
+</I>&gt;<i> Bill Lee
+</I>&gt;<i> 
+</I>
+
+-- 
+
+Charles Curley                  /&quot;\    ASCII Ribbon Campaign
+Looking for fine software       \ /    Respect for open standards
+and/or writing?                  X     No HTML/RTF in email
+<A HREF="http://www.charlescurley.com">http://www.charlescurley.com</A>    / \    No M$ Word docs in email
+
+Key fingerprint = CE5C 6645 A45A 64E4 94C0  809C FFF6 4C48 4ECD DFDB
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="004956.html">[Gpsd-users] reading reports with python blocked
+</A></li>
+	<LI>Next message: <A HREF="004966.html">[Gpsd-users] GPSD blocks USB devices
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#4961">[ date ]</a>
+              <a href="thread.html#4961">[ thread ]</a>
+              <a href="subject.html#4961">[ subject ]</a>
+              <a href="author.html#4961">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

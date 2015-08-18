@@ -1,0 +1,89 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] u-blox Antaris with strange NMEA &quot;dialect&quot;
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2006-February/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20u-blox%20Antaris%20with%20strange%20NMEA%20%22dialect%22&In-Reply-To=%3C43FF27ED.8040201%40fela.ch%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="001347.html">
+   <LINK REL="Next"  HREF="001338.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] u-blox Antaris with strange NMEA &quot;dialect&quot;</H1>
+    <B>Andreas Stricker</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20u-blox%20Antaris%20with%20strange%20NMEA%20%22dialect%22&In-Reply-To=%3C43FF27ED.8040201%40fela.ch%3E"
+       TITLE="[Gpsd-users] u-blox Antaris with strange NMEA &quot;dialect&quot;">andreas.stricker at fela.ch
+       </A><BR>
+    <I>Fri Feb 24 16:36:13 CET 2006</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="001347.html">[Gpsd-users] u-blox Antaris with strange NMEA &quot;dialect&quot;
+</A></li>
+        <LI>Next message: <A HREF="001338.html">[Gpsd-users] information updating
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1348">[ date ]</a>
+              <a href="thread.html#1348">[ thread ]</a>
+              <a href="subject.html#1348">[ subject ]</a>
+              <a href="author.html#1348">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hopefully, nobody is thinking I'm spamming this mailing-list :-/
+
+I wrote:
+&gt;&gt;<i> I don't know more about the device. I'm currently trying to get
+</I>&gt;&gt;<i> more information.
+</I>&gt;<i> 
+</I>&gt;<i> Funny, even the documents I got don't mention this strange value 'E'.
+</I>&gt;<i> But those documents are from 2003. I still trying to get a more
+</I>&gt;<i> recent version.
+</I>
+Now I talked with our hardware guru:
+
+The GPS device comes with a gyro. The NMEA protocol was modified
+to support those extended functions. The second mode field not only
+include the three known values, but also the 'E':
+
+1 = No fix
+2 = 2D Mode
+3 = 3D Mode
+E = Estimated
+
+'E' appears as soon as the device is not moving. And it don't
+indicate an error or a &quot;no fix&quot; situation. I think the best
+solution is to don't change the mode if an 'E' appears. The
+patch attached at my last message should do that.
+
+Regards,
+Andy
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="001347.html">[Gpsd-users] u-blox Antaris with strange NMEA &quot;dialect&quot;
+</A></li>
+	<LI>Next message: <A HREF="001338.html">[Gpsd-users] information updating
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1348">[ date ]</a>
+              <a href="thread.html#1348">[ thread ]</a>
+              <a href="subject.html#1348">[ subject ]</a>
+              <a href="author.html#1348">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

@@ -1,0 +1,87 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] No mode-refresh after a lost gps-signal
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2004-December/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20No%20mode-refresh%20after%20a%20lost%20gps-signal&In-Reply-To=%3C41ADDF32.6090907%40gmx.net%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   
+   <LINK REL="Next"  HREF="000152.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] No mode-refresh after a lost gps-signal</H1>
+    <B>zeeman</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20No%20mode-refresh%20after%20a%20lost%20gps-signal&In-Reply-To=%3C41ADDF32.6090907%40gmx.net%3E"
+       TITLE="[Gpsd-users] No mode-refresh after a lost gps-signal">zeeman at gmx.net
+       </A><BR>
+    <I>Wed Dec  1 16:11:46 CET 2004</I>
+    <P><UL>
+        
+        <LI>Next message: <A HREF="000152.html">[Gpsd-users] No mode-refresh after a lost gps-signal
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#150">[ date ]</a>
+              <a href="thread.html#150">[ thread ]</a>
+              <a href="subject.html#150">[ subject ]</a>
+              <a href="author.html#150">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi!
+
+I'm a new user of gpsd and kismet.
+They work fine together.
+
+But I've got a problem with my gpsd (gps-reciver is a evermore-chip with 
+pl2303-converter):
+When the gps-reciver losts the gps-signal (not enough satellits in 
+view), gpsd goes crazy.
+The gps-reciver sends, after a &quot;reconnect&quot; to the gps-satellits, new 
+positions to the gpsd and gpsd distributs them.
+So far, so good.
+But the problem is, that gpsd never changes the Mode-argument any more.
+Even after unplugging the gps-reciver gpsd doesn't refresh the Mode-value.
+The result is:
+kismet ignores the log/lat, because it thinks there is no fix.
+gpsdrive works quite well again, because it uses the raw-stream of gpsd.
+
+Is this a problem of my gps-reciver or is it a bug in gpsd?
+
+And is there any way to gpsd say something like this:
+When there you lost the gps-signals to the satellits, calculate the 
+current position each second with the last valid position, the heading 
+and the speed?
+
+
+Greets
+Sebastian
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	
+	<LI>Next message: <A HREF="000152.html">[Gpsd-users] No mode-refresh after a lost gps-signal
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#150">[ date ]</a>
+              <a href="thread.html#150">[ thread ]</a>
+              <a href="subject.html#150">[ subject ]</a>
+              <a href="author.html#150">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

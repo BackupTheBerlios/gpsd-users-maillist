@@ -1,0 +1,131 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] DeLorme Earthmate (Zodiac pre-2003) w/gpsd-2.33
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2006-June/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20DeLorme%20Earthmate%20%28Zodiac%20pre-2003%29%20w/gpsd-2.33&In-Reply-To=%3C302670f20606201803g50bbdf2ck5a29ee598eefe2fd%40mail.gmail.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="001718.html">
+   <LINK REL="Next"  HREF="001720.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] DeLorme Earthmate (Zodiac pre-2003) w/gpsd-2.33</H1>
+    <B>Gary Chambers</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20DeLorme%20Earthmate%20%28Zodiac%20pre-2003%29%20w/gpsd-2.33&In-Reply-To=%3C302670f20606201803g50bbdf2ck5a29ee598eefe2fd%40mail.gmail.com%3E"
+       TITLE="[Gpsd-users] DeLorme Earthmate (Zodiac pre-2003) w/gpsd-2.33">gwchamb at gmail.com
+       </A><BR>
+    <I>Wed Jun 21 03:03:03 CEST 2006</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="001718.html">[Gpsd-users] Returned mail: Data format error
+</A></li>
+        <LI>Next message: <A HREF="001720.html">[Gpsd-users] Connect to gpsd but no gps data
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1719">[ date ]</a>
+              <a href="thread.html#1719">[ thread ]</a>
+              <a href="subject.html#1719">[ subject ]</a>
+              <a href="author.html#1719">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>All...
+
+I can use the v2.13 RPM version on my DeLorme Earthmate (Zodiac
+pre-2003) GPS, but not with v2.33 (or v2.32, v2.30) Is there something
+I'm overlooking with v2.33?  The daemon continually presents:
+
+gpsd: zodiac_analyze packet type 0
+
+With more debugging information, the relevant output is:
+
+gpsd: Read 8 chars to buffer offset 2 (total 10): 0d0a454152544841
+gpsd: 00000538: character '.' [0d], new state: GROUND_STATE
+gpsd: Character discarded, buffer 9 chars = 0a4541525448410d0a
+gpsd: ISGPS word tag not correct, skipping
+gpsd: 00000539: character '.' [0a], new state: GROUND_STATE
+gpsd: Character discarded, buffer 8 chars = 4541525448410d0a
+gpsd: ISGPS syncing at byte 540: 40914241009a24e2
+gpsd: ISGPS syncing at byte 540: 81228482009a24e2
+gpsd: ISGPS syncing at byte 540: 2450905009a24e2
+gpsd: ISGPS syncing at byte 540: 48a120a009a24e2
+gpsd: ISGPS syncing at byte 540: 9142414009a24e2
+gpsd: ISGPS syncing at byte 540: 12284828009a24e2
+gpsd: lock never achieved
+gpsd: 00000540: character 'E' [45], new state: EARTHA_1
+gpsd: ISGPS syncing at byte 541: 24509051009a24e2
+gpsd: ISGPS syncing at byte 541: 48a120a2009a24e2
+gpsd: ISGPS syncing at byte 541: 91424144009a24e2
+gpsd: ISGPS syncing at byte 541: 22848288009a24e2
+gpsd: ISGPS syncing at byte 541: 45090510009a24e2
+gpsd: ISGPS syncing at byte 541: 8a120a20009a24e2
+gpsd: lock never achieved
+gpsd: 00000541: character 'A' [41], new state: EARTHA_2
+gpsd: ISGPS syncing at byte 542: 14241440009a24e2
+gpsd: ISGPS syncing at byte 542: 28482881009a24e2
+gpsd: ISGPS syncing at byte 542: 50905102009a24e2
+gpsd: ISGPS syncing at byte 542: a120a204009a24e2
+gpsd: ISGPS syncing at byte 542: 42414409009a24e2
+gpsd: ISGPS syncing at byte 542: 84828812009a24e2
+gpsd: lock never achieved
+gpsd: 00000542: character 'R' [52], new state: EARTHA_3
+gpsd: ISGPS syncing at byte 543: 9051024009a24e2
+gpsd: ISGPS syncing at byte 543: 120a2048009a24e2
+gpsd: ISGPS syncing at byte 543: 24144091009a24e2
+gpsd: ISGPS syncing at byte 543: 48288122009a24e2
+gpsd: ISGPS syncing at byte 543: 90510245009a24e2
+gpsd: ISGPS syncing at byte 543: 20a2048a009a24e2
+gpsd: lock never achieved
+gpsd: 00000543: character 'T' [54], new state: EARTHA_4
+gpsd: ISGPS syncing at byte 544: 41440914009a24e2
+gpsd: ISGPS syncing at byte 544: 82881228009a24e2
+gpsd: ISGPS syncing at byte 544: 5102450009a24e2
+gpsd: ISGPS syncing at byte 544: a2048a1009a24e2
+gpsd: ISGPS syncing at byte 544: 14409142009a24e2
+gpsd: ISGPS syncing at byte 544: 28812284009a24e2
+gpsd: lock never achieved
+gpsd: 00000544: character 'H' [48], new state: EARTHA_5
+gpsd: ISGPS syncing at byte 545: 51024509009a24e2
+gpsd: ISGPS syncing at byte 545: a2048a12009a24e2
+gpsd: ISGPS syncing at byte 545: 44091424009a24e2
+gpsd: ISGPS syncing at byte 545: 88122848009a24e2
+gpsd: ISGPS syncing at byte 545: 10245090009a24e2
+gpsd: ISGPS syncing at byte 545: 2048a120009a24e2
+gpsd: lock never achieved
+gpsd: 00000545: character 'A' [41], new state: NMEA_RECOGNIZED
+
+The GPS is spewing EARTHA, but it appears that gpsd is somehow missing it.
+
+-- Gary
+
+// Nothing fancy and nothing Microsoft!
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="001718.html">[Gpsd-users] Returned mail: Data format error
+</A></li>
+	<LI>Next message: <A HREF="001720.html">[Gpsd-users] Connect to gpsd but no gps data
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1719">[ date ]</a>
+              <a href="thread.html#1719">[ thread ]</a>
+              <a href="subject.html#1719">[ subject ]</a>
+              <a href="author.html#1719">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

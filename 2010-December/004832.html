@@ -1,0 +1,101 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] Fw: gpsd HEAD and SiRF
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2010-December/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Fw%3A%20gpsd%20HEAD%20and%20SiRF&In-Reply-To=%3CAANLkTi%3DzWjfPRpCJ78hTeaqD6UubCKw%3DSqDhhPtUjDMi%40mail.gmail.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="004830.html">
+   <LINK REL="Next"  HREF="004833.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] Fw: gpsd HEAD and SiRF</H1>
+    <B>Chris Kuethe</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Fw%3A%20gpsd%20HEAD%20and%20SiRF&In-Reply-To=%3CAANLkTi%3DzWjfPRpCJ78hTeaqD6UubCKw%3DSqDhhPtUjDMi%40mail.gmail.com%3E"
+       TITLE="[Gpsd-users] Fw: gpsd HEAD and SiRF">chris.kuethe at gmail.com
+       </A><BR>
+    <I>Fri Dec 24 07:16:35 CET 2010</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="004830.html">[Gpsd-users] Fw:  gpsd HEAD and SiRF
+</A></li>
+        <LI>Next message: <A HREF="004833.html">[Gpsd-users] gpsd HEAD and SiRF
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#4832">[ date ]</a>
+              <a href="thread.html#4832">[ thread ]</a>
+              <a href="subject.html#4832">[ subject ]</a>
+              <a href="author.html#4832">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>On Thu, Dec 23, 2010 at 6:41 PM, Charles Curley
+&lt;<A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">charlescurley at charlescurley.com</A>&gt; wrote:
+&gt;<i> Methinks the USB-serial converter to computer link can run at any speed
+</I>&gt;<i> it likes. The receiver to converter link, being bastardized RS-232 (if
+</I>&gt;<i> that's not redundant) is the effective data rate, however pathetically
+</I>&gt;<i> slow.
+</I>
+With a few exceptions - novatel and ublox come to mind - most
+receivers have some RS232-ish serial output connected to a more
+plug-n-play bridge chip (FTDI, Prolific, SiLabs, Cambridge
+Silicon,...).
+
+UBX, NovAtel and others that implement CDC-ACM don't have any real
+speed. You can configure the port to the lowest speed supported by
+your termios implementation and you'll still be able to spew PVT and
+debug data with time to spare, as long as the data rate is less than
+usb link speed.
+
+But such devices are rare. If you're talking to a more common setup,
+then you have to send a gps protocol message to tell the receiver to
+use a certain serial format, and then send a usb or bluetooth message
+to tell the bridge chip to match this format. Here, speed does matter;
+if the bridge chip is configured incorrectly, you won't be able to
+talk to the receiver chip. Some bluetooth chips don't support changing
+serial speed either, but you can still send the receiver configuration
+message. Oops, now you can't talk to the chip at all - that's how we
+came to have the '-b' flag.
+
+I guess this might come down to cost. I think all production receivers
+are based around ARM IP (I knew of one, now defunct, vendor producing
+SPARC based receivers). In the short term, it probably saves money to
+not synthesize a USB transceiver, to not add USB support into the
+firmware and to not pay USB-IF fees. &quot;We make GPS receiver chips.
+Interfacing to other stuff... that's our customers' decision.&quot;
+
+So RS232 speed matters, if only because your local termios calls are
+translated to device specific configuration commands.
+
+-- 
+GDB has a 'break' feature; why doesn't it have 'fix' too?
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="004830.html">[Gpsd-users] Fw:  gpsd HEAD and SiRF
+</A></li>
+	<LI>Next message: <A HREF="004833.html">[Gpsd-users] gpsd HEAD and SiRF
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#4832">[ date ]</a>
+              <a href="thread.html#4832">[ thread ]</a>
+              <a href="subject.html#4832">[ subject ]</a>
+              <a href="author.html#4832">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

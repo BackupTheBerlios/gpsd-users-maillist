@@ -1,0 +1,83 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] scons &amp;&amp; turning off drivers
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2011-April/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20scons%20%26%26%20turning%20off%20drivers&In-Reply-To=%3C20110408190544.GA7703%40thyrsus.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="005181.html">
+   <LINK REL="Next"  HREF="005183.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] scons &amp;&amp; turning off drivers</H1>
+    <B>Eric Raymond</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20scons%20%26%26%20turning%20off%20drivers&In-Reply-To=%3C20110408190544.GA7703%40thyrsus.com%3E"
+       TITLE="[Gpsd-users] scons &amp;&amp; turning off drivers">esr at thyrsus.com
+       </A><BR>
+    <I>Fri Apr  8 21:05:44 CEST 2011</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="005181.html">[Gpsd-users] scons &amp;&amp; turning off drivers
+</A></li>
+        <LI>Next message: <A HREF="005183.html">[Gpsd-users] [Gpsd-dev] Release plans for 3.0
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#5182">[ date ]</a>
+              <a href="thread.html#5182">[ thread ]</a>
+              <a href="subject.html#5182">[ subject ]</a>
+              <a href="author.html#5182">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Charles Curley &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">charlescurley at charlescurley.com</A>&gt;:
+&gt;<i> If I understand the man page for scons, the way to turn off
+</I>&gt;<i> compilation of a driver is, e.g.:
+</I>&gt;<i> 
+</I>&gt;<i> scons tripmate=false
+</I>&gt;<i> 
+</I>&gt;<i> However, when I build with that, the tripmate driver is still in the
+</I>&gt;<i> build.
+</I>&gt;<i> 
+</I>&gt;<i> $ ./gpsd -l | grep -i tripmate
+</I>&gt;<i> 			Delorme TripMate
+</I>&gt;<i> 
+</I>&gt;<i> Am I doing something wrong or is that not yet working?
+</I>
+scons --disable-tripmate
+
+Your confusion is reasonable. tripmate=false would be the correct form
+if we were using the older native scons convention for arguments. I
+chose instead to make the CLI more configure-like, using a newer
+argument-declaration feature that's based on Python optparse.
+-- 
+		&lt;a href=&quot;<A HREF="http://www.catb.org/~esr/">http://www.catb.org/~esr/</A>&quot;&gt;Eric S. Raymond&lt;/a&gt;
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="005181.html">[Gpsd-users] scons &amp;&amp; turning off drivers
+</A></li>
+	<LI>Next message: <A HREF="005183.html">[Gpsd-users] [Gpsd-dev] Release plans for 3.0
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#5182">[ date ]</a>
+              <a href="thread.html#5182">[ thread ]</a>
+              <a href="subject.html#5182">[ subject ]</a>
+              <a href="author.html#5182">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

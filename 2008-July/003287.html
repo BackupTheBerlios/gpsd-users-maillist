@@ -1,0 +1,198 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] New device: Holux M-241
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2008-July/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20New%20device%3A%20Holux%20M-241&In-Reply-To=%3C4872B241.7070208%40gmx.de%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="003286.html">
+   <LINK REL="Next"  HREF="003289.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] New device: Holux M-241</H1>
+    <B>Roland Ager</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20New%20device%3A%20Holux%20M-241&In-Reply-To=%3C4872B241.7070208%40gmx.de%3E"
+       TITLE="[Gpsd-users] New device: Holux M-241">roland.ager at gmx.de
+       </A><BR>
+    <I>Tue Jul  8 02:18:09 CEST 2008</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="003286.html">[Gpsd-users] (no subject)
+</A></li>
+        <LI>Next message: <A HREF="003289.html">[Gpsd-users] gpsd on Mandriva 2008.1
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3287">[ date ]</a>
+              <a href="thread.html#3287">[ thread ]</a>
+              <a href="subject.html#3287">[ subject ]</a>
+              <a href="author.html#3287">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>-----BEGIN PGP SIGNED MESSAGE-----
+Hash: SHA1
+
+Hi,
+
+I bought a new device not yet listed in the 'compatible hardware'-list
+[1]. It works almost out-of-the-box (needs stty-tweaking and/or
+'-b'/broken-device-safety..). It works fine with xgps and gpsdrive. So
+here's my report attached.
+
+Sincereyl yours
+
+Roland
+
+[1] <A HREF="http://gpsd.berlios.de/hardware.html">http://gpsd.berlios.de/hardware.html</A>
+
+1. The GPS model name.
+
+Holux M-241
+(a bright yellow gps logger with display and two buttons, ships with
+firmware version v1.06 (buggy!), updated to v1.11 via 'holux utility'
+(using Windows..))
+
+
+2. Whether or not it works.
+
+Yes, almost out of the box  - see notes for details.
+
+
+3. If possible, an URL to a technical reference on it.
+
+Service section on Holux HP: <A HREF="http://www.holux.com">http://www.holux.com</A>
+deep link to manual: <A HREF="http://www.holux.com/JCore/UploadFile/5815718.pdf">http://www.holux.com/JCore/UploadFile/5815718.pdf</A>
+
+
+4. The GPS and (if applicable) USB-to-serial chip it uses. (Look at the
+output of lsusb(1), it may identify the USB-to-serial chip. If it gives a
+vendor and product ID, send us those numbers.)
+
+GPS-chip:
+MTK (works fine with bt747 ( <A HREF="http://bt747.wiki.sourceforge.net/">http://bt747.wiki.sourceforge.net/</A> ))
+
+USB-UART-bridge (from lsusb):
+Bus 001 Device 014: ID 10c4:ea60 Cygnal Integrated Products, Inc.
+
+..aka CP2102 - linux kernel module cp2101 works fine
+
+
+5. The interface type (RS232, USB, CF, UART (= 5V TTL RS-232))
+
+USB (used here) and bluetooth with SPP (not tested)
+
+
+6. The vendor
+
+amazon, ..
+
+
+7. Version of gpsd you tested with
+
+2.37
+
+
+8. NMEA version it emits, or '?' if the documentation doesn't say
+
+according to manual: 3.01
+
+
+9. Notes on the device
+
+gpsd crashes the device when autoprobing @ baud rate 9600 (unless
+'-b'/broken-device-safety is enabled - need to unplug/reset the device).
+'stty -F /dev/ttyUSB1 ispeed 38400' helps avoiding too much autoprobing -
+though stty complains about not being able to perform all requested
+operations. Here comes the log of what happens next (note that I have
+named the device to be used on the command line since if fear interesting
+effects from gpsd sending commands to my UPS..):
+
+$ /usr/local/sbin/gpsd -N -D 2 /dev/ttyUSB1
+gpsd: launching (Version 2.37)
+gpsd: listening on port gpsd
+gpsd: running with effective group ID 0
+gpsd: running with effective user ID 0
+gpsd: opening GPS data source at '/dev/ttyUSB1'
+gpsd: speed 38400, 8N1
+gpsd: garmin_gps not active.
+gpsd: gpsd_activate(0): opened GPS (4)
+gpsd: ntpd_link_activate: 0
+gpsd: GPGSV field 3 value of 15 != actual count 3
+gpsd: closing GPS=/dev/ttyUSB1 (4)
+gpsd: client 127.0.0.1 (0) connect on fd 4
+gpsd: opening GPS data source at '/dev/ttyUSB1'
+gpsd: speed 38400, 8N1
+gpsd: garmin_gps not active.
+gpsd: gpsd_activate(1): opened GPS (5)
+gpsd: client(0) turned on profiling mode
+gpsd: unknown sentence: &quot;$PMTK001,-1,0*1F\x0d\x0a&quot;
+gpsd: unknown sentence: &quot;$PMTK001,-1,0*1F\x0d\x0a&quot;
+gpsd: unknown sentence: &quot;$PMTK001,-1,0*1F\x0d\x0a&quot;
+gpsd: can't use GGA time until after ZDA or RMC has supplied a year.
+gpsd: unknown sentence: &quot;$PMTK001,-1,0*1F\x0d\x0a&quot;
+gpsd: unknown sentence: &quot;$PMTK001,-1,0*1F\x0d\x0a&quot;
+gpsd: unknown sentence: &quot;$PMTK001,-1,0*1F\x0d\x0a&quot;
+gpsd: client(0) turned off profiling mode
+gpsd: detaching 127.0.0.1 (sub0, fd 4) in detach_client
+gpsd: closing GPS=/dev/ttyUSB1 (5)
+
+..and the output from gpsprof:
+$ gpsprof -f cycle
+gpsprof: looking for fix...first fix in 0.13sec, gathering
+samples......(14.14 sec) done.
+Cycle report Tue Jul  8 00:41:57 2008, Generic NMEA, 38400N1, cycle 1s
+The sentence set emitted by this GPS is: GSA RMC GGA GSV
+GSA: is probably emitted once a second.
+RMC: is probably emitted once a second.
+GGA: is probably emitted once a second.
+GSV: is probably emitted once a second.
+Send cycle is once per second.
+
+According to MTK documentation (can be found in EB-230 data sheet on your
+webserver or on the internet by googling for 'PMTK001 filetype:pdf'..) the
+unknown sentence '$PMTK001..' is the answer to an invalid command..
+..well, perhaps we shouldn't send arbitrary commands to the device.. I
+added '-b' to the command line in the startup script since I doubt that my
+device needs 'performance tweaking'.
+
+Note that one can choose which sentences are to be sent by the device and
+how often via bt747. The device *can* send the following sentences:
+$PMTKCHN, $GPGGA, $GPGLL, $GPGSA, $GPGSV, $GPRMC, $GPVTG, $GPZDA
+(where PMTKCHN-lines are longer than 200 characters and rejected by gpsd..)
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v1.4.6 (MingW32)
+
+iD8DBQFIcrI0AH9l5J/XWzIRAkU3AJ4kfTLnRZgBtoLGnlIYCXSdY7C6vgCeKIW2
+GyGemT8VZree8f6FcHzVtNQ=
+=PyZ7
+-----END PGP SIGNATURE-----
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="003286.html">[Gpsd-users] (no subject)
+</A></li>
+	<LI>Next message: <A HREF="003289.html">[Gpsd-users] gpsd on Mandriva 2008.1
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3287">[ date ]</a>
+              <a href="thread.html#3287">[ thread ]</a>
+              <a href="subject.html#3287">[ subject ]</a>
+              <a href="author.html#3287">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

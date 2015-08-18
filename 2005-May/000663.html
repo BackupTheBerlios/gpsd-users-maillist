@@ -1,0 +1,116 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] A tail of how I use gpsd and a feature request.
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2005-May/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20A%20tail%20of%20how%20I%20use%20gpsd%20and%20a%20feature%20request.&In-Reply-To=%3C1116615056.8618.248.camel%40dmdesk.them.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="000661.html">
+   <LINK REL="Next"  HREF="000665.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] A tail of how I use gpsd and a feature request.</H1>
+    <B>David I S Mandala</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20A%20tail%20of%20how%20I%20use%20gpsd%20and%20a%20feature%20request.&In-Reply-To=%3C1116615056.8618.248.camel%40dmdesk.them.com%3E"
+       TITLE="[Gpsd-users] A tail of how I use gpsd and a feature request.">davidm at them.com
+       </A><BR>
+    <I>Fri May 20 20:50:56 CEST 2005</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="000661.html">[Gpsd-users] A tail of how I use gpsd and a feature request.
+</A></li>
+        <LI>Next message: <A HREF="000665.html">[Gpsd-users] A tail of how I use gpsd and a feature request.
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#663">[ date ]</a>
+              <a href="thread.html#663">[ thread ]</a>
+              <a href="subject.html#663">[ subject ]</a>
+              <a href="author.html#663">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>On Fri, 2005-05-20 at 14:54 -0400, Eric S. Raymond wrote:
+&gt;<i> David I S Mandala &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">davidm at them.com</A>&gt;:
+</I>&gt;<i> &gt; So thanks for the great app.
+</I>&gt;<i> 
+</I>&gt;<i> You're welcome!  Parsing NMEA is exactly what gpsd is intended to free
+</I>&gt;<i> you from having to do.
+</I>&gt;<i>  
+</I>&gt;<i> &gt; Here is the request. Add a flag to gpsd that will if started as root
+</I>&gt;<i> &gt; once the GPS gets lock set the time/date of the PC. Then go to normal
+</I>&gt;<i> &gt; GPSD operations getting the year from the system clock.
+</I>&gt;<i> &gt; 
+</I>&gt;<i> &gt; Is this possible or do I need to request raw data and process the nema
+</I>&gt;<i> &gt; data so I can set the date myself?
+</I>&gt;<i> 
+</I>&gt;<i> For the last couple of releases, gpsd has dropped root privileges
+</I>&gt;<i> before it processes input from *anywhere*, and long before it gets a
+</I>&gt;<i> fix.  That way, we don't have to worry about gpsd being used as a
+</I>&gt;<i> vehicle for privilege-escalation attacks.
+</I>&gt;<i> 
+</I>&gt;<i> So what you're asking would be possible, but only by breaking a
+</I>&gt;<i> security property of the program that I consider important.  
+</I>&gt;<i> 
+</I>&gt;<i> If there were some way to get a persistent handle on the clock-setting
+</I>&gt;<i> capability while root and hold it past the point of privilege-dropping,
+</I>&gt;<i> my objection would go away.  But I think we're talking about an 
+</I>&gt;<i> oridinary privileged system call here.
+</I>&gt;<i> 
+</I>&gt;<i> Seems to me, though, that you could get the same effect from a
+</I>&gt;<i> special-purpose gpsd client with root privileges.  Start your gpsd,
+</I>&gt;<i> start the client, have it connect up and spin waiting for a fix from
+</I>&gt;<i> gpsd, then when it gets one it can set the clock and terminate.
+</I>&gt;<i> 
+</I>
+I don't think I can without going back to parsing NEMA data, by itself
+GPSD outputs the wrong date if the system clock is not set to the
+correct time. Or am I missing something and there is a way to get the
+correct time out of GPSD when the system clock is not set?
+
+&gt;<i> I'd guess you could do this in sixty lines of code *with* comments,
+</I>&gt;<i> about two hours' work start to finish.
+</I>
+
+I don't mind the time coding, in fact I'd happily give the code back to
+the GPSD project, I just don't see how to get the necessary info from
+GPSD.
+
+Cheers,
+
+David
+
+-- 
+David Mandala &lt;davidm at them dot com&gt;
+www.them.com/~davidm Public Key id: 45B2D952
+Murphy TX, 75094 214.774.2569 HO 972.693.4007 C
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="000661.html">[Gpsd-users] A tail of how I use gpsd and a feature request.
+</A></li>
+	<LI>Next message: <A HREF="000665.html">[Gpsd-users] A tail of how I use gpsd and a feature request.
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#663">[ date ]</a>
+              <a href="thread.html#663">[ thread ]</a>
+              <a href="subject.html#663">[ subject ]</a>
+              <a href="author.html#663">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

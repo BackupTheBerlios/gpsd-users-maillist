@@ -1,0 +1,139 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] Getting GPSD to pick up PPS from Delorme Earthmate Serial GPS
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2007-July/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Getting%20GPSD%20to%20pick%20up%20PPS%20from%20Delorme%20Earthmate%0A%20Serial%20GPS&In-Reply-To=%3CPine.LNX.4.64.0707031414500.24042%40catbert.rellim.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="002742.html">
+   <LINK REL="Next"  HREF="002753.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] Getting GPSD to pick up PPS from Delorme Earthmate Serial GPS</H1>
+    <B>Gary E. Miller</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Getting%20GPSD%20to%20pick%20up%20PPS%20from%20Delorme%20Earthmate%0A%20Serial%20GPS&In-Reply-To=%3CPine.LNX.4.64.0707031414500.24042%40catbert.rellim.com%3E"
+       TITLE="[Gpsd-users] Getting GPSD to pick up PPS from Delorme Earthmate Serial GPS">gem at rellim.com
+       </A><BR>
+    <I>Tue Jul  3 23:23:01 CEST 2007</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="002742.html">[Gpsd-users] Getting GPSD to pick up PPS from Delorme Earthmate	Serial GPS
+</A></li>
+        <LI>Next message: <A HREF="002753.html">[Gpsd-users] Getting GPSD to pick up PPS from Delorme Earthmate	Serial GPS
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2744">[ date ]</a>
+              <a href="thread.html#2744">[ thread ]</a>
+              <a href="subject.html#2744">[ subject ]</a>
+              <a href="author.html#2744">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>-----BEGIN PGP SIGNED MESSAGE-----
+Hash: SHA1
+
+Yo Adam!
+
+On Tue, 3 Jul 2007, Adam Dosch wrote:
+
+&gt;<i> &gt; Your -D6 does not go long enough to show the PPS lock.  PPS only happe
+</I>&gt;<i> &gt; ns
+</I>&gt;<i> &gt; after you have received a solid fix.
+</I>&gt;<i>
+</I>&gt;<i> Right, I dunno if you caught my previous post to Matt Roberds minutes ag
+</I>&gt;<i> o, but
+</I>&gt;<i> after digging into the libgpsd_core.c code, I found you have to have a s
+</I>&gt;<i> olid fix
+</I>&gt;<i> on at least 4.
+</I>
+Yep.  The GPS needs to know the proper time to get a good fix, and
+conversely without a proper fix it can not know the current time.
+Garmin says to ignore the PPS until you have 4 valid fixes but we could
+quible over exactly how many to require.  However you better not use
+the PPS without a valid fix as the time is really unknown and you will
+destabilize ntpd.  It can take ntpd days to adjust out the last but of
+errors so you really do not want to sync a bad signal.
+
+&gt;<i> ...so if that's the case, I'm curious what your debug looks like then?
+</I>&gt;<i> Do yo
+</I>&gt;<i> u
+</I>&gt;<i> see this log line below in your any of your -D6 output on a regular bas
+</I>&gt;<i> i
+</I>&gt;<i> s before
+</I>&gt;<i> you get your solid fix?
+</I>&gt;<i>
+</I>&gt;<i>    gpsd: TIOCMIWAIT returns unchanged state, ppsmonitor terminates
+</I>
+Never seen it.  My Garmin always outputs a PPS, as does every GPS I have
+heard of.
+
+&gt;<i> It seems to me when I get this error, I know I am officially out of tha
+</I>&gt;<i> t
+</I>&gt;<i> everlasting ppsmonitor loop and I don't ever get back in it. (I put brea
+</I>&gt;<i> kpoints
+</I>&gt;<i> all over the code going into that piece and from what I gathered, once I
+</I>&gt;<i>  broke
+</I>&gt;<i> out of the loop, I never entered back in)
+</I>
+I suspect that when you get your PPS signal working this problem goes
+away.  It would be better for error recovery to allow continuous tries
+to lock up to PPS.
+
+&gt;<i> Because if that's the case, I'll just need to wait a *really* long time
+</I>&gt;<i> (in my
+</I>&gt;<i> case) and see if I see any PPS output?  But even when I wait to get a so
+</I>&gt;<i> lid fix
+</I>&gt;<i> the unchange state of the ppsmonitor hits it's threshold and it's breaks
+</I>&gt;<i>  out of
+</I>&gt;<i> the loop while waiting.
+</I>
+Seems to me that your PPS is behaving very strangely.  I would put an oscope
+on it and check it out.  Failing an oscope I would input it into the audio
+input of your PC and use one of the shareware apps that turns your audio-in
+into an oscope.
+
+
+RGDS
+GARY
+- ---------------------------------------------------------------------------
+Gary E. Miller Rellim 109 NW Wilmington Ave., Suite E, Bend, OR 97701
+	<A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">gem at rellim.com</A>  Tel:+1(541)382-8588
+
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v1.4.3 (GNU/Linux)
+
+iD8DBQFGir438KZibdeR3qURAi7OAKCKf6c0E37NHZwQ6RtWbDM8lqGOtwCfaPCP
+T25sv3Wv5z84obuO2A/+Lz8=
+=QKFE
+-----END PGP SIGNATURE-----
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="002742.html">[Gpsd-users] Getting GPSD to pick up PPS from Delorme Earthmate	Serial GPS
+</A></li>
+	<LI>Next message: <A HREF="002753.html">[Gpsd-users] Getting GPSD to pick up PPS from Delorme Earthmate	Serial GPS
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2744">[ date ]</a>
+              <a href="thread.html#2744">[ thread ]</a>
+              <a href="subject.html#2744">[ subject ]</a>
+              <a href="author.html#2744">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

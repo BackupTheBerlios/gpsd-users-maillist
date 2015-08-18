@@ -1,0 +1,101 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] Not Getting Output from Garmin GPS-18 (USB)
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2006-March/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Not%20Getting%20Output%20from%20Garmin%20GPS-18%20%28USB%29&In-Reply-To=%3CPine.LNX.4.64.0603311138030.13996%40catbert.rellim.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="001492.html">
+   <LINK REL="Next"  HREF="001476.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] Not Getting Output from Garmin GPS-18 (USB)</H1>
+    <B>Gary E. Miller</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Not%20Getting%20Output%20from%20Garmin%20GPS-18%20%28USB%29&In-Reply-To=%3CPine.LNX.4.64.0603311138030.13996%40catbert.rellim.com%3E"
+       TITLE="[Gpsd-users] Not Getting Output from Garmin GPS-18 (USB)">gem at rellim.com
+       </A><BR>
+    <I>Fri Mar 31 21:41:55 CEST 2006</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="001492.html">[Gpsd-users] Not Getting Output from Garmin GPS-18 (USB)
+</A></li>
+        <LI>Next message: <A HREF="001476.html">[Gpsd-users] Re: [GRASSLIST:362] DGPS
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1493">[ date ]</a>
+              <a href="thread.html#1493">[ thread ]</a>
+              <a href="subject.html#1493">[ subject ]</a>
+              <a href="author.html#1493">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>-----BEGIN PGP SIGNED MESSAGE-----
+Hash: SHA1
+
+Yo Adam!
+
+On Fri, 31 Mar 2006, Adam VanBerlo wrote:
+
+&gt;<i> back to the 64bit RPM, and I get the same debug output that I showed
+</I>&gt;<i> you when I compiled myself.
+</I>
+As expected.  Few people use Garmin/USB, few use 64 bit Athlon, and you
+are the first to put them both together.  So we are back to trying to
+fix it in SVN.  Try the patch I sent you.
+
+&gt;<i> I couldn't run cgps because gpsd-clients wouldn't install w/o having
+</I>&gt;<i> an old version libXm.so.3()(64bit).  Oldest I have is 3.
+</I>
+xgps uses Xm, but cgps only uses curses.  In any case the failure is way
+before that when you found the &quot;Buffer too small&quot;.  Nothing will work
+right after that.
+
+&gt;<i> I don't, so what now?
+</I>
+Try the patch I sent you.  We have already determined that the problem is
+something with the way that your gcc is packing the Packet_t structure.
+
+RGDS
+GARY
+- ---------------------------------------------------------------------------
+Gary E. Miller Rellim 20340 Empire Blvd, Suite E-3, Bend, OR 97701
+	<A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">gem at rellim.com</A>  Tel:+1(541)382-8588
+
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v1.4.2.1 (GNU/Linux)
+
+iD8DBQFELYYI8KZibdeR3qURAgn6AKCywgzXnpZ4LAySBz/P/vxu7L17+wCgnIiB
+MivkSLVRIv+5599IKf97JOc=
+=bpZk
+-----END PGP SIGNATURE-----
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="001492.html">[Gpsd-users] Not Getting Output from Garmin GPS-18 (USB)
+</A></li>
+	<LI>Next message: <A HREF="001476.html">[Gpsd-users] Re: [GRASSLIST:362] DGPS
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1493">[ date ]</a>
+              <a href="thread.html#1493">[ thread ]</a>
+              <a href="subject.html#1493">[ subject ]</a>
+              <a href="author.html#1493">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

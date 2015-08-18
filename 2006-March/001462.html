@@ -1,0 +1,118 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] Perl GPS::gpsd and track filtering
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2006-March/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Perl%20GPS%3A%3Agpsd%20and%20track%20filtering&In-Reply-To=%3C20060322204454.5615.qmail%40web32504.mail.mud.yahoo.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="001461.html">
+   <LINK REL="Next"  HREF="001463.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] Perl GPS::gpsd and track filtering</H1>
+    <B>Michael R. Davis</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Perl%20GPS%3A%3Agpsd%20and%20track%20filtering&In-Reply-To=%3C20060322204454.5615.qmail%40web32504.mail.mud.yahoo.com%3E"
+       TITLE="[Gpsd-users] Perl GPS::gpsd and track filtering">mrdvt92 at yahoo.com
+       </A><BR>
+    <I>Wed Mar 22 21:44:54 CET 2006</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="001461.html">[Gpsd-users] WINNING NOTIFICATION / FINAL NOTICE CONGRATULATIONS??????'
+</A></li>
+        <LI>Next message: <A HREF="001463.html">[Gpsd-users] Perl GPS::gpsd bug fix
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1462">[ date ]</a>
+              <a href="thread.html#1462">[ thread ]</a>
+              <a href="subject.html#1462">[ subject ]</a>
+              <a href="author.html#1462">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Steve,
+It looks like you are looking for a post processing filter.  Many gis
+systems do this.  You may want to look to see if qgis or grass support
+this.  The way they work is to determine the delta in area if the
+interstitial point is filtered.  
+
+However, if you use my track filter it may not require any post
+processing filtering in the first place. And will meet more (if not
+all) of your requirements.
+
+Sorry to hear you're working with mysql.  Postgres has an entire GIS
+library called postgis.
+
+&gt;<i> I'm going to have to spend more time figuring out distance diffs 
+</I>&gt;<i> and how to calculate changes in heading (with the 360 rollover 
+</I>&gt;<i> issue) and taking into account speed, etc.  
+</I>
+What I do is called near-real time track filtering.  
+Take last reported position to predict where it would be now based on
+time, speed and heading.  Then measure the delta between that and the
+current fix.  If it is greater than your threshold then you'll need a
+new report.  This will work for what you want.  The challenge is to get
+the time, location and tracking values to your liking.
+
+&gt;<i> I may steal some of your algorithms though.  :)
+</I>It's under perl license it's very relaxed.
+
+&gt;<i> Currently, I'm working with lat, lon, mph and dir (from the NMEA
+</I>&gt;<i> data). 
+</I>I would encourage handling all calculations internally as m/s.  Display
+MPH only.
+
+&gt;<i> I'd like to get an algorithm that:
+</I>&gt;<i> * drops points at the beginning and end of a turn
+</I>I assume that &quot;drops&quot; here means &quot;reports&quot; and/or &quot;logs&quot; not &quot;filter&quot;
+
+&gt;<i> * drops points on significant changes in direction
+</I>&gt;<i> * drops an icon at the beginning and end of a track and &quot;interesting&quot;
+</I>&gt;<i> points, like points where I stood still for &gt; 10 seconds or so
+</I>&gt;<i> (traffic light, drive through, ...)
+</I>&gt;<i> 
+</I>&gt;<i> It's difficult to find out what an &quot;interesting&quot; point is and how to 
+</I>&gt;<i> calculate it.  Are there other algorithms for trying to devine this
+</I>&gt;<i> info 
+</I>&gt;<i> that I can look at somewhere that you may know of?
+</I>&gt;<i> 
+</I>
+Please let me know if you find any bugs in the GPS::gpsd perl module. 
+I'd appreciate any feedback as we are the only two users that I know
+off.
+Thanks,
+Mike (mrdvt92)
+
+__________________________________________________
+Do You Yahoo!?
+Tired of spam?  Yahoo! Mail has the best spam protection around 
+<A HREF="http://mail.yahoo.com">http://mail.yahoo.com</A> 
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="001461.html">[Gpsd-users] WINNING NOTIFICATION / FINAL NOTICE CONGRATULATIONS??????'
+</A></li>
+	<LI>Next message: <A HREF="001463.html">[Gpsd-users] Perl GPS::gpsd bug fix
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1462">[ date ]</a>
+              <a href="thread.html#1462">[ thread ]</a>
+              <a href="subject.html#1462">[ subject ]</a>
+              <a href="author.html#1462">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

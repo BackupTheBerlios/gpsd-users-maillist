@@ -1,0 +1,100 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] Missing track field
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2011-June/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Missing%20track%20field&In-Reply-To=%3C20110630100555.3f541c71%40dizzy-gillespie%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="005367.html">
+   <LINK REL="Next"  HREF="005374.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] Missing track field</H1>
+    <B>Nelson Goncalves</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Missing%20track%20field&In-Reply-To=%3C20110630100555.3f541c71%40dizzy-gillespie%3E"
+       TITLE="[Gpsd-users] Missing track field">nelson.filipe.ferreira.goncalves at gmail.com
+       </A><BR>
+    <I>Thu Jun 30 11:05:55 CEST 2011</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="005367.html">[Gpsd-users] Missing track field
+</A></li>
+        <LI>Next message: <A HREF="005374.html">[Gpsd-users] Missing track field
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#5373">[ date ]</a>
+              <a href="thread.html#5373">[ thread ]</a>
+              <a href="subject.html#5373">[ subject ]</a>
+              <a href="author.html#5373">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi,
+
+  I am not really sure how to get the logs you mention. I used &quot;gpspipe
+  -r&quot; to collect a log from gpsd and then ran &quot;gpsfake&quot;. I could not
+  get gpsdecode to work (and tried all possible options from the
+  manpage).
+
+  The log is in annex. The strange thing is that this morning, I can
+  read the track angle (and see it on cgps and xgps). The values are
+  wrong because the antena is stopped. However they change through
+  time so I assume that everything is working fine.
+
+  This is very strange because there is no difference in setup
+  (hardware or software) from yesterday. Could it be that gpsd is
+  automatically changing from NMEA to binary format and today is
+  decided to go with NMEA instead ?
+
+   Nelson
+
+On Wed, 29 Jun 2011 17:17:25 -0400 (EDT)
+Eric Raymond &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">esr at snark.thyrsus.com</A>&gt; wrote:
+
+&gt;<i> Sounds like we might have a cgps-specific bug. If you can mail me a
+</I>&gt;<i> loh file containin hg several sentences with a nonzero track angle I
+</I>&gt;<i> can test for this.
+</I>&gt;<i> 
+</I>&gt;<i> Actually, you can check it yourself.  Here are the steps:
+</I>&gt;<i> 
+</I>&gt;<i> 1. Run your log through gpsdecode; check to see if the output JSON has
+</I>&gt;<i> a nonzero track angle.  If it doesn't, the daemon is failing.
+</I>&gt;<i> 
+</I>&gt;<i> 2. Next thing to check is whether xgps shows a nonzeroi track angle.
+</I>&gt;<i> Run gpsfake on your logfile to repeatedly present JSON from it on
+</I>&gt;<i> port 2947, then run xgps.  Likely it will show there; if it doesn't,
+</I>&gt;<i> the Python library binding has a bug.
+</I>&gt;<i> 
+</I>&gt;<i> 3. Now test the C library binding by running gpxlogger.  If it doesn't
+</I>&gt;<i> report the track angle, thesre's a bug in the common C binding.uswd
+</I>&gt;<i> by gpxlogger and cgps.
+</I>
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="005367.html">[Gpsd-users] Missing track field
+</A></li>
+	<LI>Next message: <A HREF="005374.html">[Gpsd-users] Missing track field
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#5373">[ date ]</a>
+              <a href="thread.html#5373">[ thread ]</a>
+              <a href="subject.html#5373">[ subject ]</a>
+              <a href="author.html#5373">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

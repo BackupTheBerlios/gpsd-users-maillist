@@ -1,0 +1,120 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] Re: [Gpsd-dev] gpsd 2.32 no longer builds out-of-the-box
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2006-March/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Re%3A%20%5BGpsd-dev%5D%20gpsd%202.32%20no%20longer%20builds%20out-of-the-box&In-Reply-To=%3CPine.LNX.4.64.0603141222580.21390%40catbert.rellim.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="001428.html">
+   <LINK REL="Next"  HREF="001417.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] Re: [Gpsd-dev] gpsd 2.32 no longer builds out-of-the-box</H1>
+    <B>Gary E. Miller</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Re%3A%20%5BGpsd-dev%5D%20gpsd%202.32%20no%20longer%20builds%20out-of-the-box&In-Reply-To=%3CPine.LNX.4.64.0603141222580.21390%40catbert.rellim.com%3E"
+       TITLE="[Gpsd-users] Re: [Gpsd-dev] gpsd 2.32 no longer builds out-of-the-box">gem at rellim.com
+       </A><BR>
+    <I>Tue Mar 14 21:31:18 CET 2006</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="001428.html">[Gpsd-users] Re: [Gpsd-dev] gpsd 2.32 no longer builds out-of-the-box
+</A></li>
+        <LI>Next message: <A HREF="001417.html">[Gpsd-users] gpsd 2.32 no longer builds out-of-the-box
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1429">[ date ]</a>
+              <a href="thread.html#1429">[ thread ]</a>
+              <a href="subject.html#1429">[ subject ]</a>
+              <a href="author.html#1429">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>-----BEGIN PGP SIGNED MESSAGE-----
+Hash: SHA1
+
+Yo Eric!
+
+On Tue, 14 Mar 2006, Eric S. Raymond wrote:
+
+&gt;<i> Try again, please? I've done another pass at fixing the mess.
+</I>
+I deleted trunk, then did an SVN update and then:
+
+# autogen.sh --enable-pps &amp;&amp; make &amp;&amp; make install
+
+[...]
+test -z &quot;/usr/man/man1&quot; || mkdir -p -- &quot;/usr/man/man1&quot;
+ /usr/bin/ginstall -c -m 644 './gps.1' '/usr/man/man1/gps.1'
+ /usr/bin/ginstall -c -m 644 'xgps.1' '/usr/man/man1/xgps.1'
+/usr/bin/ginstall: cannot stat `xgps.1': No such file or directory
+ /usr/bin/ginstall -c -m 644 './xgpsspeed.1' '/usr/man/man1/xgpsspeed.1'
+ /usr/bin/ginstall -c -m 644 'cgps.1' '/usr/man/man1/cgps.1'
+/usr/bin/ginstall: cannot stat `cgps.1': No such file or directory
+ /usr/bin/ginstall -c -m 644 'cgpxlogger.1' '/usr/man/man1/cgpxlogger.1'
+/usr/bin/ginstall: cannot stat `cgpxlogger.1': No such file or directory
+ /usr/bin/ginstall -c -m 644 './gpsprof.1' '/usr/man/man1/gpsprof.1'
+ /usr/bin/ginstall -c -m 644 './gpsfake.1' '/usr/man/man1/gpsfake.1'
+ /usr/bin/ginstall -c -m 644 './sirfmon.1' '/usr/man/man1/sirfmon.1'
+ /usr/bin/ginstall -c -m 644 './rtcmdecode.1' '/usr/man/man1/rtcmdecode.1'
+ /usr/bin/ginstall -c -m 644 'gpspipe.1' '/usr/man/man1/gpspipe.1'
+/usr/bin/ginstall: cannot stat `gpspipe.1': No such file or directory
+ /usr/bin/ginstall -c -m 644 'gpsflash.1' '/usr/man/man1/gpsflash.1'
+/usr/bin/ginstall: cannot stat `gpsflash.1': No such file or directory
+make[2]: *** [install-man1] Error 1
+make[2]: Leaving directory `/usr/local/src/GPS/gpsd/gpsd/trunk'
+make[1]: *** [install-am] Error 2
+make[1]: Leaving directory `/usr/local/src/GPS/gpsd/gpsd/trunk'
+make: *** [install] Error 2
+
+
+Looks like install is trying to find these that do not exist:
+	xgps.1
+	cgps.1
+	cgpxlogger.1
+	gpspipe.1
+	gpsflash.1
+
+
+RGDS
+GARY
+- ---------------------------------------------------------------------------
+Gary E. Miller Rellim 20340 Empire Blvd, Suite E-3, Bend, OR 97701
+	<A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">gem at rellim.com</A>  Tel:+1(541)382-8588
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v1.4.2.1 (GNU/Linux)
+
+iD8DBQFEFygY8KZibdeR3qURAkwbAKCq8k5BGephJo6wkOUi0d7IGCDPQwCgp0XD
+MIdUoDoC/qsaHxI2VQc5jBM=
+=kFL6
+-----END PGP SIGNATURE-----
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="001428.html">[Gpsd-users] Re: [Gpsd-dev] gpsd 2.32 no longer builds out-of-the-box
+</A></li>
+	<LI>Next message: <A HREF="001417.html">[Gpsd-users] gpsd 2.32 no longer builds out-of-the-box
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1429">[ date ]</a>
+              <a href="thread.html#1429">[ thread ]</a>
+              <a href="subject.html#1429">[ subject ]</a>
+              <a href="author.html#1429">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

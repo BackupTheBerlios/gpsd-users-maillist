@@ -1,0 +1,148 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] Cannot get Garmin 18x LVC NMEA to work right with ntp
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2010-December/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Cannot%20get%20Garmin%2018x%20LVC%20NMEA%20to%20work%20right%20with%0A%20ntp&In-Reply-To=%3C4D1CF012.8040701%40funsoft.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="004857.html">
+   <LINK REL="Next"  HREF="004859.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] Cannot get Garmin 18x LVC NMEA to work right with ntp</H1>
+    <B>Gary Eheman</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Cannot%20get%20Garmin%2018x%20LVC%20NMEA%20to%20work%20right%20with%0A%20ntp&In-Reply-To=%3C4D1CF012.8040701%40funsoft.com%3E"
+       TITLE="[Gpsd-users] Cannot get Garmin 18x LVC NMEA to work right with ntp">eheman at funsoft.com
+       </A><BR>
+    <I>Thu Dec 30 21:48:18 CET 2010</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="004857.html">[Gpsd-users] Cannot get Garmin 18x LVC NMEA to work right with ntp
+</A></li>
+        <LI>Next message: <A HREF="004859.html">[Gpsd-users] Cannot get Garmin 18x LVC NMEA to work right with ntp
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#4858">[ date ]</a>
+              <a href="thread.html#4858">[ thread ]</a>
+              <a href="subject.html#4858">[ subject ]</a>
+              <a href="author.html#4858">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>
+On 12/30/2010 02:24 PM, Gary E. Miller wrote:
+&gt;<i> -----BEGIN PGP SIGNED MESSAGE-----
+</I>&gt;<i> Hash: SHA1
+</I>&gt;<i> 
+</I>&gt;<i> Yo Gary!
+</I>&gt;<i> 
+</I>&gt;<i> On Thu, 30 Dec 2010, Gary Eheman wrote:
+</I>&gt;<i> 
+</I>&gt;&gt;<i> I recently purchased a Garmin 18x LVC and built myself a DE9 (female-DB9
+</I>&gt;&gt;<i> ) cable with
+</I>&gt;&gt;<i> integrated led for confirming PPS signal using the info from the various
+</I>&gt;&gt;<i>  recommended
+</I>&gt;&gt;<i> websites. The GPS seems to be working ok, and I can get ntpd to sync wit
+</I>&gt;&gt;<i> h the PPS
+</I>&gt;&gt;<i> shared memory segment. It never seems to like the NMEA shared memory seg
+</I>&gt;&gt;<i> ment data and
+</I>&gt;&gt;<i> always marks the NMEA signal as &quot;falsetick&quot; as reported by ntpq associates.
+</I>&gt;<i> 
+</I>&gt;<i> You are close, but we need to see your gpsd debug logs to futher debug.
+</I>&gt;<i> 
+</I>&gt;<i> Run gpsd this way:
+</I>&gt;<i> 	gpsd -nND 5 /dev/ttyS0 2&gt;&amp;1 | egrep 'PPS|NTP'
+</I>&gt;<i> 
+</I>&gt;<i> Then put the first few minutes of that on a pastebin somewhere.
+</I>&gt;<i> 
+</I>&gt;<i> Also confirm that your port speed is 38400 or better.
+</I>&gt;<i> 
+</I>&gt;<i> Here is my ntp.conf for my 18/LVC:
+</I>&gt;<i> 
+</I>&gt;<i> # for gpsd
+</I>&gt;<i> server 127.127.28.0 minpoll 4 maxpoll 4
+</I>&gt;<i> fudge 127.127.28.0 time1 0.0  refid GPS
+</I>&gt;<i> 
+</I>&gt;<i> # for PPS and gpsd
+</I>&gt;<i> server 127.127.28.1 minpoll 4 maxpoll 4 prefer
+</I>&gt;<i> fudge 127.127.28.1 refid GPS1
+</I>&gt;<i> 
+</I>&gt;<i> 
+</I>&gt;<i> RGDS
+</I>&gt;<i> GARY
+</I>&gt;<i> - ---------------------------------------------------------------------------
+</I>&gt;<i> Gary E. Miller Rellim 109 NW Wilmington Ave., Suite E, Bend, OR 97701
+</I>&gt;<i> 	<A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">gem at rellim.com</A>  Tel:+1(541)382-8588
+</I>&gt;<i> 
+</I>&gt;<i> -----BEGIN PGP SIGNATURE-----
+</I>&gt;<i> Version: GnuPG v1.4.3 (GNU/Linux)
+</I>&gt;<i> 
+</I>&gt;<i> iD8DBQFNHNx7BmnRqz71OvMRAlBvAKC30qNnCQ4PgeekN6wegKu+nzUhnQCeMU5v
+</I>&gt;<i> 72f5FjyBgmcOBd595uAjcCU=
+</I>&gt;<i> =dnPC
+</I>&gt;<i> -----END PGP SIGNATURE-----
+</I>&gt;<i> 
+</I>&gt;<i> 
+</I>&gt;<i> 
+</I>
+Ok.  See pastebin: <A HREF="http://pastebin.com/SwLUeA10">http://pastebin.com/SwLUeA10</A>
+for the trace you requested.
+
+I'm pretty sure that the gps is only sending the data at 4800 baud and not 38400,
+unless gpsd is sending an instruction to the gps to specify 38400.  Was I supposed to
+program the gps using $PGRMC to specify 38400 baud?  I thought everything I read
+during research said 4800 was ok and desired?
+
+# gpsd -nND 5 /dev/ttyS1 2&gt;&amp;1 | egrep '4800'
+gpsd: speed 4800, 8N1
+gpsd: /dev/ttyS1 identified as type Generic NMEA (4.326088 sec @ 4800bps)
+
+I did set the serial port on the computer to have the low_latency attribute:
+# setserial -G /dev/ttyS1
+/dev/ttyS1 uart 16550A port 0x02f8 irq 3 baud_base 115200 spd_normal skip_test
+low_latency
+
+Another view from gpspipe started immediately after I started the daemon shows:
+# gpspipe -rt
+netlib_connectsock() returns socket on fd 3
+:<i>{&quot;class&quot;:&quot;VERSION&quot;,&quot;release&quot;:&quot;2.95&quot;,&quot;rev&quot;:&quot;2010-12-29T20:39:22&quot;,&quot;proto_major&quot;:3,&quot;proto_minor&quot;:3}
+</I>:<i>{&quot;class&quot;:&quot;DEVICES&quot;,&quot;devices&quot;:[{&quot;class&quot;:&quot;DEVICE&quot;,&quot;path&quot;:&quot;/dev/ttyS1&quot;,&quot;activated&quot;:1293741787.97,&quot;native&quot;:0,&quot;bps&quot;:9600,&quot;parity&quot;:&quot;N&quot;,&quot;stopbits&quot;:1,&quot;cycle&quot;:1.00}]}
+</I>:<i>{&quot;class&quot;:&quot;WATCH&quot;,&quot;enable&quot;:true,&quot;json&quot;:false,&quot;nmea&quot;:true,&quot;raw&quot;:0,&quot;scaled&quot;:false,&quot;timing&quot;:false}
+</I> :{&quot;class&quot;:&quot;DEVICE&quot;,&quot;path&quot;:&quot;/dev/ttyS1&quot;,&quot;activated&quot;:1293741792.34,&quot;driver&quot;:&quot;Generic
+NMEA&quot;,&quot;native&quot;:0,&quot;bps&quot;:4800,&quot;parity&quot;:&quot;N&quot;,&quot;stopbits&quot;:1,&quot;cycle&quot;:1.00}
+
+
+-- 
+Gary Eheman
+Fundamental Software, Inc.
+<A HREF="http://www.funsoft.com">http://www.funsoft.com</A>
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="004857.html">[Gpsd-users] Cannot get Garmin 18x LVC NMEA to work right with ntp
+</A></li>
+	<LI>Next message: <A HREF="004859.html">[Gpsd-users] Cannot get Garmin 18x LVC NMEA to work right with ntp
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#4858">[ date ]</a>
+              <a href="thread.html#4858">[ thread ]</a>
+              <a href="subject.html#4858">[ subject ]</a>
+              <a href="author.html#4858">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

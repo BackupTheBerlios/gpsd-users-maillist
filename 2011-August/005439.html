@@ -1,0 +1,124 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] Direct access to PPS transition time
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2011-August/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Direct%20access%20to%20PPS%20transition%20time&In-Reply-To=%3C816E7DCB-2081-4795-AC00-87455917C0AE%40pelgrum.org%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="005436.html">
+   <LINK REL="Next"  HREF="005437.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] Direct access to PPS transition time</H1>
+    <B>Wouter Pelgrum</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Direct%20access%20to%20PPS%20transition%20time&In-Reply-To=%3C816E7DCB-2081-4795-AC00-87455917C0AE%40pelgrum.org%3E"
+       TITLE="[Gpsd-users] Direct access to PPS transition time">wouter at pelgrum.org
+       </A><BR>
+    <I>Sat Aug 27 05:21:58 CEST 2011</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="005436.html">[Gpsd-users] Direct access to PPS transition time
+</A></li>
+        <LI>Next message: <A HREF="005437.html">[Gpsd-users] [Gpsd-dev] 3.0 has shipped
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#5439">[ date ]</a>
+              <a href="thread.html#5439">[ thread ]</a>
+              <a href="subject.html#5439">[ subject ]</a>
+              <a href="author.html#5439">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>
+On Friday Aug 26 2011, at 07:25:21, Roger Oberholtzer wrote:
+
+&gt;<i> On Thu, 2011-08-25 at 20:58 -0400, Wouter Pelgrum wrote:
+</I>&gt;&gt;<i> Hi,
+</I>&gt;&gt;<i> 
+</I>&gt;&gt;<i> I got gpsd to work with ntpd (thanks Gary!), but I'm running into some occasional startup issues. 
+</I>&gt;&gt;<i> The computer that needs the time sync is not connected to internet, and I need precise time quickly after startup. ntpd sometimes complains, and requires some time to lock &amp; align with the 1PPS time. 
+</I>&gt;&gt;<i> 
+</I>&gt;&gt;<i> Assuming the 1PPS is correct, and the NTPD-provided time not always, the provision of the offset between the two would work. In post processing (I'm time-tagging sensor data, not a real problem to adjust the time stamps later) I can then correct for the time offsets, after outlier detection and filtering of the offset values.
+</I>&gt;&gt;<i> 
+</I>&gt;&gt;<i> I can get that offset via ntpq -p, but that's not a call I can embed in my c application.
+</I>&gt;&gt;<i> I tried ntp_adjtime() but that function doesn't output a correct offset value if ntpd is in error state. (Also, ntp_adjtime() and ntp_gettime() seem to sometimes report in ns, and other times in us)
+</I>&gt;&gt;<i> 
+</I>&gt;&gt;<i> Is there a way to get the 1PPS info from GPSD, similar to how NTPD is getting the information?
+</I>&gt;&gt;<i> 
+</I>&gt;&gt;<i> Or is there a way to get ntpd to startup more reliably and converge faster?
+</I>&gt;<i> 
+</I>&gt;<i> Please post your findings. I am starting the exact same thing. In a
+</I>&gt;<i> vehicle without internet I want to have the PC time set, as close as
+</I>&gt;<i> possible, to the current GPS time. Other devices I have do the same.
+</I>
+So far the NovAtel + gpsd + chrony setup seems to work pretty good. I've tested it only in the lab, and with many reboots, but not yet with long power-offs.  I have to dive a little bit deeper in the chrony config to see what the best options are for that.
+
+&gt;<i> Currently I compute the difference between PC and GPS time, using the
+</I>&gt;<i> PPS signal and the ZDA record in my own C code. I too want to drop that
+</I>&gt;<i> in favor of gpsd.
+</I>
+What I really like of the gpsd - chrony combi is that I can log the offsets between 1PPS and PC time so I can correct things later if I want. 
+===============================================================================
+   Date (UTC) Time         Refid  DP L P  Raw offset   Cooked offset      Disp.
+===============================================================================
+2011-08-27 03:07:19.999998 PPSp    0 N 0  1.746000e-06  2.023000e-06  6.109e-06
+2011-08-27 03:07:20.999997 PPSp    1 N 0  3.324000e-06  3.532000e-06  6.109e-06
+2011-08-27 03:07:22.000001 PPSp    2 N 0 -1.410000e-06 -1.254000e-06  6.092e-06
+2011-08-27 03:07:22.999977 PPSp    3 N 0  2.282900e-05  2.294600e-05  6.079e-06
+
+&gt;<i> The thing I have been worrying about is if the systems are started when
+</I>&gt;<i> there is no GPS available, like in a garage. Then, I would imagine the
+</I>&gt;<i> time is whatever the GPS receiver maintained. When the satellites come
+</I>&gt;<i> in to view, this may change. How quickly is that seen in the PC time? I
+</I>&gt;<i> do not mean how quickly it is seen from the GPS. I mean from when the
+</I>&gt;<i> GPS starts reporting it until the PC clock is completely adjusted. I am
+</I>&gt;<i> guessing that this initial time difference will be small. But whatever
+</I>&gt;<i> it may be, I need to know how the change is introduced into the system.
+</I>
+That's why I switched to chrony, ntpd sucks in this context. 
+I have to do more testing to get you numbers, but from what I've seen is that the PC clock is adjusted (&lt;1ms) in 10s of seconds.
+
+For my current application I need sub-ms, and that seems very achievable. For other applications I would like to push it quite a bit further (I'm rather interested how far it can be pushed without dedicated hardware such as a ptp server and ptp-ready NICs)
+
+We're also building a robotic platform (quad rotor) with a sensor payload that needs to be time-synchronized. I'm opting for that one to not use GPS as the common standard, since we want to be able to operate this thing in gps-denied scenarios. So I'm thinking about a reference oscillator and a time pulse that is used as the common time source to time-tag all sensors (some connected to FPGAs, some to a PC). If GPS is available, we'll determine the relation between the reference time and GPS time. It's probably easiest if the reference clock remains somewhat close to UTC so we can sync the PC to that using a gpsd-chrony combination
+
+I'll keep you posted on the topic,
+
+Wouter
+
+
+
+
+
+
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="005436.html">[Gpsd-users] Direct access to PPS transition time
+</A></li>
+	<LI>Next message: <A HREF="005437.html">[Gpsd-users] [Gpsd-dev] 3.0 has shipped
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#5439">[ date ]</a>
+              <a href="thread.html#5439">[ thread ]</a>
+              <a href="subject.html#5439">[ subject ]</a>
+              <a href="author.html#5439">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

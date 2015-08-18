@@ -1,0 +1,140 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] Error: unrecognized opcode `rorw $8,$2'  cross compiling for mipsel-linux
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2006-March/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Error%3A%20unrecognized%20opcode%20%60rorw%20%248%2C%242%27%20%20cross%20compiling%20for%20mipsel-linux&In-Reply-To=%3C44077AB7.2070402%40frontiernet.net%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="001373.html">
+   <LINK REL="Next"  HREF="001375.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] Error: unrecognized opcode `rorw $8,$2'  cross compiling for mipsel-linux</H1>
+    <B>Beakmyn</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Error%3A%20unrecognized%20opcode%20%60rorw%20%248%2C%242%27%20%20cross%20compiling%20for%20mipsel-linux&In-Reply-To=%3C44077AB7.2070402%40frontiernet.net%3E"
+       TITLE="[Gpsd-users] Error: unrecognized opcode `rorw $8,$2'  cross compiling for mipsel-linux">beakmyn at frontiernet.net
+       </A><BR>
+    <I>Fri Mar  3 00:07:35 CET 2006</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="001373.html">[Gpsd-users] DeLorme Earthmate + OS X help needed
+</A></li>
+        <LI>Next message: <A HREF="001375.html">[Gpsd-users] Error: unrecognized opcode `rorw $8,$2'  cross compiling for mipsel-linux
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1374">[ date ]</a>
+              <a href="thread.html#1374">[ thread ]</a>
+              <a href="subject.html#1374">[ subject ]</a>
+              <a href="author.html#1374">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>I've tried just about every version of GPSD from 1.10 to 2.31.  I cannot 
+seem to get the source to make without getting the same errors
+It always seems to give me a &quot;Error: unrecognized opcode `rorw $8,$2' &quot; 
+error.
+ I've successfully cross-compiled other programs so I think my toolchain 
+and buildroot is ok.
+
+==========================================
+Environment:
+
+==========================================
+export 
+PATH=/home/user/whiterussian/openwrt/staging_dir_mipsel/usr/bin:/home/user/whiterussian/openwrt/staging_dir_mipsel/mipsel-linux-uclibc:/home/user/whiterussian/openwrt/staging_dir_mipsel/bin:$PATH 
+
+export CC=mipsel-linux-uclibc-gcc
+export CXX=mipsel-linux-uclibc-g++
+
+echo &quot;Configuring GPSD&quot;
+export ac_cv_linux_vers=2.4.30
+
+./configure --disable-dependency-tracking \
+--host=mipsel-linux --disable-sirfII \
+ --disable-tsip --disable-fv18 --disable-tripmate \
+ --disable-earthmate  --disable-itrax --disable-italk \
+--disable-garmin --disable-evermore \
+ --disable-rtcm104 --disable-ntpshm
+
+==========================================
+output of configure
+
+==========================================
+gpsd 2.31
+------------------------------------------
+NMEA                    : yes
+FV-18                   : no
+SiRF-II                 : no
+Trimble TSIP            : no
+Tripmate                : no
+Earthmate               : no
+iTrax                   : no
+iTalk                   : no
+Garmin                  : no
+True North              : no
+Evermore                : no
+RTCM104 support         : no
+NTP SHM                 : no
+NTP PPS                 : no
+Enable shared libraries : yes
+Enable DBUS support     : no
+------------------------------------------
+Configure finished, type 'make' to build.
+<A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">user at ws2</A>:~/gpsd-2.31$ make
+sed -e '/^ *\([A-Z][A-Z0-9_]*\),/s//   &quot;\1&quot;,/' &lt;packet_states.h 
+ &gt;packet_names.h
+make  all-am
+make[1]: Entering directory `/home/user/gpsd-2.31'
+/bin/sh ./libtool --tag=CC --mode=compile mipsel-linux-uclibc-gcc 
+-DHAVE_CONFIG_ H -I. -I. -I.   -I/usr/include  -g -O2 -Wall -Wcast-align 
+-Wmissing-declarations  -Wmissing-prototypes -Wstrict-prototypes 
+-Wpointer-arith -Wreturn-type -D_GNU_S OURCE  -I/usr/include -c -o 
+netlib.lo netlib.c
+mkdir .libs
+mipsel-linux-uclibc-gcc -DHAVE_CONFIG_H -I. -I. -I. -I/usr/include -g 
+-O2 -Wall  -Wcast-align -Wmissing-declarations -Wmissing-prototypes 
+-Wstrict-prototypes -W pointer-arith -Wreturn-type -D_GNU_SOURCE 
+-I/usr/include -c netlib.c  -fPIC -DPI C -o .libs/netlib.o
+In file included from /usr/include/sys/socket.h:35,
+                from netlib.c:5:
+/usr/include/bits/socket.h: In function `__cmsg_nxthdr':
+/usr/include/bits/socket.h:271: warning: cast increases required 
+alignment of ta rget type
+/tmp/ccb6QiPR.s: Assembler messages:
+/tmp/ccb6QiPR.s:88: Error: unrecognized opcode `rorw $8,$2'
+/tmp/ccb6QiPR.s:93: Error: unrecognized opcode `rorw $8,$2'
+/tmp/ccb6QiPR.s:332: Error: unrecognized opcode `rorw $8,$2'
+make[1]: *** [netlib.lo] Error 1
+make[1]: Leaving directory `/home/user/gpsd-2.31'
+make: *** [all] Error 2
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="001373.html">[Gpsd-users] DeLorme Earthmate + OS X help needed
+</A></li>
+	<LI>Next message: <A HREF="001375.html">[Gpsd-users] Error: unrecognized opcode `rorw $8,$2'  cross compiling for mipsel-linux
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1374">[ date ]</a>
+              <a href="thread.html#1374">[ thread ]</a>
+              <a href="subject.html#1374">[ subject ]</a>
+              <a href="author.html#1374">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

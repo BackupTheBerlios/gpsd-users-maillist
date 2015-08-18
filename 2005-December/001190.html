@@ -1,0 +1,126 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] Problems getting started with gpsd
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2005-December/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Problems%20getting%20started%20with%20gpsd&In-Reply-To=%3CPine.LNX.4.64.0512240007270.27512%40catbert.rellim.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="001189.html">
+   <LINK REL="Next"  HREF="001191.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] Problems getting started with gpsd</H1>
+    <B>Gary E. Miller</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Problems%20getting%20started%20with%20gpsd&In-Reply-To=%3CPine.LNX.4.64.0512240007270.27512%40catbert.rellim.com%3E"
+       TITLE="[Gpsd-users] Problems getting started with gpsd">gem at rellim.com
+       </A><BR>
+    <I>Sat Dec 24 09:18:55 CET 2005</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="001189.html">[Gpsd-users] Problems getting started with gpsd
+</A></li>
+        <LI>Next message: <A HREF="001191.html">[Gpsd-users] problem compiling using libgps
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1190">[ date ]</a>
+              <a href="thread.html#1190">[ thread ]</a>
+              <a href="subject.html#1190">[ subject ]</a>
+              <a href="author.html#1190">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>-----BEGIN PGP SIGNED MESSAGE-----
+Hash: SHA1
+
+Yo Mark!
+
+On Fri, 23 Dec 2005, mark_2811 wrote:
+
+&gt;<i> Hi Gary, thanks for the reply. I wasn't doing 'make install', but I don'
+</I>&gt;<i> t want to install anyways, just copy over the executable to my compact f
+</I>&gt;<i> lash card.
+</I>
+It woould still easier to run &quot;make install&quot; on to a live FS and then
+grab the pieces you need for the read-only FS&gt;
+
+&gt;<i> I've learned a bit more since I sent the original message. The executabl
+</I>&gt;<i> e is in the build directory/.libs. The file 'gpsd' in the build director
+</I>&gt;<i> y is just a shell script that loads some libraries and launches the real
+</I>&gt;<i>  executable. This seems to be from libtool, which I'm not familiar with.
+</I>
+Now you know a good reason to run &quot;make install&quot;.  The gpsd in the build
+dir uses that funcky .lib thing so you can test the build before installing
+it and copying over your working copy.
+
+&gt;<i> I copied libgps.so.15 to my compact flash card, in addition to the gpsd
+</I>&gt;<i> executable from /.libs. It gets alot further now, but complains at getpr
+</I>&gt;<i> otobyname(). The error message is:
+</I>
+&gt;<i> gpsd: Can't get &quot;tcp&quot; protocol entry.
+</I>&gt;<i> gpsd: command socket create failed, netlib error -1
+</I>
+Here is my /etc/protocols:
+
+tcp     6       TCP     # transmission control protocol
+
+Here is my /etc/services:
+
+gpsd    2947/tcp        #
+
+&gt;<i> My /etc/protocols file is fine, so not sure what's wrong with it. I susp
+</I>&gt;<i> ect it may have something to do with nsswitch.conf (which I don't have o
+</I>&gt;<i> n my compact flash). Any thoughts?
+</I>
+My nsswitch.conf is empty.
+
+&gt;<i> Also according to the documentation you're supposed to just pass the dev
+</I>&gt;<i> ice file to gpsd as a command line argument (no -p argument).
+</I>
+Not according to the man page, but I just tried it and it does work withou
+the -f/-p.  Try running gpsd with debug on:
+
+	gpsd  -f /dev/ttyUSB0 -nN -D4
+
+RGDS
+GARY
+- ---------------------------------------------------------------------------
+Gary E. Miller Rellim 20340 Empire Blvd, Suite E-3, Bend, OR 97701
+	<A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">gem at rellim.com</A>  Tel:+1(541)382-8588 Fax: +1(541)382-8676
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v1.4.1 (GNU/Linux)
+
+iD8DBQFDrQRy8KZibdeR3qURAsfhAKDR1nV5AMCPE9BttPlwIdVkgjsVyQCgvVZf
+tIHOjUMrl/mBmMQOEB+ZN1Q=
+=yBH2
+-----END PGP SIGNATURE-----
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="001189.html">[Gpsd-users] Problems getting started with gpsd
+</A></li>
+	<LI>Next message: <A HREF="001191.html">[Gpsd-users] problem compiling using libgps
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1190">[ date ]</a>
+              <a href="thread.html#1190">[ thread ]</a>
+              <a href="subject.html#1190">[ subject ]</a>
+              <a href="author.html#1190">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

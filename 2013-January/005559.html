@@ -1,0 +1,108 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] Issue with Garmin GPS 18 USB
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2013-January/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Issue%20with%20Garmin%20GPS%2018%20USB&In-Reply-To=%3CCAD%2B1-4-r9PtsxHmdv6w9sAsKaDt3brapJnyhv07fg%3DSi2cOb4A%40mail.gmail.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   
+   <LINK REL="Next"  HREF="005560.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] Issue with Garmin GPS 18 USB</H1>
+    <B>Joe Bennett</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Issue%20with%20Garmin%20GPS%2018%20USB&In-Reply-To=%3CCAD%2B1-4-r9PtsxHmdv6w9sAsKaDt3brapJnyhv07fg%3DSi2cOb4A%40mail.gmail.com%3E"
+       TITLE="[Gpsd-users] Issue with Garmin GPS 18 USB">jammer10000 at ka3nam.com
+       </A><BR>
+    <I>Fri Jan 25 18:24:21 CET 2013</I>
+    <P><UL>
+        
+        <LI>Next message: <A HREF="005560.html">[Gpsd-users] Issue with Garmin GPS 18 USB
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#5559">[ date ]</a>
+              <a href="thread.html#5559">[ thread ]</a>
+              <a href="subject.html#5559">[ subject ]</a>
+              <a href="author.html#5559">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi,
+
+I've seen posts that say the GPS 18 USB can be used with GPSD, but I seem
+to not be experiencing this. When I plug in my Holux 213U I get this in
+syslog:
+
+
+Jan 25 11:14:41 joe-ThinkPad-T510 kernel: [15004.553416] pl2303 ttyUSB0:
+pl2303 converter now disconnected from ttyUSB0
+Jan 25 11:14:41 joe-ThinkPad-T510 kernel: [15004.553447] pl2303 2-1.1:1.0:
+device disconnected
+Jan 25 11:14:47 joe-ThinkPad-T510 kernel: [15011.063179] usb 2-1.1: new
+full-speed USB device number 4 using ehci_hcd
+Jan 25 11:14:47 joe-ThinkPad-T510 kernel: [15011.156815] pl2303 2-1.1:1.0:
+pl2303 converter detected
+Jan 25 11:14:47 joe-ThinkPad-T510 kernel: [15011.158435] usb 2-1.1: pl2303
+converter now attached to ttyUSB0
+Jan 25 11:14:48 joe-ThinkPad-T510 mtp-probe: checking bus 2, device 4:
+&quot;/sys/devices/pci0000:00/0000:
+00:1d.0/usb2/2-1/2-1.1&quot;
+Jan 25 11:14:48 joe-ThinkPad-T510 mtp-probe: bus: 2, device: 4 was not an
+MTP device
+Jan 25 11:14:48 joe-ThinkPad-T510 gpsd.hotplug: add /dev/ttyUSB0
+Jan 25 11:14:48 joe-ThinkPad-T510 gpsdctl: gpsd_control(action=add,
+arg=/dev/ttyUSB0)
+Jan 25 11:14:48 joe-ThinkPad-T510 gpsdctl: reached a running gpsd
+
+
+This looks normal... When I plug in the GPS 18 USB, this is what I get:
+
+
+Jan 25 11:17:11 joe-ThinkPad-T510 kernel: [15153.977342] usb 2-1.1: new
+full-speed USB device number 5 using ehci_hcd
+Jan 25 11:17:11 joe-ThinkPad-T510 mtp-probe: checking bus 2, device 5:
+&quot;/sys/devices/pci0000:00/0000:00:1d.0/usb2/2-1/2-1.1&quot;
+Jan 25 11:17:12 joe-ThinkPad-T510 mtp-probe: bus: 2, device: 5 was not an
+MTP device
+
+
+I do not see in the log where GPSD recognizes that a GPS resource is
+available... Any ideas what may be going on in this case? Any better debug
+method to use?
+
+
+Thanks!
+
+
+
+-Joe
+</PRE>
+
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	
+	<LI>Next message: <A HREF="005560.html">[Gpsd-users] Issue with Garmin GPS 18 USB
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#5559">[ date ]</a>
+              <a href="thread.html#5559">[ thread ]</a>
+              <a href="subject.html#5559">[ subject ]</a>
+              <a href="author.html#5559">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

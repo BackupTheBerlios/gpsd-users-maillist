@@ -1,0 +1,83 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] GPS DATA CONVERSION : latitude, longitude to x, y
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2010-May/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20GPS%20DATA%20CONVERSION%20%3A%20latitude%2C%20longitude%20to%20x%2C%20y&In-Reply-To=%3CAANLkTilAc6-xvSMYQue3-_LnshoKGOo4J1Hnwaqg7Rkh%40mail.gmail.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="004512.html">
+   <LINK REL="Next"  HREF="004516.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] GPS DATA CONVERSION : latitude, longitude to x, y</H1>
+    <B>Nic Roets</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20GPS%20DATA%20CONVERSION%20%3A%20latitude%2C%20longitude%20to%20x%2C%20y&In-Reply-To=%3CAANLkTilAc6-xvSMYQue3-_LnshoKGOo4J1Hnwaqg7Rkh%40mail.gmail.com%3E"
+       TITLE="[Gpsd-users] GPS DATA CONVERSION : latitude, longitude to x, y">nroets at gmail.com
+       </A><BR>
+    <I>Fri May 28 11:46:23 CEST 2010</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="004512.html">[Gpsd-users] GPS DATA CONVERSION : latitude, longitude to x, y
+</A></li>
+        <LI>Next message: <A HREF="004516.html">[Gpsd-users] GPS DATA CONVERSION : latitude, longitude to x, y
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#4515">[ date ]</a>
+              <a href="thread.html#4515">[ thread ]</a>
+              <a href="subject.html#4515">[ subject ]</a>
+              <a href="author.html#4515">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>On Fri, May 28, 2010 at 12:29 AM, Hamish &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">hamish_b at yahoo.com</A>&gt; wrote:
+&gt;<i> Do yourself a big favor. Do it properly. Use the PROJ.4 library, it's
+</I>
+There are many circumstance where that is not the case. In the case
+where a person travels through a city and you want to display an
+odometer on a low power device (cellphone), or do the calculations in
+javascript, my formulas are perfectly fine. The noise coming from
+other sources, like the GPS receiver, far exceeds the noise introduced
+by my formulas.
+
+The yournavigation code also use a similar Mercator approximation.
+Although the code is written in C and runs on a server, speed is of
+the essence due to the potentially large number of segments involved.
+
+--
+Note that when you the distance between 2 points with Pythagoras, you
+should use the average latitude in the cosine parameter:
+x0=cos(lat0 / 2+lat1 / 2)*lon0/M_PI*20000000
+y0=lat0/M_PI*20000000
+
+x1=cos(lat0 / 2 + lat1 / 2)*lon1/M_PI*20000000
+y1=lat1/M_PI*20000000
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="004512.html">[Gpsd-users] GPS DATA CONVERSION : latitude, longitude to x, y
+</A></li>
+	<LI>Next message: <A HREF="004516.html">[Gpsd-users] GPS DATA CONVERSION : latitude, longitude to x, y
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#4515">[ date ]</a>
+              <a href="thread.html#4515">[ thread ]</a>
+              <a href="subject.html#4515">[ subject ]</a>
+              <a href="author.html#4515">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

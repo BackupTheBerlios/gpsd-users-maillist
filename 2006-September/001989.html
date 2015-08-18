@@ -1,0 +1,99 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] [PATCH] Re: Garmin GPS almost never sends new	position data
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2006-September/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20%5BPATCH%5D%20Re%3A%20Garmin%20GPS%20almost%20never%20sends%20new%0A%09position%20data&In-Reply-To=%3Cef6tcq%24289%241%40sea.gmane.org%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="001985.html">
+   <LINK REL="Next"  HREF="001992.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] [PATCH] Re: Garmin GPS almost never sends new	position data</H1>
+    <B>Eivind Tagseth</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20%5BPATCH%5D%20Re%3A%20Garmin%20GPS%20almost%20never%20sends%20new%0A%09position%20data&In-Reply-To=%3Cef6tcq%24289%241%40sea.gmane.org%3E"
+       TITLE="[Gpsd-users] [PATCH] Re: Garmin GPS almost never sends new	position data">eivindt-gmane at multinet.no
+       </A><BR>
+    <I>Sun Sep 24 23:30:03 CEST 2006</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="001985.html">[Gpsd-users] [PATCH] Re: Garmin GPS almost never sends new position data
+</A></li>
+        <LI>Next message: <A HREF="001992.html">[Gpsd-users] [PATCH] Re: Garmin GPS almost never sends new position data
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1989">[ date ]</a>
+              <a href="thread.html#1989">[ thread ]</a>
+              <a href="subject.html#1989">[ subject ]</a>
+              <a href="author.html#1989">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Gary E. Miller wrote:
+&gt;<i> BTW, I am still waiting to hear what kernel, CPU and gcc you are using.
+</I>
+You are?  I've given you those details several months ago, and not tried 
+getting gspd working since.  Until MikeCarter reported the same problem 
+last week that is.
+
+I'm on gentoo, vanilla kernel 2.6.17.1 on a intel centrino dual core cpu.
+
+&gt;<i> On Sun, 24 Sep 2006, Eivind Tagseth wrote:
+</I>
+&gt;&gt;<i> 	o at the start of GetPacket, initialize the buffer with the left
+</I>&gt;&gt;<i> 	  over bytes from the last run, and only read more bytes if
+</I>&gt;&gt;<i> 	  necessary
+</I>&gt;<i> 
+</I>&gt;<i> This to me is really scary.  The size of the buffer returned is supposed to
+</I>&gt;<i> match the size of the packet.  Anything else is madness.
+</I>
+I don't know about madness.  Since I'm using /dev/ttyUSB0 as my device, 
+and that device goes through the tty layer, I'm not so sure that this is 
+madness.  I cannot find anything preventing the tty layer to concatenate 
+several packets that it receives from garmin_gps into one read buffer. 
+Once this happens, the tty layer cannot know that it should return only 
+parts of that buffer to userspace.
+
+&gt;&gt;<i> I've done some testing, and so far not gotten a single error message about too
+</I>&gt;&gt;<i> long packets.  Maybe Chris could try this patch and see if it helps on his
+</I>&gt;&gt;<i> system?
+</I>&gt;<i> 
+</I>&gt;<i> Chris is an OpenBSD guy.  So he can not test this.
+</I>
+Oh, I'm very sorry, for the past emails when I've mentioned Chris, I've 
+really meant MikeyCarter!  Very sorry!
+
+
+
+Eivind
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="001985.html">[Gpsd-users] [PATCH] Re: Garmin GPS almost never sends new position data
+</A></li>
+	<LI>Next message: <A HREF="001992.html">[Gpsd-users] [PATCH] Re: Garmin GPS almost never sends new position data
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1989">[ date ]</a>
+              <a href="thread.html#1989">[ thread ]</a>
+              <a href="subject.html#1989">[ subject ]</a>
+              <a href="author.html#1989">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

@@ -1,0 +1,119 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] GPSD is not setting the time via ntpd
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2007-March/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20GPSD%20is%20not%20setting%20the%20time%20via%20ntpd&In-Reply-To=%3CPine.LNX.4.64.0703151503000.10144%40catbert.rellim.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="002495.html">
+   <LINK REL="Next"  HREF="002497.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] GPSD is not setting the time via ntpd</H1>
+    <B>Gary E. Miller</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20GPSD%20is%20not%20setting%20the%20time%20via%20ntpd&In-Reply-To=%3CPine.LNX.4.64.0703151503000.10144%40catbert.rellim.com%3E"
+       TITLE="[Gpsd-users] GPSD is not setting the time via ntpd">gem at rellim.com
+       </A><BR>
+    <I>Thu Mar 15 23:08:06 CET 2007</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="002495.html">[Gpsd-users] GPSD is not setting the time via ntpd
+</A></li>
+        <LI>Next message: <A HREF="002497.html">[Gpsd-users] GPSD is not setting the time via ntpd
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2496">[ date ]</a>
+              <a href="thread.html#2496">[ thread ]</a>
+              <a href="subject.html#2496">[ subject ]</a>
+              <a href="author.html#2496">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>-----BEGIN PGP SIGNED MESSAGE-----
+Hash: SHA1
+
+Yo David!
+
+On Fri, 16 Mar 2007, David Cottle wrote:
+
+&gt;<i> I have put into my ntp.conf file:
+</I>&gt;<i>
+</I>&gt;<i> # Use GPSD
+</I>&gt;<i> server 127.127.28.0 minpoll 4 maxpoll 4
+</I>&gt;<i> fudge 127.127.28.0 time1 0.000 refid GPS
+</I>&gt;<i> server 127.127.28.1 minpoll 4 maxpoll 4 prefer
+</I>&gt;<i> fudge 127.127.28.1 refid GPS1
+</I>&gt;<i>
+</I>&gt;<i> Restarted ntpd.
+</I>&gt;<i>
+</I>&gt;<i> But ntpq -p reports back I am still using internet time servers, I
+</I>&gt;<i> don't see my gps listed at all, the only local I see is the standard
+</I>&gt;<i> fallback that's in ntp.conf
+</I>
+Then the problem is in your ntpd.  With the ntpd.conf as above
+you should see the gpsd as being unreachable with &quot;ntpdc -p&quot;.
+
+Since you do not see the gpsd time server in &quot;ntpdc -p&quot; your ntpd
+is not even trying to use gpsd.  Double check your ntp.conf and
+verify that your ntpd was compiled to allow shared memory time sync.
+
+Here is how my NTP looks when the NMEA time is working but the
+PPS is down:
+
+# ntpdc -p
+     remote           local      st poll reach  delay   offset    disp
+=======================================================================
+=SHM(0)          127.0.0.1        0   16  377 0.00000  0.017572 0.01532
+=SHM(1)          127.0.0.1        0   16    0 0.00000  0.000000 0.00000
+=time.windows.co 204.17.205.18    5 1024  377 0.03432 -0.017446 0.17433
+=qwest-gw.inow.c 204.17.205.18    3 1024  377 0.08551  0.009795 0.12181
+=main1.inow.com  204.17.205.18    2 1024  151 0.09862  0.006012 0.31163
+
+You should always have  the SHM() entries regardless of gpsd status.
+
+Not sure why my PPS is down, I suspect a recent SVN change did it.
+
+RGDS
+GARY
+- ---------------------------------------------------------------------------
+Gary E. Miller Rellim 20340 Empire Ave., Suite E-3, Bend, OR 97701
+	<A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">gem at rellim.com</A>  Tel:+1(541)382-8588
+
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v1.4.3 (GNU/Linux)
+
+iD8DBQFF+cPJ8KZibdeR3qURArG1AKCTLOeEKYp//SIns8aIJOW9GiIyEgCg38Ar
+N7IlND4+n6425UgnUMtrmmw=
+=cV+s
+-----END PGP SIGNATURE-----
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="002495.html">[Gpsd-users] GPSD is not setting the time via ntpd
+</A></li>
+	<LI>Next message: <A HREF="002497.html">[Gpsd-users] GPSD is not setting the time via ntpd
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2496">[ date ]</a>
+              <a href="thread.html#2496">[ thread ]</a>
+              <a href="subject.html#2496">[ subject ]</a>
+              <a href="author.html#2496">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

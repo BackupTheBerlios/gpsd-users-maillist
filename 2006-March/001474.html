@@ -1,0 +1,136 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] Not Getting Output from Garmin GPS-18 (USB)
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2006-March/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Not%20Getting%20Output%20from%20Garmin%20GPS-18%20%28USB%29&In-Reply-To=%3C89cb55a50603232054k4aeb6ad8l871e1df1de96036b%40mail.gmail.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="001473.html">
+   <LINK REL="Next"  HREF="001475.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] Not Getting Output from Garmin GPS-18 (USB)</H1>
+    <B>Adam VanBerlo</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Not%20Getting%20Output%20from%20Garmin%20GPS-18%20%28USB%29&In-Reply-To=%3C89cb55a50603232054k4aeb6ad8l871e1df1de96036b%40mail.gmail.com%3E"
+       TITLE="[Gpsd-users] Not Getting Output from Garmin GPS-18 (USB)">NiX0n at fragfest.cx
+       </A><BR>
+    <I>Fri Mar 24 05:54:45 CET 2006</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="001473.html">[Gpsd-users] Not Getting Output from Garmin GPS-18 (USB)
+</A></li>
+        <LI>Next message: <A HREF="001475.html">[Gpsd-users] Not Getting Output from Garmin GPS-18 (USB)
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1474">[ date ]</a>
+              <a href="thread.html#1474">[ thread ]</a>
+              <a href="subject.html#1474">[ subject ]</a>
+              <a href="author.html#1474">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>mmmmm... errors.  the first step to recovery.  thx gary ;)
+
+&lt;--begin--&gt;
+[<A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">root at epona</A> ~]# killall gpsd
+gpsd: no process killed
+[<A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">root at epona</A> ~]# gpsd -nN -D 5 /dev/ttyUSB0
+gpsd: launching (Version 2.32)
+gpsd: listening on port gpsd
+gpsd: running with effective group ID 0
+gpsd: running with effective user ID 0
+gpsd: opening GPS data source at '/dev/ttyUSB0'
+gpsd: garmin_probe: Compile error, garmin.Buffer too small.
+gpsd: no probe matched...
+gpsd: speed 9600, 8N1
+gpsd: gpsd_activate: opened GPS (4)
+gpsd: flagging descriptor 4 in open_device
+gpsd: client connect on 5
+gpsd: checking client(5)
+gpsd: &lt;= client(5): w+x
+gpsd: client(5): assigning channel...
+gpsd: User requires 2, channel type is -1
+gpsd: client(5): channel 4 already active.
+gpsd: client(5): channel 4 already active.
+gpsd: =&gt; client(5): GPSD,W=1,X=1143175368.129755
+&lt;--end--&gt;
+
+I'm gonna go out on a limb and suggest that this line
+gpsd: garmin_probe: Compile error, garmin.Buffer too small.
+is an indicator of the problem.
+
+perhaps that will give an idea of what to fix?
+
+Thanks,
+Adam &quot;NiX0n&quot;
+
+On 3/23/06, Gary E. Miller &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">gem at rellim.com</A>&gt; wrote:
+&gt;<i> -----BEGIN PGP SIGNED MESSAGE-----
+</I>&gt;<i> Hash: SHA1
+</I>&gt;<i>
+</I>&gt;<i> Yo Adam!
+</I>&gt;<i>
+</I>&gt;<i> On Thu, 23 Mar 2006, Adam VanBerlo wrote:
+</I>&gt;<i>
+</I>&gt;<i> &gt; i've looked at dmesg, I do get:
+</I>&gt;<i> &gt; garmin_gps 1-2:1.0: Garmin GPS usb/tty converter detected
+</I>&gt;<i> &gt; usb 1-2: Garmin GPS usb/tty converter now attached to ttyUSB0
+</I>&gt;<i>
+</I>&gt;<i> That looks right.
+</I>&gt;<i>
+</I>&gt;<i> &gt; afterwhich i've done the following
+</I>&gt;<i>
+</I>&gt;<i> Try this to get a lot of debug info:
+</I>&gt;<i>
+</I>&gt;<i>         killall gpsd
+</I>&gt;<i>         gpsd -nN -D 5 /dev/ttyUSB0
+</I>&gt;<i>
+</I>&gt;<i> While that is running in another terminal window do this:
+</I>&gt;<i>         cgps
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i> RGDS
+</I>&gt;<i> GARY
+</I>&gt;<i> - ---------------------------------------------------------------------------
+</I>&gt;<i> Gary E. Miller Rellim 20340 Empire Blvd, Suite E-3, Bend, OR 97701
+</I>&gt;<i>         <A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">gem at rellim.com</A>  Tel:+1(541)382-8588
+</I>&gt;<i>
+</I>&gt;<i> -----BEGIN PGP SIGNATURE-----
+</I>&gt;<i> Version: GnuPG v1.4.2.1 (GNU/Linux)
+</I>&gt;<i>
+</I>&gt;<i> iD8DBQFEI2vy8KZibdeR3qURAigSAJ486RytSAX4gxQTFqG9OilOm4GqbgCeLlN5
+</I>&gt;<i> EMcvnALsmCEC9tmcqfVJdIU=
+</I>&gt;<i> =9v8F
+</I>&gt;<i> -----END PGP SIGNATURE-----
+</I>&gt;<i>
+</I>&gt;<i>
+</I>
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="001473.html">[Gpsd-users] Not Getting Output from Garmin GPS-18 (USB)
+</A></li>
+	<LI>Next message: <A HREF="001475.html">[Gpsd-users] Not Getting Output from Garmin GPS-18 (USB)
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1474">[ date ]</a>
+              <a href="thread.html#1474">[ thread ]</a>
+              <a href="subject.html#1474">[ subject ]</a>
+              <a href="author.html#1474">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

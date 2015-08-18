@@ -1,0 +1,98 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] results of Y polling, consider supporting Heading and Bearing
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2004-August/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20results%20of%20Y%20polling%2C%20consider%20supporting%20Heading%20and%20Bearing&In-Reply-To=%3C1093933130.29240.36.camel%40q.sr.unh.edu%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="000010.html">
+   <LINK REL="Next"  HREF="000012.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] results of Y polling, consider supporting Heading and Bearing</H1>
+    <B>Robert E. Anderson</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20results%20of%20Y%20polling%2C%20consider%20supporting%20Heading%20and%20Bearing&In-Reply-To=%3C1093933130.29240.36.camel%40q.sr.unh.edu%3E"
+       TITLE="[Gpsd-users] results of Y polling, consider supporting Heading and Bearing">rea at q.sr.unh.edu
+       </A><BR>
+    <I>Tue Aug 31 08:18:50 CEST 2004</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="000010.html">[Gpsd-users] SVN repository is back up
+</A></li>
+        <LI>Next message: <A HREF="000012.html">[Gpsd-users] results of Y polling, consider supporting Heading and Bearing
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#11">[ date ]</a>
+              <a href="thread.html#11">[ thread ]</a>
+              <a href="subject.html#11">[ subject ]</a>
+              <a href="author.html#11">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>My problem with the earlier versions was fixed in 1.94.  Turns out that
+that multi-gpsd-watcher patch could also cause problems if a single
+sender sent anything very quickly to gpsd.  I spent a lot of time
+debugging and came up with the same patch, when I went to mail it to
+this list I saw the update and retested with 1.94 and it worked fine.
+
+I then made the patches to qpegps to use 1.95.  I've submitted those to
+the authur for review.  I did notice one slight problem, but it could be
+my gps.
+
+When the return values of 'Y' are sent I've seen duplicate satellite
+names returned in a single Y response.  I first noticed it graphically
+and confirmed that I got the same result in a telnet session.
+
+On another note, the only functionality lost in converting qpegps was
+that you don't support the Heading or Bearing commands.  Bearing was a
+garmin specific options so I can see that not being high on the priority
+list, but Heading does make sense.
+
+The argument I would use for including Heading is most gps apps could
+use that feature.  I would suggest it return '?' if the current V value
+was not above something reasonable (qpegps used &gt;0.2m/s).  When
+traveling I could see it interesting to store the values from DPAVH at
+some polling interval.
+
+Thanks for the great work you've done.
+
+I intend on sending my OpenEmbedded build recipe to the OE team shortly.
+  
+
+-- 
+--------------------------------------------------------------
+ Robert E. Anderson  		 	email: <A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">rea at sr.unh.edu</A>
+ Systems Programmer			phone: (603) 862-3489
+ UNH Research Computing Center		  fax: (603) 862-1761
+--------------------------------------------------------------
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="000010.html">[Gpsd-users] SVN repository is back up
+</A></li>
+	<LI>Next message: <A HREF="000012.html">[Gpsd-users] results of Y polling, consider supporting Heading and Bearing
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#11">[ date ]</a>
+              <a href="thread.html#11">[ thread ]</a>
+              <a href="subject.html#11">[ subject ]</a>
+              <a href="author.html#11">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

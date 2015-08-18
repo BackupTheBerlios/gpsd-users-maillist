@@ -1,0 +1,94 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] Problems getting started with gpsd
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2005-December/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Problems%20getting%20started%20with%20gpsd&In-Reply-To=%3C20051224002342.B39651BCBD%40xprdmailfe23.nwk.excite.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="001188.html">
+   <LINK REL="Next"  HREF="001190.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] Problems getting started with gpsd</H1>
+    <B>mark_2811</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Problems%20getting%20started%20with%20gpsd&In-Reply-To=%3C20051224002342.B39651BCBD%40xprdmailfe23.nwk.excite.com%3E"
+       TITLE="[Gpsd-users] Problems getting started with gpsd">mark_2811 at excite.com
+       </A><BR>
+    <I>Sat Dec 24 01:23:42 CET 2005</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="001188.html">[Gpsd-users] Problems getting started with gpsd
+</A></li>
+        <LI>Next message: <A HREF="001190.html">[Gpsd-users] Problems getting started with gpsd
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1189">[ date ]</a>
+              <a href="thread.html#1189">[ thread ]</a>
+              <a href="subject.html#1189">[ subject ]</a>
+              <a href="author.html#1189">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE> --- On Fri 12/23, Gary E. Miller &lt; <A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">gem at rellim.com</A> &gt; wrote:
+From: Gary E. Miller [mailto: <A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">gem at rellim.com</A>]
+To: <A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">mark_2811 at excite.com</A>
+     Cc: <A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">gpsd-users at lists.berlios.de</A>
+Date: Fri, 23 Dec 2005 11:38:04 -0800 (PST)
+Subject: Re: [Gpsd-users] Problems getting started with gpsd
+
+-----BEGIN PGP SIGNED MESSAGE-----Hash: SHA1Yo Mark!On Fri, 23 Dec 2005, mark_2811 wrote:&gt; I'm running Mandrake Linux LE 2005.  For some reason the build isn't suc&gt; cessful with the autogen.sh script.  Is autogen.sh necessary since a reg&gt; ular 'make' seems to work fine.  What does autogen.sh actually do?  When&gt;  I try to build gpsd with autogen.sh I get the following messages:autogen.sh creates configure and configure generates tha makefile.  Ifyou checked out SVN then you need to run all three in order.  If youdownloaded the release tarball then run just this:	configure &amp;&amp; make &amp;&amp; make install&gt; Your automake version  is older than the suggested one, 1.7.6&gt; Go on at your own risk. :-)If you downloaed the SVN then you really need to update your automakecute.&gt; [<A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">mark at localhost</A> gpsd-2.30]$ ./autogen.shThat says you are not running as root, so any install will fail laterwhen the binaries are copied over.This says you are missing MOTIF, so the x based programs will not compile:&gt; 
+Makefile.am:8: HAVE_MOTIF does not appear in AM_CONDITIONALThis says you are missing DBUS support, you willlikely not miss that.&gt; Makefile.am:14: HAVE_DBUS does not appear in AM_CONDITIONAL&gt; [<A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">mark at localhost</A> gpsd-2.30]$You left out the details of how you built/installed it.&gt; I intend to run gpsd from a compact flash card that uses a read-only fil&gt; e system.  When I launch the executable with '/sbin/gpsd /dev/ttyS4' it&gt; gives the following:That is not the proper command line syntax.  You should try this way:	/sbin/gpsd -p /dev/ttyS4The naked device as an arugment is not supported.&gt; mkdir: Cannot create directory '/sbin/.libs': Read-only file system&gt; /sbin/gpsd: cd: 1: can't cd to /home/mark/projects/gpsd-2.30&gt; /sbin/gpsd: eval: 1: gcc: not foundThis does not even remotely look like gpsd.  It looks like a shell script.Check the file date, is that really the one you think you compiled?RGDSGARY- ---------------------------------------------------------------------------Gary E. 
+Miller Rellim 20340 Empire Blvd, Suite E-3, Bend, OR 97701	<A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">gem at rellim.com</A>  Tel:+1(541)382-8588 Fax: +1(541)382-8676-----BEGIN PGP SIGNATURE-----Version: GnuPG v1.4.1 (GNU/Linux)iD8DBQFDrFIf8KZibdeR3qURAgp1AJ9HonTxY6vuX5RpAV6O9ghzlsEy1QCg5lUmTYr27tH5NOofOF5C0BhhJfE==ldUW-----END PGP SIGNATURE-----_______________________________________________Gpsd-users mailing <A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">listGpsd-users at lists.berlios.dehttp</A>://lists.berlios.de/mailman/listinfo/gpsd-users
+
+
+Hi Gary, thanks for the reply.  I wasn't doing 'make install', but I don't want to install anyways, just copy over the executable to my compact flash card.
+
+I've learned a bit more since I sent the original message.  The executable is in the build directory/.libs.  The file 'gpsd' in the build directory is just a shell script that loads some libraries and launches the real executable.  This seems to be from libtool, which I'm not familiar with.
+
+I copied libgps.so.15 to my compact flash card, in addition to the gpsd executable from /.libs.  It gets alot further now, but complains at getprotobyname().  The error message is:  
+
+gpsd: Can't get &quot;tcp&quot; protocol entry.
+gpsd: command socket create failed, netlib error -1
+
+My /etc/protocols file is fine, so not sure what's wrong with it.  I suspect it may have something to do with nsswitch.conf (which I don't have on my compact flash).  Any thoughts?
+
+Also according to the documentation you're supposed to just pass the device file to gpsd as a command line argument (no -p argument).
+
+Thanks!
+Mark
+
+_______________________________________________
+Join Excite! - <A HREF="http://www.excite.com">http://www.excite.com</A>
+The most personalized portal on the Web!
+
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="001188.html">[Gpsd-users] Problems getting started with gpsd
+</A></li>
+	<LI>Next message: <A HREF="001190.html">[Gpsd-users] Problems getting started with gpsd
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1189">[ date ]</a>
+              <a href="thread.html#1189">[ thread ]</a>
+              <a href="subject.html#1189">[ subject ]</a>
+              <a href="author.html#1189">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

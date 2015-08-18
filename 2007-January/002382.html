@@ -1,0 +1,94 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] Garmin Binary
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2007-January/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Garmin%20Binary&In-Reply-To=%3C91981b3e0701090804p63ed9711w29024699c7bb25a2%40mail.gmail.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="002381.html">
+   <LINK REL="Next"  HREF="002384.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] Garmin Binary</H1>
+    <B>Chris Kuethe</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Garmin%20Binary&In-Reply-To=%3C91981b3e0701090804p63ed9711w29024699c7bb25a2%40mail.gmail.com%3E"
+       TITLE="[Gpsd-users] Garmin Binary">chris.kuethe at gmail.com
+       </A><BR>
+    <I>Tue Jan  9 17:04:24 CET 2007</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="002381.html">[Gpsd-users] Garmin Binary
+</A></li>
+        <LI>Next message: <A HREF="002384.html">[Gpsd-users] Garmin Binary
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2382">[ date ]</a>
+              <a href="thread.html#2382">[ thread ]</a>
+              <a href="subject.html#2382">[ subject ]</a>
+              <a href="author.html#2382">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>On 1/9/07, Andreas Stricker &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">andy at knitter.ch</A>&gt; wrote:
+&gt;<i> *BSD-Guys: How is this solved under OpenBSD/NetBSD? AFAIK the path
+</I>&gt;<i> /proc/bus/usb is linux specific too?
+</I>
+On OpenBSD, I don't even try to handle hotplug serial devices, but...
+
+we have the hotplug(4) system. /dev/hotplug is read by hotplugd(8)
+which in turn fires off a script to do stuff based on device type. I
+have a script that watches for disk attachment and mounts them
+properly - used to attach my ipod, for example.
+
+OpenBSD does have a rudimentary, somewhat-linux-compatible /proc, but
+no one really uses it outside of linux-emulation mode. It doesn't
+present the full tree, just processes and basic CPU and memory
+information - no /proc/bus. By and large, what linux provides through
+/proc, OpenBSD gets with sysctl.
+
+Alas, the kernel does not inlude pci/usb/ata product/vendor/serial
+number in hotplug messages, so we usually end up parsing this out of
+dmesg if we need it. There was a patch on the tech mailing list to at
+least get USB VID/PID for more fine-grain control. I haven't closely
+reviewed it, but the principle seems sound to me.
+
+I'm not sure I would activate a serial line with hotplug, because none
+of the 8 usb-serial devices give my any sort of unique device
+identifier - heck, not even windows gets that. At least with a hard
+disk I can examine the serial number and the volume label to decide
+how to automount this device.
+
+CK
+
+-- 
+GDB has a 'break' feature; why doesn't it have 'fix' too?
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="002381.html">[Gpsd-users] Garmin Binary
+</A></li>
+	<LI>Next message: <A HREF="002384.html">[Gpsd-users] Garmin Binary
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2382">[ date ]</a>
+              <a href="thread.html#2382">[ thread ]</a>
+              <a href="subject.html#2382">[ subject ]</a>
+              <a href="author.html#2382">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

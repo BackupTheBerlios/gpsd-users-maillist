@@ -1,0 +1,143 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] gps_query issue
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2009-July/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20gps_query%20issue&In-Reply-To=%3Ca2d3b4550907091530s25225cb0n4b1c128e40d46813%40mail.gmail.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="003806.html">
+   <LINK REL="Next"  HREF="003808.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] gps_query issue</H1>
+    <B>Don Weeks</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20gps_query%20issue&In-Reply-To=%3Ca2d3b4550907091530s25225cb0n4b1c128e40d46813%40mail.gmail.com%3E"
+       TITLE="[Gpsd-users] gps_query issue">don.l.weeks.jr at gmail.com
+       </A><BR>
+    <I>Fri Jul 10 00:30:36 CEST 2009</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="003806.html">[Gpsd-users] WBT-201
+</A></li>
+        <LI>Next message: <A HREF="003808.html">[Gpsd-users] gps_query issue
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3807">[ date ]</a>
+              <a href="thread.html#3807">[ thread ]</a>
+              <a href="subject.html#3807">[ subject ]</a>
+              <a href="author.html#3807">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Not sure if this goes to the developers list or the users list but I have
+the following code listed towards the end of this message. And while the
+program works while doing the poll, it does not work for the query. In the
+failed case, lat, long, time and alt are all NaN.  However, if the commented
+out section is run through the debugger, the query succeeds and values are
+set. For the software I ultimately need to write, another application will
+periodically grab from me the latitude/long/alt. So I really don't want to
+implement it with gps poll.  I only want to query as needed.
+           Don
+
+
+#ifdef HAVE_CONFIG_H
+#include &lt;config.h&gt;
+#endif
+
+#include &lt;stdio.h&gt;
+#include &lt;stdlib.h&gt;
+#include &lt;string.h&gt;
+#include &lt;errno.h&gt;
+#include &quot;gps.h&quot;
+
+static struct gps_data_t *gpsdata;
+int main(int argc, char *argv[])
+{
+      char *err_str = NULL;
+    char server[16];
+char port[5];
+strcpy(server, &quot;127.0.0.1\0&quot;);
+strcpy(port, &quot;2947\0&quot;);
+
+printf(&quot;Opening GPSd....\n&quot;);
+gpsdata = gps_open(server, port);
+
+/*    gpsdata = gps_open(&quot;localhost&quot;, &quot;2947&quot;); */
+    if (!&amp;gpsdata) {
+        switch ( errno ) {
+            case NL_NOSERVICE:  err_str = &quot;can't get service entry&quot;; break;
+            case NL_NOHOST:     err_str = &quot;can't get host entry&quot;; break;
+            case NL_NOPROTO:    err_str = &quot;can't get protocol entry&quot;; break;
+            case NL_NOSOCK:     err_str = &quot;can't create socket&quot;; break;
+            case NL_NOSOCKOPT:  err_str = &quot;error SETSOCKOPT SO_REUSEADDR&quot;;
+break;
+            case NL_NOCONNECT:  err_str = &quot;can't connect to host&quot;; break;
+            default:            err_str = &quot;Unknown&quot;; break;
+        }
+        (void)fprintf( stderr,
+                &quot;cgps: no gpsd running or network error: %d, %s\n&quot;,
+                errno, err_str);
+        exit(2);
+      }
+/*    printf(&quot;status = %d\n&quot;, gpsdata-&gt;status);
+    int i=gps_query(gpsdata, &quot;i\n&quot;);
+    printf(&quot;Query Status = %d\n&quot;, i);
+    i=gps_query(gpsdata, &quot;o\n&quot;);
+    printf(&quot;Query Status = %d\n&quot;, i);
+    printf(&quot;Fix Status = %d Latitiude=%lg Longitude=%lg Time=%lg\n\n&quot;,
+gpsdata-&gt;fix.mode, gpsdata-&gt;fix.latitude, gpsdata-&gt;fix.longitude,
+gpsdata-&gt;fix.time);
+    i=gps_query(gpsdata, &quot;o\n&quot;);
+    printf(&quot;Query Status = %d\n&quot;, i);
+    printf(&quot;Fix Status = %d Latitiude=%lg Longitude=%lg Time=%lg\n\n&quot;,
+gpsdata-&gt;fix.mode, gpsdata-&gt;fix.latitude, gpsdata-&gt;fix.longitude,
+gpsdata-&gt;fix.time);
+    i=gps_query(gpsdata, &quot;o\n&quot;);
+    printf(&quot;Query Status = %d\n&quot;, i);
+    printf(&quot;Fix Status = %d Latitiude=%lg Longitude=%lg Time=%lg\n\n&quot;,
+gpsdata-&gt;fix.mode, gpsdata-&gt;fix.latitude, gpsdata-&gt;fix.longitude,
+gpsdata-&gt;fix.time);
+    i=gps_query(gpsdata, &quot;o\n&quot;);
+    printf(&quot;Query Status = %d\n&quot;, i);
+    printf(&quot;Fix Status = %d Latitiude=%lg Longitude=%lg Time=%lg\n\n&quot;,
+gpsdata-&gt;fix.mode, gpsdata-&gt;fix.latitude, gpsdata-&gt;fix.longitude,
+gpsdata-&gt;fix.time);
+*/
+    gps_query(gpsdata, &quot;w\n&quot;);
+    while (1) {
+        gps_poll(gpsdata);
+        printf(&quot;Fix Status = %d Latitiude=%lg Longitude=%lg Altitude=%f
+Time=%f\n\n&quot;, gpsdata-&gt;fix.mode, gpsdata-&gt;fix.latitude,
+gpsdata-&gt;fix.longitude, gpsdata-&gt;fix.altitude, gpsdata-&gt;fix.time);
+    }
+}
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="003806.html">[Gpsd-users] WBT-201
+</A></li>
+	<LI>Next message: <A HREF="003808.html">[Gpsd-users] gps_query issue
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3807">[ date ]</a>
+              <a href="thread.html#3807">[ thread ]</a>
+              <a href="subject.html#3807">[ subject ]</a>
+              <a href="author.html#3807">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

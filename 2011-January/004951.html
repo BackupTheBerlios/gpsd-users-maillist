@@ -1,0 +1,113 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] Mapping NMEA Sentence name to tag
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2011-January/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Mapping%20NMEA%20Sentence%20name%20to%20tag&In-Reply-To=%3C4D3EF713.1010007%40WRLee.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="004957.html">
+   <LINK REL="Next"  HREF="004952.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] Mapping NMEA Sentence name to tag</H1>
+    <B>Bill Lee</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Mapping%20NMEA%20Sentence%20name%20to%20tag&In-Reply-To=%3C4D3EF713.1010007%40WRLee.com%3E"
+       TITLE="[Gpsd-users] Mapping NMEA Sentence name to tag">Bill at WRLee.com
+       </A><BR>
+    <I>Tue Jan 25 17:15:15 CET 2011</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="004957.html">[Gpsd-users] gps_waiting behavior
+</A></li>
+        <LI>Next message: <A HREF="004952.html">[Gpsd-users] Mapping NMEA Sentence name to tag
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#4951">[ date ]</a>
+              <a href="thread.html#4951">[ thread ]</a>
+              <a href="subject.html#4951">[ subject ]</a>
+              <a href="author.html#4951">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Warning: newbie alert! :-)
+
+I am running a Fedora13 system using GPSD 2.39. Contrary to what I have 
+seen elsewhere, 2.39 uses the OLD interface format. The gps receiver is 
+a bu-353.
+
+I have several programs attaching to gpsd and getting output. In fact, I 
+have actually made the FireFox gpsd interface work. Which brings me to 
+my question.
+
+The man page for gpsd defines the &quot;o&quot; output as having a &quot;tag&quot;, defined as:
+
+     &quot;A tag identifying the last sentence received. For NMEA devices 
+this is just
+       the NMEA sentence name; the talker-ID portion may be useful for
+        distinguishing among results produced by different NMEA talkers 
+in the same
+        wire.&quot;
+
+On my system, gpsd is sending back &quot;o&quot; messages with a &quot;tag&quot; of &quot;GND&quot;. 
+Given that this is supposed to be an NMEA sentence name, two things are 
+in question. 1)Is the bu-353 an NMEA device, and 2) what NMEA sentence 
+is being mapped?
+
+I have run gpsd in debug mode and looked at the message from the gps 
+unit. A typical message looks like
+
+gpsd: &lt;= GPS (binary) /dev/ttyUSB0: 
+$GPGGA,145232,3221.3012,N,09532.6418,W,1,06,1.40,156.62,M,-25.144,M,,*79\x0d\x0a$GPRMC,145232,A,3221.3012,N,09532.6418,W,1.3853,112.526,250111,,*31\x0d\x0a$GPGSA,A,3,04,09,02,05,10,17,,,,,,,2.4,1.4,1.7*3A
+
+The output sent to the client as a result of this NMEA message from the 
+gps was
+
+gpsd: =&gt; client(0): GPSD,O=MID2 1295967152.000 0.005 32.355019734 
+-95.544030260 156.621 21.000 39.482 112.5259 0.713 0.197 ? 23.89 ? 3
+
+
+I looked at the NMEA definition here:
+     <A HREF="http://www.gpsinformation.org/dale/nmea.htm">http://www.gpsinformation.org/dale/nmea.htm</A>
+and found no NMEA sentences that approach &quot;GND&quot;. How does GPSD create 
+the GND response which is sent back to the client?
+
+A similar question arises when examining the xgps application. I gets a 
+mix of &quot;GND&quot; and &quot;MID2&quot; messages back from gpsd. And, again, I can find 
+no information that describes the NMEA sentence(s) that map to a MID2 
+response.
+
+Thanks in advance.
+
+Regards,
+
+Bill Lee
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="004957.html">[Gpsd-users] gps_waiting behavior
+</A></li>
+	<LI>Next message: <A HREF="004952.html">[Gpsd-users] Mapping NMEA Sentence name to tag
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#4951">[ date ]</a>
+              <a href="thread.html#4951">[ thread ]</a>
+              <a href="subject.html#4951">[ subject ]</a>
+              <a href="author.html#4951">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

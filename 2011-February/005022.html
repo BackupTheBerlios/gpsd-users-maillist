@@ -1,0 +1,182 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] NTRIP/RTCM disconnects solved(?)
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2011-February/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20NTRIP/RTCM%20disconnects%20solved%28%3F%29&In-Reply-To=%3C4D53D2B8.7070109%40googlemail.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="005021.html">
+   <LINK REL="Next"  HREF="005023.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] NTRIP/RTCM disconnects solved(?)</H1>
+    <B>Andre Naujoks</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20NTRIP/RTCM%20disconnects%20solved%28%3F%29&In-Reply-To=%3C4D53D2B8.7070109%40googlemail.com%3E"
+       TITLE="[Gpsd-users] NTRIP/RTCM disconnects solved(?)">nautsch2 at googlemail.com
+       </A><BR>
+    <I>Thu Feb 10 12:57:44 CET 2011</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="005021.html">[Gpsd-users] Volunteers Needed?
+</A></li>
+        <LI>Next message: <A HREF="005023.html">[Gpsd-users] NTRIP/RTCM disconnects solved(?) (more patches)
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#5022">[ date ]</a>
+              <a href="thread.html#5022">[ thread ]</a>
+              <a href="subject.html#5022">[ subject ]</a>
+              <a href="author.html#5022">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi.
+
+I had a problem with an RTCM Caster for two days now with reoccuring disconnects,
+lost locks all the time and overall non-working :-).
+
+I think I got it fixed as far as I can see. See the patches below which should apply
+to the current git.
+
+The first thing I had to do to make RTCM work at all, was to remove the separate
+poll for the socket (the change in gpsd.c). The same stuff is done in
+consume_packet, so there is no loss here. In fact the duplicated read caused
+constant lock losses on the RTCM stream because of missing data, which
+was already read by the now removed read.
+
+The first change in net_ntrip.c adds another string to the valid strings for
+rtcm2 to be recognized. See: <A HREF="http://www.sapos-ni-ntrip.de:2101/sourcetable.htm">http://www.sapos-ni-ntrip.de:2101/sourcetable.htm</A>
+for the sourcetable of the server. The mountpoint I am using is EPS_NI.
+The problem is the RTCM1_ data format. The people from sapos confirmed,
+that this is a RTCM2 stream and so far it works.
+
+I then had to add the EAGAIN cases during the NTRIP probing and opening, because
+the server could not possibly answer as fast as was expected and the read failed
+every time on the nonblocking socket with EAGAIN. The downside of this is that a
+non answering server will cause an infinite loop here. Maybe a counter should be
+added there.
+
+The last one fixes the sending of the current position to the RTCM caster. The
+current implementation sends exactly one GGA sentence to the server and then stops.
+In my case that led to a closed connection by the server because of an NMEA timeout.
+Since this is the only Server I could try this with, I don't know the implications
+of the change, but it works for me.
+
+
+Please tell me what you think of these changes and if they have any chance of
+of getting into the mainline gpsd. I would really appreciate it.
+
+
+Regards
+  Andre Naujoks
+
+------------------------------
+
+diff --git a/gpsd.c b/gpsd.c
+index b663e90..43bb91b 100644
+--- a/gpsd.c
++++ b/gpsd.c
+@@ -1923,15 +1923,6 @@ int main(int argc, char *argv[])
+            FD_CLR(csock, &amp;rfds);
+        }
+
+-       if (context.dsock &gt;= 0 &amp;&amp; FD_ISSET(context.dsock, &amp;rfds)) {
+-           /* be ready for DGPS reports */
+-           if (netgnss_poll(&amp;context) == -1) {
+-               FD_CLR(context.dsock, &amp;all_fds);
+-               FD_CLR(context.dsock, &amp;rfds);
+-               context.dsock = -1;
+-           }
+-       }
+-
+        /* read any commands that came in over control sockets */
+        for (cfd = 0; cfd &lt; FD_SETSIZE; cfd++)
+            if (FD_ISSET(cfd, &amp;control_fds)) {
+diff --git a/net_ntrip.c b/net_ntrip.c
+index 636b5f0..0dbf7d4 100644
+--- a/net_ntrip.c
++++ b/net_ntrip.c
+@@ -115,6 +115,8 @@ static void ntrip_str_parse(char *str, size_t len,
+            hold-&gt;format = fmt_rtcm2_2;
+        else if (strcasecmp(&quot;RTCM 2.3&quot;, s) == 0)
+            hold-&gt;format = fmt_rtcm2_3;
++       else if (strcasecmp(&quot;RTCM1_&quot;, s) == 0)
++           hold-&gt;format = fmt_rtcm2_3;
+        else if (strcasecmp(&quot;RTCM 3.0&quot;, s) == 0)
+            hold-&gt;format = fmt_rtcm3;
+        else
+@@ -198,6 +200,10 @@ static int ntrip_sourcetable_parse(int fd, char *buf, ssize_t blen,
+        if ((rlen = recv(fd, &amp;buf[len], (size_t) (blen - 1 - len), 0)) == -1) {
+            if (errno == EINTR)
+                continue;
++           if (errno == EAGAIN) {
++               usleep(10000);
++               continue;
++           }
+            gpsd_report(LOG_ERROR, &quot;ntrip stream read error %d on fd %d\n&quot;,
+                        errno, fd);
+            return -1;
+@@ -396,6 +402,10 @@ static int ntrip_stream_open(const char *caster, const char *port,
+     while (read(context-&gt;dsock, buf, sizeof(buf) - 1) == -1) {
+        if (errno == EINTR)
+            continue;
++       if (errno == EAGAIN) {
++               usleep(10000); // if the server did not immediately answer we wait for it
++               continue;
++       }
+        gpsd_report(LOG_ERROR, &quot;ntrip stream read error %d on fd %d\n&quot;, errno,
+                    context-&gt;dsock);
+        goto close;
+@@ -504,14 +514,19 @@ int ntrip_open(struct gps_context_t *context, char *caster)
+ void ntrip_report(struct gps_device_t *session)
+ /* may be time to ship a usage report to the Ntrip caster */
+ {
++    static int count;
+     struct ntrip_stream_t *stream = session-&gt;context-&gt;netgnss_privdata;
+     /*
+      * 10 is an arbitrary number, the point is to have gotten several good
+      * fixes before reporting usage to our Ntrip caster.
+-     */
++     *
++     * count % 5 is as arbitrary a number as the fixcnt. But some delay
++     * was needed here
++     */
++    count ++;
+     if (stream != NULL &amp;&amp; stream-&gt;nmea != 0
+-       &amp;&amp; session-&gt;context-&gt;fixcnt &gt; 10 &amp;&amp; !session-&gt;context-&gt;sentdgps) {
+-       session-&gt;context-&gt;sentdgps = true;
++       &amp;&amp; session-&gt;context-&gt;fixcnt &gt; 10 &amp;&amp;!(count % 5)) {
++       session-&gt;context-&gt;sentdgps = true; // this is maybe no longer needed
+        if (session-&gt;context-&gt;dsock &gt; -1) {
+            char buf[BUFSIZ];
+            gpsd_position_fix_dump(session, buf, sizeof(buf));
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="005021.html">[Gpsd-users] Volunteers Needed?
+</A></li>
+	<LI>Next message: <A HREF="005023.html">[Gpsd-users] NTRIP/RTCM disconnects solved(?) (more patches)
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#5022">[ date ]</a>
+              <a href="thread.html#5022">[ thread ]</a>
+              <a href="subject.html#5022">[ subject ]</a>
+              <a href="author.html#5022">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

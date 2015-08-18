@@ -1,0 +1,95 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] Initializing clock with gpsd &amp; ntpd
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2009-September/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Initializing%20clock%20with%20gpsd%20%26%20ntpd&In-Reply-To=%3Ca2d3b4550909250658r645a89cdt827916e445f9e9d3%40mail.gmail.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="003961.html">
+   <LINK REL="Next"  HREF="003974.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] Initializing clock with gpsd &amp; ntpd</H1>
+    <B>Don Weeks</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Initializing%20clock%20with%20gpsd%20%26%20ntpd&In-Reply-To=%3Ca2d3b4550909250658r645a89cdt827916e445f9e9d3%40mail.gmail.com%3E"
+       TITLE="[Gpsd-users] Initializing clock with gpsd &amp; ntpd">don.l.weeks.jr at gmail.com
+       </A><BR>
+    <I>Fri Sep 25 15:58:20 CEST 2009</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="003961.html">[Gpsd-users] Initializing clock with gpsd &amp; ntpd
+</A></li>
+        <LI>Next message: <A HREF="003974.html">[Gpsd-users] Initializing clock with gpsd &amp; ntpd
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3971">[ date ]</a>
+              <a href="thread.html#3971">[ thread ]</a>
+              <a href="subject.html#3971">[ subject ]</a>
+              <a href="author.html#3971">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>I will have this problem as well. My plan is to use the GPS date/time from
+gpsd to set the date and time. Then, I will start ntpd.
+       Don
+
+On Thu, Sep 24, 2009 at 6:00 PM, David Severt &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">severtd at softdevsys.com</A>&gt;wrote:
+
+&gt;<i> I have an embedded data gathering application that requires valid time
+</I>&gt;<i> information to go with the data, so I am trying to use gpsd along with
+</I>&gt;<i> ntpd to maintain the clock.  The real-time clock in this device will not
+</I>&gt;<i> survive an extended power outage and, since it is headless, there can be
+</I>&gt;<i> no user interaction to restore the system clock.  I can use ntpd to
+</I>&gt;<i> initialize the clock via an ntp server (ntpd -Agq) and the ntpd/gpsd
+</I>&gt;<i> combination will work to maintain the clock.  However, if I don't have
+</I>&gt;<i> access to an ntp server because the network is unavailable, I can't get
+</I>&gt;<i> ntpd to initialize the clock using time information from gpsd.  It looks
+</I>&gt;<i> like the gpsd time information will only be used to slew the clock,
+</I>&gt;<i> rather than step the clock, which is what needs to happen when the date
+</I>&gt;<i> is Jan 1, 1970.  If the system time is Jan 1, 1970, is there a way to
+</I>&gt;<i> get ntpd to initialize the clock using only gpsd data, or will I need to
+</I>&gt;<i> write an application to get time information from gpsd to initialize the
+</I>&gt;<i> clock before starting ntpd?  Once the clock is initialized, ntpd works
+</I>&gt;<i> fine with only gpsd for time information but first I have to get it
+</I>&gt;<i> initialized somehow.
+</I>&gt;<i>
+</I>&gt;<i> I realize that this might be a question for the ntp mailing list but I
+</I>&gt;<i> thought I'd try here first.
+</I>&gt;<i>
+</I>&gt;<i> Regards,
+</I>&gt;<i> David Severt
+</I>&gt;<i> _______________________________________________
+</I>&gt;<i> Gpsd-users mailing list
+</I>&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">Gpsd-users at lists.berlios.de</A>
+</I>&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">https://lists.berlios.de/mailman/listinfo/gpsd-users</A>
+</I>&gt;<i>
+</I>
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="003961.html">[Gpsd-users] Initializing clock with gpsd &amp; ntpd
+</A></li>
+	<LI>Next message: <A HREF="003974.html">[Gpsd-users] Initializing clock with gpsd &amp; ntpd
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3971">[ date ]</a>
+              <a href="thread.html#3971">[ thread ]</a>
+              <a href="subject.html#3971">[ subject ]</a>
+              <a href="author.html#3971">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

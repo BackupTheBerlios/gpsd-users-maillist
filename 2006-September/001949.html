@@ -1,0 +1,144 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] Problems with a Haicom HI-305N
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2006-September/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Problems%20with%20a%20Haicom%20HI-305N&In-Reply-To=%3C86bqpk18iq.fsf%40coulee.tdb.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="001948.html">
+   <LINK REL="Next"  HREF="001915.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] Problems with a Haicom HI-305N</H1>
+    <B>Russell Senior</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Problems%20with%20a%20Haicom%20HI-305N&In-Reply-To=%3C86bqpk18iq.fsf%40coulee.tdb.com%3E"
+       TITLE="[Gpsd-users] Problems with a Haicom HI-305N">russell at personaltelco.net
+       </A><BR>
+    <I>Wed Sep 13 10:21:49 CEST 2006</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="001948.html">[Gpsd-users] Problems with a Haicom HI-305N
+</A></li>
+        <LI>Next message: <A HREF="001915.html">[Gpsd-users] Bluetooth GPS Nokia LD-3W, sirfmon
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1949">[ date ]</a>
+              <a href="thread.html#1949">[ thread ]</a>
+              <a href="subject.html#1949">[ subject ]</a>
+              <a href="author.html#1949">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>&gt;&gt;&gt;&gt;&gt;<i> &quot;Eric&quot; == Eric S Raymond &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">esr at thyrsus.com</A>&gt; writes:
+</I>
+Eric&gt; Eh?  When gpsd has altitude, Kismet will get altitude. I'm still
+Eric&gt; not quite getting this.
+
+Russell&gt; gpsd *gets* altitude and then throws it away.  That's the
+Russell&gt; problem, as I recall.  Pretty sure that (altitude) shows in
+Russell&gt; the raw NMEA dump I sent before.
+
+Eric&gt; A raw log of NMEA shows that altitude is being reported by the
+Eric&gt; GPS, all right, but not that it's being thrown away.
+
+Russell&gt; Gpsd *does* throw away the altitude present in the NMEA.  If
+Russell&gt; the BU-353 doesn't generate the data in exactly the way
+Russell&gt; current gpsd expects it, then _gpsd_ needs to change what it
+Russell&gt; expects.  Period.  Full stop.  Anything else is *B* *R* *O*
+Russell&gt; *K* *E* *N*.
+
+Eric&gt; I still don't understand why you believe this.  What are you
+Eric&gt; seeing that convinces you altitude is being thrown away.
+
+Because the NMEA data has altitude and GPSD doesn't give it to me.
+
+I sent this information before, back on August 1, to this list.  I
+query and gpsd gives me A=?, e.g.:
+
+  $ nc localhost 2947
+  pavmh
+  GPSD,P=?,A=?,V=?,M=0
+  pavmh
+  GPSD,P=45.546543 -122.640468,A=53.900,V=?,M=3
+  pavmh
+  GPSD,P=45.546545 -122.640467,A=?,V=0.040,M=0
+  pavmh
+  GPSD,P=45.546543 -122.640470,A=?,V=0.080,M=0
+  pavmh
+  GPSD,P=45.546542 -122.640472,A=54.700,V=?,M=3
+  pavmh
+  GPSD,P=45.546548 -122.640475,A=?,V=0.120,M=0
+  pavmh
+  GPSD,P=45.546548 -122.640475,A=?,V=0.030,M=0
+  pavmh
+  GPSD,P=45.546548 -122.640475,A=?,V=0.160,M=0
+  pavmh
+  GPSD,P=45.546548 -122.640477,A=?,V=?,M=0
+  pavmh
+  GPSD,P=45.546548 -122.640477,A=?,V=0.140,M=0
+  pavmh
+  GPSD,P=45.546550 -122.640477,A=?,V=0.100,M=0
+  pavmh
+  GPSD,P=45.546550 -122.640477,A=?,V=0.100,M=0
+  pavmh
+  GPSD,P=45.546550 -122.640477,A=?,V=0.060,M=0
+  pavmh
+  GPSD,P=45.546552 -122.640477,A=?,V=0.220,M=0
+  pavmh
+  GPSD,P=45.546552 -122.640475,A=54.300,V=?,M=3
+  pavmh
+  GPSD,P=45.546552 -122.640477,A=?,V=?,M=0
+  pavmh
+  GPSD,P=45.546552 -122.640477,A=?,V=0.230,M=0
+  pavmh
+  GPSD,P=45.546552 -122.640477,A=54.300,V=?,M=3
+  pavmh
+  GPSD,P=45.546552 -122.640477,A=?,V=0.130,M=0
+  pavmh
+  GPSD,P=45.546552 -122.640478,A=54.400,V=?,M=3
+  pavmh
+  GPSD,P=45.546555 -122.640480,A=?,V=0.090,M=0
+
+when clearly (take my word for it) the altitude is present in NMEA
+data and I have an excellent lock on the satellites.  
+
+The &quot;pavmh&quot; query is the one that kismet uses (iirc), and when it gets
+the question mark for A, it assumes the whole fix is bad and kismet
+throws it away, which is how I first noticed this.
+
+See my August 1 message for a slightly more comprehensive report.
+
+
+-- 
+Russell Senior, Secretary
+<A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">russell at personaltelco.net</A>
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="001948.html">[Gpsd-users] Problems with a Haicom HI-305N
+</A></li>
+	<LI>Next message: <A HREF="001915.html">[Gpsd-users] Bluetooth GPS Nokia LD-3W, sirfmon
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1949">[ date ]</a>
+              <a href="thread.html#1949">[ thread ]</a>
+              <a href="subject.html#1949">[ subject ]</a>
+              <a href="author.html#1949">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

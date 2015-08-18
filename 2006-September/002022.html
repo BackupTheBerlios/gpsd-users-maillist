@@ -1,0 +1,118 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] unit power confusion, was Re:  PPS on RTS?
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2006-September/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20unit%20power%20confusion%2C%20was%20Re%3A%20%20PPS%20on%20RTS%3F&In-Reply-To=%3CPine.LNX.4.64.0609271310570.29291%40catbert.rellim.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="002021.html">
+   <LINK REL="Next"  HREF="002023.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] unit power confusion, was Re:  PPS on RTS?</H1>
+    <B>Gary E. Miller</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20unit%20power%20confusion%2C%20was%20Re%3A%20%20PPS%20on%20RTS%3F&In-Reply-To=%3CPine.LNX.4.64.0609271310570.29291%40catbert.rellim.com%3E"
+       TITLE="[Gpsd-users] unit power confusion, was Re:  PPS on RTS?">gem at rellim.com
+       </A><BR>
+    <I>Wed Sep 27 22:15:07 CEST 2006</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="002021.html">[Gpsd-users] unit power confusion, was Re:  PPS on RTS?
+</A></li>
+        <LI>Next message: <A HREF="002023.html">[Gpsd-users] unit power confusion, was Re: PPS on RTS?
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2022">[ date ]</a>
+              <a href="thread.html#2022">[ thread ]</a>
+              <a href="subject.html#2022">[ subject ]</a>
+              <a href="author.html#2022">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>-----BEGIN PGP SIGNED MESSAGE-----
+Hash: SHA1
+
+Yo Steven!
+
+On Wed, 27 Sep 2006, gnu not unix wrote:
+
+&gt;<i> &gt;Section 1.5.3: The unit accepts TIA-232-F (RS-232) level inputs and
+</I>&gt;<i> &gt;transmits voltage levels that swing from ground to the positive supply
+</I>&gt;<i> &gt;coltage, TIA-232-F (RS-232) polarity.
+</I>&gt;<i>
+</I>&gt;<i> So, no, the data output is ground (zero) to plus five volts
+</I>&gt;<i> (nominal +5V supply), not minus five to plus five volts.
+</I>
+Yep.
+
+&gt;<i> &gt;Section 1.6.2.1: Input Voltage
+</I>&gt;<i> &gt;  GPS-18/LVC: 4.0 - 5.5V
+</I>&gt;<i>
+</I>&gt;<i> &gt;Section 1.6.2.2 Input Current
+</I>&gt;<i> &gt;  GPS-18/LVC: 60mA @ 5.0V
+</I>&gt;<i>
+</I>&gt;<i> Uh, these are  the voltage/current that power the unit, and are
+</I>&gt;<i> not related to the *output* drive level.
+</I>
+Read it again. Input Voltage is &quot;Vin&quot; and is referenced below as the
+output high level.
+
+&gt;<i> &gt;Section 1.6.2.3 CMOS Serial Output Levels
+</I>&gt;<i> &gt;  GPS-18/LVC: 0V to Vin, between 4 and 5.5V (Asynchronous Serial, TIA-232-F
+</I>                     ^^^^^^^
+Notice Vin?   That is why I provided Vin above.
+
+So it might be possible to run the GPS-18/LVC at 4.25V with a good power
+supply if that sneaks in under an input voltage limit on the gumstix.
+
+&gt;<i> &gt;              (RS-232) Compatible Polarity)
+</I>&gt;<i>
+</I>&gt;<i> I use a &quot;max232&quot; style buffer/driver to the PC, on a Trimble SV6 which has
+</I>&gt;<i> similar cmos buffer output driver spec, as this gps18lvc.
+</I>
+Do you run TSIP with gpsd?  If so I am working on some TSIP/Garmin init
+issues and I coluld use some testing on the TSIP.
+
+RGDS
+GARY
+- ---------------------------------------------------------------------------
+Gary E. Miller Rellim 20340 Empire Blvd, Suite E-3, Bend, OR 97701
+	<A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">gem at rellim.com</A>  Tel:+1(541)382-8588
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v1.4.3 (GNU/Linux)
+
+iD8DBQFFGtvN8KZibdeR3qURAkMvAJ9LUBOhWej1UPH/zQKwT01EaE5aYwCgvwfT
+iKPUSs+jeUXswU9ohYoEewk=
+=ZgtT
+-----END PGP SIGNATURE-----
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="002021.html">[Gpsd-users] unit power confusion, was Re:  PPS on RTS?
+</A></li>
+	<LI>Next message: <A HREF="002023.html">[Gpsd-users] unit power confusion, was Re: PPS on RTS?
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2022">[ date ]</a>
+              <a href="thread.html#2022">[ thread ]</a>
+              <a href="subject.html#2022">[ subject ]</a>
+              <a href="author.html#2022">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

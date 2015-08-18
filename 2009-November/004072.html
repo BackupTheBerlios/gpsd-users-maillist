@@ -1,0 +1,136 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] Fw: GPSD Documentation
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2009-November/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Fw%3A%20GPSD%20Documentation&In-Reply-To=%3C20091118090442.GA9226%40thyrsus.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="004064.html">
+   <LINK REL="Next"  HREF="004073.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] Fw: GPSD Documentation</H1>
+    <B>Eric S. Raymond</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Fw%3A%20GPSD%20Documentation&In-Reply-To=%3C20091118090442.GA9226%40thyrsus.com%3E"
+       TITLE="[Gpsd-users] Fw: GPSD Documentation">esr at thyrsus.com
+       </A><BR>
+    <I>Wed Nov 18 10:04:42 CET 2009</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="004064.html">[Gpsd-users] Fw: GPSD Documentation
+</A></li>
+        <LI>Next message: <A HREF="004073.html">[Gpsd-users] Fw: GPSD Documentation
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#4072">[ date ]</a>
+              <a href="thread.html#4072">[ thread ]</a>
+              <a href="subject.html#4072">[ subject ]</a>
+              <a href="author.html#4072">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE><A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">dofinch-aria at yahoo.co.uk</A> &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">dofinch-aria at yahoo.co.uk</A>&gt;:
+&gt;<i>  CAVEAT: I hope that the gpsd development collaborators
+</I>&gt;<i>  won't take offense about any of this but rather that this
+</I>&gt;<i>  mail will be of some assistance as the observations of a
+</I>&gt;<i>  happy and grateful, but not especially linux savvy, user 
+</I>&gt;<i>  of gpsd.
+</I>
+Your feedback was extremely useful and I am in the process of
+incorporating several of your suggestions.
+  
+&gt;<i>  1) Immediately after the section &quot;SYNOPSIS&quot; add a new
+</I>&gt;<i>  section &quot;EXAMPLES OF BASIC OPERATION&quot;. 
+</I>
+I'm doing this now.
+  
+&gt;<i>  3) To be truly helpful the Compatible Hardware table should
+</I>&gt;<i>  be extended to show also HOW the hardware is to be used. A
+</I>&gt;<i>  few simple additions should suffice. In this context I would
+</I>&gt;<i>  like to see the following added to the Garmin GPS 76 entry:
+</I>&gt;<i>  
+</I>&gt;<i>  In the Notes column: 
+</I>&gt;<i>  
+</I>&gt;<i>  &quot;This device can be connected directly to a Serial RS232
+</I>&gt;<i>  port on the computer using the special PC connector lead
+</I>&gt;<i>  supplied by Garmin (a 9-pin RS232 connector is used at the
+</I>&gt;<i>  PC end). Issue the command 'gpsd /dev/ttyS0', or similar, in
+</I>&gt;<i>  a terminal window to start gpsd.
+</I>&gt;<i>  
+</I>&gt;<i>  The device can also be connected to a USB socket on the PC
+</I>&gt;<i>  by using a USB-Serial converter lead. In this latter case,
+</I>&gt;<i>  in Linux, the usbserial Kernel Module must be loaded and
+</I>&gt;<i>  started with a command such as 'sudo modprobe usbserial
+</I>&gt;<i>  vendor=0&#215;1a86 product=0&#215;7523' (check the manual for your
+</I>&gt;<i>  usb-serial converter device for more information on this -
+</I>&gt;<i>  vendor and product number will most likely be different for
+</I>&gt;<i>  your device). Start gpsd by issuing the command 'gpsd
+</I>&gt;<i>  /dev/ttyUSB0' or similar in a terminal window. In this case
+</I>&gt;<i>  the Garmin GPS 76 comms MUST be set to 'NMEA'. The kernel
+</I>&gt;<i>  module garmin_gps is not needed and should not be specially
+</I>&gt;<i>  loaded.&quot;
+</I>
+This is *far* too long for the notes column.  The stuff about the
+usbserial module actually belongs in our FAQ and I'm going to put it
+there.
+
+&gt;<i>  Unfortunately, at present I believe that the table also has
+</I>&gt;<i>  some errors in its content for the Garmin GPS 76 device:
+</I>&gt;<i>  
+</I>&gt;<i>  1) The device interface should be shown as &quot;RS232&quot; not
+</I>&gt;<i>  &quot;USB&quot; (even if the connection is made via a usb-serial
+</I>&gt;<i>  converter lead.) Garmin supplies a lead for transferring
+</I>&gt;<i>  data to/from a computer. This lead connects between the GPS
+</I>&gt;<i>  76 device and a 9-pin RS232 connector. I could not find any
+</I>&gt;<i>  reference in the user manual to a lead that can be connected
+</I>&gt;<i>  directly between the GPS device and a computer USB port.
+</I>&gt;<i>  2) Because it's RS232 the exclamation icon in the &quot;tested
+</I>&gt;<i>  with&quot; column is not appropriate. Connecting the Garmin will
+</I>&gt;<i>  probably not start the gpsd daemon. Plugging the usb-serial
+</I>&gt;<i>  device lead into a computer socket WOULD load the usbserial
+</I>&gt;<i>  driver module and might start the daemon if the system was
+</I>&gt;<i>  set up to do that (mine isn't). Anyway NOT correct as it
+</I>&gt;<i>  stands.
+</I>
+Something seems wrong in your account.  If it talks over a USB
+connector and requires the usbserial module, in what way is it
+not USB?  You are describing the normal way that vendors 
+support both interfaces.
+
+&gt;<i>  3) There's a coding bug in the html which makes the three
+</I>&gt;<i>  star designation in &quot;tested with&quot; column look wrong (see
+</I>&gt;<i>  attached image).
+</I>
+Attachment is missing.
+-- 
+		&lt;a href=&quot;<A HREF="http://www.catb.org/~esr/">http://www.catb.org/~esr/</A>&quot;&gt;Eric S. Raymond&lt;/a&gt;
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="004064.html">[Gpsd-users] Fw: GPSD Documentation
+</A></li>
+	<LI>Next message: <A HREF="004073.html">[Gpsd-users] Fw: GPSD Documentation
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#4072">[ date ]</a>
+              <a href="thread.html#4072">[ thread ]</a>
+              <a href="subject.html#4072">[ subject ]</a>
+              <a href="author.html#4072">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

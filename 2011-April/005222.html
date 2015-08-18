@@ -1,0 +1,99 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] Using GPSD in a moving vehicle
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2011-April/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Using%20GPSD%20in%20a%20moving%20vehicle&In-Reply-To=%3C4DAF0652.10906%40wildgooses.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="005221.html">
+   <LINK REL="Next"  HREF="005224.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] Using GPSD in a moving vehicle</H1>
+    <B>Ed W</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Using%20GPSD%20in%20a%20moving%20vehicle&In-Reply-To=%3C4DAF0652.10906%40wildgooses.com%3E"
+       TITLE="[Gpsd-users] Using GPSD in a moving vehicle">lists at wildgooses.com
+       </A><BR>
+    <I>Wed Apr 20 18:14:10 CEST 2011</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="005221.html">[Gpsd-users] Using GPSD in a moving vehicle
+</A></li>
+        <LI>Next message: <A HREF="005224.html">[Gpsd-users] Fwd: Gpsd stashing device Blumax GPS
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#5222">[ date ]</a>
+              <a href="thread.html#5222">[ thread ]</a>
+              <a href="subject.html#5222">[ subject ]</a>
+              <a href="author.html#5222">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>On 18/04/2011 10:41, Jon Schlueter wrote:
+&gt;<i> Just to make sure you are aware of it, for this type of application
+</I>&gt;<i> gpsd + chrony seems to be a preferred over ntpd.  Chrony was build
+</I>&gt;<i> with intermittent timesource availably in mind.  This is from multiple email
+</I>&gt;<i>  list threads which have mitigated towards this solution in the past.
+</I>&gt;<i> 
+</I>&gt;<i> <A HREF="http://chrony.tuxfamily.org/">http://chrony.tuxfamily.org/</A>
+</I>
+
+Indeed - I was just about to add the same.  Also chrony has a bunch of
+features allowing it to jump or slew very quickly to the new time.
+
+The main thing you should consider though is some kind of battery backed
+RTC clock on your device?  This way the device will boot up with a time
+which is at least vaguely in the correct vicinity?  Chrony can take over
+from there
+
+A real hack is to occasionally touch some file, then on boot set the
+clock to the mtime of that file.  The clock is now always in the past,
+but at least you can now slew forwards from there, and log files, etc
+are monotonic increasing (if not correct).  Gentoo supports this with
+it's boot scripts, nasty, but can be better than nothing...
+
+Oh, Chrony will discipline both your RTC clock and the device clock.
+This roughly means that if you have an RTC on your device, the device is
+turned off for a month, then not only will chrony grab the time from the
+RTC at boot, but it will also try and offset that clock based on it's
+measured drift rate.  OK, it's not going to be that accurate, but its an
+incremental improvement over nothing (usually)
+
+Note that a new Chrony will be released very imminently - I would
+recommend going with a tarball from git if you don't mind building your
+own package
+
+Good luck
+
+Ed W
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="005221.html">[Gpsd-users] Using GPSD in a moving vehicle
+</A></li>
+	<LI>Next message: <A HREF="005224.html">[Gpsd-users] Fwd: Gpsd stashing device Blumax GPS
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#5222">[ date ]</a>
+              <a href="thread.html#5222">[ thread ]</a>
+              <a href="subject.html#5222">[ subject ]</a>
+              <a href="author.html#5222">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

@@ -1,0 +1,99 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] NTP time sync problem
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2010-October/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20NTP%20time%20sync%20problem&In-Reply-To=%3CAANLkTi%3D6k5CXf8Oo%3DV2ffZemZNJTsxovwZb_CU8H7tBJ%40mail.gmail.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="004715.html">
+   <LINK REL="Next"  HREF="004717.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] NTP time sync problem</H1>
+    <B>Burak TUYSUZ</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20NTP%20time%20sync%20problem&In-Reply-To=%3CAANLkTi%3D6k5CXf8Oo%3DV2ffZemZNJTsxovwZb_CU8H7tBJ%40mail.gmail.com%3E"
+       TITLE="[Gpsd-users] NTP time sync problem">buraktuysuz at gmail.com
+       </A><BR>
+    <I>Thu Oct 28 11:34:08 CEST 2010</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="004715.html">[Gpsd-users] CW25 at 38400, N, 8, 1
+</A></li>
+        <LI>Next message: <A HREF="004717.html">[Gpsd-users] NTP time sync problem
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#4716">[ date ]</a>
+              <a href="thread.html#4716">[ thread ]</a>
+              <a href="subject.html#4716">[ subject ]</a>
+              <a href="author.html#4716">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi all,
+
+I did gpsd  talking to the gps and it turned out that the problem was the
+faulty rs232 to usb connector.
+I get the gpspipe like this
+
+$GPGLL,4047.691235,N,07751.818326,W,093136.001,A,A*4B
+$GPRMC,093136.001,A,4047.691235,N,07751.818326,W,0.004,74.11,281010,,,A*71
+$GPGGA,093136.001,4047.691235,N,07751.818326,W,1,8,0.99,382.541,M,-33.327,M,,*64
+{&quot;class&quot;:&quot;TPV&quot;,&quot;tag&quot;:&quot;GGA&quot;,&quot;device&quot;:&quot;/dev/ttyUSB0&quot;,&quot;time&quot;:1288258296.001,&quot;ept&quot;:0.005,&quot;lat&quot;:40.794853917,&quot;lon&quot;:-77.863638767,&quot;alt&quot;:382.541,&quot;epx&quot;:10.619,&quot;epy&quot;:10.924,&quot;epv&quot;:43.559,&quot;track&quot;:74.1100,&quot;speed&quot;:0.002,&quot;eps&quot;:22.02,&quot;mode&quot;:3}
+$GPGSA,A,3,31,29,23,30,06,03,14,16,,,,,1.77,0.99,1.47*0D
+$GPGSV,3,1,12,32,44,234,,31,56,052,48,20,38,264,,29,20,059,43*7D
+$GPGSV,3,2,12,23,30,311,31,30,23,047,33,06,10,165,38,03,03,179,37*7C
+$GPGSV,3,3,12,14,18,129,38,16,64,198,44,25,02,043,,13,02,310,*72
+{&quot;class&quot;:&quot;SKY&quot;,&quot;tag&quot;:&quot;GSV&quot;,&quot;device&quot;:&quot;/dev/ttyUSB0&quot;,&quot;xdop&quot;:0.71,&quot;ydop&quot;:0.73,&quot;vdop&quot;:1.89,&quot;tdop&quot;:0.95,&quot;hdop&quot;:1.02,&quot;gdop&quot;:2.35,&quot;pdop&quot;:2.15,&quot;satellites&quot;:[{&quot;PRN&quot;:32,&quot;el&quot;:44,&quot;az&quot;:234,&quot;ss&quot;:0,&quot;used&quot;:false},{&quot;PRN&quot;:31,&quot;el&quot;:56,&quot;az&quot;:52,&quot;ss&quot;:48,&quot;used&quot;:true},{&quot;PRN&quot;:20,&quot;el&quot;:38,&quot;az&quot;:264,&quot;ss&quot;:0,&quot;used&quot;:false},{&quot;PRN&quot;:29,&quot;el&quot;:20,&quot;az&quot;:59,&quot;ss&quot;:43,&quot;used&quot;:true},{&quot;PRN&quot;:23,&quot;el&quot;:30,&quot;az&quot;:311,&quot;ss&quot;:31,&quot;used&quot;:true},{&quot;PRN&quot;:30,&quot;el&quot;:23,&quot;az&quot;:47,&quot;ss&quot;:33,&quot;used&quot;:true},{&quot;PRN&quot;:6,&quot;el&quot;:10,&quot;az&quot;:165,&quot;ss&quot;:38,&quot;used&quot;:true},{&quot;PRN&quot;:3,&quot;el&quot;:3,&quot;az&quot;:179,&quot;ss&quot;:37,&quot;used&quot;:true},{&quot;PRN&quot;:14,&quot;el&quot;:18,&quot;az&quot;:129,&quot;ss&quot;:38,&quot;used&quot;:true},{&quot;PRN&quot;:16,&quot;el&quot;:64,&quot;az&quot;:198,&quot;ss&quot;:44,&quot;used&quot;:true},{&quot;PRN&quot;:25,&quot;el&quot;:2,&quot;az&quot;:43,&quot;ss&quot;:0,&quot;used&quot;:false},{&quot;PRN&quot;:13,&quot;el&quot;:2,&quot;az&quot;:310,&quot;ss&quot;:0,&quot;used&quot;:false}]}
+$POLYT,093136.001,281010,379896.0010886,1607,379911.0010886,-88641,-389.481,25,4032672,00018,00018,*68
+$POLYP,093136.001,4047.691235,N,07751.818326,W,349.214,G3,002.2,005.4,0.008,74.11,0.001,,0.99,1.47,1.77,1.96,0.84,8,,0*20
+$POLYS,12,32,e,234,44,,,31,U,052,56,48,255,20,e,264,38,,,29,U,059,20,43,255,23,U,311,30,31,,30,U,047,23,33,043,06,U,165,10,38,255,03,U,179,03,37,113,14,U,129,18,38,255,16,U,198,64,44,255,25,e,043,02,,,13,-,310,02,,*02
+$POLYI,JN,19,EXT,HPOS,VPOS,INT,TSYNC,*18*
+*
+
+
+The thing is when I try to get the time information to the ntp server
+
+
+     remote           refid      st t when poll reach   delay   offset
+jitter
+==============================================================================
+ SHM(0)          .NMEA.           0 l    -   16    0    0.000    0.000
+0.000
+ SHM(1)          .PPS.            0 l    -   16    0    0.000    0.000
+0.000
+
+I cannot get connected. Could that be because of the usb to rs232 cable?
+I am really wasting time with this while I should move on and any help will
+be appreciated.
+Thank you.
+-Burak
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="004715.html">[Gpsd-users] CW25 at 38400, N, 8, 1
+</A></li>
+	<LI>Next message: <A HREF="004717.html">[Gpsd-users] NTP time sync problem
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#4716">[ date ]</a>
+              <a href="thread.html#4716">[ thread ]</a>
+              <a href="subject.html#4716">[ subject ]</a>
+              <a href="author.html#4716">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

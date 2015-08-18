@@ -1,0 +1,103 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] make failure on nmea driver
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2009-December/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20make%20failure%20on%20nmea%20driver&In-Reply-To=%3C200912140632.56666.dennisveatch%40bellsouth.net%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="004122.html">
+   <LINK REL="Next"  HREF="004124.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] make failure on nmea driver</H1>
+    <B>Dennis Veatch</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20make%20failure%20on%20nmea%20driver&In-Reply-To=%3C200912140632.56666.dennisveatch%40bellsouth.net%3E"
+       TITLE="[Gpsd-users] make failure on nmea driver">dennisveatch at bellsouth.net
+       </A><BR>
+    <I>Mon Dec 14 12:32:56 CET 2009</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="004122.html">[Gpsd-users] make failure on nmea driver
+</A></li>
+        <LI>Next message: <A HREF="004124.html">[Gpsd-users] make failure on nmea driver
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#4123">[ date ]</a>
+              <a href="thread.html#4123">[ thread ]</a>
+              <a href="subject.html#4123">[ subject ]</a>
+              <a href="author.html#4123">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>On Monday 14 December 2009 5:06:39 am Eric Raymond wrote:
+&gt;<i> Dennis Veatch &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">dennisveatch at bellsouth.net</A>&gt;:
+</I>&gt;<i> &gt; Using gcc-4.4.2 and glibc-2.10.1 on x86_64 (none multi-lib) and get this
+</I>&gt;<i> &gt; make failure with gpsd-2.90:
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; libtool: compile:  gcc -DHAVE_CONFIG_H -I. -I/usr/include/dbus-1.0 -
+</I>&gt;<i> &gt; I/usr/lib/dbus-1.0/include -I/usr/include/glib-2.0
+</I>&gt;<i> &gt; -I/usr/lib/glib-2.0/include -DDBUS_API_SUBJECT_TO_CHANGE=1 -O2
+</I>&gt;<i> &gt; -march=x86-64 -pipe -Wall -Wcast-align - Wmissing-declarations
+</I>&gt;<i> &gt; -Wmissing-prototypes -Wstrict-prototypes -Wpointer-arith -Wreturn-type
+</I>&gt;<i> &gt; -D_GNU_SOURCE -MT driver_nmea.lo -MD -MP -MF
+</I>&gt;<i> &gt; .deps/driver_nmea.Tpo -c driver_nmea.c  -fPIC -DPIC -o
+</I>&gt;<i> &gt; .libs/driver_nmea.o driver_nmea.c: In function 'processTNTHTM':
+</I>&gt;<i> &gt; driver_nmea.c:690: error: 'struct gps_data_t' has no member named
+</I>&gt;<i> &gt; 'headingStatus'
+</I>&gt;<i> &gt; driver_nmea.c:692: error: 'struct gps_data_t' has no member named
+</I>&gt;<i> &gt; 'pitchStatus'
+</I>&gt;<i> &gt; driver_nmea.c:694: error: 'struct gps_data_t' has no member named
+</I>&gt;<i> &gt; 'rollStatus' driver_nmea.c:696: error: 'struct gps_data_t' has no member
+</I>&gt;<i> &gt; named 'horzField' driver_nmea.c:701: error: 'struct gps_data_t' has no
+</I>&gt;<i> &gt; member named 'headingStatus'
+</I>&gt;<i> &gt; make[1]: *** [driver_nmea.lo] Error 1
+</I>&gt;<i> &gt; make[1]: Leaving directory `/usr/src/gpsd-2.90'
+</I>&gt;<i> &gt; make: *** [all] Error 2
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; The prior version of gpsd compiled fine.
+</I>&gt;<i> 
+</I>&gt;<i> So should this one if you build with TNT_ENABLE off.  Support for that
+</I>&gt;<i>  device is broken; this is a known bug, listed in our TODO.
+</I>&gt;<i> 
+</I>&gt;<i> If you actually have one of these devcices, we'd love to work with you
+</I>&gt;<i> to fix the code.
+</I>&gt;<i> 
+</I>
+Ah, I see. Did not know that. Compiled fine with that disabled. Sorry, no 
+don't have any of those around. Just have a GlobalSat CF-337, which seems to 
+be broken (XP nor gpsd can access the serial port). I think its time to go 
+with something else. If I do buy something new, what particular device/model 
+that you need help with?
+
+Thanks
+Dennis
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="004122.html">[Gpsd-users] make failure on nmea driver
+</A></li>
+	<LI>Next message: <A HREF="004124.html">[Gpsd-users] make failure on nmea driver
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#4123">[ date ]</a>
+              <a href="thread.html#4123">[ thread ]</a>
+              <a href="subject.html#4123">[ subject ]</a>
+              <a href="author.html#4123">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

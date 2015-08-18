@@ -1,0 +1,120 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] Fwd: Gpsd stashing device Blumax GPS
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2011-April/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Fwd%3A%20Gpsd%20stashing%20device%20Blumax%20GPS&In-Reply-To=%3CBANLkTimfQLjvPPmmncgsWUfD27WYvBzzzA%40mail.gmail.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="005222.html">
+   <LINK REL="Next"  HREF="005225.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] Fwd: Gpsd stashing device Blumax GPS</H1>
+    <B>Philipp Schmidt</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Fwd%3A%20Gpsd%20stashing%20device%20Blumax%20GPS&In-Reply-To=%3CBANLkTimfQLjvPPmmncgsWUfD27WYvBzzzA%40mail.gmail.com%3E"
+       TITLE="[Gpsd-users] Fwd: Gpsd stashing device Blumax GPS">pippo.smd at googlemail.com
+       </A><BR>
+    <I>Fri Apr 22 14:09:29 CEST 2011</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="005222.html">[Gpsd-users] Using GPSD in a moving vehicle
+</A></li>
+        <LI>Next message: <A HREF="005225.html">[Gpsd-users] Checking GPSD on local host
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#5224">[ date ]</a>
+              <a href="thread.html#5224">[ thread ]</a>
+              <a href="subject.html#5224">[ subject ]</a>
+              <a href="author.html#5224">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>I have a Blumax GPS 4044 bluetooth GPS dongle and I'm unable to get it
+connected to gpsd or at least I do not see any GPS data comming in. Instead
+sudo cat /dev/rfcomm0 reports a huge stream of data. Is the
+device/manufacturer supported? What command should I try? Do you need any
+log?
+IMHO it get &quot;stucked&quot; at stashing device?
+
+sudo telnet localhost 2947
+Trying 127.0.0.1...
+Connected to localhost.localdomain.
+Escape character is '^]'.
+{&quot;class&quot;:&quot;VERSION&quot;,&quot;release&quot;:&quot;2.96&quot;,&quot;rev&quot;:&quot;2011-04-22T11:05:16&quot;,&quot;proto_major&quot;:3,&quot;proto_minor&quot;:4}
+?DEVICE;
+{&quot;class&quot;:&quot;DEVICE&quot;,&quot;path&quot;:&quot;/dev/rfcomm0&quot;}
+?WATCH;
+{&quot;class&quot;:&quot;DEVICES&quot;,&quot;devices&quot;:[{&quot;class&quot;:&quot;DEVICE&quot;,&quot;path&quot;:&quot;/dev/rfcomm0&quot;}]}
+{&quot;class&quot;:&quot;WATCH&quot;,&quot;enable&quot;:false,&quot;json&quot;:false,&quot;nmea&quot;:false,&quot;raw&quot;:0,&quot;scaled&quot;:false,&quot;timing&quot;:false}
+
+
+gpsd -N -b -D5 /dev/rfcomm0
+gpsd:INFO: launching (Version 2.96)
+gpsd:IO: opening IPv4 socket
+gpsd:IO: opening IPv6 socket
+gpsd:INFO: listening on port gpsd
+gpsd:PROG: NTPD shmat(65538,0,0) succeeded, segment 2
+gpsd:PROG: NTPD shmat(98307,0,0) succeeded, segment 3
+gpsd:INFO: running with effective group ID 1000
+gpsd:INFO: running with effective user ID 1000
+gpsd:INFO: startup at 2011-04-22T11:42:20.00Z (1303472540)
+gpsd:INFO: *stashing device* /dev/rfcomm0 at slot 0
+....
+gpsd:IO: =&gt; client(0):
+{&quot;class&quot;:&quot;VERSION&quot;,&quot;release&quot;:&quot;2.96&quot;,&quot;rev&quot;:&quot;2011-04-22T11:05:16&quot;,&quot;proto_major&quot;:3,&quot;proto_minor&quot;:4}\x0d\x0a
+gpsd:PROG: checking client(0)
+gpsd:IO: &lt;= client(0): ?DEVICE;\x0d\x0a
+gpsd:IO: =&gt; client(0): {&quot;class&quot;:&quot;DEVICE&quot;,&quot;path&quot;:&quot;/dev/rfcomm0&quot;}\x0d\x0a
+gpsd:PROG: checking client(0)
+gpsd:IO: &lt;= client(0): ?WATCH;\x0d\x0a
+gpsd:IO: =&gt; client(0):
+{&quot;class&quot;:&quot;DEVICES&quot;,&quot;devices&quot;:[{&quot;class&quot;:&quot;DEVICE&quot;,&quot;path&quot;:&quot;/dev/rfcomm0&quot;}]}\x0d\x0a{&quot;class&quot;:&quot;WATCH&quot;,&quot;enable&quot;:false,&quot;json&quot;:false,&quot;nmea&quot;:false,&quot;raw&quot;:0,&quot;scaled&quot;:false,&quot;timing&quot;:false}\x0d\x0a
+
+The format of sudo cat /dev/rfcomm0 is as follows (some coordinates omitted
+# for privacy reasons, let me know if you need more):
+$GPGGA,115###.000,,,,,0,0,,,M,,M,,*45
+$GPGSA,A,1,,,,,,,,,,,,,,,*1E
+$GPGSV,3,#,##,10,78,1##,,07,##,090,,08,63,###,,05,43,###,51*76
+$GPGSV,3,#,11,##,39,074,,02,32,247,,##,18,###,,26,##,271,*7A
+$GPGSV,3,#,11,##,06,086,,16,##,027,,28,06,164,*4B
+$GPRMC,11###8.000,V,,,,,0.00,45.##,220###,,,N*70
+$GPGGA,11###9.000,,,,,0,0,,,M,,M,,*44
+$GPGSA,A,1,,,,,,,,,,,,,,,*1E
+$GPGSV,3,1,##,10,78,186,,07,##,090,,##,63,###,,05,43,###,5#*#7
+$GPRMC,11####.000,V,,,,,0.00,45##,220###,,N*#1
+
+
+Any suggestion would be really appreciated, because I'm stuck here (and yes
+I have read a lot of tutorials and also several guides on the gpsd.berlinos
+webpage).
+Thanks
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="005222.html">[Gpsd-users] Using GPSD in a moving vehicle
+</A></li>
+	<LI>Next message: <A HREF="005225.html">[Gpsd-users] Checking GPSD on local host
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#5224">[ date ]</a>
+              <a href="thread.html#5224">[ thread ]</a>
+              <a href="subject.html#5224">[ subject ]</a>
+              <a href="author.html#5224">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

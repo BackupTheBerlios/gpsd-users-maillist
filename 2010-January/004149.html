@@ -1,0 +1,84 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] gpsd 2.90 has wrong API_VERSION info
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2010-January/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20gpsd%202.90%20has%20wrong%20API_VERSION%20info&In-Reply-To=%3C8b65902a1001090513xdd957bv3b640cf3e74facec%40mail.gmail.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="004148.html">
+   <LINK REL="Next"  HREF="004167.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] gpsd 2.90 has wrong API_VERSION info</H1>
+    <B>Guilhem Bonnefille</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20gpsd%202.90%20has%20wrong%20API_VERSION%20info&In-Reply-To=%3C8b65902a1001090513xdd957bv3b640cf3e74facec%40mail.gmail.com%3E"
+       TITLE="[Gpsd-users] gpsd 2.90 has wrong API_VERSION info">guilhem.bonnefille at gmail.com
+       </A><BR>
+    <I>Sat Jan  9 14:13:23 CET 2010</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="004148.html">[Gpsd-users] Problem detecting broken connection between libgps and	gpsd
+</A></li>
+        <LI>Next message: <A HREF="004167.html">[Gpsd-users] gpsd 2.90 has wrong API_VERSION info
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#4149">[ date ]</a>
+              <a href="thread.html#4149">[ thread ]</a>
+              <a href="subject.html#4149">[ subject ]</a>
+              <a href="author.html#4149">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi,
+
+I'm trying to build a code using both 2.39 and 2.90 gpsd library. In
+order to activate correct part of code, I wrote a macro:
+#define GPSD_CHECK_VERSION(major,minor)    \
+   (GPSD_API_MAJOR_VERSION &gt; (major) || \
+    (GPSD_API_MAJOR_VERSION == (major) &amp;&amp; GPSD_API_MINOR_VERSION &gt;= (minor)))
+
+Then I just realized that:
+- major and minor does not follow the version of the project
+(disturbing, but why not)
+- nor major nor minor was updated when gpsd goes from 2.39 to 2.90.
+It is quite annoying because I think a notable change occured in API:
+gps_open_r. Furthermore, gps_open now return a static structure, so a
+single call is legal, while 2.39 returns a newly allocated struct.
+
+Hope that helps.
+
+-- 
+Guilhem BONNEFILLE
+-=- JID: <A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">guyou at im.apinc.org</A> MSN: <A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">guilhem_bonnefille at hotmail.com</A>
+-=- mailto:<A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">guilhem.bonnefille at gmail.com</A>
+-=- <A HREF="http://nathguil.free.fr/">http://nathguil.free.fr/</A>
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="004148.html">[Gpsd-users] Problem detecting broken connection between libgps and	gpsd
+</A></li>
+	<LI>Next message: <A HREF="004167.html">[Gpsd-users] gpsd 2.90 has wrong API_VERSION info
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#4149">[ date ]</a>
+              <a href="thread.html#4149">[ thread ]</a>
+              <a href="subject.html#4149">[ subject ]</a>
+              <a href="author.html#4149">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

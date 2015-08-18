@@ -1,0 +1,159 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] Re: Welcome to the &quot;Gpsd-users&quot; mailing list
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2004-December/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Re%3A%20Welcome%20to%20the%20%22Gpsd-users%22%20mailing%20list&In-Reply-To=%3CPine.LNX.4.61.0412260122530.12139%40catbert.rellim.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="000168.html">
+   
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] Re: Welcome to the &quot;Gpsd-users&quot; mailing list</H1>
+    <B>Gary E. Miller</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Re%3A%20Welcome%20to%20the%20%22Gpsd-users%22%20mailing%20list&In-Reply-To=%3CPine.LNX.4.61.0412260122530.12139%40catbert.rellim.com%3E"
+       TITLE="[Gpsd-users] Re: Welcome to the &quot;Gpsd-users&quot; mailing list">gem at rellim.com
+       </A><BR>
+    <I>Sun Dec 26 10:43:37 CET 2004</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="000168.html">[Gpsd-users] Announcing release 2.5 of gpsd
+</A></li>
+        
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#169">[ date ]</a>
+              <a href="thread.html#169">[ thread ]</a>
+              <a href="subject.html#169">[ subject ]</a>
+              <a href="author.html#169">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>-----BEGIN PGP SIGNED MESSAGE-----
+Hash: SHA1
+
+Yo gps-users!
+
+Got a success report for you.
+
+   1. The GPS model name
+
+	Garmin GPS-18
+
+   2. Whether or not it works
+
+	Seems fine so far.
+
+	I used garmin_gps Ver 0.19a and garminusb2nmea Ver 0.12
+
+	Both from  <A HREF="http://sourceforge.net/projects/garmin-gps/">http://sourceforge.net/projects/garmin-gps/</A>
+
+        I can not get Linux 2.6.9 or 2.6.10 to work on my laptop so
+        I can not try newer versions of garmin_gps.
+
+   3. If possible, an URL to a technical reference on it
+
+	<A HREF="http://www.garmin.com/manuals/GPS18_TechnicalSpecification.pdf">http://www.garmin.com/manuals/GPS18_TechnicalSpecification.pdf</A>
+	<A HREF="http://www.garmin.com/support/commProtocol.html">http://www.garmin.com/support/commProtocol.html</A>
+
+   4. The GPS and (if applicable) USB-to-serial chip it uses
+
+	Dunno, could not get gpsprobe to work for me.    I keep
+        getting python errors I do not understand.
+
+   5. The interface type (RS232, USB, CF)
+
+	USB.
+
+   6. The vendor
+
+	Garmin
+
+   7. The gpsd driver type (almost always 'n')
+
+	Yep, -n.
+
+   8. Version of gpsd you tested with
+
+	Version 2.5
+
+   9. NMEA version it emits, or '?' if the documentation doesn't say
+
+	Dunno how to tell.
+
+  10. A list of NMEA sentences it emits
+
+	GPGGA, GPRMC, GPGLL, GPGSA, GPGSV
+
+	Here is a sample:
+
+$GPGSV,1,1,04,25,65,075,42,01,58,052,35,20,62,309,40,14,15,071,38*74
+$GPGGA,094249,4404.1250,N,12118.8449,W,1,04,,1131.3,M,-20.1,M,,*6F
+$GPRMC,094249,A,4404.1250,N,12118.8449,W,000.1,000.0,261204,,*07
+$GPGLL,4404.1250,N,12118.8449,W,094249,A*32
+$GPGSA,A,3,25,01,20,,14,,,,,,,,,,*1D
+$GPGGA,094250,4404.1243,N,12118.8450,W,1,04,,1131.3,M,-20.1,M,,*6D
+$GPRMC,094250,A,4404.1243,N,12118.8450,W,000.2,000.0,261204,,*06
+$GPGLL,4404.1243,N,12118.8450,W,094250,A*30
+$GPGSA,A,3,25,01,20,,14,,,,,,,,,,*1D
+$GPGGA,094251,4404.1239,N,12118.8450,W,1,04,,1131.2,M,-20.1,M,,*60
+$GPRMC,094251,A,4404.1239,N,12118.8450,W,000.1,000.0,261204,,*09
+$GPGLL,4404.1239,N,12118.8450,W,094251,A*3C
+$GPGSA,A,3,25,01,20,,14,,,,,,,,,,*1D
+
+
+  11. Notes on the device
+
+        Known caveats of garminusb2nmea:
+                - DOP (Dilution of Precision) information not available
+                  (Garmin protocol includes EPE only)
+                - DGPS information in GPGGA sentence not returned
+                - speed and course over ground are calculated from the
+                  north/east velocity and may not be accurate
+                - magnetic variation information not available
+                - Garmin 16-bit SNR scale unknown
+
+
+
+RGDS
+GARY
+- ---------------------------------------------------------------------------
+Gary E. Miller Rellim 20340 Empire Blvd, Suite E-3, Bend, OR 97701
+	<A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">gem at rellim.com</A>  Tel:+1(541)382-8588 Fax: +1(541)382-8676
+
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v1.2.3 (GNU/Linux)
+
+iD8DBQFBzofN8KZibdeR3qURAm6+AJ0SI0GjBhTZ4GpWGZjEYRC1OVtPVACeLTNY
+YTOfKp1Jxlr925tm4wdBqnc=
+=pZXB
+-----END PGP SIGNATURE-----
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="000168.html">[Gpsd-users] Announcing release 2.5 of gpsd
+</A></li>
+	
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#169">[ date ]</a>
+              <a href="thread.html#169">[ thread ]</a>
+              <a href="subject.html#169">[ subject ]</a>
+              <a href="author.html#169">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

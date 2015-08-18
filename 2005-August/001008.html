@@ -1,0 +1,109 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] Update on i.Trek M3/Sirf-III issue
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2005-August/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Update%20on%20i.Trek%20M3/Sirf-III%20issue&In-Reply-To=%3C20050817161310.GA19002%40thyrsus.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="000999.html">
+   <LINK REL="Next"  HREF="001004.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] Update on i.Trek M3/Sirf-III issue</H1>
+    <B>Eric S. Raymond</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Update%20on%20i.Trek%20M3/Sirf-III%20issue&In-Reply-To=%3C20050817161310.GA19002%40thyrsus.com%3E"
+       TITLE="[Gpsd-users] Update on i.Trek M3/Sirf-III issue">esr at thyrsus.com
+       </A><BR>
+    <I>Wed Aug 17 18:13:10 CEST 2005</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="000999.html">[Gpsd-users] Update on i.Trek M3/Sirf-III issue
+</A></li>
+        <LI>Next message: <A HREF="001004.html">[Gpsd-users] Update on i.Trek M3/Sirf-III issue
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1008">[ date ]</a>
+              <a href="thread.html#1008">[ thread ]</a>
+              <a href="subject.html#1008">[ subject ]</a>
+              <a href="author.html#1008">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Wallace Owen &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">wally.owen at titan.com</A>&gt;:
+&gt;<i> I've got a copy, but it dates to 1 Jan 2002, so it's likely not the
+</I>&gt;<i> latest and greatest.  While I won't quote the document verbatim out of
+</I>&gt;<i> fear of legal action from the Maritime Association, feel free to ask
+</I>&gt;<i> specific questions and I'll try to describe what the spec says.
+</I>
+Here's the oldest item on the TODO list:
+
+*** Do the research to figure out just what is going on with status bits
+
+NMEA actually has *four* kinds of validity bits: Mode, Status, the
+Active/Void bit (some sources interpret 'V' as 'Navigation receiver
+warning'), and in later versions the FAA indicator mode.  Sentences
+that have an Active/Void send V when there is no fix, so the position
+data is no good.
+
+Let's look at which sentences send what:
+
+                GPRMC     GPGLL     GPGGA     GPGSA
+Returns fix      Yes       Yes       Yes        No
+Returns status   No        Yes       Yes        No
+Returns mode     No        No        No         Yes
+Returns A/V      Yes       Yes       No         No
+
+In addition, some sentences use empty fields to signify invalid data.
+
+My first conclusion from looking at this table is that the designers
+of NMEA 0183 should be hung for galloping incompetence.  But never mind that.
+What are we to make of this mess?
+
+The fact that the FV18 sends GPMRC/GPGLL/GPGGA but not GPGSA
+argues that GPGSA is optional.  I don't see how it can be, since it
+seems to be the only status bit that applies to altitude.  Just how are
+we supposed to know when altitude is valid if it doesn't ship GSA?  
+Can a receiver ever ship a non-empty but invalid altitude?
+
+Which of these override which other bits?  I don't think status is ever
+nonzero when mode is zero. So status overrides mode.  What other such
+relationships are there?
+
+News flash: it develops that the &quot;Navigation receiver warning&quot; is
+supposed to indicate a valid fix that has a DOP too high or fails
+an elevation test.
+
+
+
+-- 
+		&lt;a href=&quot;<A HREF="http://www.catb.org/~esr/">http://www.catb.org/~esr/</A>&quot;&gt;Eric S. Raymond&lt;/a&gt;
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="000999.html">[Gpsd-users] Update on i.Trek M3/Sirf-III issue
+</A></li>
+	<LI>Next message: <A HREF="001004.html">[Gpsd-users] Update on i.Trek M3/Sirf-III issue
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1008">[ date ]</a>
+              <a href="thread.html#1008">[ thread ]</a>
+              <a href="subject.html#1008">[ subject ]</a>
+              <a href="author.html#1008">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

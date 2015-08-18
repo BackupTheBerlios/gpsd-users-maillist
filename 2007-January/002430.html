@@ -1,0 +1,115 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] Mac OS X not supported due to an unfixed bug?
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2007-January/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Mac%20OS%20X%20not%20supported%20due%20to%20an%20unfixed%20bug%3F&In-Reply-To=%3C00582D10-ECC8-4A34-BC62-DBAF51D1841B%40gmail.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="002429.html">
+   <LINK REL="Next"  HREF="002431.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] Mac OS X not supported due to an unfixed bug?</H1>
+    <B>Geordie Millar</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Mac%20OS%20X%20not%20supported%20due%20to%20an%20unfixed%20bug%3F&In-Reply-To=%3C00582D10-ECC8-4A34-BC62-DBAF51D1841B%40gmail.com%3E"
+       TITLE="[Gpsd-users] Mac OS X not supported due to an unfixed bug?">themacuser at gmail.com
+       </A><BR>
+    <I>Sun Jan 28 03:55:05 CET 2007</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="002429.html">[Gpsd-users] gps protocol problem
+</A></li>
+        <LI>Next message: <A HREF="002431.html">[Gpsd-users] Mac OS X not supported due to an unfixed bug?
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2430">[ date ]</a>
+              <a href="thread.html#2430">[ thread ]</a>
+              <a href="subject.html#2430">[ subject ]</a>
+              <a href="author.html#2430">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>-----BEGIN PGP SIGNED MESSAGE-----
+Hash: SHA1
+
+Just noticed this on the gpsd homepage.
+
+ &gt;Mac OS/X is explicitly not supported, because of an unfixed bug  
+dating from 1997; shame on Apple!
+
+The bug it references is found here: <A HREF="http://lists.apple.com/archives/">http://lists.apple.com/archives/</A> 
+darwin-development/2001/Oct/msg00867.html, backing up a few gets you  
+to the test code.
+<A HREF="http://lists.apple.com/archives/darwin-development/2001/Oct/">http://lists.apple.com/archives/darwin-development/2001/Oct/</A> 
+msg00716.html
+
+Run the code, type some text and hit return (since the terminal is line
+buffered by default) or
+CTRL-D. Nothing happens. The select never returns.
+
+... or does it?
+
+x:~ gm$ pbpaste &gt; bug.c
+x:~ gm$ gcc bug.c -o bug
+x:~ gm$ ./bug
+a
+a
+this is a test
+this is a test
+this seems to be working strangely well for something that's supposed  
+to be broken
+this seems to be working strangely well for something that's supposed  
+to be broken
+^C
+x:~ gm$ uname -a
+Darwin x.local 8.8.0 Darwin Kernel Version 8.8.0: Fri Sep  8 17:18:57  
+PDT 2006; root:xnu-792.12.6.obj~1/RELEASE_PPC Power Macintosh powerpc
+
+Mac OS X 10.4.8 on a PB G4 12&quot;.
+
+I've got a SiRFStarIII BU-353, and it's worked with gpsd on Mac OS X  
+since I got it, for ages, using self-built packages from source, and  
+gpsdX (see below).
+
+There is also this: <A HREF="http://www.grandhighwizard.net/gpsdx.html">http://www.grandhighwizard.net/gpsdx.html</A> - a  
+parallel development that provides universal binary builds for OS X.
+
+So can someone explain further as to why OS X isn't supported,  
+despite the fact that there seems to be very little stopping it working?
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v1.4.1 (Darwin)
+
+iD8DBQFFvBCNUoqVFq9VicIRAu28AKCsDOAdMoHt2DjjXFkOYUnY+RxIxACfRi2q
+bSjzWlTnJFOzkOTadNkP0Kg=
+=++0f
+-----END PGP SIGNATURE-----
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="002429.html">[Gpsd-users] gps protocol problem
+</A></li>
+	<LI>Next message: <A HREF="002431.html">[Gpsd-users] Mac OS X not supported due to an unfixed bug?
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2430">[ date ]</a>
+              <a href="thread.html#2430">[ thread ]</a>
+              <a href="subject.html#2430">[ subject ]</a>
+              <a href="author.html#2430">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

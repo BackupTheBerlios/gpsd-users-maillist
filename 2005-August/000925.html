@@ -1,0 +1,102 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] /var/run/gpsd.sock creation failure: (111, 'Connection refused')
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2005-August/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20/var/run/gpsd.sock%20creation%20failure%3A%20%28111%2C%20%27Connection%20refused%27%29&In-Reply-To=%3C20050731221546.11e07c86%40localhost%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="000924.html">
+   <LINK REL="Next"  HREF="000950.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] /var/run/gpsd.sock creation failure: (111, 'Connection refused')</H1>
+    <B>Steve Arnold</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20/var/run/gpsd.sock%20creation%20failure%3A%20%28111%2C%20%27Connection%20refused%27%29&In-Reply-To=%3C20050731221546.11e07c86%40localhost%3E"
+       TITLE="[Gpsd-users] /var/run/gpsd.sock creation failure: (111, 'Connection refused')">sarnold at arnolds.dhs.org
+       </A><BR>
+    <I>Mon Aug  1 07:15:46 CEST 2005</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="000924.html">[Gpsd-users] gpsd-2.28 and dbus still broken?
+</A></li>
+        <LI>Next message: <A HREF="000950.html">[Gpsd-users] /var/run/gpsd.sock creation failure: (111, 'Connection refused')
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#925">[ date ]</a>
+              <a href="thread.html#925">[ thread ]</a>
+              <a href="subject.html#925">[ subject ]</a>
+              <a href="author.html#925">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>When built without dbus support, 2.28 still sits waiting:
+
+26953 ?        S&lt;     0:00 udev usb
+26954 ?        S&lt;     0:00 /sbin/udev_run_hotplugd usb
+26957 ?        S&lt;     0:00 /bin/sh /etc/hotplug/usb.agent
+27052 ?        S&lt;     0:00 /usr/bin/python /etc/hotplug/usb/gpsd
+
+And then it barfs:
+
+Jul 31 20:16:00 rama pl2303 1-2.1:1.0: PL-2303 converter detected
+Jul 31 20:16:00 rama usb 1-2.1: PL-2303 converter now attached to
+ttyUSB0 
+Jul 31 20:16:00 rama usbcore: registered new driver pl2303
+Jul 31 20:16:00 rama drivers/usb/serial/pl2303.c: Prolific PL2303
+USB to serial adaptor driver v0.12 
+Jul 31 20:16:00 rama gpsd: waiting for /dev/ttyUSB0 
+Jul 31 20:18:03 rama gpsd: /dev/ttyUSB0 has gone active 
+Jul 31 20:18:03 rama gpsd: gpsd_control(action=add,
+arg=/dev/ttyUSB0) 
+Jul 31 20:18:03 rama gpsd: socket /var/run/gpsd.sock creation
+failure: (111, 'Connection refused') 
+Jul 31 20:18:03 rama gpsd: launching gpsd -F /var/run/gpsd.sock 
+Jul 31 20:18:03 rama gpsd: socket /var/run/gpsd.sock creation
+failure: (111, 'Connection refused') 
+Jul 31 20:18:03 rama gpsd: can't reach gpsd 
+Jul 31 20:18:03 rama gpsd: gpsd: exception exceptions.IOError yields
+[Errno 2] No such file or directory:
+'/var/run/usb/%sys%devices%pci0000:00%0000:00:02.2%usb1%1-2%1-2.1%1
+-2.1:1.0' 
+Jul 31 20:18:03 rama gpsd[27186]: Gpsd started (Version 1.06b) 
+Jul 31 20:18:03 rama gpsd[27186]: Gpsd listening on port 2947 
+Jul 31 20:19:11 rama gpsd[27186]: File open: : No such device or
+address Exit now...
+
+The last line is when I tried to start xgps.
+
+Thanks again, Steve
+
+-- 
+Steve Arnold                           <A HREF="http://arnolds.dhs.org/">http://arnolds.dhs.org/</A>
+gnupg key:      <A HREF="http://arnolds.dhs.org/static/files/pubkey.txt">http://arnolds.dhs.org/static/files/pubkey.txt</A>
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="000924.html">[Gpsd-users] gpsd-2.28 and dbus still broken?
+</A></li>
+	<LI>Next message: <A HREF="000950.html">[Gpsd-users] /var/run/gpsd.sock creation failure: (111, 'Connection refused')
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#925">[ date ]</a>
+              <a href="thread.html#925">[ thread ]</a>
+              <a href="subject.html#925">[ subject ]</a>
+              <a href="author.html#925">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

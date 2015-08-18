@@ -1,0 +1,119 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] GPSD segfault
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2006-April/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20GPSD%20segfault&In-Reply-To=%3Cadbbf73e0604062118g23a88685j191ae5a62272607d%40mail.gmail.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="001497.html">
+   <LINK REL="Next"  HREF="001501.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] GPSD segfault</H1>
+    <B>Jim Hogan</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20GPSD%20segfault&In-Reply-To=%3Cadbbf73e0604062118g23a88685j191ae5a62272607d%40mail.gmail.com%3E"
+       TITLE="[Gpsd-users] GPSD segfault">jim.hogan at gmail.com
+       </A><BR>
+    <I>Fri Apr  7 06:18:50 CEST 2006</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="001497.html">[Gpsd-users] Copies of swiss watches
+</A></li>
+        <LI>Next message: <A HREF="001501.html">[Gpsd-users] GPSD segfault
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1500">[ date ]</a>
+              <a href="thread.html#1500">[ thread ]</a>
+              <a href="subject.html#1500">[ subject ]</a>
+              <a href="author.html#1500">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>I've installed gpsd 2.32-1 for x86_64 from RPM (on Fedora Core 4
+2.6.15-1.1831_FC4smp, gcc version 4.02).    I have a reproduceable
+segfault that isn't as yet very informative.  I seem to be able to run
+gpsd for lengthy periods, like overnight, but not long after I fire up
+a client like xgps, it segfaults.
+
+I am seeing some things, though, that suggest that maybe I have a
+problem -- that I may be abusing gpsd :)    Let me list some of these
+oddities.
+
+If I run &quot;gpsd -N -D128 /dev/ttyS0&quot;  I can see a preponderance or messages like
+
+/************* SAMPLE ***************/
+gpsd: select waits
+gpsd: polling 4
+gpsd: Read 2 chars to buffer offset 0 (total 2): 2a32
+gpsd: ISGPS word tag not correct, skipping
+gpsd: 00014076: character '*' [2a], new state: GROUND_STATE
+gpsd: Character discarded, buffer 1 chars = 32
+gpsd: ISGPS word tag not correct, skipping
+gpsd: 00014077: character '2' [32], new state: GROUND_STATE
+gpsd: Character discarded, buffer 0 chars =
+gpsd: packet sniff finds type -1
+gpsd: GPS sent 2 new characters
+gpsd: New data, not yet a packet
+gpsd: select waits
+gpsd: polling 4
+/*************** END SAMPLE ************/
+
+I also see long periods where &quot;select waits&quot; will repeat endlessly. 
+This &quot;select waits&quot; loop will usually end when I fire up xgps - and I
+get fine-looking output on xgps for a while - but then a segfault.
+
+Now, for all I know, some or all of this is normal, but I didn't like
+the look of repeated
+&quot;New data, not yet a packet&quot; with only the occasional NMEA string.  It
+seems to suggest I have a problem with the serial output from my GPS
+(an Oncore GT+ with Larry Cochrane's interface board).
+
+I can produce a longer section of debug output, but thought I wouldn't
+overdo it until posting an initial query.  Any thoughts of what i
+could do to improve diagnostic output welcome.
+
+Unrelated question: If you reenable 1PPS feature in gpsd, is it built
+to just look on serial pin like pin 1 on DB9?  What does it expect to
+see, voltage/signal-wise.  I ask just because Cochrane's board has
+solder pad for 1PPS and it seems like it would be a shame to waste it
+:<i>)
+</I>
+Thanks,
+
+Jim
+
+
+
+--
+-*-  Jim Hogan
+     Seattle, WA
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="001497.html">[Gpsd-users] Copies of swiss watches
+</A></li>
+	<LI>Next message: <A HREF="001501.html">[Gpsd-users] GPSD segfault
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1500">[ date ]</a>
+              <a href="thread.html#1500">[ thread ]</a>
+              <a href="subject.html#1500">[ subject ]</a>
+              <a href="author.html#1500">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

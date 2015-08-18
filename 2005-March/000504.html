@@ -1,0 +1,141 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] Gpsd on a Zaurus SL-C3000
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2005-March/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Gpsd%20on%20a%20Zaurus%20SL-C3000&In-Reply-To=%3CPine.LNX.4.62.0503311044020.8214%40catbert.rellim.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="000505.html">
+   <LINK REL="Next"  HREF="000506.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] Gpsd on a Zaurus SL-C3000</H1>
+    <B>Gary E. Miller</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Gpsd%20on%20a%20Zaurus%20SL-C3000&In-Reply-To=%3CPine.LNX.4.62.0503311044020.8214%40catbert.rellim.com%3E"
+       TITLE="[Gpsd-users] Gpsd on a Zaurus SL-C3000">gem at rellim.com
+       </A><BR>
+    <I>Thu Mar 31 20:45:51 CEST 2005</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="000505.html">[Gpsd-users] Gpsd on a Zaurus SL-C3000
+</A></li>
+        <LI>Next message: <A HREF="000506.html">[Gpsd-users] Gpsd on a Zaurus SL-C3000
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#504">[ date ]</a>
+              <a href="thread.html#504">[ thread ]</a>
+              <a href="subject.html#504">[ subject ]</a>
+              <a href="author.html#504">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>-----BEGIN PGP SIGNED MESSAGE-----
+Hash: SHA1
+
+Yo Eric!
+
+Once again, if the compiler observes pragma pack then this does not
+apply.  Can someone prove the Zaurus CC is so brain dead it does not
+have a pragma pack?  Can someone find ANY modern compiler that does not
+observer pragma pack in some form?
+
+RGDS
+GARY
+- ---------------------------------------------------------------------------
+Gary E. Miller Rellim 20340 Empire Blvd, Suite E-3, Bend, OR 97701
+	<A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">gem at rellim.com</A>  Tel:+1(541)382-8588 Fax: +1(541)382-8676
+
+On Thu, 31 Mar 2005, Eric S. Raymond wrote:
+
+&gt;<i> Date: Thu, 31 Mar 2005 01:49:57 -0500
+</I>&gt;<i> From: Eric S. Raymond &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">esr at thyrsus.com</A>&gt;
+</I>&gt;<i> To: Russell Nelson &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">nelson at crynwr.com</A>&gt;
+</I>&gt;<i> Cc: <A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">gpsd-users at lists.berlios.de</A>
+</I>&gt;<i> Subject: Re: [Gpsd-users] Gpsd on a Zaurus SL-C3000
+</I>&gt;<i>
+</I>&gt;<i> Russell Nelson &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">nelson at crynwr.com</A>&gt;:
+</I>&gt;<i> &gt; Gary E. Miller writes:
+</I>&gt;<i> &gt;  &gt; &gt; You're making an assumption that won't survive exposure to an ARM.
+</I>&gt;<i> &gt;  &gt;
+</I>&gt;<i> &gt;  &gt; I am open to learning.  Can you cite some doc to PROVE your contention?
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; A struct of this form:
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; struct foo { uint16 a; uchar b; uint16 c; };
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; when compiled for the ARM processor, will require 6 bytes.  That's
+</I>&gt;<i> &gt; probably not what the creator of the struct intended.  It's not what
+</I>&gt;<i> &gt; the naive reader of the code would guess.  Code that assumes five
+</I>&gt;<i> &gt; bytes and does things like this:
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; uchar bar[5];
+</I>&gt;<i> &gt; struct foo *baz;
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; baz = (struct foo *)&bar;
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; baz-&gt;c = 0
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; will overwrite whatever follows bar in memory.  In other words, you
+</I>&gt;<i> &gt; have a buffer overflow just waiting to happen.
+</I>&gt;<i>
+</I>&gt;<i> That's right.  Gary, remember the failure scenario I described?  ARM
+</I>&gt;<i> is a word-addressed machine that requires uints to start on an even address.
+</I>&gt;<i> Thus, the C compiler will insert a pad byte after the b field.  When you
+</I>&gt;<i> write baz-&gt;c = 0 you'll zero the location that would be bar[5] if the array
+</I>&gt;<i> were 6 chars long.
+</I>&gt;<i>
+</I>&gt;<i> It works the other way, too.  If you read baz-&gt;c after casting bar, you
+</I>&gt;<i> won't get the short encoded by bytes 3 and 4 of bar -- you'll get
+</I>&gt;<i> what's encoded by byte 5 and whatever is in the storage in the byte
+</I>&gt;<i> right after the array.
+</I>&gt;<i>
+</I>&gt;<i> And this lossage is *before* we start on the endian issues...
+</I>&gt;<i>
+</I>&gt;<i> Naive me, I thought all C programmers knew this stuff.  Are you relatively new
+</I>&gt;<i> to the language?
+</I>&gt;<i> --
+</I>&gt;<i> 		&lt;a href=&quot;<A HREF="http://www.catb.org/~esr/">http://www.catb.org/~esr/</A>&quot;&gt;Eric S. Raymond&lt;/a&gt;
+</I>&gt;<i> _______________________________________________
+</I>&gt;<i> Gpsd-users mailing list
+</I>&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">Gpsd-users at lists.berlios.de</A>
+</I>&gt;<i> <A HREF="http://lists.berlios.de/mailman/listinfo/gpsd-users">http://lists.berlios.de/mailman/listinfo/gpsd-users</A>
+</I>&gt;<i>
+</I>&gt;<i>
+</I>-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v1.2.3 (GNU/Linux)
+
+iD8DBQFCTEVh8KZibdeR3qURAsO9AKC91Eo46nRQYZXjy1fWOv/MO3pqFgCfepCR
+dNv3L1+3uwFziPdt7GXiMIc=
+=iKUR
+-----END PGP SIGNATURE-----
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="000505.html">[Gpsd-users] Gpsd on a Zaurus SL-C3000
+</A></li>
+	<LI>Next message: <A HREF="000506.html">[Gpsd-users] Gpsd on a Zaurus SL-C3000
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#504">[ date ]</a>
+              <a href="thread.html#504">[ thread ]</a>
+              <a href="subject.html#504">[ subject ]</a>
+              <a href="author.html#504">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

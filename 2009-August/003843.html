@@ -1,0 +1,115 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] bug:  crash with 'F' command, debugging on
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2009-August/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20bug%3A%20%20crash%20with%20%27F%27%20command%2C%20debugging%20on&In-Reply-To=%3C25360.1249682055%40foxharp.boston.ma.us%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="003855.html">
+   <LINK REL="Next"  HREF="003854.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] bug:  crash with 'F' command, debugging on</H1>
+    <B>Paul Fox</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20bug%3A%20%20crash%20with%20%27F%27%20command%2C%20debugging%20on&In-Reply-To=%3C25360.1249682055%40foxharp.boston.ma.us%3E"
+       TITLE="[Gpsd-users] bug:  crash with 'F' command, debugging on">pgf at foxharp.boston.ma.us
+       </A><BR>
+    <I>Fri Aug  7 23:54:15 CEST 2009</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="003855.html">[Gpsd-users] patch to fix some json output in aivdm driver
+</A></li>
+        <LI>Next message: <A HREF="003854.html">[Gpsd-users] bug:  crash with 'F' command, debugging on
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3843">[ date ]</a>
+              <a href="thread.html#3843">[ thread ]</a>
+              <a href="subject.html#3843">[ subject ]</a>
+              <a href="author.html#3843">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>
+hi --
+
+i was trying to get some logging of gpsd (pretty current:  r5863)
+with debug turned on.  gpsmon caused it to crash -- it's
+reproducible with a simple &quot;echo f | nc localhost 2947&quot;.
+
+let me know if i can provide any more information.
+
+(the device is a sirf receiver, though i'm not sure that matters.)
+
+paul
+
+# gdb /usr/local/sbin/gpsd 
+GNU gdb Fedora (6.8-21.fc9)
+Copyright (C) 2008 Free Software Foundation, Inc.
+License GPLv3+: GNU GPL version 3 or later &lt;<A HREF="http://gnu.org/licenses/gpl.html">http://gnu.org/licenses/gpl.html</A>&gt;
+This is free software: you are free to change and redistribute it.
+There is NO WARRANTY, to the extent permitted by law.  Type &quot;show copying&quot;
+and &quot;show warranty&quot; for details.
+This GDB was configured as &quot;i386-redhat-linux-gnu&quot;...
+(gdb) run -N -D 5 /dev/ttyUSB0
+Starting program: /usr/local/sbin/gpsd -N -D 5 /dev/ttyUSB0
+[Thread debugging using libthread_db enabled]
+gpsd: launching (Version 2.40dev)
+[New Thread 0xb7d446d0 (LWP 802)]
+gpsd: listening on port gpsd
+gpsd: Priority setting failed.
+gpsd: shmat(98307,0,0) succeeded
+gpsd: shmat(131076,0,0) succeeded
+gpsd: shmat(163845,0,0) succeeded
+gpsd: shmat(196614,0,0) succeeded
+gpsd: running with effective group ID 0
+gpsd: running with effective user ID 0
+gpsd: stashing device /dev/ttyUSB0 at slot 0 (fd 0)
+gpsd: device 0 (fd 0) released
+gpsd: client 127.0.0.1 (0) connect on fd 7
+gpsd: checking client(0)
+gpsd: &lt;= client(0): f
+
+Program received signal SIGSEGV, Segmentation fault.
+0x0804b5a1 in handle_oldstyle (sub=0x8055740, buf=0xbfbe0e3c &quot;f\n&quot;, buflen=2) at gpsd.c:1173
+1173                if (channel-&gt;device != NULL)
+Missing separate debuginfos, use: debuginfo-install gcc.i386 glibc.i686
+(gdb) where
+#0  0x0804b5a1 in handle_oldstyle (sub=0x8055740, buf=0xbfbe0e3c &quot;f\n&quot;, buflen=2) at gpsd.c:1173
+#1  0x0804eae6 in main (argc=5, argv=0xbfbe4554) at gpsd.c:1813
+(gdb) p channel
+$1 = (struct channel_t *) 0x16
+(gdb) 
+
+
+=---------------------
+ paul fox, <A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">pgf at foxharp.boston.ma.us</A> (arlington, ma, where it's 71.8 degrees)
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="003855.html">[Gpsd-users] patch to fix some json output in aivdm driver
+</A></li>
+	<LI>Next message: <A HREF="003854.html">[Gpsd-users] bug:  crash with 'F' command, debugging on
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3843">[ date ]</a>
+              <a href="thread.html#3843">[ thread ]</a>
+              <a href="subject.html#3843">[ subject ]</a>
+              <a href="author.html#3843">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

@@ -1,0 +1,235 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] Fwd:  NTP Problems
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2006-August/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Fwd%3A%20%20NTP%20Problems&In-Reply-To=%3C7e272c5c0608280418t35e35812k76e152b1327c3f10%40mail.gmail.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="001883.html">
+   <LINK REL="Next"  HREF="001887.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] Fwd:  NTP Problems</H1>
+    <B>Karl von Muller</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Fwd%3A%20%20NTP%20Problems&In-Reply-To=%3C7e272c5c0608280418t35e35812k76e152b1327c3f10%40mail.gmail.com%3E"
+       TITLE="[Gpsd-users] Fwd:  NTP Problems">vertigok at gmail.com
+       </A><BR>
+    <I>Mon Aug 28 13:18:18 CEST 2006</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="001883.html">[Gpsd-users] finding quoted correctly
+</A></li>
+        <LI>Next message: <A HREF="001887.html">[Gpsd-users] Fwd:  NTP Problems
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1886">[ date ]</a>
+              <a href="thread.html#1886">[ thread ]</a>
+              <a href="subject.html#1886">[ subject ]</a>
+              <a href="author.html#1886">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Forgot to copy the list...
+
+Well, it seems I've gotten a little further, my gps is showing up in ntpq -p
+now, but even after 10-15 minutes doesnt appear to be using the shared
+memory. NTPD seems to be ok;
+
+[<A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">root at gumstix</A> /]# ntpd -d
+ntpd <A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">4.2.0 at 1.1161-r</A> Mon Aug 28 19:09:32 EST 2006 (1)
+addto_syslog: ntpd <A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">4.2.0 at 1.1161-r</A> Mon Aug 28 19:09:32 EST 2006 (1)
+addto_syslog: signal_no_reset: signal 13 had flags 4000000
+addto_syslog: precision = 11.000 usec
+create_sockets(123)
+addto_syslog: no IPv6 interfaces found
+bind() fd 4, family 2, port 123, addr 0.0.0.0, flags=8
+bind() fd 5, family 2, port 123, addr 127.0.0.1, flags=0
+bind() fd 6, family 2, port 123, addr 192.168.6.5, flags=8
+init_io: maxactivefd 6
+local_clock: at 0 state 0
+peer_clear: at 0 assoc ID 54308 refid INIT
+newpeer: 127.0.0.1-&gt;127.127.28.0 mode 3 vers 4 poll 4 4 flags 0x21 0x1 ttl 0
+key 00000000
+peer_clear: at 0 assoc ID 54309 refid INIT
+newpeer: 192.168.6.5-&gt; 192.168.1.5 mode 3 vers 4 poll 6 10 flags 0x1 0x1 ttl
+0 key 00000000
+peer_clear: at 0 assoc ID 54310 refid INIT
+newpeer: 192.168.6.5-&gt;203.12.160.2 mode 3 vers 4 poll 6 10 flags 0x1 0x1 ttl
+0 key 00000000
+peer_clear: at 0 assoc ID 54311 refid INIT
+newpeer: 192.168.6.5-&gt;203.21.37.18 mode 3 vers 4 poll 6 10 flags 0x1 0x1 ttl
+0 key 00000000
+peer_clear: at 0 assoc ID 54312 refid INIT
+newpeer: 192.168.6.5-&gt;149.171.92.94 mode 3 vers 4 poll 6 10 flags 0x1 0x1
+ttl 0 key 00000000
+report_event: system event 'event_restart' (0x01) status 'sync_alarm,
+sync_unspec, 1 event, event_unspec' (0xc010)
+refclock_transmit: at 1 127.127.28.0
+clock SHM(0) event 'clk_noreply' (0x01)
+auth_agekeys: at 1 keys 1 expired 0
+transmit: at 2 192.168.6.5-&gt;192.168.1.5 mode 3
+receive: at 2 192.168.6.5&lt;-192.168.1.5 mode 4 code 1
+peer 192.168.1.5 event 'event_reach' (0x84) status 'unreach, conf, 1 event,
+event_reach' (0xa014)
+clock_filter: n 1 off -0.083868 del 0.003167 dsp 7.937508 jit 0.000015, age
+2
+transmit: at 3 192.168.6.5-&gt;203.12.160.2 mode 3
+transmit: at 4 192.168.6.5-&gt; 203.21.37.18 mode 3
+transmit: at 5 192.168.6.5-&gt;149.171.92.94 mode 3
+refclock_transmit: at 17 127.127.28.0
+clock SHM(0) event 'clk_noreply' (0x01)
+refclock_transmit: at 32 127.127.28.0
+clock SHM(0) event 'clk_noreply' (0x01)
+refclock_transmit: at 47 127.127.28.0
+clock SHM(0) event 'clk_noreply' (0x01)
+
+I'm guessing the above clk_noreply means there may be an error either with
+GPSD or the shared memory itself.
+Anyway I can debug GPSD more to see if its writing to the shared mem?
+
+[<A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">root at gumstix</A> lib]# ntpq -p
+     remote           refid      st t when poll reach   delay   offset
+jitter
+==============================================================================
+ SHM(0)          .GPS.            0 l    -   16    0    0.000    0.000
+4000.00
+ 12-6-cust.skyme .INIT.          16 u    -   64    0    0.000    0.000
+4000.00
+ mvk.cx          128.250.37.2     2 u    6   64    1    3.420  -13.480
+0.015
+  203.11.119.1    .INIT.          16 u    -   64    0    0.000    0.000
+4000.00
+ ntp1.tpgi.com.a .INIT.          16 u    -   64    0    0.000    0.000
+4000.00
+ mu-relay2.masse .INIT.          16 u    -   64    0    0.000    0.000
+4000.00
+ murgon.csse.uni .INIT.          16 u    -   64    0    0.000    0.000
+4000.00
+ ns.saard.net    .INIT.          16 u    -   64    0    0.000    0.000
+4000.00
+  zap.ee.unsw.EDU .INIT.          16 u    -   64    0    0.000    0.000
+4000.00
+
+[<A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">root at gumstix</A> lib]# ntpq -p
+     remote           refid      st t when poll reach   delay   offset
+jitter
+==============================================================================
+
+ SHM(0)          .GPS.            0 l    -   16    0    0.000    0.000
+4000.00
+ 12-6-cust.skyme .STEP.          16 u    -   64    0    0.000    0.000
+4000.00
+ mvk.cx          128.250.37.2     2 u   50   64    3    2.377  -37.699
+2.670
+ 203.11.119.1    .STEP.          16 u    -   64    0    0.000    0.000
+4000.00
+ ntp1.tpgi.com.a .STEP.          16 u    -   64    0    0.000    0.000
+4000.00
+ mu-relay2.masse .STEP.          16 u    -   64    0    0.000    0.000
+4000.00
+ murgon.csse.uni .STEP.          16 u    -   64    0    0.000    0.000
+4000.00
+  ns.saard.net    .STEP.          16 u    -   64    0    0.000    0.000
+4000.00
+ zap.ee.unsw.EDU .STEP.          16 u    -   64    0    0.000    0.000
+4000.00
+
+[<A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">root at gumstix</A> var]# cat /etc/ntp.conf
+server 127.127.28.0 minpoll 4 maxpoll 4
+fudge 127.127.28.0 time1 0.420 refid GPS
+#server 127.127.28.1 minpoll 4 maxpoll 4 prefer
+#fudge 127.127.28.1 refid GPS1
+
+server mvk.cx
+server ntp1.tpg.com.au
+server ntp.saard.net
+server zap.ee.unsw.EDU.AU
+
+driftfile /var/ntp.drift
+
+
+
+
+&gt;<i>
+</I>&gt;<i>  On 8/28/06, Gary E. Miller &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">gem at rellim.com</A>&gt; wrote:
+</I>&gt;<i>
+</I>&gt;<i> &gt; -----BEGIN PGP SIGNED MESSAGE-----
+</I>&gt;<i> &gt; Hash: SHA1
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; Yo Karl!
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; On Mon, 28 Aug 2006, Karl von Muller wrote:
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; &gt; Don't think my GPS supports PPS, didnt see anything about it when
+</I>&gt;<i> &gt; debugging
+</I>&gt;<i> &gt; &gt; it through GPSD, but I put it in the config as well just to test if
+</I>&gt;<i> &gt; it'd
+</I>&gt;<i> &gt; &gt; pick up anythng
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; Does not hurt to add it in, but most GPS do not support it.
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; &gt; [<A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">root at gumstix</A> ~]# cat /etc/ntp.conf
+</I>&gt;<i> &gt; &gt; server 127.127.28.0 minpoll 4 maxpoll 4
+</I>&gt;<i> &gt; &gt; fudge 127.127.28.0 time1 0.420 refid GPS
+</I>&gt;<i> &gt; &gt; server 127.127.28.1 minpoll 4 maxpoll 4 prefer
+</I>&gt;<i> &gt; &gt; fudge 127.127.28.1 refid GPS1
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; That is a pretty minimal config.  I would want to have at least 3
+</I>&gt;<i> &gt; servers and the driftfile.
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; You should be getting no refclock errors in ntp even if gpsd is never
+</I>&gt;<i> &gt; started.  If you are still getting them then you have an ntpd problem.
+</I>&gt;<i> &gt; I would double check that you are running the ntpd that you think you
+</I>&gt;<i> &gt; are running, that it has the shared memory refclock driver compiled
+</I>&gt;<i> &gt; in, that your shared memory is working and that ntpd can use the shared
+</I>&gt;<i> &gt; memory.
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; RGDS
+</I>&gt;<i> &gt; GARY
+</I>&gt;<i> &gt; -
+</I>&gt;<i> &gt; ---------------------------------------------------------------------------
+</I>&gt;<i> &gt; Gary E. Miller Rellim 20340 Empire Blvd, Suite E-3, Bend, OR 97701
+</I>&gt;<i> &gt;          <A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">gem at rellim.com</A>  Tel:+1(541)382-8588
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; -----BEGIN PGP SIGNATURE-----
+</I>&gt;<i> &gt; Version: GnuPG v1.4.3 (GNU/Linux)
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; iD8DBQFE8pIK8KZibdeR3qURAseEAJ9Z9Pe9Onbh9stTb2chPmg6sKRUnACg6GZj
+</I>&gt;<i> &gt; 2giEsxUdgHfpNEWsRILanEs=
+</I>&gt;<i> &gt; =lVVA
+</I>&gt;<i> &gt; -----END PGP SIGNATURE-----
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt;
+</I>&gt;<i>
+</I>-------------- next part --------------
+An HTML attachment was scrubbed...
+URL: &lt;<A HREF="https://lists.berlios.de/pipermail/gpsd-users/attachments/20060828/276b7317/attachment.html">https://lists.berlios.de/pipermail/gpsd-users/attachments/20060828/276b7317/attachment.html</A>&gt;
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="001883.html">[Gpsd-users] finding quoted correctly
+</A></li>
+	<LI>Next message: <A HREF="001887.html">[Gpsd-users] Fwd:  NTP Problems
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1886">[ date ]</a>
+              <a href="thread.html#1886">[ thread ]</a>
+              <a href="subject.html#1886">[ subject ]</a>
+              <a href="author.html#1886">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

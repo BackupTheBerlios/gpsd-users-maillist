@@ -1,0 +1,100 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] gpsd:WARN: PPS TIOCMIWAIT returns unchanged state, ppsmonitor sleeps 10
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2013-July/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20gpsd%3AWARN%3A%20PPS%20TIOCMIWAIT%20returns%20unchanged%20state%2C%0A%20ppsmonitor%20sleeps%2010&In-Reply-To=%3C20130701140708.GC11795%40belle.intranet.vanheusden.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   
+   
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] gpsd:WARN: PPS TIOCMIWAIT returns unchanged state, ppsmonitor sleeps 10</H1>
+    <B>folkert</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20gpsd%3AWARN%3A%20PPS%20TIOCMIWAIT%20returns%20unchanged%20state%2C%0A%20ppsmonitor%20sleeps%2010&In-Reply-To=%3C20130701140708.GC11795%40belle.intranet.vanheusden.com%3E"
+       TITLE="[Gpsd-users] gpsd:WARN: PPS TIOCMIWAIT returns unchanged state, ppsmonitor sleeps 10">folkert at vanheusden.com
+       </A><BR>
+    <I>Mon Jul  1 16:07:08 CEST 2013</I>
+    <P><UL>
+        
+        
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#5564">[ date ]</a>
+              <a href="thread.html#5564">[ thread ]</a>
+              <a href="subject.html#5564">[ subject ]</a>
+              <a href="author.html#5564">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi,
+
+I'm trying to sync a pc via gpsd and ntpd.
+I noticed that the nmea stream is processed correctly but pps does not
+work at all.
+So I invoked gpsd with &quot;-n -N -D 255&quot; and saw this:
+
+gpsd:PROG: KPPS assert 1372687478.817955292, sequence: 105 - clear  1372687477.917954360, sequence: 104
+gpsd:PROG: KPPS data: using assert
+gpsd:INFO: KPPS cycle: 1000019, duration:  900001 @ 1372687478.817955292
+gpsd:PROG: KPPS assert 1372687478.817955292, sequence: 105 - clear  1372687478.917956736, sequence: 105
+gpsd:PROG: KPPS data: using clear
+gpsd:INFO: KPPS cycle: 1000002, duration:  100001 @ 1372687478.917956736
+gpsd:PROG: KPPS assert 1372687479.817934609, sequence: 106 - clear  1372687478.917956736, sequence: 105
+gpsd:PROG: KPPS data: using assert
+gpsd:INFO: KPPS cycle:  999980, duration:  899978 @ 1372687479.817934609
+gpsd:PROG: KPPS assert 1372687479.817934609, sequence: 106 - clear  1372687479.917950586, sequence: 106
+gpsd:PROG: KPPS data: using clear
+gpsd:INFO: KPPS cycle:  999994, duration:  100015 @ 1372687479.917950586
+gpsd:DATA: packet from /dev/ttyS1 with {ONLINE|TIME|LATLON|SPEED|TRACK|MODE|PACKET|CLEAR|PPSTIME}
+gpsd:DATA: packet from /dev/ttyS1 with {ONLINE|TIME|LATLON|ALTITUDE|STATUS|MODE|PACKET|PPSTIME}
+gpsd:DATA: packet from /dev/ttyS1 with {ONLINE|TIME|LATLON|STATUS|PACKET|REPORT|PPSTIME}
+gpsd:PROG: KPPS assert 1372687480.817949304, sequence: 107 - clear  1372687479.917950586, sequence: 106
+gpsd:PROG: KPPS data: using assert
+gpsd:INFO: KPPS cycle: 1000014, duration:  899999 @ 1372687480.817949304
+gpsd:PROG: KPPS assert 1372687480.817949304, sequence: 107 - clear  1372687480.917933407, sequence: 107
+gpsd:PROG: KPPS data: using clear
+gpsd:INFO: KPPS cycle:  999983, duration:   99984 @ 1372687480.917933407
+gpsd:WARN: PPS TIOCMIWAIT returns unchanged state, ppsmonitor sleeps 10
+
+So clearly the PPS signal comes in but for some reason gpsd decides to sleep 10 seconds?
+Why on earth is it doing that?
+
+
+Regards,
+
+Folkert van Heusden
+
+-- 
+MultiTail &#232; uno flexible tool per seguire di logfiles e effettuazione
+di commissioni. Feltrare, provedere da colore, merge, 'diff-view',
+etc. <A HREF="http://www.vanheusden.com/multitail/">http://www.vanheusden.com/multitail/</A>
+----------------------------------------------------------------------
+Phone: +31-6-41278122, PGP-key: 1F28D8AE, www.vanheusden.com
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	
+	
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#5564">[ date ]</a>
+              <a href="thread.html#5564">[ thread ]</a>
+              <a href="subject.html#5564">[ subject ]</a>
+              <a href="author.html#5564">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

@@ -1,0 +1,84 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] How to set initial time?
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2011-October/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20How%20to%20set%20initial%20time%3F&In-Reply-To=%3C4EA9877D.4000309%40wildgooses.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="005520.html">
+   
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] How to set initial time?</H1>
+    <B>Ed W</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20How%20to%20set%20initial%20time%3F&In-Reply-To=%3C4EA9877D.4000309%40wildgooses.com%3E"
+       TITLE="[Gpsd-users] How to set initial time?">lists at wildgooses.com
+       </A><BR>
+    <I>Thu Oct 27 18:31:57 CEST 2011</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="005520.html">[Gpsd-users] How to set initial time?
+</A></li>
+        
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#5516">[ date ]</a>
+              <a href="thread.html#5516">[ thread ]</a>
+              <a href="subject.html#5516">[ subject ]</a>
+              <a href="author.html#5516">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>On 26/10/2011 16:08, Yan Seiner wrote:
+&gt;<i> I posted on this before.  I have an embedded platform without a RTC that
+</I>&gt;<i> comes up often without network access.  When the box boots, it sets the
+</I>&gt;<i> date to some arbitrary date (1992 or thereabouts).
+</I>&gt;<i>
+</I>
+Unrelated, but one thing which will help is if you grab the
+/etc/init.d/swclock script from gentoo openrc and modify the basic idea
+for your environment.  Roughly it touches a dummy file, then at boot it
+restores the time to the time on that dummy file. 
+
+This guarantees that the time is wrong, but it also ensures that it's
+always *increasing*.  And you can touch you sync file as often as you
+need to ensure that you can't skip back in time more than X...
+
+This probably doesn't fix your core problem, but it might be a useful
+bandaid in the meantime while you are getting the correct time from the gps?
+
+As Gary pointed out, chrony is such a simple app it's well worth getting
+the very latest so that you aren't tripping over solved problems. There
+are quite a few improvements in recent versions around odd corner cases
+
+Good luck
+
+Ed W
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="005520.html">[Gpsd-users] How to set initial time?
+</A></li>
+	
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#5516">[ date ]</a>
+              <a href="thread.html#5516">[ thread ]</a>
+              <a href="subject.html#5516">[ subject ]</a>
+              <a href="author.html#5516">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

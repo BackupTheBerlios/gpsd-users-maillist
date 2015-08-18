@@ -1,0 +1,80 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] Is use of gps_unpack allowed ?
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2011-March/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Is%20use%20of%20gps_unpack%20allowed%20%3F&In-Reply-To=%3C1300013662.1976.54.camel%40pavilion%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="005165.html">
+   <LINK REL="Next"  HREF="005135.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] Is use of gps_unpack allowed ?</H1>
+    <B>Danny Backx</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Is%20use%20of%20gps_unpack%20allowed%20%3F&In-Reply-To=%3C1300013662.1976.54.camel%40pavilion%3E"
+       TITLE="[Gpsd-users] Is use of gps_unpack allowed ?">danny.backx at scarlet.be
+       </A><BR>
+    <I>Sun Mar 13 11:54:22 CET 2011</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="005165.html">[Gpsd-users] Wrong device detection
+</A></li>
+        <LI>Next message: <A HREF="005135.html">[Gpsd-users] Is use of gps_unpack allowed ?
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#5133">[ date ]</a>
+              <a href="thread.html#5133">[ thread ]</a>
+              <a href="subject.html#5133">[ subject ]</a>
+              <a href="author.html#5133">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>I was going to write a message about RoadMap does work with the current
+version of libgps, but only when run under gdb.
+But then I debugged more and rewrote my message :-)
+
+RoadMap already has a triggering system so it'll read data off a socket,
+and then call the function registered to handle that data. Libgps has
+something similar. Using gps_read in the function is wrong, but oddly it
+appears to work at times.
+
+Recently it worked reliably under gdb but not outside so I thought I
+must have an odd memory problem somewhere. Not so. Not sure exactly
+what is causing this.
+
+Anyway, the fix is easy if gps_unpack is a public function. Is it ?
+
+	Danny
+-- 
+Danny Backx ; danny.backx - at - scarlet.be ; <A HREF="http://danny.backx.info">http://danny.backx.info</A>
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="005165.html">[Gpsd-users] Wrong device detection
+</A></li>
+	<LI>Next message: <A HREF="005135.html">[Gpsd-users] Is use of gps_unpack allowed ?
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#5133">[ date ]</a>
+              <a href="thread.html#5133">[ thread ]</a>
+              <a href="subject.html#5133">[ subject ]</a>
+              <a href="author.html#5133">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

@@ -1,0 +1,117 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] gpsd with logfile
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2005-April/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20gpsd%20with%20logfile&In-Reply-To=%3C200504261100.18955.bafi%40gmx.de%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="000578.html">
+   <LINK REL="Next"  HREF="000601.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] gpsd with logfile</H1>
+    <B>Bastian Fincke</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20gpsd%20with%20logfile&In-Reply-To=%3C200504261100.18955.bafi%40gmx.de%3E"
+       TITLE="[Gpsd-users] gpsd with logfile">bafi at gmx.de
+       </A><BR>
+    <I>Tue Apr 26 11:00:18 CEST 2005</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="000578.html">[Gpsd-users] gpsd with logfile
+</A></li>
+        <LI>Next message: <A HREF="000601.html">[Gpsd-users] gpsd with logfile
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#599">[ date ]</a>
+              <a href="thread.html#599">[ thread ]</a>
+              <a href="subject.html#599">[ subject ]</a>
+              <a href="author.html#599">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi,
+
+I will try to answer a better question: 
+
+I tried it with gpsfake:
+[quote from shell]
+linux:/usr/sbin # gpsfake -n -s 10 /home/basti/Strecke.txt
+gpsfake: launch 'gpsd -N -P /tmp/gpsfake_pid-15342 -f /dev/pts/5' and press 
+enter...
+gpsfake: interpreting as NMEA
+Traceback (most recent call last):
+  File &quot;/usr/bin/gpsfake&quot;, line 87, in ?
+    raw[4] = raw[5] = eval(&quot;termios.B&quot; + `speed`)
+  File &quot;&lt;string&gt;&quot;, line 0, in ?
+AttributeError: 'module' object has no attribute 'B10'
+[/quote]
+
+Between I started on another shell: 
+[quote for another shell]
+linux:/home/basti/gpsemu # gpsd -N -P /tmp/gpsfake_pid-15335 -f /dev/pts/6 -S 
+6000 -D 5
+gpsd: launching (Version 2.22)
+gpsd: listening on port 6000
+gpsd: closing GPS=/dev/pts/6
+gpsd: Received terminating signal 2. Exiting...
+linux:/home/basti/gpsemu # gpsd -N -P /tmp/gpsfake_pid-15342 -f /dev/pts/5 -S 
+6000 -D 5
+gpsd: launching (Version 2.22)
+gpsd: listening on port 6000
+[/quote]
+
+Can anyone tell me what means the AttributeError ? Or how can I get the goal ?
+
+Thanks,
+
+Basti
+
+
+
+Am Montag, 25. April 2005 16:34 schrieb Bastian Fincke:
+&gt;<i> Hi,
+</I>&gt;<i>
+</I>&gt;<i> I have a small problem I think.
+</I>&gt;<i> I want to use the aktual gpsd with a logfile.
+</I>&gt;<i> I remember it was something like -T l and -p /home/user/logfile
+</I>&gt;<i> now it is not working anymore. How can I do that now, and is there a
+</I>&gt;<i> posibility to change the speed of that logfile. The trip I made was about
+</I>&gt;<i> half an hour, but in the presentation I have only 2 or 3 min.
+</I>&gt;<i>
+</I>&gt;<i> Thank you so far,
+</I>&gt;<i>
+</I>&gt;<i> Basti
+</I>&gt;<i> _______________________________________________
+</I>&gt;<i> Gpsd-users mailing list
+</I>&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">Gpsd-users at lists.berlios.de</A>
+</I>&gt;<i> <A HREF="http://lists.berlios.de/mailman/listinfo/gpsd-users">http://lists.berlios.de/mailman/listinfo/gpsd-users</A>
+</I>
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="000578.html">[Gpsd-users] gpsd with logfile
+</A></li>
+	<LI>Next message: <A HREF="000601.html">[Gpsd-users] gpsd with logfile
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#599">[ date ]</a>
+              <a href="thread.html#599">[ thread ]</a>
+              <a href="subject.html#599">[ subject ]</a>
+              <a href="author.html#599">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

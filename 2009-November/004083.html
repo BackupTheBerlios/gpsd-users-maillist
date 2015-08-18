@@ -1,0 +1,108 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] PPS data from gpsd on OpenBSD??
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2009-November/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20PPS%20data%20from%20gpsd%20on%20OpenBSD%3F%3F&In-Reply-To=%3Calpine.LNX.1.10.0911251530590.21347%40catbert.rellim.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="004082.html">
+   <LINK REL="Next"  HREF="004084.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] PPS data from gpsd on OpenBSD??</H1>
+    <B>Gary E. Miller</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20PPS%20data%20from%20gpsd%20on%20OpenBSD%3F%3F&In-Reply-To=%3Calpine.LNX.1.10.0911251530590.21347%40catbert.rellim.com%3E"
+       TITLE="[Gpsd-users] PPS data from gpsd on OpenBSD??">gem at rellim.com
+       </A><BR>
+    <I>Thu Nov 26 00:37:20 CET 2009</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="004082.html">[Gpsd-users] PPS data from gpsd on OpenBSD??
+</A></li>
+        <LI>Next message: <A HREF="004084.html">[Gpsd-users] PPS data from gpsd on OpenBSD??
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#4083">[ date ]</a>
+              <a href="thread.html#4083">[ thread ]</a>
+              <a href="subject.html#4083">[ subject ]</a>
+              <a href="author.html#4083">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>-----BEGIN PGP SIGNED MESSAGE-----
+Hash: SHA1
+
+Yo Rich!
+
+On Wed, 25 Nov 2009, Rich Wales wrote:
+
+&gt;<i> I'm using the current gpsd sources from SVN (revision 6600).
+</I>
+Good.  Been a lot of improvment lately.
+
+&gt;<i> PPS_ENABLE is defined in gpsd_config.h, but TIOCMIWAIT appears to be a
+</I>&gt;<i> Linux-specific thing that doesn't exist in OpenBSD.
+</I>
+Yep, no TIOCMIWAIT then you get no PPS from gpsd.  Since I have no OpenBSD
+I have no idea what the workaround might be.
+
+On Linux the gps_ppsmonitor() uses ioctl(TIOCMIWAIT) to wait for a
+change on the PPS pin.  That way it gets woken up promptly on a PPS
+change and yet wastes no time in a wait loop.
+
+I see two options, connect the PPS pin somehow directly to ntpd or
+figure out a way to wait on the pin so gps_ppsmonitor() can work on
+OpenBSD.
+
+&gt;<i> I want to get this working in OpenBSD, if possible, because I'm
+</I>&gt;<i> looking for a software platform that will support PPS out of the box,
+</I>&gt;<i> without requiring a custom-built kernel -- and this appears to be a
+</I>&gt;<i> realistic possibility in OpenBSD, but not Linux or FreeBSD.
+</I>
+PPS works just fine on stock Linux kernels/distros.  Just add
+ntpd and gpsd.
+
+RGDS
+GARY
+- ---------------------------------------------------------------------------
+Gary E. Miller Rellim 109 NW Wilmington Ave., Suite E, Bend, OR 97701
+	<A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">gem at rellim.com</A>  Tel:+1(541)382-8588
+
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v1.4.3 (GNU/Linux)
+
+iD8DBQFLDb+yBmnRqz71OvMRAvtNAJ9FmJ9z+zgX2pqh58NDGCQECRvQlwCdFJlV
+sVqO1DrC8wynkfyB83dGb50=
+=OO3L
+-----END PGP SIGNATURE-----
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="004082.html">[Gpsd-users] PPS data from gpsd on OpenBSD??
+</A></li>
+	<LI>Next message: <A HREF="004084.html">[Gpsd-users] PPS data from gpsd on OpenBSD??
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#4083">[ date ]</a>
+              <a href="thread.html#4083">[ thread ]</a>
+              <a href="subject.html#4083">[ subject ]</a>
+              <a href="author.html#4083">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

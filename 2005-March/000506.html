@@ -1,0 +1,90 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] Gpsd on a Zaurus SL-C3000
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2005-March/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Gpsd%20on%20a%20Zaurus%20SL-C3000&In-Reply-To=%3C20050331190448.GB9238%40thyrsus.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="000504.html">
+   <LINK REL="Next"  HREF="000507.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] Gpsd on a Zaurus SL-C3000</H1>
+    <B>Eric S. Raymond</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Gpsd%20on%20a%20Zaurus%20SL-C3000&In-Reply-To=%3C20050331190448.GB9238%40thyrsus.com%3E"
+       TITLE="[Gpsd-users] Gpsd on a Zaurus SL-C3000">esr at thyrsus.com
+       </A><BR>
+    <I>Thu Mar 31 21:04:48 CEST 2005</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="000504.html">[Gpsd-users] Gpsd on a Zaurus SL-C3000
+</A></li>
+        <LI>Next message: <A HREF="000507.html">[Gpsd-users] Gpsd on a Zaurus SL-C3000
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#506">[ date ]</a>
+              <a href="thread.html#506">[ thread ]</a>
+              <a href="subject.html#506">[ subject ]</a>
+              <a href="author.html#506">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Gary E. Miller &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">gem at rellim.com</A>&gt;:
+&gt;<i> Once again, if the compiler observes pragma pack then this does not
+</I>&gt;<i> apply.  Can someone prove the Zaurus CC is so brain dead it does not
+</I>&gt;<i> have a pragma pack?  Can someone find ANY modern compiler that does not
+</I>&gt;<i> observer pragma pack in some form?
+</I>
+Well, first, I thought we already had a bug report indicating that zgcc
+chokes on #pragma pack.  
+
+And second -- even if all compilers support some equivalent of #pragma
+pack, that doesn't mean we're home free.  At least two things could 
+still go wrong:
+
+1. We might not know what the equivalent command-line option or pragma
+or other black magic is, or just not have applied it.  The only way we
+could possibly tell that it *needs* to be applied is when some poor
+user gets back garbage data.
+
+2. We don't control the optimization switches in the target
+environment.  What if one of them turns off #pragma pack, for example
+to do access-time optimization?  The C standard permits this; remember
+that pragmas are advisory only.
+
+The bottom line is that relying on #pragma pack is bad practice.  Yes,
+I know this is a pain in the butt.  I'd rather use your pack-and-cast method
+myself, it does make the code easier to read.  But I've learned by painful
+experience that to do so is unwise.
+-- 
+		&lt;a href=&quot;<A HREF="http://www.catb.org/~esr/">http://www.catb.org/~esr/</A>&quot;&gt;Eric S. Raymond&lt;/a&gt;
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="000504.html">[Gpsd-users] Gpsd on a Zaurus SL-C3000
+</A></li>
+	<LI>Next message: <A HREF="000507.html">[Gpsd-users] Gpsd on a Zaurus SL-C3000
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#506">[ date ]</a>
+              <a href="thread.html#506">[ thread ]</a>
+              <a href="subject.html#506">[ subject ]</a>
+              <a href="author.html#506">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

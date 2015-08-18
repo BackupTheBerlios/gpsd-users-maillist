@@ -1,0 +1,93 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] 2 talkers for 1 gps mouse (sirfstar iii)?
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2009-August/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%202%20talkers%20for%201%20gps%20mouse%20%28sirfstar%20iii%29%3F&In-Reply-To=%3C20090826205507.GD27003%40thyrsus.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="003874.html">
+   <LINK REL="Next"  HREF="003876.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] 2 talkers for 1 gps mouse (sirfstar iii)?</H1>
+    <B>Eric S. Raymond</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%202%20talkers%20for%201%20gps%20mouse%20%28sirfstar%20iii%29%3F&In-Reply-To=%3C20090826205507.GD27003%40thyrsus.com%3E"
+       TITLE="[Gpsd-users] 2 talkers for 1 gps mouse (sirfstar iii)?">esr at thyrsus.com
+       </A><BR>
+    <I>Wed Aug 26 22:55:07 CEST 2009</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="003874.html">[Gpsd-users] 2 talkers for 1 gps mouse (sirfstar iii)?
+</A></li>
+        <LI>Next message: <A HREF="003876.html">[Gpsd-users] BT GPS
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3875">[ date ]</a>
+              <a href="thread.html#3875">[ thread ]</a>
+              <a href="subject.html#3875">[ subject ]</a>
+              <a href="author.html#3875">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Patrick Weemeeuw &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">pweemeeuw at telenet.be</A>&gt;:
+&gt;<i> The O=GND is much more accurate (e.g. horizontal error 2 vss 33) (33 
+</I>&gt;<i> is perhaps on the high side, but this is an indoor measurement).
+</I>
+That's interesting, and not what I'd expect.
+ 
+&gt;<i> According to the gpsd manual, MID2 and GND are tags:
+</I>&gt;<i>     &quot;A tag identifying the last sentence received. For NMEA devices 
+</I>&gt;<i> this is just the NMEA sentence name; the talker-ID portion may be 
+</I>&gt;<i> useful for distinguishing among results produced by different NMEA 
+</I>&gt;<i> talkers in the same wire.&quot;
+</I>&gt;<i> 
+</I>&gt;<i> Applications get most often the MID2 one, as that is typically the 
+</I>&gt;<i> most recent one received. I would like to select the GND one, and 
+</I>&gt;<i> ignore the MID2. Is there a means to make gpsd to do that?
+</I>&gt;<i> 
+</I>&gt;<i> Further I'm wondering about the underlying cause of this.
+</I>
+They're both sentences emitted by SirF chips at different points in
+their cycle, analogous to the way many NMEA devices redundantly emit
+GPRMC/GPGGA/GPGLL.  We process both because in older firmware versions
+the timestamp in the GND report is garbage.
+
+Currently there's no way to suppress GND. It is possible we could do that
+in the driver, but I'd need to see evidence from people with different usage
+patterns before I'd take that relatively drastic step.
+
+I have a feature request in my queue for the new protocol, to implement
+filtering commands.  I will bear in mind that some people may want
+to filter on tags as well as data classes.
+-- 
+		&lt;a href=&quot;<A HREF="http://www.catb.org/~esr/">http://www.catb.org/~esr/</A>&quot;&gt;Eric S. Raymond&lt;/a&gt;
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="003874.html">[Gpsd-users] 2 talkers for 1 gps mouse (sirfstar iii)?
+</A></li>
+	<LI>Next message: <A HREF="003876.html">[Gpsd-users] BT GPS
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3875">[ date ]</a>
+              <a href="thread.html#3875">[ thread ]</a>
+              <a href="subject.html#3875">[ subject ]</a>
+              <a href="author.html#3875">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

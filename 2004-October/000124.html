@@ -1,0 +1,157 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] fix for erroneous Q output
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2004-October/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20fix%20for%20erroneous%20Q%20output&In-Reply-To=%3Cp0611041abda43d5856cc%40%5B210.10.215.33%5D%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="000126.html">
+   <LINK REL="Next"  HREF="000125.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] fix for erroneous Q output</H1>
+    <B>Robin L Darroch</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20fix%20for%20erroneous%20Q%20output&In-Reply-To=%3Cp0611041abda43d5856cc%40%5B210.10.215.33%5D%3E"
+       TITLE="[Gpsd-users] fix for erroneous Q output">robin at spade-men.com
+       </A><BR>
+    <I>Tue Oct 26 19:47:42 CEST 2004</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="000126.html">[Gpsd-users] problems building 2.2, bug in running gpsd
+</A></li>
+        <LI>Next message: <A HREF="000125.html">[Gpsd-users] fix for erroneous Q output
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#124">[ date ]</a>
+              <a href="thread.html#124">[ thread ]</a>
+              <a href="subject.html#124">[ subject ]</a>
+              <a href="author.html#124">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>OK - I've written a couple of fixes to go in nmea_parse.c.  Just 
+replace the GPGGA and GPGSA parsing functions with the following 
+(I've bolded the changed lines for those whose e-mail client supports 
+it - only four new or changed lines in total):
+
+static void processGPGGA(char *sentence, struct gps_data_t *out)
+/* Global Positioning System Fix Data */
+{
+     /*
+         GGA,123519,4807.038,N,01131.324,E,1,08,0.9,545.4,M,46.9,M, , *42
+            123519       Fix taken at 12:35:19 UTC
+            4807.038,N   Latitude 48 deg 07.038' N
+            01131.324,E  Longitude 11 deg 31.324' E
+            1            Fix quality: 0 = invalid, 1 = GPS fix, 2 = DGPS fix
+            08           Number of satellites being tracked
+            0.9          Horizontal dilution of position
+            545.4,M      Altitude, Metres above mean sea level
+            46.9,M       Height of geoid (mean sea level) above WGS84
+                         ellipsoid, in Meters
+            (empty field) time in seconds since last DGPS update
+            (empty field) DGPS station ID number (0000-1023)
+     */
+     out-&gt;status_stamp.changed = update_field_i(sentence, 6, &amp;out-&gt;status);
+     REFRESH(out-&gt;status_stamp);
+     gpsd_report(3, &quot;GPGGA sets status %d\n&quot;, out-&gt;status);
+     if (out-&gt;status &gt; STATUS_NO_FIX) {
+	char	*altitude;
+
+	fake_mmddyyyy(out);
+	merge_hhmmss(field(sentence, 1), out);
+	do_lat_lon(sentence, 2, out);
+	out-&gt;satellites_used = atoi(field(sentence, 7));
+	altitude = field(sentence, 9);
+	/*
+	 * SiRF chipsets up to version 2.2 report a null altitude field.
+	 * See &lt;<A HREF="http://www.sirf.com/Downloads/Technical/apnt0033.pdf">http://www.sirf.com/Downloads/Technical/apnt0033.pdf</A>&gt;.
+	 * If we see this, force mode to 2D at most.
+	 */
+	if (!altitude[0]) {
+	    if (out-&gt;mode == MODE_3D) {
+		out-&gt;mode = out-&gt;status ? MODE_2D : MODE_NO_FIX;
+		out-&gt;mode_stamp.changed = 1;
+		REFRESH(out-&gt;mode_stamp);
+	    }
+	} else {
+	    double newaltitude = atof(altitude);
+
+	    out-&gt;altitude_stamp.changed = (newaltitude != out-&gt;altitude);
+	    out-&gt;altitude = newaltitude;
+	    REFRESH(out-&gt;altitude_stamp);
+	}
+     }
+}
+
+static void processGPGSA(char *sentence, struct gps_data_t *out)
+/* GPS DOP and Active Satellites */
+{
+     /*
+	eg1. $GPGSA,A,3,,,,,,16,18,,22,24,,,3.6,2.1,2.2*3C
+	eg2. $GPGSA,A,3,19,28,14,18,27,22,31,39,,,,,1.7,1.0,1.3*35
+	1    = Mode:
+	       M=Manual, forced to operate in 2D or 3D
+	       A=Automatic, 3D/2D
+	2    = Mode: 1=Fix not available, 2=2D, 3=3D
+	3-14 = PRNs of satellites used in position fix (null for unused fields)
+	15   = PDOP
+	16   = HDOP
+	17   = VDOP
+      */
+     int i, changed = 0;
+    
+     out-&gt;mode_stamp.changed = update_field_i(sentence, 2, &amp;out-&gt;mode);
+     REFRESH(out-&gt;mode_stamp);
+     gpsd_report(3, &quot;GPGSA sets mode %d\n&quot;, out-&gt;mode);
+     changed |= update_field_f(sentence, 15, &amp;out-&gt;pdop);
+     changed |= update_field_f(sentence, 16, &amp;out-&gt;hdop);
+     changed |= update_field_f(sentence, 17, &amp;out-&gt;vdop);
+     for (i = 0; i &lt; MAXCHANNELS; i++)
+	out-&gt;used[i] = 0;
+     out-&gt;satellites_used = 0;
+     for (i = 0; i &lt; MAXCHANNELS; i++) {
+	out-&gt;used[i] = atoi(field(sentence, i+3));
+	if (out-&gt;used[i] &gt; 0)
+		out-&gt;satellites_used++;
+     }
+     out-&gt;fix_quality_stamp.changed = changed;
+     REFRESH(out-&gt;fix_quality_stamp);
+}
+
+-- 
+
+------------------------------------------------------------
+Robin L. Darroch - <A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">robin at spade-men.com</A> - <A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">robin at darroch.id.au</A>
+       <A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">robin_darroch at nyca.org.au</A>   -   +61 421 503 966
+-------------- next part --------------
+An HTML attachment was scrubbed...
+URL: &lt;<A HREF="https://lists.berlios.de/pipermail/gpsd-users/attachments/20041027/c8e86a90/attachment.html">https://lists.berlios.de/pipermail/gpsd-users/attachments/20041027/c8e86a90/attachment.html</A>&gt;
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="000126.html">[Gpsd-users] problems building 2.2, bug in running gpsd
+</A></li>
+	<LI>Next message: <A HREF="000125.html">[Gpsd-users] fix for erroneous Q output
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#124">[ date ]</a>
+              <a href="thread.html#124">[ thread ]</a>
+              <a href="subject.html#124">[ subject ]</a>
+              <a href="author.html#124">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

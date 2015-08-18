@@ -1,0 +1,141 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] Re: GPS Simulator for gpsd
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2005-May/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Re%3A%20GPS%20Simulator%20for%20gpsd&In-Reply-To=%3C00c201c55ddd%24da19d9d0%243c67a8c0%40netsity.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="000679.html">
+   <LINK REL="Next"  HREF="000688.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] Re: GPS Simulator for gpsd</H1>
+    <B>Inpreet Singh</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Re%3A%20GPS%20Simulator%20for%20gpsd&In-Reply-To=%3C00c201c55ddd%24da19d9d0%243c67a8c0%40netsity.com%3E"
+       TITLE="[Gpsd-users] Re: GPS Simulator for gpsd">Singh.Inpreet at netsity.com
+       </A><BR>
+    <I>Sat May 21 10:19:47 CEST 2005</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="000679.html">[Gpsd-users] Re: GPS Simulator for gpsd
+</A></li>
+        <LI>Next message: <A HREF="000688.html">[Gpsd-users] Re: GPS Simulator for gpsd
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#680">[ date ]</a>
+              <a href="thread.html#680">[ thread ]</a>
+              <a href="subject.html#680">[ subject ]</a>
+              <a href="author.html#680">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>I want to clerify some doubts about gpsfake, when I start this by following
+command, it ouputs this.
+/usr/bin/gpsfake  -l -n /usr/src/test_gps
+outputs:
+gpsfake: launch 'gpsd -N -P /tmp/gpsfake_pid-4382 -f /dev/pts/2' and press
+enter...
+gpsfake: interpreting as NMEA
+gpsfake: log cycle begins.
+gpsfake: line 1
+$GPGGA,194653,3758.4041,N,02405.2198,E,1,04,5.6,707.6,M,34.5,M,,*44
+gpsfake: line 2
+$GPRMC,194653,A,3758.4041,N,02405.2198,E,139.5,28.7,200405,5,E,A*35
+gpsfake: line 3
+$GPGGA,194654,3759.4199,N,02405.5196,E,1,04,5.6,895.5,M,34.5,M,,*48
+gpsfake: line 4
+$GPRMC,194654,A,3759.4199,N,02405.5196,E,3754.3,13.1,200405,5,E,A*8
+gpsfake: line 5
+$GPGGA,194655,3800.4917,N,02405.6202,E,1,04,5.6,1087.2,M,34.5,M,,*74
+gpsfake: line 6
+$GPRMC,194655,A,3800.4917,N,02405.6202,E,3869.2,4.2,200405,5,E,A*3C
+gpsfake: line 7
+$GPGGA,194656,3801.5803,N,02405.5112,E,1,04,5.6,1275.6,M,34.5,M,,*79
+gpsfake: line 8
+$GPRMC,194656,A,3801.5803,N,02405.5112,E,3931.2,355.5,200405,5,E,A*36
+gpsfake: line 9
+$GPGGA,194657,3802.6445,N,02405.1901,E,1,04,5.6,1454.0,M,34.5,M,,*7B
+gpsfake: line 10
+$GPRMC,194657,A,3802.6445,N,02405.1901,E,3937.7,346.6,200405,5,E,A*35
+gpsfake: line 11
+$GPGGA,194658,3803.6427,N,02404.6624,E,1,04,5.6,1615.7,M,34.5,M,,*7F
+..........................etc....................................
+
+Along with this I started gpsd service daemon and tried to telnet localhost
+2947. Now when I typed P it still returns
+GPSD,P=?
+GPSD,Q=?
+GPSD,W=1
+GPSD,X=1116572373.763550
+GPSD,X=1116572375.763481
+
+This shows there is still something left on simulator issue. So my question
+is how to make gpsfake work as simulator?
+
+I want to write C program for simulator just as gpsfake. could you please
+share some documentation about gpsfake, which can explain what exactly
+gpsfake is doing. I mean business logic.
+
+Regards
+Inpreet singh
+
+----- Original Message ----- 
+From: &quot;Eric S. Raymond&quot; &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">esr at thyrsus.com</A>&gt;
+To: &quot;Inpreet Singh&quot; &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">Singh.Inpreet at netsity.com</A>&gt;
+Cc: &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">gpsd-users at lists.berlios.de</A>&gt;
+Sent: Saturday, May 21, 2005 1:21 PM
+Subject: Re: [Gpsd-users] Re: GPS Simulator for gpsd
+
+
+&gt;<i> Inpreet Singh &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">Singh.Inpreet at netsity.com</A>&gt;:
+</I>&gt;<i> &gt; I studied libgps.c in gpsd package and I think this file can solve my
+</I>&gt;<i> &gt; requirement. What I need is way to define input of NMEA data which I
+</I>have in
+&gt;<i> &gt; logfile to libgps.c. what do u think? So please help me, how should I
+</I>define
+&gt;<i> &gt; gps data input to this utility.
+</I>&gt;<i> &gt; I tried,&quot;  ln -s /usr/scr/logfile /dev/gps&quot;.
+</I>&gt;<i> &gt; Now this is returning data in following format. Is it correct output.
+</I>Also
+&gt;<i> &gt; P=? which I believe is not correct. So please give me some idea, how can
+</I>I
+&gt;<i> &gt; generate gps simulator. Can logfile solve simulator requirement??
+</I>&gt;<i>
+</I>&gt;<i> All libgps.c is is a client library.  It talks to a running gpsd.  It has
+</I>&gt;<i> no ability to interace with GPSes or process NMEA itself.
+</I>&gt;<i>
+</I>&gt;<i> You'll have to either port Python onto your machine or write a C
+</I>&gt;<i> equivalent of gpsfake.
+</I>&gt;<i> -- 
+</I>&gt;<i> &lt;a href=&quot;<A HREF="http://www.catb.org/~esr/">http://www.catb.org/~esr/</A>&quot;&gt;Eric S. Raymond&lt;/a&gt;
+</I>&gt;<i>
+</I>
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="000679.html">[Gpsd-users] Re: GPS Simulator for gpsd
+</A></li>
+	<LI>Next message: <A HREF="000688.html">[Gpsd-users] Re: GPS Simulator for gpsd
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#680">[ date ]</a>
+              <a href="thread.html#680">[ thread ]</a>
+              <a href="subject.html#680">[ subject ]</a>
+              <a href="author.html#680">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

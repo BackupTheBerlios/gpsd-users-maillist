@@ -1,0 +1,97 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] GPSClock 200
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2007-September/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20GPSClock%20200&In-Reply-To=%3C3BF93070B3D1B047BA7ABF612958950D018FBDBF%40hcex.hartwellcorp.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="002911.html">
+   <LINK REL="Next"  HREF="002914.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] GPSClock 200</H1>
+    <B>Michael St. Laurent</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20GPSClock%20200&In-Reply-To=%3C3BF93070B3D1B047BA7ABF612958950D018FBDBF%40hcex.hartwellcorp.com%3E"
+       TITLE="[Gpsd-users] GPSClock 200">mikes at hartwellcorp.com
+       </A><BR>
+    <I>Fri Sep 28 20:21:09 CEST 2007</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="002911.html">[Gpsd-users] Suggestion for 2.35
+</A></li>
+        <LI>Next message: <A HREF="002914.html">[Gpsd-users] GPSClock 200
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2912">[ date ]</a>
+              <a href="thread.html#2912">[ thread ]</a>
+              <a href="subject.html#2912">[ subject ]</a>
+              <a href="author.html#2912">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>I'm working with the GPSClock 200 unit which uses a Furuno Electric
+GH-79L4-N engine.
+
+Here is what the web page says about the time signaling:
+
+&quot;The GPSClock 200 has an RS-232 output that provides NMEA time codes and
+a PPS output signal. About a half-second before, it outputs the time of
+the next PPS pulse in either GPRMC or GPZDA format. Within one
+microsecond of the beginning of the UTC second, it brings the PPS output
+high for about 500 ms.&quot;
+
+The PPS is at TTL level but my hardware seems able to deal with that as
+according to the gpsd logs it's sensing the voltage transition.  However
+it's complaining that the pulse is too short and not providing PPS info
+to NTP through the shm interface.
+
+Sep 27 12:41:15 hcnas gpsd[1773]: gpsd: pps-detect (DCD) on /dev/ttyS0
+changed t
+o 0
+Sep 27 12:41:15 hcnas gpsd[1773]: gpsd: PPS pulse rejected too short.
+cycle: 100
+0009, duration: 499997
+Sep 27 12:41:15 hcnas gpsd[1773]: gpsd: &lt;= GPS:
+$GPRMC,194115,A,3351.7903,N,1174
+9.5205,W,000.0,333.7,270907,013.3,E,A*0F^M
+Sep 27 12:41:16 hcnas gpsd[1773]: gpsd: pps-detect (DCD) on /dev/ttyS0
+changed t
+o 1
+Sep 27 12:41:16 hcnas gpsd[1773]: gpsd: PPS pulse rejected too short.
+cycle: 100
+0033, duration: 500036
+
+So I'm thinking that it's either that the pulse is too long or because
+the NMEA is 1/2 sec *before* the second mark.
+
+Comments?
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="002911.html">[Gpsd-users] Suggestion for 2.35
+</A></li>
+	<LI>Next message: <A HREF="002914.html">[Gpsd-users] GPSClock 200
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2912">[ date ]</a>
+              <a href="thread.html#2912">[ thread ]</a>
+              <a href="subject.html#2912">[ subject ]</a>
+              <a href="author.html#2912">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

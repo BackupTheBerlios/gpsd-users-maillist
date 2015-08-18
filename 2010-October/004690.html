@@ -1,0 +1,219 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] No data from Garmin GPSMap 76CSx through gpsd to tango	GPS
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2010-October/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20No%20data%20from%20Garmin%20GPSMap%2076CSx%20through%20gpsd%20to%20tango%0A%09GPS&In-Reply-To=%3C4CB9FAC1.7030408%40shaw.ca%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="004689.html">
+   <LINK REL="Next"  HREF="004691.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] No data from Garmin GPSMap 76CSx through gpsd to tango	GPS</H1>
+    <B>Peter Freeman</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20No%20data%20from%20Garmin%20GPSMap%2076CSx%20through%20gpsd%20to%20tango%0A%09GPS&In-Reply-To=%3C4CB9FAC1.7030408%40shaw.ca%3E"
+       TITLE="[Gpsd-users] No data from Garmin GPSMap 76CSx through gpsd to tango	GPS">petersfreeman at gmail.com
+       </A><BR>
+    <I>Sat Oct 16 21:19:29 CEST 2010</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="004689.html">[Gpsd-users] Using old Psion GPS?
+</A></li>
+        <LI>Next message: <A HREF="004691.html">[Gpsd-users] No data from Garmin GPSMap 76CSx through gpsd to tango GPS
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#4690">[ date ]</a>
+              <a href="thread.html#4690">[ thread ]</a>
+              <a href="subject.html#4690">[ subject ]</a>
+              <a href="author.html#4690">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE> Summary
+-------
+
+I have a GPS unit that I am trying to get working with gpsd and
+tangoGPS.  I have tried many things listed in other forum posts so far
+with no success.  I need to have a comprehensive step-by-step testing
+process to determine that each step of the communication process between
+the GPS unit and tangoGPS is working.
+
+Environment
+-----------
+
+Ubuntu 10.10 Maverick Meerkat i386
+Linux 2.6.35-22-generic-pae
+GNOME 2.32.0
+Memory 4GB
+
+Garmin GPSMap 76CSx
+Interface set to NMEA In and NMEA Out
+Baud Rate 4800
+
+tangoGPS 0.99.3
+
+Process
+-------
+
+1. Boot Computer
+2. Plug in USB cable
+3. Connect GPS unit
+4. Turn on GPS unit
+4. When satellites have been acquired, start tangoGPS
+
+Configuration
+-------------
+
+<A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">peter at Laptop</A>:~$ sudo dpkg-reconfigure gpsd
+
+Question and responses:
+
+If you accept this option, gpsd will be started automatically
+Start gpsd automatically? YES]
+
+As gpsd only handles GPS devices, it is safe to choose this option.
+However, you can disable it if gpsd is causing interference with other
+attached devices or programs. Should gpsd handle attached USB GPS
+receivers automatically?  YES
+
+Please enter the device the GPS receiver is attached to. It will
+probably be something like /dev/ttyS0 or /dev/ttyUSB0.
+Multiple devices may be specified as a space-separated list. Leave empty
+if you don't want to connect gpsd to a device on boot or if you want to
+use device autodetection only.
+Device the GPS receiver is attached to:  /dev/ttyUSB0
+
+You can give additional arguments when starting gpsd; see gpsd(8) for a
+list of options.
+Do not use '-F' here. The control socket path is set independently.
+Options to gpsd: &lt;no options listed&gt;
+
+Please enter the gpsd control socket location. Usually you want to keep
+the default setting.
+gpsd control socket path: /var/run/gpsd.sock
+
+Tests
+-----
+
+When tangoGPS Loads, two messages in status area at bottom of window:
+
+* No GPS
+* No GPSD
+
+<A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">peter at Laptop</A>:~$ gpscat -s 4800N1
+Traceback (most recent call last):
+  File &quot;/usr/bin/gpscat&quot;, line 66, in &lt;module&gt;
+    tty = os.open(arguments[0], os.O_RDWR)
+IndexError: list index out of range
+
+<A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">peter at Laptop</A>:~$ lsmod | grep 'usb'
+usbhid                 36978  0
+hid                    67742  1 usbhid
+
+<A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">peter at Laptop</A>:~$ gpspipe -w -n 100
+netlib_connectsock() returns socket on fd 3
+{&quot;class&quot;:&quot;VERSION&quot;,&quot;release&quot;:&quot;2.94&quot;,&quot;rev&quot;:&quot;2010-05-13T11:53:05&quot;,&quot;proto_major&quot;:3,&quot;proto_minor&quot;:2}
+{&quot;class&quot;:&quot;DEVICES&quot;,&quot;devices&quot;:[{&quot;class&quot;:&quot;DEVICE&quot;,&quot;path&quot;:&quot;/dev/ttyUSB0&quot;}]}
+{&quot;class&quot;:&quot;WATCH&quot;,&quot;enable&quot;:true,&quot;json&quot;:true,&quot;nmea&quot;:false,&quot;raw&quot;:0,&quot;scaled&quot;:false,&quot;timing&quot;:false}
+
+<A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">peter at Laptop</A>:~$ ps -C gpsd -fww
+UID        PID  PPID  C STIME TTY          TIME CMD
+nobody    1320     1  0 09:48 ?        00:00:00 /usr/sbin/gpsd -F
+/var/run/gpsd.sock -P /var/run/gpsd.pid /dev/ttyUSB0
+
+<A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">peter at Laptop</A>:~$ sudo kill 1320
+
+<A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">peter at Laptop</A>:~$ gpsd -N -n -D 2 /dev/ttyUSB0
+gpsd: launching (Version 2.94)
+gpsd: listening on port gpsd
+gpsd: running with effective group ID 1000
+gpsd: running with effective user ID 1000
+gpsd: opening read-only GPS data source type 0 and at '/dev/ttyUSB0'
+gpsd: device open failed: No such file or directory - retrying read-only
+gpsd: read-only device open failed: No such file or directory
+gpsd: GPS device /dev/ttyUSB0 nonexistent or can't be read
+gpsd: opening read-only GPS data source type 0 and at '/dev/ttyUSB0'
+gpsd: device open failed: No such file or directory - retrying read-only
+gpsd: read-only device open failed: No such file or directory
+gpsd: client(0): device activation failed.
+
+<A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">peter at Laptop</A>:~$ gpsprof -f cycle
+gpsprof: gpsd unreachable.
+
+<A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">peter at Laptop</A>:~$ ls -la /dev/ttyU*
+ls: cannot access /dev/ttyU*: No such file or directory
+
+<A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">peter at Laptop</A>:~$ ls -la /dev/u*
+crw-r----- 1 root root  10, 223 2010-10-16 07:45 /dev/uinput
+crw-rw-rw- 1 root root   1,   9 2010-10-16 07:45 /dev/urandom
+crw-rw---- 1 root root 252,   0 2010-10-16 07:45 /dev/usbmon0
+crw------- 1 root root 252,   1 2010-10-16 07:45 /dev/usbmon1
+crw------- 1 root root 252,   2 2010-10-16 07:45 /dev/usbmon2
+crw------- 1 root root 252,   3 2010-10-16 07:45 /dev/usbmon3
+crw------- 1 root root 252,   4 2010-10-16 07:45 /dev/usbmon4
+crw------- 1 root root 252,   5 2010-10-16 07:45 /dev/usbmon5
+crw------- 1 root root 252,   6 2010-10-16 07:45 /dev/usbmon6
+crw------- 1 root root 252,   7 2010-10-16 07:45 /dev/usbmon7
+crw------- 1 root root 252,   8 2010-10-16 07:45 /dev/usbmon8
+
+Conclusion
+
+It seems to me that there is no ttyUSB0 device.
+
+* Do I have to create ttyUSB0?
+* Should I use another usb device?
+* Which device should I use?
+
+Request
+
+Can you tell me:
+
+1. How can I determine which USB port is being used when I plug in the
+GPS unit?
+2. How do I tell if the USB port is being recognised by gpsd?
+3. How do I tell if the correct baud rate is being used by gpsd
+4. How do I test that gpsd is sending data to tangoGPS
+5. Should I start the GPS unit before starting tangoGPS or the other way
+around
+
+Finally, what steps should I take to get everything working?
+
+Thank you,
+
+Peter Freeman
+
+-- 
+Peter Freeman
+180 Musgrave Place
+Salt Spring Island, V8K 1V5
+British Columbia, Canada
+(250) 653-4623
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="004689.html">[Gpsd-users] Using old Psion GPS?
+</A></li>
+	<LI>Next message: <A HREF="004691.html">[Gpsd-users] No data from Garmin GPSMap 76CSx through gpsd to tango GPS
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#4690">[ date ]</a>
+              <a href="thread.html#4690">[ thread ]</a>
+              <a href="subject.html#4690">[ subject ]</a>
+              <a href="author.html#4690">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

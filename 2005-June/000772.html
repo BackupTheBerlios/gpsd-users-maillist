@@ -1,0 +1,112 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] Patches to gps.py
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2005-June/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Patches%20to%20gps.py&In-Reply-To=%3C42B4FBD9.4050409%40afoyi.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="000773.html">
+   <LINK REL="Next"  HREF="000774.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] Patches to gps.py</H1>
+    <B>Darryl Ross</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Patches%20to%20gps.py&In-Reply-To=%3C42B4FBD9.4050409%40afoyi.com%3E"
+       TITLE="[Gpsd-users] Patches to gps.py">spam at afoyi.com
+       </A><BR>
+    <I>Sun Jun 19 07:00:09 CEST 2005</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="000773.html">[Gpsd-users] can't bind to port gpsd, netlib error -1
+</A></li>
+        <LI>Next message: <A HREF="000774.html">[Gpsd-users] Patches to gps.py
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#772">[ date ]</a>
+              <a href="thread.html#772">[ thread ]</a>
+              <a href="subject.html#772">[ subject ]</a>
+              <a href="author.html#772">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hey All,
+
+New to the list (so I apologize if this is the wrong list) and also
+fairly new to gps'ing as well.
+
+I'm writing myself an app (using wxPython) for a car-puter and have
+fixed a few problems in gps.py. I've attached two diff files.
+
+The whitespace fix is against the gps.py file in the gpsd-devel package
+that I built by rebuilding gpsd-2.25-1.src.rpm on Fedora Core 4.
+
+The track fix is against the gps.py file after I fixed the whitespace.
+
+There is also a problem relating to parsing the result of a 'y' command,
+but I haven't had time to work it out yet:
+
+
+[<A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">darryl at unleashed</A> ~]$ python
+Python 2.4.1 (#1, May 16 2005, 15:19:29)
+[GCC 4.0.0 20050512 (Red Hat 4.0.0-5)] on linux2
+Type &quot;help&quot;, &quot;copyright&quot;, &quot;credits&quot; or &quot;license&quot; for more information.
+&gt;&gt;&gt;<i> import gps
+</I>&gt;&gt;&gt;<i> g = gps.gps()
+</I>&gt;&gt;&gt;<i> g.query('y')
+</I>Traceback (most recent call last):
+  File &quot;&lt;stdin&gt;&quot;, line 1, in ?
+  File &quot;/usr/lib/python2.4/site-packages/gps.py&quot;, line 388, in query
+    return self.poll()
+  File &quot;/usr/lib/python2.4/site-packages/gps.py&quot;, line 375, in poll
+    self.__unpack(data)
+  File &quot;/usr/lib/python2.4/site-packages/gps.py&quot;, line 353, in __unpack
+    float(self.timings.sentence_time)
+ValueError: invalid literal for float(): 4 56 311 27 0
+
+
+Regards
+Darryl
+-------------- next part --------------
+An embedded and charset-unspecified text was scrubbed...
+Name: gps_trackfixed.patch
+URL: &lt;<A HREF="https://lists.berlios.de/pipermail/gpsd-users/attachments/20050619/0ad72b7b/attachment.ksh">https://lists.berlios.de/pipermail/gpsd-users/attachments/20050619/0ad72b7b/attachment.ksh</A>&gt;
+-------------- next part --------------
+An embedded and charset-unspecified text was scrubbed...
+Name: gps_whitespacefixed.patch
+URL: &lt;<A HREF="https://lists.berlios.de/pipermail/gpsd-users/attachments/20050619/0ad72b7b/attachment-0001.ksh">https://lists.berlios.de/pipermail/gpsd-users/attachments/20050619/0ad72b7b/attachment-0001.ksh</A>&gt;
+-------------- next part --------------
+A non-text attachment was scrubbed...
+Name: signature.asc
+Type: application/pgp-signature
+Size: 187 bytes
+Desc: OpenPGP digital signature
+URL: &lt;<A HREF="https://lists.berlios.de/pipermail/gpsd-users/attachments/20050619/0ad72b7b/attachment.pgp">https://lists.berlios.de/pipermail/gpsd-users/attachments/20050619/0ad72b7b/attachment.pgp</A>&gt;
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="000773.html">[Gpsd-users] can't bind to port gpsd, netlib error -1
+</A></li>
+	<LI>Next message: <A HREF="000774.html">[Gpsd-users] Patches to gps.py
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#772">[ date ]</a>
+              <a href="thread.html#772">[ thread ]</a>
+              <a href="subject.html#772">[ subject ]</a>
+              <a href="author.html#772">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

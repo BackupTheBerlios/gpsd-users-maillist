@@ -1,0 +1,99 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] Gpsd on a Zaurus SL-C3000
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2005-March/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Gpsd%20on%20a%20Zaurus%20SL-C3000&In-Reply-To=%3C16972.15752.591833.301298%40desk.crynwr.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="000490.html">
+   <LINK REL="Next"  HREF="000501.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] Gpsd on a Zaurus SL-C3000</H1>
+    <B>Russell Nelson</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Gpsd%20on%20a%20Zaurus%20SL-C3000&In-Reply-To=%3C16972.15752.591833.301298%40desk.crynwr.com%3E"
+       TITLE="[Gpsd-users] Gpsd on a Zaurus SL-C3000">nelson at crynwr.com
+       </A><BR>
+    <I>Thu Mar 31 20:12:24 CEST 2005</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="000490.html">[Gpsd-users] Gpsd on a Zaurus SL-C3000
+</A></li>
+        <LI>Next message: <A HREF="000501.html">[Gpsd-users] Gpsd on a Zaurus SL-C3000
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#500">[ date ]</a>
+              <a href="thread.html#500">[ thread ]</a>
+              <a href="subject.html#500">[ subject ]</a>
+              <a href="author.html#500">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Eric S. Raymond writes:
+ &gt; Russell Nelson &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">nelson at crynwr.com</A>&gt;:
+ &gt; &gt; Found two problems (patch below), but more remain.  For one, while
+ &gt; &gt; it's sleeping 30 seconds after sending EARTHA, it accumulates a whole
+ &gt; &gt; pile of packets.  That doesn't seem correct. 
+ &gt; 
+ &gt; If you observe that it us not necessary, remove it.
+
+This seems to work much better.
+
+Index: drivers.c
+===================================================================
+--- drivers.c   (revision 2222)
++++ drivers.c   (working copy)
+@@ -197,11 +197,15 @@
+ 
+ static void earthmate_initializer(struct gps_device_t *session)
+ {
++    struct timespec to;
++
+     write(session-&gt;gpsdata.gps_fd, &quot;EARTHA\r\n&quot;, 8);
+-    sleep(30);
++    to.tv_sec = 0;
++    to.tv_nsec = 10 * 1000 * 1000;
++    nanosleep(&amp;to, NULL);
+     session-&gt;device_type = &amp;zodiac_binary;
+     zodiac_binary.wrapup = earthmate_close;
+-    zodiac_binary.initializer(session);
++    if (zodiac_binary.initializer) zodiac_binary.initializer(session);
+ }
+ 
+ struct gps_type_t earthmate = {
+
+-- 
+--My blog is at     blog.russnelson.com         | The laws of physics cannot
+Crynwr sells support for free software  | PGPok | be legislated.  Neither can
+521 Pleasant Valley Rd. | +1 315-323-1241 cell  | the laws of countries.
+Potsdam, NY 13676-3213  | +1 212-202-2318 VOIP  | 
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="000490.html">[Gpsd-users] Gpsd on a Zaurus SL-C3000
+</A></li>
+	<LI>Next message: <A HREF="000501.html">[Gpsd-users] Gpsd on a Zaurus SL-C3000
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#500">[ date ]</a>
+              <a href="thread.html#500">[ thread ]</a>
+              <a href="subject.html#500">[ subject ]</a>
+              <a href="author.html#500">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

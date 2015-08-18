@@ -1,0 +1,96 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] GPS loses lock (funny GPGSA line?) - reboot fixes
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2010-June/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20GPS%20loses%20lock%20%28funny%20GPGSA%20line%3F%29%20-%20reboot%20fixes&In-Reply-To=%3C20100610162338.GA10355%40thyrsus.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="004528.html">
+   <LINK REL="Next"  HREF="004529.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] GPS loses lock (funny GPGSA line?) - reboot fixes</H1>
+    <B>Eric Raymond</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20GPS%20loses%20lock%20%28funny%20GPGSA%20line%3F%29%20-%20reboot%20fixes&In-Reply-To=%3C20100610162338.GA10355%40thyrsus.com%3E"
+       TITLE="[Gpsd-users] GPS loses lock (funny GPGSA line?) - reboot fixes">esr at thyrsus.com
+       </A><BR>
+    <I>Thu Jun 10 18:23:38 CEST 2010</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="004528.html">[Gpsd-users] GPS loses lock (funny GPGSA line?) - reboot fixes
+</A></li>
+        <LI>Next message: <A HREF="004529.html">[Gpsd-users] GPS loses lock (funny GPGSA line?) - reboot fixes
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#4534">[ date ]</a>
+              <a href="thread.html#4534">[ thread ]</a>
+              <a href="subject.html#4534">[ subject ]</a>
+              <a href="author.html#4534">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Derek C &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">derekgpsd at hssl.ie</A>&gt;:
+&gt;<i> This query is perhaps a bit off-topic because it looks, to me, like the
+</I>&gt;<i> problem is the GPS units I'm trying (two different types) rather than gpsd
+</I>&gt;<i> itself.
+</I>&gt;<i> 
+</I>&gt;<i> I'm using gpsd in a project (OpenWRT Kamikaze 8.09.2 on a PC Engines ALIX
+</I>&gt;<i> board).
+</I>&gt;<i> 
+</I>&gt;<i> I see a funny problem that occurs after the unit is on for a couple, or a
+</I>&gt;<i> few, days:  gpsd returns no lock when I telnet and send the &quot;p&quot; command.
+</I>
+You're running an old-protocol daemon, then.  &quot;P&quot; is no longer supported.
+You should upgrade, though I don't think this has anything to do with your
+problem.
+ 
+&gt;<i> I also notice that the raw output from the /dev/ttyUSBX gps device seems
+</I>&gt;<i> to have a lot of commas in the GPGSA line when the problem is happening.
+</I>
+GPGSA has a fixed field count.  The lots of adjacent commas just
+means the GPS doesn't think it sees signal from most of the satellites
+in the skyview.
+ 
+&gt;<i> When I reboot the unit (a &quot;reboot&quot; command works fine) gpsd starts return
+</I>&gt;<i> the co-ordinates again in response to a &quot;p&quot; command.
+</I>
+It looks as though what's happening is that the GPS firmware is dropping 
+all but the three strongest channels, and noyt trying to reacquire until
+you reboot.
+
+&gt;<i> Has anyone else comes across this?  Is there any way to tell the usb gps
+</I>&gt;<i> units to fix themselves without the reboot?
+</I>
+Sorry, I don't know of one.
+-- 
+		&lt;a href=&quot;<A HREF="http://www.catb.org/~esr/">http://www.catb.org/~esr/</A>&quot;&gt;Eric S. Raymond&lt;/a&gt;
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="004528.html">[Gpsd-users] GPS loses lock (funny GPGSA line?) - reboot fixes
+</A></li>
+	<LI>Next message: <A HREF="004529.html">[Gpsd-users] GPS loses lock (funny GPGSA line?) - reboot fixes
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#4534">[ date ]</a>
+              <a href="thread.html#4534">[ thread ]</a>
+              <a href="subject.html#4534">[ subject ]</a>
+              <a href="author.html#4534">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

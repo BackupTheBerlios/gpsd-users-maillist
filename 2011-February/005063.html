@@ -1,0 +1,118 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] Synchronization with a gps
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2011-February/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Synchronization%20with%20a%20gps&In-Reply-To=%3Calpine.LNX.1.00.1102241009270.11261%40catbert.rellim.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="005061.html">
+   <LINK REL="Next"  HREF="005064.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] Synchronization with a gps</H1>
+    <B>Gary E. Miller</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Synchronization%20with%20a%20gps&In-Reply-To=%3Calpine.LNX.1.00.1102241009270.11261%40catbert.rellim.com%3E"
+       TITLE="[Gpsd-users] Synchronization with a gps">gem at rellim.com
+       </A><BR>
+    <I>Thu Feb 24 19:29:25 CET 2011</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="005061.html">[Gpsd-users] Synchronization with a gps
+</A></li>
+        <LI>Next message: <A HREF="005064.html">[Gpsd-users] Synchronization with a gps
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#5063">[ date ]</a>
+              <a href="thread.html#5063">[ thread ]</a>
+              <a href="subject.html#5063">[ subject ]</a>
+              <a href="author.html#5063">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>-----BEGIN PGP SIGNED MESSAGE-----
+Hash: SHA1
+
+Yo Damien!
+
+On Thu, 24 Feb 2011, Damien R wrote:
+
+&gt;<i> So, to have the same time on both computer, I think I should sync each
+</I>&gt;<i> computer clock with a gps clock.
+</I>&gt;<i> But I do not know if it this approach will work. So my first question:
+</I>&gt;<i> &gt; Is it possible to use ntp and gpsd for the described purpose ?
+</I>
+ntp stands for Network Time Protocol.  Since you have no net, you have
+nothing to run ntp on!
+
+&gt;<i> Is it appropriate to sync each computer with a gps (and so gpsd and ntp) to
+</I>&gt;<i> have the same time on each computer ?
+</I>
+Sort of. ntp (the protocol) will do you no good since you have no net.
+But you can get good time from your GPS, and yes you can use ntpd (the
+program, not the protocol) or chronyd to take the GPS time and apply it
+to your local clock.
+
+&gt;<i> And the second question was not about a ntp program but a more general
+</I>&gt;<i> question and maybe it is out of the scope of that list:
+</I>&gt;<i> Are there better alternatives than using gps to synchronize two or more
+</I>&gt;<i> computers ?
+</I>
+Got an atomic clock handy?  They can be had 'cheaply'.
+
+&gt;<i> What is the best approach to have the same time (with microseconds
+</I>&gt;<i> resolution) on two or more computers (with no internet access, no connection
+</I>&gt;<i> between them) ?
+</I>
+Resolution is not the issue, you can easily get nSec resolution.
+Stability and accuracy are the issues.  Do those nSec mean anything
+(e.g. how closely do two hosts agree on the same time)?
+
+There may be no 'best' solution.  Depending on your hardware it will be
+easy to get two hosts to agree within 100uSec.  With good hardware and
+careful tuning 10uSec is possible.  Only rarely do people report success
+to 1uSec, and I doubt most of those reports.
+
+RGDS
+GARY
+- ---------------------------------------------------------------------------
+Gary E. Miller Rellim 109 NW Wilmington Ave., Suite E, Bend, OR 97701
+	<A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">gem at rellim.com</A>  Tel:+1(541)382-8588
+
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v1.4.3 (GNU/Linux)
+
+iD8DBQFNZqOIBmnRqz71OvMRAiwBAKDRbRSsV4o9P4ZlCXOfGR/u23L7GgCbBipL
+eyP5cCNwH/l8yyTGgH1dQsw=
+=qaFf
+-----END PGP SIGNATURE-----
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="005061.html">[Gpsd-users] Synchronization with a gps
+</A></li>
+	<LI>Next message: <A HREF="005064.html">[Gpsd-users] Synchronization with a gps
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#5063">[ date ]</a>
+              <a href="thread.html#5063">[ thread ]</a>
+              <a href="subject.html#5063">[ subject ]</a>
+              <a href="author.html#5063">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

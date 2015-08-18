@@ -1,0 +1,133 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] client with vector mapping data?
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2005-January/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20client%20with%20vector%20mapping%20data%3F&In-Reply-To=%3C20050101111313.82594.qmail%40web52704.mail.yahoo.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="000175.html">
+   <LINK REL="Next"  HREF="000176.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] client with vector mapping data?</H1>
+    <B>Hamish</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20client%20with%20vector%20mapping%20data%3F&In-Reply-To=%3C20050101111313.82594.qmail%40web52704.mail.yahoo.com%3E"
+       TITLE="[Gpsd-users] client with vector mapping data?">hamish_nospam at yahoo.com
+       </A><BR>
+    <I>Sat Jan  1 12:13:13 CET 2005</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="000175.html">[Gpsd-users] client with vector mapping data?
+</A></li>
+        <LI>Next message: <A HREF="000176.html">[Gpsd-users] client with vector mapping data?
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#174">[ date ]</a>
+              <a href="thread.html#174">[ thread ]</a>
+              <a href="subject.html#174">[ subject ]</a>
+              <a href="author.html#174">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>&gt;&gt;<i> It seems like the gpsd mapping clients I've seen work primarily with
+</I>&gt;&gt;<i> raster graphics. Wouldn't something using vector graphics be better?
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> I'm just getting into this so I don't know much yet. If there is a
+</I>&gt;&gt;<i> project which does this, I'd appreciate it if someone would point me
+</I>&gt;&gt;<i> to it.
+</I>&gt;<i>
+</I>&gt;<i> you can use xastir with vector maps in shapefile form converted from 
+</I>&gt;<i> census maps (download them from xastir.tamu.edu). xastir is a gpsd 
+</I>&gt;<i> client.
+</I>
+That's probably the most straight forward solution but if you are into
+some functionality overkill you could also try my real-time plugin for
+GRASS GIS; although a bit clunky and based on old versions (GPSD 1.1
+and GRASS 5.0), it takes care of the task it was written for nicely.
+
+screenshot of vector coastline + gps track, stats, &amp; 20 minute trend
+arrow:
+ <A HREF="http://bambi.otago.ac.nz/hamish/grass/realtime_gps_4.png">http://bambi.otago.ac.nz/hamish/grass/realtime_gps_4.png</A>
+and with more advanced vector bubble plotting:
+ <A HREF="http://bambi.otago.ac.nz/hamish/grass/realtime_gps6.png">http://bambi.otago.ac.nz/hamish/grass/realtime_gps6.png</A>
+
+info:
+ <A HREF="http://grass.institutoecos.org.br/grass-list/arq/10779.html">http://grass.institutoecos.org.br/grass-list/arq/10779.html</A>
+ <A HREF="http://grass.institutoecos.org.br/grass-list/arq/9997.html">http://grass.institutoecos.org.br/grass-list/arq/9997.html</A>
+
+
+You get support for all raster/vector map formats supported by GDAL/OGR
+(which is most):
+<A HREF="http://gdal.org/">http://gdal.org/</A>
+<A HREF="http://gdal.org/ogr/">http://gdal.org/ogr/</A>
+
+
+FYI something else which doesn't cover the real-time nature of gpsd you
+are probably thinking of; typical use with the GIS is downloading the
+waypoints and tracks at the end of the day. This is very easy with
+gpstrans + GRASS GIS 5.7 = v.in.garmin module. I'm planning on one day
+updating this to talk to gpsbabel as well..
+
+
+&gt;<i> about all it doesn't support is route-finding; aside from tmrs (which
+</I>
+&gt;<i> has very limited route finding in the code and isn't useful generally
+</I>
+&gt;<i> yet) i know of no open source program which does.
+</I>
+You would probably just have to write the glue to interface my realtime
+GIS cludge with GRASS 5.7's vector path modules[*]: d.path, v.net.path,
+&amp;/or v.net.salesman.
+
+see:
+ <A HREF="http://mpa.itc.it/radim/g51/d.path.jpg">http://mpa.itc.it/radim/g51/d.path.jpg</A>
+ <A HREF="http://grass.ibiblio.org/grass57/manuals/html57_user/d.path.html">http://grass.ibiblio.org/grass57/manuals/html57_user/d.path.html</A>
+ <A HREF="http://grass.ibiblio.org/grass57/manuals/html57_user/v.net.path.html">http://grass.ibiblio.org/grass57/manuals/html57_user/v.net.path.html</A>
+ <A HREF="http://grass.itc.it/grass57/manuals/html57_user/v.net.salesman.html">http://grass.itc.it/grass57/manuals/html57_user/v.net.salesman.html</A>
+
+<A HREF="http://grass.ibiblio.org/grass57/manuals/html57_user/v.net.steiner.html">http://grass.ibiblio.org/grass57/manuals/html57_user/v.net.steiner.html</A>
+
+[*] well, there's more to it than that but my point is the hardest part
+of the problem is already done by those modules + the new GRASS vector
+engine.
+
+
+best of luck,
+Hamish
+
+
+
+__________________________________________________
+Do You Yahoo!?
+Tired of spam?  Yahoo! Mail has the best spam protection around 
+<A HREF="http://mail.yahoo.com">http://mail.yahoo.com</A> 
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="000175.html">[Gpsd-users] client with vector mapping data?
+</A></li>
+	<LI>Next message: <A HREF="000176.html">[Gpsd-users] client with vector mapping data?
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#174">[ date ]</a>
+              <a href="thread.html#174">[ thread ]</a>
+              <a href="subject.html#174">[ subject ]</a>
+              <a href="author.html#174">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

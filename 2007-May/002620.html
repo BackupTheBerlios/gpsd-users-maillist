@@ -1,0 +1,168 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] Unknown Sentences $IIMWV and $IIVWR
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2007-May/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Unknown%20Sentences%20%24IIMWV%20and%20%24IIVWR&In-Reply-To=%3CPine.LNX.4.64.0705072355080.2654%40birdbird.example.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="002619.html">
+   <LINK REL="Next"  HREF="002621.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] Unknown Sentences $IIMWV and $IIVWR</H1>
+    <B>Matt Roberds</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Unknown%20Sentences%20%24IIMWV%20and%20%24IIVWR&In-Reply-To=%3CPine.LNX.4.64.0705072355080.2654%40birdbird.example.com%3E"
+       TITLE="[Gpsd-users] Unknown Sentences $IIMWV and $IIVWR">mattroberds at cox.net
+       </A><BR>
+    <I>Tue May  8 07:52:36 CEST 2007</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="002619.html">[Gpsd-users] Unknown Sentences $IIMWV and $IIVWR
+</A></li>
+        <LI>Next message: <A HREF="002621.html">[Gpsd-users] Unknown Sentences $IIMWV and $IIVWR
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2620">[ date ]</a>
+              <a href="thread.html#2620">[ thread ]</a>
+              <a href="subject.html#2620">[ subject ]</a>
+              <a href="author.html#2620">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>On Mon, 7 May 2007, Chris Kuethe wrote:
+&gt;<i> Our attempt at mapping the truenorth compass into our standard PVT
+</I>&gt;<i> format is ugly to say the least.
+</I>
+I saw that.  :)  I was looking at the code with an eye to &quot;OK, if gpsd
+does decode the wind messages, where should the data go?&quot;  Most all of
+the data from $GP___ messages can go into the gps_fix_t structure,
+because it all deals with GPS.  But there doesn't seem to be an existing
+place to stick data from other kinds of messages.  This is just on the
+&quot;parse and store data&quot; side; it doesn't address how you get the data
+back out to a client - via new commands, or extra fields in existing
+commands, or what.
+
+&gt;<i> I'd argue that {wind,water} direction, velocity, temperature, pressure
+</I>&gt;<i> have no place in a navigation solution. They are utterly irrelevant to
+</I>&gt;<i> the position of the navigation set (or the phase center of its
+</I>&gt;<i> antenna).
+</I>
+I would argue that they are irrelevant to the _current_ position of the
+GPS antenna, but they have a lot to say about where the GPS antenna
+_will_ be after a while.  In a mobile application, knowing precisely
+where you are (GPS lat/lon/alt) is only half of the battle.  Generally,
+you're trying to get somewhere, and you'd like some guidance on how best
+to do that.
+
+In a car, this information comes from the map database - you tell the
+device where you want to go, and it looks up the associated lat/lon of
+that point.  The device knows where you are based on the GPS signal.
+Since the car is constrained to the road network, it then picks out
+roads from the database that will get you headed towards your
+destination.
+
+On a boat, a map database alone might not be enough.  It can help with
+things like not running into shallow rocks or staying in the center of a
+channel, but otherwise, the boat isn't constrained to a fixed set of
+paths - you can go where you want.  The device can't say &quot;turn left on
+4th Street&quot;, but it can say &quot;sail along a heading of 50 degrees.&quot;  You
+then need heading information - either from the GPS or a magnetic
+compass - to navigate successfully.
+
+In a small powerboat, you could conceivably just chase the GPS heading,
+while the device tells you &quot;go two degrees right... OK, now go three
+degrees left... OK, three right&quot;.  In a sailboat, it helps to have more
+information about the environment, so you can sail in the right direction.
+If you're due west of where you want to be, the GPS will tell you &quot;sail
+along a heading of 90 degrees&quot;.  But if the wind is straight out of the
+north, and you try to point the boat due east, you're going to end up
+sailing right past your target on the south side.  You've got to sail
+northeast, in a direction determined by how hard the wind is blowing and
+the performance of your boat... the wind speed and direction _is part
+of_ the navigation solution.  It's nice if the information on the wind
+shows up in the same place as the information from the GPS, which is why
+people might want gpsd to handle both.
+
+An airplane has somewhat similar considerations to a boat.  You need a
+map database for things like &quot;don't fly right over the middle of LAX at
+an altitude of 500 feet&quot; or &quot;if you're flying west from Denver and you
+aren't at least 15,000 feet above sea level, watch out for the cumulus
+granitus&quot;.  But outside of that, you can fly where you want.  You don't
+usually have an external instrument for wind speed and direction,
+because it's pretty easy to tell from the pilot's seat what the wind is
+doing.  But you might have other external instruments - a pressure or
+radar altimeter for better altitude accuracy than GPS can give you, or
+maybe heading and distance information from pre-GPS electronic
+navigational aids (VOR/DME).  Again, it's nice if all your navigation
+information shows up in the same place, so that's why people might want
+gpsd to handle more than just gps.
+
+&gt;<i> I say &quot;If&quot; because I'm unconvinced that we want to get into the
+</I>&gt;<i> business of parsing non-gps data.
+</I>
+Another way to state this question might be: is this gpsd, or navd?  Do
+you only care about GPS, or do you want to extend it to deal with other
+kinds of navigation information as well?
+
+&gt;<i> If we did go that way, it would be good to have a copy of the NMEA spec.
+</I>
+Something else that might help: some kind of effort to collect log file
+data from actual devices.  Having the spec is nice, but it looks like
+different vendors don't always implement the NMEA GPS messages the same
+way - it's probably not wise to expect them to handle the other NMEA
+messages the same way either.  Having log file data lets you see what's
+happening in the &quot;real world&quot;, and also allows you to automate tests of
+the parser.
+
+&gt;<i> Finally, I'm worried about the stability of the state machine; It's
+</I>&gt;<i> somewhat frightening how much noise looks like a valid protocol
+</I>&gt;<i> message, at least for a few characters. I've seen instances where a
+</I>&gt;<i> bunch of noise was mistake for NMEA because it happened to have $GP
+</I>&gt;<i> in it...
+</I>
+Well, you can make the state machine/parser &quot;smarter&quot;, which
+unfortunately is sometimes an alternate spelling of &quot;more brittle&quot;.
+The probability of noise containing &quot;$GP[A-Z][A-Z][A-Z],&quot; is less than
+the probability of noise containing just &quot;$GP&quot;.  Like the comments in
+packet.c say, if you're pretty sure another sentence is coming in a
+second, it's not a bad idea to just give up on a mal-formed sentence.
+On the other hand, if the sentences don't come that often (non-GPS
+sensors?) or if they do come often but your vehicle is fast *, it's
+not such a good idea.
+
+Matt Roberds
+
+* &quot;There's no reason to become alarmed, and we hope you'll enjoy the
+rest of your flight. By the way, is there anyone on board who knows
+how to fly a plane?&quot;
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="002619.html">[Gpsd-users] Unknown Sentences $IIMWV and $IIVWR
+</A></li>
+	<LI>Next message: <A HREF="002621.html">[Gpsd-users] Unknown Sentences $IIMWV and $IIVWR
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2620">[ date ]</a>
+              <a href="thread.html#2620">[ thread ]</a>
+              <a href="subject.html#2620">[ subject ]</a>
+              <a href="author.html#2620">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

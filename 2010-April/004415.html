@@ -1,0 +1,103 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] Input to gpsd via UDP/TCP?
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2010-April/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Input%20to%20gpsd%20via%20UDP/TCP%3F&In-Reply-To=%3CE27B5034-B7E0-40AD-AB8A-B67130B1DDA4%40ccom.unh.edu%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="004412.html">
+   <LINK REL="Next"  HREF="004416.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] Input to gpsd via UDP/TCP?</H1>
+    <B>Val Schmidt</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Input%20to%20gpsd%20via%20UDP/TCP%3F&In-Reply-To=%3CE27B5034-B7E0-40AD-AB8A-B67130B1DDA4%40ccom.unh.edu%3E"
+       TITLE="[Gpsd-users] Input to gpsd via UDP/TCP?">vschmidt at ccom.unh.edu
+       </A><BR>
+    <I>Thu Apr 22 22:32:06 CEST 2010</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="004412.html">[Gpsd-users] Input to gpsd via UDP/TCP?
+</A></li>
+        <LI>Next message: <A HREF="004416.html">[Gpsd-users] Input to gpsd via UDP/TCP?
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#4415">[ date ]</a>
+              <a href="thread.html#4415">[ thread ]</a>
+              <a href="subject.html#4415">[ subject ]</a>
+              <a href="author.html#4415">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>&gt;&gt;<i> 
+</I>&gt;<i> And, in GPSD, it does.  It's already the case that some of our sensor
+</I>&gt;<i> sources can be serial devices while others are sockets accepting data
+</I>&gt;<i> from remote Ntrip and DGPSIP servers.
+</I>
+:<i>)
+</I>
+&gt;<i> 
+</I>&gt;<i> Supporting your case may be as simple as teaching GPSD to open a UDP
+</I>&gt;<i> socket listening to whatever your emitter's IP address is, and then to
+</I>&gt;<i> pass the datagrams straight to the packet sniffer as though they
+</I>&gt;<i> came from yet another serial device.
+</I>
+Exactly my thought.
+
+&gt;<i> 
+</I>&gt;<i> If so, this would be half an hour of programming supposing I had a 
+</I>&gt;<i> UDP-datagram source to test with.  Do you have a public address you
+</I>&gt;<i> could broadcast these from?
+</I>
+Not very easily from this specific device. However, I can provide a simple python script that will transmit strings from an ASCII text file at a regular interval and I can provide a text file of data captured from my receiver if that is helpful.
+
+&gt;<i> 
+</I>&gt;<i> So how does your Rabbit advertise itself in UDP space?
+</I>
+It doesn't really. One must listen on a UDP port (perhaps a multicast address) and when the GPS is turned on it starts sending NMEA strings in the blind at regular intervals (usually 1 Hz I think).
+
+
+&gt;<i> -- 
+</I>&gt;<i> 		&lt;a href=&quot;<A HREF="http://www.catb.org/~esr/">http://www.catb.org/~esr/</A>&quot;&gt;Eric S. Raymond&lt;/a&gt;
+</I>
+------------------------------------------------------
+Val Schmidt
+CCOM/JHC
+University of New Hampshire
+Chase Ocean Engineering Lab
+24 Colovos Road
+Durham, NH 03824
+e: vschmidt [AT] ccom.unh.edu
+m: 614.286.3726
+
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="004412.html">[Gpsd-users] Input to gpsd via UDP/TCP?
+</A></li>
+	<LI>Next message: <A HREF="004416.html">[Gpsd-users] Input to gpsd via UDP/TCP?
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#4415">[ date ]</a>
+              <a href="thread.html#4415">[ thread ]</a>
+              <a href="subject.html#4415">[ subject ]</a>
+              <a href="author.html#4415">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

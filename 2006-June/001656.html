@@ -1,0 +1,299 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] Garmin GPS almost never sends new position data
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2006-June/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Garmin%20GPS%20almost%20never%20sends%20new%20position%20data&In-Reply-To=%3Ce67jdj%244ri%241%40sea.gmane.org%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="001666.html">
+   <LINK REL="Next"  HREF="001657.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] Garmin GPS almost never sends new position data</H1>
+    <B>Eivind Tagseth</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Garmin%20GPS%20almost%20never%20sends%20new%20position%20data&In-Reply-To=%3Ce67jdj%244ri%241%40sea.gmane.org%3E"
+       TITLE="[Gpsd-users] Garmin GPS almost never sends new position data">eivindt-gmane at multinet.no
+       </A><BR>
+    <I>Thu Jun  8 00:19:32 CEST 2006</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="001666.html">[Gpsd-users] Re: [Gpsd-dev] Time for a release?
+</A></li>
+        <LI>Next message: <A HREF="001657.html">[Gpsd-users] Garmin GPS almost never sends new position data
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1656">[ date ]</a>
+              <a href="thread.html#1656">[ thread ]</a>
+              <a href="subject.html#1656">[ subject ]</a>
+              <a href="author.html#1656">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi.
+
+I've got a Garmin GPSmap 60Cx that's connected to my laptop using a USB
+cable.
+
+The problem is that when running gpsd (2.32), the communication _seems_
+to  be working, but the gpsd server (almost) never gets positioning data.
+
+This is how it normally looks (gspd started with -D 8 -N /dev/ttyUSB0):
+
+gpsd: select waits
+gpsd: polling 7
+gpsd: GetPacket()
+gpsd: got 12 bytes
+gpsd: GotPacket() sz=12
+gpsd: GPS sent 1 new characters
+gpsd: garmin_parse_input()
+gpsd: PrintPacket()
+gpsd: Transport, Packet: Type 0 0 0, ID: 2, Sz: 0
+gpsd: LOS matrix is singular, can't calculate DOPs.
+gpsd: select waits
+gpsd: polling 7
+gpsd: GetPacket()
+gpsd: got 64 bytes
+gpsd: got 64 bytes
+gpsd: got 44 bytes
+gpsd: GotPacket() sz=172
+gpsd: GPS sent 1 new characters
+gpsd: garmin_parse_input()
+gpsd: PrintPacket()
+gpsd: Appl, SAT Data Sz: 84
+gpsd:   Sat 24, snr: 1650, elev: 19, Azmth: 28, Stat: 5
+gpsd:   Sat 5, snr: 1550, elev: 66, Azmth: 124, Stat: 5
+gpsd:   Sat 2, snr: 1860, elev: 30, Azmth: 103, Stat: 5
+gpsd:   Sat 1, snr: 2010, elev: 34, Azmth: 302, Stat: 4
+gpsd:   Sat 14, snr: 1679, elev: 32, Azmth: 247, Stat: 5
+gpsd:   Sat 30, snr: 2150, elev: 66, Azmth: 239, Stat: 5
+gpsd:   Sat 4, snr: 1920, elev: 30, Azmth: 59, Stat: 5
+gpsd:   Sat 9, snr: 1450, elev: 15, Azmth: 149, Stat: 5
+gpsd:   Sat 20, snr: 1670, elev: 14, Azmth: 350, Stat: 5
+gpsd:   Sat 6, snr: 1879, elev: 20, Azmth: 206, Stat: 4
+gpsd:   Sat 255, snr: 0, elev: 0, Azmth: 0, Stat: 0
+gpsd:   Sat 255, snr: 0, elev: 0, Azmth: 0, Stat: 0
+gpsd: &lt;= GPS:
+$GPGSV,3,1,10,24,19,028,97,05,66,124,97,02,30,103,97,01,34,302,96*79\x0d\x0a$GPGSV,3,2,10,14,32,247,97,30,66,239,96,04,30,059,97,09,15,149,97*7C\x0d\x0a$GPGSV,3,3,10,20,14,350,97,06,20,206,97*79
+gpsd: client(8): channel 7 already active.
+gpsd: =&gt; client(8): GPSD,Y=20 ? 10:24 19 28 97 1:5 66 124 97 1:2 30 103
+97 1:1 34 302 96 1:14 32 247 97 1:30 66 239 96 1:4 30 59 97 1:9 15 149
+97 1:20 14 350 97 1:6 20 206 97 1:
+
+The connected client is xgps.  The message above is repeated over and
+over again, with little variation (the values varies, and the number of
+satellites).
+
+Sometimes, however, I _do_ get new positioning data, but then these stay
+unchanged on the client for a very long time.  In fact, I'm not sure if
+I've ever seen positioning data received by the gpsd unless I was either
+debugging, or freezing the output console looking at the messages.
+
+If I freeze the output console for about 30 seconds (using Ctrl-S), and
+then unfreeze, I _always_ get new positioning data.  Could there be some
+kind of timing issue here?
+
+When unfreezing, I get the following output:
+
+gpsd: select waits
+gpsd: polling 7
+gpsd: GetPacket()
+gpsd: got 64 bytes
+gpsd: got 64 bytes
+gpsd: got 64 bytes
+gpsd: got 64 bytes
+gpsd: GetPacket() packet too long!
+gpsd: GotPacket() sz=0
+gpsd: GPS sent 1 new characters
+gpsd: New data, not yet a packet
+
+[I get lots of these, at least 10, all the same]
+
+gpsd: select waits
+gpsd: polling 7
+gpsd: GetPacket()
+gpsd: got 28 bytes
+gpsd: GotPacket() sz=28
+gpsd: GPS sent 1 new characters
+gpsd: garmin_parse_input()
+gpsd: PrintPacket()
+gpsd: bogus packet, size too large=100991223
+gpsd: LOS matrix is singular, can't calculate DOPs.
+gpsd: select waits
+gpsd: polling 7
+gpsd: GetPacket()
+gpsd: got 32 bytes
+gpsd: GotPacket() sz=32
+gpsd: GPS sent 1 new characters
+gpsd: garmin_parse_input()
+gpsd: PrintPacket()
+gpsd: bogus packet, size too large=-16449186
+
+[and then, finally]
+
+gpsd: select waits
+gpsd: polling 7
+gpsd: GetPacket()
+gpsd: got 64 bytes
+gpsd: got 12 bytes
+gpsd: GotPacket() sz=76
+gpsd: GPS sent 1 new characters
+gpsd: garmin_parse_input()
+gpsd: PrintPacket()
+gpsd: Appl, PVT Data Sz: 64
+gpsd: time_l: 1149716312
+gpsd: Appl, mode 3, status 1
+gpsd: UTC Time: 1149716312.000000
+gpsd: Geoid Separation (MSL - WGS84): from garmin 40.950176, calculated
+40.950223
+gpsd: Alt: 34.980, Epe: 22.868, Eph: 25.088, Epv: 19.120, Fix: 3,
+Gps_tow: 337125.968750, Lat: 63.432, Lon: 10.410, LonVel: -0.039,
+LatVel: -0.458, AltVel: -0.500, MslHgt: -40.950, Leap: 14, GarminDays: 5999
+gpsd: &lt;= GPS:
+$GPGGA,213832,6325.9081,N,01024.6187,E,3,09,,-6.0,M,40.950,M,,*40\x0d\x0a$GPRMC,213832,A,6325.9081,N,01024.6187,E,1.7380,184.910,070606,,*26
+gpsd: client(8): channel 7 already active.
+gpsd: GPS has a fix (status=1, mode=3).
+gpsd: =&gt; client(8): GPSD,O=20 1149716312.00 0.005 63.431802 10.410312
+-5.97 30.73 23.42 184.9100    0.894 -0.500  97.9067  0.87        ?
+
+I may get several of these.  And then, when the console catches up with
+all the pending output, I get back to the original problem again, with
+the same satellite data output, but no new coords.
+
+I'm running linux kernel version 2.6.17_rc2, and the garmin_gps driver,
+and I've had no problems using it with other software, like gpsbabel.
+
+Any hints or suggestions to what I may do to make gpsd work, or to help
+debugging the problem would be appreciated.
+
+
+
+
+Eivind
+
+
+This is the output during startup:
+
+gpsd: launching (Version 2.32)
+gpsd: listening on port 2947
+gpsd: running with effective group ID 0
+gpsd: running with effective user ID 0
+gpsd: opening GPS data source at '/dev/ttyUSB0'
+
+[garmin_probe]
+
+gpsd: Set garmin_gps driver mode = 0
+gpsd: SendPacket(), writing 16 bytes
+gpsd: PrintPacket()
+gpsd: Private, Set Mode: 0
+gpsd: SendPacket(), wrote 16 bytes
+gpsd: Get garmin_gps driver version
+gpsd: SendPacket(), writing 12 bytes
+gpsd: PrintPacket()
+gpsd: Private, ID: Info Req
+gpsd: SendPacket(), wrote 12 bytes
+gpsd: GetPacket()
+gpsd: got 24 bytes
+gpsd: GotPacket() sz=24
+gpsd: PrintPacket()
+gpsd: Private, ID: Info Resp
+gpsd: Garmin USB Driver found, Version 0.23, Mode: 0, GPS Serial# 3300811160
+gpsd: Send Garmin Start Session
+gpsd: SendPacket(), writing 12 bytes
+gpsd: PrintPacket()
+gpsd: Transport, Start Session req
+gpsd: SendPacket(), wrote 12 bytes
+gpsd: GetPacket()
+gpsd: got 16 bytes
+gpsd: GotPacket() sz=16
+gpsd: Got packet waiting for START_SESSION
+gpsd: PrintPacket()
+gpsd: Transport, Start Session resp, unit: 0xc4be6198
+gpsd: Get Garmin Product Data
+gpsd: SendPacket(), writing 12 bytes
+gpsd: PrintPacket()
+gpsd: Appl, Product Data req
+gpsd: SendPacket(), wrote 12 bytes
+gpsd: GetPacket()
+gpsd: got 12 bytes
+gpsd: GotPacket() sz=12
+gpsd: PrintPacket()
+gpsd: Transport, Packet: Type 0 0 0, ID: 2, Sz: 0
+gpsd: GetPacket()
+gpsd: got 64 bytes
+gpsd: got 64 bytes
+gpsd: got 64 bytes
+gpsd: got 64 bytes
+gpsd: GetPacket() packet too long!
+gpsd: GotPacket() sz=0
+gpsd: PrintPacket()
+gpsd: Appl, Product Data, sz: 147
+gpsd: Garmin Product ID: 292, SoftVer: 2.70
+gpsd: Garmin Product Desc: GPSMap60CX Software Version 2.70
+gpsd: probe found Garmin binary driver...
+
+
+gpsd: to garmin_probe()
+[garmin_probe again, removed here, the output is exactly like the output
+from garmin_probe() above]
+gpsd: from garmin_probe() = 1
+
+gpsd: Set Garmin to send reports every 1 second
+gpsd: SendPacket(), writing 14 bytes
+gpsd: PrintPacket()
+gpsd: Appl, Command Data: Start Xmit PVT data
+gpsd: SendPacket(), wrote 14 bytes
+gpsd: gpsd_activate: opened GPS (7)
+gpsd: flagging descriptor 7 in open_device
+gpsd: select waits
+gpsd: polling 7
+gpsd: GetPacket()
+gpsd: got 64 bytes
+gpsd: got 64 bytes
+gpsd: got 12 bytes
+gpsd: GotPacket() sz=140
+gpsd: GPS sent 1 new characters
+gpsd: garmin_parse_input()
+gpsd: PrintPacket()
+gpsd: bogus packet, size too large=1409288769
+gpsd: select waits
+gpsd: polling 7
+gpsd: GetPacket()
+gpsd: got 12 bytes
+gpsd: GotPacket() sz=12
+gpsd: GPS sent 1 new characters
+gpsd: garmin_parse_input()
+gpsd: PrintPacket()
+gpsd: Transport, Packet: Type 0 0 0, ID: 2, Sz: 0
+
+[after this it starts printing satelite data]
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="001666.html">[Gpsd-users] Re: [Gpsd-dev] Time for a release?
+</A></li>
+	<LI>Next message: <A HREF="001657.html">[Gpsd-users] Garmin GPS almost never sends new position data
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1656">[ date ]</a>
+              <a href="thread.html#1656">[ thread ]</a>
+              <a href="subject.html#1656">[ subject ]</a>
+              <a href="author.html#1656">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

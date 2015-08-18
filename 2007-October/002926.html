@@ -1,0 +1,133 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] Problems with PPS and gpsd
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2007-October/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Problems%20with%20PPS%20and%20gpsd&In-Reply-To=%3CPine.SOL.4.58.0710081301550.4222%40chemistry.ohio-state.edu%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="002922.html">
+   <LINK REL="Next"  HREF="002927.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] Problems with PPS and gpsd</H1>
+    <B>Jim Tatz</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Problems%20with%20PPS%20and%20gpsd&In-Reply-To=%3CPine.SOL.4.58.0710081301550.4222%40chemistry.ohio-state.edu%3E"
+       TITLE="[Gpsd-users] Problems with PPS and gpsd">jtatz at chemistry.ohio-state.edu
+       </A><BR>
+    <I>Mon Oct  8 19:06:40 CEST 2007</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="002922.html">[Gpsd-users] Problems with PPS and gpsd
+</A></li>
+        <LI>Next message: <A HREF="002927.html">[Gpsd-users] Problems with PPS and gpsd
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2926">[ date ]</a>
+              <a href="thread.html#2926">[ thread ]</a>
+              <a href="subject.html#2926">[ subject ]</a>
+              <a href="author.html#2926">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Thanks to all those that replied!
+
+&gt;<i> If you have a 'slow' PC (I encountered this on a PIII 1GHz), I found
+</I>&gt;<i> that the act of turning on the -D5 debugging with the -N option was
+</I>&gt;<i> enough
+</I>
+I don't think that it's due to the speed of the PC. That was actaully my
+first thought. I was testing on a laptop (I wanted something I could
+install and test on and wipe clean) - and had timing issues.
+I noticed that it was pretty bad about just syncronizing with NTP peers,
+regardless of anything else - so I decided to try a desktop to eliminate
+any confusion.
+
+So, I am running it on an older (desktop) Athlon XP 2800+, but even
+without debugging it doesn't work
+
+&gt;<i>The debug output you show is one resulting from a transition at the end
+</I>&gt;<i>of the actual 1pps pulse. The duration is 100532 microseconds, which is
+</I>&gt;<i>reasonable for the 1pps pulse. It is rejected because we are interested
+</I>&gt;<i>in the transition which happens at the end of the &quot;idle&quot; part of the
+</I>&gt;<i>pulse. Hopefully, your debug output would shortly be follwed by a
+</I>&gt;<i>transition which produces a duration of about 900000 microseconds that would be
+</I>&gt;<i>acceptable.
+</I>
+Well, I went back to start gpsd to look at the debugging information,
+because I Don't remember seeing a duration that long.
+And I saw:
+
+gpsd: pps-detect (DCD) on /dev/ttyS0 changed to 1
+gpsd: ntpshm_pps: clock: 1191862458 @ 1191862458.004656, precision -7
+gpsd: Raw SiRF packet type 0x12 length 2: 1201
+gpsd: OTS 0x12: send indicator = 1
+gpsd: pps-detect (DCD) on /dev/ttyS0 changed to 0
+gpsd: PPS pulse rejected too short. cycle: 1001922, duration: 101387
+
+So......... It looks like it's working properly now, and PPS is locked on,
+and accepting the beginning of the PPS pulse?
+I have no clue what changed. I just left it running. I think that the GPS
+receiver might have some issues with outputting a stable PPS signal. I've
+seen that some receivers are poorly designed...
+
+&gt;<i>Is your PPS signal a regular 3V/5V TTL/CMOS output or proper RS-232 level
+</I>&gt;<i>signal?  Some RS-232 ports will amazingly work with logic levels though
+</I>&gt;<i>they shouldn't, strictly speaking.  Not to mention that the polarity will
+</I>&gt;<i>be inverted too but I think GPSD can resolve the polarity problem.
+</I>
+I don't know to tell you the truth. The documentation I have doesn't
+mention anything. Can you tell with a digital voltmeter, even though the
+pulse is only 100ms? I don't have an occiloscope...
+
+&gt;<i> See if you can adjust the pulse duty with a command and if that doesn't
+</I>Don't see any way to do that... I have a program called &quot;Conductor&quot; thats
+specific to Sirf chips - but no mention of changing the pulse duty (or any
+of the other vendor docs)
+
+&gt;<i>work then throw an inverter and RS-232 transceiver into the fray.  I have
+</I>&gt;<i>had trouble with GPSD not syncing to the PPS properly until I issue a
+</I>&gt;<i>manual $PGRMI,,,,,,,R to reset the GPS15H.  I think it's fair to say that
+</I>&gt;<i>the PPS code in GPSD needs a bit of lovin'.
+</I>
+I tried that command (for fun) , but no change.
+
+I'm thinking of getting a Motorola Oncore UT+ module, seems to be real
+popular as a signal for stratum 1 time servers..
+
+Anyone have any experience with those? Don't know if it's PPS output is
+TTL or not..
+
+
+Thanks!
+Jim
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="002922.html">[Gpsd-users] Problems with PPS and gpsd
+</A></li>
+	<LI>Next message: <A HREF="002927.html">[Gpsd-users] Problems with PPS and gpsd
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2926">[ date ]</a>
+              <a href="thread.html#2926">[ thread ]</a>
+              <a href="subject.html#2926">[ subject ]</a>
+              <a href="author.html#2926">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

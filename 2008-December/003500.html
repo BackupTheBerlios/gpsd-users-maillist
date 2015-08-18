@@ -1,0 +1,96 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] GPSD not able to read data from serial port.
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2008-December/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20GPSD%20not%20able%20to%20read%20data%20from%20serial%20port.&In-Reply-To=%3C154741.6672.qm%40web8706.mail.in.yahoo.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="003502.html">
+   <LINK REL="Next"  HREF="003501.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] GPSD not able to read data from serial port.</H1>
+    <B>PRANEET KUMAR.A</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20GPSD%20not%20able%20to%20read%20data%20from%20serial%20port.&In-Reply-To=%3C154741.6672.qm%40web8706.mail.in.yahoo.com%3E"
+       TITLE="[Gpsd-users] GPSD not able to read data from serial port.">apkumar_be at yahoo.co.in
+       </A><BR>
+    <I>Wed Dec 10 16:33:20 CET 2008</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="003502.html">[Gpsd-users] Garmin GPS 18 USB
+</A></li>
+        <LI>Next message: <A HREF="003501.html">[Gpsd-users] iGPS-500 works with gpsd
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3500">[ date ]</a>
+              <a href="thread.html#3500">[ thread ]</a>
+              <a href="subject.html#3500">[ subject ]</a>
+              <a href="author.html#3500">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hello Team,
+
+I'm not able to read NMEA data from serial port. Can you please help me with the problem?
+Steps followed:
+1. Start xGPS.
+2. Start GPSD. ( cmd used:  &quot;./gpsd -D 5 &quot;/dev/ttyS0&quot; &amp;)
+3. Connect the PC running GPSD to another PC with a serial cable.
+4. Open Hyper-terminal on the 2nd PC and configure it with baud rate =  9200.
+5. Send an NMEA string to GPSD using the hyper-terminal. ( NEMA string sent:  $GPRMC,115328.35,A,0000.19120,N,00000.19120,W,5.0,315.0,260808,0.0,W*54)
+
+Problem:
+1. Not able to receive data properly. Data is received in chunks by GPSD (8 bytes at a time). Eg: $GPRMC,1 --  15328.35, etc. I see following logs:
+    gpsd: Packet sniff finds -1
+    gpsd: GPS sent 8 new characters
+    gpsd: New data, not yet a packet
+This continues till last byte is read. But still the packet is not constructed. Can you please let me know how the packet is parsed. Why does GPSD report a BAD_PACKET even when it doesn't receive the entire data? Also, please let me know the funda of &quot;session-&gt;packet.outbuflen == 0&quot; for checking the data packet. (gpsd-2.37\libgpsd_core.c. Line No: 758) 
+
+2. GPSD receives some junk data when hyper-terminal used for sending the data is configured at a baud rate other than 9600. Can you please let me know why this happens if GPSD keeps on hunting for data at different baud rates. When I configure GPSD at FIXED_PORT_SPEED of 9600, I receive correct data but Problem 1 is encountered.
+
+I tried doing the same using a text file having NMEA data and everything works fine.
+1. Start xGPS.
+2. Start GPSD.  ( cmd used:  &quot;./gpsd -D 5 &quot;./nmeaFile.c&quot; &amp;). The file has same NMEA content as shown above.
+3. GPSD runs successfully and xGPS shows the correct fix. 
+    I see following logs in case of success.
+      gpsd: &lt;= GPS: $GPGGA,115328.50,0000.19120,N,00000.19120,W,1,12,2.0,250,M,250.0,M,,*58
+      gpsd: GPGGA starts a reporting cycle.
+      gpsd: GPGGA sets status 1 and mode 3 (changed)
+      gpsd: client(0): channel 5 already active.
+      gpsd: GPS has a fix (status=1, mode=3).
+
+
+Thanks &amp; Regards,
+Praneet Kumar A.
+
+
+      Bollywood news, movie reviews, film trailers and more! Go to <A HREF="http://in.movies.yahoo.com/">http://in.movies.yahoo.com/</A>
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="003502.html">[Gpsd-users] Garmin GPS 18 USB
+</A></li>
+	<LI>Next message: <A HREF="003501.html">[Gpsd-users] iGPS-500 works with gpsd
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3500">[ date ]</a>
+              <a href="thread.html#3500">[ thread ]</a>
+              <a href="subject.html#3500">[ subject ]</a>
+              <a href="author.html#3500">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

@@ -1,0 +1,108 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] possible to configure gpsd?
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2011-June/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20possible%20to%20configure%20gpsd%3F&In-Reply-To=%3C20110608083541.GA23588%40dizzy.vulkor.net%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="005306.html">
+   <LINK REL="Next"  HREF="005307.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] possible to configure gpsd?</H1>
+    <B>vwf</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20possible%20to%20configure%20gpsd%3F&In-Reply-To=%3C20110608083541.GA23588%40dizzy.vulkor.net%3E"
+       TITLE="[Gpsd-users] possible to configure gpsd?">vwf at vulkor.net
+       </A><BR>
+    <I>Wed Jun  8 10:35:41 CEST 2011</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="005306.html">[Gpsd-users] gpspipe switch in help function?
+</A></li>
+        <LI>Next message: <A HREF="005307.html">[Gpsd-users] why does gpsd not decode my data?
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#5305">[ date ]</a>
+              <a href="thread.html#5305">[ thread ]</a>
+              <a href="subject.html#5305">[ subject ]</a>
+              <a href="author.html#5305">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hello,
+
+After my problems with gpsd and speed-autodetect I tried to force a
+connect speed using &quot;./configure --enable-fixed-port-speed=38400&quot;.
+This seems to work, but not completely. The debug info shows:
+
+gpsd: launching (Version 2.95)
+gpsd: listening on port gpsd
+gpsd: running with effective group ID 0
+gpsd: running with effective user ID 0
+gpsd: opening GPS data source type 3 at '/dev/ttyUSB0'
+gpsd: speed 0, 8N1
+gpsd: attempting USB device enumeration.
+gpsd: 1d6b:0001 (bus 1, device 1)
+gpsd: 1d6b:0001 (bus 2, device 1)
+gpsd: 1d6b:0002 (bus 3, device 1)
+gpsd: 1d6b:0001 (bus 4, device 1)
+gpsd: 1d6b:0001 (bus 5, device 1)
+gpsd: 1d6b:0001 (bus 6, device 1)
+gpsd: 1d6b:0002 (bus 7, device 1)
+gpsd: 0a5c:2110 (bus 1, device 2)
+gpsd: 0483:2016 (bus 1, device 3)
+gpsd: 110a:1130 (bus 4, device 3)
+gpsd: vendor/product match with 091e:0003 not found
+gpsd: speed 9600, 8O1
+gpsd: speed 9600, 8N1
+gpsd: gpsd_activate(): opened GPS (fd 6)
+gpsd: speed 38400, 7N2
+gpsd: NTPD ntpd_link_activate: 1
+gpsd: /dev/ttyUSB0 identified as type Generic NMEA (4.399003 sec @
+38400bps)
+gpsd: =&gt; Probing device subtype 0
+gpsd: unknown sentence: &quot;$PFECb\x0a&quot;
+gpsd: modeling errors: mode=0, masks={ONLINE|DRIVER|PACKET}
+gpsd: packet from /dev/ttyUSB0 with {ONLINE|DRIVER|PACKET}
+gpsd: GPS on /dev/ttyUSB0 is offline (0.000349 sec since data)
+gpsd: =&gt; Probing device subtype 1
+gpsd: ZDA: mask={TIME}
+gpsd: GPZDA time (nearest sec) is 1307539736.000000 = 2011-6-8T13:2856
+gpsd: modeling errors: mode=0, masks={ONLINE|TIME|PACKET}
+gpsd: packet from /dev/ttyUSB0 with {ONLINE|TIME|PACKET}
+
+It connects at speed 38400, 7N2, 
+which should be speed 38400, 8N1
+
+Any suggestion how to get this right?
+Thanks, Frits
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="005306.html">[Gpsd-users] gpspipe switch in help function?
+</A></li>
+	<LI>Next message: <A HREF="005307.html">[Gpsd-users] why does gpsd not decode my data?
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#5305">[ date ]</a>
+              <a href="thread.html#5305">[ thread ]</a>
+              <a href="subject.html#5305">[ subject ]</a>
+              <a href="author.html#5305">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

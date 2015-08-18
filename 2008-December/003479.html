@@ -1,0 +1,207 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] gpsd interaction with cron?
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2008-December/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20gpsd%20interaction%20with%20cron%3F&In-Reply-To=%3C49340D16.2020705%40RXcomm.net%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="003478.html">
+   <LINK REL="Next"  HREF="003480.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] gpsd interaction with cron?</H1>
+    <B>David R. Andersen</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20gpsd%20interaction%20with%20cron%3F&In-Reply-To=%3C49340D16.2020705%40RXcomm.net%3E"
+       TITLE="[Gpsd-users] gpsd interaction with cron?">k0rx at RXcomm.net
+       </A><BR>
+    <I>Mon Dec  1 17:13:10 CET 2008</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="003478.html">[Gpsd-users] GPS devices' communication with GPSD other than using serial port.
+</A></li>
+        <LI>Next message: <A HREF="003480.html">[Gpsd-users] gpsd interaction with cron?
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3479">[ date ]</a>
+              <a href="thread.html#3479">[ thread ]</a>
+              <a href="subject.html#3479">[ subject ]</a>
+              <a href="author.html#3479">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hello:
+  I want to use gpsd with the shared memory clock driver (127.127.28.u) 
+of ntpd.  I'm having trouble with significant (~10 mS) offsets being 
+added to the pps offset during  of cron events.  When I use another 
+shmpps driver, I don't see
+this problem.  I'd like to use gpsd because it provides both nmea and 
+pps inputs to ntpd, whereas the other shmpps driver only provides the 
+pps input.
+
+  My system configuration is as follows:
+Kubuntu Intrepid Ibex 8.10
+ntpd 4.2.4p4 (kubuntu repository version)
+gpsd 2.37 (kubuntu repository version)
+alternate shmpps driver available here &lt;<A HREF="http://time.qnan.org/#driver-shm">http://time.qnan.org/#driver-shm</A>&gt;.
+
+ I run the daemons as follows (ntpd and gpsd at startup from 
+/etc/init.d, shmpps from the cli)
+/usr/sbin/ntpd-p /var/run/ntpd.pid -u 110:121 -g
+/usr/sbin/gpsd-n -P /var/run/gpsd.pid /dev/ttyS0
+./shm_splc2 -d/dev/ttyS0 -s -u 0 -c -l DCD -f
+I run either the gpsd or shmpps daemon, but not both ;-)
+
+  A Garmin GPS-18LVC GPS is plugged into ttyS0, with the PPS (set for 
+200mS) input to pin 1 of the DB9 connector.  I know the GPS config is 
+okay, because it all works with the shmpps driver, and works with the 
+gpsd driver as well, except for this offset problem.
+
+  I have set up the ntp.conf file with either (but not both of):
+For gpsd operation:
+
+# gpsd: both NMEA and PPS
+server 127.127.28.0 minpoll 4 maxpoll 4
+fudge 127.127.28.0 time1 0.420 refid NMEA
+
+server 127.127.28.1 minpoll 4 maxpoll 4 prefer
+fudge 127.127.28.1 refid PPS
+
+
+For shmpps operation:
+
+# SHM: PPS filtered mean
+server 127.127.28.0 minpoll 4 prefer
+fudge 127.127.28.0 refid PPS
+
+ With the shmpps driver installed, I get reasonable results for the pps 
+clock.  I have plotted about 4 hours of data from the loopstats file 
+here &lt;<A HREF="http://dx.eng.uiowa.edu/shmpps.png">http://dx.eng.uiowa.edu/shmpps.png</A>&gt;. With the gpsd driver 
+installed, the clock converges nicely, but during some (but not all) 
+periods of cron activity on the machine, ~10 mS of offset are added to 
+the pps clock.  This offset decays away, and then the problem recurs.  A 
+period of about 4 hours of loopstats data showing this behavior is 
+plotted here &lt;<A HREF="http://dx.eng.uiowa.edu/gpsd.png">http://dx.eng.uiowa.edu/gpsd.png</A>&gt;.  There is some data 
+missing in this second plot (due to me starting and stopping things, 
+trying to figure out what is going on), but three examples of the kind 
+of behavior I am talking about are visible at 1.8 hrs, 2.3 hrs, and 2.75 
+hrs.  I have appended segments of the loopstats file surrounding these 
+events below.
+
+Event at ~01:50
+54801 6449.095 -0.000186000 -11.285 0.000103571 0.003149 4
+54801 6466.095 -0.000180000 -11.288 0.000096905 0.003120 4
+54801 6481.095 -0.000174000 -11.291 0.000090671 0.003048 4
+54801 6499.095 -0.000163000 -11.294 0.000084904 0.003019 4
+54801 6515.095 -0.000161000 -11.296 0.000079423 0.002955 4
+54801 6533.095 -0.000114000 -11.298 0.000076129 0.002849 4
+54801 6549.095 -0.000159000 -11.300 0.000072968 0.002800 4
+54801 6564.095 -0.000143000 -11.302 0.000068490 0.002717 4
+54801 6581.095 -0.000141000 -11.305 0.000064070 0.002667 4
+54801 6597.095 -0.000150000 -11.307 0.000060016 0.002623 4
+54801 6615.095 0.039902000 -10.622 0.014160639 0.242185 4
+54801 6632.095 -0.002687000 -10.666 0.020054584 0.227066 4
+54801 6649.095 -0.002560000 -10.707 0.018759399 0.212907 4
+54801 6666.095 -0.002407000 -10.746 0.017547895 0.199634 4
+54801 6682.095 -0.002285000 -10.781 0.016414609 0.187147 4
+54801 6698.095 -0.002077000 -10.813 0.015354637 0.175418 4
+54801 6713.095 -0.002057000 -10.842 0.014362949 0.164418 4
+54801 6728.095 -0.001952000 -10.870 0.013435360 0.154116 4
+54801 6746.095 -0.002082000 -10.906 0.012567713 0.144714 4
+54801 6764.095 -0.001765000 -10.936 0.011756553 0.135791 4
+54801 6780.095 -0.001639000 -10.961 0.010997339 0.127329 4
+
+Event at ~02:20
+54801 8108.095 -0.000073000 -11.485 0.000060990 0.002188 4
+54801 8125.095 -0.000149000 -11.487 0.000063062 0.002217 4
+54801 8142.095 -0.000147000 -11.490 0.000058993 0.002238 4
+54801 8158.095 -0.000141000 -11.492 0.000055224 0.002227 4
+54801 8174.095 -0.000148000 -11.494 0.000051716 0.002231 4
+54801 8189.095 -0.000139000 -11.496 0.000048481 0.002202 4
+54801 8204.095 -0.000139000 -11.498 0.000045351 0.002178 4
+54801 8221.095 -0.000126000 -11.500 0.000042670 0.002161 4
+54801 8237.095 -0.000131000 -11.502 0.000039953 0.002142 4
+54801 8252.095 -0.000001000 -11.502 0.000059239 0.002003 4
+54801 8269.095 0.040006000 -10.853 0.014144727 0.229324 4
+54801 8287.095 -0.002824000 -10.902 0.020108841 0.215197 4
+54801 8303.095 -0.002709000 -10.943 0.018810142 0.201828 4
+54801 8319.095 -0.002465000 -10.981 0.017595488 0.189261 4
+54801 8337.095 -0.002395000 -11.022 0.016459091 0.177633 4
+54801 8354.095 -0.002166000 -11.057 0.015396282 0.166624 4
+54801 8371.095 -0.002046000 -11.090 0.014401966 0.156303 4
+54801 8388.095 -0.001917000 -11.121 0.013471883 0.146620 4
+54801 8405.095 -0.001893000 -11.152 0.012601795 0.137579 4
+54801 8421.095 -0.001752000 -11.179 0.011788006 0.129040 4
+54801 8436.095 -0.001686000 -11.203 0.011026694 0.121007 4
+
+Event at ~02:45
+54801 9753.095 -0.000084000 -11.680 0.000056590 0.001472 4
+54801 9771.095 -0.000087000 -11.682 0.000052946 0.001475 4
+54801 9787.095 -0.000004000 -11.682 0.000057567 0.001380 4
+54801 9806.095 -0.000094000 -11.684 0.000062548 0.001423 4
+54801 9823.095 -0.000087000 -11.685 0.000058560 0.001423 4
+54801 9841.095 -0.000076000 -11.686 0.000054916 0.001408 4
+54801 9857.095 -0.000074000 -11.688 0.000051374 0.001376 4
+54801 9875.095 -0.000062000 -11.689 0.000048243 0.001341 4
+54801 9890.095 -0.000002000 -11.689 0.000049864 0.001255 4
+54801 9906.095 -0.000079000 -11.690 0.000054007 0.001249 4
+54801 9921.115 0.029030000 -11.664 0.010263745 0.009181 6
+54801 9963.980 -0.001219000 -11.714 0.014371971 0.019650 4
+54801 9980.980 -0.001208000 -11.734 0.013443749 0.019640 4
+54801 9997.980 -0.001125000 -11.752 0.012575510 0.019470 4
+54801 10013.980 -0.001062000 -11.768 0.011763333 0.019093 4
+54801 10030.980 -0.000995000 -11.784 0.011003616 0.018749 4
+54801 10045.980 -0.000941000 -11.798 0.010292958 0.018172 4
+54801 10063.980 -0.000879000 -11.813 0.009628206 0.017816 4
+54801 10079.980 -0.000796000 -11.825 0.009006410 0.017210 4
+54801 10097.980 -0.000672000 -11.836 0.008424839 0.016607 4
+54801 10115.980 -0.000671000 -11.848 0.007880715 0.016060 4
+
+Simultaneously with each of these events is an entry in the 
+/var/log/syslog file showing a cron event.  Typically, no messages from 
+the ntpd or gpsd are evident around these time.  There are other cron 
+events in the log at times where an offset event does not occur.
+
+Suggestions regarding what is happening and how to fix it would be most 
+welcome.  Please let me know if I can provide additional information.
+
+Thanks!
+Dave
+
+
+
+
+
+-- 
+
+int x=90560580,y=32678;main(){putchar(x);x&gt;&gt;=y&amp;7;y&gt;&gt;=3;return y?main():0;}
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="003478.html">[Gpsd-users] GPS devices' communication with GPSD other than using serial port.
+</A></li>
+	<LI>Next message: <A HREF="003480.html">[Gpsd-users] gpsd interaction with cron?
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3479">[ date ]</a>
+              <a href="thread.html#3479">[ thread ]</a>
+              <a href="subject.html#3479">[ subject ]</a>
+              <a href="author.html#3479">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

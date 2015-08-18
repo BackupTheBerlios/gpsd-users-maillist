@@ -1,0 +1,106 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-dev] Re: [Gpsd-users] Preparing for 2.20 -- take 2
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2005-March/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-dev%5D%20Re%3A%20%5BGpsd-users%5D%20Preparing%20for%202.20%20--%20take%202&In-Reply-To=%3C20050331091021.M8749%40bandos.homelinux.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="000472.html">
+   <LINK REL="Next"  HREF="000493.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-dev] Re: [Gpsd-users] Preparing for 2.20 -- take 2</H1>
+    <B>Jose Bernardo Silva</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-dev%5D%20Re%3A%20%5BGpsd-users%5D%20Preparing%20for%202.20%20--%20take%202&In-Reply-To=%3C20050331091021.M8749%40bandos.homelinux.com%3E"
+       TITLE="[Gpsd-dev] Re: [Gpsd-users] Preparing for 2.20 -- take 2">jbs at bandos.homelinux.com
+       </A><BR>
+    <I>Thu Mar 31 11:15:56 CEST 2005</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="000472.html">[Gpsd-dev] Re: [Gpsd-users] Preparing for 2.20 -- take 2
+</A></li>
+        <LI>Next message: <A HREF="000493.html">[Gpsd-users] NMEA-0183 mode and SIRF mode, how to switch?
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#492">[ date ]</a>
+              <a href="thread.html#492">[ thread ]</a>
+              <a href="subject.html#492">[ subject ]</a>
+              <a href="author.html#492">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>On Wed, 30 Mar 2005 17:13:07 -0500, Eric S. Raymond wrote
+&gt;<i> Jose Bernardo Silva &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">jbs at bandos.homelinux.com</A>&gt;:
+</I>&gt;<i> &gt;                                                       The problem seems
+</I>&gt;<i> &gt; to be that D isn't returning a date in the format expected by qpegps, and so
+</I>&gt;<i> &gt; it doesn0t even use the other values.
+</I>&gt;<i> 
+</I>&gt;<i> Some time back I switched D from an America-centric dd/mm/yy format 
+</I>&gt;<i> to ISO8661.
+</I>
+First, I'm not one of the qpegps developers, but I intend to send them all the
+changes needed to get it to work with the latest gpsd as soon as I can get fix it.
+
+As for the date, I think I can change that easily, they use a sprintf to read
+it so it sould be easy - as soon as I get at least a value for the date, which
+I've been unable to get, as you can see from the logs.
+
+
+&gt;<i> &gt;                  Also, it expects X to return 0 or 1, not
+</I>&gt;<i> &gt; a float. Or is the man file for gpsd now completely obsolete, and X has
+</I>&gt;<i> &gt; changed meaning, no longer signifying that gps is online/offline?
+</I>&gt;<i> 
+</I>&gt;<i> X=0 still means offline.  X=%f now means the damon got its last
+</I>&gt;<i> packet at the indicated Unix time.  Thanks for catching this, I 
+</I>&gt;<i> forgot to document it.
+</I>&gt;<i> 
+</I>&gt;<i> &gt; Sorry for the long rant, I haven't had much time to do further testing.
+</I>&gt;<i> 
+</I>&gt;<i> No apology becessary, you caught a real doc bug.
+</I>
+For X it will mean a bigger hack - I can see two ways of doing the change in
+qpegps, both will require to change the sprintf to expect a float, but
+afterwards I can either assume a non-zero value means connected, or assume
+that after a specified interval from the last packet it no longer is connected
+to the gps unit.
+I think in the end, if I have the time, I'll do both and post them as
+suggested alternatives to the qpegps people.
+
+
+-- 
+Jose Bernardo B R Silva             | Source Mage GNU/Linux Section Guru
+<A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">jbernardo at sourcemage.org</A>            | <A HREF="http://www.sourcemage.org">http://www.sourcemage.org</A>
+<A HREF="http://counter.li.org">http://counter.li.org</A> #245602
+<A HREF="http://cosmos.oninetspeed.pt/jose.bernardo">http://cosmos.oninetspeed.pt/jose.bernardo</A>
+<A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">jbs at bandos.homelinux.com</A>
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="000472.html">[Gpsd-dev] Re: [Gpsd-users] Preparing for 2.20 -- take 2
+</A></li>
+	<LI>Next message: <A HREF="000493.html">[Gpsd-users] NMEA-0183 mode and SIRF mode, how to switch?
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#492">[ date ]</a>
+              <a href="thread.html#492">[ thread ]</a>
+              <a href="subject.html#492">[ subject ]</a>
+              <a href="author.html#492">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

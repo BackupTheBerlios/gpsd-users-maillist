@@ -1,0 +1,127 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] Initializing clock with gpsd &amp; ntpd
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2009-September/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Initializing%20clock%20with%20gpsd%20%26%20ntpd&In-Reply-To=%3C4AC12127.5020801%40softdevsys.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="003982.html">
+   <LINK REL="Next"  HREF="003989.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] Initializing clock with gpsd &amp; ntpd</H1>
+    <B>David Severt</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Initializing%20clock%20with%20gpsd%20%26%20ntpd&In-Reply-To=%3C4AC12127.5020801%40softdevsys.com%3E"
+       TITLE="[Gpsd-users] Initializing clock with gpsd &amp; ntpd">severtd at softdevsys.com
+       </A><BR>
+    <I>Mon Sep 28 22:48:39 CEST 2009</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="003982.html">[Gpsd-users] Initializing clock with gpsd &amp; ntpd
+</A></li>
+        <LI>Next message: <A HREF="003989.html">[Gpsd-users] Daemon  mode altitude in oddity
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3985">[ date ]</a>
+              <a href="thread.html#3985">[ thread ]</a>
+              <a href="subject.html#3985">[ subject ]</a>
+              <a href="author.html#3985">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Jason Curl wrote:
+&gt;<i> David Severt wrote:
+</I>&gt;&gt;<i> I have an embedded data gathering application that requires valid 
+</I>&gt;&gt;<i> time information to go with the data, so I am trying to use gpsd 
+</I>&gt;&gt;<i> along with ntpd to maintain the clock.  The real-time clock in this 
+</I>&gt;&gt;<i> device will not survive an extended power outage and, since it is 
+</I>&gt;&gt;<i> headless, there can be no user interaction to restore the system 
+</I>&gt;&gt;<i> clock.  I can use ntpd to initialize the clock via an ntp server 
+</I>&gt;&gt;<i> (ntpd -Agq) and the ntpd/gpsd combination will work to maintain the 
+</I>&gt;&gt;<i> clock.  However, if I don't have access to an ntp server because the 
+</I>&gt;&gt;<i> network is unavailable, I can't get ntpd to initialize the clock 
+</I>&gt;&gt;<i> using time information from gpsd.  It looks like the gpsd time 
+</I>&gt;&gt;<i> information will only be used to slew the clock, rather than step the 
+</I>&gt;&gt;<i> clock, which is what needs to happen when the date is Jan 1, 1970.  
+</I>&gt;&gt;<i> If the system time is Jan 1, 1970, is there a way to get ntpd to 
+</I>&gt;&gt;<i> initialize the clock using only gpsd data, or will I need to write an 
+</I>&gt;&gt;<i> application to get time information from gpsd to initialize the clock 
+</I>&gt;&gt;<i> before starting ntpd?  Once the clock is initialized, ntpd works fine 
+</I>&gt;&gt;<i> with only gpsd for time information but first I have to get it 
+</I>&gt;&gt;<i> initialized somehow.
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> I realize that this might be a question for the ntp mailing list but 
+</I>&gt;&gt;<i> I thought I'd try here first.
+</I>&gt;&gt;<i>   
+</I>&gt;<i> The page &quot;<A HREF="http://tldp.org/LDP/sag/html/basic-ntp-config.html">http://tldp.org/LDP/sag/html/basic-ntp-config.html</A>&quot; 
+</I>&gt;<i> describes the rationale behind NTP for doing this. Does the option 
+</I>&gt;<i> &quot;iburst&quot; not work? Looking here 
+</I>&gt;<i> &quot;<A HREF="http://www.ece.udel.edu/~mills/ntp/html/ntpd.html">http://www.ece.udel.edu/~mills/ntp/html/ntpd.html</A>&quot;:
+</I>&gt;<i> &quot;Operating Modes
+</I>&gt;<i>
+</I>&gt;<i> The ntpd program normally operates continuously while adjusting the 
+</I>&gt;<i> time and frequency, but in some cases it may not be practical to run 
+</I>&gt;<i> it continuously. With the -q option ntpd operates as in continous 
+</I>&gt;<i> mode, but exits just after setting the clock for the first time. Most 
+</I>&gt;<i> applications will probably want to specify the iburst option with the 
+</I>&gt;<i> server command. With this option a volley of messages is exchanged to 
+</I>&gt;<i> groom the data and set the clock in about 10 s. If nothing is heard 
+</I>&gt;<i> after a few minutes, the daemon times out and exits.&quot;
+</I>&gt;<i>
+</I>The iburst option does fine to sync with ntp servers when first starting 
+ntpd with a network connection.  But iburst doesn't have an effect on 
+the psuedo-servers defined for the gpsd interface.
+&gt;<i> But maybe this is still not fast enough.
+</I>&gt;<i>
+</I>&gt;<i> With that said, I had NTP and GPSD working together a long time ago 
+</I>&gt;<i> but I don't remember starting without an Internet connection. I 
+</I>&gt;<i> discontinued because I didn't have a 1PPS signal for better 
+</I>&gt;<i> synchronisation.
+</I>&gt;<i>
+</I>&gt;<i> Also, while it's rare, it's happened a few times in our embedded 
+</I>&gt;<i> products, we've had epoch jumps until a restart of the GPS. I don't 
+</I>&gt;<i> know if GPSD can handle this or just passes it on, or if one can set 
+</I>&gt;<i> the expected epoch. But I'd certainly vouch for a persistent RTC in 
+</I>&gt;<i> anycase.
+</I>&gt;<i>
+</I>&gt;&gt;<i> Regards,
+</I>&gt;&gt;<i> David Severt
+</I>&gt;&gt;<i> _______________________________________________
+</I>&gt;&gt;<i> Gpsd-users mailing list
+</I>&gt;&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">Gpsd-users at lists.berlios.de</A>
+</I>&gt;&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">https://lists.berlios.de/mailman/listinfo/gpsd-users</A>
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i>   
+</I>&gt;<i>
+</I>&gt;<i>
+</I>
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="003982.html">[Gpsd-users] Initializing clock with gpsd &amp; ntpd
+</A></li>
+	<LI>Next message: <A HREF="003989.html">[Gpsd-users] Daemon  mode altitude in oddity
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3985">[ date ]</a>
+              <a href="thread.html#3985">[ thread ]</a>
+              <a href="subject.html#3985">[ subject ]</a>
+              <a href="author.html#3985">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

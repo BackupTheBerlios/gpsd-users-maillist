@@ -1,0 +1,197 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] GPSD and Parrot bluetooth GPS in-car device
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2007-March/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20GPSD%20and%20Parrot%20bluetooth%20GPS%20in-car%20device&In-Reply-To=%3C460D2409.8060107%40thebmwz3.co.uk%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="002528.html">
+   <LINK REL="Next"  HREF="002533.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] GPSD and Parrot bluetooth GPS in-car device</H1>
+    <B>Andy</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20GPSD%20and%20Parrot%20bluetooth%20GPS%20in-car%20device&In-Reply-To=%3C460D2409.8060107%40thebmwz3.co.uk%3E"
+       TITLE="[Gpsd-users] GPSD and Parrot bluetooth GPS in-car device">andy at thebmwz3.co.uk
+       </A><BR>
+    <I>Fri Mar 30 16:51:53 CEST 2007</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="002528.html">[Gpsd-users] Question on Motorola Oncore GPS and gpsd
+</A></li>
+        <LI>Next message: <A HREF="002533.html">[Gpsd-users] GPSD and Parrot bluetooth GPS in-car device
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2531">[ date ]</a>
+              <a href="thread.html#2531">[ thread ]</a>
+              <a href="subject.html#2531">[ subject ]</a>
+              <a href="author.html#2531">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi All,
+I've been running GPSD for some time now, flawlessly! Using a cheap 
+bluetooth GPS receiver.
+Recently I got a new carphone kit that also has bluetooth GPS built-in, 
+so I'm trying to get my GPSD to talk to it.
+
+The bluetooth pairing, etc is all sorted, so GPSD does see the device, 
+but I suspect there is something odd in the NMEA data that is throwing 
+GPSD off. I'm definately no expert in this, so can somebody who has clue 
+take a look and see if they can spot where its going wrong?
+The gps kit specifies the standards it uses:
+NMEA 0183v2 9600
+Which seems normal to me.
+Here are the various debugs and trace's. When I run it, I'm doing:
+
+gpsd -n -N -D4 -P /var/run/gpsd.pid /dev/rfcomm1
+where rfcomm1 is the bluetooth pseudo-device.
+Starting
+gpspipe -w
+produces NO output at all, neither does a netcat 127.0.0.1 2947
+
+If I connect to the gps unit using bluetooth from my PDA and start up 
+TomTom, set it to the pseudo-serial device it works fine and gets 
+satellite lock, etc, so it appears to be working, perhaps a translation 
+issue with GPSD?? (I have no clue!)
+
+
+# Name: Parrot CK3300 Hands-free phone and GPS kit
+# Submitted-by: &quot;Patrick L. McGillan&quot; &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">pmcgillan at pateri.com</A>&gt;
+# Date: 4 Apr 2005
+# Location: Hartlepool, UK
+
+gpsd: launching (Version 2.33)
+gpsd: listening on port gpsd
+gpsd: successfully connected to the DBUS system bus
+gpsd: running with effective group ID 0
+gpsd: running with effective user ID 0
+gpsd: opening GPS data source at '/dev/rfcomm1'
+gpsd: device open failed: Host is down
+gpsd: GPS device /dev/rfcomm1 nonexistent or can't be read
+gpsd: closing GPS=/dev/rfcomm1 (-1)
+gpsd: gpsd restarted by SIGHUP
+gpsd: opening GPS data source at '/dev/rfcomm1'
+gpsd: no probe matched...
+gpsd: speed 9600, 8N1
+gpsd: gpsd_activate: opened GPS (5)
+gpsd: flagging descriptor 5 in open_device
+gpsd: packet sniff finds type 0
+gpsd: Selecting Generic NMEA driver...
+gpsd: =&gt; GPS: $PFEC,GPint,GSA01,DTM00,ZDA01,RMC01,GLL00,VTG00,GSV05*3B\x0d
+
+gpsd: =&gt; GPS: @NC10151010\x0d
+
+gpsd: =&gt; GPS: $PMOTG,ZDA,1*2F\x0d\x0a FAILED
+gpsd: =&gt; GPS: $PGRMCE*0E\x0d\x0a FAILED
+gpsd: =&gt; GPS: $PSRF105,1*3E\x0d\x0a FAILED
+gpsd: =&gt; GPS: $PFST*11\x0d\x0a FAILED
+gpsd: &lt;= GPS: 
+$GPRMC,143105.00,A,5441.7932,N,00114.8201,W,0.22,329.63,300307,-3.7,E,A*02
+gpsd: &lt;= GPS: 
+$GPGSV,3,1,10,01,04,046,41,02,19,308,00,04,58,282,46,13,58,198,41*70
+gpsd: Partial satellite data (1 of 3).
+gpsd: &lt;= GPS: 
+$GPGSV,3,2,10,17,17,222,39,20,38,093,00,23,73,108,46,25,39,101,00*71
+gpsd: Partial satellite data (2 of 3).
+gpsd: &lt;= GPS: $GPGSV,3,3,10,27,01,171,00,31,13,030,33*78
+gpsd: Satellite data OK.
+gpsd: &lt;= GPS: 
+$GPGGA,143106.00,5441.7931,N,00114.8201,W,1,06,1.8,59.3,M,47.1,M,,*4A
+gpsd: GPGGA sets status 1
+gpsd: &lt;= GPS: $GPGLL,5441.7931,N,00114.8201,W,143106.00,A,A*7D
+gpsd: can't use GGA/GGL time until after ZDA or RMC has supplied a year.
+gpsd: GPGLL sets status 1
+gpsd: &lt;= GPS: $GPVTG,359.29,T,355.6,M,0.07,N,0.1,K,A*24
+gpsd: &lt;= GPS: 
+$GPRMC,143106.00,A,5441.7931,N,00114.8201,W,0.07,359.29,300307,-3.7,E,A*0C
+gpsd: &lt;= GPS: $GPGSA,A,3,01,04,13,17,23,31,,,,,,,2.2,1.8,1.3*3B
+gpsd: GPGSA sets mode 3
+gpsd: &lt;= GPS: 
+$GPGSV,3,1,10,01,04,046,41,02,19,308,00,04,58,282,47,13,58,198,41*71
+gpsd: Partial satellite data (1 of 3).
+gpsd: &lt;= GPS: 
+$GPGSV,3,2,10,17,17,222,39,20,38,093,00,23,73,108,46,25,39,101,00*71
+gpsd: Partial satellite data (2 of 3).
+gpsd: &lt;= GPS: 
+$GPGGA,143107.00,5441.7931,N,00114.8201,W,1,06,1.8,59.0,M,47.1,M,,*48
+gpsd: GPGGA sets status 1
+gpsd: &lt;= GPS: $GPGLL,5441.7931,N,00114.8201,W,143107.00,A,A*7C
+gpsd: can't use GGA/GGL time until after ZDA or RMC has supplied a year.
+gpsd: GPGLL sets status 1
+gpsd: &lt;= GPS: 
+$GPRMC,143107.00,A,5441.7931,N,00114.8201,W,0.03,167.92,300307,-3.7,E,A*06
+gpsd: &lt;= GPS: $GPGSA,A,3,01,04,13,17,23,31,,,,,,,2.2,1.8,1.3*3B
+gpsd: GPGSA sets mode 3
+gpsd: &lt;= GPS: 
+$GPGSV,3,1,10,01,04,046,41,02,19,308,00,04,58,282,47,13,58,198,41*71
+gpsd: Partial satellite data (1 of 3).
+gpsd: &lt;= GPS: 
+$GPGSV,3,2,10,17,17,222,39,20,38,093,00,23,73,108,46,25,39,101,00*71
+gpsd: Partial satellite data (2 of 3).
+gpsd: &lt;= GPS: 
+$GPGGA,143108.00,5441.7931,N,00114.8200,W,1,06,1.8,58.8,M,47.1,M,,*4F
+gpsd: GPGGA sets status 1
+gpsd: &lt;= GPS: $GPGLL,5441.7931,N,00114.8200,W,143108.00,A,A*72
+gpsd: can't use GGA/GGL time until after ZDA or RMC has supplied a year.
+gpsd: GPGLL sets status 1
+gpsd: &lt;= GPS: $GPVTG,275.91,T,272.2,M,0.07,N,0.1,K,A*28
+gpsd: &lt;= GPS: 
+$GPRMC,143108.00,A,5441.7931,N,00114.8200,W,0.07,275.91,300307,-3.7,E,A*0F
+gpsd: &lt;= GPS: $GPGSA,A,3,01,04,13,17,23,31,,,,,,,2.2,1.8,1.3*3B
+gpsd: GPGSA sets mode 3
+gpsd: &lt;= GPS: 
+$GPGSV,3,1,10,01,04,046,41,02,19,308,00,04,58,282,47,13,58,198,41*71
+gpsd: Partial satellite data (1 of 3).
+gpsd: &lt;= GPS: 
+$GPGSV,3,2,10,17,17,222,39,20,38,093,00,23,73,108,46,25,39,101,00*71
+gpsd: Partial satellite data (2 of 3).
+gpsd: &lt;= GPS: $GPGSV,3,3,10,27,01,171,00,31,13,030,33*78
+gpsd: Satellite data OK.
+gpsd: &lt;= GPS: 
+$GPGGA,143109.00,5441.7931,N,00114.8200,W,1,06,1.8,58.6,M,47.1,M,,*40
+gpsd: GPGGA sets status 1
+gpsd: &lt;= GPS: $GPGLL,5441.7931,N,00114.8200,W,143109.00,A,A*73
+gpsd: can't use GGA/GGL time until after ZDA or RMC has supplied a year.
+gpsd: GPGLL sets status 1
+
+
+Thanks in advance guys
+-- 
+Andy
+e: andy @ thebmwz3.co.uk
+e: andy @ broadcast-tech.co.uk
+
+w: <A HREF="http://www.thebmwz3.co.uk">http://www.thebmwz3.co.uk</A>
+w: <A HREF="http://www.broadcast-tech.co.uk">http://www.broadcast-tech.co.uk</A>
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="002528.html">[Gpsd-users] Question on Motorola Oncore GPS and gpsd
+</A></li>
+	<LI>Next message: <A HREF="002533.html">[Gpsd-users] GPSD and Parrot bluetooth GPS in-car device
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2531">[ date ]</a>
+              <a href="thread.html#2531">[ thread ]</a>
+              <a href="subject.html#2531">[ subject ]</a>
+              <a href="author.html#2531">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

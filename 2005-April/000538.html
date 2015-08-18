@@ -1,0 +1,101 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] please help debugging my new setup
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2005-April/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20please%20help%20debugging%20my%20new%20setup&In-Reply-To=%3C425129F3.50805%40ngi.it%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="000534.html">
+   <LINK REL="Next"  HREF="000542.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] please help debugging my new setup</H1>
+    <B>Bob Alexander</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20please%20help%20debugging%20my%20new%20setup&In-Reply-To=%3C425129F3.50805%40ngi.it%3E"
+       TITLE="[Gpsd-users] please help debugging my new setup">bob at ngi.it
+       </A><BR>
+    <I>Mon Apr  4 13:50:11 CEST 2005</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="000534.html">[Gpsd-users] Gpsd on a Zaurus SL-C3000
+</A></li>
+        <LI>Next message: <A HREF="000542.html">[Gpsd-users] please help debugging my new setup
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#538">[ date ]</a>
+              <a href="thread.html#538">[ thread ]</a>
+              <a href="subject.html#538">[ subject ]</a>
+              <a href="author.html#538">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Dear friends,
+I am using gpsd 2.13 on a 2.6.4.11 kernel on an IBM Thinkpad T40 via the 
+serial port on the port replicator connected with cable to my Garmin 
+eTrex (info shows eTrex Software Version 2.14, GPS model 130, version 214).
+
+On the same machine under XP a simple software calles ExpertGPS shows 
+downloading static data as waypoints is possible but &quot;real time&quot; data 
+such as position, clock etc. does not seem to show up.
+
+Under gpsd I cannot see any data coming. Tried both with NMEA and Garmin 
+binary protocols with a -D3 option ... nothing.
+
+Any ideas ? Could it be the firmware is too old ?
+
+Follows more debug data.
+
+Thank you very much,
+Bob
+
+(same result below if running as root)
+
+<A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">bob at t40</A>:~$ sudo cat /proc/tty/driver/serial
+serinfo:1.0 driver revision:
+0: uart:16550A port:000003F8 irq:4 tx:0 rx:0
+1: uart:unknown port:000002F8 irq:3
+2: uart:unknown port:000003E8 irq:4
+3: uart:unknown port:000002E8 irq:3
+4: uart:unknown port:00000000 irq:0
+5: uart:unknown port:00000000 irq:0
+6: uart:unknown port:00000000 irq:0
+7: uart:unknown port:00000000 irq:0
+
+<A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">bob at t40</A>:~$ sudo setserial /dev/ttyS0 -a
+/dev/ttyS0, Line 0, UART: 16550A, Port: 0x03f8, IRQ: 4
+         Baud_base: 115200, close_delay: 50, divisor: 0
+         closing_wait: 3000
+         Flags: spd_normal skip_test
+
+
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="000534.html">[Gpsd-users] Gpsd on a Zaurus SL-C3000
+</A></li>
+	<LI>Next message: <A HREF="000542.html">[Gpsd-users] please help debugging my new setup
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#538">[ date ]</a>
+              <a href="thread.html#538">[ thread ]</a>
+              <a href="subject.html#538">[ subject ]</a>
+              <a href="author.html#538">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

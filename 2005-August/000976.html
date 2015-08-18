@@ -1,0 +1,146 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] Re: [Gpsd-users] State of GPSD
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2005-August/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20%3D%3FISO-8859-1%3FQ%3FRe%3A_%5BGpsd-users%5D_State_of_GPSD%3F%3D&In-Reply-To=%3C11780.1123544041%40www44.gmx.net%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="000971.html">
+   <LINK REL="Next"  HREF="000977.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] Re: [Gpsd-users] State of GPSD</H1>
+    <B>Belgabor</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20%3D%3FISO-8859-1%3FQ%3FRe%3A_%5BGpsd-users%5D_State_of_GPSD%3F%3D&In-Reply-To=%3C11780.1123544041%40www44.gmx.net%3E"
+       TITLE="[Gpsd-users] Re: [Gpsd-users] State of GPSD">belgabor at gmx.de
+       </A><BR>
+    <I>Tue Aug  9 01:34:01 CEST 2005</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="000971.html">[Gpsd-users] Re: [Gpsd-users] State of GPSD
+</A></li>
+        <LI>Next message: <A HREF="000977.html">[Gpsd-users] Re: [Gpsd-users] State of GPSD
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#976">[ date ]</a>
+              <a href="thread.html#976">[ thread ]</a>
+              <a href="subject.html#976">[ subject ]</a>
+              <a href="author.html#976">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi Gary,
+
+thanks for the explanation =)
+
+Thinking about it, maybe it would be nice to have some time scripts with
+gpsd? I'm thinking mostly of something that would benefit people that don't
+want to run ntpd =)
+It/they should mainly provide two functionalities:
+a) Determination of fudge agianst (a) ntpd server(s)
+b) Using this fudge in ntpd-less environments to set system time
+
+What do you think about that?
+
+Cheers
+Tobias
+
+&gt;<i> --- Urspr&#252;ngliche Nachricht ---
+</I>&gt;<i> Von: &quot;Gary E. Miller&quot; &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">gem at rellim.com</A>&gt;
+</I>&gt;<i> An: Belgabor &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">belgabor at gmx.de</A>&gt;
+</I>&gt;<i> Kopie: <A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">gpsd-users at lists.berlios.de</A>
+</I>&gt;<i> Betreff: Re: [Gpsd-users] State of GPSD
+</I>&gt;<i> Datum: Sun, 7 Aug 2005 21:52:38 -0700 (PDT)
+</I>&gt;<i> 
+</I>&gt;<i> -----BEGIN PGP SIGNED MESSAGE-----
+</I>&gt;<i> Hash: SHA1
+</I>&gt;<i> 
+</I>&gt;<i> Yo Belgabor!
+</I>&gt;<i> 
+</I>&gt;<i> On Mon, 8 Aug 2005, Belgabor wrote:
+</I>&gt;<i> 
+</I>&gt;<i> &gt; sorry it took me a while to answer, but I initially overread you asking
+</I>&gt;<i> me
+</I>&gt;<i> &gt; to test it ^^;
+</I>&gt;<i> &gt; Now I did and I'm happy to tell that the problem is gone =)
+</I>&gt;<i> 
+</I>&gt;<i> The code is now in SVN and should make it into the next release.  Curt
+</I>&gt;<i> really nailed that one.
+</I>&gt;<i> 
+</I>&gt;<i> &gt; I'm trying to decipher what all this pps fuzz is about. What exactly is
+</I>&gt;<i> pps?
+</I>&gt;<i> 
+</I>&gt;<i> One side benefit GPS gives you is very accurate time.  Internally the
+</I>&gt;<i> GPS knows the time to 1 uSec or better.  The problem is how can the GPS
+</I>&gt;<i> communicate that accurate time it has internally to the host computer in
+</I>&gt;<i> an accurate manner.
+</I>&gt;<i> 
+</I>&gt;<i> If the GPS just sends the time to the host over a serial channel there
+</I>&gt;<i> is a large uncertainty added to the time.  RS-232 can only provide you
+</I>&gt;<i> accurate time stamps to somewhere between 1 Sec and 30 mSec, depending
+</I>&gt;<i> on your gps model and other factors.  Not good enough.
+</I>&gt;<i> 
+</I>&gt;<i> The long standing and low tech solution is to add a dedicated signal wire
+</I>&gt;<i> between the GPS and the host.  This dedicated signal is often connected
+</I>&gt;<i> to the host RS-232 Carrier Detect pin.  All the signal does is pulse
+</I>&gt;<i> at exactly the top of the second.  Exactly to 1 uS.  So that is why
+</I>&gt;<i> it is called a PPS (Pulse Per Second).
+</I>&gt;<i> 
+</I>&gt;<i> gpsd can pass that PPS signal on the the commonly used time daemon: ntpd.
+</I>&gt;<i> 
+</I>&gt;<i> When it all is working your host computer clock will then be accurate
+</I>&gt;<i> and stable to about  +-/1 uSec of UTC.  That is pretty cool for setting
+</I>&gt;<i> your watch, but it only helps if your GPS outputs this signal.  Consumer
+</I>&gt;<i> grade GPS usually do not have it, so you have to buy carefully.
+</I>&gt;<i> 
+</I>&gt;<i> 
+</I>&gt;<i> RGDS
+</I>&gt;<i> GARY
+</I>&gt;<i> -
+</I>&gt;<i>
+</I>---------------------------------------------------------------------------
+&gt;<i> Gary E. Miller Rellim 20340 Empire Blvd, Suite E-3, Bend, OR 97701
+</I>&gt;<i> 	<A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">gem at rellim.com</A>  Tel:+1(541)382-8588 Fax: +1(541)382-8676
+</I>&gt;<i> 
+</I>&gt;<i> -----BEGIN PGP SIGNATURE-----
+</I>&gt;<i> Version: GnuPG v1.4.1 (GNU/Linux)
+</I>&gt;<i> 
+</I>&gt;<i> iD8DBQFC9uUc8KZibdeR3qURAvZ1AKD06oKkJKzpAHAtgiViSKBCT6bdSACggcM+
+</I>&gt;<i> T6rhcidk5tGHLQ3YhqJmaTU=
+</I>&gt;<i> =XOvf
+</I>&gt;<i> -----END PGP SIGNATURE-----
+</I>&gt;<i> 
+</I>
+-- 
+GMX DSL = Maximale Leistung zum minimalen Preis!
+2000 MB nur 2,99, Flatrate ab 4,99 Euro/Monat: <A HREF="http://www.gmx.net/de/go/dsl">http://www.gmx.net/de/go/dsl</A>
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="000971.html">[Gpsd-users] Re: [Gpsd-users] State of GPSD
+</A></li>
+	<LI>Next message: <A HREF="000977.html">[Gpsd-users] Re: [Gpsd-users] State of GPSD
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#976">[ date ]</a>
+              <a href="thread.html#976">[ thread ]</a>
+              <a href="subject.html#976">[ subject ]</a>
+              <a href="author.html#976">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

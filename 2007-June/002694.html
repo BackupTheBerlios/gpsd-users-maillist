@@ -1,0 +1,102 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] PPS and baud rate
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2007-June/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20PPS%20and%20baud%20rate&In-Reply-To=%3C4.3.2.7.2.20070606082333.03526f08%40postoffice.creativesilicon.com.au%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="002693.html">
+   <LINK REL="Next"  HREF="002695.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] PPS and baud rate</H1>
+    <B>Dave C</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20PPS%20and%20baud%20rate&In-Reply-To=%3C4.3.2.7.2.20070606082333.03526f08%40postoffice.creativesilicon.com.au%3E"
+       TITLE="[Gpsd-users] PPS and baud rate">gpsd at creativesilicon.com.au
+       </A><BR>
+    <I>Wed Jun  6 01:35:52 CEST 2007</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="002693.html">[Gpsd-users] PPS and baud rate
+</A></li>
+        <LI>Next message: <A HREF="002695.html">[Gpsd-users] Proposal for joining OSGeo (Fwd: [OSGeo-Discuss] Route	Guidance System)
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2694">[ date ]</a>
+              <a href="thread.html#2694">[ thread ]</a>
+              <a href="subject.html#2694">[ subject ]</a>
+              <a href="author.html#2694">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi Jason,
+
+My experiences with the Garmin 18 LVC (hopefully similar to the GPS15) are 
+as follows:
+
+1. Changing Baud rate will not change either the duration or frequency of 
+the PPS pulse. The PPS pulse is a separate signal from the GPS engine, and 
+only appears on the serial port  DCD or CTS lines as a convenience to get 
+the signal into the PC.
+The GPSD PPS code anachronously watches the serial port lines for signal 
+changes and then acts on them (as if the code was doing hardware flow control).
+
+2. I have had issues getting GPSD to get PPS lock on older machines (i.e. 
+PIII 1000MHz) when I have a high level of debug enabled (i.e. -D5). I DON'T 
+have problems on the same machine when I run with no debug enabled.
+Don't know why - all I suspect that the latency of outputting the debug 
+info to console is enough to disturb the PPS timing code. I haven't had 
+time to prove this on a faster machine though.
+
+3. If you have access to a windows box, try using the Garmin Configuration 
+software to change the duration of the PPS pulse, and recompile GPSD to not 
+do any configuration of the GPS, just in case GPSD is doing something funny 
+in the configuration. It shoiuldn't be though - the Garmin code seems to be 
+pretty tight.
+
+4. Your description of your PPS interface circuitry sounds OK. Reading the 
+datasheet I notice that the PPS pulse is 0V (low) and 3.3V (high). The 7404 
+inverter is a strict TTL level device, with a Vhigh threshold of 2V minimum 
+so you should be OK, although you might be better with one of the newer 
+generations of 74 chips such as the 74HC series. Also note that the 7404 
+datasheet notes that there is a maximum of 22ns delay when switching 
+low-high and 15nS switching high-low. You will need to add this (and the 
+delay through the MAX232) to your fudge factor in the NTP config file.
+
+Your logic seems OK as well - a double inversion (7404 &amp; MAX232) should 
+present the serial port with the PPS pulse in the same sense as the GPS.
+
+Hope this helps a little.
+
+ciao, Dave
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="002693.html">[Gpsd-users] PPS and baud rate
+</A></li>
+	<LI>Next message: <A HREF="002695.html">[Gpsd-users] Proposal for joining OSGeo (Fwd: [OSGeo-Discuss] Route	Guidance System)
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2694">[ date ]</a>
+              <a href="thread.html#2694">[ thread ]</a>
+              <a href="subject.html#2694">[ subject ]</a>
+              <a href="author.html#2694">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

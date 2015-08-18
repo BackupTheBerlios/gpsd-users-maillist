@@ -1,0 +1,86 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] gpsd &amp; the parallel port?
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2008-December/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20gpsd%20%26%20the%20parallel%20port%3F&In-Reply-To=%3CPine.LNX.4.64.0812031603410.18280%40birdbird.example.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="003489.html">
+   <LINK REL="Next"  HREF="003494.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] gpsd &amp; the parallel port?</H1>
+    <B>Matt Roberds</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20gpsd%20%26%20the%20parallel%20port%3F&In-Reply-To=%3CPine.LNX.4.64.0812031603410.18280%40birdbird.example.com%3E"
+       TITLE="[Gpsd-users] gpsd &amp; the parallel port?">mattroberds at cox.net
+       </A><BR>
+    <I>Wed Dec  3 23:09:06 CET 2008</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="003489.html">[Gpsd-users] gpsd &amp; the parallel port?
+</A></li>
+        <LI>Next message: <A HREF="003494.html">[Gpsd-users] Generic NMEA device, NemeriX or uBlox?
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3490">[ date ]</a>
+              <a href="thread.html#3490">[ thread ]</a>
+              <a href="subject.html#3490">[ subject ]</a>
+              <a href="author.html#3490">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>On Wed, 3 Dec 2008, Robert Cunningham wrote:
+&gt;<i> I'm invoking gpsd as follows:
+</I>&gt;<i>   /usr/sbin/gpsd -n /dev/ttyUSB0 &amp;
+</I>
+Just to echo what Chris said, something like
+
+strace /usr/sbin/gpsd -n /dev/ttyUSB0 2&gt;gpsd-syscalls.txt
+
+will put the system calls that gpsd is making into gpsd-syscalls.txt.
+
+If gpsd isn't doing it, it might be that your USB-to-serial driver
+(assuming that's what you use) is glomping on to the parallel port
+(or at least its I/O range) for some reason.  If you have a
+USB-to-serial converter that uses a different chip or driver, you might
+change to that converter and see if it makes any difference.
+Alternatively, with gpsd not running, start up minicom or equal and
+point it at /dev/ttyUSB0; at the right bit rate you should see NMEA
+sentences or binary soup coming from your GPS.  With minicom running,
+try using the parallel port; if you are still blocked from using the
+parallel port, the problem is at a layer below gpsd.
+
+I hope this helps!
+
+Matt Roberds
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="003489.html">[Gpsd-users] gpsd &amp; the parallel port?
+</A></li>
+	<LI>Next message: <A HREF="003494.html">[Gpsd-users] Generic NMEA device, NemeriX or uBlox?
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3490">[ date ]</a>
+              <a href="thread.html#3490">[ thread ]</a>
+              <a href="subject.html#3490">[ subject ]</a>
+              <a href="author.html#3490">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

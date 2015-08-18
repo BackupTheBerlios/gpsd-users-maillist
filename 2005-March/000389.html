@@ -1,0 +1,123 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] GPSD Disconnect/Reconnect
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2005-March/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20GPSD%20Disconnect/Reconnect&In-Reply-To=%3C20050318115718.52dfcd32.hamish_nospam%40yahoo.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="000378.html">
+   <LINK REL="Next"  HREF="000391.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] GPSD Disconnect/Reconnect</H1>
+    <B>Hamish</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20GPSD%20Disconnect/Reconnect&In-Reply-To=%3C20050318115718.52dfcd32.hamish_nospam%40yahoo.com%3E"
+       TITLE="[Gpsd-users] GPSD Disconnect/Reconnect">hamish_nospam at yahoo.com
+       </A><BR>
+    <I>Thu Mar 17 23:57:18 CET 2005</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="000378.html">[Gpsd-users] GPSD Disconnect/Reconnect
+</A></li>
+        <LI>Next message: <A HREF="000391.html">[Gpsd-users] GPSD Disconnect/Reconnect
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#389">[ date ]</a>
+              <a href="thread.html#389">[ thread ]</a>
+              <a href="subject.html#389">[ subject ]</a>
+              <a href="author.html#389">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>&gt;<i> 1. gpsd is intended to be zero-configuration, launched by a hotplug
+</I>&gt;<i> script  and automatically syncing up with whatever GPSes it finds. 
+</I>&gt;<i> Adding a baud rate option would represent a step away from that, back
+</I>&gt;<i> towards the bad old world  where users have to do more than just plug
+</I>&gt;<i> the GPS into a handy port to make it work.  
+</I>
+for embedded gps applications time-to-fix is critical to keep power use
+to minimum. e.g. I've built GPS-&gt;Satellite transmitters that run for yr+
+on 15 D-cells. What about a /etc/gpsdrc file with which (if it exists) a
+&quot;power user&quot;* can specify [Lock!!!] port/mode/baud rate? This file only
+exists if you put it there, Aunt Tillie (below) is none the wiser.
+See below for &quot;but it scans only once&quot; response.
+
+[*] I wouldn't really call '-p /dev/ttyS1 -s 9600' &quot;power-usage&quot;
+
+ 
+&gt;<i> 2. I may give gpsd the capability to handle multiple GPSes.  If that
+</I>&gt;<i> happens, an -s option on the command line stops making a lot of sense.
+</I>
+Report from the field re. the use of multiple GPSs:
+
+I know (personally) several different folks using multiple GPSs coming
+back to a single logger. This has been for attitude observation on
+container ships, development aircraft, and america's cup yachts.
+
+I have never heard a suggestion of using multiple cheap GPS to get a
+better fix for where you are*. I think it's a case of- you can have a
+dozen TV sets all tuned into the same channel at once, but you are still
+just watching the same crummy episode of Gilligan's Island. i.e. you can
+improve the signal strength &amp; average out the different interpolation
+models each receiver uses, but if you have 12-channel GPSs in the same
+place you are still seeing all the same satellites in the sky and you
+would be better off just using your best one.
+
+[*] maybe it works great. Sounds like an EE MSc project for someone.
+shrug.
+
+
+&gt;<i> Remember, my typical use case is Aunt Tillie with a GPS mouse and a
+</I>&gt;<i> laptop. I'm trying to ruthlessly simplify all interfaces.
+</I>
+a worthy goal.
+
+&gt;<i> Considering time to first  fix and the fact that you usually pay the
+</I>&gt;<i> hunt-time cost only once (when you  start up your application) I don't
+</I>&gt;<i> think a second and a half of hunt time is much of a price for the
+</I>&gt;<i> simplification.
+</I>
+mmph. I'm not sold.. &lt;devil's advocate&gt; if the gps powers down between
+fixes, will gpsd rescan when next a connection is made? or is it sticky
+for entire life of the process? What if the gpsd process is unloaded
+when not in use, say in limited memory environments.
+
+I'd rather it just obeyed my orders of where the gps should be and
+didn't waste any more time/cycles/probing on the problem. Smart when
+needed, sure, but obedient when instructed; and as light as possible.
+K.I.S.S. works.
+
+
+
+regards,
+Hamish
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="000378.html">[Gpsd-users] GPSD Disconnect/Reconnect
+</A></li>
+	<LI>Next message: <A HREF="000391.html">[Gpsd-users] GPSD Disconnect/Reconnect
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#389">[ date ]</a>
+              <a href="thread.html#389">[ thread ]</a>
+              <a href="subject.html#389">[ subject ]</a>
+              <a href="author.html#389">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

@@ -1,0 +1,167 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] Bluetooth issues (was: Re: Preparing for 2.93	point release)
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2010-May/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Bluetooth%20issues%20%28was%3A%20Re%3A%20Preparing%20for%202.93%0A%09point%20release%29&In-Reply-To=%3Cx2p2196fd761005011237mae3db078jd89c55a250c22e05%40mail.gmail.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   
+   <LINK REL="Next"  HREF="004457.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] Bluetooth issues (was: Re: Preparing for 2.93	point release)</H1>
+    <B>Ji&#345;&#237; Techet</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Bluetooth%20issues%20%28was%3A%20Re%3A%20Preparing%20for%202.93%0A%09point%20release%29&In-Reply-To=%3Cx2p2196fd761005011237mae3db078jd89c55a250c22e05%40mail.gmail.com%3E"
+       TITLE="[Gpsd-users] Bluetooth issues (was: Re: Preparing for 2.93	point release)">techet at gmail.com
+       </A><BR>
+    <I>Sat May  1 21:37:23 CEST 2010</I>
+    <P><UL>
+        
+        <LI>Next message: <A HREF="004457.html">[Gpsd-users] Add maskdump.c to .gitignore?
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#4456">[ date ]</a>
+              <a href="thread.html#4456">[ thread ]</a>
+              <a href="subject.html#4456">[ subject ]</a>
+              <a href="author.html#4456">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>On Tue, Apr 27, 2010 at 21:40, Eric Raymond &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">esr at thyrsus.com</A>&gt; wrote:
+&gt;<i> Ji&#345;&#237; Techet &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">techet at gmail.com</A>&gt;:
+</I>&gt;&gt;<i> No change I'm afraid - still the same problem. Please let me know if I
+</I>&gt;&gt;<i> should enable some tracing of gpsd or test some branch of gpsd with
+</I>&gt;&gt;<i> extra traces or if there is some other way to help you fixing the bug.
+</I>&gt;<i>
+</I>&gt;<i> I'm stumped.
+</I>&gt;<i>
+</I>&gt;<i> You can enable extra tracing with the -D option. &#160;Here are the levels:
+</I>&gt;<i>
+</I>&gt;<i> #define LOG_ERROR &#160; &#160; &#160; 0 &#160; &#160; &#160; /* errors, display always */
+</I>&gt;<i> #define LOG_SHOUT &#160; &#160; &#160; 0 &#160; &#160; &#160; /* not an error but we should always see it */
+</I>&gt;<i> #define LOG_WARN &#160; &#160; &#160; &#160;1 &#160; &#160; &#160; /* not errors but may indicate a problem */
+</I>&gt;<i> #define LOG_INF &#160; &#160; &#160; &#160; 2 &#160; &#160; &#160; /* key informative messages */
+</I>&gt;<i> #define LOG_DATA &#160; &#160; &#160; &#160;3 &#160; &#160; &#160; /* log data management messages */
+</I>&gt;<i> #define LOG_PROG &#160; &#160; &#160; &#160;4 &#160; &#160; &#160; /* progress messages */
+</I>&gt;<i> #define LOG_IO &#160; &#160; &#160; &#160; &#160;5 &#160; &#160; &#160; /* IO to and from devices */
+</I>&gt;<i> #define LOG_SPIN &#160; &#160; &#160; &#160;6 &#160; &#160; &#160; /* logging for catching spin bugs */
+</I>&gt;<i> #define LOG_RAW &#160; &#160; &#160; &#160; 7 &#160; &#160; &#160; /* raw low-level I/O */
+</I>&gt;<i>
+</I>&gt;<i> All I can suggest is cranking it up to -D 5 and reading logs. &#160;You'll
+</I>&gt;<i> get device-connect/disconnect logging at -D 2.
+</I>&gt;<i> --
+</I>&gt;<i> &#160; &#160; &#160; &#160; &#160; &#160; &#160; &#160;&lt;a href=&quot;<A HREF="http://www.catb.org/~esr/">http://www.catb.org/~esr/</A>&quot;&gt;Eric S. Raymond&lt;/a&gt;
+</I>&gt;<i>
+</I>
+Hi Eric,
+
+sorry for the late reply, I haven't had time to test it earlier.
+Anyway, from the log below (which includes annotations of what I was
+doing when the particular part of the log was printed) it seems that
+gpsd isn't informed when the device is turned on - at least it doesn't
+print any message. So my only question  (addressed to other users of
+gpsd that use bluetooth devices) is whether this is common to all
+bluetooth devices or if it's a problem specific to mine or if there is
+possibly some configuration problem on my machine (basically what I
+did to get it working was this: <A HREF="http://gpsd.berlios.de/bt.html">http://gpsd.berlios.de/bt.html</A>).
+
+Thanks,
+
+Jiri
+
+
+
+initial state: device off
+
+<A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">techy at techy-laptop</A>:~$ sudo /usr/local/sbin/gpsd -F /var/run/gpsd.sock
+-P /var/run/gpsd.pid /dev/rfcomm0 -N -D 2
+gpsd: launching (Version 2.95~dev)
+gpsd: listening on port gpsd
+gpsd: running with effective group ID 0
+gpsd: running with effective user ID 0
+gpsd: stashing device /dev/rfcomm0 at slot 0
+
+action: turning device on
+
+(no output)
+
+action: running application (connect gpsd socket, send WATCH)
+
+gpsd: opening read-only GPS data source type 0 and at '/dev/rfcomm0'
+gpsd: speed 9600, 8N1
+gpsd: =&gt; GPS: @F0.3=1*67\x0d\x0a FAILED
+gpsd: =&gt; GPS: @F2.2=1*64\x0d\x0a FAILED
+gpsd: speed 9600, 8O1
+gpsd: =&gt; GPS: @F0.3=1*67\x0d\x0a FAILED
+gpsd: =&gt; GPS: @F2.2=1*64\x0d\x0a FAILED
+gpsd: speed 9600, 8N1
+gpsd: =&gt; GPS: @F0.3=1*67\x0d\x0a FAILED
+gpsd: =&gt; GPS: @F2.2=1*64\x0d\x0a FAILED
+gpsd: gpsd_activate(): opened GPS (fd 7)
+gpsd: NTPD ntpd_link_activate: 1
+gpsd: /dev/rfcomm0 identified as type Generic NMEA (0.284249 sec @ 9600bps)
+gpsd: =&gt; Probing device subtype 0
+gpsd: can't use GGA time until after ZDA or RMC has supplied a year.
+gpsd: =&gt; Probing device subtype 1
+gpsd: =&gt; Probing device subtype 2
+gpsd: =&gt; Probing device subtype 3
+gpsd: =&gt; Probing device subtype 4
+gpsd: =&gt; Probing device subtype 5
+gpsd: =&gt; Probing device subtype 6
+gpsd: =&gt; Probing device subtype 7
+gpsd: =&gt; Probing device subtype 8
+gpsd: bad checksum in NMEA packet; expected 06.
+gpsd: bad checksum in NMEA packet; expected 23.
+
+output: gps data being sent
+
+action: turning gps device off
+
+gpsd: GPS on /dev/rfcomm0 is offline (0.000019 sec since data)
+gpsd: /dev/rfcomm0 returned error or went offline
+gpsd: closing GPS=/dev/rfcomm0 (7)
+
+action: turning gps device on
+
+(no output)
+
+sending watch
+
+gpsd: opening read-only GPS data source type 0 and at '/dev/rfcomm0'
+gpsd: speed 9600, 8N1
+gpsd: speed 9600, 8O1
+gpsd: speed 9600, 8N1
+gpsd: gpsd_activate(): opened GPS (fd 7)
+gpsd: can't use GGA time until after ZDA or RMC has supplied a year.
+
+output: gps data being sent
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	
+	<LI>Next message: <A HREF="004457.html">[Gpsd-users] Add maskdump.c to .gitignore?
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#4456">[ date ]</a>
+              <a href="thread.html#4456">[ thread ]</a>
+              <a href="subject.html#4456">[ subject ]</a>
+              <a href="author.html#4456">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

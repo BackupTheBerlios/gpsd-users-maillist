@@ -1,0 +1,83 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] gpsd HEAD and SiRF
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2010-December/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20gpsd%20HEAD%20and%20SiRF&In-Reply-To=%3CAANLkTim-zP2W4Uz9MfEdeu67c%2BJka3B20e3KOEmK0Pot%40mail.gmail.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="004823.html">
+   <LINK REL="Next"  HREF="004831.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] gpsd HEAD and SiRF</H1>
+    <B>Chris Kuethe</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20gpsd%20HEAD%20and%20SiRF&In-Reply-To=%3CAANLkTim-zP2W4Uz9MfEdeu67c%2BJka3B20e3KOEmK0Pot%40mail.gmail.com%3E"
+       TITLE="[Gpsd-users] gpsd HEAD and SiRF">chris.kuethe at gmail.com
+       </A><BR>
+    <I>Thu Dec 23 16:10:06 CET 2010</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="004823.html">[Gpsd-users] gpsd HEAD and SiRF
+</A></li>
+        <LI>Next message: <A HREF="004831.html">[Gpsd-users] gpsd HEAD and SiRF
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#4824">[ date ]</a>
+              <a href="thread.html#4824">[ thread ]</a>
+              <a href="subject.html#4824">[ subject ]</a>
+              <a href="author.html#4824">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>On Thu, Dec 23, 2010 at 7:44 AM, Charles Curley
+&lt;<A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">charlescurley at charlescurley.com</A>&gt; wrote:
+&gt;<i> * A compile time switch to manually enable your subframe code. It's
+</I>&gt;<i> &#160;ugly, but it gets you there. This avoids the jerky startup. It's
+</I>&gt;<i> &#160;likely to cause problems for distribution packagers, so (on the
+</I>&gt;<i> &#160;hypothesis that most of their users aren't interested in the the
+</I>&gt;<i> &#160;subframe data, or wouldn't notice its absence) I'd suggest the
+</I>&gt;<i> &#160;default be off.
+</I>
+driver_sirf.c defines two control messages &quot;enablesubframe&quot;
+(driver_sirf.c:60) and &quot;disablesubframe&quot; (driver_sirf.c:76). These are
+used to prevent link flooding, based on port speed (driver_sirf.c:424)
+
+&gt;<i> Thoughts?
+</I>
+I think the test above, in combination with another test (serial.c:51)
+is broken. Please consider instrumenting serial.c to report what your
+device is classified as, and instrumenting driver_sirf.c to report why
+it chose to en-/dis-able more packets.
+
+-- 
+GDB has a 'break' feature; why doesn't it have 'fix' too?
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="004823.html">[Gpsd-users] gpsd HEAD and SiRF
+</A></li>
+	<LI>Next message: <A HREF="004831.html">[Gpsd-users] gpsd HEAD and SiRF
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#4824">[ date ]</a>
+              <a href="thread.html#4824">[ thread ]</a>
+              <a href="subject.html#4824">[ subject ]</a>
+              <a href="author.html#4824">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

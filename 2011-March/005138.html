@@ -1,0 +1,197 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] telnet'ing to gpsd
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2011-March/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20telnet%27ing%20to%20gpsd&In-Reply-To=%3C20110314163532.1e98551c%40yendi%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="005137.html">
+   <LINK REL="Next"  HREF="005139.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] telnet'ing to gpsd</H1>
+    <B>Charles Curley</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20telnet%27ing%20to%20gpsd&In-Reply-To=%3C20110314163532.1e98551c%40yendi%3E"
+       TITLE="[Gpsd-users] telnet'ing to gpsd">charlescurley at charlescurley.com
+       </A><BR>
+    <I>Mon Mar 14 23:35:32 CET 2011</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="005137.html">[Gpsd-users] telnet'ing to gpsd
+</A></li>
+        <LI>Next message: <A HREF="005139.html">[Gpsd-users] telnet'ing to gpsd
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#5138">[ date ]</a>
+              <a href="thread.html#5138">[ thread ]</a>
+              <a href="subject.html#5138">[ subject ]</a>
+              <a href="author.html#5138">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Sending to the list to capture the answer for future use, and also in
+case I'm wrong someone else can chime in.
+
+Also, please interpolate your responses so that the conversation
+doesn't get unwieldly.
+
+On Tue, 15 Mar 2011 10:35:53 +1300
+TJ &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">jordan.trevor at gmail.com</A>&gt; wrote:
+
+&gt;<i> I just added gpsd and gps-utils to the TOOLS_INSTALL section of a
+</I>&gt;<i> bitbake recipe. I'm still learning about OpenEmbedded stuff as well
+</I>&gt;<i> but I think it just pulls the tools from a repository and installs
+</I>&gt;<i> them to an image, which I then write to the SD card that I'm booting
+</I>&gt;<i> from.
+</I>
+OK. You are out of my expertise here.
+
+&gt;<i> Anyway, the version cammand gives:
+</I>&gt;<i> 
+</I>&gt;<i> ?VERSION;
+</I>&gt;<i> {&quot;class&quot;:&quot;VERSION&quot;,&quot;release&quot;:&quot;2.95&quot;,&quot;rev&quot;:&quot;2011-03-09T14:08:20&quot;,&quot;proto_major&quot;:3,&quot;proto_minor&quot;:3}
+</I>
+OK. Fairly recent but not the latest. Although recently compiled.
+
+&gt;<i> 
+</I>&gt;<i> I can see the GPS module is running since gpsmon /dev/ttyO0 shows
+</I>&gt;<i> fixes being updated every second.
+</I>
+Good.
+
+&gt;<i> 
+</I>&gt;<i> After starting gpsd (I just issue &quot;gpsd /dev/ttyO0&quot; to start it), cgps
+</I>&gt;<i> also works.
+</I>
+Good.
+
+&gt;<i> I cant use xgps since I only have a serial console.
+</I>
+Not a problem, as either one tells us the minimum we need to know: that
+gpsd is running, the client can connect to it, and get useful data from
+it.
+
+&gt;<i> So the
+</I>&gt;<i> question is, since cgps works, why dont I see NMEA messages in telnet?
+</I>
+You have to ask for them. You can get fix data two ways, NMEA
+(deprecated) or JSON (preferred). From telnet, you have to send gpsd the
+JSON equivalent of WATCH_ENABLE | WATCH_JSON. I'll let you google on
+that.
+
+For your application, you might be better off using libgps. It will
+handle decoding the JSON and does some other things you really don't
+want to think about.
+
+&gt;<i> And how do I send binary commands to the uBlox module to put it into a
+</I>&gt;<i> low power state or slow down the fix rate etc?
+</I>
+The fix rate is up to the receiver and may not be adjustable. I'm not
+sure there is a mechanism for gpsd to transmit that to the receiver.
+
+Disconnecting from gpsd may put the receiver into a low power state.
+So get your fix every five minutes once you have your initial 3D fix,
+disconnect for four minutes, then reconnect. That gives it a minute to
+get a new fix. You can probably shave that, depending on your
+application.
+
+In addition to fix data, the GPS satellites transmit other data,
+including an ephemeris. So the on one, off four strategy may not be a
+good one for more than a few hours.
+
+For more reading, &quot;man gpsd&quot;.
+
+
+&gt;<i> 
+</I>&gt;<i> TJ
+</I>&gt;<i> 
+</I>&gt;<i> 
+</I>&gt;<i> On 15 March 2011 03:49, Charles Curley
+</I>&gt;<i> &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">charlescurley at charlescurley.com</A>&gt; wrote:
+</I>&gt;<i> &gt; On Mon, 14 Mar 2011 18:43:44 +1300
+</I>&gt;<i> &gt; TJ &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">jordan.trevor at gmail.com</A>&gt; wrote:
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt;&gt; Hey all
+</I>&gt;<i> &gt;&gt;
+</I>&gt;<i> &gt;&gt; Newbie to gpsd here and trying to get a pretty simple app running
+</I>&gt;<i> &gt;&gt; on a Angstrom Linux Gumstix.
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; Which version of gpsd? From a Linux distribution's repository or
+</I>&gt;<i> &gt; from source?
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt;&gt;
+</I>&gt;<i> &gt;&gt; I have gpsd running and can telnet into it like so;
+</I>&gt;<i> &gt;&gt;
+</I>&gt;<i> &gt;&gt; <A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">root at overo</A>:/usr/lib/python2.6# telnet localhost 2947
+</I>&gt;<i> &gt;&gt;
+</I>&gt;<i> &gt;&gt; In telnet I can issue requests such as ?VERSION;&lt;CR&gt;&lt;LF&gt; and get a
+</I>&gt;<i> &gt;&gt; sensible response
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; OK. You shouldn't need the &lt;CR&gt;, but that's a minor detail.
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt;&gt; but why dont I get any responses from single letter
+</I>&gt;<i> &gt;&gt; commands? And why arn't I seeing any NMEA data or anything go
+</I>&gt;<i> &gt;&gt; flying by as it seems I should be based on what I've read?
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; Possibly because you have a newer version of gpsd and the letter
+</I>&gt;<i> &gt; commands are disabled?
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; Does cgps or xgps show anything?
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; Is the gpsd troubleshooting page useful?
+</I>&gt;<i> &gt; <A HREF="http://gpsd.berlios.de/troubleshooting.html">http://gpsd.berlios.de/troubleshooting.html</A>
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; --
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; Charles Curley &#160; &#160; &#160; &#160; &#160; &#160; &#160; &#160; &#160;/&quot;\ &#160; &#160;ASCII Ribbon Campaign
+</I>&gt;<i> &gt; Looking for fine software &#160; &#160; &#160; \ / &#160; &#160;Respect for open standards
+</I>&gt;<i> &gt; and/or writing? &#160; &#160; &#160; &#160; &#160; &#160; &#160; &#160; &#160;X &#160; &#160; No HTML/RTF in email
+</I>&gt;<i> &gt; <A HREF="http://www.charlescurley.com">http://www.charlescurley.com</A> &#160; &#160;/ \ &#160; &#160;No M$ Word docs in email
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; Key fingerprint = CE5C 6645 A45A 64E4 94C0 &#160;809C FFF6 4C48 4ECD DFDB
+</I>&gt;<i> &gt; _______________________________________________
+</I>&gt;<i> &gt; Gpsd-users mailing list
+</I>&gt;<i> &gt; <A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">Gpsd-users at lists.berlios.de</A>
+</I>&gt;<i> &gt; <A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">https://lists.berlios.de/mailman/listinfo/gpsd-users</A>
+</I>&gt;<i> &gt;
+</I>
+
+
+-- 
+
+Charles Curley                  /&quot;\    ASCII Ribbon Campaign
+Looking for fine software       \ /    Respect for open standards
+and/or writing?                  X     No HTML/RTF in email
+<A HREF="http://www.charlescurley.com">http://www.charlescurley.com</A>    / \    No M$ Word docs in email
+
+Key fingerprint = CE5C 6645 A45A 64E4 94C0  809C FFF6 4C48 4ECD DFDB
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="005137.html">[Gpsd-users] telnet'ing to gpsd
+</A></li>
+	<LI>Next message: <A HREF="005139.html">[Gpsd-users] telnet'ing to gpsd
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#5138">[ date ]</a>
+              <a href="thread.html#5138">[ thread ]</a>
+              <a href="subject.html#5138">[ subject ]</a>
+              <a href="author.html#5138">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

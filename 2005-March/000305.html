@@ -1,0 +1,114 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] Hotplug interface problems
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2005-March/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Hotplug%20interface%20problems&In-Reply-To=%3C200503111522.j2BFMHgR019831%40snark.thyrsus.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="000365.html">
+   <LINK REL="Next"  HREF="000317.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] Hotplug interface problems</H1>
+    <B>Eric S. Raymond</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Hotplug%20interface%20problems&In-Reply-To=%3C200503111522.j2BFMHgR019831%40snark.thyrsus.com%3E"
+       TITLE="[Gpsd-users] Hotplug interface problems">esr at snark.thyrsus.com
+       </A><BR>
+    <I>Fri Mar 11 16:22:17 CET 2005</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="000365.html">[Gpsd-users] Re: [Gpsd-dev] Rate-limiting SiRF sentence 4.
+</A></li>
+        <LI>Next message: <A HREF="000317.html">[Gpsd-users] Hotplug interface problems
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#305">[ date ]</a>
+              <a href="thread.html#305">[ thread ]</a>
+              <a href="subject.html#305">[ subject ]</a>
+              <a href="author.html#305">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>The hotplug interface works pretty nicely for telling gpsd which
+device to look at, at least on my FC3 machines.  The fly in the
+ointment is that I'm using a deprecated version of the interface, the
+old-style /etc/hotplug version with usermap files.
+
+I tried moving to the new-style /etc/hotplug.d interface, but I ran
+into a nasty race condition.  My hotplug agent got woken up on a USB
+add event as it should, but in the new interface the creation of
+/dev/ttyUSB* can be delayed arbitrarily long after the wakeup event.
+Thus, it may not be there when gpsd goes to probe it unless I
+busy-wait in the script.
+
+I bitched to Greg K-H about this.  He directed me to the hotplug-devel
+list, where Kay Sievers recommended using udev directly.
+
+I think udev rules like this might work:
+
+# The Prolific Technology 2303 (commonly in tandem with SiRF chips)
+BUS=&quot;usb&quot; ACTION=&quot;add&quot; SYSFS{vendor}=&quot;067b&quot; SYSFS{product}=&quot;2303&quot; \
+		NAME=&quot;gps%e&quot; \
+		HOTPLUG=&quot;/usr/bin/gps-probe&quot;
+# FTDI 8U232AM
+BUS=&quot;usb&quot; ACTION=&quot;add&quot; SYSFS{vendor}=&quot;0403&quot; SYSFS{product}=&quot;6001&quot; \
+		NAME=&quot;gps%e&quot; \
+		HOTPLUG=&quot;/usr/bin/gps-probe&quot;
+# Cypress M8/CY7C64013 (DeLorme uses these)
+BUS=&quot;usb&quot; ACTION=&quot;add&quot; SYSFS{vendor}=&quot;1163&quot; SYSFS{product}=&quot;0100&quot; \
+		NAME=&quot;gps%e&quot; \
+		HOTPLUG=&quot;/usr/bin/gps-probe&quot;
+
+I'd love for somebody else with more interest in udev to take on 
+chasing this down.
+
+Still to come:
+
+* Should sirfmon be part of the release?
+
+* The mess near error modeling
+
+* HAL integration
+
+* DGPS/WAAS/EGNOS/SBAS support
+
+* Multi-session semantics
+
+* Subsecond polling
+
+* Does the GPSD protocol need to be redesigned?
+-- 
+		&lt;a href=&quot;<A HREF="http://www.catb.org/~esr/">http://www.catb.org/~esr/</A>&quot;&gt;Eric S. Raymond&lt;/a&gt;
+
+Never could an increase of comfort or security be a sufficient good to be
+bought at the price of liberty.		-- Hillaire Belloc
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="000365.html">[Gpsd-users] Re: [Gpsd-dev] Rate-limiting SiRF sentence 4.
+</A></li>
+	<LI>Next message: <A HREF="000317.html">[Gpsd-users] Hotplug interface problems
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#305">[ date ]</a>
+              <a href="thread.html#305">[ thread ]</a>
+              <a href="subject.html#305">[ subject ]</a>
+              <a href="author.html#305">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

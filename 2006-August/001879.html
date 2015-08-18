@@ -1,0 +1,191 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] Globalsat BU-353 BU Floating Point Issues on ARM /	AT91RM9200
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2006-August/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Globalsat%20BU-353%20BU%20Floating%20Point%20Issues%20on%20ARM%20/%0A%09AT91RM9200&In-Reply-To=%3C91981b3e0608241158n2d6a0250h4c29abd65c6827e4%40mail.gmail.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="001878.html">
+   <LINK REL="Next"  HREF="001881.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] Globalsat BU-353 BU Floating Point Issues on ARM /	AT91RM9200</H1>
+    <B>Chris Kuethe</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Globalsat%20BU-353%20BU%20Floating%20Point%20Issues%20on%20ARM%20/%0A%09AT91RM9200&In-Reply-To=%3C91981b3e0608241158n2d6a0250h4c29abd65c6827e4%40mail.gmail.com%3E"
+       TITLE="[Gpsd-users] Globalsat BU-353 BU Floating Point Issues on ARM /	AT91RM9200">chris.kuethe at gmail.com
+       </A><BR>
+    <I>Thu Aug 24 20:58:57 CEST 2006</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="001878.html">[Gpsd-users] Globalsat BU-353 BU Floating Point Issues on ARM /	AT91RM9200
+</A></li>
+        <LI>Next message: <A HREF="001881.html">[Gpsd-users] Globalsat BU-353 BU Floating Point Issues on ARM /	AT91RM9200
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1879">[ date ]</a>
+              <a href="thread.html#1879">[ thread ]</a>
+              <a href="subject.html#1879">[ subject ]</a>
+              <a href="author.html#1879">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>On 8/24/06, Jon Webb &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">digitalwebb at gmail.com</A>&gt; wrote:
+&gt;<i> I must be missing a trick somewhere, and i'm not that experienced with
+</I>&gt;<i> embedded stuff but....
+</I>
+I'm told embedded is tricky. And I'm not a complete embedded systems
+wizard but I'll take a shot at wrestling with your ARM.
+
+&gt;<i> My setup is an ARM9 / AT91RM9200 uClinux based system with a 2.6.14 kernel.
+</I>&gt;<i> The USB Device is a GlobalSat BU-353, i have the USB Serial driver compiles,
+</I>&gt;<i> installed and functioning on ttyUSB0.
+</I>
+Sounds OK so far. I'm running a zaurus (PXA270 xscale core) with a
+BU-353. USB, SiRFstarIII and ARM is not a known-unworkable
+configuration.
+
+&gt;<i> I'm having an issue where by the GPSd deamon is not reporting the
+</I>&gt;<i> coordinates properly when i telnet to port 2947. If I enter pn i generally
+</I>&gt;<i> get back a very very strange result, such as:
+</I>
+I'll get it out of the way now: I don't think it's gpsd's fault
+because it works for me. ;)
+
+with that out of the way, let me just say &quot;ick.&quot; That looks some kind
+of math or perhaps format string bug. I don't know if that's due to
+your math library, your compiler or something internal to gpsd.
+
+I don't think it's gpsd breaking is that gpsd seems to work well on
+32-/64-bit machines and big-/little-endian machines. Usually code
+that's suffering from all-the-world-is-redhat-x86 syndrome will die
+horribly when moved to a sparc64 running openbsd or solaris. Different
+word size, alignment, endianness... that's a good way to at least
+detect some of the bigger bugs. Not saying it can't happen, I just
+don't think that's the primary cause.
+
+&gt;<i> It's also switching through the various 0,2,3 NMEA states very regularly,
+</I>&gt;<i> atleast once per second
+</I>
+What is &quot;it&quot; - your receiver or gpsd? I'm assuming it's gpsd given the
+odd output above.
+
+&gt;<i> I've tried lots of difference compilation options, fixing the port speed and
+</I>&gt;<i> it makes very little difference.
+</I>
+Fixed port speed and protocol is a convenience hack, but really it
+should be unnecessary.
+
+For testing, can I suggest that you set the receiver to <A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">NMEA at 4800</A> and
+compile with only the NMEA driver and --enable-fixed-speed=4800. That
+shouldn't do much, but it will take the binary protocol decoding logic
+out of the picture. It'll also help with debugging.
+
+&gt;<i> now, although this isn't the safest way to advertise my location - the data
+</I>&gt;<i> coming back from the GPS looks sane
+</I>
+Thank you. We have dispatched black helicopters to your location. I'm
+at 53.5/-113.5 if you want to return fire. :)
+
+&gt;<i> $GPGGA,154520.000,5047.7664,N,00037.4305,W,1,03,8.3,14.7,M,47.1,M,,0000*72
+</I>&gt;<i> $GPGSA,A,2,30,14,01,,,,,,,,,,8.3,8.3,1.0*35
+</I>&gt;<i> $GPGSV,3,1,11,05,73,068,,30,60,258,27,14,49,274,20,09,34,125,*78
+</I>&gt;<i> $GPGSV,3,2,11,01,21,319,27,06,19,197,13,04,16,059,,02,16,098,*7C
+</I>&gt;<i> $GPGSV,3,3,11,24,12,039,,25,01,303,,20,00,359,*4D
+</I>&gt;<i> $GPRMC,154520.000,A,5047.7664,N,00037.4305,W,16.52,79.82,240806,,*19
+</I>
+&gt;<i> $GPGGA,154521.000,5047.7653 ,N,00037.4394,W,1,03,8.2,14.7,M,47.1,M,,0000*7E
+</I>&gt;<i> $GPGSA,A,2,30,14,01,,,,,,,,,,8.3,8.2,1.0*34
+</I>&gt;<i> $GPRMC,154521.000,A,5047.7653,N,00037.4394,W,0.80,245.96,240806,,*14
+</I>
+&gt;<i> $GPGGA,154522.000,5047.7709,N,00037.3903,W,1,03,8.2 ,14.7,M,47.1,M,,0000*70
+</I>&gt;<i> $GPGSA,A,2,30,14,01,,,,,,,,,,8.3,8.2,1.0*34
+</I>&gt;<i> $GPRMC,154522.000,A,5047.7709,N,00037.3903,W,6.42,79.30,240806,,*23
+</I>
+&gt;<i> $GPGGA,154523.000,5047.7680,N,00037.4156,W,1,03,8.2,14.7,M,47.1,M,,0000*7E
+</I>&gt;<i> $GPGSA,A,2,30,14,01,,,,,,,,,,8.3,8.2,1.0*34
+</I>&gt;<i> $GPRMC,154523.000,A,5047.7680,N,00037.4156,W,12.55,80.40,240806,,*1F
+</I>
+Hm. you're only generating GGA, GSA, RMC and GSV. No GLL.
+
+&gt;<i> This output from the ARM platform is very very close to the Fedora Core
+</I>&gt;<i> systems.
+</I>
+You mean that when you look at the raw nmea coming straight out of
+ttyUSB0 on both your ARM board and a regular PC, the NMEA looks good,
+ie. it's not a serial port problem.
+
+&gt;<i> I stumbled across this:
+</I>&gt;<i> <A HREF="http://sablevm.org/lists/sablevm-bugs/2004-November/000239.html">http://sablevm.org/lists/sablevm-bugs/2004-November/000239.html</A>
+</I>&gt;<i> which (although not related to gpsd, has a few pointers for me)
+</I>
+You might find a few more neat ARM programming tips here...
+<A HREF="http://wiki.gp2x.org/wiki/Hardware_Documentation">http://wiki.gp2x.org/wiki/Hardware_Documentation</A>
+
+&gt;<i> I would prefer not to have to recompile everything with -msoft-float unless
+</I>&gt;<i> there is really no other way.
+</I>
+I though ARM didn't have an FPU, so -msoft-float would implicit. From
+my gcc manpage:
+
+&quot;-msoft-float changes the calling convention in the output file;
+therefore, it is only useful if you compile all of a program with this
+option.  In particular, you need to compile libgcc.a, the library that
+comes with GCC, with -msoft-float in order for this to work.&quot;
+
+But you knew that - I'm just quoting it for the folks watching this on TV.
+
+Is your compiler providing the math routines, are you using uClinux'
+libm to emulate, or are you letting the kernel trap the floating point
+stuff? I'm told that at least the 387 FPU was pretty competent; I
+don't know about ARM FPU &quot;emulators&quot;.
+
+What compiler and flags are you using? Perhaps you've found a compiler
+or optimizer bug.
+
+Are you running in little endian or big endian mode? Generating arm or
+thumb instructions?
+
+What do you get back from gpsd if you say &quot;R=1&quot;? It should give you a
+stream of synthetic NMEA crafted by gpsd based on its interpretation
+of the data from the receiver. How does it compare with &quot;R=2&quot; output,
+which is the raw output of the receiver.
+
+You might end up having to slap on a debugger and see exactly what is
+mishandling your data.
+
+Sorry I don't have any more concrete answers for you.
+
+CK
+
+-- 
+GDB has a 'break' feature; why doesn't it have 'fix' too?
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="001878.html">[Gpsd-users] Globalsat BU-353 BU Floating Point Issues on ARM /	AT91RM9200
+</A></li>
+	<LI>Next message: <A HREF="001881.html">[Gpsd-users] Globalsat BU-353 BU Floating Point Issues on ARM /	AT91RM9200
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1879">[ date ]</a>
+              <a href="thread.html#1879">[ thread ]</a>
+              <a href="subject.html#1879">[ subject ]</a>
+              <a href="author.html#1879">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

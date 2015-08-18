@@ -1,0 +1,287 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] opening GPS data source at '(null)'
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2005-May/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20opening%20GPS%20data%20source%20at%20%27%28null%29%27&In-Reply-To=%3C428309EE.9050205%40sigos.de%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="000617.html">
+   <LINK REL="Next"  HREF="000619.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] opening GPS data source at '(null)'</H1>
+    <B>Rainer Scholz</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20opening%20GPS%20data%20source%20at%20%27%28null%29%27&In-Reply-To=%3C428309EE.9050205%40sigos.de%3E"
+       TITLE="[Gpsd-users] opening GPS data source at '(null)'">ras at sigos.de
+       </A><BR>
+    <I>Thu May 12 09:46:54 CEST 2005</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="000617.html">[Gpsd-users] opening GPS data source at '(null)'
+</A></li>
+        <LI>Next message: <A HREF="000619.html">[Gpsd-users] how does gpsd handle RTCM?
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#618">[ date ]</a>
+              <a href="thread.html#618">[ thread ]</a>
+              <a href="subject.html#618">[ subject ]</a>
+              <a href="author.html#618">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Eric S. Raymond wrote:
+
+&gt;<i>Rainer Scholz &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">ras at sigos.de</A>&gt;:
+</I>&gt;<i>  
+</I>&gt;<i>
+</I>&gt;&gt;<i>after 5 hours the gpsd hangs. Trying closing and opening a device name 
+</I>&gt;&gt;<i>which is currently a NULL pointer?! I'd have expected &quot;/dev/ttyUSB9&quot; ...
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i>Is this a known bug?
+</I>&gt;&gt;<i>    
+</I>&gt;&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i>No, it isn't.  Do you still have the entire log?  If so, what was the name
+</I>&gt;<i>of the last device closed and opened before you saw the null pointer?
+</I>&gt;<i>  
+</I>&gt;<i>
+</I>My test results so far:
+
+Sigoslab216 (2.4)
+
+gpsd-2.23
+
+Haicom-gps
+
+	
+
+Sigoslab233 (2.4)
+
+gpsd-2.23
+
+Haicom-gps
+
+	
+
+Sigoslab216 (2.4)
+
+gpsd-2.23
+
+fse-gps
+
+	
+
+Sigoslab220 (2.6)
+
+gpsd-2.23
+
+Haicom-gps
+
+	
+
+Sigoslab217 (2.4)
+
+gpsd-2.2
+
+Haicom-gps
+
++05:04:10
+
++03:49:01
+
+	
+
++06:29:41
+
+	
+
+ &gt;18:52:59
+
+	
+
+ &gt;11:50:18
+
+	
+
+ &gt;36:00:00
+
+
+Sigoslab216 has a 2.4.19-4GB kernel, running with gpsd-2.23 and a gps 
+receiver (hi-204e) from haicom, died 2 times after max. 5 hours uptime. 
+No problems at all with the old gpsd-2.2.
+
+
+There were no further open/close statements in the log.
+-----------------------&gt;&lt;-----------------------------------
+May 10 13:45:25 sigoslab216 gpsd[7818]: gpsd: launching (Version 2.23)
+May 10 13:45:25 sigoslab216 gpsd[7818]: gpsd: listening on port gpsd
+May 10 13:45:25 sigoslab216 gpsd[7818]: gpsd: changing to group 14
+May 10 13:45:25 sigoslab216 gpsd[7818]: gpsd: running with effective 
+group ID 14
+May 10 13:45:25 sigoslab216 gpsd[7818]: gpsd: running with effective 
+user ID 65534
+May 10 13:45:25 sigoslab216 gpsd[7818]: gpsd: opening GPS data source at 
+'/dev/ttyUSB9'
+May 10 13:45:25 sigoslab216 gpsd[7818]: gpsd: hunting at speed 4800, 8N1
+May 10 13:45:25 sigoslab216 gpsd[7818]: gpsd: gpsd_activate: opened GPS (5)
+May 10 13:45:25 sigoslab216 gpsd[7818]: gpsd: =&gt; GPS: 
+$PFEC,GPint,GSA01,DTM00,ZDA01,RMC01,GLL00,VTG00,GSV05*3B^M
+May 10 13:45:25 sigoslab216 gpsd[7818]: gpsd: =&gt; GPS: $PSRF105,1*3E^M
+[...]
+May 10 18:49:33 sigoslab216 gpsd[7818]: gpsd: &lt;= GPS: 
+$GPGSV,3,3,12,15,03,344,,17,01,230,,18,00,329,,07,00,144,*7F^M
+May 10 18:49:35 sigoslab216 gpsd[7818]: gpsd: closing GPS=(null)
+May 10 18:49:36 sigoslab216 gpsd[7818]: gpsd: closing GPS=(null)
+May 10 18:49:36 sigoslab216 gpsd[7818]: gpsd: opening GPS data source at 
+'(null)'
+May 10 18:49:36 sigoslab216 gpsd[7818]: gpsd: device open failed: Bad 
+address
+May 10 18:49:37 sigoslab216 gpsd[7818]: gpsd: closing GPS=(null)
+May 10 18:49:37 sigoslab216 gpsd[7818]: gpsd: opening GPS data source at 
+'(null)'
+May 10 18:49:37 sigoslab216 gpsd[7818]: gpsd: device open failed: Bad 
+address
+---------------------------------&gt;&lt;---------------------------
+
+
+Here's another log. I cut off the communication stuff with the gps 
+receiver only. I just insert some logging statements and an exit(5) 
+command to get rid of the server.
+---------------------------&gt;&lt;-------------------------
+May 11 07:47:36 sigoslab216 gpsd[18134]: gpsd: launching (Version 2.23)
+May 11 07:47:36 sigoslab216 gpsd[18134]: gpsd: listening on port gpsd
+May 11 07:47:36 sigoslab216 gpsd[18134]: gpsd: changing to group 14
+May 11 07:47:36 sigoslab216 gpsd[18134]: gpsd: running with effective 
+group ID 14
+May 11 07:47:36 sigoslab216 gpsd[18134]: gpsd: running with effective 
+user ID 65534
+May 11 07:47:36 sigoslab216 gpsd[18134]: gpsd: opening GPS data source 
+at '/dev/ttyUSB9'
+May 11 07:47:36 sigoslab216 gpsd[18134]: gpsd: hunting at speed 4800, 8N1
+May 11 07:47:36 sigoslab216 gpsd[18134]: gpsd: gpsd_activate: opened GPS 
+(5)
+May 11 07:47:36 sigoslab216 gpsd[18134]: gpsd: =&gt; GPS: 
+$PFEC,GPint,GSA01,DTM00,ZDA01,RMC01,GLL00,VTG00,GSV05*3B^M
+May 11 07:47:36 sigoslab216 gpsd[18134]: gpsd: =&gt; GPS: $PSRF105,1*3E^M
+May 11 07:47:36 sigoslab216 gpsd[18134]: gpsd: =&gt; GPS: $PMOTG,ZDA,1*2F^M
+May 11 07:47:36 sigoslab216 gpsd[18134]: gpsd: =&gt; GPS: $PGRM0,GSA,1*5C^M
+May 11 07:47:36 sigoslab216 gpsd[18134]: gpsd: &lt;= GPS: 
+$GPGSV,3,1,12,29,63,301,,28,58,127,,08,51,062,,26,45,299,*78
+[...]
+May 11 07:47:42 sigoslab216 gpsd[18134]: gpsd: &lt;= GPS: 
+$GPGSV,3,3,12,08,03,307,38,21,01,077,,28,01,335,,26,00,011,*76^M
+May 11 07:47:44 sigoslab216 gpsd[18134]: gpsd: closing GPS=/dev/ttyUSB9
+May 11 07:47:45 sigoslab216 gpsd[18134]: gpsd: closing GPS=/dev/ttyUSB9
+May 11 07:47:45 sigoslab216 gpsd[18134]: gpsd: [gpsd.c:1048] we may need 
+to force the GPS open
+May 11 07:47:45 sigoslab216 gpsd[18134]: gpsd: opening GPS data source 
+at '/dev/ttyUSB9'
+May 11 07:47:45 sigoslab216 gpsd[18134]: gpsd: setting speed 4800, 1 
+stopbits, no parity
+May 11 07:47:47 sigoslab216 gpsd[18134]: gpsd: gpsd_activate: opened GPS 
+(5)
+May 11 07:47:47 sigoslab216 gpsd[18134]: gpsd: =&gt; GPS: 
+$PFEC,GPint,GSA01,DTM00,ZDA01,RMC01,GLL00,VTG00,GSV05*3B^M
+May 11 07:47:47 sigoslab216 gpsd[18134]: gpsd: =&gt; GPS: $PSRF105,1*3E^M
+[...]
+May 11 11:02:36 sigoslab216 gpsd[18134]: gpsd: &lt;= GPS: 
+$GPGSV,3,3,11,23,18,195,34,19,09,172,,28,04,265,*41^M
+May 11 11:02:38 sigoslab216 gpsd[18134]: gpsd: closing GPS=/dev/ttyUSB9
+May 11 11:02:39 sigoslab216 gpsd[18134]: gpsd: closing GPS=/dev/ttyUSB9
+May 11 11:02:39 sigoslab216 gpsd[18134]: gpsd: [gpsd.c:1048] we may need 
+to force the GPS open
+May 11 11:02:39 sigoslab216 gpsd[18134]: gpsd: opening GPS data source 
+at '/dev/ttyUSB9'
+May 11 11:02:39 sigoslab216 gpsd[18134]: gpsd: setting speed 4800, 1 
+stopbits, no parity
+May 11 11:02:39 sigoslab216 gpsd[18134]: gpsd: gpsd_activate: opened GPS 
+(5)
+May 11 11:02:39 sigoslab216 gpsd[18134]: gpsd: =&gt; GPS: 
+$PFEC,GPint,GSA01,DTM00,ZDA01,RMC01,GLL00,VTG00,GSV05*3B^M
+[...]
+May 11 11:27:39 sigoslab216 gpsd[18134]: gpsd: &lt;= GPS: 
+$GPGSV,3,3,11,13,01,206,,04,01,303,,19,00,171,*44^M
+May 11 11:27:41 sigoslab216 gpsd[18134]: gpsd: closing GPS=/dev/ttyUSB9
+May 11 11:27:42 sigoslab216 gpsd[18134]: gpsd: closing GPS=/dev/ttyUSB9
+May 11 11:27:42 sigoslab216 gpsd[18134]: gpsd: [gpsd.c:1048] we may need 
+to force the GPS open
+May 11 11:27:42 sigoslab216 gpsd[18134]: gpsd: opening GPS data source 
+at '/dev/ttyUSB9'
+May 11 11:27:42 sigoslab216 gpsd[18134]: gpsd: setting speed 4800, 1 
+stopbits, no parity
+May 11 11:27:45 sigoslab216 gpsd[18134]: gpsd: gpsd_activate: opened GPS 
+(5)
+May 11 11:27:45 sigoslab216 gpsd[18134]: gpsd: =&gt; GPS: 
+$PFEC,GPint,GSA01,DTM00,ZDA01,RMC01,GLL00,VTG00,GSV05*3B^M
+[...]
+May 11 11:36:35 sigoslab216 gpsd[18134]: gpsd: &lt;= GPS: 
+$GPGSV,3,1,10,20,74,282,36,11,58,151,,24,46,300,39,01,45,058,*7E^M
+May 11 11:36:35 sigoslab216 gpsd[18134]: gpsd: &lt;= GPS: 
+$GPGSV,3,2,10,23,34,197,35,07,33,292,38,25,27,084,,14,09,040,*75^M
+May 11 11:36:35 sigoslab216 gpsd[18134]: gpsd: &lt;= GPS: 
+$GPGSV,3,3,10,13,05,207,39,04,04,304,38*7C^M
+May 11 11:36:37 sigoslab216 gpsd[18134]: gpsd: closing GPS=(null)
+May 11 11:36:38 sigoslab216 gpsd[18134]: gpsd: closing GPS=(null)
+May 11 11:36:38 sigoslab216 gpsd[18134]: gpsd: [gpsd.c:1048] we may need 
+to force the GPS open
+May 11 11:36:38 sigoslab216 gpsd[18134]: gpsd: opening GPS data source 
+at '(null)'
+May 11 11:36:38 sigoslab216 gpsd[18134]: gpsd: device open failed: Bad 
+address
+May 11 11:36:38 sigoslab216 gpsd[18134]: gpsd: EMERGENCY EJECT by ras
+------------------------&gt;&lt;------------------------------------------
+
+
+Diffs:
+-------------------------------------&gt;&lt;-------------------------------------------
+sigoslx163:/usr/local/src # diff gpsd-2.23/gpsd.c gpsd-2.23-motified/gpsd.c
+315a316
+ &gt;   gpsd_report(1, &quot;[%s:%d] open and initialize a new channel block\n&quot;, 
+__FILE__, __LINE__);
+360a362
+ &gt;   gpsd_report(1, &quot;[%s:%d] and open that device\n&quot;, __FILE__, __LINE__);
+1045a1048
+ &gt;   gpsd_report(1, &quot;[%s:%d] we may need to force the GPS open\n&quot;, 
+__FILE__, __LINE__);
+
+
+sigoslx163:/usr/local/src # diff gpsd-2.23/serial.c 
+gpsd-2.23-motified/serial.c
+91a92,93
+ &gt;       gpsd_report(1, &quot;EMERGENCY EJECT by ras\n&quot;);
+ &gt; exit(5);
+------------------------&gt;&lt;--------------------------------------------------------
+
+
+
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="000617.html">[Gpsd-users] opening GPS data source at '(null)'
+</A></li>
+	<LI>Next message: <A HREF="000619.html">[Gpsd-users] how does gpsd handle RTCM?
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#618">[ date ]</a>
+              <a href="thread.html#618">[ thread ]</a>
+              <a href="subject.html#618">[ subject ]</a>
+              <a href="author.html#618">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

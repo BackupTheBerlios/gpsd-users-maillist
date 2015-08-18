@@ -1,0 +1,91 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] Problem with PPS on FreeBSD
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2009-October/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Problem%20with%20PPS%20on%20FreeBSD&In-Reply-To=%3C4ADFFE4A.2000606%40liberation.richw.org%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="004012.html">
+   <LINK REL="Next"  HREF="004019.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] Problem with PPS on FreeBSD</H1>
+    <B>Rich Wales</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Problem%20with%20PPS%20on%20FreeBSD&In-Reply-To=%3C4ADFFE4A.2000606%40liberation.richw.org%3E"
+       TITLE="[Gpsd-users] Problem with PPS on FreeBSD">richw at richw.org
+       </A><BR>
+    <I>Thu Oct 22 08:40:10 CEST 2009</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="004012.html">[Gpsd-users] Unplugging USB gps receivers - gpsd behaviour.
+</A></li>
+        <LI>Next message: <A HREF="004019.html">[Gpsd-users] -j option in gpxlogger
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#4016">[ date ]</a>
+              <a href="thread.html#4016">[ thread ]</a>
+              <a href="subject.html#4016">[ subject ]</a>
+              <a href="author.html#4016">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>I've started experimenting with gpsd (2.39) on a FreeBSD 7.2-RELEASE
+system, using a custom kernel (built with the PPS_SYNC option) and a
+Garmin GPS 18x LVC (with the PPS signal wired to the carrier pin).
+
+Gpsd can read the NMEA sentences from the GPS just fine, but I'm not
+seeing the PPS data at all.  I've tried running gpsd with &quot;-D6&quot;, but
+there is no mention of any PPS events in the syslog output.  And I'm
+also using ntpd (interfacing to gpsd via shared memory), and ntpd
+sees the NMEA-based time fine, but it's not seeing any PPS timestamps.
+
+I also tried this same setup on Linux 2.6 (Ubuntu Karmic beta), and
+gpsd was able to see the PPS data just fine under Linux, so I'm
+confident that I have the GPS properly wired and configured to send
+the PPS signal.  But I want to handle PPS in the kernel (for better
+accuracy and stability), and I'm feeling more comfortable building a
+custom FreeBSD kernel than a custom Linux kernel, so I want to get
+this working in FreeBSD if at all possible.
+
+My ultimate goal is to build an NTP time source.  I tried having
+ntpd talk directly to the GPS (including PPS) via its own builtin
+driver, but I was having stability problems (possibly due to the
+same issue that is preventing gpsd from seeing the PPS signal?),
+so I decided to try gpsd and see if it would interface any better
+with the GPS.
+
+Suggestions, anyone?
+
+Rich Wales
+Palo Alto, California, USA
+<A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">richw at richw.org</A>
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="004012.html">[Gpsd-users] Unplugging USB gps receivers - gpsd behaviour.
+</A></li>
+	<LI>Next message: <A HREF="004019.html">[Gpsd-users] -j option in gpxlogger
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#4016">[ date ]</a>
+              <a href="thread.html#4016">[ thread ]</a>
+              <a href="subject.html#4016">[ subject ]</a>
+              <a href="author.html#4016">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

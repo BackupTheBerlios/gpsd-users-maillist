@@ -1,0 +1,102 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] Thinking about a new unit
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2005-December/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Thinking%20about%20a%20new%20unit&In-Reply-To=%3C20051222182944.GA15030%40thyrsus.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="001185.html">
+   <LINK REL="Next"  HREF="001187.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] Thinking about a new unit</H1>
+    <B>Eric S. Raymond</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Thinking%20about%20a%20new%20unit&In-Reply-To=%3C20051222182944.GA15030%40thyrsus.com%3E"
+       TITLE="[Gpsd-users] Thinking about a new unit">esr at thyrsus.com
+       </A><BR>
+    <I>Thu Dec 22 19:29:44 CET 2005</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="001185.html">[Gpsd-users] python gpsd module
+</A></li>
+        <LI>Next message: <A HREF="001187.html">[Gpsd-users] Problems getting started with gpsd
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1186">[ date ]</a>
+              <a href="thread.html#1186">[ thread ]</a>
+              <a href="subject.html#1186">[ subject ]</a>
+              <a href="author.html#1186">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Richard Finegold &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">goldfndr at gmail.com</A>&gt;:
+&gt;<i> If it's anything like my Holux GR236 (otherwise known as GPSlim236),
+</I>&gt;<i> there's an issue with keeping a fix.
+</I>&gt;<i> 
+</I>&gt;<i> gps_merge_fix(): depends on MODE_SET, lives in gpsutils.c, called by gpsd_poll()
+</I>&gt;<i> gps_clear_fix(): sets mode = MODE_NOT_SEEN
+</I>&gt;<i> 
+</I>&gt;<i> What seems to be happening: gpsd_poll runs gps_clear_fix (at
+</I>&gt;<i> libgpsd_core.c line 569), which clears gpsdata.fix, but it doesn't
+</I>&gt;<i> clear gpsdata.newdata. So gps_merge_fix only merges once, and cgps
+</I>&gt;<i> only checks gpsdata.fix. Of the various calls in nmea_parse.c, the
+</I>&gt;<i> only one that actually sets gpsdata.fix.mode is processGPGSA, due to
+</I>&gt;<i> it having mask = MODE_SET every time. Each other call in nmea_parse.c
+</I>&gt;<i> compares against gpsdata.newdata.fix, but gpsdata.newdata doesn't get
+</I>&gt;<i> merged, gpsdata.fix does, but gpsdata.fix isn't updated,
+</I>&gt;<i> gpsdata.newdata is, so all those compares are against data that
+</I>&gt;<i> doesn't get replicated from gpsdata.newdata to gpsdata.fix and are
+</I>&gt;<i> therefore moot.
+</I>&gt;<i> 
+</I>&gt;<i> Looking at the non-NMEA code, most of it is done with setting values
+</I>&gt;<i> regardless of previous, whereas the NMEA code mostly sets values only
+</I>&gt;<i> if previous was different.
+</I>&gt;<i> 
+</I>&gt;<i> Example of sentence ordering and mode values:
+</I>&gt;<i> GPGSA then GPGSV: newdata=3, fix=3 (the only one that sets MODE_SET)
+</I>&gt;<i> GPGSV then GPRMC: newdata=3, fix=3
+</I>&gt;<i> GPRMC then GPGGA: newdata=3, fix=0 (GPVTG occurred but was ignored)
+</I>&gt;<i> GPGGA then GPRMC: newdata=3, fix=0
+</I>&gt;<i> GPGGA then GPGSA: newdata=3, fix=0
+</I>&gt;<i> 
+</I>&gt;<i> Tested on Cygwin (yes!) and Kanotix Bug Hunter X (as of 3.18).
+</I>&gt;<i> Commenting out line 569 of libgpsd_core.c solves the problem for me
+</I>&gt;<i> (accurately keeps lock, accurately tells when lock is lost). More
+</I>&gt;<i> detail available upon request.
+</I>
+You've put your finger on a hard problem.  The problem is that with NMEA 
+we can't know, in general, when to clear the old data, because we can't
+detect start-of-cycle reliably.  So updating the data every time is about
+the only option we have.
+-- 
+		&lt;a href=&quot;<A HREF="http://www.catb.org/~esr/">http://www.catb.org/~esr/</A>&quot;&gt;Eric S. Raymond&lt;/a&gt;
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="001185.html">[Gpsd-users] python gpsd module
+</A></li>
+	<LI>Next message: <A HREF="001187.html">[Gpsd-users] Problems getting started with gpsd
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1186">[ date ]</a>
+              <a href="thread.html#1186">[ thread ]</a>
+              <a href="subject.html#1186">[ subject ]</a>
+              <a href="author.html#1186">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

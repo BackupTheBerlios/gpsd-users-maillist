@@ -1,0 +1,128 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] Synchronization with a gps
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2011-February/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Synchronization%20with%20a%20gps&In-Reply-To=%3CAANLkTi%3DxB1_REHKjCZ3KAD8E5TF8nseE-tK%2Bnyh2w919%40mail.gmail.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="005063.html">
+   <LINK REL="Next"  HREF="005050.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] Synchronization with a gps</H1>
+    <B>Damien R</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Synchronization%20with%20a%20gps&In-Reply-To=%3CAANLkTi%3DxB1_REHKjCZ3KAD8E5TF8nseE-tK%2Bnyh2w919%40mail.gmail.com%3E"
+       TITLE="[Gpsd-users] Synchronization with a gps">damienrg+list at gmail.com
+       </A><BR>
+    <I>Fri Feb 25 10:50:15 CET 2011</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="005063.html">[Gpsd-users] Synchronization with a gps
+</A></li>
+        <LI>Next message: <A HREF="005050.html">[Gpsd-users] Synchronization with a gps
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#5064">[ date ]</a>
+              <a href="thread.html#5064">[ thread ]</a>
+              <a href="subject.html#5064">[ subject ]</a>
+              <a href="author.html#5064">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>On 24 February 2011 19:29, Gary E. Miller &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">gem at rellim.com</A>&gt; wrote:
+
+&gt;<i> -----BEGIN PGP SIGNED MESSAGE-----
+</I>&gt;<i> Hash: SHA1
+</I>&gt;<i>
+</I>&gt;<i> Yo Damien!
+</I>&gt;<i>
+</I>&gt;<i> On Thu, 24 Feb 2011, Damien R wrote:
+</I>&gt;<i>
+</I>&gt;<i> &gt; So, to have the same time on both computer, I think I should sync each
+</I>&gt;<i> &gt; computer clock with a gps clock.
+</I>&gt;<i> &gt; But I do not know if it this approach will work. So my first question:
+</I>&gt;<i> &gt; &gt; Is it possible to use ntp and gpsd for the described purpose ?
+</I>&gt;<i>
+</I>&gt;<i> ntp stands for Network Time Protocol.  Since you have no net, you have
+</I>&gt;<i> nothing to run ntp on!
+</I>&gt;<i>
+</I>&gt;<i> [...]
+</I>&gt;<i>
+</I>&gt;<i> Sort of. ntp (the protocol) will do you no good since you have no net.
+</I>&gt;<i>
+</I>
+I agree, thanks for clarification.
+
+But you can get good time from your GPS, and yes you can use ntpd (the
+&gt;<i> program, not the protocol) or chronyd to take the GPS time and apply it
+</I>&gt;<i> to your local clock.
+</I>&gt;<i>
+</I>
+Good. I will switch to chronyd because, as you mentioned, it takes care of
+intermittent access of time reference.
+
+ &gt; And the second question was not about a ntp program but a more general
+&gt;<i> &gt; question and maybe it is out of the scope of that list:
+</I>&gt;<i> &gt; Are there better alternatives than using gps to synchronize two or more
+</I>&gt;<i> &gt; computers ?
+</I>&gt;<i>
+</I>&gt;<i> Got an atomic clock handy?  They can be had 'cheaply'.
+</I>&gt;<i>
+</I>
+No, I do not have one and I could not get one.
+
+ &gt; What is the best approach to have the same time (with microseconds
+&gt;<i> &gt; resolution) on two or more computers (with no internet access, no
+</I>&gt;<i> connection
+</I>&gt;<i> &gt; between them) ?
+</I>&gt;<i>
+</I>&gt;<i> Resolution is not the issue, you can easily get nSec resolution.
+</I>&gt;<i> Stability and accuracy are the issues.
+</I>
+
+Yes, exactly. I badly expressed myself.
+
+There may be no 'best' solution.  Depending on your hardware it will be
+&gt;<i> easy to get two hosts to agree within 100uSec.  With good hardware and
+</I>&gt;<i> careful tuning 10uSec is possible.  Only rarely do people report success
+</I>&gt;<i> to 1uSec, and I doubt most of those reports.
+</I>&gt;<i>
+</I>
+Ok, thanks for having given these numbers. I though I could get an accuracy
+of 1 uSec with an incertitude of +/-5 uSec or so.
+
+Anyway, thanks for having taken time to answers my questions.
+
+
+Best regards,
+Damien R.
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="005063.html">[Gpsd-users] Synchronization with a gps
+</A></li>
+	<LI>Next message: <A HREF="005050.html">[Gpsd-users] Synchronization with a gps
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#5064">[ date ]</a>
+              <a href="thread.html#5064">[ thread ]</a>
+              <a href="subject.html#5064">[ subject ]</a>
+              <a href="author.html#5064">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

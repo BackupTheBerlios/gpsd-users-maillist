@@ -1,0 +1,168 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] semi-success report with Techway TH-011
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2005-March/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20semi-success%20report%20with%20Techway%20TH-011&In-Reply-To=%3C423A1C40.5030105%40free.fr%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="000390.html">
+   <LINK REL="Next"  HREF="000394.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] semi-success report with Techway TH-011</H1>
+    <B>Jean-Christophe Duberga</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20semi-success%20report%20with%20Techway%20TH-011&In-Reply-To=%3C423A1C40.5030105%40free.fr%3E"
+       TITLE="[Gpsd-users] semi-success report with Techway TH-011">jeanchristophe.duber at free.fr
+       </A><BR>
+    <I>Fri Mar 18 01:09:36 CET 2005</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="000390.html">[Gpsd-users] Re: [Gpsd-dev] I think I may just have won the dumbass award
+</A></li>
+        <LI>Next message: <A HREF="000394.html">[Gpsd-users] gpsfake is too old to work well together with gpsd2.16
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#392">[ date ]</a>
+              <a href="thread.html#392">[ thread ]</a>
+              <a href="subject.html#392">[ subject ]</a>
+              <a href="author.html#392">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hello all,
+
+First, thanks a lot for the effort of making gpsd, very usefull project, 
+clean design...
+
+
+Here is my report of using gpsd with the Techway TH-011 GPS device:
+
+1. The GPS model name
+
+Techway TH-011
+
+
+2. Whether or not it works
+
+Not perfectly
+
+gpsd manage to open the device and read MNEA sentences
+but never get any fix ( although the demo program get fixes in the same 
+conditions)
+
+Here is the log from gpsd :
+<A HREF="http://jeanchristophe.duber.free.fr/GPS/bug_report_gpsd-2.17_with_techway_th011.log">http://jeanchristophe.duber.free.fr/GPS/bug_report_gpsd-2.17_with_techway_th011.log</A>
+
+Here is the log of what send gpsd after the &quot;r&quot; query :
+<A HREF="http://jeanchristophe.duber.free.fr/GPS/gpsd-2.17_with_techway_th011.log">http://jeanchristophe.duber.free.fr/GPS/gpsd-2.17_with_techway_th011.log</A>
+
+Here is the log from the demo program:
+<A HREF="http://jeanchristophe.duber.free.fr/GPS/G_Port2.log">http://jeanchristophe.duber.free.fr/GPS/G_Port2.log</A>
+
+
+
+3. If possible, an URL to a technical reference on it
+
+<A HREF="http://www.techwayinc.com.tw/support.htm#2">http://www.techwayinc.com.tw/support.htm#2</A>
+
+
+4. The GPS and (if applicable) USB-to-serial chip it uses. (Look at the 
+output of lsusb(1), it may identify the USB-to-serial chip. If it gives 
+a vendor and product ID, send us those numbers.)
+
+from the lsusb command
+
+&gt;<i> [<A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">jeanchri at localhost</A> jeanchri]$ /usr/sbin/lsusb
+</I>&gt;<i> Bus 001 Device 002: ID 067b:2303 Prolific Technology, Inc. PL2303 
+</I>&gt;<i> Serial Port
+</I>
+from /var/log/dmesg
+
+&gt;<i> usb 1-1: new full speed USB device using address 2
+</I>&gt;<i> drivers/usb/serial/usb-serial.c: USB Serial support registered for Generic
+</I>&gt;<i> usbcore: registered new driver usbserial_generic
+</I>&gt;<i> usbcore: registered new driver usbserial
+</I>&gt;<i> drivers/usb/serial/usb-serial.c: USB Serial Driver core v2.0
+</I>&gt;<i> drivers/usb/serial/usb-serial.c: USB Serial support registered for PL-2303
+</I>&gt;<i> pl2303 1-1:1.0: PL-2303 converter detected
+</I>&gt;<i> usb 1-1: PL-2303 converter now attached to ttyUSB0
+</I>&gt;<i> usbcore: registered new driver pl2303
+</I>&gt;<i> drivers/usb/serial/pl2303.c: Prolific PL2303 USB to serial adaptor 
+</I>&gt;<i> driver v0.11
+</I>&gt;<i> usb 1-3: new full speed USB device using address 3
+</I>
+
+5. The interface type (RS232, USB, CF)
+
+USB ( with an external PS2(RS232) to USB converter )
+
+
+6. The vendor
+
+Techway, <A HREF="http://www.techwayinc.com.tw/">http://www.techwayinc.com.tw/</A>
+
+
+7. Version of gpsd you tested with
+
+2.17
+
+
+8. NMEA version it emits, or '?' if the documentation doesn't say
+
+?
+
+
+9. A list of NMEA sentences it emits
+
+
+$GPGSA
+$GPGSV
+$GPRMC
+$GPGGA
+
+Notes:
+* The specification says: GGA, GLL, GSV, GSA, RMC, VTG
+* It emits the two sentances at the begining: $PFEC and $PSRF105
+
+
+10. Notes on the device
+
+cheap GPS device ( between 50 and 60 &#8364; )
+claimed to be Waterproof
+Base Band TECHWAY SOC, AB0201
+
+
+-- 
+Jean-Christophe Duberga - <A HREF="http://jeanchristophe.duber.free.fr">http://jeanchristophe.duber.free.fr</A>
+webmaster du site MNEA  - <A HREF="http://www.mnea.fr">http://www.mnea.fr</A>
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="000390.html">[Gpsd-users] Re: [Gpsd-dev] I think I may just have won the dumbass award
+</A></li>
+	<LI>Next message: <A HREF="000394.html">[Gpsd-users] gpsfake is too old to work well together with gpsd2.16
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#392">[ date ]</a>
+              <a href="thread.html#392">[ thread ]</a>
+              <a href="subject.html#392">[ subject ]</a>
+              <a href="author.html#392">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

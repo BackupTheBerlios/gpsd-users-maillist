@@ -1,0 +1,89 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] gps.py EarthDistance method problem
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2005-August/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20gps.py%20EarthDistance%20method%20problem&In-Reply-To=%3CPine.GSO.4.58.0508091551140.21831%40myrtle.ukc.ac.uk%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="000982.html">
+   <LINK REL="Next"  HREF="000980.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] gps.py EarthDistance method problem</H1>
+    <B>Philipp H. Mohr</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20gps.py%20EarthDistance%20method%20problem&In-Reply-To=%3CPine.GSO.4.58.0508091551140.21831%40myrtle.ukc.ac.uk%3E"
+       TITLE="[Gpsd-users] gps.py EarthDistance method problem">phm4 at kent.ac.uk
+       </A><BR>
+    <I>Tue Aug  9 16:55:04 CEST 2005</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="000982.html">[Gpsd-users] Odd behaviour of GPS on MacOS X
+</A></li>
+        <LI>Next message: <A HREF="000980.html">[Gpsd-users] gps.py EarthDistance method problem
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#979">[ date ]</a>
+              <a href="thread.html#979">[ thread ]</a>
+              <a href="subject.html#979">[ subject ]</a>
+              <a href="author.html#979">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi,
+
+I played with the python interface to gpsd, inparticular with
+def EarthDistance((lat1, lon1), (lat2, lon2)):
+and I would like to point out the following (which is at least a problem for me):
+
+taken from: <A HREF="http://mathforum.org/library/drmath/view/51879.html">http://mathforum.org/library/drmath/view/51879.html</A>
+
+This site points out that the cosine formula does not give accurate
+results for small distances, and presents a better formula, the
+Haversine Formula.
+
+
+My suggestion is to add a method that might look's a bit like to
+following:
+
+
+def distanceShort(self,point1, point2):
+        if len(point1) != len(point2):
+            raise ValueError(&quot;Points have different number of dimensions&quot;)
+        dlat = point2[0] - point1[0]
+        dlon = point2[1] - point1[1]
+        a = pow((sin(dlat/2)),2) + cos(point1[0]) * cos(point2[0]) * pow((sin(dlon/2)),2)
+        c = 2 * atan2(sqrt(a), sqrt(1-a))
+        # distance in meter
+        d = 6367000 * c
+        return d
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="000982.html">[Gpsd-users] Odd behaviour of GPS on MacOS X
+</A></li>
+	<LI>Next message: <A HREF="000980.html">[Gpsd-users] gps.py EarthDistance method problem
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#979">[ date ]</a>
+              <a href="thread.html#979">[ thread ]</a>
+              <a href="subject.html#979">[ subject ]</a>
+              <a href="author.html#979">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

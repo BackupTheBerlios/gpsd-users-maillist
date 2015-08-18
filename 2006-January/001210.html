@@ -1,0 +1,107 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] drivers for bu303 usb 1.1
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2006-January/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20drivers%20for%20bu303%20usb%201.1&In-Reply-To=%3CPine.LNX.4.64.0601151455110.18857%40catbert.rellim.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="001209.html">
+   <LINK REL="Next"  HREF="001211.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] drivers for bu303 usb 1.1</H1>
+    <B>Gary E. Miller</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20drivers%20for%20bu303%20usb%201.1&In-Reply-To=%3CPine.LNX.4.64.0601151455110.18857%40catbert.rellim.com%3E"
+       TITLE="[Gpsd-users] drivers for bu303 usb 1.1">gem at rellim.com
+       </A><BR>
+    <I>Mon Jan 16 00:06:49 CET 2006</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="001209.html">[Gpsd-users] drivers for bu303 usb 1.1
+</A></li>
+        <LI>Next message: <A HREF="001211.html">[Gpsd-users] Odd prob with my Holux gm-210
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1210">[ date ]</a>
+              <a href="thread.html#1210">[ thread ]</a>
+              <a href="subject.html#1210">[ subject ]</a>
+              <a href="author.html#1210">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>-----BEGIN PGP SIGNED MESSAGE-----
+Hash: SHA1
+
+Yo Sowmya!
+
+On Sun, 15 Jan 2006, sowmya menon wrote:
+
+&gt;<i>   I am using bu-303 usb 1.1 gps receiver.
+</I>&gt;<i>   Can someone please send me the linux drivers?
+</I>
+I do not have one of those units, but in the interst of a quick reply to
+your question I do not believe any driver is needed for that unit.  Linux
+just sees it as a new serial port.
+
+Do this to se that Linux sees your unit:
+
+# cat /proc/bus/usb/devices
+
+Run &quot;dmesg&quot; just after you conect the device and the output should tell
+you if the GPS was detected and what serial device it was assiged to.
+
+You might see a line similar to this:
+	usb 2-1: Garmin GPS usb/tty converter now attached to ttyUSB0
+
+That tells you your GPS is a /dve/ttyUSB0.  Then just try this on the
+command line:
+	gpsd -nN -D 5 /dev/ttyUSB0
+
+Watch the debugging output and see if your GPS is detected.  Be sure to use
+a recen gpsd build, like 2.30.  THings should jsut work for you.
+
+
+RGDS
+GARY
+- ---------------------------------------------------------------------------
+Gary E. Miller Rellim 20340 Empire Blvd, Suite E-3, Bend, OR 97701
+	<A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">gem at rellim.com</A>  Tel:+1(541)382-8588 Fax: +1(541)382-8676
+
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v1.4.1 (GNU/Linux)
+
+iD8DBQFDytWQ8KZibdeR3qURAnqNAKDSn0ftsCtg+6QIc3kOah6idBeu1gCg1BhJ
+FaR6tCD821bXziX8a6DKyXk=
+=kH0T
+-----END PGP SIGNATURE-----
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="001209.html">[Gpsd-users] drivers for bu303 usb 1.1
+</A></li>
+	<LI>Next message: <A HREF="001211.html">[Gpsd-users] Odd prob with my Holux gm-210
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1210">[ date ]</a>
+              <a href="thread.html#1210">[ thread ]</a>
+              <a href="subject.html#1210">[ subject ]</a>
+              <a href="author.html#1210">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

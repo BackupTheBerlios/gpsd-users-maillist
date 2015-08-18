@@ -1,0 +1,82 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] unable to receive gps data
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2010-November/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20unable%20to%20receive%20gps%20data&In-Reply-To=%3C437417.93132.qm%40web39805.mail.mud.yahoo.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="004727.html">
+   <LINK REL="Next"  HREF="004730.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] unable to receive gps data</H1>
+    <B>Byron .</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20unable%20to%20receive%20gps%20data&In-Reply-To=%3C437417.93132.qm%40web39805.mail.mud.yahoo.com%3E"
+       TITLE="[Gpsd-users] unable to receive gps data">byroncx3200 at yahoo.com
+       </A><BR>
+    <I>Sun Nov  7 03:32:36 CET 2010</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="004727.html">[Gpsd-users] Bugs in Trimble Driver
+</A></li>
+        <LI>Next message: <A HREF="004730.html">[Gpsd-users] support for u-blox EVK-5H-0
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#4729">[ date ]</a>
+              <a href="thread.html#4729">[ thread ]</a>
+              <a href="subject.html#4729">[ subject ]</a>
+              <a href="author.html#4729">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hello all I am running or trying to gpsd ver 2.94 on a Mac OS X v10.5.8 the receiver is a Qstarz BT-Q818XT which according to manf has a &quot;MTK II&quot; GPS chip. It's connected over bluetooth &amp; outputs at 10hz
+I am just trying to use gpspipe to record the gps NMEA strings to a file which I'll later read with matlab. The use is to reconstruct aircraft flight path.&#160;
+After some fiddling around I did get it to work and recorded a whole flight (~1.5 hr). Now after a month I try it again and it doesn't log anything. I haven't changed any hardware or software...and I can't figure out what went wrong?! I did try removing and reinstalling gpsd using macports, which didn't change anything. Any help would be appreciated
+Thanks,
+Byron
+With debug turned on I get this:
+byrons-macbook:~ byron$ gpsd -b -n -N -D 10 /dev/tty.QstarzGPS-SPPslave-1gpsd: launching (Version 2.94)gpsd: opening IPv4 socketgpsd: passivesock_af() -&gt; 3gpsd: opening IPv6 socketgpsd: passivesock_af() -&gt; 4gpsd: listening on port gpsdgpsd: NTPD shmat(65536,0,0) succeeded, segment 2gpsd: NTPD shmat(65537,0,0) succeeded, segment 3gpsd: running with effective group ID 20gpsd: running with effective user ID 501gpsd: opening read-only GPS data source type 0 and at '/dev/tty.QstarzGPS-SPPslave-1'gpsd: speed 9600, 8N1gpsd: open(/dev/tty.QstarzGPS-SPPslave-1) -&gt; 5 in gpsd_open()gpsd: Probing TSIPgpsd: speed 9600, 8O1gpsd: speed 9600, 8N1gpsd: no probe matched...gpsd: gpsd_activate(): opened GPS (fd 5)gpsd: select waitsgpsd: select() {3 4 5} -&gt; {} at 1289096591.298800gpsd: select waitsgpsd: select() {3 4 5} -&gt; {} at 1289096592.299129gpsd: select waitsgpsd: select() {3 4 5} -&gt; {} at 1289096593.299390gpsd: select waitsgpsd: select() {3 4 5} -&gt; {} at
+ 1289096594.299624gpsd: select waitsgpsd: select() {3 4 5} -&gt; {} at 1289096595.299749gpsd: select waitsgpsd: select() {3 4 5} -&gt; {} at 1289096596.299966gpsd: select waitsgpsd: select() {3 4 5} -&gt; {} at 1289096597.300188gpsd: select waitsgpsd: select() {3 4 5} -&gt; {} at 1289096598.300423gpsd: select waitsgpsd: select() {3 4 5} -&gt; {} at 1289096599.300658gpsd: select waitsgpsd: select() {3 4 5} -&gt; {} at 1289096600.300925gpsd: select waitsgpsd: select() {3 4 5} -&gt; {} at 1289096601.301303...continues forever
+Then in another terminal I type&#160;
+byrons-macbook:~ byron$ gpspipe -o test -n 100 -r /dev/tty.QstarzGPS-SPPslave-1
+gpsd output switches to&#160;
+gpsd: checking client(0)gpsd: &lt;= client(0): ?WATCH={&quot;enable&quot;:true,&quot;nmea&quot;:true,&quot;device&quot;:/dev/tty.QstarzGPS-SPPslave-1};json: json_read_object() sees '{&quot;enable&quot;:true,&quot;nmea&quot;:true,&quot;device&quot;:/dev/tty.QstarzGPS-SPPslave-1};'json: Target address for class (offset 0) is 0x0json: Target address for enable (offset 0) is 0x17eacjson: Target address for scaled (offset 0) is 0x17eb4json: Target address for timing (offset 0) is 0x17eb5json: Target address for device (offset 0) is 0x17eb6json: JSON parse of '{&quot;enable&quot;:true,&quot;nmea&quot;:true,&quot;device&quot;:/dev/tty.QstarzGPS-SPPslave-1};' begins.json: State init &#160; &#160; &#160; &#160; &#160;, looking at '{' (0xbfffd921)json: State await_attr &#160; &#160;, looking at '&quot;' (0xbfffd922)json: State in_attr &#160; &#160; &#160; , looking at 'e' (0xbfffd923)json: State in_attr &#160; &#160; &#160; , looking at 'n' (0xbfffd924)json: State in_attr &#160; &#160; &#160; , looking at 'a' (0xbfffd925)json: State in_attr &#160; &#160; &#160; , looking at 'b' (0xbfffd926)json: State in_attr &#160; &#160; &#160; , looking at 'l'
+ (0xbfffd927)json: State in_attr &#160; &#160; &#160; , looking at 'e' (0xbfffd928)json: State in_attr &#160; &#160; &#160; , looking at '&quot;' (0xbfffd929)json: Collected attribute name enablejson: State await_value &#160; , looking at ':' (0xbfffd92a)json: State await_value &#160; , looking at 't' (0xbfffd92b)json: State in_val_token &#160;, looking at 'r' (0xbfffd92c)json: State in_val_token &#160;, looking at 'u' (0xbfffd92d)json: State in_val_token &#160;, looking at 'e' (0xbfffd92e)json: State in_val_token &#160;, looking at ',' (0xbfffd92f)json: Collected token value true.json: State post_val &#160; &#160; &#160;, looking at ',' (0xbfffd92f)json: Target address for enable (offset 0) is 0x17eacjson: State await_attr &#160; &#160;, looking at '&quot;' (0xbfffd930)json: State in_attr &#160; &#160; &#160; , looking at 'n' (0xbfffd931)json: State in_attr &#160; &#160; &#160; , looking at 'm' (0xbfffd932)json: State in_attr &#160; &#160; &#160; , looking at 'e' (0xbfffd933)json: State in_attr &#160; &#160; &#160; , looking at 'a' (0xbfffd934)json: State in_attr &#160; &#160; &#160; ,
+ looking at '&quot;' (0xbfffd935)json: Collected attribute name nmeajson: State await_value &#160; , looking at ':' (0xbfffd936)json: State await_value &#160; , looking at 't' (0xbfffd937)json: State in_val_token &#160;, looking at 'r' (0xbfffd938)json: State in_val_token &#160;, looking at 'u' (0xbfffd939)json: State in_val_token &#160;, looking at 'e' (0xbfffd93a)json: State in_val_token &#160;, looking at ',' (0xbfffd93b)json: Collected token value true.json: State post_val &#160; &#160; &#160;, looking at ',' (0xbfffd93b)json: Target address for nmea (offset 0) is 0x17eaejson: State await_attr &#160; &#160;, looking at '&quot;' (0xbfffd93c)json: State in_attr &#160; &#160; &#160; , looking at 'd' (0xbfffd93d)json: State in_attr &#160; &#160; &#160; , looking at 'e' (0xbfffd93e)json: State in_attr &#160; &#160; &#160; , looking at 'v' (0xbfffd93f)json: State in_attr &#160; &#160; &#160; , looking at 'i' (0xbfffd940)json: State in_attr &#160; &#160; &#160; , looking at 'c' (0xbfffd941)json: State in_attr &#160; &#160; &#160; , looking at 'e' (0xbfffd942)json: State in_attr &#160;
+ &#160; &#160; , looking at '&quot;' (0xbfffd943)json: Collected attribute name devicejson: State await_value &#160; , looking at ':' (0xbfffd944)json: State await_value &#160; , looking at '/' (0xbfffd945)json: State in_val_token &#160;, looking at 'd' (0xbfffd946)json: State in_val_token &#160;, looking at 'e' (0xbfffd947)json: State in_val_token &#160;, looking at 'v' (0xbfffd948)json: State in_val_token &#160;, looking at '/' (0xbfffd949)json: State in_val_token &#160;, looking at 't' (0xbfffd94a)json: State in_val_token &#160;, looking at 't' (0xbfffd94b)json: State in_val_token &#160;, looking at 'y' (0xbfffd94c)json: State in_val_token &#160;, looking at '.' (0xbfffd94d)json: State in_val_token &#160;, looking at 'Q' (0xbfffd94e)json: State in_val_token &#160;, looking at 's' (0xbfffd94f)json: State in_val_token &#160;, looking at 't' (0xbfffd950)json: State in_val_token &#160;, looking at 'a' (0xbfffd951)json: State in_val_token &#160;, looking at 'r' (0xbfffd952)json: State in_val_token &#160;, looking at 'z'
+ (0xbfffd953)json: State in_val_token &#160;, looking at 'G' (0xbfffd954)json: State in_val_token &#160;, looking at 'P' (0xbfffd955)json: State in_val_token &#160;, looking at 'S' (0xbfffd956)json: State in_val_token &#160;, looking at '-' (0xbfffd957)json: State in_val_token &#160;, looking at 'S' (0xbfffd958)json: State in_val_token &#160;, looking at 'P' (0xbfffd959)json: State in_val_token &#160;, looking at 'P' (0xbfffd95a)json: State in_val_token &#160;, looking at 's' (0xbfffd95b)json: State in_val_token &#160;, looking at 'l' (0xbfffd95c)json: State in_val_token &#160;, looking at 'a' (0xbfffd95d)json: State in_val_token &#160;, looking at 'v' (0xbfffd95e)json: State in_val_token &#160;, looking at 'e' (0xbfffd95f)json: State in_val_token &#160;, looking at '-' (0xbfffd960)json: State in_val_token &#160;, looking at '1' (0xbfffd961)json: State in_val_token &#160;, looking at '}' (0xbfffd962)json: Collected token value /dev/tty.QstarzGPS-SPPslave-1.json: State post_val &#160; &#160; &#160;, looking at '}'
+ (0xbfffd962)json: Didn't see quoted value when expecting string.gpsd: ERROR response: {&quot;class&quot;:&quot;ERROR&quot;,&quot;message&quot;:&quot;Invalid WATCH: saw quoted value when expecting nonstring&quot;}gpsd: =&gt; client(0): {&quot;class&quot;:&quot;ERROR&quot;,&quot;message&quot;:&quot;Invalid WATCH: saw quoted value when expecting nonstring&quot;}\x0d\x0a{&quot;class&quot;:&quot;DEVICES&quot;,&quot;devices&quot;:[{&quot;class&quot;:&quot;DEVICE&quot;,&quot;path&quot;:&quot;/dev/tty.QstarzGPS-SPPslave-1&quot;,&quot;activated&quot;:1289096590.30,&quot;native&quot;:0,&quot;bps&quot;:9600,&quot;parity&quot;:&quot;N&quot;,&quot;stopbits&quot;:1,&quot;cycle&quot;:1.00}]}\x0d\x0a{&quot;class&quot;:&quot;WATCH&quot;,&quot;enable&quot;:true,&quot;json&quot;:false,&quot;nmea&quot;:true,&quot;raw&quot;:0,&quot;scaled&quot;:false,&quot;timing&quot;:false}
+then back to select waits forevernever
+&#160;
+
+
+      
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="004727.html">[Gpsd-users] Bugs in Trimble Driver
+</A></li>
+	<LI>Next message: <A HREF="004730.html">[Gpsd-users] support for u-blox EVK-5H-0
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#4729">[ date ]</a>
+              <a href="thread.html#4729">[ thread ]</a>
+              <a href="subject.html#4729">[ subject ]</a>
+              <a href="author.html#4729">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

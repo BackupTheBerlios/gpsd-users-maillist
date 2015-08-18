@@ -1,0 +1,136 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] Scripting with GPSD
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2011-April/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Scripting%20with%20GPSD&In-Reply-To=%3C4DA3B417.70907%40seiner.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="005205.html">
+   <LINK REL="Next"  HREF="005207.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] Scripting with GPSD</H1>
+    <B>Yan Seiner</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Scripting%20with%20GPSD&In-Reply-To=%3C4DA3B417.70907%40seiner.com%3E"
+       TITLE="[Gpsd-users] Scripting with GPSD">yan at seiner.com
+       </A><BR>
+    <I>Tue Apr 12 04:08:23 CEST 2011</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="005205.html">[Gpsd-users] Scripting with GPSD
+</A></li>
+        <LI>Next message: <A HREF="005207.html">[Gpsd-users] Scripting with GPSD
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#5206">[ date ]</a>
+              <a href="thread.html#5206">[ thread ]</a>
+              <a href="subject.html#5206">[ subject ]</a>
+              <a href="author.html#5206">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Charles Curley wrote:
+&gt;<i> On Mon, 11 Apr 2011 09:12:35 -0700 (PDT)
+</I>&gt;<i> &quot;Yan Seiner&quot; &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">yan at seiner.com</A>&gt; wrote:
+</I>&gt;<i>
+</I>&gt;<i>   
+</I>&gt;&gt;<i> On Sat, April 9, 2011 9:08 am, Gleb Smirnoff wrote:
+</I>&gt;&gt;<i>     
+</I>&gt;&gt;&gt;<i> On Sat, Apr 09, 2011 at 09:04:44AM -0700, Yan Seiner wrote:
+</I>&gt;&gt;&gt;<i>       
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i>   
+</I>&gt;&gt;<i> Does such a simple client exist?  I would think that having a simple
+</I>&gt;&gt;<i> CLI interface to gpsd would be of great use for general scripting.
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i>     
+</I>&gt;<i>
+</I>&gt;<i> Well, I have one, but it's rusty. I need to bring it up to the current
+</I>&gt;<i> API. In my copious free time. :-)
+</I>&gt;<i>
+</I>&gt;<i> But we've already mentioned gpxlogger. Since that is part of the gpsd
+</I>&gt;<i> package, it may be a better bet.
+</I>&gt;<i>   
+</I>
+Sorry for being such an idiot, but I'm having issues....
+
+gpsmon just dies right away, and gpxlogger sits and does nothing....
+
+<A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">root at OpenWrt</A>:/etc/config# /usr/sbin/gpsd -n -P /var/run/gpsd.pid -S 2947 
+-F /dev/gps -D 255 /dev/ttyUSB0
+gpsd: control socket /dev/gps is fd 3
+gpsd: control socket opened at /dev/gps
+<A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">root at OpenWrt</A>:/etc/config# /tmp/gpxlogger localhost
+&lt;?xml version=&quot;1.0&quot; encoding=&quot;utf-8&quot;?&gt;
+&lt;gpx version=&quot;1.1&quot; creator=&quot;navsys logger&quot;
+        xmlns:xsi=&quot;<A HREF="http://www.w3.org/2001/XMLSchema-instance">http://www.w3.org/2001/XMLSchema-instance</A>&quot;
+        xmlns=&quot;<A HREF="http://www.topografix.com/GPX/1.1">http://www.topografix.com/GPX/1.1</A>&quot;
+        xsi:schemaLocation=&quot;<A HREF="http://www.topografix.com/GPS/1/1">http://www.topografix.com/GPS/1/1</A>
+        <A HREF="http://www.topografix.com/GPX/1/1/gpx.xsd">http://www.topografix.com/GPX/1/1/gpx.xsd</A>&quot;&gt;
+ &lt;metadata&gt;
+  &lt;name&gt;NavSys GPS logger dump&lt;/name&gt;
+  &lt;author&gt;Amaury Jacquot, Chris Kuethe&lt;/author&gt;
+  &lt;copyright&gt;BSD&lt;/copyright&gt;
+ &lt;/metadata&gt;
+netlib_connectsock() returns socket on fd 3
+^C&lt;/gpx&gt;
+<A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">root at OpenWrt</A>:/etc/config#
+
+I waited a good 15 minutes before bailing with the ^C....
+
+I am using a USB puck.  It's recognized and if I cat /dev/ttyUSB0 I get 
+gobs of gibberish.  I used to get NMEA sentences so I'm assuming gpsd 
+2.94 is putting the GPS into some sort of binary mode.
+
+ From reading the source, if I use the localhost arg to gpxlogger it 
+should use socket instead of dbus.  I'm not sure dbus is functional on 
+my embedded platform.
+
+If I run gpsmon without gpsd running, it generates an error message:, 
+but if I run gpsd it runs and dies with a select(2) failed:
+
+<A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">root at OpenWrt</A>:/etc/config# /tmp/gpsmon
+/tmp/gpsmon: connection failure on localhost:2947, error -6 = can't 
+connect to host/port pair.
+<A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">root at OpenWrt</A>:/etc/config# /usr/sbin/gpsd -n -P /var/run/gpsd.pid -S 2947 
+-D 255 /dev/ttyUSB0  
+<A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">root at OpenWrt</A>:/etc/config# /tmp/gpsmon
+select(2) failed
+<A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">root at OpenWrt</A>:/etc/config#
+
+--Yan
+
+-- 
+My car is Japanese. My Vodka is Russian. My pizza is Italian. My kebab is Turkish. My democracy is Greek. My wine is French. My coffee is Brazilian. My language is English. My movies are American. My music is African. My beers are German. My shirt is Indian. My oil is Saudi Arabian. My electronics are Taiwanese. My rifle is Czech. My shoes are Chinese.  My math is Arabic, my writing Latin. And you complain that your neighbor is Mexican?
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="005205.html">[Gpsd-users] Scripting with GPSD
+</A></li>
+	<LI>Next message: <A HREF="005207.html">[Gpsd-users] Scripting with GPSD
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#5206">[ date ]</a>
+              <a href="thread.html#5206">[ thread ]</a>
+              <a href="subject.html#5206">[ subject ]</a>
+              <a href="author.html#5206">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

@@ -1,0 +1,104 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] ntp pps with garmin 18lvc
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2006-January/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20ntp%20pps%20with%20garmin%2018lvc&In-Reply-To=%3C1137797555l.5075l.9l%40oyster.stnhbr.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="001227.html">
+   <LINK REL="Next"  HREF="001235.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] ntp pps with garmin 18lvc</H1>
+    <B>Tim Cwik</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20ntp%20pps%20with%20garmin%2018lvc&In-Reply-To=%3C1137797555l.5075l.9l%40oyster.stnhbr.com%3E"
+       TITLE="[Gpsd-users] ntp pps with garmin 18lvc">tcwik at stnhbr.com
+       </A><BR>
+    <I>Fri Jan 20 23:52:35 CET 2006</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="001227.html">[Gpsd-users] ntp pps with garmin 18lvc
+</A></li>
+        <LI>Next message: <A HREF="001235.html">[Gpsd-users] ntp pps with garmin 18lvc
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1234">[ date ]</a>
+              <a href="thread.html#1234">[ thread ]</a>
+              <a href="subject.html#1234">[ subject ]</a>
+              <a href="author.html#1234">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>On 2006.01.18 17:07, Gary E. Miller wrote:
+&gt;<i> -----BEGIN PGP SIGNED MESSAGE-----
+</I>&gt;<i> Hash: SHA1
+</I>&gt;<i> 
+</I>&gt;<i> Yo Tim!
+</I>&gt;<i> 
+</I>&gt;<i> On Wed, 18 Jan 2006, Tim Cwik wrote:
+</I>&gt;<i> 
+</I>&gt;<i> &gt; The patch does not seem to make a difference.
+</I>&gt;<i> 
+</I>&gt;<i> Too bad, just a shot in the dark on that one.
+</I>&gt;<i> 
+</I>&gt;<i> &gt; Looking closer at my output from
+</I>&gt;<i> &gt; ntpq pstatus for the PPS (GPS1) gives
+</I>&gt;<i> 
+</I>&gt;<i> Well, likely gpsd is not passing it on to ntpd.  What does your ntp.conf
+</I>&gt;<i> file look like?  What does the debug output of gpsd look like when you crank
+</I>&gt;<i> it up to maybe -D 5?  How close do you have the basic GPS/NMEA time locked to
+</I>&gt;<i> ntpd?
+</I>&gt;<i> 
+</I>Hi Gary,
+
+That was the trick! ntpdate was not setting the clock during boot. I stopped  
+ntpd, ran ntpdate, and restarted ntpd. Things are much better:
+
+ntpq&gt; pe
+      remote           refid      st t when poll reach   delay   offset  jitter
+==============================================================================
++SHM(0)          .GPS.            0 l   16   16  377    0.000  -23.673  32.495
+*SHM(1)          .GPS1.           0 l   14   16  377    0.000    0.000   0.003
++time.nist.gov   .ACTS.           1 u   30   64  377   54.695    0.492   0.337
+  whale.stnhbr.co 192.168.1.10     2 u   58 1024  377    0.305    5.328   2.026
+
+Thanks for all your help.
+
+Best regards,
+TIm
+
+-- 
+Tim Cwik
+<A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">tcwik at stnhbr.com</A>                            spamtrap: <A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">tjc123 at stnhbr.com</A>
+Voice: 609-368-2482                         Fax: 609-368-3695
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="001227.html">[Gpsd-users] ntp pps with garmin 18lvc
+</A></li>
+	<LI>Next message: <A HREF="001235.html">[Gpsd-users] ntp pps with garmin 18lvc
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1234">[ date ]</a>
+              <a href="thread.html#1234">[ thread ]</a>
+              <a href="subject.html#1234">[ subject ]</a>
+              <a href="author.html#1234">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

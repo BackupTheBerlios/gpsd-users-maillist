@@ -1,0 +1,141 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] Roadmap, and release goals for 2.36
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2007-December/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Roadmap%2C%20and%20release%20goals%20for%202.36&In-Reply-To=%3C20071211110226.GA23081%40thyrsus.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="002986.html">
+   <LINK REL="Next"  HREF="002988.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] Roadmap, and release goals for 2.36</H1>
+    <B>Eric S. Raymond</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Roadmap%2C%20and%20release%20goals%20for%202.36&In-Reply-To=%3C20071211110226.GA23081%40thyrsus.com%3E"
+       TITLE="[Gpsd-users] Roadmap, and release goals for 2.36">esr at thyrsus.com
+       </A><BR>
+    <I>Tue Dec 11 12:02:26 CET 2007</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="002986.html">[Gpsd-users] Release of 2.35 is imminent
+</A></li>
+        <LI>Next message: <A HREF="002988.html">[Gpsd-users] [Gpsd-dev] Roadmap, and release goals for 2.36
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2987">[ date ]</a>
+              <a href="thread.html#2987">[ thread ]</a>
+              <a href="subject.html#2987">[ subject ]</a>
+              <a href="author.html#2987">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>We made really solid progress in 2.35.  The news that makes me
+happiest is that our regression-test infrastructure is now sound. The
+32-vs-64-bit problems in the tests have been traced to some subtle
+bugs in floating-point handling and fixed.  A longstanding algorithmic
+error that was producing bad altitude-error estimates has been
+rectified.  And the technical problems with the Python test monitor
+code that made Chris unable to use it have been solved.
+
+We've already had our first significant post-2.35 feature; Petr Slansky sent
+me a driver for Garmin Simple Text Protocol which I have merged.
+
+In IRC discussion, Chris Kuethe and I have identified the following
+near- and medium-term goals for gpsd:
+
+Chris (who should correct me if I have any of this wrong):
+
+1. pipe mode -- I think this is Chris's proposal for a revived -T option
+or something similar.
+
+2. new command language -- Implementation of the NG command syntax
+we've been kicking around, including things like the ability to set
+listener address lists.
+
+3. new driver: oncore -- I'm guessing this would be support for the 
+Motorola Oncore GPSes.
+
+4. new driver: ashtech -- Support for the Ashtech chips often used
+in embedded navigation systems.
+
+5. new output format for hi-rez postprocessing -- not certain what this
+is about but it might mesh with our to-to item of tweaking the output
+formats so they can play nice with millimeter-precision GPSes.
+
+6. fix the Trimble support -- something is badly wrong in the TSIP/Trimble
+drivers.  Their regression tests are so unstable that I've taken them
+out of the qualification sequence for release and added a warning to the
+bug list in TODO.  This should be fixed; Chris muttered about doing it
+during an upcoming trip to Mexico.
+
+Eric:
+
+1. Merge in Qt and GTK test clients from Diego Berge and Bill Marr.  (Bill,
+if you're out there, I don't have a pointer to source for your code.)
+
+2. Various small fixes on the Motif client.  I want to frame the message-data
+window properly.  It should do automatic retries at connecting with the server
+after it has registered offline for a while.  I'd like to have a 'View' 
+menu pulldown with checkboxes that can be used to suppress the 
+skyview/message-data/GPS-data frames.
+
+3, After both 1 and 2 are done, we must do a functional and esthetic 
+evaluation and decide whether or not the Motif client is worth keeping.
+(It's a maintenance pain in the ass.)
+
+4. New command language -- I want to write it because I like writing
+such things, but I also think it's good strategy to hold off doing it 
+as long as possible.
+
+5, GPS simulator -- I've written the first proof-of-concept Python code
+for a tool to generate NMEA tracks from course-speed-waypoint descriptions.
+There is a lot more work to be done here.
+
+6. Move us to Mercurial or some other 3G version-control system.  Subversion
+has served us well but the newer ones have big advantages, including 
+disconnected operation and better merge algorithms.
+
+Obviously a lot of these are longer-term goals.  I think I'd like to plan
+for a 2.36 in the relatively short term, maybe as little as three weeks
+to a month out.  We should aim for these things:
+
+* Oncore support, Ashtech support, fixed Trimble drivers.
+
+* As much work as we can get done on the Motif, Qt, and GTK clients
+  while those drivers are being coded and qualified.
+
+I'd add Chris's pipe mode, but it is going to be hard to sell to me now that
+we've solved the technical problems with gpsfake and it can reliably
+do what gpsd -T would do.  I'm sure we'll have a good wrangle about this. :-)
+-- 
+		&lt;a href=&quot;<A HREF="http://www.catb.org/~esr/">http://www.catb.org/~esr/</A>&quot;&gt;Eric S. Raymond&lt;/a&gt;
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="002986.html">[Gpsd-users] Release of 2.35 is imminent
+</A></li>
+	<LI>Next message: <A HREF="002988.html">[Gpsd-users] [Gpsd-dev] Roadmap, and release goals for 2.36
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2987">[ date ]</a>
+              <a href="thread.html#2987">[ thread ]</a>
+              <a href="subject.html#2987">[ subject ]</a>
+              <a href="author.html#2987">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

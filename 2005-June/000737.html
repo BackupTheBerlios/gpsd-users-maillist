@@ -1,0 +1,108 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] cross-compiling make error
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2005-June/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20cross-compiling%20make%20error&In-Reply-To=%3CPine.GSO.4.58.0506091005370.7869%40myrtle.ukc.ac.uk%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="000736.html">
+   <LINK REL="Next"  HREF="000739.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] cross-compiling make error</H1>
+    <B>Philipp H. Mohr</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20cross-compiling%20make%20error&In-Reply-To=%3CPine.GSO.4.58.0506091005370.7869%40myrtle.ukc.ac.uk%3E"
+       TITLE="[Gpsd-users] cross-compiling make error">phm4 at kent.ac.uk
+       </A><BR>
+    <I>Thu Jun  9 11:09:32 CEST 2005</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="000736.html">[Gpsd-users] Send me your GPS logs, please
+</A></li>
+        <LI>Next message: <A HREF="000739.html">[Gpsd-users] cross-compiling make error
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#737">[ date ]</a>
+              <a href="thread.html#737">[ thread ]</a>
+              <a href="subject.html#737">[ subject ]</a>
+              <a href="author.html#737">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hello,
+
+As I have written before, I try to compile the latest gpsd for my Ipaq
+running familiar linux 0.8.2. After a bit of trying I managed to get
+configure run through with the cross-compiler options.
+But make is still giving me errors.
+
+
+For configure I have set the following:
+
+
+      CFLAGS=&quot;-Wa,-mfpu=fpa11 -mcpu=xscale&quot;  CC=&quot;arm-linux-gcc&quot;  ./configure --target=arm-linux --host=i686
+
+
+This gives no errors.
+But make gives me the following:
+
+
+Configure finished, type 'make' to build.
+(529:<A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">root at dhcp2936</A>:/home/phm4/handheld/gpsd-2.25)# make
+make  all-am
+make[1]: Entering directory `/home/phm4/handheld/gpsd-2.25'
+if /bin/sh ./libtool --mode=compile --tag=CC arm-linux-gcc -DHAVE_CONFIG_H
+-I. -I. -I.   -I/usr/X11R6/include  -Wa,-mfpu=fpa11 -mcpu=xscale -Wall
+-Wcast-align -Wmissing-declarations -Wmissing-prototypes
+-Wstrict-prototypes -Wpointer-arith -Wreturn-type -W  -I/usr/X11R6/include
+-MT garmin.lo -MD -MP -MF &quot;.deps/garmin.Tpo&quot; -c -o garmin.lo garmin.c; \
+then mv -f &quot;.deps/garmin.Tpo&quot; &quot;.deps/garmin.Plo&quot;; else rm -f
+&quot;.deps/garmin.Tpo&quot;; exit 1; fi
+ arm-linux-gcc -DHAVE_CONFIG_H -I. -I. -I. -I/usr/X11R6/include
+-Wa,-mfpu=fpa11 -mcpu=xscale -Wall -Wcast-align -Wmissing-declarations
+-Wmissing-prototypes -Wstrict-prototypes -Wpointer-arith -Wreturn-type -W
+-I/usr/X11R6/include -MT garmin.lo -MD -MP -MF .deps/garmin.Tpo -c
+garmin.c -o garmin.o
+garmin.c: In function `garmin_probe':
+garmin.c:649: error: impossible constraint in `asm'
+make[1]: *** [garmin.lo] Error 1
+make[1]: Leaving directory `/home/phm4/handheld/gpsd-2.25'
+make: *** [all] Error 2
+
+
+
+Any ideas what is going wrong ?
+
+Cheers,
+Phil
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="000736.html">[Gpsd-users] Send me your GPS logs, please
+</A></li>
+	<LI>Next message: <A HREF="000739.html">[Gpsd-users] cross-compiling make error
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#737">[ date ]</a>
+              <a href="thread.html#737">[ thread ]</a>
+              <a href="subject.html#737">[ subject ]</a>
+              <a href="author.html#737">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

@@ -1,0 +1,112 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] bluetooth GPS
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2011-January/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20bluetooth%20GPS&In-Reply-To=%3C20110131085705.GB9085%40thyrsus.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="004981.html">
+   <LINK REL="Next"  HREF="004950.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] bluetooth GPS</H1>
+    <B>Eric Raymond</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20bluetooth%20GPS&In-Reply-To=%3C20110131085705.GB9085%40thyrsus.com%3E"
+       TITLE="[Gpsd-users] bluetooth GPS">esr at thyrsus.com
+       </A><BR>
+    <I>Mon Jan 31 09:57:05 CET 2011</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="004981.html">[Gpsd-users] bluetooth GPS
+</A></li>
+        <LI>Next message: <A HREF="004950.html">[Gpsd-users] gps_waiting behavior
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#4985">[ date ]</a>
+              <a href="thread.html#4985">[ thread ]</a>
+              <a href="subject.html#4985">[ subject ]</a>
+              <a href="author.html#4985">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Chris Kottaridis &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">chriskot at quietwind.net</A>&gt;:
+&gt;<i> Ok, so if I turn the bluetooth device off I need to exit any apps using
+</I>&gt;<i> gpsd. Then after I turn the device back on I can restart them, at least
+</I>&gt;<i> one of them, and get reconnected.
+</I>
+Correct.
+ 
+&gt;<i> I seem to be able to make this happen with the following scenario:
+</I>&gt;<i> 
+</I>&gt;<i> 1. start things up and have xgps running and I am connected
+</I>&gt;<i> 2. Turn off the GPS device and in xgps see:
+</I>&gt;<i> 
+</I>&gt;<i> {&quot;class&quot;:&quot;DEVICE&quot;,&quot;path&quot;:&quot;/dev/rfcomm0&quot;,&quot;activated&quot;:0}
+</I>&gt;<i> 
+</I>&gt;<i> 3. exit xgps
+</I>&gt;<i> &lt; wait a little&gt;
+</I>&gt;<i> 4. Turn on the device
+</I>&gt;<i> 5. start xgps over again
+</I>&gt;<i> 6. It starts gathering data
+</I>&gt;<i> 
+</I>&gt;<i> That seems to play out. In fact I can keep the original xgps I started
+</I>&gt;<i> in step 1 operating. I can skip step 3, let the xgps keep running, and
+</I>&gt;<i> at step 5 start a second xgps. Then the device comes back on and I see
+</I>&gt;<i> data in both xgps apps.
+</I>&gt;<i> 
+</I>&gt;<i> So, the rule is if I turn the bluetooth GPS device off when I turn it
+</I>&gt;<i> back on I need to start up some app that uses it, to trigger an open and
+</I>&gt;<i> reestablish a connection that will then be visible by all apps that may
+</I>&gt;<i> have been left running as well as the new one started.
+</I>
+Yes, this is the expected behavior.
+
+&gt;<i>                                                        Alternatively, I
+</I>&gt;<i> can write my own script to remove it from the list and add it back after
+</I>&gt;<i> it is turned back on and kick it in the head that way.
+</I>
+Yes, this is what I would have recommended.  Your script can call the
+gpsd.hotplug program to do the remove and add, and thus mot have to 
+know the socket location or socket command set itself. 
+
+&gt;<i> I suppose that typically if someone turns off the GPS they also exit the
+</I>&gt;<i> apps. Seems you also have to remember to restart the GPS prior to
+</I>&gt;<i> restarting the app or else you'll miss the open and gpsd won't
+</I>&gt;<i> reconnect.
+</I>
+That shouldn't be the case. When an application has a WATCH active and
+a new device is added to the pool by a hotplug event, gpsd is supposed 
+to open that device immediately and add it to the set of devices under
+watch. 
+-- 
+		&lt;a href=&quot;<A HREF="http://www.catb.org/~esr/">http://www.catb.org/~esr/</A>&quot;&gt;Eric S. Raymond&lt;/a&gt;
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="004981.html">[Gpsd-users] bluetooth GPS
+</A></li>
+	<LI>Next message: <A HREF="004950.html">[Gpsd-users] gps_waiting behavior
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#4985">[ date ]</a>
+              <a href="thread.html#4985">[ thread ]</a>
+              <a href="subject.html#4985">[ subject ]</a>
+              <a href="author.html#4985">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

@@ -1,0 +1,133 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] Problems getting started with gpsd
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2005-December/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Problems%20getting%20started%20with%20gpsd&In-Reply-To=%3CPine.LNX.4.64.0512231125361.21277%40catbert.rellim.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="001187.html">
+   <LINK REL="Next"  HREF="001189.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] Problems getting started with gpsd</H1>
+    <B>Gary E. Miller</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Problems%20getting%20started%20with%20gpsd&In-Reply-To=%3CPine.LNX.4.64.0512231125361.21277%40catbert.rellim.com%3E"
+       TITLE="[Gpsd-users] Problems getting started with gpsd">gem at rellim.com
+       </A><BR>
+    <I>Fri Dec 23 20:38:04 CET 2005</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="001187.html">[Gpsd-users] Problems getting started with gpsd
+</A></li>
+        <LI>Next message: <A HREF="001189.html">[Gpsd-users] Problems getting started with gpsd
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1188">[ date ]</a>
+              <a href="thread.html#1188">[ thread ]</a>
+              <a href="subject.html#1188">[ subject ]</a>
+              <a href="author.html#1188">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>-----BEGIN PGP SIGNED MESSAGE-----
+Hash: SHA1
+
+Yo Mark!
+
+On Fri, 23 Dec 2005, mark_2811 wrote:
+
+&gt;<i> I'm running Mandrake Linux LE 2005.  For some reason the build isn't suc
+</I>&gt;<i> cessful with the autogen.sh script.  Is autogen.sh necessary since a reg
+</I>&gt;<i> ular 'make' seems to work fine.  What does autogen.sh actually do?  When
+</I>&gt;<i>  I try to build gpsd with autogen.sh I get the following messages:
+</I>
+autogen.sh creates configure and configure generates tha makefile.  If
+you checked out SVN then you need to run all three in order.  If you
+downloaded the release tarball then run just this:
+	configure &amp;&amp; make &amp;&amp; make install
+
+&gt;<i> Your automake version  is older than the suggested one, 1.7.6
+</I>&gt;<i> Go on at your own risk. :-)
+</I>
+If you downloaed the SVN then you really need to update your automake
+cute.
+
+&gt;<i> [<A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">mark at localhost</A> gpsd-2.30]$ ./autogen.sh
+</I>
+That says you are not running as root, so any install will fail later
+when the binaries are copied over.
+
+
+This says you are missing MOTIF, so the x based programs will not compile:
+
+&gt;<i> Makefile.am:8: HAVE_MOTIF does not appear in AM_CONDITIONAL
+</I>
+This says you are missing DBUS support, you willlikely not miss that.
+
+&gt;<i> Makefile.am:14: HAVE_DBUS does not appear in AM_CONDITIONAL
+</I>
+&gt;<i> [<A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">mark at localhost</A> gpsd-2.30]$
+</I>
+You left out the details of how you built/installed it.
+
+&gt;<i> I intend to run gpsd from a compact flash card that uses a read-only fil
+</I>&gt;<i> e system.  When I launch the executable with '/sbin/gpsd /dev/ttyS4' it
+</I>&gt;<i> gives the following:
+</I>
+That is not the proper command line syntax.  You should try this way:
+	/sbin/gpsd -p /dev/ttyS4
+
+The naked device as an arugment is not supported.
+
+&gt;<i> mkdir: Cannot create directory '/sbin/.libs': Read-only file system
+</I>&gt;<i> /sbin/gpsd: cd: 1: can't cd to /home/mark/projects/gpsd-2.30
+</I>&gt;<i> /sbin/gpsd: eval: 1: gcc: not found
+</I>
+This does not even remotely look like gpsd.  It looks like a shell script.
+Check the file date, is that really the one you think you compiled?
+
+
+RGDS
+GARY
+- ---------------------------------------------------------------------------
+Gary E. Miller Rellim 20340 Empire Blvd, Suite E-3, Bend, OR 97701
+	<A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">gem at rellim.com</A>  Tel:+1(541)382-8588 Fax: +1(541)382-8676
+
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v1.4.1 (GNU/Linux)
+
+iD8DBQFDrFIf8KZibdeR3qURAgp1AJ9HonTxY6vuX5RpAV6O9ghzlsEy1QCg5lUm
+TYr27tH5NOofOF5C0BhhJfE=
+=ldUW
+-----END PGP SIGNATURE-----
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="001187.html">[Gpsd-users] Problems getting started with gpsd
+</A></li>
+	<LI>Next message: <A HREF="001189.html">[Gpsd-users] Problems getting started with gpsd
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1188">[ date ]</a>
+              <a href="thread.html#1188">[ thread ]</a>
+              <a href="subject.html#1188">[ subject ]</a>
+              <a href="author.html#1188">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

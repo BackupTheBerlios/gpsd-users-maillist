@@ -1,0 +1,89 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] Change to new API
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2010-July/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Change%20to%20new%20API&In-Reply-To=%3C20100722002745.164066d8%40frodo%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="004594.html">
+   <LINK REL="Next"  HREF="004596.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] Change to new API</H1>
+    <B>Andreas Volz</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Change%20to%20new%20API&In-Reply-To=%3C20100722002745.164066d8%40frodo%3E"
+       TITLE="[Gpsd-users] Change to new API">lists at brachttal.net
+       </A><BR>
+    <I>Thu Jul 22 00:27:45 CEST 2010</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="004594.html">[Gpsd-users] D-BUS support
+</A></li>
+        <LI>Next message: <A HREF="004596.html">[Gpsd-users] Change to new API
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#4595">[ date ]</a>
+              <a href="thread.html#4595">[ thread ]</a>
+              <a href="subject.html#4595">[ subject ]</a>
+              <a href="author.html#4595">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hello,
+
+I changed from 2.38 to 2.92 API. I read this document:
+
+<A HREF="http://gpsd.berlios.de/protocol-transition.html">http://gpsd.berlios.de/protocol-transition.html</A>
+
+But I ever get this warning with gpsfake if I call poll():
+
+<A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">andreas at er00923n</A>:nmea&gt; sudo gpsfake -v neuhaus2.nmea 
+Processing neuhaus2.nmea
+gpsfake: log cycle of neuhaus2.nmea begins.
+gpsd: ERROR response: {&quot;class&quot;:&quot;ERROR&quot;,&quot;message&quot;:&quot;Unrecognized request '?WATCH={&quot;enable&quot;:true,&quot;raw&quot;:2};\x0a?WATCH={&quot;enable&quot;:true,&quot;raw&quot;:2};'&quot;}
+gpsfake: log cycle of neuhaus2.nmea begins.
+
+I initialised gpsd (own wrapper) before like this:
+
+    gpsCon.query (&quot;r\n&quot;);   // activate raw NMEA protocol
+    gpsCon.query (&quot;w+\n&quot;);  // set watcher mode
+    gpsCon.query (&quot;j=1\n&quot;); // smooth GPS data
+
+Now I tried it with:
+
+  int retVal = gps_stream (&amp;gpsDataLocal, WATCH_RAW | WATCH_ENABLE, NULL);
+
+Any ideas how to solve this problem?
+
+regards
+	Andreas
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="004594.html">[Gpsd-users] D-BUS support
+</A></li>
+	<LI>Next message: <A HREF="004596.html">[Gpsd-users] Change to new API
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#4595">[ date ]</a>
+              <a href="thread.html#4595">[ thread ]</a>
+              <a href="subject.html#4595">[ subject ]</a>
+              <a href="author.html#4595">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

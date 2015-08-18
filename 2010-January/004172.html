@@ -1,0 +1,92 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] Waiting data is the same as already read before
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2010-January/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Waiting%20data%20is%20the%20same%20as%20already%20read%20before&In-Reply-To=%3Cbdca99241001200157s651fb69cx5fbde94caa28bb2f%40mail.gmail.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="004171.html">
+   <LINK REL="Next"  HREF="004173.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] Waiting data is the same as already read before</H1>
+    <B>Sebastian Schuberth</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Waiting%20data%20is%20the%20same%20as%20already%20read%20before&In-Reply-To=%3Cbdca99241001200157s651fb69cx5fbde94caa28bb2f%40mail.gmail.com%3E"
+       TITLE="[Gpsd-users] Waiting data is the same as already read before">sschuberth at gmail.com
+       </A><BR>
+    <I>Wed Jan 20 10:57:00 CET 2010</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="004171.html">[Gpsd-users] Waiting data is the same as already read before
+</A></li>
+        <LI>Next message: <A HREF="004173.html">[Gpsd-users] Waiting data is the same as already read before
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#4172">[ date ]</a>
+              <a href="thread.html#4172">[ thread ]</a>
+              <a href="subject.html#4172">[ subject ]</a>
+              <a href="author.html#4172">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>On Mon, Jan 18, 2010 at 17:59, Charles Curley
+&lt;<A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">charlescurley at charlescurley.com</A>&gt; wrote:
+
+&gt;&gt;<i> I'm quite new to gpsd (using v2.90) and GPS in general. I've written a
+</I>&gt;&gt;<i> simple test program that reads GPS data in a loop and prints it to the
+</I>&gt;&gt;<i> console until a key is pressed. If there's currently no (new) data
+</I>&gt;&gt;<i> waiting, the program should not block but print the current /
+</I>&gt;&gt;<i> previously polled data. See below for the source code. The program
+</I>&gt;&gt;<i> works just fine, but there's one thing that I do not really
+</I>&gt;&gt;<i> understand. As you can see from the source code, I print the string
+</I>&gt;&gt;<i> &quot;polled&quot; to the console if the data was freshly polled, and not just
+</I>&gt;&gt;<i> read from a previously polled &quot;data&quot; structure.
+</I>&gt;<i>
+</I>&gt;<i> I am also fairly new to gpsd myself, but have written two programs
+</I>&gt;<i> similar to what you are doing. I'm sure the more experienced folks here
+</I>&gt;<i> will correct me if I'm wrong.
+</I>&gt;<i>
+</I>&gt;<i> You should have a hooked, or callback, function (I called mine &quot;showData
+</I>&gt;<i> ()&quot;) for libgps to call from time to time. showData does the actual
+</I>&gt;<i> display. Set it with:
+</I>
+Thanks for the tip. But to be honest, I do not understand the scenario
+when to use the hook method. If the hook is only called when I call
+gps_poll(), I can also unregister the hook and call the hook function
+myself directly after gps_poll(), right? Moreover, the hook is also
+called if POLL_NOBLOCK is set and gps_poll() returns 0 because there
+is no data waiting, which makes the hook quite useless for me, as I
+want to know if new data was polled or if I'm reusing old data.
+
+-- 
+Sebastian Schuberth
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="004171.html">[Gpsd-users] Waiting data is the same as already read before
+</A></li>
+	<LI>Next message: <A HREF="004173.html">[Gpsd-users] Waiting data is the same as already read before
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#4172">[ date ]</a>
+              <a href="thread.html#4172">[ thread ]</a>
+              <a href="subject.html#4172">[ subject ]</a>
+              <a href="author.html#4172">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

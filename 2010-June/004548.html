@@ -1,0 +1,94 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] [ Feature Request #5040 ] option for -b switch to provide baud rate
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2010-June/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20%5B%20Feature%20Request%20%235040%20%5D%20option%20for%20-b%20switch%20to%0A%20provide%20baud%20rate&In-Reply-To=%3Calpine.LNX.1.10.1006211140580.27792%40catbert.rellim.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="004547.html">
+   <LINK REL="Next"  HREF="004549.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] [ Feature Request #5040 ] option for -b switch to provide baud rate</H1>
+    <B>Gary E. Miller</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20%5B%20Feature%20Request%20%235040%20%5D%20option%20for%20-b%20switch%20to%0A%20provide%20baud%20rate&In-Reply-To=%3Calpine.LNX.1.10.1006211140580.27792%40catbert.rellim.com%3E"
+       TITLE="[Gpsd-users] [ Feature Request #5040 ] option for -b switch to provide baud rate">gem at rellim.com
+       </A><BR>
+    <I>Mon Jun 21 20:42:28 CEST 2010</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="004547.html">[Gpsd-users] [ Feature Request #5040 ] option for -b switch to	provide baud rate
+</A></li>
+        <LI>Next message: <A HREF="004549.html">[Gpsd-users] GPSD data parsing
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#4548">[ date ]</a>
+              <a href="thread.html#4548">[ thread ]</a>
+              <a href="subject.html#4548">[ subject ]</a>
+              <a href="author.html#4548">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>-----BEGIN PGP SIGNED MESSAGE-----
+Hash: SHA1
+
+Yo Andreas!
+
+On Mon, 21 Jun 2010, <A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">weller at andreas-weller.de</A> wrote:
+
+&gt;<i> Now I discovered it has a build in fixed port speed so when compiling
+</I>&gt;<i> gpsd with ./configure --enable-fixed-port-speed=57600 gpsd even manages
+</I>&gt;<i> to work and reconfigure the GPS receiver without -b switch.
+</I>
+Eric is trying to eliminate command line options, not add them.
+
+You can short circuit the auto baud if you use stty to set the bit
+rate before starting gpsd.  Like this:
+	stty speed 54600 &lt; /dev/ttyS0
+	gpsd -nN /dev/ttyS0
+
+
+RGDS
+GARY
+- ---------------------------------------------------------------------------
+Gary E. Miller Rellim 109 NW Wilmington Ave., Suite E, Bend, OR 97701
+	<A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">gem at rellim.com</A>  Tel:+1(541)382-8588
+
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v1.4.3 (GNU/Linux)
+
+iD8DBQFMH7KWBmnRqz71OvMRAlEVAJsHvBviiwgTlsvKfmcVHlVw3QvrvACgzUET
+MqN3jqZdgRRoaIoQcZaU+g8=
+=ZBrr
+-----END PGP SIGNATURE-----
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="004547.html">[Gpsd-users] [ Feature Request #5040 ] option for -b switch to	provide baud rate
+</A></li>
+	<LI>Next message: <A HREF="004549.html">[Gpsd-users] GPSD data parsing
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#4548">[ date ]</a>
+              <a href="thread.html#4548">[ thread ]</a>
+              <a href="subject.html#4548">[ subject ]</a>
+              <a href="author.html#4548">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

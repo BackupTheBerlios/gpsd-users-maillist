@@ -1,0 +1,97 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users]  PPS and baud rate
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2007-June/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20%20PPS%20and%20baud%20rate&In-Reply-To=%3C36912.138.194.209.254.1181109321.squirrel%40www.wireless.org.au%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="002695.html">
+   <LINK REL="Next"  HREF="002697.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users]  PPS and baud rate</H1>
+    <B>Jason Hecker</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20%20PPS%20and%20baud%20rate&In-Reply-To=%3C36912.138.194.209.254.1181109321.squirrel%40www.wireless.org.au%3E"
+       TITLE="[Gpsd-users]  PPS and baud rate">jhecker at wireless.org.au
+       </A><BR>
+    <I>Wed Jun  6 07:55:21 CEST 2007</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="002695.html">[Gpsd-users] Proposal for joining OSGeo (Fwd: [OSGeo-Discuss] Route	Guidance System)
+</A></li>
+        <LI>Next message: <A HREF="002697.html">[Gpsd-users] PPS and baud rate
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2696">[ date ]</a>
+              <a href="thread.html#2696">[ thread ]</a>
+              <a href="subject.html#2696">[ subject ]</a>
+              <a href="author.html#2696">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>&gt;<i> 2. I have had issues getting GPSD to get PPS lock on older machines (i.e.
+</I>&gt;<i> PIII 1000MHz) when I have a high level of debug enabled (i.e. -D5). I
+</I>&gt;<i> DON'T
+</I>
+Oh!  Well, I am using an embedded (industrial PC in a shoe box) Geode GX1
+running at 266MHz of which there are a surplus of at my work.  I noticed
+that even booting off the flash disk that it takes a lot longer than the
+same disk booting off an similar Pentium-200 MMX shoe box machine.  I am
+using the Geode as it has no CPU fan.
+
+
+&gt;<i> 3. If you have access to a windows box, try using the Garmin Configuration
+</I>&gt;<i> software to change the duration of the PPS pulse, and recompile GPSD to
+</I>&gt;<i> not
+</I>
+That's easy enough to do using the $PGRMC command in minicom and counting
+the &quot;,&quot;'s to get the PPS time argument in the right place - followed by a
+&quot;$PGRMI,,,,,,,R&quot; for a reset.  Blimmin' GPSD clobbers the PPS value so I
+have hex edited the PGRMC command in libgps.so to put in a 200ms pulse
+edge.
+
+&gt;<i> 4. Your description of your PPS interface circuitry sounds OK. Reading the
+</I>&gt;<i> datasheet I notice that the PPS pulse is 0V (low) and 3.3V (high). The
+</I>
+Yeah, I think I grabbed a 74LS04 (it's all locked up in the shoe box now
+so I can't check at this moment).  I had checked the data sheet to ensure
+3.3V was enough to drive it.
+
+&gt;<i> datasheet notes that there is a maximum of 22ns delay when switching
+</I>&gt;<i> low-high and 15nS switching high-low. You will need to add this (and the
+</I>&gt;<i> delay through the MAX232) to your fudge factor in the NTP config file.
+</I>
+Something to consider... but it's good enough now for NTPD - much better
+than the W2K w32time service that's currently in use (&lt;ahem&gt; it sucks).
+
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="002695.html">[Gpsd-users] Proposal for joining OSGeo (Fwd: [OSGeo-Discuss] Route	Guidance System)
+</A></li>
+	<LI>Next message: <A HREF="002697.html">[Gpsd-users] PPS and baud rate
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2696">[ date ]</a>
+              <a href="thread.html#2696">[ thread ]</a>
+              <a href="subject.html#2696">[ subject ]</a>
+              <a href="author.html#2696">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

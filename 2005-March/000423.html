@@ -1,0 +1,258 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] Re: Seg Fault Debug Info - gpsd 2.17 &amp; 2.18
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2005-March/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Re%3A%20Seg%20Fault%20Debug%20Info%20-%20gpsd%202.17%20%26%202.18&In-Reply-To=%3C5d37b99033445cd566a90dfcc0ad1430%40nicholasfamilycentral.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="000415.html">
+   <LINK REL="Next"  HREF="000424.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] Re: Seg Fault Debug Info - gpsd 2.17 &amp; 2.18</H1>
+    <B>Frank Nicholas</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Re%3A%20Seg%20Fault%20Debug%20Info%20-%20gpsd%202.17%20%26%202.18&In-Reply-To=%3C5d37b99033445cd566a90dfcc0ad1430%40nicholasfamilycentral.com%3E"
+       TITLE="[Gpsd-users] Re: Seg Fault Debug Info - gpsd 2.17 &amp; 2.18">frank at nicholasfamilycentral.com
+       </A><BR>
+    <I>Thu Mar 24 21:22:14 CET 2005</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="000415.html">[Gpsd-users] Re: Seg Fault Debug Info - gpsd 2.17 &amp; 2.18
+</A></li>
+        <LI>Next message: <A HREF="000424.html">[Gpsd-users] Re: Seg Fault Debug Info - gpsd 2.17 &amp; 2.18
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#423">[ date ]</a>
+              <a href="thread.html#423">[ thread ]</a>
+              <a href="subject.html#423">[ subject ]</a>
+              <a href="author.html#423">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>This is VERY reproducible.  Most of the time, when I try to start gpsd,  
+it seg faults.
+
+If gpsd does get started OK, I periodically get seg faults.  It might  
+be after it is running for 40 minutes or four (4) minutes....
+
+It's been a LONG time since I've used gdb.  Below is a run, where it  
+actually identified the GPS (it usually doesn't make it this far).  The  
+'where' &amp; 'bt' didn't give me what I expected....  I set my CFLAGS to  
+'-g', and recompiled and reinstalled.  What am I doing wrong?
+
+------------------------------------------------------------------------ 
+--
+
+(gdb) run -f /dev/tty.gps1 -N -D6
+Starting program: /usr/sbin/gpsd -f /dev/tty.gps1 -N -D6
+gpsd: launching (Version 2.18)
+gpsd: listening on port gpsd
+gpsd: client connect on 11
+gpsd: closed GPS
+gpsd: opening GPS data source at /dev/tty.gps1
+gpsd: No USB serial drivers found.
+gpsd: no probe matched...
+gpsd: hunting at speed 4800, 8N1
+gpsd: packet_sniff begins
+gpsd: Read 320 chars (total 320):  
+\xa8\x00\x01\xaf9\x00\x00\x01y/ 
+\x04\x07\x90\x8f\x00\x10\xd8&lt;\x04\x93\xb0\xb3\xa0\xa2\x004\x1b\x01\x00\x 
+00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x 
+00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x 
+00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x1c\xb0\xb3\xa0\x 
+a2\x00\x0d2\x00\x00\x12\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00D\xb0\xb3 
+\xa0\xa2\x00\x05\x0a\x10\x0b\x00\x00\x00%\xb0\xb3\xa0\xa2\x00]\xffThroug 
+hput:\x202%\x20AccumRTC:\x2036586874\x20prevRTC: 
+\x2036554822\x20currRTC:\x201047525622\x20prevPRTC: 
+\x201047492836\x1aE\xb0\xb3\xa0\xa2\x00`\xff#Time: 
+\x2000001256\x20\x20Int:\x20005/005/004\x20\x20ms: 
+\x200004\x20*\x2000\x2000\x2000\x20*\x2000\x2000\x2000\x20*\x2000\x2000\ 
+x2000\x20*\x2000\x2000\x2000\x201000000\x13Q\xb0
+gpsd: Packet copy, type 1
+gpsd: Packet discard with 238 remaining
+gpsd: Packet copy, type 1
+gpsd: Packet discard with 217 remaining
+gpsd: Packet copy, type 1
+gpsd: Packet discard with 204 remaining
+gpsd: Packet copy, type 1
+gpsd: Packet discard with 103 remaining
+gpsd: packet_sniff ends
+gpsd: gpsd_activate: opened GPS (12)
+gpsd: Selecting SiRF-II binary driver...
+gpsd: Probing for firmware version...
+gpsd: Writing SiRF control type 84: a0 a2 00 02 84 00 00 84 b0 b3
+gpsd: checking 11
+gpsd: &lt;= client:
+gpsd: =&gt; client(11): GPSD
+gpsd: Read 290 chars (total 393):  
+\xb3\xa0\xa2\x00-\xffEXEC: 
+\x20NoAdjust(tROM,\x200)&gt;\x20swtow\x20=\x201105.000000\x0d\x09\xb0\xb3\x 
+a0\xa2\x00[)\x00\x00\x00\x00\x00\xa8\x00\x10\xdc$\x00\x00\x00\x00\x00\x0 
+0\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x0 
+0\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x0 
+0\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x0 
+0\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x004\x 
+fb\x01\x03\x11\xb0\xb3\xa0\xa2\x00\xbc\x04\x00\xa8\x00\x01\xaf\x9d\x0c\x 
+11\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x 
+00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x 
+00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x 
+00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x 
+00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x 
+00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x 
+00\x00\x00\x00\x00\x00\x00\gpsd: Packet copy, type 1
+gpsd: Packet discard with 289 remaining
+gpsd: Packet copy, type 1
+gpsd: Packet discard with 236 remaining
+gpsd: Packet copy, type 1
+gpsd: Packet discard with 137 remaining
+gpsd: Raw SiRF packet type 41 length 91:  
+290000000000a80010dc2400000000000000000000000000000000000000000000000000 
+000000000000000000000000000000000000000000000000000000000000000000000000 
+0000000000000000000000000000000034fb01
+gpsd: Read 30 chars (total 167):  
+\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00 
+\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00
+gpsd: Read 226 chars (total 393):  
+\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00 
+\x00\x00\x00\x00\x00\x00\x00\x02\x16\xb0\xb3\xa0\xa2\x00)\x02\x00\x00\x0 
+0\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\xfa\x1 
+0\x00\xa8\x00\x01\xaf\x9d\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x0 
+0\x00\x03\x01\xb0\xb3\xa0\xa2\x00\x09\x09\x00\x00\x00\x00\x00\xba\x00\x0 
+3\x00\xc6\xb0\xb3\xa0\xa2\x00\x14\x07\x04\xa8\x00\x01\xaf\x9d\x00\x00\x0 
+1y/\x04\x08\x7f\xfb\x00\x10\xdc$\x05? 
+\xb0\xb3\xa0\xa2\x004\x1b\x01\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x0 
+0\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x0 
+0\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x0 
+0\x00\x00\x00\x00\x1c\xb0\xb3\xa0\xa2\x00\x0d2\x00\x00\x12\x00\x00\x00\x 
+00\x00\x00\x00\x00\x00\x00D\xb0\xb3\xa0\xa2\x00\x05\x0a\x10\x0b\x00\x00\ 
+x00%\xb0\xb3\xa0\xa2\x00]\xffThro
+gpsd: Packet copy, type 1
+gpsd: Packet discard with 197 remaining
+gpsd: Packet copy, type 1
+gpsd: Packet discard with 148 remaining
+gpsd: Packet copy, type 1
+gpsd: Packet discard with 131 remaining
+gpsd: Packet copy, type 1
+gpsd: Packet discard with 103 remaining
+gpsd: Packet copy, type 1
+gpsd: Packet discard with 43 remaining
+gpsd: Packet copy, type 1
+gpsd: Packet discard with 22 remaining
+gpsd: Packet copy, type 1
+gpsd: Packet discard with 9 remaining
+gpsd: Raw SiRF packet type 10 length 5: 0a100b0000
+gpsd: EID 0x0a type 4177: neither KF nor LSQ fix.
+gpsd: Read 384 chars (total 393):  
+ughput:\x201%\x20AccumRTC:\x2036619023\x20prevRTC: 
+\x2036586874\x20currRTC:\x201047558368\x20prevPRTC: 
+\x201047525622\x1aB\xb0\xb3\xa0\xa2\x00`\xff#Time: 
+\x2000001257\x20\x20Int:\x20005/005/004\x20\x20ms: 
+\x200003\x20*\x2000\x2000\x2000\x20*\x2000\x2000\x2000\x20*\x2000\x2000\ 
+x2000\x20*\x2000\x2000\x2000\x201000000\x13Q\xb0\xb3\xa0\xa2\x00- 
+\xffEXEC: 
+\x20NoAdjust(tROM,\x200)&gt;\x20swtow\x20=\x201106.000000\x0d\x0a\xb0\xb3\x 
+a0\xa2\x00[)\x00\x00\x00\x00\x00\xa8\x00\x10\xe0\x0c\x00\x00\x00\x00\x00 
+\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00 
+\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00 
+\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00 
+\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00 
+4\xfb\x01\x02\xfd\xb0\xb3\xa0\xa2\x00\xbc\x04\x00\xa8\x00\x01\xb0\x01\x0 
+c\x11\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x0 
+0\x00\x00\x00\x00\x00\x00
+gpsd: Packet copy, type 1
+gpsd: Packet discard with 292 remaining
+gpsd: Packet copy, type 1
+gpsd: Packet discard with 188 remaining
+gpsd: Packet copy, type 1
+gpsd: Packet discard with 135 remaining
+gpsd: Packet copy, type 1
+gpsd: Packet discard with 36 remaining
+gpsd: Raw SiRF packet type 41 length 91:  
+290000000000a80010e00c00000000000000000000000000000000000000000000000000 
+000000000000000000000000000000000000000000000000000000000000000000000000 
+0000000000000000000000000000000034fb01
+gpsd: Read 350 chars (total 386):  
+\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00 
+\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00 
+\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00 
+\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00 
+\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00 
+\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00 
+\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00 
+\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00 
+\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x01{\xb0\xb3\xa0\xa2\x0 
+0)\x02\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x 
+00\x00\x00\xfa\x10\x00\xa8\x00\x01\xb0\x01\x00\x00\x00\x00\x00\x00\x00\x 
+00\x00\x00\x00\x00\x00\x02f\xb0\xb3\xa0\xa2\x00\x09\x09\x00\x00\x00\x00\ 
+x00\xba\x00\x03\x00\xc6\xb0\xb3\xa0\xa2\x00\x14\x07\x04\xa8\x00\x01\xb0\ 
+x01\x00\x00\x01y/\x04\x09og\x00\x10\xe0\x0c\x03\xed\xgpsd: Packet copy,  
+type 1
+gpsd: Packet discard with 190 remaining
+gpsd: Packet copy, type 1
+gpsd: Packet discard with 141 remaining
+gpsd: Packet copy, type 1
+gpsd: Packet discard with 124 remaining
+gpsd: Packet copy, type 1
+gpsd: Packet discard with 96 remaining
+gpsd: Packet copy, type 1
+gpsd: Packet discard with 36 remaining
+gpsd: Packet copy, type 1
+gpsd: Packet discard with 15 remaining
+gpsd: Packet copy, type 1
+gpsd: Packet discard with 2 remaining
+
+Program received signal EXC_BAD_ACCESS, Could not access memory.
+0x5c783030 in ?? ()
+(gdb) where
+#0  0x5c783030 in ?? ()
+Cannot access memory at address 0x5c783030
+Cannot access memory at address 0x5c783030
+#1  0x00000000 in ?? ()
+(gdb) bt
+#0  0x5c783030 in ?? ()
+#1  0x00000000 in ?? ()
+(gdb)
+
+On Mar 24, 2005, at 12:23 PM, Eric S. Raymond wrote:
+
+&gt;<i> Let me know if what other info would be helpful.
+</I>
+A gdb stack trace would be nice, if you can reproduce this reliably  
+enough.
+-- 
+		&lt;a href=&quot;<A HREF="http://www.catb.org/~esr/">http://www.catb.org/~esr/</A>&quot;&gt;Eric S. Raymond&lt;/a&gt;
+
+______________________________________________________________________
+This email has been scanned by the MessageLabs Email Security System.
+For more information please visit <A HREF="http://www.messagelabs.com/email">http://www.messagelabs.com/email</A> 
+______________________________________________________________________
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="000415.html">[Gpsd-users] Re: Seg Fault Debug Info - gpsd 2.17 &amp; 2.18
+</A></li>
+	<LI>Next message: <A HREF="000424.html">[Gpsd-users] Re: Seg Fault Debug Info - gpsd 2.17 &amp; 2.18
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#423">[ date ]</a>
+              <a href="thread.html#423">[ thread ]</a>
+              <a href="subject.html#423">[ subject ]</a>
+              <a href="author.html#423">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

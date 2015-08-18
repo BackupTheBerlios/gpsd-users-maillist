@@ -1,0 +1,138 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] Garmin  60CSx works with 2.34 but not 2.35beta (svn)
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2007-July/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Garmin%20%2060CSx%20works%20with%202.34%20but%20not%202.35beta%20%28svn%29&In-Reply-To=%3C468D19A2.1030006%40wowway.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="002743.html">
+   <LINK REL="Next"  HREF="002746.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] Garmin  60CSx works with 2.34 but not 2.35beta (svn)</H1>
+    <B>John R.</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Garmin%20%2060CSx%20works%20with%202.34%20but%20not%202.35beta%20%28svn%29&In-Reply-To=%3C468D19A2.1030006%40wowway.com%3E"
+       TITLE="[Gpsd-users] Garmin  60CSx works with 2.34 but not 2.35beta (svn)">johnr at wowway.com
+       </A><BR>
+    <I>Thu Jul  5 18:17:38 CEST 2007</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="002743.html">[Gpsd-users] Getting GPSD to pick up PPS from Delorme Earthmate	Serial GPS
+</A></li>
+        <LI>Next message: <A HREF="002746.html">[Gpsd-users] Garmin 60CSx works with 2.34 but not 2.35beta (svn)
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2745">[ date ]</a>
+              <a href="thread.html#2745">[ thread ]</a>
+              <a href="subject.html#2745">[ subject ]</a>
+              <a href="author.html#2745">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>My 60csx appears to work fine with 2.34, but commands which require 
+communication with GPS fail per the debug output below (2.35beta/svn). 
+In both cases usb is used to interface to the gps.
+
+Where should I look for problems?
+
+The 9600 baud seems odd as 4800 is selected in the interface.  2.34 does 
+the same thing though.
+
+Thanks,
+
+John
+
+With 2.35beta (d command):
+
+aqui trunk # /usr/local/sbin/gpsd -N /dev/ttyUSB0 -D 6
+gpsd: launching (Version 2.35beta)
+gpsd: listening on port 2947
+gpsd: shmat(0,0,0) succeeded
+gpsd: shmat(0,0,0) succeeded
+gpsd: shmat(0,0,0) succeeded
+gpsd: shmat(0,0,0) succeeded
+gpsd: running with effective group ID 0
+gpsd: running with effective user ID 0
+gpsd: opening GPS data source at '/dev/ttyUSB0'
+gpsd: speed 9600, 8N1
+gpsd: Navcom: command dump: 0299661c0800040200001203
+gpsd: =&gt; GPS: 0299661c0800040200001203
+gpsd: Navcom: sent command 0x1c (Test Support Block)
+gpsd: Navcom: command 0x1c mode = 02, length = 0
+gpsd: Navcom: command dump: 029966200e000001ae02000071000000f203
+gpsd: =&gt; GPS: 029966200e000001ae02000071000000f203
+gpsd: Navcom: sent command 0x20 (Data Request) - data block id = ae at 
+rate 00
+gpsd: Navcom: command dump: 029966200e00000186020a0071000000d003
+gpsd: =&gt; GPS: 029966200e00000186020a0071000000d003
+gpsd: Navcom: sent command 0x20 (Data Request) - data block id = 86 at 
+rate 0a
+gpsd: Set garmin_gps driver mode = 0
+gpsd: PrintUSBPacket()
+gpsd: Private, Set Mode: 1
+gpsd: =&gt; GPS: 4b6e1001020000000400000001000000
+gpsd: SendPacket(), wrote 16 bytes
+gpsd: probe found Garmin USB binary driver...
+gpsd: gpsd_activate(0): opened GPS (4)
+gpsd: Get Garmin Product Data
+gpsd: SendPacket(), writing 6 bytes: 10fe00021003
+gpsd: PrintSERPacket(, 0xfe, 00, )
+gpsd: Appl, Product Data req
+gpsd: PrintSERPacket(, 0xfe, 00, ) = 00
+gpsd: =&gt; GPS: 10fe00021003
+gpsd: SendPacket(), wrote 6 bytes
+gpsd: Set Garmin to send reports every 1 second
+gpsd: SendPacket(), writing 8 bytes: 100a023100c31003
+gpsd: PrintSERPacket(, 0xa, 0x2, )
+gpsd: Appl, Command Data: Start Xmit PVT data
+gpsd: PrintSERPacket(, 0xa, 0x2, ) = 00
+gpsd: =&gt; GPS: 100a023100c31003
+gpsd: SendPacket(), wrote 8 bytes
+gpsd: polling 4
+gpsd: Read 16 chars to buffer offset 0 (total 16): 
+100602fe00fa10031006020a00e003
+gpsd: Packet discard of 8, chars remaining is 8 = 1006020a00ee1003
+gpsd: polling 4
+gpsd: Read 91 chars to buffer offset 8 (total 99): 
+1006020a00ee100310ff552401414750534d6170363043535820536f6674776172652056657273696f6e20332e33300056455242415020416d6572696361732052656320426173656d617020342e303000564552534d415020
+gpsd: Packet discard of 8, chars remaining is 91 = 
+10ff5524014a014750534d61703043535820536f6674776172652056657273696f6e20332e333000564552424d415020416d65726361732052656320426173656d617020342e303000564552534d4150204e6f6e6500761003
+gpsd: client 127.0.0.1 (0) connect on fd 5
+gpsd: checking client(0)
+gpsd: &lt;= client(0): d
+gpsd: client(0): assigning channel...
+gpsd: User requires 2, channel type is -1
+gpsd: client(0): channel 4 already active.
+gpsd: =&gt; client(0): GPSD,D=?
+gpsd: checking client(0)
+gpsd: detaching 127.0.0.1 (sub0, fd 5) in detach_client
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="002743.html">[Gpsd-users] Getting GPSD to pick up PPS from Delorme Earthmate	Serial GPS
+</A></li>
+	<LI>Next message: <A HREF="002746.html">[Gpsd-users] Garmin 60CSx works with 2.34 but not 2.35beta (svn)
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2745">[ date ]</a>
+              <a href="thread.html#2745">[ thread ]</a>
+              <a href="subject.html#2745">[ subject ]</a>
+              <a href="author.html#2745">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

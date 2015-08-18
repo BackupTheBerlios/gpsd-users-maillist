@@ -1,0 +1,114 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] Re: magellan explorist 210
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2006-February/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Re%3A%20magellan%20explorist%20210&In-Reply-To=%3Cloom.20060227T230129-879%40post.gmane.org%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="001358.html">
+   <LINK REL="Next"  HREF="001360.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] Re: magellan explorist 210</H1>
+    <B>Brett Barton</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Re%3A%20magellan%20explorist%20210&In-Reply-To=%3Cloom.20060227T230129-879%40post.gmane.org%3E"
+       TITLE="[Gpsd-users] Re: magellan explorist 210">archer36 at chartermi.net
+       </A><BR>
+    <I>Mon Feb 27 23:07:01 CET 2006</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="001358.html">[Gpsd-users] Re: magellan explorist 210
+</A></li>
+        <LI>Next message: <A HREF="001360.html">[Gpsd-users] Re: magellan explorist 210
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1359">[ date ]</a>
+              <a href="thread.html#1359">[ thread ]</a>
+              <a href="subject.html#1359">[ subject ]</a>
+              <a href="author.html#1359">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Gary E. Miller &lt;gem &lt;at&gt; rellim.com&gt; writes:
+&gt;<i> Send it along to us and we can look at it.
+</I>&gt;<i> 
+</I>&gt;<i> Also send along the output of this command:
+</I>&gt;<i> 	cat /proc/bus/usb/devices
+</I>
+Here is the section of /proc/bus/usb/devices that is my gps
+
+T:  Bus=04 Lev=01 Prnt=01 Port=00 Cnt=01 Dev#=  2 Spd=12  MxCh= 0
+D:  Ver= 1.10 Cls=02(comm.) Sub=02 Prot=00 MxPS=64 #Cfgs=  1
+P:  Vendor=0b20 ProdID=0406 Rev= 1.00
+S:  Manufacturer=Thales Navigation
+S:  Product=Magellan eXplorist
+C:* #Ifs= 2 Cfg#= 1 Atr=c0 MxPwr= 20mA
+I:  If#= 0 Alt= 0 #EPs= 1 Cls=02(comm.) Sub=02 Prot=01 Driver=(none)
+E:  Ad=83(I) Atr=03(Int.) MxPS=  16 Ivl=10ms
+I:  If#= 1 Alt= 0 #EPs= 2 Cls=0a(data ) Sub=00 Prot=00 Driver=(none)
+E:  Ad=01(O) Atr=02(Bulk) MxPS=  32 Ivl=0ms
+E:  Ad=82(I) Atr=02(Bulk) MxPS=  32 Ivl=0ms
+
+And after plugging in my GPS to the USB dmesg shows up
+
+&quot;usb 4-1: new full speed USB device using uhci_hcd and address 2&quot;
+
+Now I posted on linuxquestions too and they said to try
+
+&quot;modprobe usbserial vendor=0x0b20 product 0x0406&quot;
+
+After I do that I get this from DMESG
+
+usbcore: registered new driver usbserial
+drivers/usb/serial/usb-serial.c: USB Serial support registered for generic
+usbserial_generic 4-1:1.0: generic converter detected
+usbserial_generic 4-1:1.0: Generic device with no bulk out, not allowed.
+usbserial_generic: probe of 4-1:1.0 failed with error -5
+usbserial_generic 4-1:1.1: generic converter detected
+usb 4-1: generic converter now attached to ttyUSB0
+usbcore: registered new driver usbserial_generic
+drivers/usb/serial/usb-serial.c: USB Serial Driver core
+
+doesn't make much sense to me, but doing cat /dev/ttyUSB0 I get nothing, is
+there somthing in the 2.6 kernel I need to enable? I am running a very small
+kernel 2.6 on my slackware laptop. 
+
+Thanks
+
+
+
+
+
+
+
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="001358.html">[Gpsd-users] Re: magellan explorist 210
+</A></li>
+	<LI>Next message: <A HREF="001360.html">[Gpsd-users] Re: magellan explorist 210
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1359">[ date ]</a>
+              <a href="thread.html#1359">[ thread ]</a>
+              <a href="subject.html#1359">[ subject ]</a>
+              <a href="author.html#1359">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

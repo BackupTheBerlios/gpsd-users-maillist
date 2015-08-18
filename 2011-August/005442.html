@@ -1,0 +1,75 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] gpsd fails with Illegal instruction on old AMD athlon
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2011-August/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20gpsd%20fails%20with%20Illegal%20instruction%20on%20old%20AMD%0A%20athlon&In-Reply-To=%3C20110828094325.GA7617%40thyrsus.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="005441.html">
+   <LINK REL="Next"  HREF="005443.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] gpsd fails with Illegal instruction on old AMD athlon</H1>
+    <B>Eric Raymond</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20gpsd%20fails%20with%20Illegal%20instruction%20on%20old%20AMD%0A%20athlon&In-Reply-To=%3C20110828094325.GA7617%40thyrsus.com%3E"
+       TITLE="[Gpsd-users] gpsd fails with Illegal instruction on old AMD athlon">esr at thyrsus.com
+       </A><BR>
+    <I>Sun Aug 28 11:43:25 CEST 2011</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="005441.html">[Gpsd-users] gpsd fails with Illegal instruction on old AMD athlon
+</A></li>
+        <LI>Next message: <A HREF="005443.html">[Gpsd-users] gpsd fails with Illegal instruction on old AMD	athlon
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#5442">[ date ]</a>
+              <a href="thread.html#5442">[ thread ]</a>
+              <a href="subject.html#5442">[ subject ]</a>
+              <a href="author.html#5442">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Reinhard Arlt &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">reinhard.arlt at t-online.de</A>&gt;:
+&gt;<i> Program received signal SIGILL, Illegal instruction.
+</I>&gt;<i> barrier () at gpsd.h:1069
+</I>&gt;<i> 1069            asm volatile(&quot;mfence&quot;);
+</I>&gt;<i> (gdb)
+</I>&gt;<i> 
+</I>&gt;<i> Do you have an idea, what is going wrong?
+</I>&gt;<i> The system works flawless even with version 2.96 of gpsd.
+</I>
+This looks like a problem with your 32-bit toolchain.  Try building with
+shm_export=no - the problematic code is not used in normal operation. Please
+let us know if that works.
+-- 
+		&lt;a href=&quot;<A HREF="http://www.catb.org/~esr/">http://www.catb.org/~esr/</A>&quot;&gt;Eric S. Raymond&lt;/a&gt;
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="005441.html">[Gpsd-users] gpsd fails with Illegal instruction on old AMD athlon
+</A></li>
+	<LI>Next message: <A HREF="005443.html">[Gpsd-users] gpsd fails with Illegal instruction on old AMD	athlon
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#5442">[ date ]</a>
+              <a href="thread.html#5442">[ thread ]</a>
+              <a href="subject.html#5442">[ subject ]</a>
+              <a href="author.html#5442">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

@@ -1,0 +1,104 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] Week Number issue
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2011-February/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Week%20Number%20issue&In-Reply-To=%3C20110226194635.5da3c8df%40yendi%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="005062.html">
+   <LINK REL="Next"  HREF="005069.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] Week Number issue</H1>
+    <B>Charles Curley</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Week%20Number%20issue&In-Reply-To=%3C20110226194635.5da3c8df%40yendi%3E"
+       TITLE="[Gpsd-users] Week Number issue">charlescurley at charlescurley.com
+       </A><BR>
+    <I>Sun Feb 27 03:46:35 CET 2011</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="005062.html">[Gpsd-users] Synchronization with a gps
+</A></li>
+        <LI>Next message: <A HREF="005069.html">[Gpsd-users] Week Number issue
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#5068">[ date ]</a>
+              <a href="thread.html#5068">[ thread ]</a>
+              <a href="subject.html#5068">[ subject ]</a>
+              <a href="author.html#5068">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>I'm seeing a small week number issue. When I unplug my GPS receiver for
+some hours, the time comes up wrong, and usually a multiple of
+approximately a bit less than 20 years wrong.
+
+To reproduce:
+
+* Get your receiver rolling, and get a good fix and accurate time.
+
+* Unplug your receiver. Leave it unplugged for at least 12 hours.
+
+* Plug in your receiver. It will come up with a bogus time,
+  a multiple of approximately 20 years from 2005. After a few seconds,
+  it will then switch to another, later, time, a multiple of
+  approximately 20 years from the current time.
+
+I see this with cgps, xgps and my client. I see it in the json that
+cgps and xgps report.
+
+I conjecture that the approximately 20 years is actually 19.6 years, or
+1024 weeks. <A HREF="http://en.wikipedia.org/wiki/Gps#Timekeeping_format.">http://en.wikipedia.org/wiki/Gps#Timekeeping_format.</A> I
+also conjecture that gpsd sets the week correctly when it first
+fires up or first sees a receiver, but not on re-plugging the same
+receiver (or type of receiver).
+
+This is with a GlobalSat BU-353, a SiRF-3 (according to the hardware
+page). &quot;GPS Driver: driver = SiRF binary: subtype =
+GSW3.1.1LowV_3.1.00.07-C23B1.00&quot;
+
+I would be glad to write a braindead client in Perl to check for this
+(and verify the 19.6 year conjecture), but I expect you would prefer
+that in Python.
+
+Any suggestions on how to proceed, other than buy a new receiver
+capable of dealing with a 13 bit week number?
+
+-- 
+
+Charles Curley                  /&quot;\    ASCII Ribbon Campaign
+Looking for fine software       \ /    Respect for open standards
+and/or writing?                  X     No HTML/RTF in email
+<A HREF="http://www.charlescurley.com">http://www.charlescurley.com</A>    / \    No M$ Word docs in email
+
+Key fingerprint = CE5C 6645 A45A 64E4 94C0  809C FFF6 4C48 4ECD DFDB
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="005062.html">[Gpsd-users] Synchronization with a gps
+</A></li>
+	<LI>Next message: <A HREF="005069.html">[Gpsd-users] Week Number issue
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#5068">[ date ]</a>
+              <a href="thread.html#5068">[ thread ]</a>
+              <a href="subject.html#5068">[ subject ]</a>
+              <a href="author.html#5068">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

@@ -1,0 +1,91 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] Compiling as root?
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2010-March/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Compiling%20as%20root%3F&In-Reply-To=%3C20100323163902.6bcc9790%40dragon.localdomain%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="004329.html">
+   <LINK REL="Next"  HREF="004295.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] Compiling as root?</H1>
+    <B>Charles Curley</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Compiling%20as%20root%3F&In-Reply-To=%3C20100323163902.6bcc9790%40dragon.localdomain%3E"
+       TITLE="[Gpsd-users] Compiling as root?">charlescurley at charlescurley.com
+       </A><BR>
+    <I>Tue Mar 23 23:39:02 CET 2010</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="004329.html">[Gpsd-users] ntpd accuracy of pcmcia gps cards
+</A></li>
+        <LI>Next message: <A HREF="004295.html">[Gpsd-users] Version checking gpsd
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#4297">[ date ]</a>
+              <a href="thread.html#4297">[ thread ]</a>
+              <a href="subject.html#4297">[ subject ]</a>
+              <a href="author.html#4297">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Just for the halibut, I pulled in the anonymous git clone, running as
+a non-privileged user. Again, as a non-privileged user, everything
+compiled just fine. For the &quot;make install&quot;, I used sudo to gain root
+privileges, and that appeared to run fine.
+
+I notice, however, that several files end up owned by root:
+
+<A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">ccurley at white</A>:~/versioned/gpsd$ find -user root -o -group root
+./build/lib.linux-i586-2.6
+./build/lib.linux-i586-2.6/gps
+./build/lib.linux-i586-2.6/gps/client.so
+./build/lib.linux-i586-2.6/gps/__init__.py
+./build/lib.linux-i586-2.6/gps/packet.so
+./build/lib.linux-i586-2.6/gps/gps.py
+./build/lib.linux-i586-2.6/gps/fake.py
+./stamp-python-modules
+<A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">ccurley at white</A>:~/versioned/gpsd$
+
+I'm not wild about having files owned by root in a user directory tree.
+Is this necessary? Would it be possible to populate the build tree as
+the unprivileged user, and change ownership on copying into place?
+
+-- 
+
+Charles Curley                  /&quot;\    ASCII Ribbon Campaign
+Looking for fine software       \ /    Respect for open standards
+and/or writing?                  X     No HTML/RTF in email
+<A HREF="http://www.charlescurley.com">http://www.charlescurley.com</A>    / \    No M$ Word docs in email
+
+Key fingerprint = CE5C 6645 A45A 64E4 94C0  809C FFF6 4C48 4ECD DFDB
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="004329.html">[Gpsd-users] ntpd accuracy of pcmcia gps cards
+</A></li>
+	<LI>Next message: <A HREF="004295.html">[Gpsd-users] Version checking gpsd
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#4297">[ date ]</a>
+              <a href="thread.html#4297">[ thread ]</a>
+              <a href="subject.html#4297">[ subject ]</a>
+              <a href="author.html#4297">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

@@ -1,0 +1,103 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] gps_set_raw_hook Replacement
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2011-July/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20gps_set_raw_hook%20Replacement&In-Reply-To=%3C20110712120036.23ac4609%40yendi%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="005389.html">
+   <LINK REL="Next"  HREF="005391.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] gps_set_raw_hook Replacement</H1>
+    <B>Charles Curley</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20gps_set_raw_hook%20Replacement&In-Reply-To=%3C20110712120036.23ac4609%40yendi%3E"
+       TITLE="[Gpsd-users] gps_set_raw_hook Replacement">charlescurley at charlescurley.com
+       </A><BR>
+    <I>Tue Jul 12 20:00:36 CEST 2011</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="005389.html">[Gpsd-users] gps_set_raw_hook Replacement
+</A></li>
+        <LI>Next message: <A HREF="005391.html">[Gpsd-users] gps_set_raw_hook Replacement
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#5390">[ date ]</a>
+              <a href="thread.html#5390">[ thread ]</a>
+              <a href="subject.html#5390">[ subject ]</a>
+              <a href="author.html#5390">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>CCing to the list so they can chime in as needed, and to preserve the
+record.
+
+On Tue, 12 Jul 2011 13:26:42 -0400
+Matthew Beckman &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">mbeckman6 at gmail.com</A>&gt; wrote:
+
+&gt;<i> Sorry, I may not have phrased my question just right. I use
+</I>&gt;<i> gps_stream and gps_read to retrieve the gps_data_t structure. This
+</I>&gt;<i> works fine, except for nonstandard data. What I am missing now is how
+</I>&gt;<i> to read the raw NMEA strings. In the previous world order,
+</I>&gt;<i> gps_set_raw_hook() was used to set a callback.
+</I>&gt;<i> 
+</I>&gt;<i> If gps_stream is used to receive the raw NMEA strings, then how do I
+</I>&gt;<i> access them? Through the gps_data_t structure? If so, I do not know
+</I>&gt;<i> where in that structure it would be. The only hint I have so far is
+</I>&gt;<i> gpspipe.c program in gpsd. It appears to me as though it reads the
+</I>&gt;<i> socket manually, which includes the JSON and NMEA data. Is that the
+</I>&gt;<i> only way? Doing this would seem to mean that I would have to then
+</I>&gt;<i> parse the JSON string manually as well.
+</I>
+Ah, sorry.
+
+See gps_data ().
+
+
+    if (showMessage == true) {
+        printf (&quot;%s\n&quot;, gps_data(&amp;gpsdata));
+    }
+
+Note that this is dicey if there might be binary data.
+
+
+
+
+-- 
+
+Charles Curley                  /&quot;\    ASCII Ribbon Campaign
+Looking for fine software       \ /    Respect for open standards
+and/or writing?                  X     No HTML/RTF in email
+<A HREF="http://www.charlescurley.com">http://www.charlescurley.com</A>    / \    No M$ Word docs in email
+
+Key fingerprint = CE5C 6645 A45A 64E4 94C0  809C FFF6 4C48 4ECD DFDB
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="005389.html">[Gpsd-users] gps_set_raw_hook Replacement
+</A></li>
+	<LI>Next message: <A HREF="005391.html">[Gpsd-users] gps_set_raw_hook Replacement
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#5390">[ date ]</a>
+              <a href="thread.html#5390">[ thread ]</a>
+              <a href="subject.html#5390">[ subject ]</a>
+              <a href="author.html#5390">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

@@ -1,0 +1,83 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] MR-350 pps?
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2009-November/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20MR-350%20pps%3F&In-Reply-To=%3C20091110151409.GA1536917%40hiwaay.net%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="004038.html">
+   <LINK REL="Next"  HREF="004042.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] MR-350 pps?</H1>
+    <B>Chris Adams</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20MR-350%20pps%3F&In-Reply-To=%3C20091110151409.GA1536917%40hiwaay.net%3E"
+       TITLE="[Gpsd-users] MR-350 pps?">cmadams at hiwaay.net
+       </A><BR>
+    <I>Tue Nov 10 16:14:09 CET 2009</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="004038.html">[Gpsd-users] MR-350 pps?
+</A></li>
+        <LI>Next message: <A HREF="004042.html">[Gpsd-users] MR-350 pps?
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#4039">[ date ]</a>
+              <a href="thread.html#4039">[ thread ]</a>
+              <a href="subject.html#4039">[ subject ]</a>
+              <a href="author.html#4039">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Once upon a time, H&#229;kan Johansson &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">f96hajo at chalmers.se</A>&gt; said:
+&gt;<i> So far, I have not been able to see any trace of the 1 us wide pulse 
+</I>&gt;<i> inside gpsd.  I've so far only tested with a USB TTL-RS232 cable, which 
+</I>&gt;<i> may have its own problems with such a short pulse.
+</I>
+I am running the PPS signal from my Trimble SVeeSix into the parallel
+port (no serial port available), and IIRC it was also very short.  I
+found that the port would not trigger on a pulse that narrow, so I used
+a 555 timer (in one-shot mode) to get a wider pulse.  I had to also use
+a 7404 inverter on the PPS signal before the 555, as the PPS output is
+an active-high trigger, and the 555 looks for an active-low trigger
+input.
+
+This also means that my PPS signal gets a little more delay from the
+inverter (~10ns) and the 555 (~100ns), but since that's well under the
+claimed 1us accuracy (and who knows what additional delay is added by
+the parallel port, CPU bus, etc.), I didn't worry about it.
+
+-- 
+Chris Adams &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">cmadams at hiwaay.net</A>&gt;
+Systems and Network Administrator - HiWAAY Internet Services
+I don't speak for anybody but myself - that's enough trouble.
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="004038.html">[Gpsd-users] MR-350 pps?
+</A></li>
+	<LI>Next message: <A HREF="004042.html">[Gpsd-users] MR-350 pps?
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#4039">[ date ]</a>
+              <a href="thread.html#4039">[ thread ]</a>
+              <a href="subject.html#4039">[ subject ]</a>
+              <a href="author.html#4039">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

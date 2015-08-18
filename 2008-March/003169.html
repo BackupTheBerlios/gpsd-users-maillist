@@ -1,0 +1,167 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] Help w/gpsd-2.37 and Garmin eTrex Venture HC on Fedora	8
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2008-March/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Help%20w/gpsd-2.37%20and%20Garmin%20eTrex%20Venture%20HC%20on%20Fedora%0A%098&In-Reply-To=%3C7eafb4a10803190020y4d46c7c2gc9e0e26f59f4c04e%40mail.gmail.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="003168.html">
+   <LINK REL="Next"  HREF="003170.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] Help w/gpsd-2.37 and Garmin eTrex Venture HC on Fedora	8</H1>
+    <B>Guy Cole</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Help%20w/gpsd-2.37%20and%20Garmin%20eTrex%20Venture%20HC%20on%20Fedora%0A%098&In-Reply-To=%3C7eafb4a10803190020y4d46c7c2gc9e0e26f59f4c04e%40mail.gmail.com%3E"
+       TITLE="[Gpsd-users] Help w/gpsd-2.37 and Garmin eTrex Venture HC on Fedora	8">guycole at gmail.com
+       </A><BR>
+    <I>Wed Mar 19 08:20:45 CET 2008</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="003168.html">[Gpsd-users] gpsd does not survive sleep/suspend to ram/lid close of laptop
+</A></li>
+        <LI>Next message: <A HREF="003170.html">[Gpsd-users] Decathlon/Geonaute Keymaze 300
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3169">[ date ]</a>
+              <a href="thread.html#3169">[ thread ]</a>
+              <a href="subject.html#3169">[ subject ]</a>
+              <a href="author.html#3169">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hello, I am having trouble w/my new GPS and gpsd.  Apparently gpsd does
+recognize the GPS but I never get any updates (fix) from the GPS.
+
+My environment is gpsd-2.37 on Fedora 8 and Garmin eTrex Venture HC (version
+2.7)
+
+I am happy to fix this/submit a patch if someone could suggest a starting
+point.  Thank you.
+
+Trace output follows
+[<A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">root at ophelia</A> sbin]# ./gpsd -N -D4 /dev/ttyUSB0
+gpsd: launching (Version 2.37)
+gpsd: listening on port gpsd
+gpsd: shmat(0,0,0) succeeded
+gpsd: shmat(0,0,0) succeeded
+gpsd: shmat(0,0,0) succeeded
+gpsd: shmat(0,0,0) succeeded
+gpsd: running with effective group ID 0
+gpsd: running with effective user ID 0
+gpsd: opening GPS data source at '/dev/ttyUSB0'
+gpsd: speed 9600, 8N1
+gpsd: =&gt; GPS: $PASHQ,RID*28\x0d
+
+gpsd: =&gt; GPS: 0299661c0800040200001203
+gpsd: Navcom: sent command 0x1c (Test Support Block)
+gpsd: Navcom: command 0x1c mode = 02, length = 0
+gpsd: =&gt; GPS: 029966200e000001ae02000071000000f203
+gpsd: Navcom: sent command 0x20 (Data Request) - data block id = ae at rate
+00
+gpsd: =&gt; GPS: 029966200e00000186020a0071000000d003
+gpsd: Navcom: sent command 0x20 (Data Request) - data block id = 86 at rate
+0a
+gpsd: Set garmin_gps driver mode = 0
+gpsd: PrintUSBPacket()
+gpsd: Private, Set Mode: 1
+gpsd: =&gt; GPS: 4b6e1001020000000400000001000000
+gpsd: SendPacket(), wrote 16 bytes
+gpsd: probe found Garmin USB binary driver...
+gpsd: ntpd_link_activate: 0
+gpsd: gpsd_activate(0): opened GPS (4)
+gpsd: Get Garmin Product Data
+gpsd: SendPacket(), writing 6 bytes: 10fe00021003
+gpsd: PrintSERPacket(, 0xfe, 00, )
+gpsd: Appl, Product Data req
+gpsd: PrintSERPacket(, 0xfe, 00, ) = 00
+gpsd: =&gt; GPS: 10fe00021003
+gpsd: SendPacket(), wrote 6 bytes
+gpsd: Set Garmin to send reports every 1 second
+gpsd: SendPacket(), writing 8 bytes: 100a023100c31003
+gpsd: PrintSERPacket(, 0xa, 0x2, )
+gpsd: Appl, Command Data: Start Xmit PVT data
+gpsd: PrintSERPacket(, 0xa, 0x2, ) = 00
+gpsd: =&gt; GPS: 100a023100c31003
+gpsd: SendPacket(), wrote 8 bytes
+gpsd: garmin_ser_parse() Type: 0xff, Len: 0x5a, chksum: 00
+gpsd: PrintSERPacket(, 0xff, 0x5a, )
+gpsd: Appl, Product Data, sz: 90
+gpsd: Garmin Product ID: 695, SoftVer: 2.70
+gpsd: Garmin Product Desc: eTrex Venture HC Software Version 2.70
+gpsd: PrintSERPacket(, 0xff, 0x5a, ) = 0x4000000
+gpsd: SendPacket(), writing 6 bytes: 100600fa1003
+gpsd: PrintSERPacket(, 0x6, 00, )
+gpsd: ACK
+gpsd: PrintSERPacket(, 0x6, 00, ) = 00
+gpsd: =&gt; GPS: 100600fa1003
+gpsd: SendPacket(), wrote 6 bytes
+gpsd: garmin_close()
+gpsd: closing GPS=/dev/ttyUSB0 (4)
+gpsd: client 127.0.0.1 (0) connect on fd 4
+gpsd: checking client(0)
+gpsd: &lt;= client(0): i
+gpsd: client(0): assigning channel...
+gpsd: User requires 2, channel type is 8
+gpsd: opening GPS data source at '/dev/ttyUSB0'
+gpsd: speed 9600, 8N1
+gpsd: Set garmin_gps driver mode = 0
+gpsd: PrintUSBPacket()
+gpsd: Private, Set Mode: 1
+gpsd: =&gt; GPS: 4b6e1001020000000400000001000000
+gpsd: SendPacket(), wrote 16 bytes
+gpsd: probe found Garmin USB binary driver...
+gpsd: ntpd_link_activate: 0
+gpsd: gpsd_activate(1): opened GPS (5)
+gpsd: Get Garmin Product Data
+gpsd: SendPacket(), writing 6 bytes: 10fe00021003
+gpsd: PrintSERPacket(, 0xfe, 00, )
+gpsd: Appl, Product Data req
+gpsd: PrintSERPacket(, 0xfe, 00, ) = 00
+gpsd: =&gt; GPS: 10fe00021003
+gpsd: SendPacket(), wrote 6 bytes
+gpsd: Set Garmin to send reports every 1 second
+gpsd: SendPacket(), writing 8 bytes: 100a023100c31003
+gpsd: PrintSERPacket(, 0xa, 0x2, )
+gpsd: Appl, Command Data: Start Xmit PVT data
+gpsd: PrintSERPacket(, 0xa, 0x2, ) = 00
+gpsd: =&gt; GPS: 100a023100c31003
+gpsd: SendPacket(), wrote 8 bytes
+gpsd: =&gt; client(0): GPSD,I=Garmin USB binary
+gpsd: transfer mask on 75: 01
+gpsd: checking client(0)
+gpsd: &lt;= client(0): w+x
+gpsd: client(0): channel 5 already active.
+-- 
+=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
+Guy Cole (KQ6J) &quot;Expert Plain And Fancy Bit Twiddling&quot; <A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">guycole at gmail.com</A>
+&quot;Part of the thundering herd of computer nerds in Silicon Valley, USA&quot;
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="003168.html">[Gpsd-users] gpsd does not survive sleep/suspend to ram/lid close of laptop
+</A></li>
+	<LI>Next message: <A HREF="003170.html">[Gpsd-users] Decathlon/Geonaute Keymaze 300
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3169">[ date ]</a>
+              <a href="thread.html#3169">[ thread ]</a>
+              <a href="subject.html#3169">[ subject ]</a>
+              <a href="author.html#3169">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

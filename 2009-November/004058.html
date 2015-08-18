@@ -1,0 +1,115 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] Ntp Problems
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2009-November/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Ntp%20Problems&In-Reply-To=%3Ca2d3b4550911131346v65b5cf7di4b56023e07386d2c%40mail.gmail.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="004057.html">
+   <LINK REL="Next"  HREF="004059.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] Ntp Problems</H1>
+    <B>Don Weeks</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Ntp%20Problems&In-Reply-To=%3Ca2d3b4550911131346v65b5cf7di4b56023e07386d2c%40mail.gmail.com%3E"
+       TITLE="[Gpsd-users] Ntp Problems">don.l.weeks.jr at gmail.com
+       </A><BR>
+    <I>Fri Nov 13 22:46:05 CET 2009</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="004057.html">[Gpsd-users] Ntp Problems
+</A></li>
+        <LI>Next message: <A HREF="004059.html">[Gpsd-users] Ntp Problems
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#4058">[ date ]</a>
+              <a href="thread.html#4058">[ thread ]</a>
+              <a href="subject.html#4058">[ subject ]</a>
+              <a href="author.html#4058">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Gary,
+   I think I see the problem. In the /proc/sysvipc/shm that was created on
+my system, gpsd, which is compiled with a 64bit OCTEON MIPs compiler is
+running against an NTP compiled with 32 bit O32 compiler. This is yielding a
+difference in the size of the shared memory segments. So, I am recompiling
+NTP with the same 64 bit compiler. Below shows the difference as shm 0 and 1
+were opened by NTP and 2 and 3 were opened by gpsd.
+             Don
+
+    key      shmid perms       size  cpid  lpid nattch   uid   gid
+cuid  cgid      atime      dtime      ctime
+1314148400          0   700                    80  2468 25708      1
+ 0     0     0     0 1258074980 1258074955  946684819
+1314148401      32769   700                    80  2468 25668      0
+ 0     0     0     0 1258072998 1258072999  946684819
+1314148402      65538   644                    96  2601 25726      1
+ 0     0     0     0 1258076897 1258076885  946684821
+1314148403      98307   644                    96  2601 25726      1
+ 0     0     0     0 1258076897 1258076885  946684821
+2030157850     131076   666                   808  2668  3055      0
+ 0     0     0     0 1258069672 1258069677  946684825
+
+On Fri, Nov 13, 2009 at 12:31 PM, Gary E. Miller &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">gem at rellim.com</A>&gt; wrote:
+
+&gt;<i> -----BEGIN PGP SIGNED MESSAGE-----
+</I>&gt;<i> Hash: SHA1
+</I>&gt;<i>
+</I>&gt;<i> Yo Don!
+</I>&gt;<i>
+</I>&gt;<i> On Fri, 13 Nov 2009, Don Weeks wrote:
+</I>&gt;<i>
+</I>&gt;<i> &gt; NTP seems to be reading the
+</I>&gt;<i> &gt; data gpsd now and is attached to the 2 gpsd segments.
+</I>&gt;<i>
+</I>&gt;<i> Odd, some other process must have already attached to the first to shm.
+</I>&gt;<i>
+</I>&gt;<i> At least you seem on the way to success now.
+</I>&gt;<i>
+</I>&gt;<i> RGDS
+</I>&gt;<i> GARY
+</I>&gt;<i> -
+</I>&gt;<i> ---------------------------------------------------------------------------
+</I>&gt;<i> Gary E. Miller Rellim 109 NW Wilmington Ave., Suite E, Bend, OR 97701
+</I>&gt;<i>        <A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">gem at rellim.com</A>  Tel:+1(541)382-8588
+</I>&gt;<i>
+</I>&gt;<i> -----BEGIN PGP SIGNATURE-----
+</I>&gt;<i> Version: GnuPG v1.4.3 (GNU/Linux)
+</I>&gt;<i>
+</I>&gt;<i> iD8DBQFK/aYeBmnRqz71OvMRAgauAJ9tqJMaS0d2OWbThnZ8ortSoYrepQCeLNbA
+</I>&gt;<i> +DfJWEElLFeFmbsZ/yVI8tA=
+</I>&gt;<i> =ypHF
+</I>&gt;<i> -----END PGP SIGNATURE-----
+</I>&gt;<i>
+</I>&gt;<i>
+</I>
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="004057.html">[Gpsd-users] Ntp Problems
+</A></li>
+	<LI>Next message: <A HREF="004059.html">[Gpsd-users] Ntp Problems
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#4058">[ date ]</a>
+              <a href="thread.html#4058">[ thread ]</a>
+              <a href="subject.html#4058">[ subject ]</a>
+              <a href="author.html#4058">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

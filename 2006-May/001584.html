@@ -1,0 +1,97 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] Not Getting Output from Garmin GPS-18 (USB)
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2006-May/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Not%20Getting%20Output%20from%20Garmin%20GPS-18%20%28USB%29&In-Reply-To=%3C20060517170605.GB25362%40thyrsus.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="001583.html">
+   <LINK REL="Next"  HREF="001585.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] Not Getting Output from Garmin GPS-18 (USB)</H1>
+    <B>Eric S. Raymond</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Not%20Getting%20Output%20from%20Garmin%20GPS-18%20%28USB%29&In-Reply-To=%3C20060517170605.GB25362%40thyrsus.com%3E"
+       TITLE="[Gpsd-users] Not Getting Output from Garmin GPS-18 (USB)">esr at thyrsus.com
+       </A><BR>
+    <I>Wed May 17 19:06:05 CEST 2006</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="001583.html">[Gpsd-users] Not Getting Output from Garmin GPS-18 (USB)
+</A></li>
+        <LI>Next message: <A HREF="001585.html">[Gpsd-users] Not Getting Output from Garmin GPS-18 (USB)
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1584">[ date ]</a>
+              <a href="thread.html#1584">[ thread ]</a>
+              <a href="subject.html#1584">[ subject ]</a>
+              <a href="author.html#1584">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Gary E. Miller &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">gem at rellim.com</A>&gt;:
+&gt;<i> The Garmin binary compiles wrong on 64 bit Athlon.  The structure packing
+</I>&gt;<i> is wrong.  The code assumes char-8 bits, short 16-bits, long 32 bits.
+</I>&gt;<i> The sum total of the structure is then too big.  We just need to figure out
+</I>&gt;<i> how to code Packet_t to ue those sizes on the Ath64.
+</I>
+If I understand the problem correctly, we probably want to change
+Packet_t to something like this:
+
+typedef struct {
+    unsigned char  mPacketType;
+    unsigned char  mReserved1;
+    u_int16_t mReserved2;
+    u_int16_t mPacketId;
+    u_int16_t mReserved3;
+    u_int32_t  mDataSize;
+    union {
+	    char chars[MAX_BUFFER_SIZE];
+	    unsigned char uchars[MAX_BUFFER_SIZE];
+            cpo_pvt_data pvt;
+            cpo_sat_data sats;
+    } mData;
+} Packet_t;
+
+Other structures may need to be treated similarly.  We'll need to
+include sys/types.h or the C99 inttypes.h header.
+
+Here's what I suggest:
+
+Gary, you've got a Garmin and a 32-bit machine.  See if you can hack
+your structure members into fixed-width types without breaking your 
+gpsd.  
+
+Then we'll pass that on to Adam and see if it works on his 64-bit machine.
+-- 
+		&lt;a href=&quot;<A HREF="http://www.catb.org/~esr/">http://www.catb.org/~esr/</A>&quot;&gt;Eric S. Raymond&lt;/a&gt;
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="001583.html">[Gpsd-users] Not Getting Output from Garmin GPS-18 (USB)
+</A></li>
+	<LI>Next message: <A HREF="001585.html">[Gpsd-users] Not Getting Output from Garmin GPS-18 (USB)
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1584">[ date ]</a>
+              <a href="thread.html#1584">[ thread ]</a>
+              <a href="subject.html#1584">[ subject ]</a>
+              <a href="author.html#1584">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

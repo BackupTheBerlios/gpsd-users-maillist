@@ -1,0 +1,166 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] Change to new API
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2010-July/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Change%20to%20new%20API&In-Reply-To=%3C20100725212829.52977ef3%40frodo%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="004598.html">
+   <LINK REL="Next"  HREF="004608.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] Change to new API</H1>
+    <B>Andreas Volz</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Change%20to%20new%20API&In-Reply-To=%3C20100725212829.52977ef3%40frodo%3E"
+       TITLE="[Gpsd-users] Change to new API">lists at brachttal.net
+       </A><BR>
+    <I>Sun Jul 25 21:28:29 CEST 2010</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="004598.html">[Gpsd-users] Change to new API
+</A></li>
+        <LI>Next message: <A HREF="004608.html">[Gpsd-users] Change to new API
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#4605">[ date ]</a>
+              <a href="thread.html#4605">[ thread ]</a>
+              <a href="subject.html#4605">[ subject ]</a>
+              <a href="author.html#4605">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Am Thu, 22 Jul 2010 15:07:18 -0700 (PDT) schrieb Gary E. Miller:
+
+&gt;<i> -----BEGIN PGP SIGNED MESSAGE-----
+</I>&gt;<i> Hash: SHA1
+</I>&gt;<i> 
+</I>&gt;<i> Yo Andreas!
+</I>&gt;<i> 
+</I>&gt;<i> On Thu, 22 Jul 2010, Andreas Volz wrote:
+</I>&gt;<i> 
+</I>&gt;<i> &gt; &gt; And you are sure no old copies of gpsd, gpsfake, libgps*, etc. are
+</I>&gt;<i> &gt; &gt; around?
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; Yes, I'm sure. I complete deleted my old installation and installed
+</I>&gt;<i> &gt; the default libgps from Ubuntu 10.04.
+</I>&gt;<i> 
+</I>&gt;<i> Can you humor me and doublecheck?
+</I>&gt;<i> 
+</I>&gt;<i> # ldconfig -v | fgrep gps
+</I>&gt;<i> # ls -l `which gpsd gpsfake`o
+</I>&gt;<i> 
+</I>&gt;<i> And remember that gpsdfake  uses python so the old python stuff
+</I>&gt;<i> also needs to be removed.
+</I>&gt;<i> 
+</I>&gt;<i> # find / -xdev  -name 'gps*py*'
+</I>
+<A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">root at er00923n</A>:~# ldconfig -v | fgrep gps
+/sbin/ldconfig.real: Can't stat /lib/i486-linux-gnu: No such file or directory
+/sbin/ldconfig.real: Can't stat /lib64: No such file or directory
+	libgps.so.19 -&gt; libgps.so.19.0.0
+<A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">root at er00923n</A>:~# ls -l `which gpsd gpsfake`
+-rwxr-xr-x 1 root root  6095 2010-04-06 14:32 /usr/bin/gpsfake
+-rwxr-xr-x 1 root root 34816 2010-04-06 14:33 /usr/sbin/gpsd
+<A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">root at er00923n</A>:~# find / -xdev  -name 'gps*py*'
+/usr/share/pyshared/gps/gps.py
+/usr/lib/pymodules/python2.6/gps/gps.py
+/usr/lib/pymodules/python2.6/gps/gps.pyc
+<A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">root at er00923n</A>:~# apt-cache show gpsd
+Package: gpsd
+Priority: optional
+Section: universe/misc
+Installed-Size: 208
+Maintainer: Ubuntu Developers &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">ubuntu-devel-discuss at lists.ubuntu.com</A>&gt;
+Original-Maintainer: Bernd Zeimetz &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">bzed at debian.org</A>&gt;
+Architecture: i386
+Version: 2.92-4
+Depends: netbase, lsb-base (&gt;= 3.2-13), libc6 (&gt;= 2.11), libdbus-1-3 (&gt;= 1.0.2), libgps19 (&gt;= 2.91), debconf (&gt;= 0.5) | debconf-2.0
+Recommends: udev, python
+Suggests: gpsd-clients, dbus
+Breaks: udev (&lt;&lt; 136-1)
+Filename: pool/universe/g/gpsd/gpsd_2.92-4_i386.deb
+Size: 90890
+MD5sum: 489bc192856a4c03c7a41654119b8681
+SHA1: 5c59fda39c2257e3602dd41a9f20aeb195d626bf
+SHA256: 06ba4c20eb28b7a791634cf6a39661310e3513e173a710d20816d9c6744060ac
+Description: Global Positioning System - daemon
+ The gpsd service daemon can monitor one or more GPS devices connected to
+ a host computer, making all data on the location and movements of the
+ sensors available to be queried on TCP port 2947.
+ .
+ With gpsd, multiple GPS client applications can share access to devices
+ without contention or loss of data. Also, gpsd responds to queries with a
+ format that is substantially easier to parse than the different standards
+ emitted by GPS devices.
+Homepage: <A HREF="http://gpsd.berlios.de/">http://gpsd.berlios.de/</A>
+Bugs: <A HREF="https://bugs.launchpad.net/ubuntu/+filebug">https://bugs.launchpad.net/ubuntu/+filebug</A>
+Origin: Ubuntu
+
+<A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">root at er00923n</A>:~# apt-cache show libgps-dev
+Package: libgps-dev
+Priority: optional
+Section: universe/libdevel
+Installed-Size: 600
+Maintainer: Ubuntu Developers &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">ubuntu-devel-discuss at lists.ubuntu.com</A>&gt;
+Original-Maintainer: Bernd Zeimetz &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">bzed at debian.org</A>&gt;
+Architecture: i386
+Source: gpsd
+Version: 2.92-4
+Depends: libgps19 (= 2.92-4)
+Conflicts: gpsd (&lt;&lt; 2.34.dfsg-1)
+Filename: pool/universe/g/gpsd/libgps-dev_2.92-4_i386.deb
+Size: 223658
+MD5sum: 47e529dd60c37140f8881654d6465ad5
+SHA1: 7348d51045975dbbdcbc4416e2c3fabb32d1d344
+SHA256: 260d1248ae7e5e3e38d6fca608f955b94ee81807c6885b1085cde9af6bb57fa7
+Description: Global Positioning System - development files
+ The gpsd service daemon can monitor one or more GPS devices connected to
+ a host computer, making all data on the location and movements of the
+ sensors available to be queried on TCP port 2947.
+ .
+ This package contains the header and development files needed to build
+ programs and packages using libgps.
+Homepage: <A HREF="http://gpsd.berlios.de/">http://gpsd.berlios.de/</A>
+Bugs: <A HREF="https://bugs.launchpad.net/ubuntu/+filebug">https://bugs.launchpad.net/ubuntu/+filebug</A>
+Origin: Ubuntu
+
+&gt;<i> &gt; What is the suggest way to do this now?
+</I>&gt;<i> 
+</I>&gt;<i> Trying running gpsd at a higher debug level and look for problems.
+</I>
+Hm, I tried the cgps client with my gpsfake run and it works. So I think there's
+something wrong how I read the data from gpsd with the new API. I'll try to fix
+it and show some code if I don't find the problem.
+
+thanks
+	Andreas
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="004598.html">[Gpsd-users] Change to new API
+</A></li>
+	<LI>Next message: <A HREF="004608.html">[Gpsd-users] Change to new API
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#4605">[ date ]</a>
+              <a href="thread.html#4605">[ thread ]</a>
+              <a href="subject.html#4605">[ subject ]</a>
+              <a href="author.html#4605">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

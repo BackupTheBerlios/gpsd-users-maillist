@@ -1,0 +1,93 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] Announcing release 2.7 of gpsd
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2005-January/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Announcing%20release%202.7%20of%20gpsd&In-Reply-To=%3Cp06200721be14d2122157%40%5B192.168.0.3%5D%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="000217.html">
+   <LINK REL="Next"  HREF="000219.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] Announcing release 2.7 of gpsd</H1>
+    <B>Robin L Darroch</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Announcing%20release%202.7%20of%20gpsd&In-Reply-To=%3Cp06200721be14d2122157%40%5B192.168.0.3%5D%3E"
+       TITLE="[Gpsd-users] Announcing release 2.7 of gpsd">robin at spade-men.com
+       </A><BR>
+    <I>Thu Jan 20 04:27:28 CET 2005</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="000217.html">[Gpsd-users] Re: Holux GM-210 / sample Java gpsd code
+</A></li>
+        <LI>Next message: <A HREF="000219.html">[Gpsd-users] Announcing release 2.7 of gpsd
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#218">[ date ]</a>
+              <a href="thread.html#218">[ thread ]</a>
+              <a href="subject.html#218">[ subject ]</a>
+              <a href="author.html#218">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>I've just discovered (or had reported to me, and confirmed) a crash 
+bug that is new in 2.7.  It seems (at least on Darwin systems, 
+possibly on others) that repeated querying of GPSD will cause it to 
+crash.  This doesn't appear to cause problems if you just turn on a 
+stream using &quot;w&quot; or &quot;r&quot;.
+
+To reproduce:
+- install gpsd-2.7 (possibly on Darwin only, possibly on other BSD 
+systems or all systems)
+- start gpsd (I've tested it with a USB GPS connected with a poor sky 
+view, but can't find a pattern for the crash as being when the GPS 
+does or doesn't have a fix)
+- telnet to the gpsd port
+- repeatedly query gpsd (e.g. p&lt;enter&gt;p&lt;enter&gt;p&lt;enter&gt;...)
+
+Unfortunately it's not reliable as to how quickly it will crash, but 
+I generally find within the first couple of dozen queries (I've only 
+once seen it go for more than about 50 queries - I usually use either 
+&quot;p&quot; or &quot;q&quot;).
+
+If you prefer to automate the testing process, just run KisMAC or any 
+comparable client software that sends repeated queries rather than 
+listening to a stream.
+
+Cheers,
+Robin
+-- 
+
+-------------------------------------------------------------------------
+  Robin L. Darroch - PO Box 2715, South Hedland WA 6722 - +61 421 503 966
+       <A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">robin at darroch.id.au</A> - <A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">robin at nyca.org.au</A> - <A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">robin at spade-men.com</A>
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="000217.html">[Gpsd-users] Re: Holux GM-210 / sample Java gpsd code
+</A></li>
+	<LI>Next message: <A HREF="000219.html">[Gpsd-users] Announcing release 2.7 of gpsd
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#218">[ date ]</a>
+              <a href="thread.html#218">[ thread ]</a>
+              <a href="subject.html#218">[ subject ]</a>
+              <a href="author.html#218">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

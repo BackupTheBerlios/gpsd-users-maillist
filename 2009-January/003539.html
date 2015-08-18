@@ -1,0 +1,85 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] gpsfake not going past first NMEA log line
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2009-January/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20gpsfake%20not%20going%20past%20first%20NMEA%20log%20line&In-Reply-To=%3C20090107041702.GA3686%40thyrsus.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="003538.html">
+   <LINK REL="Next"  HREF="003540.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] gpsfake not going past first NMEA log line</H1>
+    <B>Eric S. Raymond</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20gpsfake%20not%20going%20past%20first%20NMEA%20log%20line&In-Reply-To=%3C20090107041702.GA3686%40thyrsus.com%3E"
+       TITLE="[Gpsd-users] gpsfake not going past first NMEA log line">esr at thyrsus.com
+       </A><BR>
+    <I>Wed Jan  7 05:17:02 CET 2009</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="003538.html">[Gpsd-users] gpsfake not going past first NMEA log line
+</A></li>
+        <LI>Next message: <A HREF="003540.html">[Gpsd-users] gpsfake not going past first NMEA log line
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3539">[ date ]</a>
+              <a href="thread.html#3539">[ thread ]</a>
+              <a href="subject.html#3539">[ subject ]</a>
+              <a href="author.html#3539">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Eric Klein &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">klein.eric at gmail.com</A>&gt;:
+&gt;<i> I'm developing some software at the hobby level using gpsd, and have
+</I>&gt;<i> been attempting to get gpsfake to work properly. It seems no matter
+</I>&gt;<i> what NMEA log I throw at it, it only ever sends gpsd the first NMEA
+</I>&gt;<i> log line. I have tried using logs downloaded from a couple of gps
+</I>&gt;<i> hobbyists, and also purchased an Earthmate LT-40. The LT-40 works like
+</I>&gt;<i> a champ with gpsd, with xgps and gpsdrive having no trouble following
+</I>&gt;<i> the satellites and track. However, even the NMEA file I generated
+</I>&gt;<i> using gpspipe is only passing the first NMEA log line to gpsd in
+</I>&gt;<i> gpsfake. Am I just missing something? I'll be happy to post to the
+</I>&gt;<i> list or privately any diagnostic info you need.
+</I>
+We recently became aware of this bug ourselves.  It is not a gpsd problem,
+but the result of some kind of gnarly interaction between Python, the
+kernel, and even the GCC version. What we know about it is described here: 
+
+	<A HREF="http://gpsd.berlios.de/upstream-bugs.html#gpsfake">http://gpsd.berlios.de/upstream-bugs.html#gpsfake</A>
+
+The workaround is to drop back to Python 2.4 for running gpsfake.  The
+fix is in somebody else's code :-).  We are continuing to investigate;
+just today we turned up evidence of a Linux kernel bug in pty handling
+that we'll almost certainly file a bug on.
+-- 
+		&lt;a href=&quot;<A HREF="http://www.catb.org/~esr/">http://www.catb.org/~esr/</A>&quot;&gt;Eric S. Raymond&lt;/a&gt;
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="003538.html">[Gpsd-users] gpsfake not going past first NMEA log line
+</A></li>
+	<LI>Next message: <A HREF="003540.html">[Gpsd-users] gpsfake not going past first NMEA log line
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3539">[ date ]</a>
+              <a href="thread.html#3539">[ thread ]</a>
+              <a href="subject.html#3539">[ subject ]</a>
+              <a href="author.html#3539">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

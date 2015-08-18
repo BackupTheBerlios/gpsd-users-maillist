@@ -1,0 +1,126 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] Input buffer overrun
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2005-July/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Input%20buffer%20overrun&In-Reply-To=%3C20050730103922.GA17809%40thyrsus.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="000907.html">
+   <LINK REL="Next"  HREF="000909.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] Input buffer overrun</H1>
+    <B>Eric S. Raymond</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Input%20buffer%20overrun&In-Reply-To=%3C20050730103922.GA17809%40thyrsus.com%3E"
+       TITLE="[Gpsd-users] Input buffer overrun">esr at thyrsus.com
+       </A><BR>
+    <I>Sat Jul 30 12:39:22 CEST 2005</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="000907.html">[Gpsd-users] Input buffer overrun
+</A></li>
+        <LI>Next message: <A HREF="000909.html">[Gpsd-users] Input buffer overrun
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#908">[ date ]</a>
+              <a href="thread.html#908">[ thread ]</a>
+              <a href="subject.html#908">[ subject ]</a>
+              <a href="author.html#908">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>maillist &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">maillist at boilerbots.com</A>&gt;:
+&gt;<i> It is me again with another issue. With the high data rates my GPS is 
+</I>&gt;<i> producing it appears that sometimes the input buffer overflows and it 
+</I>&gt;<i> crashes. I looked at the code and can't see anything obvious that would 
+</I>&gt;<i> cause it to crash and haven't tried to catch it yet with a debugger.
+</I>
+I've stared at the code for a while myself, and I don't think it's the 
+input buffer itself.  More likely it's some auxiliary buffer that is not
+correctly scaled to the input buffer size.
+
+Could I possibly get you to compile with MAX_PACKET_LENGTH = 196 and then
+run under gdb long enough to crash gpsd?  I want to fix the underlying bug
+rather than the symptom, and I don't have a 20Hz GPS to test with.
+
+(Wherever did you get such a beast, anyway?)
+ 
+&gt;<i> Anyway, what it looks like is that sometimes a long/slow context switch 
+</I>&gt;<i> will cause the next read from the serial device to be very big. I 
+</I>&gt;<i> sometimes see a read of 250 characters or more. This exceeds the size of 
+</I>&gt;<i> the input buffer because it already contained partial packet data.
+</I>&gt;<i> 
+</I>&gt;<i> I have re-defined MAX_PACKET_LENGTH to 512 and I have not yet had a crash.
+</I>
+That wasn't the right define to tweak, I don't think.  Here's what I did:
+
+--- gpsd.h	(revision 3047)
++++ gpsd.h	(working copy)
+@@ -100,6 +100,16 @@
+  */
+ #define MAX_PACKET_LENGTH	196	/* 188 + 8 */
+ 
++/*
++ * We used to define the inbut buffer length as MAX_PACKET_LENGTH*2+1.
++ * However, as it turns out, this isn't enough.  We've had a report
++ * from one user with a GPS that reports at 20Hz that &quot;sometimes a
++ * long/slow context switch will cause the next read from the serial
++ * device to be very big. I sometimes see a read of 250 characters or
++ * more.&quot;
++ */
++#define INPUT_BUFFER_LENGTH	1024
++
+ struct gps_device_t {
+ /* session object, encapsulates all global state */
+     struct gps_data_t gpsdata;
+@@ -120,7 +130,7 @@
+     unsigned int baudindex;
+     unsigned int packet_state;
+     size_t packet_length;
+-    unsigned char inbuffer[MAX_PACKET_LENGTH*2+1];
++    unsigned char inbuffer[INPUT_BUFFER_LENGTH];
+     size_t inbuflen;
+     unsigned /*@observer@*/char *inbufptr;
+     unsigned char outbuffer[MAX_PACKET_LENGTH+1];
+
+&gt;<i> I can send you my gpsd output logs at level 6 showing the input buffer 
+</I>&gt;<i> growing very large sometimes and it takes a few cycles to empty out what 
+</I>&gt;<i> it has accumulated.
+</I>
+I believe you.  My concern is that I want to harden the code so it will
+handle arbitrary data rates, not just balloon some buffers hoping the 
+overrun condition will never actually hit.
+
+Replies to your previous two messages are coming.
+-- 
+		&lt;a href=&quot;<A HREF="http://www.catb.org/~esr/">http://www.catb.org/~esr/</A>&quot;&gt;Eric S. Raymond&lt;/a&gt;
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="000907.html">[Gpsd-users] Input buffer overrun
+</A></li>
+	<LI>Next message: <A HREF="000909.html">[Gpsd-users] Input buffer overrun
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#908">[ date ]</a>
+              <a href="thread.html#908">[ thread ]</a>
+              <a href="subject.html#908">[ subject ]</a>
+              <a href="author.html#908">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

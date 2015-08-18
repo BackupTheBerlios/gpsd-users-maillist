@@ -1,0 +1,132 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] rpath madness (was: gpsd build failed...)
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2011-September/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20rpath%20madness%20%28was%3A%20gpsd%20build%20failed...%29&In-Reply-To=%3C20110928041344.GA29152%40thyrsus.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="005494.html">
+   <LINK REL="Next"  HREF="005500.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] rpath madness (was: gpsd build failed...)</H1>
+    <B>Eric Raymond</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20rpath%20madness%20%28was%3A%20gpsd%20build%20failed...%29&In-Reply-To=%3C20110928041344.GA29152%40thyrsus.com%3E"
+       TITLE="[Gpsd-users] rpath madness (was: gpsd build failed...)">esr at thyrsus.com
+       </A><BR>
+    <I>Wed Sep 28 06:13:44 CEST 2011</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="005494.html">[Gpsd-users] Python - Current Location
+</A></li>
+        <LI>Next message: <A HREF="005500.html">[Gpsd-users] GPS board question: Rockwell Jupiter vs Trimble ACE 3
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#5495">[ date ]</a>
+              <a href="thread.html#5495">[ thread ]</a>
+              <a href="subject.html#5495">[ subject ]</a>
+              <a href="author.html#5495">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Jon Schlueter &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">jon.schlueter at gmail.com</A>&gt;:
+&gt;<i> Confirmed, if you don't have an installed version of libgpsd in your
+</I>&gt;<i> library search path it won't compile and it fails trying to link...
+</I>&gt;<i> even though the library was just built, it is not found and not linked
+</I>&gt;<i> into gpsd or the other apps.
+</I>&gt;<i> 
+</I>&gt;<i> to recreate just remove your installed gpsd libraries and try a clean
+</I>&gt;<i> compile of the package.
+</I>&gt;<i> 
+</I>&gt;<i> An Ugly hack that breaks other things but allows it to compile is below
+</I>
+Don't do that.  Instead, install the chrpath(1) tool on your
+development system and the problem will vanish.
+
+Explanation: The problem stems from the rpath feature of
+shared-library loading, and arise because the GPSD programs rely on
+two shared libaries - libgps (client) and libgpsd (low-level device
+access).
+
+A binary that uses shared libraries needs to tell the OS where to look
+for them; this is a list of directories called an 'rpath'.  There's a
+default rpath, which typically includes /lib and /usr/lib; you can add
+directories to this by setting the RPATH environment variable at link
+time.
+
+For purposes of running regressions and other tests in the build
+directory *before* the point at which shared libraries are installed
+in /lib or /usr/lib, it is convenient to include $PWD or '.' in the
+build path.  But we do *not* want this rpath to remain in the
+installed binaries; with it, a maliciously crafted library dropped in
+the right place might be used for privilege-escalation attacks and
+other mischief. In the installed binaries, we want the default rpath
+(/lib, /usr/lib, etc.)
+
+The are only two known ways to get around this problem.  One is
+libtool's; it does weird magic, producing under the name of each
+binary a thing that is actually a shellscript that links the the
+binary's components with RPATH='.' and then loading and running that.
+This is why running gdb on a 'binary' with non-static linking produces
+cryptic messages about the file type.  Then, libtool does an entire
+second link pass with a different (default) rpath at binary
+installation
+
+The other way is to hack the rpath in the installed binaries *after
+they're installed* to remove $PWD.  This is what chrpath does forn
+us. If you have chrpath on your system, everything will behave as
+you'd expect; in particular -lgpsd will find libgpsd in the build
+directory.
+
+If you don't have chrpath installed, life gets complicated.
+
+In that case, the scons recipe never inserts $PWD in the rpath of each
+binaries (in order to never produce a subvertible binary that might
+get installed in sysyem space). This policy would make the link pass
+unable to resolve -lgpsd to libgpsd in the build directory, except
+that the scons recipe sets LD_LIBRARY PATH to $CWD in the environment
+it passes to commands.  This behaves as a temporary addition to the
+rpath, and means that you can run scons testregress without truoble.
+
+The only case in which you still lose is if (a) you don't have chrpath,
+(b) you try to run one of the programs by hand rather than through the 
+scons test wraapper, and (c) you don't already have the shared 
+libraries installed in system space
+
+This is a price we pay for dumping autotools - specifically, 
+libtool - over the side. It's such as nasty pile of hacks that
+I think that's a good trade.
+
+To sum up and repeat: Install chrpath(1).  That should fix the problem.
+-- 
+		&lt;a href=&quot;<A HREF="http://www.catb.org/~esr/">http://www.catb.org/~esr/</A>&quot;&gt;Eric S. Raymond&lt;/a&gt;
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="005494.html">[Gpsd-users] Python - Current Location
+</A></li>
+	<LI>Next message: <A HREF="005500.html">[Gpsd-users] GPS board question: Rockwell Jupiter vs Trimble ACE 3
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#5495">[ date ]</a>
+              <a href="thread.html#5495">[ thread ]</a>
+              <a href="subject.html#5495">[ subject ]</a>
+              <a href="author.html#5495">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

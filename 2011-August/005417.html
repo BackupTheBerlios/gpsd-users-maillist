@@ -1,0 +1,99 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] Fwd:  gpsfake fails
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2011-August/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Fwd%3A%20%20gpsfake%20fails&In-Reply-To=%3C1313593635.96816.YahooMailClassic%40web39308.mail.mud.yahoo.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="005415.html">
+   <LINK REL="Next"  HREF="005418.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] Fwd:  gpsfake fails</H1>
+    <B>Ezequiel Garc&#237;a</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Fwd%3A%20%20gpsfake%20fails&In-Reply-To=%3C1313593635.96816.YahooMailClassic%40web39308.mail.mud.yahoo.com%3E"
+       TITLE="[Gpsd-users] Fwd:  gpsfake fails">elezegarcia at yahoo.com.ar
+       </A><BR>
+    <I>Wed Aug 17 17:07:15 CEST 2011</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="005415.html">[Gpsd-users] Fwd:  gpsfake fails
+</A></li>
+        <LI>Next message: <A HREF="005418.html">[Gpsd-users] Fwd: gpsfake fails
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#5417">[ date ]</a>
+              <a href="thread.html#5417">[ thread ]</a>
+              <a href="subject.html#5417">[ subject ]</a>
+              <a href="author.html#5417">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>
+&gt;<i> 2011/8/17 Rusty Synate &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">k.saran.k at gmail.com</A>&gt;
+</I>&gt;<i> 
+</I>&gt;<i> &gt; [<A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">root at uxchas233</A> ~]# uname -a
+</I>&gt;<i> &gt; Linux uxchas233 2.6.33.3-85.fc13.i686.PAE #1 SMP Thu
+</I>&gt;<i> May 6 18:27:11 UTC
+</I>&gt;<i> &gt; 2010 i68
+</I>&gt;<i> &gt; 6 i686 i386 GNU/Linux
+</I>&gt;<i> &gt; [<A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">root at uxchas233</A> ~]# which python
+</I>&gt;<i> &gt; /usr/bin/python
+</I>&gt;<i> &gt; [<A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">root at uxchas233</A> ~]# which gpsd
+</I>&gt;<i> &gt; /usr/local/sbin/gpsd
+</I>&gt;<i> &gt; [<A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">root at uxchas233</A> ~]# which gpsfake
+</I>&gt;<i> &gt; /usr/local/bin/gpsfake
+</I>&gt;<i> &gt; [<A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">root at uxchas233</A> ~]#
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; I tried exporting the PYTHONPATH but no good. Above
+</I>&gt;<i> are the details of my
+</I>&gt;<i> &gt; system.
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; Is&#160; that gpsd-2.96 requires python with some
+</I>&gt;<i> packages installed.
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; My system has python 2.6 installed.
+</I>
+To clarify whats going on...
+
+You need to search for gps.py and fake.py. You can find them inside gpsd/gps
+in the gpsd sources. These are the modules that python are looking for 
+when you do 'import gps.fake'.
+
+In other words gps.py and fake.py (and such) are installed when you install gpsd, but python is not finding it.
+
+So you must add gps.py path to the python path. Again this path is controlled by PYTHONPATH variable and you can verify with
+sys.path (in python).
+
+Hope it is clear now,
+Ezequiel.
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="005415.html">[Gpsd-users] Fwd:  gpsfake fails
+</A></li>
+	<LI>Next message: <A HREF="005418.html">[Gpsd-users] Fwd: gpsfake fails
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#5417">[ date ]</a>
+              <a href="thread.html#5417">[ thread ]</a>
+              <a href="subject.html#5417">[ subject ]</a>
+              <a href="author.html#5417">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

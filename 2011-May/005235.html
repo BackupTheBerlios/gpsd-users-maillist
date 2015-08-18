@@ -1,0 +1,94 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] gpsd 3.0~dev cross compilation
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2011-May/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20gpsd%203.0%7Edev%20cross%20compilation&In-Reply-To=%3CBANLkTi%3DB4x6h_BGW1Ex7gdiP2XaEPeU_Cg%40mail.gmail.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="005234.html">
+   <LINK REL="Next"  HREF="005236.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] gpsd 3.0~dev cross compilation</H1>
+    <B>Michael Lippautz</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20gpsd%203.0%7Edev%20cross%20compilation&In-Reply-To=%3CBANLkTi%3DB4x6h_BGW1Ex7gdiP2XaEPeU_Cg%40mail.gmail.com%3E"
+       TITLE="[Gpsd-users] gpsd 3.0~dev cross compilation">michael.lippautz at gmail.com
+       </A><BR>
+    <I>Wed May  4 09:36:23 CEST 2011</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="005234.html">[Gpsd-users] gpsd 3.0~dev cross compilation
+</A></li>
+        <LI>Next message: <A HREF="005236.html">[Gpsd-users] gpsd 3.0~dev cross compilation
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#5235">[ date ]</a>
+              <a href="thread.html#5235">[ thread ]</a>
+              <a href="subject.html#5235">[ subject ]</a>
+              <a href="author.html#5235">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>2011/5/4 Eric Raymond &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">esr at thyrsus.com</A>&gt;:
+&gt;<i> ...
+</I>&gt;<i> No. &#160;The SCons documentation explains that it ignores PATH, looking for
+</I>&gt;<i> commands in a fixed set of system directories, so that the build environment
+</I>&gt;<i> will be explicitly controlled by the recipe rather than implicitly by
+</I>&gt;<i> environment variables of which the user may be unaware.
+</I>
+That's not really comfortable, but I understand that having a fixed
+set of tools makes everything more predictable. [1] describes
+propagating PATH into SCons if you change your opinion on that.
+
+&gt;<i>
+</I>&gt;<i> Our build used pkg-config without problems on my machine. &#160;Do you have
+</I>&gt;<i> it installed or configured in some unusual way?
+</I>
+The problem is that when you have a cross environment you can't use
+the systems pkg-config (because you have different libraries installed
+in your environment than you have on the system; also the paths
+differ). Ofc. normal compilation should be not effected by this.
+
+To solve the cross compilation issue you would have to propagate not
+only CC/..., but also pkg-config from the environment (like it's done
+in [2]). Because you don't want to respect PATH, every tool used
+should be probed for an environment counterpart. This way you get the
+right (cross-environment) pkg-config which then tells you the right
+(cross compiled) libraries to link against.
+
+&gt;<i> ...
+</I>
+-Michael
+
+[1] <A HREF="http://www.scons.org/wiki/FrequentlyAskedQuestions#Why_doesn.27t_SCons_find_my_compiler.2BAC8-linker.2BAC8-etc..3F_I_can_execute_it_just_fine_from_the_command_line.">http://www.scons.org/wiki/FrequentlyAskedQuestions#Why_doesn.27t_SCons_find_my_compiler.2BAC8-linker.2BAC8-etc..3F_I_can_execute_it_just_fine_from_the_command_line.</A>
+[2] <A HREF="http://git.berlios.de/cgi-bin/cgit.cgi/gpsd/tree/SConstruct#n144">http://git.berlios.de/cgi-bin/cgit.cgi/gpsd/tree/SConstruct#n144</A>
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="005234.html">[Gpsd-users] gpsd 3.0~dev cross compilation
+</A></li>
+	<LI>Next message: <A HREF="005236.html">[Gpsd-users] gpsd 3.0~dev cross compilation
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#5235">[ date ]</a>
+              <a href="thread.html#5235">[ thread ]</a>
+              <a href="subject.html#5235">[ subject ]</a>
+              <a href="author.html#5235">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

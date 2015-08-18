@@ -1,0 +1,111 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] backtrace from the bug on gps_query
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2007-June/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20backtrace%20from%20the%20bug%20on%20gps_query&In-Reply-To=%3CBAY117-F92BE578E11DE7629FB362C20B0%40phx.gbl%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="002726.html">
+   <LINK REL="Next"  HREF="002728.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] backtrace from the bug on gps_query</H1>
+    <B>Simon Le Pape</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20backtrace%20from%20the%20bug%20on%20gps_query&In-Reply-To=%3CBAY117-F92BE578E11DE7629FB362C20B0%40phx.gbl%3E"
+       TITLE="[Gpsd-users] backtrace from the bug on gps_query">simon.le-pape at hotmail.fr
+       </A><BR>
+    <I>Tue Jun 26 11:43:35 CEST 2007</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="002726.html">[Gpsd-users] how use tomtom gps
+</A></li>
+        <LI>Next message: <A HREF="002728.html">[Gpsd-users] gpsd-logo
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2727">[ date ]</a>
+              <a href="thread.html#2727">[ thread ]</a>
+              <a href="subject.html#2727">[ subject ]</a>
+              <a href="author.html#2727">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi,
+I wrote this list a few days ago about a strange error which appears 
+sometimes.
+I have more details about it.
+I did not understand what append exactly. I can just give you the scenario 
+and give you a back trace.
+I launch my application which is a multithreaded one.
+One thread is a UDP server, the other one a GPSd client based on libgps. 
+They just share a structure (secured by a mutex).
+The GPSd client is a simple loop :
+-it calls gps_query and uses the response from GPSd to update the shared 
+structure.
+
+In order to test my application, i use gpsfake with a NMEA file.
+I wanted to stress it a little bit, so i used the -i option and i 
+repetitively launched and killed gpsfake without fooding the daemon.
+And sometimes,  when my application calls gps_query (GPSd is running but not 
+fed), this function seems to be in an infinite loop. The only way to stop 
+this loop is to kill GPSd or to kill my application.
+In this second case, i got a back trace from gdb :
+
+0x0077f7a2 in _dl_sysinfo_int80 () from /lib/ld-linux.so.2
+#1  0x00856073 in __read_nocancel () from /lib/tls/libc.so.6
+#2  0x0804b686 in gps_poll (gpsdata=0x92631b0) at libgps.c:519
+#3  0x0804c6a8 in gps_query (gpsdata=0x92631b0, fmt=0x804ea18 &quot;o\n&quot;) at 
+libgps.c:549
+#4  0x0804a049 in ca_client_convertisseur (arg=0xbfec6d54) at 
+ca_serveur_convertisseur.c:419
+#5  0x0804adea in main (argc=1, argv=0xbfec6d54) at 
+ca_serveur_convertisseur.c:1231
+
+I am really lost, I thought it came from my application, but the back trace 
+seems to say that the problem is in the system function __read_nocancel, I 
+looked for information on google but the only thing I found is that a lot of 
+people with a lot of applications encountered problems with this system 
+function....
+
+So any idea about the cause, the risk to encounter this problem in real life 
+and how to avoid it?
+
+Thank you in advance for your response,
+
+Regards,
+
+Simon
+
+_________________________________________________________________
+D&#233;couvrez le Blog heroic Fantaisy d'Eragon! 
+<A HREF="http://eragon-heroic-fantasy.spaces.live.com/">http://eragon-heroic-fantasy.spaces.live.com/</A>
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="002726.html">[Gpsd-users] how use tomtom gps
+</A></li>
+	<LI>Next message: <A HREF="002728.html">[Gpsd-users] gpsd-logo
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2727">[ date ]</a>
+              <a href="thread.html#2727">[ thread ]</a>
+              <a href="subject.html#2727">[ subject ]</a>
+              <a href="author.html#2727">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

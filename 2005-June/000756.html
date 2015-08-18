@@ -1,0 +1,128 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] [gpsd] Information on support of &quot;Garmin Geko 201&quot;
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2005-June/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20%5Bgpsd%5D%20Information%20on%20support%20of%20%22Garmin%20Geko%20201%22&In-Reply-To=%3C20050614210932.GA2257%40localhost%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="000755.html">
+   <LINK REL="Next"  HREF="000757.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] [gpsd] Information on support of &quot;Garmin Geko 201&quot;</H1>
+    <B>Jos&#233; Luis Domingo L&#243;pez</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20%5Bgpsd%5D%20Information%20on%20support%20of%20%22Garmin%20Geko%20201%22&In-Reply-To=%3C20050614210932.GA2257%40localhost%3E"
+       TITLE="[Gpsd-users] [gpsd] Information on support of &quot;Garmin Geko 201&quot;">jdomingo at 24x7linux.com
+       </A><BR>
+    <I>Tue Jun 14 23:09:32 CEST 2005</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="000755.html">[Gpsd-users] [gpsd] Information on support of &quot;Garmin Geko 201&quot;
+</A></li>
+        <LI>Next message: <A HREF="000757.html">[Gpsd-users] [gpsd] Information on support of &quot;Garmin Geko 201&quot;
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#756">[ date ]</a>
+              <a href="thread.html#756">[ thread ]</a>
+              <a href="subject.html#756">[ subject ]</a>
+              <a href="author.html#756">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>On Tuesday, 14 June 2005, at 15:31:18 -0400,
+Eric S. Raymond wrote:
+
+[ I am not currently subscribed to the list, thanks for Cc:'ing ]
+
+&gt;<i> It would be more interesting if you could test the subversion head or 2.25
+</I>&gt;<i> and tell us if the speed problem persists.
+</I>&gt;<i> 
+</I>Just tried a build of version 2.25 from the Debian package maintainer, and
+this builds behaves erratically. &quot;time&quot;, &quot;speed&quot; and &quot;course&quot; is always
+n/a, while the rest goes n/a each second or so. The reason is in the
+logs. An excerpt follows. Some columns suppressed:
+
+23:00:53 gpsd: launching (Version 2.25)
+23:00:53 gpsd: listening on port gsd
+23:00:53 gpsd: changing to group 20
+23:00:53 gpsd: running with effective group ID 20
+23:00:53 gpsd: running with effective user ID 65534
+23:01:01 gpsd: &lt;= client: w+x
+23:01:01 gpsd: closing GPS=/dev/ttyS1
+23:01:01 gpsd: opening GPS data source at '/dev/ttyS1'
+23:01:01 gpsd: hunting at speed 9600, 8N1
+23:01:03 gpsd: hunting at speed 4800, 8N1
+23:01:04 gpsd: gpsd_activate: opened GPS (6)
+23:01:04 gpsd: =&gt; GPS: $PFEC,GPint,GSA01,DTM00,ZDA01,RMC01,GLL00,VTG00,GSV05*3B
+23:01:04 gpsd: =&gt; GPS: $PMOTG,ZDA,1*2F
+23:01:04 gpsd: =&gt; GPS: $PGRM0,GSA,1*5C
+23:01:04 gpsd: =&gt; GPS: $PSRF105,1*3E
+23:01:04 gpsd: &lt;= GPS: $GPRMC,210102,V,4026.7949,N,00339.1630,W,10.8,0.0,140605,2.5,W,S*28
+23:01:04 gpsd: &lt;= GPS: $GPGGA,210102,4026.7949,N,00339.1630,W,8,09,2.0,695.7,M,51.6,M,,*53
+23:01:04 gpsd: &lt;= GPS: $GPGSA,A,3,02,04,05,06,09,14,18,22,30,,,,3.6,2.0,3.0*35
+23:01:05 gpsd: &lt;= GPS: $GPGSV,3,1,09,02,07,109,35,04,07,066,35,05,76,010,51,06,19,194,40*7B
+23:01:05 gpsd: &lt;= GPS: $GPGSV,3,2,09,09,56,094,48,14,38,309,45,18,06,224,34,22,14,255,39*7E
+23:01:05 gpsd: &lt;= GPS: $GPGSV,3,3,09,30,53,263,48*4E
+23:01:05 gpsd: &lt;= GPS: $GPGLL,4026.7949,N,00339.1630,W,210102,V,S*5E
+23:01:05 gpsd: &lt;= GPS: $GPBOD,,T,,M,,*47
+23:01:05 gpsd: unknown sentence: &quot;$GPBOD,,T,,M,,*47  &quot;
+23:01:05 gpsd: &lt;= GPS: $PGRME,15.0,M,22.5,M,27.0,M*1A
+23:01:05 gpsd: &lt;= GPS: $PGRMZ,2282,f,3*21
+23:01:05 gpsd: unknown sentence: &quot;$PGRMZ,2282,f,3*21  &quot;
+23:01:05 gpsd: &lt;= GPS: $GPRTE,1,1,c,*37
+23:01:05 gpsd: unknown sentence: &quot;$GPRTE,1,1,c,*37  &quot;
+23:01:06 gpsd: &lt;= GPS: $GPRMC,210104,V,4026.8009,N,00339.1630,W,10.8,0.0,140605,2.5,W,S*2C
+23:01:06 gpsd: &lt;= GPS: $GPRMB,V,,,,,,,,,,,,A,S*0E
+23:01:06 gpsd: unknown sentence: &quot;$GPRMB,V,,,,,,,,,,,,A,S*0E  &quot;
+23:01:06 gpsd: &lt;= GPS: $GPGGA,210104,4026.8009,N,00339.1630,W,8,09,2.0,695.7,M,51.6,M,,*57
+23:01:06 gpsd: &lt;= GPS: $GPGSA,A,3,02,04,05,06,09,14,18,22,30,,,,3.6,2.0,3.0*35
+23:01:06 gpsd: &lt;= GPS: $GPGSV,3,1,09,02,07,109,35,04,07,066,35,05,76,010,51,06,19,194,40*7B
+23:01:07 gpsd: &lt;= GPS: $GPGSV,3,2,09,09,56,094,48,14,38,309,45,18,06,224,34,22,14,255,39*7E
+23:01:07 gpsd: &lt;= GPS: $GPGSV,3,3,09,30,53,263,48*4E
+23:01:07 gpsd: &lt;= GPS: $GPGLL,4026.8009,N,00339.1630,W,210104,V,S*5A
+23:01:07 gpsd: &lt;= GPS: $GPBOD,,T,,M,,*47
+23:01:07 gpsd: unknown sentence: &quot;$GPBOD,,T,,M,,*47  &quot;
+
+
+Hope it helps, regards,
+
+-- 
+Jose Luis Domingo Lopez
+Linux Registered User #189436     Debian Linux Sid (Linux 2.6.12-rc5)
+
+-------------- next part --------------
+A non-text attachment was scrubbed...
+Name: signature.asc
+Type: application/pgp-signature
+Size: 189 bytes
+Desc: Digital signature
+URL: &lt;<A HREF="https://lists.berlios.de/pipermail/gpsd-users/attachments/20050614/27557870/attachment.pgp">https://lists.berlios.de/pipermail/gpsd-users/attachments/20050614/27557870/attachment.pgp</A>&gt;
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="000755.html">[Gpsd-users] [gpsd] Information on support of &quot;Garmin Geko 201&quot;
+</A></li>
+	<LI>Next message: <A HREF="000757.html">[Gpsd-users] [gpsd] Information on support of &quot;Garmin Geko 201&quot;
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#756">[ date ]</a>
+              <a href="thread.html#756">[ thread ]</a>
+              <a href="subject.html#756">[ subject ]</a>
+              <a href="author.html#756">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

@@ -1,0 +1,88 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] Bidirectional 'raw' communication using libgpsd
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2010-December/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Bidirectional%20%27raw%27%20communication%20using%20libgpsd&In-Reply-To=%3CAANLkTinFMP8BfKTAg%2BtQ8TDbL7Mt%3DejkCPpwK9KW7Qz2%40mail.gmail.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="004780.html">
+   <LINK REL="Next"  HREF="004782.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] Bidirectional 'raw' communication using libgpsd</H1>
+    <B>Mario De Weerd</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Bidirectional%20%27raw%27%20communication%20using%20libgpsd&In-Reply-To=%3CAANLkTinFMP8BfKTAg%2BtQ8TDbL7Mt%3DejkCPpwK9KW7Qz2%40mail.gmail.com%3E"
+       TITLE="[Gpsd-users] Bidirectional 'raw' communication using libgpsd">m.deweerd at ieee.org
+       </A><BR>
+    <I>Sun Dec  5 13:31:41 CET 2010</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="004780.html">[Gpsd-users] ntrip (rtcm 2.3) support for generic nmea devices
+</A></li>
+        <LI>Next message: <A HREF="004782.html">[Gpsd-users] Bidirectional 'raw' communication using libgpsd
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#4781">[ date ]</a>
+              <a href="thread.html#4781">[ thread ]</a>
+              <a href="subject.html#4781">[ subject ]</a>
+              <a href="author.html#4781">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi
+
+On the latest Fedora release, GPSD seems to be installed (and launched) by
+default.
+
+BT747 (<A HREF="http://www.bT747.org">http://www.bT747.org</A>), an opensource program to manage MTK Chipset
+based GPS Loggers, requires bidirectional communication with the logger.
+As GPSD already occupies the serial port (in a to the user 'invisible'
+manner), BT747 can not connect to the port.
+
+The only solutions I see are:
+- Somehow 'kill' gpsd upon BT747 launch;
+- Uninstall gpsd;
+- Integrate an interface to gps in BT747.
+
+I've had a quick look at the libgpsd.c code to see if it was somewhat
+portable to java, but this does not seem to be the case.
+It looks like some kind of virtual device is used - is it possible to
+connect to that?
+BT747 needs to be able to write/read the serial data to/from the GPS device.
+ Some sample usage of libgpsd would be usefull.  It surely can be wrapped in
+a native library for java.
+
+The highlevel protocol does not allow bidirectional communication
+apparently.
+
+What are the GPSD expert suggestions?
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="004780.html">[Gpsd-users] ntrip (rtcm 2.3) support for generic nmea devices
+</A></li>
+	<LI>Next message: <A HREF="004782.html">[Gpsd-users] Bidirectional 'raw' communication using libgpsd
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#4781">[ date ]</a>
+              <a href="thread.html#4781">[ thread ]</a>
+              <a href="subject.html#4781">[ subject ]</a>
+              <a href="author.html#4781">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

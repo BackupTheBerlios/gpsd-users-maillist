@@ -1,0 +1,117 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] gpsd + Garmin GPS 25L + PPS?
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2005-December/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20gpsd%20%2B%20Garmin%20GPS%2025L%20%2B%20PPS%3F&In-Reply-To=%3C43A0A4A2.2000303%40ll.mit.edu%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="001178.html">
+   <LINK REL="Next"  HREF="001180.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] gpsd + Garmin GPS 25L + PPS?</H1>
+    <B>Armen Babikyan</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20gpsd%20%2B%20Garmin%20GPS%2025L%20%2B%20PPS%3F&In-Reply-To=%3C43A0A4A2.2000303%40ll.mit.edu%3E"
+       TITLE="[Gpsd-users] gpsd + Garmin GPS 25L + PPS?">armenb at ll.mit.edu
+       </A><BR>
+    <I>Thu Dec 15 00:02:58 CET 2005</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="001178.html">[Gpsd-users] gpsd with sirf-iii globalsat br-355 or garmin gps 25 and ubuntu linux (breezy)
+</A></li>
+        <LI>Next message: <A HREF="001180.html">[Gpsd-users] gpsd + Garmin GPS 25L + PPS?
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1174">[ date ]</a>
+              <a href="thread.html#1174">[ thread ]</a>
+              <a href="subject.html#1174">[ subject ]</a>
+              <a href="author.html#1174">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi,
+
+I am trying to get ntpd on my linux box synchronized with the PPS (pulse 
+per second) signal from my Garmin GPS 25LP.  While I am able to get the 
+gps working pretty much out-out-of-the-box with gpsd and xgps, I am 
+having difficulty accessing the PPS signal on this GPS device.  The PPS 
+pin on the GPS is wired to the DCD (data carrier detect) pin, as it 
+should be, and stty isn't reporting anything funny with respect to the 
+serial port on my linux box (it reports 4800 baud).
+
+In reading further, I noticed that there is the possibility that a 
+Garmin-proprietary NMEA command needs to be issued to the GPS.  While 
+searching google for &quot;garmin pps pulse enable&quot;, I found an NMEA command 
+that seems to do what I need, so I wrote a little python program to 
+shove this data out on the serial port:
+
+    ser = open(&quot;/dev/ttyS0&quot;, &quot;w&quot;)
+    msg = &quot;$PGRMC,,,,,,,,,,,,2\r\n&quot;
+    ser.write(msg)
+    ser.close()
+
+However, doing this does not appear to command the GPS to send PPS 
+pulses on the DCD pin.  I don't see the carrier-detect change lines that 
+I'm expecting to see at the gpsd console (when I run it in the 
+foreground with -D 5).  Instead, I see this error message in the gpsd 
+console:
+
+gpsd: &lt;= GPS: $PGRMC,,,,,,,,,,,,2
+gpsd: found $PGRMC.
+gpsd: LOS matrix is singular, can't calculate DOPs.
+
+What does this mean?  Incidently, when searching that error message on 
+google, I found a reference to ESR's entry on the bottom of this page: 
+<A HREF="http://www.nabble.com/More-woes-t116856.html:">http://www.nabble.com/More-woes-t116856.html:</A>
+
+&quot;Yeah, that will happen when the data is ill-conditioned.  All it means 
+is that
+you won't get some error estimates it would otherwise compute. &quot;
+
+I'm not sure what that means in the context of my problem - maybe the 
+comment doesn't apply at all.
+
+Does anyone have any ideas as to how to get gpsd to recognize this 
+device's PPS pulse?  Is there a way to get gpsd to shove arbitrary NMEA 
+commands out to the GPS, or do I need to continue to use a separate 
+program?  Do I need kernel support for PPS?
+
+Any and all information is appreciated.  Thanks!  :)
+
+  - Armen
+
+-- 
+Armen Babikyan
+MIT Lincoln Laboratory
+<A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">armenb at ll.mit.edu</A> . 781-981-1796 
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="001178.html">[Gpsd-users] gpsd with sirf-iii globalsat br-355 or garmin gps 25 and ubuntu linux (breezy)
+</A></li>
+	<LI>Next message: <A HREF="001180.html">[Gpsd-users] gpsd + Garmin GPS 25L + PPS?
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1174">[ date ]</a>
+              <a href="thread.html#1174">[ thread ]</a>
+              <a href="subject.html#1174">[ subject ]</a>
+              <a href="author.html#1174">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

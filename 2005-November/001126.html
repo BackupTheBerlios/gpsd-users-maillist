@@ -1,0 +1,127 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] Problems with gpsfake
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2005-November/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Problems%20with%20gpsfake&In-Reply-To=%3C20051121074350.GA19013%40kingcull.cullmail.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="001125.html">
+   <LINK REL="Next"  HREF="001127.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] Problems with gpsfake</H1>
+    <B>J Moore</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Problems%20with%20gpsfake&In-Reply-To=%3C20051121074350.GA19013%40kingcull.cullmail.com%3E"
+       TITLE="[Gpsd-users] Problems with gpsfake">jaymo at cullmail.com
+       </A><BR>
+    <I>Mon Nov 21 08:43:50 CET 2005</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="001125.html">[Gpsd-users] Problems with gpsfake
+</A></li>
+        <LI>Next message: <A HREF="001127.html">[Gpsd-users] Garmin binary with serial interface
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1126">[ date ]</a>
+              <a href="thread.html#1126">[ thread ]</a>
+              <a href="subject.html#1126">[ subject ]</a>
+              <a href="author.html#1126">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>On Sun, Nov 20, 2005 at 10:37:46PM -0600, the unit calling itself Rob McGee wrote:
+&gt;<i> On Sunday 2005-November-20 22:20, J Moore wrote:
+</I>&gt;<i> &gt; work. Each time I try to start it I get:
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; $ /usr/sbin/gpsfake -b /home/jamoore/start-at-costco.txt
+</I>&gt;<i> &gt; Processing /home/jamoore/start-at-costco.txt...sh: gpsd: command not
+</I>&gt;<i> &gt; found
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; Someone replied off-list to my original request, and suggested that
+</I>&gt;<i> &gt; the cause was due to the fact that /usr/sbin was not in my path as a
+</I>&gt;<i> &gt; regular user. He suggested I get around the issue by starting gpsfake
+</I>&gt;<i> &gt; as root, or adding /usr/sbin to the regular user's path.
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; I actually tried these (and several other tricks) before posting. I
+</I>&gt;<i> 
+</I>&gt;<i> You should report what you have tried to save people the trouble of 
+</I>&gt;<i> telling you what you already know. And how exactly did you try 
+</I>&gt;<i> adding /usr/sbin to the regular user's path?
+</I>
+Sorry - apologies to all - I was a dumb-ass. But wait... there's still a 
+problem  :)
+
+Briefly, the $PATH problem was a result of my confusion in moving from 
+*BSD to Linux... sorry for the noise. I corrected as follows:
+[<A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">jamoore at tecra</A> ~]$ export PATH=$PATH:/usr/sbin
+
+So now that I'm all squared away on that (?), here's the next problem:
+
+[<A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">jamoore at tecra</A> ~]$ gpsfake start-at-costco.txt
+gpsfake: unknown packet type, leader G, (0x47)
+
+The file &quot;start-at-costco.txt&quot; was generated using gpspipe; following 
+are some lines from the file:
+[<A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">jamoore at tecra</A> ~]$ head start-at-costco.txt
+GPSD,R=1
+$GPRMB,V,,,,MK001     ,3442.849,N,08633.047,W,,,,V,N*33
+$GPRMC,,V,,,,,,,,,,N*53
+$GPRMB,V,,,,MK001     ,3442.849,N,08633.047,W,,,,V,N*33
+$GPRMC,,V,,,,,,,,,,N*53
+$GPRMB,V,,,,MK001     ,3442.849,N,08633.047,W,,,,V,N*33
+$GPRMC,,V,,,,,,,,,,N*53
+$GPRMB,V,,,,MK001     ,3442.849,N,08633.047,W,,,,V,N*33
+$GPRMC,,V,,,,,,,,,,N*53
+$GPRMB,V,,,,MK001     ,3442.849,N,08633.047,W,,,,V,N*33
+
+[<A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">jamoore at tecra</A> ~]$ tail start-at-costco.txt
+$GPRMB,A,,,,MK001     ,3442.849,N,08633.047,W,1.501,31,,V,A*02
+$GPRMC,013939.60,A,3441.567,N,08633.996,W,0.000,,131105,3.0,W,A*16
+$GPRMB,A,,,,MK001     ,3442.849,N,08633.047,W,1.501,31,,V,A*02
+$GPRMC,013941.61,A,3441.567,N,08633.997,W,0.000,,131105,3.0,W,A*19
+$GPRMB,A,,,,MK001     ,3442.849,N,08633.047,W,1.501,31,,V,A*02
+$GPRMC,013943.61,A,3441.566,N,08633.997,W,0.000,,131105,3.0,W,A*1A
+$GPRMB,A,,,,MK001     ,3442.849,N,08633.047,W,1.501,31,,V,A*02
+$GPRMC,013945.61,A,3441.566,N,08633.997,W,0.000,,131105,3.0,W,A*1C
+$GPRMB,A,,,,MK001     ,3442.849,N,08633.047,W,1.501,31,,V,A*02
+$GPRMC,013947.61,A,3441.566,N,08633.997,W,0.000,,131105,3.0,W,A*1E
+
+So I guess my question is, &quot;where is the error in gpsfake&quot;?
+
+Thanks,
+Jay 
+
+&gt;<i> First, show us that you've gotten past the shell problems. The error 
+</I>&gt;<i> posted was not from gpsfake, it was from sh.
+</I>&gt;<i> -- 
+</I>&gt;<i>     Rob - /dev/rob0
+</I>
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="001125.html">[Gpsd-users] Problems with gpsfake
+</A></li>
+	<LI>Next message: <A HREF="001127.html">[Gpsd-users] Garmin binary with serial interface
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1126">[ date ]</a>
+              <a href="thread.html#1126">[ thread ]</a>
+              <a href="subject.html#1126">[ subject ]</a>
+              <a href="author.html#1126">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

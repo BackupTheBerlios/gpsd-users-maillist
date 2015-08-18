@@ -1,0 +1,115 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] gpds, ntpd, pps, and shared memory (oh my)
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2010-March/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20gpds%2C%20ntpd%2C%20pps%2C%20and%20shared%20memory%20%28oh%20my%29&In-Reply-To=%3C4BA7C7D8.4090702%40acarver.net%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="004291.html">
+   <LINK REL="Next"  HREF="004293.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] gpds, ntpd, pps, and shared memory (oh my)</H1>
+    <B>Alexander Carver</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20gpds%2C%20ntpd%2C%20pps%2C%20and%20shared%20memory%20%28oh%20my%29&In-Reply-To=%3C4BA7C7D8.4090702%40acarver.net%3E"
+       TITLE="[Gpsd-users] gpds, ntpd, pps, and shared memory (oh my)">agcarver+gpsd at acarver.net
+       </A><BR>
+    <I>Mon Mar 22 20:41:12 CET 2010</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="004291.html">[Gpsd-users] gpds, ntpd, pps, and shared memory (oh my)
+</A></li>
+        <LI>Next message: <A HREF="004293.html">[Gpsd-users] ntpd accuracy of pcmcia gps cards
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#4292">[ date ]</a>
+              <a href="thread.html#4292">[ thread ]</a>
+              <a href="subject.html#4292">[ subject ]</a>
+              <a href="author.html#4292">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Gary E. Miller wrote:
+&gt;<i> -----BEGIN PGP SIGNED MESSAGE-----
+</I>&gt;<i> Hash: SHA1
+</I>&gt;<i> 
+</I>&gt;<i> Yo Alexander!
+</I>&gt;<i> 
+</I>&gt;<i> On Mon, 22 Mar 2010, Alexander Carver wrote:
+</I>&gt;<i> 
+</I>&gt;&gt;&gt;<i> No need for ldattach.  Just start gpsd first, let it control the GPS and
+</I>&gt;&gt;&gt;<i> then let ntpd get all the data it needs from the shared memory segment.
+</I>&gt;&gt;<i> I need ldattach to get PPS data.  Is this not correct?
+</I>&gt;<i> 
+</I>&gt;<i> Nope, not at all.  PPS just comes in on the normal serial device to gpsd.
+</I>&gt;<i> Just start gpsd reading the basic tty device and do not have ntpd touch
+</I>&gt;<i> any serial device.
+</I>&gt;<i> 
+</I>&gt;<i> There are some advanced reasons to maybe use ldattach, but you are not
+</I>&gt;<i> close to that yet.
+</I>
+All the documentation I've read thus far said I had to use ldattach to 
+ensure that the DCD line is monitored.  Running gpsd on the serial port 
+alone shows no PPS events at all.  Then again, running with ldattach 
+doesn't show them either.  The GPS receiver does have its PPS output 
+sent to DCD.  I'll have to try again and see if it's there.
+
+&gt;&gt;&gt;&gt;<i> First ntpd complains that it gets a permission denied when attaching to
+</I>&gt;&gt;&gt;&gt;<i> shared
+</I>&gt;&gt;&gt;&gt;<i> memory.  The config reads:
+</I>&gt;&gt;&gt;<i> What version of gpsd are you running?
+</I>&gt;&gt;<i> 2.90  But I think I figured it out by deleting all the shared memory hooks
+</I>&gt;&gt;<i> with ipcrm and letting ntp and gpsd recreate them.  So right now I'm getting
+</I>&gt;&gt;<i> the straight GPS time but not the PPS time.
+</I>&gt;<i> 
+</I>&gt;<i> Shared memory segments can persist and so if created wrong will stay
+</I>&gt;<i> wrong.  gpsd 2.91 handles this a bit better then 2.90.
+</I>&gt;<i> 
+</I>&gt;<i> Try to get gpsd to see the PPS before you start ntpd.  Also, what does
+</I>&gt;<i> your ntpd.conf look like?  This is about all you need in it:
+</I>&gt;<i> 
+</I>&gt;<i> 	driftfile /var/lib/ntp/ntp.drift
+</I>&gt;<i> 	logfile /var/log/ntp.log
+</I>&gt;<i> 
+</I>&gt;<i> 	# for gpsd
+</I>&gt;<i> 	server 127.127.28.0 minpoll 4 maxpoll 4
+</I>&gt;<i> 	fudge 127.127.28.0 time1 0.0  refid GPS
+</I>&gt;<i> 
+</I>&gt;<i> 	# for PPS and gpsd
+</I>&gt;<i> 	server 127.127.28.1 minpoll 4 maxpoll 4 prefer
+</I>&gt;<i> 	fudge 127.127.28.1 refid GPS1
+</I>
+
+That's what I have (except the refid for PPS is &quot;PPS&quot; instead of GPS1). 
+  According to ntpd, the NMEA GPS time is coming through on the shm but 
+the PPS shm is not reachable.
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="004291.html">[Gpsd-users] gpds, ntpd, pps, and shared memory (oh my)
+</A></li>
+	<LI>Next message: <A HREF="004293.html">[Gpsd-users] ntpd accuracy of pcmcia gps cards
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#4292">[ date ]</a>
+              <a href="thread.html#4292">[ thread ]</a>
+              <a href="subject.html#4292">[ subject ]</a>
+              <a href="author.html#4292">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

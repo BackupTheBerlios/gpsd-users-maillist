@@ -1,0 +1,95 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] GPSD 2.33: Error using --enable-fixed-port-speed
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2006-June/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20GPSD%202.33%3A%20Error%20using%20--enable-fixed-port-speed&In-Reply-To=%3C20060612142931.GA16662%40thyrsus.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="001686.html">
+   <LINK REL="Next"  HREF="001689.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] GPSD 2.33: Error using --enable-fixed-port-speed</H1>
+    <B>Eric S. Raymond</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20GPSD%202.33%3A%20Error%20using%20--enable-fixed-port-speed&In-Reply-To=%3C20060612142931.GA16662%40thyrsus.com%3E"
+       TITLE="[Gpsd-users] GPSD 2.33: Error using --enable-fixed-port-speed">esr at thyrsus.com
+       </A><BR>
+    <I>Mon Jun 12 16:29:31 CEST 2006</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="001686.html">[Gpsd-users] GPSD 2.33: Error using --enable-fixed-port-speed
+</A></li>
+        <LI>Next message: <A HREF="001689.html">[Gpsd-users] GPSD 2.33: Error using --enable-fixed-port-speed
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1688">[ date ]</a>
+              <a href="thread.html#1688">[ thread ]</a>
+              <a href="subject.html#1688">[ subject ]</a>
+              <a href="author.html#1688">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE><A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">beakmyn at frontiernet.net</A> &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">beakmyn at frontiernet.net</A>&gt;:
+&gt;<i> mipsel-linux-uclibc-gcc -DHAVE_CONFIG_H -I. -I. -I. 
+</I>&gt;<i> -I/home/user/whiterussian/o penwrt/staging_dir_mipsel/usr/include 
+</I>&gt;<i> -I/home/user/whiterussian/openwrt/staging_ dir_mipsel/usr/include -Os 
+</I>&gt;<i> -s -I/home/user/whiterussian/openwrt/staging_dir_mips el/usr/include 
+</I>&gt;<i> -Wall -Wcast-align -Wmissing-declarations -Wmissing-prototypes -W 
+</I>&gt;<i> strict-prototypes -Wpointer-arith -Wreturn-type -D_GNU_SOURCE 
+</I>&gt;<i> -I/home/user/white russian/openwrt/staging_dir_mipsel/usr/include -MT 
+</I>&gt;<i> serial.lo -MD -MP -MF .deps/s erial.Tpo -c serial.c  -fPIC -DPIC -o 
+</I>&gt;<i> .libs/serial.o
+</I>&gt;<i> serial.c: In function `gpsd_open':
+</I>&gt;<i> serial.c:119: error: `yes' undeclared (first use in this function)
+</I>&gt;<i> serial.c:119: error: (Each undeclared identifier is reported only once
+</I>&gt;<i> serial.c:119: error: for each function it appears in.)
+</I>&gt;<i> serial.c: In function `gpsd_next_hunt_setting':
+</I>&gt;<i> serial.c:202: error: `yes' undeclared (first use in this function)
+</I>&gt;<i> serial.c:202: error: initializer element is not constant
+</I>&gt;<i> serial.c:202: error: (near initialization for `rates[0]')
+</I>&gt;<i> make[1]: *** [serial.lo] Error 1
+</I>&gt;<i> make[1]: Leaving directory `/home/user/gpsd-2.33'
+</I>&gt;<i> make: *** [all] Error 2
+</I>
+I couldn't reproduce this error after configure
+--enable-fixed-port-speed=4800, and can't find any identifier 'yes' in
+serial.c. 
+
+The last error line is significant, however.  What must be happening
+is that configure is stepping on one of the baud rate macros (giving
+it the value 'yes').
+
+First thing you should do is svn up.  Then try cc -E and look in the
+output rates array to see which one got trashed
+-- 
+		&lt;a href=&quot;<A HREF="http://www.catb.org/~esr/">http://www.catb.org/~esr/</A>&quot;&gt;Eric S. Raymond&lt;/a&gt;
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="001686.html">[Gpsd-users] GPSD 2.33: Error using --enable-fixed-port-speed
+</A></li>
+	<LI>Next message: <A HREF="001689.html">[Gpsd-users] GPSD 2.33: Error using --enable-fixed-port-speed
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1688">[ date ]</a>
+              <a href="thread.html#1688">[ thread ]</a>
+              <a href="subject.html#1688">[ subject ]</a>
+              <a href="author.html#1688">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

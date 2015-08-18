@@ -1,0 +1,155 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] odd delay problem, with sirf receiver
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2009-August/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20odd%20delay%20problem%2C%20with%20sirf%20receiver&In-Reply-To=%3C25902.1251115208%40foxharp.boston.ma.us%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="003866.html">
+   <LINK REL="Next"  HREF="003863.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] odd delay problem, with sirf receiver</H1>
+    <B>Paul Fox</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20odd%20delay%20problem%2C%20with%20sirf%20receiver&In-Reply-To=%3C25902.1251115208%40foxharp.boston.ma.us%3E"
+       TITLE="[Gpsd-users] odd delay problem, with sirf receiver">pgf at foxharp.boston.ma.us
+       </A><BR>
+    <I>Mon Aug 24 14:00:08 CEST 2009</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="003866.html">[Gpsd-users] odd delay problem, with sirf receiver
+</A></li>
+        <LI>Next message: <A HREF="003863.html">[Gpsd-users] TSIP mode switch for gpsctl
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3867">[ date ]</a>
+              <a href="thread.html#3867">[ thread ]</a>
+              <a href="subject.html#3867">[ subject ]</a>
+              <a href="author.html#3867">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>hello jens --
+
+jens wrote:
+ &gt; Hi Paul
+ &gt; 
+ &gt; We have the same problem with u-Blox devices, though the delay is only 5
+ &gt; seconds.
+ &gt; See <A HREF="https://lists.berlios.de/pipermail/gpsd-users/2009-January/003566.html">https://lists.berlios.de/pipermail/gpsd-users/2009-January/003566.html</A>
+ &gt; We are using version 2.32 now (as far as I remember) which works correct.
+
+if i could reproduce the problem reliably, i would certainly do that.
+unfortunately, the condition has gone away, so everything's fine right
+now.  i'm sure it's waiting for my next road trip to reappear.
+
+ &gt; Could you give that version and the next a try, so we can be sure the
+ &gt; bug came in with that changes. My workmates thought it's a problem with
+ &gt; u-Blox only.
+ &gt; What OS are you using?
+
+fedora F-9, on an OPLC XO laptop.
+
+i see in your earlier thread you write that the problem only occurs
+with a USB connection, not with serial.  how do you test the same
+device in both ways?
+
+just to add more confusion to the current discussion (more is
+good, right ;-), i'll add that in may of last year i wrote here
+concerning the 5-second latency i was experiencing with my
+bluetooth MTK-based receiver.  at the time my serial receiver
+(the one i currently get 15 second delays from sometimes) was
+working perfectly:
+    <A HREF="../2008-May/003239.html">http://lists.berlios.de/pipermail/gpsd-users/2008-May/003239.html</A>
+
+i haven't been using the bluetooth receiver much recently, for
+other reasons, but i'll try it again today, just to see.
+
+paul
+p.s. anyone know if the owners of lists.berlios.de are pursuing
+a new security certificate?
+
+
+ &gt; 
+ &gt; Bye,
+ &gt;     Jens
+ &gt; 
+ &gt; 
+ &gt; Paul Fox wrote:
+ &gt; &gt; hi --
+ &gt; &gt; 
+ &gt; &gt; i'm having a very strange delay issue with my sirf receiver.
+ &gt; &gt; 
+ &gt; &gt; i use a sirf-based USB mouse attached to a (linux) laptop running
+ &gt; &gt; a mapping program.  some days (like today) everything works
+ &gt; &gt; perfectly.  other days (like yesterday) GPS reports are delayed
+ &gt; &gt; by a full 14 or 15 seconds from when they really happen.
+ &gt; &gt; 
+ &gt; &gt; to describe the behavior in more detail:  if i'm traveling, the
+ &gt; &gt; trail followed by the mapping program's cursor follows my actual
+ &gt; &gt; trail exactly (meaning that the position reports are all correct)
+ &gt; &gt; but each is delayed by 15 seconds -- i can come to a stop at
+ &gt; &gt; an intersection, and watch the cursor &quot;catch up&quot;.  or, if i'm on
+ &gt; &gt; a bus, and we come to a stop, the speed reported from the device
+ &gt; &gt; comes to a stop 15 seconds later -- it inicates 0m/s for the duration
+ &gt; &gt; of the stop, then starts climbing 14 seconds after the bus has
+ &gt; &gt; started moving.  this is observed using my mapping client, or
+ &gt; &gt; using gpsmon.  if using gpsmon, i can observe this behavior
+ &gt; &gt; whether using gpsd as the data source, or when connecting
+ &gt; &gt; directly to /dev/ttyUSB0.  gps data seems to arrive at the usual
+ &gt; &gt; rate -- an update or two per second.
+ &gt; &gt; 
+ &gt; &gt; while i can't fully interpret what i'm seeing, it sure feels like
+ &gt; &gt; either my sirf chip, or the USB stack (!?) is in some sort of
+ &gt; &gt; wayback mode.  has anyone else ever seen anything like this?
+ &gt; &gt; 
+ &gt; &gt; when the problem is occuring (and i've had it happen enough that
+ &gt; &gt; i've watched it quite a bit, both with my map program, and
+ &gt; &gt; gpsmon), it's so reliably &quot;wrong&quot; that it feels deliberate --
+ &gt; &gt; i.e., it feels like a debug flag in the sirf firmware has been
+ &gt; &gt; set (the &quot;delay all reports by 14 seconds&quot; debug flag?).  are
+ &gt; &gt; there any sirf dumping utilities that i could use to get a more
+ &gt; &gt; complete picture of the receiver's state?)  i haven't figured out
+ &gt; &gt; any way of forcing the receiver in or out of this odd mode --
+ &gt; &gt; unplugging/replugging/reopening the device usually has no affect.
+ &gt; &gt; 
+ &gt; &gt; versions:  i've been using svn r5863 of gpsd.  if someone can tell me
+ &gt; &gt; how to get the sirf firmware version number, i'll provide it.
+ &gt; &gt; 
+ &gt; &gt; thanks!
+ &gt; &gt; 
+ &gt; &gt; paul
+ &gt; &gt; =---------------------
+
+=---------------------
+ paul fox, <A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">pgf at foxharp.boston.ma.us</A> (arlington, ma, where it's 67.5 degrees)
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="003866.html">[Gpsd-users] odd delay problem, with sirf receiver
+</A></li>
+	<LI>Next message: <A HREF="003863.html">[Gpsd-users] TSIP mode switch for gpsctl
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3867">[ date ]</a>
+              <a href="thread.html#3867">[ thread ]</a>
+              <a href="subject.html#3867">[ subject ]</a>
+              <a href="author.html#3867">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

@@ -1,0 +1,112 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] Errors building/installing gpsd-2.34
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2007-April/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Errors%20building/installing%20gpsd-2.34&In-Reply-To=%3CPine.LNX.4.64.0704182037520.26060%40birdbird.example.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="002573.html">
+   <LINK REL="Next"  HREF="002575.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] Errors building/installing gpsd-2.34</H1>
+    <B>Matt Roberds</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Errors%20building/installing%20gpsd-2.34&In-Reply-To=%3CPine.LNX.4.64.0704182037520.26060%40birdbird.example.com%3E"
+       TITLE="[Gpsd-users] Errors building/installing gpsd-2.34">mattroberds at cox.net
+       </A><BR>
+    <I>Thu Apr 19 04:19:22 CEST 2007</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="002573.html">[Gpsd-users] Errors building/installing gpsd-2.34
+</A></li>
+        <LI>Next message: <A HREF="002575.html">[Gpsd-users] Errors building/installing gpsd-2.34
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2574">[ date ]</a>
+              <a href="thread.html#2574">[ thread ]</a>
+              <a href="subject.html#2574">[ subject ]</a>
+              <a href="author.html#2574">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>On Wed, 18 Apr 2007, Eric Pretorious wrote:
+
+&gt;<i> 1. ./autoconf.sh assumes that prefix=/.
+</I>&gt;<i>   Almost all of the other software that I've built/installed lately
+</I>&gt;<i> correctly assumed prefix=/usr/local.
+</I>
+I tried running just './configure' with no options and it set up to
+install in /usr .  This seems to be pretty common among programs that
+use GNU Autoconf.
+
+I suspect that Autoconf predates the wide use of packaged binaries
+(RPMs, Debian packages, etc) and it was then reasonable to assume that
+if you built some software, you most likely wanted it to go into /usr .
+Now I suspect it's slightly more common for admins to let only the
+package manager put things in /usr , and to put stuff built from source
+into /usr/local .
+
+&gt;<i> 2. `make` does not build all of the executables.
+</I>&gt;<i>   e.g., xgps was not built but its man page (/usr/local/man/man1/xgps.1)
+</I>&gt;<i> was installed.
+</I>
+You may be having the same trouble I had.  xgps won't get built unless
+configure finds all of the X libraries it is looking for.  You can tell
+by looking at the configure output - it will have lines like
+&quot;checking for libXfoo... no&quot; which means it didn't find one of the X
+libraries.  The little summary that prints out at the end of the
+configure script will still say something like &quot;X support... yes&quot; even
+if it didn't find all the libraries, but it won't build xgps.
+
+I'm on Debian and I had to install some of the X development packages to
+get configure to find everything it wanted and build xgps.  On Debian,
+and I think on RedHat and other systems that use RPM packages, these
+packages typically have names that end in &quot;-devel&quot; or &quot;-dev&quot;.
+
+I submitted a patch to the gpsd authors to make configure be a little
+more vocal about not building xgps when it can't find one of the X
+libraries.  I suspect this change will be in 2.35 .
+
+&gt;<i> 3. `make install` does not installs some of the executables in a way
+</I>&gt;<i> that leaves them broken:
+</I>
+You posted later that running ldconfig fixed this.  I've had to do this
+before, sometimes, after installing new software, but a lot of packages
+that use Autoconf will run ldconfig for you after they install the new
+programs and libraries.  You were probably root (or used sudo) when you
+ran 'make install' - otherwise how would the stuff get put in /usr/local ,
+on a system with the usual permissions? -  but if not, the automatic
+ldconfig step might not have worked.
+
+Matt Roberds
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="002573.html">[Gpsd-users] Errors building/installing gpsd-2.34
+</A></li>
+	<LI>Next message: <A HREF="002575.html">[Gpsd-users] Errors building/installing gpsd-2.34
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2574">[ date ]</a>
+              <a href="thread.html#2574">[ thread ]</a>
+              <a href="subject.html#2574">[ subject ]</a>
+              <a href="author.html#2574">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

@@ -1,0 +1,193 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] Suggestions for simple GPS log program?
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2005-January/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Suggestions%20for%20simple%20GPS%20log%20program%3F&In-Reply-To=%3C20050113163931.GA23455%40thyrsus.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="000200.html">
+   <LINK REL="Next"  HREF="000205.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] Suggestions for simple GPS log program?</H1>
+    <B>Eric S. Raymond</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Suggestions%20for%20simple%20GPS%20log%20program%3F&In-Reply-To=%3C20050113163931.GA23455%40thyrsus.com%3E"
+       TITLE="[Gpsd-users] Suggestions for simple GPS log program?">esr at thyrsus.com
+       </A><BR>
+    <I>Thu Jan 13 17:39:31 CET 2005</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="000200.html">[Gpsd-users] Suggestions for simple GPS log program?
+</A></li>
+        <LI>Next message: <A HREF="000205.html">[Gpsd-users] Suggestions for simple GPS log program?
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#204">[ date ]</a>
+              <a href="thread.html#204">[ thread ]</a>
+              <a href="subject.html#204">[ subject ]</a>
+              <a href="author.html#204">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Tilman Koschnick &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">til at subnetz.org</A>&gt;:
+&gt;<i> As for the timestamp, I'm using the utc member of the gps_data_t
+</I>&gt;<i> structure, so it is ISO8601 format. I will add specifiers for the single
+</I>&gt;<i> components of the time stamp, so that people can make their own format.
+</I>
+That's why I asked. If you add such specifiers, please be compatible
+with strftime(3).  That leaves you %f, %L,  %N, %o, %q, %Q, %v unassigned.
+
+       %a     The abbreviated weekday name according to the current locale.
+
+       %A     The full weekday name according to the current locale.
+
+       %b     The abbreviated month name according to the current locale.
+
+       %B     The full month name according to the current locale.
+
+       %c     The  preferred  date  and  time  representation for the current
+              locale.
+
+       %C     The century number (year/100) as a 2-digit integer. (SU)
+
+       %d     The day of the month as a decimal number (range 01 to 31).
+
+       %D     Equivalent to %m/%d/%y. (Yecch - for Americans only.  Americans
+              should  note that in other countries %d/%m/%y is rather common.
+              This means that in international context this format is ambigu-
+              ous and should not be used.) (SU)
+
+       %e     Like  %d, the day of the month as a decimal number, but a lead-
+              ing zero is replaced by a space. (SU)
+
+       %E     Modifier: use alternative format, see below. (SU)
+
+       %F     Equivalent to %Y-%m-%d (the ISO 8601 date format). (C99)
+
+       %G     The ISO 8601 year  with  century  as  a  decimal  number.   The
+              4-digit  year  corresponding  to  the ISO week number (see %V).
+              This has the same format and value as %y, except  that  if  the
+              ISO week number belongs to the previous or next year, that year
+              is used instead. (TZ)
+
+       %g     Like %G,  but  without  century,  i.e.,  with  a  2-digit  year
+              (00-99). (TZ)
+
+       %h     Equivalent to %b. (SU)
+
+       %H     The hour as a decimal number using a 24-hour clock (range 00 to
+              23).
+
+       %I     The hour as a decimal number using a 12-hour clock (range 01 to
+              12).
+
+       %j     The day of the year as a decimal number (range 001 to 366).
+
+       %k     The  hour  (24-hour clock) as a decimal number (range 0 to 23);
+              single digits are preceded by a blank. (See also %H.) (TZ)
+
+       %l     The hour (12-hour clock) as a decimal number (range 1  to  12);
+              single digits are preceded by a blank. (See also %I.) (TZ)
+
+       %m     The month as a decimal number (range 01 to 12).
+
+       %M     The minute as a decimal number (range 00 to 59).
+
+       %n     A newline character. (SU)
+
+       %O     Modifier: use alternative format, see below. (SU)
+
+       %p     Either  &#8216;AM&#8217;  or &#8216;PM&#8217; according to the given time value, or the
+              corresponding strings for the current locale.  Noon is  treated
+              as &#8216;pm&#8217; and midnight as &#8216;am&#8217;.
+
+       %P     Like  %p  but  in  lowercase:  &#8216;am&#8217;  or &#8216;pm&#8217; or a corresponding
+              string for the current locale. (GNU)
+
+       %r     The time in a.m. or p.m. notation.  In the POSIX locale this is
+              equivalent to &#8216;%I:%M:%S %p&#8217;. (SU)
+
+       %R     The  time  in  24-hour  notation  (%H:%M).  (SU)  For a version
+              including the seconds, see %T below.
+
+       %s     The number of seconds since the Epoch, i.e.,  since  1970-01-01
+              00:00:00 UTC. (TZ)
+
+       %S     The second as a decimal number (range 00 to 61).
+
+       %t     A tab character. (SU)
+
+       %T     The time in 24-hour notation (%H:%M:%S). (SU)
+
+       %u     The day of the week as a decimal, range 1 to 7, Monday being 1.
+              See also %w. (SU)
+
+       %U     The week number of the current year as a decimal number,  range
+              00  to  53,  starting with the first Sunday as the first day of
+              week 01. See also %V and %W.
+
+       %V     The ISO 8601:1988 week number of the current year as a  decimal
+              number, range 01 to 53, where week 1 is the first week that has
+              at least 4 days in the current year, and  with  Monday  as  the
+              first day of the week. See also %U and %W. (SU)
+
+       %w     The day of the week as a decimal, range 0 to 6, Sunday being 0.
+              See also %u.
+
+       %W     The week number of the current year as a decimal number,  range
+              00  to  53,  starting with the first Monday as the first day of
+              week 01.
+
+       %x     The preferred date representation for the current locale  with-
+              out the time.
+
+       %X     The  preferred time representation for the current locale with-
+              out the date.
+
+       %y     The year as a decimal number without a  century  (range  00  to
+              99).
+
+       %Y     The year as a decimal number including the century.
+
+       %z     The  time-zone  as  hour  offset  from  GMT.   Required to emit
+              RFC822-conformant dates (using &quot;%a, %d  %b  %Y  %H:%M:%S  %z&quot;).
+              (GNU)
+
+       %Z     The time zone or name or abbreviation.
+
+       %+     The date and time in date(1) format. (TZ)
+
+       %%     A literal &#8216;%&#8217; character.
+
+-- 
+		&lt;a href=&quot;<A HREF="http://www.catb.org/~esr/">http://www.catb.org/~esr/</A>&quot;&gt;Eric S. Raymond&lt;/a&gt;
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="000200.html">[Gpsd-users] Suggestions for simple GPS log program?
+</A></li>
+	<LI>Next message: <A HREF="000205.html">[Gpsd-users] Suggestions for simple GPS log program?
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#204">[ date ]</a>
+              <a href="thread.html#204">[ thread ]</a>
+              <a href="subject.html#204">[ subject ]</a>
+              <a href="author.html#204">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

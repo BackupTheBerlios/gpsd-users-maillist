@@ -1,0 +1,111 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] Bearing vs. Heading
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2011-September/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Bearing%20vs.%20Heading&In-Reply-To=%3C1316184553.38567.YahooMailClassic%40web161511.mail.bf1.yahoo.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="005477.html">
+   <LINK REL="Next"  HREF="005480.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] Bearing vs. Heading</H1>
+    <B>steve</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Bearing%20vs.%20Heading&In-Reply-To=%3C1316184553.38567.YahooMailClassic%40web161511.mail.bf1.yahoo.com%3E"
+       TITLE="[Gpsd-users] Bearing vs. Heading">sqrlyguy at yahoo.com
+       </A><BR>
+    <I>Fri Sep 16 16:49:13 CEST 2011</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="005477.html">[Gpsd-users] help with opencpn on ubuntu 10.10 ?
+</A></li>
+        <LI>Next message: <A HREF="005480.html">[Gpsd-users] Bearing vs. Heading
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#5479">[ date ]</a>
+              <a href="thread.html#5479">[ thread ]</a>
+              <a href="subject.html#5479">[ subject ]</a>
+              <a href="author.html#5479">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hello all,
+
+New to gpsd here.&#160; I am liking what I am finding after writing my own parser a couple of years ago.&#160; It worked, but this is nicer by far.
+
+Q.&#160; I need to know the bearing from a ship's nav system(Garmin).&#160;&#160; I see track data, but am I right that track and bearing are different?&#160;&#160; If my ship is drifting, then in general its bow is not pointing toward my heading/track.&#160; I need to know where the bow is pointing to insert this data into mysql for display of my ship on google earth.&#160;&#160; I am using/modifying gps.py. Suggestions?
+
+Here is some sample NMEA output:
+$SDDPT,25.96,0.00,*43
+$IIROT,-7.57,A*3E
+$IIAPB,A,,,,,V,V,,,,,,,,N*70
+$GPGGA,221043,3256.7862,N,11830.3428,W,1,9,1.07,-36.95,M,-36.92,M*61
+$SDDPT,25.96,0.00,*43
+$IIROT,57.98,A*25
+$IIAPB,A,,,,,V,V,,,,,,,,N*70
+$IIZDA,221044,18,07,2011,,*52
+$SDDBT,84.48,f,25.75,M,14.08,F*0E
+$GPGGA,221044,3256.7868,N,11830.3442,W,1,9,1.07,-36.94,M,-36.92,M*61
+$GPGLL,3256.7868,N,11830.3442,W,221044,A,A*5D
+$HCHDG,273.2,,,13.2,E*1D
+$IIMTW,18.82,C*20
+$GPRMC,221044,A,3256.7868,N,11830.3442,W,4.68,292.79,180711,13.28,E,A*0A
+$IIVHW,,,273.2,M,,,*02
+$IIVLW,139.77,N,139.77,N,,,*61
+$IIVTG,292.7,T,,,4.6,N,8.6,K*38
+$IIXTE,A,,,,,N*46
+$SDDPT,25.75,0.00,*4E
+$IIROT,-220.40,A*3F
+$IIAPB,A,,,,,V,V,,,,,,,,N*70
+$GPGGA,221045,3256.7873,N,11830.3455,W,1,9,1.07,-36.89,M,-36.92,M*60
+$SDDPT,25.68,0.00,*42
+$IIROT,-77.42,A*0D
+$IIAPB,A,,,,,V,V,,,,,,,,N*70
+$IIZDA,221046,18,07,2011,,*50
+$SDDBT,84.93,f,25.89,M,14.15,F*07
+$GPGGA,221046,3256.7878,N,11830.3470,W,1,9,1.07,-36.95,M,-36.92,M*62
+$GPGLL,3256.7878,N,11830.3470,W,221046,A,A*5F
+$GPGSA,A,3,28,08,17,26,07,11,24,15,27,,,,1.8,1.0,1.5*3E
+$GPGSV,3,1,10,28,55,023,43,08,47,112,45,17,73,204,48,26,48,257,47*7D
+$GPGSV,3,2,10,07,21,125,43,11,14,049,41,24,18,064,40,15,26,300,44*7B
+$GPGSV,3,3,10,27,14,316,39,04,09,171,-01*50
+$HCHDG,267.9,,,13.2,E*13
+$IIMTW,18.82,C*20
+$GPRMC,221046,A,3256.7878,N,11830.3470,W,5.17,290.12,180711,13.28,E,A*0E
+$IIVHW,,,267.9,M,,,*0C
+$IIVLW,139.77,N,139.77,N,,,*61
+$IIVTG,290.1,T,,,5.1,N,9.5,K*38
+$IIXTE,A,,,,,N*46
+
+Thanks,
+-s
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="005477.html">[Gpsd-users] help with opencpn on ubuntu 10.10 ?
+</A></li>
+	<LI>Next message: <A HREF="005480.html">[Gpsd-users] Bearing vs. Heading
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#5479">[ date ]</a>
+              <a href="thread.html#5479">[ thread ]</a>
+              <a href="subject.html#5479">[ subject ]</a>
+              <a href="author.html#5479">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

@@ -1,0 +1,87 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] Moxa NPort 5210 serial port over LAN emulation
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2006-September/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Moxa%20NPort%205210%20serial%20port%20over%20LAN%20emulation&In-Reply-To=%3Cc32efac40609070741g3f5c415ew7350db9ce7a26feb%40mail.gmail.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="001932.html">
+   <LINK REL="Next"  HREF="001935.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] Moxa NPort 5210 serial port over LAN emulation</H1>
+    <B>Dave Hylands</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Moxa%20NPort%205210%20serial%20port%20over%20LAN%20emulation&In-Reply-To=%3Cc32efac40609070741g3f5c415ew7350db9ce7a26feb%40mail.gmail.com%3E"
+       TITLE="[Gpsd-users] Moxa NPort 5210 serial port over LAN emulation">dhylands at gmail.com
+       </A><BR>
+    <I>Thu Sep  7 16:41:42 CEST 2006</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="001932.html">[Gpsd-users] Moxa NPort 5210 serial port over LAN emulation
+</A></li>
+        <LI>Next message: <A HREF="001935.html">[Gpsd-users] Moxa NPort 5210 serial port over LAN emulation
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1933">[ date ]</a>
+              <a href="thread.html#1933">[ thread ]</a>
+              <a href="subject.html#1933">[ subject ]</a>
+              <a href="author.html#1933">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi Massimo,
+
+Whoops - replying to the list this time.
+
+&gt;<i> But there's one problem I encounter: As soon as a process is connected
+</I>&gt;<i> to the serial port, it cannot disconnect anymore. &quot;gpsd&quot; hangs on
+</I>&gt;<i> disconnecting sometimes also &quot;cat /dev/ttyr00&quot;. I even can't kill -9 the
+</I>&gt;<i> process gpsd, reload the module or continue using that port.
+</I>&gt;<i> The only way to restart gpsd is to restart the computer.
+</I>
+
+The primary reason that kill -9 won't work is because the driver is
+stuck in a non-interruptible wait of some type, typically due to a
+driver bug.
+
+If you have SysRq support built in, you can try SysRq-T to figure out
+what address the process is blocked on and report back to the Moxa
+developers. You may need to do Ctrl-Alt-SysRq on a PC, or Ctrl-Break
+on a serial console to do the SysRq.
+
+SysRq-D says that it shows all locks, which might also have some useful info.
+
+-- 
+Dave Hylands
+Vancouver, BC, Canada
+<A HREF="http://www.DaveHylands.com/">http://www.DaveHylands.com/</A>
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="001932.html">[Gpsd-users] Moxa NPort 5210 serial port over LAN emulation
+</A></li>
+	<LI>Next message: <A HREF="001935.html">[Gpsd-users] Moxa NPort 5210 serial port over LAN emulation
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1933">[ date ]</a>
+              <a href="thread.html#1933">[ thread ]</a>
+              <a href="subject.html#1933">[ subject ]</a>
+              <a href="author.html#1933">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

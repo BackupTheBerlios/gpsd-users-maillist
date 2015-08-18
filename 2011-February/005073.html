@@ -1,0 +1,125 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] Week Number issue
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2011-February/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Week%20Number%20issue&In-Reply-To=%3C20110228053242.GA5094%40thyrsus.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="005071.html">
+   <LINK REL="Next"  HREF="005078.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] Week Number issue</H1>
+    <B>Eric Raymond</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Week%20Number%20issue&In-Reply-To=%3C20110228053242.GA5094%40thyrsus.com%3E"
+       TITLE="[Gpsd-users] Week Number issue">esr at thyrsus.com
+       </A><BR>
+    <I>Mon Feb 28 06:32:42 CET 2011</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="005071.html">[Gpsd-users] Week Number issue
+</A></li>
+        <LI>Next message: <A HREF="005078.html">[Gpsd-users] Week Number issue
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#5073">[ date ]</a>
+              <a href="thread.html#5073">[ thread ]</a>
+              <a href="subject.html#5073">[ subject ]</a>
+              <a href="author.html#5073">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Charles Curley &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">charlescurley at charlescurley.com</A>&gt;:
+&gt;<i> For lack of a better term in your discussion, I'm going to show off my
+</I>&gt;<i> knowledge of things medieval and byzantine and swipe the term
+</I>&gt;<i> &quot;indiction&quot; to refer to the 19.6 year interval.
+</I>&gt;<i> <A HREF="http://en.wikipedia.org/wiki/Indiction.">http://en.wikipedia.org/wiki/Indiction.</A>
+</I>
+I like it. I've been calling this a &quot;rollover period&quot;.
+
+&gt;<i> &gt; It
+</I>&gt;<i> &gt; does use the daemon start time to deduce what rollover period, year,
+</I>&gt;<i> &gt; and century it started in, but this information is used only to
+</I>&gt;<i> &gt; compensate for rollovers and year or century transitions that happen
+</I>&gt;<i> &gt; *while the daemon is running*.
+</I>&gt;<i> 
+</I>&gt;<i> It doesn't seem to be doing that, since the daemon is running
+</I>&gt;<i> continuously even during the time the receiver is unplugged.
+</I>
+Right. I should have said that the only transitions gpsd can
+compensate for reliably is when they happen while the daemon i
+and the device are running continuously.
+
+&gt;<i> I conjecture that the daemon doesn't maintain an internal clock.
+</I>
+Correct.
+
+&gt;<i>                                                             Even if
+</I>&gt;<i> the system clock were wrong, you could still use it to time intervals
+</I>&gt;<i> closely enough to get back in synch once the receiver did re-appear.
+</I>
+Hm.  That is possible, maybe. Trying to think through all the
+potential edge cases makes my brain hurt, though.  I fear making
+hard-to-detect errors, which is why I gave up on attempts to be clever
+about this.
+
+&gt;<i> I read that, its predecessor, and many of the comments. I'm not sure you
+</I>&gt;<i> are stating the problem *as it applies to gpsd* correctly. I think even
+</I>&gt;<i> if the system clock is wrong, you may still find it useful. You could
+</I>&gt;<i> assume it is correct to within the indiction, i.e. +/- a semi-indiction.
+</I>&gt;<i> So you are either in indiction N or indiction N+1. The week number tells
+</I>&gt;<i> you which one.
+</I>
+There's a problem.  We don't necessarily know the indiction length.
+Now it's 2^10 weeks, in the future it could be 2^13, and we don't yet
+have a way to tell which bird might be shipping 13 bits.
+
+&gt;<i> &gt; &gt; I would be glad to write a braindead client in Perl to check for
+</I>&gt;<i> &gt; &gt; this (and verify the 19.6 year conjecture), but I expect you would
+</I>&gt;<i> &gt; &gt; prefer that in Python.  
+</I>&gt;<i> &gt; 
+</I>&gt;<i> &gt; Nah.  I believe your report. Got some similar tire tracks in my back.
+</I>&gt;<i> 
+</I>&gt;<i> I was thinking of adding it to the live testing tools.
+</I>
+I will cheerfully accept it, then.
+
+&gt;<i> I take it TOW is Time of the Week, i.e. seconds since week rollover.
+</I>
+Correct.
+
+If you want to suggest improved date-disambiguation algorithms, I
+suggest you start by reading timebase.c.  I sealed away all the
+hair relating to conversion from GPS week+TOW to UTC in there. 
+-- 
+		&lt;a href=&quot;<A HREF="http://www.catb.org/~esr/">http://www.catb.org/~esr/</A>&quot;&gt;Eric S. Raymond&lt;/a&gt;
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="005071.html">[Gpsd-users] Week Number issue
+</A></li>
+	<LI>Next message: <A HREF="005078.html">[Gpsd-users] Week Number issue
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#5073">[ date ]</a>
+              <a href="thread.html#5073">[ thread ]</a>
+              <a href="subject.html#5073">[ subject ]</a>
+              <a href="author.html#5073">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

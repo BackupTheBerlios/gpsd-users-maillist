@@ -1,0 +1,91 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] Gpsd on a Zaurus SL-C3000
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2005-March/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Gpsd%20on%20a%20Zaurus%20SL-C3000&In-Reply-To=%3C20050331182321.GA7537%40thyrsus.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="000500.html">
+   <LINK REL="Next"  HREF="000510.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] Gpsd on a Zaurus SL-C3000</H1>
+    <B>Eric S. Raymond</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Gpsd%20on%20a%20Zaurus%20SL-C3000&In-Reply-To=%3C20050331182321.GA7537%40thyrsus.com%3E"
+       TITLE="[Gpsd-users] Gpsd on a Zaurus SL-C3000">esr at thyrsus.com
+       </A><BR>
+    <I>Thu Mar 31 20:23:22 CEST 2005</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="000500.html">[Gpsd-users] Gpsd on a Zaurus SL-C3000
+</A></li>
+        <LI>Next message: <A HREF="000510.html">[Gpsd-users] Gpsd on a Zaurus SL-C3000
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#501">[ date ]</a>
+              <a href="thread.html#501">[ thread ]</a>
+              <a href="subject.html#501">[ subject ]</a>
+              <a href="author.html#501">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Russell Nelson &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">nelson at crynwr.com</A>&gt;:
+&gt;<i> This seems to work much better.
+</I>
+As in, the Zodiac stuff is working?
+ 
+&gt;<i> Index: drivers.c
+</I>&gt;<i> ===================================================================
+</I>&gt;<i> --- drivers.c   (revision 2222)
+</I>&gt;<i> +++ drivers.c   (working copy)
+</I>&gt;<i> @@ -197,11 +197,15 @@
+</I>&gt;<i>  
+</I>&gt;<i>  static void earthmate_initializer(struct gps_device_t *session)
+</I>&gt;<i>  {
+</I>&gt;<i> +    struct timespec to;
+</I>&gt;<i> +
+</I>&gt;<i>      write(session-&gt;gpsdata.gps_fd, &quot;EARTHA\r\n&quot;, 8);
+</I>&gt;<i> -    sleep(30);
+</I>&gt;<i> +    to.tv_sec = 0;
+</I>&gt;<i> +    to.tv_nsec = 10 * 1000 * 1000;
+</I>&gt;<i> +    nanosleep(&amp;to, NULL);
+</I>&gt;<i>      session-&gt;device_type = &amp;zodiac_binary;
+</I>&gt;<i>      zodiac_binary.wrapup = earthmate_close;
+</I>&gt;<i> -    zodiac_binary.initializer(session);
+</I>&gt;<i> +    if (zodiac_binary.initializer) zodiac_binary.initializer(session);
+</I>&gt;<i>  }
+</I>
+That nanosleep call should be equivalent to usleep(10000).  Does the
+latter work?
+-- 
+		&lt;a href=&quot;<A HREF="http://www.catb.org/~esr/">http://www.catb.org/~esr/</A>&quot;&gt;Eric S. Raymond&lt;/a&gt;
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="000500.html">[Gpsd-users] Gpsd on a Zaurus SL-C3000
+</A></li>
+	<LI>Next message: <A HREF="000510.html">[Gpsd-users] Gpsd on a Zaurus SL-C3000
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#501">[ date ]</a>
+              <a href="thread.html#501">[ thread ]</a>
+              <a href="subject.html#501">[ subject ]</a>
+              <a href="author.html#501">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

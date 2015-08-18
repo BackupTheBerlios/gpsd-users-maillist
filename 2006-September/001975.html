@@ -1,0 +1,123 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] Garmin GPS almost never sends new position data
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2006-September/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Garmin%20GPS%20almost%20never%20sends%20new%20position%20data&In-Reply-To=%3Cef41si%24csg%241%40sea.gmane.org%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="001974.html">
+   <LINK REL="Next"  HREF="001977.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] Garmin GPS almost never sends new position data</H1>
+    <B>Eivind Tagseth</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Garmin%20GPS%20almost%20never%20sends%20new%20position%20data&In-Reply-To=%3Cef41si%24csg%241%40sea.gmane.org%3E"
+       TITLE="[Gpsd-users] Garmin GPS almost never sends new position data">eivindt-gmane at multinet.no
+       </A><BR>
+    <I>Sat Sep 23 21:28:12 CEST 2006</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="001974.html">[Gpsd-users] Garmin GPS almost never sends new position data
+</A></li>
+        <LI>Next message: <A HREF="001977.html">[Gpsd-users] Garmin GPS almost never sends new position data
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1975">[ date ]</a>
+              <a href="thread.html#1975">[ thread ]</a>
+              <a href="subject.html#1975">[ subject ]</a>
+              <a href="author.html#1975">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>
+I've now tried some more.  I now really thinks this must be an error
+caused by the way gpsd uses the tty layer, garmin_gps uses the tty 
+layer, or how the tty layer works on a dual cpu computer.
+
+I've added some debugging statements in my kernel's n_tty.c (the line 
+discipline being used by the tty layer when using the garmin_gps serial 
+usb driver).
+
+As far as I can see (and please correct me if I'm wrong), the garmin_gps 
+driver calls tty_flip_buffer_push (from send_to_tty) for each message it 
+receives from the gps.
+
+This causes the tty layer to call the tty discipline's receive_buf 
+(either directly from tty_flip_buffer_push, or from a wait queue the 
+next scheduling loop).
+
+n_tty_receive_buf will copy the head tty buffer &quot;packet&quot; contents into 
+tty-&gt;read_buf and wake up anyone waiting to read from that tty (this can 
+be anyone trying to read() from the tty device or anyone doing poll() on 
+the device).
+
+The process/thread read()ing from the tty device file will cause 
+read_chan in n_tty.c to be called, which uses copy_from_read_buf to copy 
+the contents of tty-&gt;read_buf to user space.
+
+I've added a simple printk in n_tty_receive_buf and one in 
+copy_from_read_buf.
+
+With these log messages I can see the usb driver writing e.g. 22 bytes 
+to the tty layer, followed by a call to copy_from_read_buf returning 
+these bytes to the gpsd process.  These are ok, as far as I can see.
+
+But for messages larger than the 64 byte buffer, things behave like this:
+
+	n_tty_receive_buf(64 bytes)
+	copy_from_read_buf(64 bytes)
+	n_tty_receive_buf(32 bytes)
+	n_tty_receive_buf(64 bytes)
+	n_tty_receive_buf(22 bytes)
+	copy_from_read_buf (repeated several times)
+
+[unfortunately I lost the log files, so the byte counts above may be 
+incorrect]
+
+I'm in deep water here, but I cannot see anything stopping the 
+garmin_gps driver from calling tty_flip_buffer_push for multiple 
+packets, and thus calling n_tty_receive_buf, _before_ copy_from_read_buf 
+has returned all of the previous packet (or any of it) back to user space.
+
+Could this possibly be broken since I'm on a dual core cpu?
+
+Unfortunately, I was unable to boot my kernel with nosmp set, and 
+booting with maxcpus=1 only made matters worse, where gpsd couldn't even 
+probe the GPS properly, since also the small packets got garbled.
+
+Anyone have any insight in this?  I'm obviously in very deep water here...
+
+
+
+Eivind
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="001974.html">[Gpsd-users] Garmin GPS almost never sends new position data
+</A></li>
+	<LI>Next message: <A HREF="001977.html">[Gpsd-users] Garmin GPS almost never sends new position data
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1975">[ date ]</a>
+              <a href="thread.html#1975">[ thread ]</a>
+              <a href="subject.html#1975">[ subject ]</a>
+              <a href="author.html#1975">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

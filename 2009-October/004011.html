@@ -1,0 +1,96 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] Unplugging USB gps receivers - gpsd behaviour.
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2009-October/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Unplugging%20USB%20gps%20receivers%20-%20gpsd%20behaviour.&In-Reply-To=%3C4AD9850D.6090405%40attglobal.net%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="004009.html">
+   <LINK REL="Next"  HREF="004013.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] Unplugging USB gps receivers - gpsd behaviour.</H1>
+    <B>Two Sank</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Unplugging%20USB%20gps%20receivers%20-%20gpsd%20behaviour.&In-Reply-To=%3C4AD9850D.6090405%40attglobal.net%3E"
+       TITLE="[Gpsd-users] Unplugging USB gps receivers - gpsd behaviour.">sanktwo at attglobal.net
+       </A><BR>
+    <I>Sat Oct 17 10:49:17 CEST 2009</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="004009.html">[Gpsd-users] Unplugging USB gps receivers - gpsd behaviour.
+</A></li>
+        <LI>Next message: <A HREF="004013.html">[Gpsd-users] Unplugging USB gps receivers - gpsd behaviour.
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#4011">[ date ]</a>
+              <a href="thread.html#4011">[ thread ]</a>
+              <a href="subject.html#4011">[ subject ]</a>
+              <a href="author.html#4011">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Ed W wrote:
+&gt;<i> Two Sank wrote:
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> Hi Ed, thanks for responding.
+</I>&gt;&gt;<i> The truth is that I cannot find ANY remove event for the first 4 tty
+</I>&gt;&gt;<i> devices. After that the remove event is invoked and works just fine.
+</I>&gt;&gt;<i> Also, if I kill gpsd, then the remove event is generated and the remove
+</I>&gt;&gt;<i> script for gpsd is called - but gpsd is of course missing.  I am really
+</I>&gt;&gt;<i> puzzled. I can only think that because gpsd is keeping the tty open,
+</I>&gt;&gt;<i> Ubuntu does not generate the receive event - but why???
+</I>&gt;&gt;<i>   
+</I>&gt;<i> 
+</I>&gt;<i> If you need help then why are you ignoring all the help I tried to offer?
+</I>&gt;<i> 
+</I>&gt;<i> Please use udev monitor and check the exact events.  Then simplify your
+</I>&gt;<i> remove event until it starts to fire - this will show a lot of info
+</I>&gt;<i> about why it's not firing. In my case I need a udev rule which is simply
+</I>&gt;<i> matched on any ttyUSB event, no matter what driver...
+</I>
+Ed, I failed to mention that the original &quot;remove&quot; rule is:
+
+ACTION=&quot;remove&quot;, RUN+=&quot;/lib/udev/gpsd.hotplug.wrapper&quot;
+
+the only thing that bypasses that rule is: if the subsystem is not tty
+all the gpsd rules are ignored including this one. I think that the
+above rule is about as simple as possible.
+So I have to figure out why some other rule does not think that the
+receiver is a tty device. I don't like the idea of triggering the remove
+for all possible subsystems e.g. when I remove a USB DVD drive.
+
+What I think I have to do is find out what rules are being fired for the
+device and, as you wrote, find out why the add rules identify the device
+as tty but the remove rules do not.  I can do that once I can figure out
+from the logs which UDEV rules are actually being triggered for &quot;add&quot;
+since there seems to be quite a lot of them in the directory.
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="004009.html">[Gpsd-users] Unplugging USB gps receivers - gpsd behaviour.
+</A></li>
+	<LI>Next message: <A HREF="004013.html">[Gpsd-users] Unplugging USB gps receivers - gpsd behaviour.
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#4011">[ date ]</a>
+              <a href="thread.html#4011">[ thread ]</a>
+              <a href="subject.html#4011">[ subject ]</a>
+              <a href="author.html#4011">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

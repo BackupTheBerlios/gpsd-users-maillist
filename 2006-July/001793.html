@@ -1,0 +1,79 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] [Gpsd-dev] Have we cut processor utilization	any?
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2006-July/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20%5BGpsd-dev%5D%20Have%20we%20cut%20processor%20utilization%09any%3F&In-Reply-To=%3C20060726200003.GA31864%40thyrsus.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="001791.html">
+   <LINK REL="Next"  HREF="001792.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] [Gpsd-dev] Have we cut processor utilization	any?</H1>
+    <B>Eric S. Raymond</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20%5BGpsd-dev%5D%20Have%20we%20cut%20processor%20utilization%09any%3F&In-Reply-To=%3C20060726200003.GA31864%40thyrsus.com%3E"
+       TITLE="[Gpsd-users] [Gpsd-dev] Have we cut processor utilization	any?">esr at thyrsus.com
+       </A><BR>
+    <I>Wed Jul 26 22:00:03 CEST 2006</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="001791.html">[Gpsd-users] [Gpsd-dev] Have we cut processor utilization	any?
+</A></li>
+        <LI>Next message: <A HREF="001792.html">[Gpsd-users] [Gpsd-dev] Have we cut processor	utilization	any?
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1793">[ date ]</a>
+              <a href="thread.html#1793">[ thread ]</a>
+              <a href="subject.html#1793">[ subject ]</a>
+              <a href="author.html#1793">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Eric S. Raymond &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">esr at thyrsus.com</A>&gt;:
+&gt;<i> Marshall Crocker &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">crocker at cavs.msstate.edu</A>&gt;:
+</I>&gt;<i> &gt; I got some time to test today. I built svn revision 3558 and loaded it
+</I>&gt;<i> &gt; onto my embedded system. Processor utilization was between 20% and 30%
+</I>&gt;<i> &gt; with a single client connected with watcher mode on.  This is a definite
+</I>&gt;<i> &gt; improvement over the stock gpsd code that was running from  60% to over
+</I>&gt;<i> &gt; 80%.
+</I>&gt;<i> 
+</I>&gt;<i> That's good news!
+</I>
+I meant to observe, more specifically, that this means the select() call
+on a large fd set really was a serious bottleneck.  Props to Wallace Owen,
+who was the first to point this out as as a potentially serious problem.
+
+Think I'm gonna patch the configure machinery to make it easy to set up
+profiling, next.
+-- 
+		&lt;a href=&quot;<A HREF="http://www.catb.org/~esr/">http://www.catb.org/~esr/</A>&quot;&gt;Eric S. Raymond&lt;/a&gt;
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="001791.html">[Gpsd-users] [Gpsd-dev] Have we cut processor utilization	any?
+</A></li>
+	<LI>Next message: <A HREF="001792.html">[Gpsd-users] [Gpsd-dev] Have we cut processor	utilization	any?
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1793">[ date ]</a>
+              <a href="thread.html#1793">[ thread ]</a>
+              <a href="subject.html#1793">[ subject ]</a>
+              <a href="author.html#1793">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

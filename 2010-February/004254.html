@@ -1,0 +1,145 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] Fwd: xgps lock ups?
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2010-February/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Fwd%3A%20xgps%20lock%20ups%3F&In-Reply-To=%3Ca2d3b4551002201123j6d81610cg5fabaad6b1255dde%40mail.gmail.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="004240.html">
+   <LINK REL="Next"  HREF="004241.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] Fwd: xgps lock ups?</H1>
+    <B>Don Weeks</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Fwd%3A%20xgps%20lock%20ups%3F&In-Reply-To=%3Ca2d3b4551002201123j6d81610cg5fabaad6b1255dde%40mail.gmail.com%3E"
+       TITLE="[Gpsd-users] Fwd: xgps lock ups?">don.l.weeks.jr at gmail.com
+       </A><BR>
+    <I>Sat Feb 20 20:23:14 CET 2010</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="004240.html">[Gpsd-users] Fwd: xgps lock ups?
+</A></li>
+        <LI>Next message: <A HREF="004241.html">[Gpsd-users] new user
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#4254">[ date ]</a>
+              <a href="thread.html#4254">[ thread ]</a>
+              <a href="subject.html#4254">[ subject ]</a>
+              <a href="author.html#4254">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Adding the mailing list:
+
+It may relate to a bug I found in the unpack code where the status from the
+JPON unpack is not checked. What was happening to me was that it created a
+tight loop and CPU went to 100%. Fortunately, I was on a multicore system.
+My reply in gpsd-dev list:
+
+Given:
+
+int gps_unpack(char *buf, struct gps_data_t *gpsdata)
+/* unpack a gpsd response into a status structure, buf must be writeable */
+{
+char *ns, *sp, *tp;
+int i;
+
+libgps_debug_trace((1, &quot;gps_unpack(%s)\n&quot;, buf));
+
+/* detect and process a JSON response */
+if (buf[0] == '{') {
+const char *jp = buf, **next = &jp;
+while (next != NULL &amp;&amp; *next != NULL &amp;&amp; next[0][0] != '\0') {
+libgps_debug_trace((1,
+&quot;gps_unpack() segment parse '%s'\n&quot;,
+*next));
+(void)libgps_json_unpack(*next, gpsdata, next);
+
+
+
+and
+
+
+
+int libgps_json_unpack(const char *buf,
+struct gps_data_t *gpsdata,
+const char **end)
+/* the only entry point - unpack a JSON object into gpsdata_t substructures
+*/
+{
+int status;
+char *classtag = nstrstr(buf, &quot;\&quot;class\&quot;:&quot;)
+if (classtag == NULL)
+return -1;
+
+
+We can return a -1 from the classtag check and yet we don't check the return
+code in gps_unpack. Is this a bug? I am certainly hitting it badly for some
+reason. Nasty infinite loop.
+
+I changed the (void)libgps_json_unpack(*next, gpsdata, next); to if
+((void)libgps_json_unpack(*next, gpsdata, next) == -1) break; which is
+working. I have not had time to work through the details on what this will
+do but if anyone knows why this is happening or if a better fix is
+available, let me know.
+Don
+
+
+
+
+---------- Forwarded message ----------
+From: kevin diggs &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">diggskevin38 at gmail.com</A>&gt;
+To: <A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">gpsd-users at lists.berlios.de</A>
+Date: Thu, 18 Feb 2010 12:31:25 -0600
+Subject: xgps lock ups?
+Hi,
+
+Any known problems relating to xgps lock ups? Under gdb it appears to be
+caught in a loop in gps_unpack().
+This happens on:
+
+Debian etch (I thin? lenny?) on two Toshiba laptops (650 MHz p3 and 3.2 GHz
+p4) and YellowDog 6.1 on a 2.5 GHz G5. The GPSes are USB (GiSTEQ GT-730F/L)
+and GlobalSat ND-100. So far I have only used the GiSTEQ on the mac and the
+GlobalSat on the PCs. The GlobalSat can't report the time (under debug I get
+time is negative messages).
+
+GPSd version is 2.90. The motif on the mac is 2.3.x and 2.2.3 on the PCs.
+
+The p3 won't even show a display before it locks up.
+
+kevin
+_______________________________________________
+Gpsd-users mailing list
+<A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">Gpsd-users at lists.berlios.de</A>
+<A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">https://lists.berlios.de/mailman/listinfo/gpsd-users</A>
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="004240.html">[Gpsd-users] Fwd: xgps lock ups?
+</A></li>
+	<LI>Next message: <A HREF="004241.html">[Gpsd-users] new user
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#4254">[ date ]</a>
+              <a href="thread.html#4254">[ thread ]</a>
+              <a href="subject.html#4254">[ subject ]</a>
+              <a href="author.html#4254">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

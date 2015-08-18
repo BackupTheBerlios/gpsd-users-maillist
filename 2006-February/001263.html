@@ -1,0 +1,101 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] gpsd hotplug - serial usb adaptor thinks its a mouse
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2006-February/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20gpsd%20hotplug%20-%20serial%20usb%20adaptor%20thinks%20its%20a%20mouse&In-Reply-To=%3C1138966405.26713.13.camel%40hare.demon.co.uk%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="001262.html">
+   <LINK REL="Next"  HREF="001264.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] gpsd hotplug - serial usb adaptor thinks its a mouse</H1>
+    <B>Les Smithson</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20gpsd%20hotplug%20-%20serial%20usb%20adaptor%20thinks%20its%20a%20mouse&In-Reply-To=%3C1138966405.26713.13.camel%40hare.demon.co.uk%3E"
+       TITLE="[Gpsd-users] gpsd hotplug - serial usb adaptor thinks its a mouse">lsmithso at hare.demon.co.uk
+       </A><BR>
+    <I>Fri Feb  3 12:33:25 CET 2006</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="001262.html">[Gpsd-users] USB BU-353 not recognized on boot (not GPSD issue)
+</A></li>
+        <LI>Next message: <A HREF="001264.html">[Gpsd-users] gpsd hotplug - serial usb adaptor thinks its a mouse
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1263">[ date ]</a>
+              <a href="thread.html#1263">[ thread ]</a>
+              <a href="subject.html#1263">[ subject ]</a>
+              <a href="author.html#1263">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Linux Redhat FC4, gpsd 2.30, built and installed from source.
+
+I have a Garmin etrex connected to FC4 on a laptop using a Serial-USB
+Adaptor (Targus PA088). This setup used to work OK with older versions
+of gpsd. Now I've installed gpsd 2.30, the adaptor thinks its a mouse.
+In syslog,  get the error messages: 
+
+Feb  3 11:08:08 hare kernel: input: USB HID v1.10 Mouse [MCT Corp.
+Serial Mouse Adaptor] on usb-0000:00:1d.3-2
+Feb  3 11:08:08 hare hal.hotplug[4264]: DEVPATH is not set (subsystem
+input)
+
+usb 5-2: new full speed USB device using uhci_hcd and address 2
+usb 5-2: too many configurations: 67, using maximum allowed: 8
+usb 5-2: configuration #1 chosen from 8 choices
+input: USB HID v1.10 Mouse [MCT Corp. Serial Mouse Adaptor] on
+usb-0000:00:1d.3-2
+
+And X11 goes ape, thinking its getting random mouse actions from the
+GPS!
+
+I think this is related to the gpsd hotplug stuff in /etc/hotplug/usb. I
+removed the gpsd.* hotplug files but it made no difference. Can anyone
+help me (a) undo the damage (b) make the gpsd hotplugging work. 
+
+Thanks.
+
+
+-- 
+Les Smithson &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">lsmithso at hare.demon.co.uk</A>&gt;
+Open Network Solutions Ltd
+-------------- next part --------------
+An HTML attachment was scrubbed...
+URL: &lt;<A HREF="https://lists.berlios.de/pipermail/gpsd-users/attachments/20060203/7947c8bc/attachment.html">https://lists.berlios.de/pipermail/gpsd-users/attachments/20060203/7947c8bc/attachment.html</A>&gt;
+-------------- next part --------------
+A non-text attachment was scrubbed...
+Name: signature.asc
+Type: application/pgp-signature
+Size: 189 bytes
+Desc: This is a digitally signed message part
+URL: &lt;<A HREF="https://lists.berlios.de/pipermail/gpsd-users/attachments/20060203/7947c8bc/attachment.pgp">https://lists.berlios.de/pipermail/gpsd-users/attachments/20060203/7947c8bc/attachment.pgp</A>&gt;
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="001262.html">[Gpsd-users] USB BU-353 not recognized on boot (not GPSD issue)
+</A></li>
+	<LI>Next message: <A HREF="001264.html">[Gpsd-users] gpsd hotplug - serial usb adaptor thinks its a mouse
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1263">[ date ]</a>
+              <a href="thread.html#1263">[ thread ]</a>
+              <a href="subject.html#1263">[ subject ]</a>
+              <a href="author.html#1263">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

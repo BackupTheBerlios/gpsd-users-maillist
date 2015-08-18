@@ -1,0 +1,117 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] garmin_detect: error changing port attributes:	Inappropriate ioctl
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2008-December/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20garmin_detect%3A%20error%20changing%20port%20attributes%3A%0A%09Inappropriate%20ioctl&In-Reply-To=%3C1229301627.6124.12.camel%40rbraman-linux%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="003511.html">
+   <LINK REL="Next"  HREF="003514.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] garmin_detect: error changing port attributes:	Inappropriate ioctl</H1>
+    <B>Richard</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20garmin_detect%3A%20error%20changing%20port%20attributes%3A%0A%09Inappropriate%20ioctl&In-Reply-To=%3C1229301627.6124.12.camel%40rbraman-linux%3E"
+       TITLE="[Gpsd-users] garmin_detect: error changing port attributes:	Inappropriate ioctl">rbraman at taxcodesoftware.org
+       </A><BR>
+    <I>Mon Dec 15 01:40:27 CET 2008</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="003511.html">[Gpsd-users] garmin_gps not active, not sure why
+</A></li>
+        <LI>Next message: <A HREF="003514.html">[Gpsd-users] garmin_detect: error changing port attributes: Inappropriate ioctl
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3513">[ date ]</a>
+              <a href="thread.html#3513">[ thread ]</a>
+              <a href="subject.html#3513">[ subject ]</a>
+              <a href="author.html#3513">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>On Sun, 2008-12-14 at 23:09 +0100, Jan-Benedict Glaw wrote:
+The lines you sent didn't seem to work for me, but I am not the best
+with linux.  I tried them all on one line and on 2 seperate lines to
+know avail, but I quickly realized you were saying was to mount a usb
+filesystem so I googled around and added this to /etc/fstab (i read this
+way I wouldn't need to run the command each time):
+
+# &lt;file system&gt; &lt;mount point&gt;   &lt;type&gt;  &lt;options&gt;       &lt;dump&gt;  &lt;pass&gt;
+procbususb /proc/bus/usb usbfs defaults 0 0
+
+Now when I run gpsd I get a new error:
+
+gpsd: launching (Version 2.37)
+gpsd: listening on port gpsd
+gpsd: successfully connected to the DBUS system bus
+gpsd: running with effective group ID 0
+gpsd: running with effective user ID 0
+gpsd: opening GPS data source at '/dev/bus/usb/001/003'
+gpsd: error changing port attributes: Inappropriate ioctl for device
+gpsd: garmin_detect: error changing port attributes: Inappropriate ioctl
+for device
+gpsd: gpsd_activate(0): opened GPS (5)
+
+It seems as though garmin_usb is loading???
+and garmin_detect is throwing the error????
+
+Thanks in advance for the help.
+
+Richard
+
+On Sun, 2008-12-14 at 23:09 +0100, Jan-Benedict Glaw wrote:
+&gt;<i> On Sun, 2008-12-14 12:07:56 -0500, Richard &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">rbraman at taxcodesoftware.org</A>&gt; wrote:
+</I>&gt;<i> &gt; I found a line in my blacklist file that made garmin_gps not load.  I
+</I>&gt;<i> &gt; uncommented that line and now I get the following error:
+</I>&gt;<i> &gt; 
+</I>&gt;<i> &gt; <A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">rbraman at rbraman-linux</A>:/proc/bus/usb$ sudo gpsd -D 2 -N /dev/bus/usb/001/002
+</I>&gt;<i> &gt; gpsd: launching (Version 2.37)
+</I>&gt;<i> &gt; gpsd: listening on port gpsd
+</I>&gt;<i> &gt; gpsd: successfully connected to the DBUS system bus
+</I>&gt;<i> &gt; gpsd: running with effective group ID 0
+</I>&gt;<i> &gt; gpsd: running with effective user ID 0
+</I>&gt;<i> &gt; gpsd: opening GPS data source at '/dev/bus/usb/001/002'
+</I>&gt;<i> &gt; gpsd: Can't open /proc/bus/usb/devices
+</I>&gt;<i> &gt; gpsd: gpsd_activate(0): opened GPS (5)
+</I>&gt;<i> &gt; 
+</I>&gt;<i> &gt; I doesn;t seem that there is a devices directory in the /proc/bus/usb/
+</I>&gt;<i> &gt; directory.
+</I>&gt;<i> &gt; 
+</I>&gt;<i> &gt; Any ideas?
+</I>&gt;<i> 
+</I>&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">jbglaw at jblaptop</A>:~$ mount|grep usb
+</I>&gt;<i> procbususb on /proc/bus/usb type usbfs (rw)
+</I>&gt;<i> 
+</I>&gt;<i> MfG, JBG
+</I>&gt;<i> 
+</I>
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="003511.html">[Gpsd-users] garmin_gps not active, not sure why
+</A></li>
+	<LI>Next message: <A HREF="003514.html">[Gpsd-users] garmin_detect: error changing port attributes: Inappropriate ioctl
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3513">[ date ]</a>
+              <a href="thread.html#3513">[ thread ]</a>
+              <a href="subject.html#3513">[ subject ]</a>
+              <a href="author.html#3513">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

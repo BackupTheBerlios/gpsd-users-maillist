@@ -1,0 +1,146 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] odd delay problem, with sirf receiver
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2009-August/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20odd%20delay%20problem%2C%20with%20sirf%20receiver&In-Reply-To=%3C4A9232BA.7000700%40keynote-sigos.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="003861.html">
+   <LINK REL="Next"  HREF="003867.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] odd delay problem, with sirf receiver</H1>
+    <B>Jens Oberender</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20odd%20delay%20problem%2C%20with%20sirf%20receiver&In-Reply-To=%3C4A9232BA.7000700%40keynote-sigos.com%3E"
+       TITLE="[Gpsd-users] odd delay problem, with sirf receiver">jens.oberender at keynote-sigos.com
+       </A><BR>
+    <I>Mon Aug 24 08:27:06 CEST 2009</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="003861.html">[Gpsd-users] odd delay problem, with sirf receiver
+</A></li>
+        <LI>Next message: <A HREF="003867.html">[Gpsd-users] odd delay problem, with sirf receiver
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3866">[ date ]</a>
+              <a href="thread.html#3866">[ thread ]</a>
+              <a href="subject.html#3866">[ subject ]</a>
+              <a href="author.html#3866">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi Paul
+
+We have the same problem with u-Blox devices, though the delay is only 5
+seconds.
+See <A HREF="https://lists.berlios.de/pipermail/gpsd-users/2009-January/003566.html">https://lists.berlios.de/pipermail/gpsd-users/2009-January/003566.html</A>
+We are using version 2.32 now (as far as I remember) which works correct.
+Could you give that version and the next a try, so we can be sure the
+bug came in with that changes. My workmates thought it's a problem with
+u-Blox only.
+What OS are you using?
+
+Bye,
+    Jens
+-- 
+20 years - Keynote SIGOS GmbH -
+1989 - 2009
+
+Visit us at:
+3rd Annual Telecoms
+Fraud Risk and Revenue Management
+16th - 18th September 2009
+at the Radisson Blu Hotel Berlin, Germany
+
+Keynote SIGOS GmbH
+ - TESTING IS OUR COMPETENCE -
+Klingenhofstrasse 50d
+D-90411 Nuernberg
+Fon +49 911 95168-0
+www.keynote-sigos.com
+
+HRB 9323 Nuernberg
+Gerichtsstand: Nuernberg
+Geschaeftsfuehrer: Adil Kaya, Martin Loehlein, Umang Gupta, Andrew Hamer
+
+
+Paul Fox wrote:
+&gt;<i> hi --
+</I>&gt;<i> 
+</I>&gt;<i> i'm having a very strange delay issue with my sirf receiver.
+</I>&gt;<i> 
+</I>&gt;<i> i use a sirf-based USB mouse attached to a (linux) laptop running
+</I>&gt;<i> a mapping program.  some days (like today) everything works
+</I>&gt;<i> perfectly.  other days (like yesterday) GPS reports are delayed
+</I>&gt;<i> by a full 14 or 15 seconds from when they really happen.
+</I>&gt;<i> 
+</I>&gt;<i> to describe the behavior in more detail:  if i'm traveling, the
+</I>&gt;<i> trail followed by the mapping program's cursor follows my actual
+</I>&gt;<i> trail exactly (meaning that the position reports are all correct)
+</I>&gt;<i> but each is delayed by 15 seconds -- i can come to a stop at
+</I>&gt;<i> an intersection, and watch the cursor &quot;catch up&quot;.  or, if i'm on
+</I>&gt;<i> a bus, and we come to a stop, the speed reported from the device
+</I>&gt;<i> comes to a stop 15 seconds later -- it inicates 0m/s for the duration
+</I>&gt;<i> of the stop, then starts climbing 14 seconds after the bus has
+</I>&gt;<i> started moving.  this is observed using my mapping client, or
+</I>&gt;<i> using gpsmon.  if using gpsmon, i can observe this behavior
+</I>&gt;<i> whether using gpsd as the data source, or when connecting
+</I>&gt;<i> directly to /dev/ttyUSB0.  gps data seems to arrive at the usual
+</I>&gt;<i> rate -- an update or two per second.
+</I>&gt;<i> 
+</I>&gt;<i> while i can't fully interpret what i'm seeing, it sure feels like
+</I>&gt;<i> either my sirf chip, or the USB stack (!?) is in some sort of
+</I>&gt;<i> wayback mode.  has anyone else ever seen anything like this?
+</I>&gt;<i> 
+</I>&gt;<i> when the problem is occuring (and i've had it happen enough that
+</I>&gt;<i> i've watched it quite a bit, both with my map program, and
+</I>&gt;<i> gpsmon), it's so reliably &quot;wrong&quot; that it feels deliberate --
+</I>&gt;<i> i.e., it feels like a debug flag in the sirf firmware has been
+</I>&gt;<i> set (the &quot;delay all reports by 14 seconds&quot; debug flag?).  are
+</I>&gt;<i> there any sirf dumping utilities that i could use to get a more
+</I>&gt;<i> complete picture of the receiver's state?)  i haven't figured out
+</I>&gt;<i> any way of forcing the receiver in or out of this odd mode --
+</I>&gt;<i> unplugging/replugging/reopening the device usually has no affect.
+</I>&gt;<i> 
+</I>&gt;<i> versions:  i've been using svn r5863 of gpsd.  if someone can tell me
+</I>&gt;<i> how to get the sirf firmware version number, i'll provide it.
+</I>&gt;<i> 
+</I>&gt;<i> thanks!
+</I>&gt;<i> 
+</I>&gt;<i> paul
+</I>&gt;<i> =---------------------
+</I>&gt;<i>  paul fox, <A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">pgf at foxharp.boston.ma.us</A> (arlington, ma, where it's 68.4 degrees)
+</I>&gt;<i> _______________________________________________
+</I>&gt;<i> Gpsd-users mailing list
+</I>&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">Gpsd-users at lists.berlios.de</A>
+</I>&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">https://lists.berlios.de/mailman/listinfo/gpsd-users</A>
+</I>
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="003861.html">[Gpsd-users] odd delay problem, with sirf receiver
+</A></li>
+	<LI>Next message: <A HREF="003867.html">[Gpsd-users] odd delay problem, with sirf receiver
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3866">[ date ]</a>
+              <a href="thread.html#3866">[ thread ]</a>
+              <a href="subject.html#3866">[ subject ]</a>
+              <a href="author.html#3866">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

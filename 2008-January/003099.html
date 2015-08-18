@@ -1,0 +1,112 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] Looks like a BUG?? was PPS 5Hz + GPSClock square	wave pulse detection indefault nmea driver
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2008-January/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Looks%20like%20a%20BUG%3F%3F%20was%20PPS%205Hz%20%2B%20GPSClock%20square%0A%09wave%20pulse%20detection%20indefault%20nmea%20driver&In-Reply-To=%3C000201c857c3%24ed7fe400%24fbc31eac%40tau%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="003098.html">
+   <LINK REL="Next"  HREF="003100.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] Looks like a BUG?? was PPS 5Hz + GPSClock square	wave pulse detection indefault nmea driver</H1>
+    <B>John Arthur</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Looks%20like%20a%20BUG%3F%3F%20was%20PPS%205Hz%20%2B%20GPSClock%20square%0A%09wave%20pulse%20detection%20indefault%20nmea%20driver&In-Reply-To=%3C000201c857c3%24ed7fe400%24fbc31eac%40tau%3E"
+       TITLE="[Gpsd-users] Looks like a BUG?? was PPS 5Hz + GPSClock square	wave pulse detection indefault nmea driver">lists at davey.net.au
+       </A><BR>
+    <I>Tue Jan 15 23:13:59 CET 2008</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="003098.html">[Gpsd-users] Looks like a BUG?? was PPS 5Hz + GPSClock square wave pulse detection indefault nmea driver
+</A></li>
+        <LI>Next message: <A HREF="003100.html">[Gpsd-users] Looks like a BUG?? was PPS 5Hz + GPSClock square wave pulse detection indefault nmea driver
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3099">[ date ]</a>
+              <a href="thread.html#3099">[ thread ]</a>
+              <a href="subject.html#3099">[ subject ]</a>
+              <a href="author.html#3099">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>&gt;<i> 
+</I>&gt;<i> There have been many patches to the PPS code since 2.36.  The 
+</I>&gt;<i> first code you mention is long gone in 2.37dev.  Could you 
+</I>&gt;<i> please reapply your analysis to the current SVN code?
+</I>&gt;<i> 
+</I>
+Hi Garry,
+
+I do not have access to the current (dev) SVN code.
+
+However if session-&gt;driver.xxxxx is used anywhere in the pps_monitor
+thread and probably anywhere in gpsd outside of the actual driver code 
+without testing which driver is in use. It's a bug.
+
+I just did  grep &quot;session-&gt;driver&quot; *
+
+on the current 2.36 code and found in
+
+libgpsd_core.c:gpsd_activate()
+
+.
+#ifdef SIRF_ENABLE
+        session-&gt;driver.sirf.satcounter = 0;
+#endif /* SIRF_ENABLE */
+.
+.
+.
+Although it does not matter because a few lines later
+.
+.
+        /* clear driver subtype field and private data union */
+        session-&gt;subtype[0] = '\0';
+        memset(&amp;session-&gt;driver, '\0', sizeof(session-&gt;driver));
+
+clears the union anyway. The point is that the driver union should
+not be used anywhere outside of driver code without verifying the 
+driver in use.
+
+
+#ifdef SIRF_ENABLE
+        session-&gt;driver.sirf.satcounter = 0;
+#endif /* SIRF_ENABLE */
+
+should certianly be removed from libgpsd_core.c:gpsd_activate()
+
+If you want to send me a tarball of 2.37dev I'll have a look at it 
+when I get back from holidays.
+
+Regards John
+
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="003098.html">[Gpsd-users] Looks like a BUG?? was PPS 5Hz + GPSClock square wave pulse detection indefault nmea driver
+</A></li>
+	<LI>Next message: <A HREF="003100.html">[Gpsd-users] Looks like a BUG?? was PPS 5Hz + GPSClock square wave pulse detection indefault nmea driver
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3099">[ date ]</a>
+              <a href="thread.html#3099">[ thread ]</a>
+              <a href="subject.html#3099">[ subject ]</a>
+              <a href="author.html#3099">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

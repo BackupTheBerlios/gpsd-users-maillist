@@ -1,0 +1,164 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] Compiling/running gpsd 2.25+ on Zaurus
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2005-July/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Compiling/running%20gpsd%202.25%2B%20on%20Zaurus&In-Reply-To=%3C42E1C0AC.8030406%40wind.sannet.ne.jp%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="000854.html">
+   <LINK REL="Next"  HREF="000866.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] Compiling/running gpsd 2.25+ on Zaurus</H1>
+    <B>Lance Fetters</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Compiling/running%20gpsd%202.25%2B%20on%20Zaurus&In-Reply-To=%3C42E1C0AC.8030406%40wind.sannet.ne.jp%3E"
+       TITLE="[Gpsd-users] Compiling/running gpsd 2.25+ on Zaurus">ashikase at wind.sannet.ne.jp
+       </A><BR>
+    <I>Sat Jul 23 05:59:40 CEST 2005</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="000854.html">[Gpsd-users] Compiling/running gpsd 2.25+ on Zaurus
+</A></li>
+        <LI>Next message: <A HREF="000866.html">[Gpsd-users] Compiling/running gpsd 2.25+ on Zaurus
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#862">[ date ]</a>
+              <a href="thread.html#862">[ thread ]</a>
+              <a href="subject.html#862">[ subject ]</a>
+              <a href="author.html#862">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Eric S. Raymond wrote:
+&gt;<i> Lance F. &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">ashikase at users.sourceforge.net</A>&gt;:
+</I>&gt;<i> 
+</I>&gt;&gt;<i>Has anyone been able to successfully compile and run 2.25-2.28 on the
+</I>&gt;&gt;<i>Zaurus? Does anyone have any idea what might be wrong?
+</I>&gt;<i> 
+</I>&gt;<i> 
+</I>&gt;<i> See &quot;Try to determine what release introduced the bug: at
+</I>&gt;<i> &lt;<A HREF="http://gpsd.berlios.de/faq.html">http://gpsd.berlios.de/faq.html</A>&gt;.
+</I>
+I apologize; it looks like the shared/static problem was due to some 
+unknown corruption in my compilation environment. I have since switched 
+to the zgcc package (gcc version 2.95.2) and have been able to 
+successfully compile and run shared builds of 2.25-2.28.
+
+However, another problem has arisen. I can telnet to port 2947 and 
+switch to 'wr' mode, and I start seeing input from my (BT SirfIII-based) 
+GPS, but soon after it crashes. I captured a log of gpsd with gdb; I 
+will include the log at the end of this message. When I get time later 
+I'll try to get all the other information requested in the FAQ, if needed.
+
+It seems that the problem started in version 2.25. I attempted to track 
+it down further by checking out versions between 2.24-2.25, but I 
+constantly get 'connection refused' when using anonymous svn to berlios 
+(no idea why, not a firewall problem I don't think). This also means 
+that I can't check out the latest version to see if the problem has gone 
+away.
+
+On a side note, with zgcc the 'stdbool' problem is now just a warning; 
+however, the 'anonymous union' is still a problem which I had to fix by 
+hand.
+
+- Lance F.
+
+Log follows:
+-------------------------------------------------------------------
+(gdb) run
+Starting program: /home/system/var/mnt/code/gpsd-2.28/.libs/lt-gpsd 
+/dev/rfcomm0 -D3 -N
+gpsd: launching (Version 2.28)
+gpsd: listening on port 2947
+gpsd: running with effective group ID 0
+gpsd: running with effective user ID 0
+gpsd: client connect on 6
+gpsd: checking 6
+gpsd: &lt;= client: f
+gpsd: =&gt; client(6): GPSD,F=?
+gpsd: checking 6
+gpsd: &lt;= client: wr
+gpsd: closing GPS=/dev/rfcomm0 (-1)
+gpsd: opening GPS data source at '/dev/rfcomm0'
+gpsd: no probe matched...
+gpsd: speed 9600, 8N1
+gpsd: gpsd_activate: opened GPS (7)
+gpsd: =&gt; client(6): GPSD,X=1122006682.770802
+gpsd: 6 turned on watching
+gpsd: 6 turned on raw mode
+gpsd: =&gt; client(6): GPSD,W=1,R=1
+gpsd: packet sniff finds type 0
+gpsd: Selecting Generic NMEA driver...
+gpsd: =&gt; GPS: $PFEC,GPint,GSA01,DTM00,ZDA01,RMC01,GLL00,VTG00,GSV05*3B
+
+gpsd: =&gt; GPS: $PMOTG,ZDA,1*2F
+
+gpsd: =&gt; GPS: $PGRM0,GSA,1*5C
+
+gpsd: =&gt; GPS: $PSRF105,1*3E
+
+gpsd: &lt;= GPS: $GPRMC,121449.123,V,,,,,,,210705,,*25
+gpsd: unknown sentence: &quot;$GPRMC,121449.123,V,,,,,,,210705,,*25
+&quot;
+gpsd: =&gt; client(6): $GPRMC,121449.123,V,,,,,,,210705,,*25
+gpsd: &lt;= GPS: $GPGSV,3,2,12,07,00,000,,03,00,000,,11,00,000,,15,00,000,*7B
+gpsd: Partial satellite data (2 of 3).
+gpsd: =&gt; client(6): 
+$GPGSV,3,2,12,07,00,000,,03,00,000,,11,00,000,,15,00,000,*7B
+gpsd: &lt;= GPS: $GPGGA,121454.116,,,,,0,00,,,M,,,,0000*34
+gpsd: GPGGA sets status 0
+gpsd: =&gt; client(6): $GPGGA,121454.116,,,,,0,00,,,M,,,,0000*34
+gpsd: &lt;= GPS: $GPGSV,3,1,12,25,00,000,,27,00,000,,30,00,000,,05,00,000,*7C
+gpsd: Partial satellite data (1 of 3).
+gpsd: =&gt; client(6): 
+$GPGSV,3,1,12,25,00,000,,27,00,000,,30,00,000,,05,00,000,*7C
+gpsd: &lt;= GPS: $GPRMC,121458.123,V,,,,,,,210705,,*25
+gpsd: unknown sentence: &quot;$GPRMC,121458.123,V,,,,,,,210705,,*25
+&quot;
+gpsd: =&gt; client(6): $GPRMC,121458.123,V,,,,,,,210705,,*25
+gpsd: &lt;= GPS: $GPGSA,A,1,,,,*32
+gpsd: GPGSA sets mode 1
+
+Program received signal SIGSEGV, Segmentation fault.
+0x400d0220 in __strtod_internal () from /lib/libc.so.6
+(gdb) bt
+#0  0x400d0220 in __strtod_internal () from /lib/libc.so.6
+#1  0x40028224 in processGPGSA (c=2064, field=0xbfffb444, out=0x201023c)
+     at /mnt/include/stdlib.h:297
+#2  0x400287e4 in nmea_parse (sentence=0x201173c &quot;$GPGSA,A,1,,,,*32\r\n&quot;,
+        outdata=0x201023c) at nmea_parse.c:547
+#3  0x40029040 in nmea_parse_input (session=0x201023c) at drivers.c:27
+#4  0x4002fc58 in gpsd_poll (session=0x201023c) at libgpsd_core.c:514
+#5  0x02004cfc in main (argc=4, argv=0xbffffa84) at gpsd.c:1239
+#6  0x400b3070 in __libc_start_main () from /lib/libc.so.6
+(gdb)
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="000854.html">[Gpsd-users] Compiling/running gpsd 2.25+ on Zaurus
+</A></li>
+	<LI>Next message: <A HREF="000866.html">[Gpsd-users] Compiling/running gpsd 2.25+ on Zaurus
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#862">[ date ]</a>
+              <a href="thread.html#862">[ thread ]</a>
+              <a href="subject.html#862">[ subject ]</a>
+              <a href="author.html#862">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

@@ -1,0 +1,104 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] libgps/gpsd interaction
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2010-November/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20libgps/gpsd%20interaction&In-Reply-To=%3C20101110080811.07e70759%40dragon%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="004741.html">
+   <LINK REL="Next"  HREF="004742.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] libgps/gpsd interaction</H1>
+    <B>Charles Curley</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20libgps/gpsd%20interaction&In-Reply-To=%3C20101110080811.07e70759%40dragon%3E"
+       TITLE="[Gpsd-users] libgps/gpsd interaction">charlescurley at charlescurley.com
+       </A><BR>
+    <I>Wed Nov 10 16:08:11 CET 2010</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="004741.html">[Gpsd-users] libgps/gpsd interaction
+</A></li>
+        <LI>Next message: <A HREF="004742.html">[Gpsd-users] GPSD with UBLOX-G5010-SA
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#4743">[ date ]</a>
+              <a href="thread.html#4743">[ thread ]</a>
+              <a href="subject.html#4743">[ subject ]</a>
+              <a href="author.html#4743">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>On Tue, 9 Nov 2010 19:16:07 -0800 (PST)
+Danforth Dyad &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">bdbcat at yahoo.com</A>&gt; wrote:
+
+&gt;<i> New to the list here.&#160; I am the lead developer of OpenCPN.
+</I>
+Looks nice. Good luck with it.
+
+&gt;<i> 
+</I>&gt;<i> We are having some problems with the libgps API.
+</I>&gt;<i> Couple of simple questions:
+</I>&gt;<i> 
+</I>&gt;<i> 1.&#160; If I use the libgps 2.94 API, how can I detect that the gpsd
+</I>&gt;<i> daemon is alive? A simple test is constructed:
+</I>
+Your test procedure (a through c) looks good.
+
+You might look at how I solved this problem.
+<A HREF="http://www.charlescurley.com/blog/articles/gnome-gps_a_simple_gtk_gps_monitor/index.html">http://www.charlescurley.com/blog/articles/gnome-gps_a_simple_gtk_gps_monitor/index.html</A>
+(I think the code there reflects 2.94.)
+
+(2.9x are all beta versions; be prepared to jump to 3.x when that
+happens.)
+
+There are three separate issues to deal with:
+
+* gpsd goes away, the problem at hand.
+
+* gpsd continues to run, but loses contact with the GPS receiver (the
+  user unplugs it, e.g.). I have also solved that one.
+
+* The hardware and software continue to run correctly but the receiver
+  loses all satellites and can't produce a fix (e.g. you are in a
+  tunnel. [OK, not likely in your application]). That's up to you but
+  you should have a graceful way to handle it.
+
+-- 
+
+Charles Curley                  /&quot;\    ASCII Ribbon Campaign
+Looking for fine software       \ /    Respect for open standards
+and/or writing?                  X     No HTML/RTF in email
+<A HREF="http://www.charlescurley.com">http://www.charlescurley.com</A>    / \    No M$ Word docs in email
+
+Key fingerprint = CE5C 6645 A45A 64E4 94C0  809C FFF6 4C48 4ECD DFDB
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="004741.html">[Gpsd-users] libgps/gpsd interaction
+</A></li>
+	<LI>Next message: <A HREF="004742.html">[Gpsd-users] GPSD with UBLOX-G5010-SA
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#4743">[ date ]</a>
+              <a href="thread.html#4743">[ thread ]</a>
+              <a href="subject.html#4743">[ subject ]</a>
+              <a href="author.html#4743">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

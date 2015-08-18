@@ -1,0 +1,114 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] PPS 5Hz (was Bug - Switching Drivers from Generic	NMEAtoGarmin serial creates 2 gpsd_ppsmonitor thread)
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2008-January/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20PPS%205Hz%20%28was%20Bug%20-%20Switching%20Drivers%20from%20Generic%0A%09NMEAtoGarmin%20serial%20creates%202%20gpsd_ppsmonitor%20thread%29&In-Reply-To=%3C000301c85716%2415208950%24fbc31eac%40tau%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="003092.html">
+   <LINK REL="Next"  HREF="003096.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] PPS 5Hz (was Bug - Switching Drivers from Generic	NMEAtoGarmin serial creates 2 gpsd_ppsmonitor thread)</H1>
+    <B>John Arthur</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20PPS%205Hz%20%28was%20Bug%20-%20Switching%20Drivers%20from%20Generic%0A%09NMEAtoGarmin%20serial%20creates%202%20gpsd_ppsmonitor%20thread%29&In-Reply-To=%3C000301c85716%2415208950%24fbc31eac%40tau%3E"
+       TITLE="[Gpsd-users] PPS 5Hz (was Bug - Switching Drivers from Generic	NMEAtoGarmin serial creates 2 gpsd_ppsmonitor thread)">lists at davey.net.au
+       </A><BR>
+    <I>Tue Jan 15 02:29:33 CET 2008</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="003092.html">[Gpsd-users] PPS 5Hz (was Bug - Switching Drivers from Generic NMEAtoGarmin serial creates 2 gpsd_ppsmonitor thread)
+</A></li>
+        <LI>Next message: <A HREF="003096.html">[Gpsd-users] PPS 5Hz + GPSClock square wave pulse detection in	default nmea driver
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3095">[ date ]</a>
+              <a href="thread.html#3095">[ thread ]</a>
+              <a href="subject.html#3095">[ subject ]</a>
+              <a href="author.html#3095">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi Gary,
+
+&gt;<i> &gt; Jan 14 10:51:52 hcnas gpsd[23765]: gpsd: ntpshm_pps: clock: 
+</I>&gt;<i> &gt; 1200336712.505583, Pulse 655 Jan 14 10:51:52 hcnas 
+</I>&gt;<i> gpsd[23765]: gpsd: 
+</I>&gt;<i> &gt; ntpshm_pps: lost PPS lock: pulse 655
+</I>&gt;<i> 
+</I>&gt;<i> That 655nS is a real short pulse.  Looks like noise on your 
+</I>
+In that log message Pulse is just a pulse cycle counter with pulse 0 being the top
+of the second and 655 was merely the unset state of the counter because the wrong 
+clock driver was being used and it was not pulseing at the top of the second.
+
+Hmmm.
+For unknown devices code could be added to flip the value of the leading_edge
+variable if the pulse is being detected at the bottom of the second...
+
+if (tv-&gt;tv_usec &lt; (500000+PPS_MAX_OFFSET) &amp;&amp; tv-&gt;tv_usec &gt; (500000-PPS_MAX_OFFSET)) 
+	session-&gt;driver.nmea.leading_edge ? 0 : 1;
+
+Perhaps a custom driver for the GPSClock is not even required. Just initialise
+the leading_edge variable in the driver NMEA startup code and let gpsd work it out.
+
+Run ntpd only using SHM0 for a day to get time sync to within about 250ms then 
+activate SHM1 with PPS
+
+Perhaps the logging message should be changed to 
+ntpshm_pps: lost PPS lock: pulse cycle count 655
+
+Regards John Arthur
+
+Jan 15 11:08:41 genesis gpsd[2592]: gpsd: ntpshm_pps: clock: 1200357521.200021, Pulse 0
+Jan 15 11:08:41 genesis gpsd[2592]: gpsd: ntpshm_pps: clock: 1200357521.400020, Pulse 1
+Jan 15 11:08:41 genesis gpsd[2592]: gpsd: ntpshm_pps: clock: 1200357521.600021, Pulse 2
+Jan 15 11:08:41 genesis gpsd[2592]: gpsd: ntpshm_pps: clock: 1200357521.800020, Pulse 3
+Jan 15 11:08:42 genesis gpsd[2592]: gpsd: ntpshm_pps: clock: 1200357522.000020, Pulse 4
+Jan 15 11:08:42 genesis gpsd[2592]: gpsd: ntpshm_pps: clock: 1200357522.200021, Pulse 0
+Jan 15 11:08:42 genesis gpsd[2592]: gpsd: ntpshm_pps: clock: 1200357522.400022, Pulse 1
+Jan 15 11:08:42 genesis gpsd[2592]: gpsd: ntpshm_pps: clock: 1200357522.600022, Pulse 2
+Jan 15 11:08:42 genesis gpsd[2592]: gpsd: ntpshm_pps: clock: 1200357522.800021, Pulse 3
+Jan 15 11:08:43 genesis gpsd[2592]: gpsd: ntpshm_pps: clock: 1200357523.000020, Pulse 4
+Jan 15 11:08:43 genesis gpsd[2592]: gpsd: ntpshm_pps: clock: 1200357523.200020, Pulse 0
+Jan 15 11:08:43 genesis gpsd[2592]: gpsd: ntpshm_pps: clock: 1200357523.400024, Pulse 1
+Jan 15 11:08:43 genesis gpsd[2592]: gpsd: ntpshm_pps: clock: 1200357523.600022, Pulse 2
+Jan 15 11:08:43 genesis gpsd[2592]: gpsd: ntpshm_pps: clock: 1200357523.800021, Pulse 3
+Jan 15 11:08:44 genesis gpsd[2592]: gpsd: ntpshm_pps: clock: 1200357524.000020, Pulse 4
+Jan 15 11:08:44 genesis gpsd[2592]: gpsd: ntpshm_pps: clock: 1200357524.200022, Pulse 0
+Jan 15 11:08:44 genesis gpsd[2592]: gpsd: ntpshm_pps: clock: 1200357524.400022, Pulse 1
+Jan 15 11:08:44 genesis gpsd[2592]: gpsd: ntpshm_pps: clock: 1200357524.600019, Pulse 2
+Jan 15 11:08:44 genesis gpsd[2592]: gpsd: ntpshm_pps: clock: 1200357524.800023, Pulse 3
+Jan 15 11:08:45 genesis gpsd[2592]: gpsd: ntpshm_pps: clock: 1200357525.000019, Pulse 4
+
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="003092.html">[Gpsd-users] PPS 5Hz (was Bug - Switching Drivers from Generic NMEAtoGarmin serial creates 2 gpsd_ppsmonitor thread)
+</A></li>
+	<LI>Next message: <A HREF="003096.html">[Gpsd-users] PPS 5Hz + GPSClock square wave pulse detection in	default nmea driver
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3095">[ date ]</a>
+              <a href="thread.html#3095">[ thread ]</a>
+              <a href="subject.html#3095">[ subject ]</a>
+              <a href="author.html#3095">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

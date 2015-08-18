@@ -1,0 +1,97 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] Errors building/installing gpsd-2.34
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2007-April/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Errors%20building/installing%20gpsd-2.34&In-Reply-To=%3C946713.51323.qm%40web52906.mail.re2.yahoo.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="002571.html">
+   <LINK REL="Next"  HREF="002573.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] Errors building/installing gpsd-2.34</H1>
+    <B>Eric Pretorious</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Errors%20building/installing%20gpsd-2.34&In-Reply-To=%3C946713.51323.qm%40web52906.mail.re2.yahoo.com%3E"
+       TITLE="[Gpsd-users] Errors building/installing gpsd-2.34">epretorious at yahoo.com
+       </A><BR>
+    <I>Wed Apr 18 21:22:56 CEST 2007</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="002571.html">[Gpsd-users] Another newbie question
+</A></li>
+        <LI>Next message: <A HREF="002573.html">[Gpsd-users] Errors building/installing gpsd-2.34
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2572">[ date ]</a>
+              <a href="thread.html#2572">[ thread ]</a>
+              <a href="subject.html#2572">[ subject ]</a>
+              <a href="author.html#2572">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hello, All:
+
+I downloaded gpsd-2.34 last night and tried to build/install but had a few problems:
+
+1. ./autoconf.sh assumes that prefix=/.
+   Almost all of the other software that I've built/installed lately correctly assumed prefix=/usr/local. I corrected this by specifying `./autoconf.sh --prefix=/usr/local`
+
+2. `make` does not build all of the executables.
+   e.g., xgps was not built but its man page (/usr/local/man/man1/xgps.1) was installed.
+
+3. `make install` does not installs some of the executables in a way that leaves them broken:
+&gt;<i> [<A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">epretorious at foobar</A> gpsd-2.34]$ cd /usr/local/src/gpsd-2.34
+</I>&gt;<i> 
+</I>&gt;<i> [<A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">epretorious at foobar</A> gpsd-2.34]$ sudo /usr/local/sbin/gpsd /dev/ttyUSB0 
+</I>&gt;<i> /usr/local/sbin/gpsd: error while loading shared libraries: libgps.so.16: cannot open shared object file: No such file or directory
+</I>&gt;<i> 
+</I>&gt;<i> [<A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">epretorious at foobar</A> gpsd-2.34]$ sudo ./gpsd /dev/ttyUSB0 
+</I>&gt;<i> 
+</I>&gt;<i> [<A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">epretorious at foobar</A> gpsd-2.34]$ ps ax | grep gpsd
+</I>&gt;<i> 18158 ?        S&lt;s    0:00 /usr/local/src/gpsd-2.34/.libs/lt-gpsd /dev/ttyUSB0
+</I>&gt;<i> 
+</I>&gt;<i> [<A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">epretorious at foobar</A> gpsd-2.34]$ /usr/local/bin/cgps
+</I>&gt;<i> /usr/local/bin/cgps: error while loading shared libraries: libgps.so.16: cannot open shared object file: No such file or directory
+</I>&gt;<i> 
+</I>&gt;<i> [<A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">epretorious at foobar</A> gpsd-2.34]$ ./cgps
+</I>&gt;<i> &lt;...ncurses...&gt;
+</I>
+What's causing these errors?
+
+Eric Pretorious
+Sunnyvale, CA
+
+       
+---------------------------------
+Ahhh...imagining that irresistible &quot;new car&quot; smell?
+ Check outnew cars at Yahoo! Autos.
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="002571.html">[Gpsd-users] Another newbie question
+</A></li>
+	<LI>Next message: <A HREF="002573.html">[Gpsd-users] Errors building/installing gpsd-2.34
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2572">[ date ]</a>
+              <a href="thread.html#2572">[ thread ]</a>
+              <a href="subject.html#2572">[ subject ]</a>
+              <a href="author.html#2572">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

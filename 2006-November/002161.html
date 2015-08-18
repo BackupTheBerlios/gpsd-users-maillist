@@ -1,0 +1,92 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] Can't connect TNTC rev.3654 last working
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2006-November/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Can%27t%20connect%20TNTC%20rev.3654%20last%20working&In-Reply-To=%3C20061101031026.GA31210%40thyrsus.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   
+   <LINK REL="Next"  HREF="002162.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] Can't connect TNTC rev.3654 last working</H1>
+    <B>Eric S. Raymond</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Can%27t%20connect%20TNTC%20rev.3654%20last%20working&In-Reply-To=%3C20061101031026.GA31210%40thyrsus.com%3E"
+       TITLE="[Gpsd-users] Can't connect TNTC rev.3654 last working">esr at thyrsus.com
+       </A><BR>
+    <I>Wed Nov  1 04:10:26 CET 2006</I>
+    <P><UL>
+        
+        <LI>Next message: <A HREF="002162.html">[Gpsd-users] Turning on SiRF raw data at high port speeds (was:	[Gpsd-commit-watch] r3756 - trunk)
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2161">[ date ]</a>
+              <a href="thread.html#2161">[ thread ]</a>
+              <a href="subject.html#2161">[ subject ]</a>
+              <a href="author.html#2161">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Massimo Burcheri &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">burcheri at fgan.de</A>&gt;:
+&gt;<i> 3654:
+</I>&gt;<i> compiled with
+</I>&gt;<i> ./autogen.sh --enable-tnt --enable-fixed-port-speed=19200 &amp;&amp; make
+</I>&gt;<i> 
+</I>&gt;<i> ## WORKING: :)
+</I>&gt;<i> $ ./gpsd -n -N -D2 /dev/ttyr01 -S 2948
+</I>&gt;<i> gpsd: launching (Version 2.34)
+</I>&gt;<i> gpsd: listening on port 2948
+</I>&gt;<i> gpsd: Unable to start ntpshm.  gpsd must run as root.
+</I>&gt;<i> gpsd: running with effective group ID 557
+</I>&gt;<i> gpsd: running with effective user ID 557
+</I>&gt;<i> gpsd: opening GPS data source at '/dev/ttyr01'
+</I>&gt;<i> gpsd: Probing TrueNorth Compass
+</I>&gt;<i> gpsd: hunting at speed 19200
+</I>&gt;<i> gpsd: speed 19200, 8N1
+</I>&gt;<i> gpsd: =&gt; GPS: @X?*67
+</I>&gt;<i> gpsd: =&gt; GPS: @X?*67
+</I>&gt;<i> gpsd: =&gt; GPS: @BA=15*3A
+</I>&gt;<i> gpsd: =&gt; GPS: @BA=15*3A
+</I>&gt;<i> gpsd: gpsd_activate: opened GPS (6)
+</I>&gt;<i> gpsd: &lt;= GPS: $PTNTHTM,7.7,N,0.5,N,-2.5,N,59.0,4350*10
+</I>&gt;<i> gpsd: &lt;= GPS: $PTNTHTM,7.7,N,0.5,N,-2.5,N,59.0,4350*10
+</I>
+OK.  What I've done is recovered the TNT driver version from 3654,
+changed it as little as possible to fit the new driver method names,
+and dropped it into svn HEAD.  So it still has the internal baud-hunt
+loop rather than trying to use the new wakeup method.
+
+Please grab and test.  If it works, we can try making one small
+change forward at a time.
+-- 
+		&lt;a href=&quot;<A HREF="http://www.catb.org/~esr/">http://www.catb.org/~esr/</A>&quot;&gt;Eric S. Raymond&lt;/a&gt;
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	
+	<LI>Next message: <A HREF="002162.html">[Gpsd-users] Turning on SiRF raw data at high port speeds (was:	[Gpsd-commit-watch] r3756 - trunk)
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2161">[ date ]</a>
+              <a href="thread.html#2161">[ thread ]</a>
+              <a href="subject.html#2161">[ subject ]</a>
+              <a href="author.html#2161">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

@@ -1,0 +1,109 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] Open-source AIS receiver
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2009-October/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Open-source%20AIS%20receiver&In-Reply-To=%3C1255046754.20378.22.camel%40crapshoot%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="004002.html">
+   <LINK REL="Next"  HREF="004004.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] Open-source AIS receiver</H1>
+    <B>Nick Foster</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Open-source%20AIS%20receiver&In-Reply-To=%3C1255046754.20378.22.camel%40crapshoot%3E"
+       TITLE="[Gpsd-users] Open-source AIS receiver">nick at zylight.com
+       </A><BR>
+    <I>Fri Oct  9 02:05:54 CEST 2009</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="004002.html">[Gpsd-users] Open-source AIS receiver
+</A></li>
+        <LI>Next message: <A HREF="004004.html">[Gpsd-users] Open-source AIS receiver
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#4003">[ date ]</a>
+              <a href="thread.html#4003">[ thread ]</a>
+              <a href="subject.html#4003">[ subject ]</a>
+              <a href="author.html#4003">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Eric,
+
+&gt;<i> &gt; Just a little disclaimer, yes, I know the longer sentences violate the
+</I>&gt;<i> &gt; sentence length limit of NMEA-0183. GPSD seems to be more than happy to
+</I>&gt;<i> &gt; parse the sentences anyway. I'll eventually add in the (simple) logic to
+</I>&gt;<i> &gt; split up sentences, just to be safe.
+</I>&gt;<i> 
+</I>&gt;<i> As far as GPSD is concerned, don't worry about it. Lots of GPS
+</I>&gt;<i> receivers violate that limit in odd ways, as we've found out the hard
+</I>&gt;<i> way over the last five years.  The packet buffer in GPSD is far longer
+</I>&gt;<i> than any AIS encoding will ever be.
+</I>&gt;<i> 
+</I>
+Thanks for the heads-up.
+
+&gt;<i> &gt; Feel free to give me suggestions, comments, etc. on this program. If
+</I>&gt;<i> &gt; there are GNU Radio aficionados out there who don't have access to the
+</I>&gt;<i> &gt; USRP hardware, I can record some sample AIS data for people to play
+</I>&gt;<i> &gt; with. Just let me know.
+</I>&gt;<i> 
+</I>&gt;<i> One of the things I want most badly for this project is a complete AIVDM
+</I>&gt;<i> test load - significant portions of my decoders have not yet been tested
+</I>&gt;<i> on live data, and not because I haven't been looking.  If you could supply
+</I>&gt;<i> any of the missing types I'd be very grateful.
+</I>&gt;<i> 
+</I>&gt;<i> I have regression-test loads for AIS types 1-11, 15, 18-21, and 24.  I
+</I>&gt;<i> don't have them for types 12-14, 16-17, and 22-23.  
+</I>&gt;<i> 
+</I>&gt;<i> A proper test load includes both the sentence and the decoded output
+</I>&gt;<i> oin some human-readable form - but for messages 12 and 14 in
+</I>&gt;<i> particular I'll take any data I can get, as the payload is textual and
+</I>&gt;<i> it ought therefore to be easy to tell if the decoding is correct.
+</I>&gt;<i> 
+</I>&gt;<i> For types 6 and 8 I have regression-test sentences but no independent
+</I>&gt;<i> check that I've got the binary payload right.  If you have any known-good
+</I>&gt;<i> receivers you're checking your homebrew one against, perhaps you can help.
+</I>
+Well, since I'm not doing the decoding, but rather the demodulation and
+the sentence assembly, it's pretty easy to validate the data-- if it
+demodulates correctly and passes checksum, I'm probably doing it right,
+as all AIS transmissions are constructed in an identical fashion at the
+physical layer. I don't have a known-good receiver to test the gpsd AIS
+sentence decoding against, unfortunately. I'll set up a background task
+to filter out new sentences for you, and give you what I find, but thus
+far I haven't seen any of the more exotic AIS sentences.
+
+Nick
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="004002.html">[Gpsd-users] Open-source AIS receiver
+</A></li>
+	<LI>Next message: <A HREF="004004.html">[Gpsd-users] Open-source AIS receiver
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#4003">[ date ]</a>
+              <a href="thread.html#4003">[ thread ]</a>
+              <a href="subject.html#4003">[ subject ]</a>
+              <a href="author.html#4003">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

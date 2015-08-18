@@ -1,0 +1,84 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] Initializing clock with gpsd &amp; ntpd
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2009-September/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Initializing%20clock%20with%20gpsd%20%26%20ntpd&In-Reply-To=%3C4ABBFA10.1050602%40softdevsys.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="003984.html">
+   <LINK REL="Next"  HREF="003971.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] Initializing clock with gpsd &amp; ntpd</H1>
+    <B>David Severt</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Initializing%20clock%20with%20gpsd%20%26%20ntpd&In-Reply-To=%3C4ABBFA10.1050602%40softdevsys.com%3E"
+       TITLE="[Gpsd-users] Initializing clock with gpsd &amp; ntpd">severtd at softdevsys.com
+       </A><BR>
+    <I>Fri Sep 25 01:00:32 CEST 2009</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="003984.html">[Gpsd-users] GPS track smoothing?
+</A></li>
+        <LI>Next message: <A HREF="003971.html">[Gpsd-users] Initializing clock with gpsd &amp; ntpd
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3961">[ date ]</a>
+              <a href="thread.html#3961">[ thread ]</a>
+              <a href="subject.html#3961">[ subject ]</a>
+              <a href="author.html#3961">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>I have an embedded data gathering application that requires valid time 
+information to go with the data, so I am trying to use gpsd along with 
+ntpd to maintain the clock.  The real-time clock in this device will not 
+survive an extended power outage and, since it is headless, there can be 
+no user interaction to restore the system clock.  I can use ntpd to 
+initialize the clock via an ntp server (ntpd -Agq) and the ntpd/gpsd 
+combination will work to maintain the clock.  However, if I don't have 
+access to an ntp server because the network is unavailable, I can't get 
+ntpd to initialize the clock using time information from gpsd.  It looks 
+like the gpsd time information will only be used to slew the clock, 
+rather than step the clock, which is what needs to happen when the date 
+is Jan 1, 1970.  If the system time is Jan 1, 1970, is there a way to 
+get ntpd to initialize the clock using only gpsd data, or will I need to 
+write an application to get time information from gpsd to initialize the 
+clock before starting ntpd?  Once the clock is initialized, ntpd works 
+fine with only gpsd for time information but first I have to get it 
+initialized somehow.
+
+I realize that this might be a question for the ntp mailing list but I 
+thought I'd try here first.
+
+Regards,
+David Severt
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="003984.html">[Gpsd-users] GPS track smoothing?
+</A></li>
+	<LI>Next message: <A HREF="003971.html">[Gpsd-users] Initializing clock with gpsd &amp; ntpd
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3961">[ date ]</a>
+              <a href="thread.html#3961">[ thread ]</a>
+              <a href="subject.html#3961">[ subject ]</a>
+              <a href="author.html#3961">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

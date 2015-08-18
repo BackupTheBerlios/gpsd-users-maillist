@@ -1,0 +1,93 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] make failure on nmea driver
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2009-December/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20make%20failure%20on%20nmea%20driver&In-Reply-To=%3C20091214100639.GA7297%40thyrsus.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="004121.html">
+   <LINK REL="Next"  HREF="004123.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] make failure on nmea driver</H1>
+    <B>Eric Raymond</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20make%20failure%20on%20nmea%20driver&In-Reply-To=%3C20091214100639.GA7297%40thyrsus.com%3E"
+       TITLE="[Gpsd-users] make failure on nmea driver">esr at thyrsus.com
+       </A><BR>
+    <I>Mon Dec 14 11:06:39 CET 2009</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="004121.html">[Gpsd-users] make failure on nmea driver
+</A></li>
+        <LI>Next message: <A HREF="004123.html">[Gpsd-users] make failure on nmea driver
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#4122">[ date ]</a>
+              <a href="thread.html#4122">[ thread ]</a>
+              <a href="subject.html#4122">[ subject ]</a>
+              <a href="author.html#4122">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Dennis Veatch &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">dennisveatch at bellsouth.net</A>&gt;:
+&gt;<i> Using gcc-4.4.2 and glibc-2.10.1 on x86_64 (none multi-lib) and get this make 
+</I>&gt;<i> failure with gpsd-2.90:
+</I>&gt;<i> 
+</I>&gt;<i> libtool: compile:  gcc -DHAVE_CONFIG_H -I. -I/usr/include/dbus-1.0 -
+</I>&gt;<i> I/usr/lib/dbus-1.0/include -I/usr/include/glib-2.0 -I/usr/lib/glib-2.0/include 
+</I>&gt;<i> -DDBUS_API_SUBJECT_TO_CHANGE=1 -O2 -march=x86-64 -pipe -Wall -Wcast-align -
+</I>&gt;<i> Wmissing-declarations -Wmissing-prototypes -Wstrict-prototypes -Wpointer-arith 
+</I>&gt;<i> -Wreturn-type -D_GNU_SOURCE -MT driver_nmea.lo -MD -MP -MF 
+</I>&gt;<i> .deps/driver_nmea.Tpo -c driver_nmea.c  -fPIC -DPIC -o .libs/driver_nmea.o
+</I>&gt;<i> driver_nmea.c: In function 'processTNTHTM':
+</I>&gt;<i> driver_nmea.c:690: error: 'struct gps_data_t' has no member named 
+</I>&gt;<i> 'headingStatus'
+</I>&gt;<i> driver_nmea.c:692: error: 'struct gps_data_t' has no member named 
+</I>&gt;<i> 'pitchStatus'
+</I>&gt;<i> driver_nmea.c:694: error: 'struct gps_data_t' has no member named 'rollStatus'
+</I>&gt;<i> driver_nmea.c:696: error: 'struct gps_data_t' has no member named 'horzField'
+</I>&gt;<i> driver_nmea.c:701: error: 'struct gps_data_t' has no member named 
+</I>&gt;<i> 'headingStatus'
+</I>&gt;<i> make[1]: *** [driver_nmea.lo] Error 1
+</I>&gt;<i> make[1]: Leaving directory `/usr/src/gpsd-2.90'
+</I>&gt;<i> make: *** [all] Error 2
+</I>&gt;<i> 
+</I>&gt;<i> The prior version of gpsd compiled fine.
+</I>
+So should this one if you build with TNT_ENABLE off.  Support for that device
+is broken; this is a known bug, listed in our TODO. 
+
+If you actually have one of these devcices, we'd love to work with you
+to fix the code.
+-- 
+		&lt;a href=&quot;<A HREF="http://www.catb.org/~esr/">http://www.catb.org/~esr/</A>&quot;&gt;Eric S. Raymond&lt;/a&gt;
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="004121.html">[Gpsd-users] make failure on nmea driver
+</A></li>
+	<LI>Next message: <A HREF="004123.html">[Gpsd-users] make failure on nmea driver
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#4122">[ date ]</a>
+              <a href="thread.html#4122">[ thread ]</a>
+              <a href="subject.html#4122">[ subject ]</a>
+              <a href="author.html#4122">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

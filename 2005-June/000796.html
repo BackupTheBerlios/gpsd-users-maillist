@@ -1,0 +1,135 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] debian packages of gpsd 2.25
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2005-June/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20debian%20packages%20of%20gpsd%202.25&In-Reply-To=%3C200506291128.32661.jim%40mcdonagh.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="000795.html">
+   <LINK REL="Next"  HREF="000797.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] debian packages of gpsd 2.25</H1>
+    <B>jim mcdonagh</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20debian%20packages%20of%20gpsd%202.25&In-Reply-To=%3C200506291128.32661.jim%40mcdonagh.com%3E"
+       TITLE="[Gpsd-users] debian packages of gpsd 2.25">jim at mcdonagh.com
+       </A><BR>
+    <I>Wed Jun 29 18:28:32 CEST 2005</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="000795.html">[Gpsd-users] Popular soft - duty-free prices
+</A></li>
+        <LI>Next message: <A HREF="000797.html">[Gpsd-users] debian packages of gpsd 2.25
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#796">[ date ]</a>
+              <a href="thread.html#796">[ thread ]</a>
+              <a href="subject.html#796">[ subject ]</a>
+              <a href="author.html#796">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Here's a bit of feedback on the hotplug scripts in the debian package.  
+
+I've tried the 2.25 debian package and I've built a 2.26 debian package and 
+the hotplug doesn't seem to work for me (with either version).  I get a 
+broken pipe error when running the gpsd.hotplug script.
+
+like so...
+illimani:~# /etc/hotplug/usb/gpsd.hotplug add /dev/ttyUSB0
+Traceback (most recent call last):
+  File &quot;/etc/hotplug/usb/gpsd.hotplug&quot;, line 98, in ?
+    gpsd_control(sys.argv[1], sys.argv[2])
+  File &quot;/etc/hotplug/usb/gpsd.hotplug&quot;, line 56, in gpsd_control
+    connect.close()
+  File &quot;/usr/lib/python2.3/socket.py&quot;, line 226, in close
+    self.flush()
+  File &quot;/usr/lib/python2.3/socket.py&quot;, line 241, in flush
+    self._sock.sendall(buffer)
+socket.error: (32, 'Broken pipe')
+
+and then with gpsd..
+illimani:~# gpsd -N -D9 -F /var/run/gpsd.sock
+gpsd: control socket opened at /var/run/gpsd.sock
+gpsd: launching (Version 2.26)
+gpsd: listening on port gpsd
+gpsd: changing to group 20
+gpsd: running with effective group ID 20
+gpsd: running with effective user ID 65534
+(and when i run the hotplug)
+gpsd: control socket connect on 5
+
+
+Anybody else having this problem?  
+I'm running debian..sid 
+
+I've tried different perms on the /var/run/gpsd.sock but nothing seems to 
+work.
+
+thanks,
+jim
+
+
+
+On Friday 27 May 2005 07:06 am, Tilman Koschnick wrote:
+&gt;<i> Hi gpsd users,
+</I>&gt;<i>
+</I>&gt;<i> after some time of lagging behind, the debian packages of gpsd have
+</I>&gt;<i> finally caught up again with current development.
+</I>&gt;<i>
+</I>&gt;<i> Until they hit the debian archive, you can find the packages at
+</I>&gt;<i> &lt;<A HREF="http://www.subnetz.org/debian/gpsd/">http://www.subnetz.org/debian/gpsd/</A>&gt;.
+</I>&gt;<i>
+</I>&gt;<i> I'd welcome feedback on the quality of the packages, since quite a bit
+</I>&gt;<i> changed since the last version (2.13-1). I am especially interested if
+</I>&gt;<i> the hotplug scripts are working on debian machines - I don't own a USB
+</I>&gt;<i> device, and can't test it.
+</I>&gt;<i>
+</I>&gt;<i> Related to this - does anyone on this list have experience with PCMCIA
+</I>&gt;<i> (GPS) devices and hotplug?
+</I>&gt;<i>
+</I>&gt;<i> Cheers, Til
+</I>&gt;<i>
+</I>&gt;<i> _______________________________________________
+</I>&gt;<i> Gpsd-users mailing list
+</I>&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">Gpsd-users at lists.berlios.de</A>
+</I>&gt;<i> <A HREF="http://lists.berlios.de/mailman/listinfo/gpsd-users">http://lists.berlios.de/mailman/listinfo/gpsd-users</A>
+</I>
+-- 
+------------------
+jim mcdonagh
+mcdonagh brothers
+systems engineer
+v. 612.435.2002
+c. 612.309.9937
+------------------
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="000795.html">[Gpsd-users] Popular soft - duty-free prices
+</A></li>
+	<LI>Next message: <A HREF="000797.html">[Gpsd-users] debian packages of gpsd 2.25
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#796">[ date ]</a>
+              <a href="thread.html#796">[ thread ]</a>
+              <a href="subject.html#796">[ subject ]</a>
+              <a href="author.html#796">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

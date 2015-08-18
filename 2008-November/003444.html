@@ -1,0 +1,103 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] GPSd blocks device?
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2008-November/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20GPSd%20blocks%20device%3F&In-Reply-To=%3C4924300E.9090003%40keynote-sigos.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="003440.html">
+   <LINK REL="Next"  HREF="003434.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] GPSd blocks device?</H1>
+    <B>Jens Oberender</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20GPSd%20blocks%20device%3F&In-Reply-To=%3C4924300E.9090003%40keynote-sigos.com%3E"
+       TITLE="[Gpsd-users] GPSd blocks device?">jens.oberender at keynote-sigos.com
+       </A><BR>
+    <I>Wed Nov 19 16:26:06 CET 2008</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="003440.html">[Gpsd-users] GPSd blocks device?
+</A></li>
+        <LI>Next message: <A HREF="003434.html">[Gpsd-users] gpsd -&gt; ntpd
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3444">[ date ]</a>
+              <a href="thread.html#3444">[ thread ]</a>
+              <a href="subject.html#3444">[ subject ]</a>
+              <a href="author.html#3444">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Workmates of the hardware department tested with a USB logger now.
+That revealed the problem:
+The ACM module uses a buffer for passing the data to userspace programs.
+When the reading program (in our case gpsd) is not reading for some time
+(ie because of the load), the buffer overflows. When reading again, the
+device doesn't reset the buffer and so the gpsd doesn't receive new data.
+They tried a newer distro, with a newer kernel and there it worked fine.
+Sorry for the noise.
+
+Bye,
+    Jens Oberender
+-- 
+Keynote SIGOS GmbH
+ - TESTING IS OUR COMPETENCE -
+Klingenhofstrasse 50d
+D-90411 Nuernberg
+Fon +49 911 95168-0
+www.keynote-sigos.com
+
+HRB 9323 Nuernberg
+Gerichtsstand: Nuernberg
+Geschaeftsfuehrer: Adil Kaya, Martin Loehlein, Umang Gupta, Andrew Hamer
+
+
+Chris Kuethe wrote:
+&gt;<i> On Wed, Nov 5, 2008 at 11:33 PM, Jens Oberender
+</I>&gt;<i> &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">jens.oberender at keynote-sigos.com</A>&gt; wrote:
+</I>&gt;&gt;<i> Got a break again!
+</I>&gt;&gt;<i> I started gpsd with -D 7 and the device hurried and blocked again this
+</I>&gt;&gt;<i> morning.
+</I>&gt;&gt;<i> Attached is the part of the log, where it happened.
+</I>&gt;&gt;<i> It doesn't look promising, just no new data. :-(
+</I>&gt;<i> 
+</I>&gt;<i> log sent via private mail... the highlight: &quot;gpsd: select waits&quot;. last
+</I>&gt;<i> time I saw that was on OS X with a broken usb-serial driver. so
+</I>&gt;<i> perhaps there's something wrong with the ACM driver. I have a few
+</I>&gt;<i> ublox4 receivers, some using gpsd, some not... either way, they've
+</I>&gt;<i> been happily outputting data for months/years.  then again, i'm quite
+</I>&gt;<i> sure that you're not using the same driver version that i am...
+</I>&gt;<i> (umodem on openbsd sparc64)
+</I>&gt;<i> 
+</I>&gt;<i> 
+</I>
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="003440.html">[Gpsd-users] GPSd blocks device?
+</A></li>
+	<LI>Next message: <A HREF="003434.html">[Gpsd-users] gpsd -&gt; ntpd
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3444">[ date ]</a>
+              <a href="thread.html#3444">[ thread ]</a>
+              <a href="subject.html#3444">[ subject ]</a>
+              <a href="author.html#3444">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

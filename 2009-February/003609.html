@@ -1,0 +1,107 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] gpsd pps broken post 2.33
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2009-February/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20gpsd%20pps%20broken%20post%202.33&In-Reply-To=%3C3a596dd20902162004x52426f16n320de156ff5a3c09%40mail.gmail.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="003606.html">
+   <LINK REL="Next"  HREF="003610.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] gpsd pps broken post 2.33</H1>
+    <B>Christopher Mire</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20gpsd%20pps%20broken%20post%202.33&In-Reply-To=%3C3a596dd20902162004x52426f16n320de156ff5a3c09%40mail.gmail.com%3E"
+       TITLE="[Gpsd-users] gpsd pps broken post 2.33">cnm3332 at gmail.com
+       </A><BR>
+    <I>Tue Feb 17 05:04:07 CET 2009</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="003606.html">[Gpsd-users] Garmin GPS 60 - Mac OS X
+</A></li>
+        <LI>Next message: <A HREF="003610.html">[Gpsd-users] gpsd pps broken post 2.33
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3609">[ date ]</a>
+              <a href="thread.html#3609">[ thread ]</a>
+              <a href="subject.html#3609">[ subject ]</a>
+              <a href="author.html#3609">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>I'm having an issue with gpsd no locking on pps after version.2.33. Here are
+some debug messages.
+
+--------------gpsd 2.33
+gpsd: packet sniff finds type 0
+gpsd: Selecting Generic NMEA driver...
+gpsd: =&gt; GPS: $PFEC,GPint,GSA01,DTM00,ZDA01,RMC01,GLL00,VTG00,GSV05*3B\x0d
+gpsd: =&gt; GPS: @NC10151010\x0d
+gpsd: =&gt; GPS: $PMOTG,ZDA,1*2F\x0d
+gpsd: =&gt; GPS: $PGRMCE*0E\x0d
+gpsd: =&gt; GPS: $PSRF105,1*3E\x0d
+gpsd: =&gt; GPS: $PFST*11\x0d
+gpsd: carrier-detect on /dev/ttyM1 changed to 0
+
+gpsd: &lt;= GPS: $GPZDA,020012.000,17,02,2009,,*58
+gpsd: carrier-detect on /dev/ttyM1 changed to 0
+gpsd: carrier-detect on /dev/ttyM1 changed to 1
+gpsd: ntpshm_pps: precision -6
+
+--------------gpsd 2.38
+gpsd: packet sniff on /dev/ttyM1 finds type 1
+gpsd: switch_driver(Generic NMEA) called...
+gpsd: selecting Generic NMEA driver...
+gpsd: ntpd_link_activate: 0
+gpsd: =&gt; Probing device subtype 0
+gpsd: Create Thread gpsd_ppsmonitor
+gpsd: pps-detect (DCD) on /dev/ttyM1 changed to 0
+
+gpsd: polling 4
+gpsd: Read 35 chars to buffer offset 0 (total 35):
+2447505a44412c3032313835372e3030302c31372c30322c323030392c2c2a35300d0a
+gpsd: Packet type 1 accepted 35 =
+2447505a44412c3032313835372e3030302c31372c30322c323030392c2c2a35300d0a
+gpsd: Packet discard of 35, chars remaining is 0 =
+gpsd: &lt;= GPS: $GPZDA,021857.000,17,02,2009,,*50
+gpsd: pps-detect (DCD) on /dev/ttyM1 changed to 0
+gpsd: PPS pulse rejected. No fix.
+
+
+I've also tried version 2.34, 2.37 and 2.38 and they all act the same.  Any
+idea what is going on?  This is running on a small arm linux based computer
+:<i> <A HREF="http://www.moxa.com/product/UC-7110-LX.htm">http://www.moxa.com/product/UC-7110-LX.htm</A> : model UC-7112 Plus.  GPS
+</I>source is very expensive unit : <A HREF="http://www.oxts.co.uk/default.asp?pageRef=7:">http://www.oxts.co.uk/default.asp?pageRef=7:</A>
+
+On another nice, the precision of -6 seems kinda bad?  Reason I'm upgrading
+anyway...
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="003606.html">[Gpsd-users] Garmin GPS 60 - Mac OS X
+</A></li>
+	<LI>Next message: <A HREF="003610.html">[Gpsd-users] gpsd pps broken post 2.33
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3609">[ date ]</a>
+              <a href="thread.html#3609">[ thread ]</a>
+              <a href="subject.html#3609">[ subject ]</a>
+              <a href="author.html#3609">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

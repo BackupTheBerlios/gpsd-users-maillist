@@ -1,0 +1,114 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] gpsd -n
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2008-October/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20gpsd%20-n&In-Reply-To=%3Calpine.LNX.1.10.0810021740340.18586%40catbert.rellim.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="003403.html">
+   <LINK REL="Next"  HREF="003405.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] gpsd -n</H1>
+    <B>Gary E. Miller</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20gpsd%20-n&In-Reply-To=%3Calpine.LNX.1.10.0810021740340.18586%40catbert.rellim.com%3E"
+       TITLE="[Gpsd-users] gpsd -n">gem at rellim.com
+       </A><BR>
+    <I>Fri Oct  3 02:55:20 CEST 2008</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="003403.html">[Gpsd-users] gpsd -n
+</A></li>
+        <LI>Next message: <A HREF="003405.html">[Gpsd-users] gpsd -n
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3401">[ date ]</a>
+              <a href="thread.html#3401">[ thread ]</a>
+              <a href="subject.html#3401">[ subject ]</a>
+              <a href="author.html#3401">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>-----BEGIN PGP SIGNED MESSAGE-----
+Hash: SHA1
+
+Yo John!
+
+On Thu, 2 Oct 2008, John de la Garza wrote:
+
+&gt;<i> I've read that when you first power up a gps system it needs better
+</I>&gt;<i> reception than once it knows where it is at.
+</I>
+More a matter of how current its data is.
+
+If a gps has not been on for several months, then it has no current
+almanac available.  It was to wait to download one before it can
+generate a fix.  This can take just under 15 mins.  This is sometimes
+called an 'Autonomous start'.
+
+If a GPS has not been on for a day (four to six hours) then it has no
+valid ephemeris and it must download one before it can generate an
+accurate fix.  This is sometimes called a cold start.  Each satelite
+has its own ephemeris that must be downloaded if a current copy is not
+fresh.  It takes about a minute per sat to get the emphemeris, or a
+minute total if your GPS has multiple receivers as most do now.
+
+For both an autonomous start and a cold start if the sat signal is
+momentarily lost the wait may have to restart.
+
+If a GPS has been on recently, in the current location, then this is
+sometimes called 'Warm start' or 'Hot Start' and an accurate fix can be
+generated quite quickly.  Certainly under a minute for a modern GPS,
+maybe even 15 seconds.
+
+Unless you really need to save power it is best to always use '-n' and
+then a valid fix is always available after the startup time.
+
+Here are some links:
+	<A HREF="http://www.kowoma.de/en/gps/data_composition.htm">http://www.kowoma.de/en/gps/data_composition.htm</A>
+	<A HREF="http://gpsinformation.net/main/warmcold.htm">http://gpsinformation.net/main/warmcold.htm</A>
+
+RGDS
+GARY
+- ---------------------------------------------------------------------------
+Gary E. Miller Rellim 109 NW Wilmington Ave., Suite E, Bend, OR 97701
+	<A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">gem at rellim.com</A>  Tel:+1(541)382-8588
+
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v1.4.3 (GNU/Linux)
+
+iD8DBQFI5W16BmnRqz71OvMRAlhbAJ9fbgomTQowm2TAhc18upyMTBnv6ACfWXaX
+IJ/jNufJO3vTH9geXa7VGus=
+=9HNE
+-----END PGP SIGNATURE-----
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="003403.html">[Gpsd-users] gpsd -n
+</A></li>
+	<LI>Next message: <A HREF="003405.html">[Gpsd-users] gpsd -n
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3401">[ date ]</a>
+              <a href="thread.html#3401">[ thread ]</a>
+              <a href="subject.html#3401">[ subject ]</a>
+              <a href="author.html#3401">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

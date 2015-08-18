@@ -1,0 +1,103 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] Bidirectional 'raw' communication using libgpsd
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2010-December/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Bidirectional%20%27raw%27%20communication%20using%20libgpsd&In-Reply-To=%3C4CFCCEE0.3060109%40kera.name%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="004789.html">
+   <LINK REL="Next"  HREF="004786.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] Bidirectional 'raw' communication using libgpsd</H1>
+    <B>Tomalak Geret'kal</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Bidirectional%20%27raw%27%20communication%20using%20libgpsd&In-Reply-To=%3C4CFCCEE0.3060109%40kera.name%3E"
+       TITLE="[Gpsd-users] Bidirectional 'raw' communication using libgpsd">tom at kera.name
+       </A><BR>
+    <I>Mon Dec  6 12:54:08 CET 2010</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="004789.html">[Gpsd-users] Bidirectional 'raw' communication using libgpsd
+</A></li>
+        <LI>Next message: <A HREF="004786.html">[Gpsd-users] Bidirectional 'raw' communication using libgpsd
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#4790">[ date ]</a>
+              <a href="thread.html#4790">[ thread ]</a>
+              <a href="subject.html#4790">[ subject ]</a>
+              <a href="author.html#4790">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>On 06/12/2010 11:45, Mario De Weerd wrote:
+&gt;&gt;<i> Why? Why add the overhead of going through the network stack
+</I>&gt;&gt;<i> -- even if you're avoiding the physical drivers -- if you're
+</I>&gt;&gt;<i> just doing local IPC?
+</I>&gt;<i>
+</I>&gt;<i>   I need the reply from the device. and I did not see the equivalent of a
+</I>&gt;<i> '?WATCH' command in the Control Socket Commands.
+</I>
+NMEA is not a synchronous comms protocol. It has no 
+responses -- or shouldn't. gpsd manages the receiver, 
+auxiliary commands go over the control socket if they really 
+have to, and the receiver's state goes through gpsd. That's 
+how gpsd is designed, that's what it's designed to do, and 
+that's what it does. It's not designed to interface with an 
+arbitrary third-party management suite, so it doesn't.
+
+&gt;&gt;<i> Unix domain sockets are fine.
+</I>&gt;<i> But not supported by default in java and not so commonly used.
+</I>
+Java is not so commonly used either. Use something sensible 
+and commonplace like python or C.
+
+&gt;<i> I already tried the hex encoding, including concatenating the command
+</I>&gt;<i> several times in the same '&amp;' call so that at least one of them was preceded
+</I>&gt;<i> by a 0d0a  (A \n is not always sufficient - \r\n is more complete).
+</I>&gt;<i> So I also did something like:
+</I>&gt;<i> &amp;/dev/ttyS0=24504d544b3130332a33300d0a24504d544b3130332a33300d0a24504d544b3130332a33300d0a
+</I>&gt;<i>
+</I>&gt;<i> And I did it as 'root' to avoid any potential restriction of rights on the
+</I>&gt;<i> unix domain socket.  Given the I got an 'OK' response (and sometimes ERROR
+</I>&gt;<i> when not putting the right command), I conclude that write and read both
+</I>&gt;<i> worked.
+</I>&gt;<i>
+</I>&gt;<i> So I guess I'll have to resort to some serial protocol sniffing to see what
+</I>&gt;<i> is really sent (supposing that something was sent).
+</I>
+Something was sent. The control sockets work for thousands 
+of people, so there is likely something wrong with the 
+command that you are sending to your receiver, or you're not 
+interpreting the results correctly.
+
+Tom
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="004789.html">[Gpsd-users] Bidirectional 'raw' communication using libgpsd
+</A></li>
+	<LI>Next message: <A HREF="004786.html">[Gpsd-users] Bidirectional 'raw' communication using libgpsd
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#4790">[ date ]</a>
+              <a href="thread.html#4790">[ thread ]</a>
+              <a href="subject.html#4790">[ subject ]</a>
+              <a href="author.html#4790">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

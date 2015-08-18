@@ -1,0 +1,92 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] gpsfake timing
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2007-December/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20gpsfake%20timing&In-Reply-To=%3C20071218115525.GA6186%40thyrsus.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="003024.html">
+   <LINK REL="Next"  HREF="003026.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] gpsfake timing</H1>
+    <B>Eric S. Raymond</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20gpsfake%20timing&In-Reply-To=%3C20071218115525.GA6186%40thyrsus.com%3E"
+       TITLE="[Gpsd-users] gpsfake timing">esr at thyrsus.com
+       </A><BR>
+    <I>Tue Dec 18 12:55:25 CET 2007</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="003024.html">[Gpsd-users] gpsfake timing
+</A></li>
+        <LI>Next message: <A HREF="003026.html">[Gpsd-users] gpsd 2.34 and 2.35 not building on FreeBSD 6.2
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3025">[ date ]</a>
+              <a href="thread.html#3025">[ thread ]</a>
+              <a href="subject.html#3025">[ subject ]</a>
+              <a href="author.html#3025">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Rogers Simon &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">SROGERS1 at qinetiq.com</A>&gt;:
+&gt;<i> I want to test my application sitting at my desk, with repeatable
+</I>&gt;<i>  GPS data, rather than getting someone to drive me around in my car
+</I>&gt;<i>  every time I need to test! gpsfaked data screws up filtering because
+</I>&gt;<i>  of the timing issue mentioned above.
+</I>
+Are you competent at Python?  I can describe what you'll need to do
+in gpsfake.py.  If you can't do it, you're stuck until I do it, and 
+I'm pretty busy.
+
+First step.  Get the &quot;Start-of-cycle&quot; and &quot;Cycle-time&quot; lines from the
+log header.  If there isn't one or they aren't well-formed, you'll
+have to settle for constant-interval timing.  Exception: If the
+chipset type is SiRF, assume the start-of-cycle is GPGGA and the
+cycle time is 1s.
+
+On the first start-of-cycle sentence, record the time.
+
+Subsequently, whenever you see GPGGA, do the following: delay until
+the recorded time plus the cycle time.  Then record the time again.
+
+This won't give you perfectly-timed playback, but it will give you
+pretty good relative timing -- sentences being emitted in bursts at
+start of cycle followed by a pause until the next reporting cycle.
+This will feed through and set the relative timing of GPSD's O
+reports.
+
+This will work for NMEA devices. If you want the same effect for SiRF binary
+it's going to get significantly trickier.
+-- 
+		&lt;a href=&quot;<A HREF="http://www.catb.org/~esr/">http://www.catb.org/~esr/</A>&quot;&gt;Eric S. Raymond&lt;/a&gt;
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="003024.html">[Gpsd-users] gpsfake timing
+</A></li>
+	<LI>Next message: <A HREF="003026.html">[Gpsd-users] gpsd 2.34 and 2.35 not building on FreeBSD 6.2
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3025">[ date ]</a>
+              <a href="thread.html#3025">[ thread ]</a>
+              <a href="subject.html#3025">[ subject ]</a>
+              <a href="author.html#3025">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

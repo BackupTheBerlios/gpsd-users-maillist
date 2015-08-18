@@ -1,0 +1,262 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] We're out of validity bits - incompatible change to	API may be needed
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2010-April/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20We%27re%20out%20of%20validity%20bits%20-%20incompatible%20change%20to%0A%09API%20may%20be%20needed&In-Reply-To=%3C20100408174032.E16BA20CBBC%40snark.thyrsus.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="004376.html">
+   <LINK REL="Next"  HREF="004377.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] We're out of validity bits - incompatible change to	API may be needed</H1>
+    <B>Eric Raymond</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20We%27re%20out%20of%20validity%20bits%20-%20incompatible%20change%20to%0A%09API%20may%20be%20needed&In-Reply-To=%3C20100408174032.E16BA20CBBC%40snark.thyrsus.com%3E"
+       TITLE="[Gpsd-users] We're out of validity bits - incompatible change to	API may be needed">esr at snark.thyrsus.com
+       </A><BR>
+    <I>Thu Apr  8 19:40:32 CEST 2010</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="004376.html">[Gpsd-users] PPS Detection problem
+</A></li>
+        <LI>Next message: <A HREF="004377.html">[Gpsd-users] doc error
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#4371">[ date ]</a>
+              <a href="thread.html#4371">[ thread ]</a>
+              <a href="subject.html#4371">[ subject ]</a>
+              <a href="author.html#4371">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>When Jon Schlueter told me he had a TNT Revolution he could give me
+access to at nog.yazug.com, it made me happy. The fact that we used to
+have TNT support and it broke has been bothering me for a long time.
+
+I logged on to nog.yazug.com did the small amount of work needed to
+verify that I could see a stream of PTNTHTM sentences on /dev/ttyS0.
+Ran gpsd, hit my first problem: There's also a GPS-18 attached to the
+host.  The USB Garmin probe finds it in /proc/bus/usb/devices, doesn't
+check that the device matches the one we're probing, and we get a
+false lock.
+
+(Gary: We *must* fix this.  It's not acceptable that USB Garmins elbow
+aside other devices like that. See also the Berlios tracker bug at
+&lt;<A HREF="http://developer.berlios.de/bugs/?func=detailbug&amp;bug_id=16955&amp;group_id=2116">http://developer.berlios.de/bugs/?func=detailbug&amp;bug_id=16955&amp;group_id=2116</A>&gt;.)
+
+Once I reconfigured with --disable-garmin and --enable-tnt fixed a
+couple of minor compilation issues with stale code, gpsd was able to
+get sync lock at 19200bps and I saw PTNTHTM coming through gpsd. Win!
+I was happily preparing to design a JSON compass-data report when
+I ran headlong into a *serious* problem.
+
+We've run out of validity-mask bits.
+
+Various layers of GPSD, including the client library, return data 
+by updating pieces of a blackboard structure, struct gpsdata_t.
+Because not all of these are updated at the same time, the fix.set
+member is a bit-mask flagging which pieces of data are currently valid.
+
+This gets really significant for the rarely-used pieces of the structure that 
+live in a union near the end of it.
+
+    /* pack things never reported together to reduce structure size */ 
+#define UNION_SET	(RTCM2_SET|RTCM3_SET|AIS_SET|VERSION_SET|DEVICELIST_SET|ERROR_SET)
+    union {
+	/* unusual forms of sensor data that might come up the pipe */ 
+	struct rtcm2_t	rtcm2;
+	struct rtcm3_t	rtcm3;
+	struct ais_t ais;
+	struct compass_t compass;
+	struct rawdata_t raw;
+	/* &quot;artificial&quot; structures for various protocol responses */
+	struct version_t version;
+	struct {
+	    double time;
+	    int ndevices;
+	    struct devconfig_t list[MAXDEVICES_PER_USER];
+	} devices;
+	char error[80];
+    };
+
+Note that the union is anonyous. This technically breaks compatibility
+with pre-C99 C, but I did it so that under most circumstances app devs
+could simply ignore what's in the union and what isn't.
+
+See the compass_t union member in there? That's where the data from a
+TNT is supposed to go.  Now, if you're an especially astute reader,
+you'll have noticed there's no COMPASS_SET in the UNION_SET
+definition, and thus no flag to indicate that we should interpret the
+union as a compass_t structure.  Here's the entire set of mask bits
+presently defined:
+
+#define ONLINE_SET	0x00000001u
+#define TIME_SET	0x00000002u
+#define TIMERR_SET	0x00000004u
+#define LATLON_SET	0x00000008u
+#define ALTITUDE_SET	0x00000010u
+#define SPEED_SET	0x00000020u
+#define TRACK_SET	0x00000040u
+#define CLIMB_SET	0x00000080u
+#define STATUS_SET	0x00000100u
+#define MODE_SET	0x00000200u
+#define DOP_SET  	0x00000400u
+#define VERSION_SET	0x00000800u	/* only used in client library */
+#define HERR_SET	0x00001000u
+#define VERR_SET	0x00002000u
+#define PERR_SET	0x00004000u
+#define POLICY_SET	0x00008000u	/* only used in client library */
+#define SATELLITE_SET	0x00010000u
+#define RAW_SET		0x00020000u
+#define USED_SET	0x00040000u
+#define SPEEDERR_SET	0x00080000u
+#define TRACKERR_SET	0x00100000u
+#define CLIMBERR_SET	0x00200000u
+#define DEVICE_SET	0x00400000u
+#define DEVICELIST_SET	0x00800000u
+#define DEVICEID_SET	0x01000000u
+#define ERROR_SET	0x02000000u
+#define RTCM2_SET	0x04000000u
+#define RTCM3_SET	0x08000000u
+#define AIS_SET 	0x10000000u
+#define PACKET_SET	0x20000000u
+#define CLEAR_SET	0x40000000u	/* sentence starts a reporting cycle */
+#define REPORT_SET	0x80000000u	/* sentence ends a reporting cycle */
+
+The key point here is that there are 32 of them. And COMPASS_SET isn't
+there.  There's no way out of this that isn't ugly.  Here are the
+alternatives I've been able to come up with, compkere with handy
+labels for later discussion:
+
+1. (GO64) Start using higher-order bits on the assumption that our int is
+64 bits. Preserve the existing design and binary compatibilty on
+64-bit machines. Breaks 32-bit machines.
+
+2. (NAIVE_SPLIT) Break this mask in two - probably one for the basic
+data (TPV, SKY) and a second for union parts. There are other ways it
+could be split; the point is, any obvious way of doing this will break
+both binary and source compatibility (but for an unobvious way, see
+AUXDATA below). And now app developers have a two-step check
+to see if any particulatr piece of union data is present.
+
+3. (STEAL_RTCM3) Steal the bit used by RTCM3_SET, because support for
+that is very incomplete and it is highly unlikely anyone is using
+it. Disadvantages: (1) we'd have to drop RTCM3 support, (2) I could be
+wrong about it not being in use, (3) this would be an ugly hack, and
+(4) it only postpones the crisis - what happens when we have to add
+the *next* bit?
+
+4. (STEAL_RAW) Steal the RAW_SET bit, because we haven't implemented
+raw-data reporting yet. See objections (1)-(4) above, s/RTCM3/RAW/.
+
+5. (STEAL_UNUSED) Use the fact that CLEAR_SET and REPORT_SET aren't in
+use in the client library and steal one of those.  Requires intrusive
+changes to all the drivers and the daemon core (those status bits have
+to live somewhere) but at least confines the ugliness to where app
+developers can't see it. Problem: Now we're just one new capability
+away from having the same problem all over again.
+
+6. (BLOB) Suggestion by sanooj on IRC: Abandon having a gps_data_t
+that the app developers can see inside.  Instead, make struct
+gpsdata_t an opaque blob that can be copied but only unpacked by
+function accessors.  Requires at least one break in binary and source
+compatibility, but solves the problem forever. Or, at least, until a
+dev in a hurry peeks.
+
+7. (AUXDATA) Variant of approach 2 (builds on another suggestion by
+sanooj). In this one, we steal RAW_SET's 0x00020000u to indicate that
+there is extension data in a new struct that lives in the union.  The
+struct begins with a bitmask and has yet another union is the only
+other member.  Something like this:
+
+#define AUXDATA_SET	0x00020000u
+
+    /* pack things never reported together to reduce structure size */ 
+#define UNION_SET	(RTCM2_SET|RTCM3_SET|AIS_SET|VERSION_SET|DEVICELIST_SET|ERROR_SET|AUXDATA_SET)
+    union {
+	/* unusual forms of sensor data that might come up the pipe */ 
+	struct rtcm2_t	rtcm2;
+	struct rtcm3_t	rtcm3;
+	struct ais_t ais;
+	/* &quot;artificial&quot; structures for various protocol responses */
+	struct version_t version;
+	struct {
+	    double time;
+	    int ndevices;
+	    struct devconfig_t list[MAXDEVICES_PER_USER];
+	} devices;
+	char error[80];
+        struct auxdata_t {
+	    enum {compass_aux, raw_aux} auxtype;
+	    union {
+	        struct compass_t compass;
+	        struct rawdata_t raw;
+	    }
+	};
+    };
+
+Doesn't break binary compatibility, but it's ugly as hell.  App devs
+have a two-step procedure to check for validity of some data.
+Mistakes would be distressingly easy.
+
+8. (CLEANSHEET) This is where I say &quot;screw it&quot; and design a new client
+API with different names for the blackboard structure and entry points,
+leaving the old one in place but less capable.
+
+The reason this would get us out of trouble is that most of the
+existing _SET flags are actually relics of the old protocol.  A new
+design could get away with these:
+
+#define VERSION_VALID	0x00000001u
+#define WATCH_VALID	0x00000002u
+#define TPV_VALID	0x00000004u
+#define SKY_VALID	0x00000008u
+#define DEVICE_VALID	0x00000010u
+#define RTCM2_VALID	0x00000020u
+#define RTCM3_VALID	0x00000040u
+#define AIS_VALID 	0x00000080u
+#define RAW_VALID	0x00000100u
+#define COMPASS_VALID	0x00000200u
+#define ERROR_VALID	0x00000400u
+
+leaving 21 bits for expansion.  For other reasons this might be a good
+idea, see <A HREF="http://gpsd.berlios.de/future.html">http://gpsd.berlios.de/future.html</A>
+-- 
+		&lt;a href=&quot;<A HREF="http://www.catb.org/~esr/">http://www.catb.org/~esr/</A>&quot;&gt;Eric S. Raymond&lt;/a&gt;
+
+[President Clinton] boasts about 186,000 people denied firearms under
+the Brady Law rules.  The Brady Law has been in force for three years.  In
+that time, they have prosecuted seven people and put three of them in
+prison.  You know, the President has entertained more felons than that at
+fundraising coffees in the White House, for Pete's sake.&quot;
+	-- Charlton Heston, FOX News Sunday, 18 May 1997
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="004376.html">[Gpsd-users] PPS Detection problem
+</A></li>
+	<LI>Next message: <A HREF="004377.html">[Gpsd-users] doc error
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#4371">[ date ]</a>
+              <a href="thread.html#4371">[ thread ]</a>
+              <a href="subject.html#4371">[ subject ]</a>
+              <a href="author.html#4371">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

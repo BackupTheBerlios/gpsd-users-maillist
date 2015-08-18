@@ -1,0 +1,209 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] &quot;Satellite data no good&quot; and &quot;modeling errors&quot; with	gpsd-2.94 and Fastrax UP500
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2010-June/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20%22Satellite%20data%20no%20good%22%20and%20%22modeling%20errors%22%20with%0A%09gpsd-2.94%20and%20Fastrax%20UP500&In-Reply-To=%3CAANLkTik8UTPYflRHkBQe4H7jgeOk4nAVdpYxvf2Z-N3F%40mail.gmail.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="004532.html">
+   <LINK REL="Next"  HREF="004536.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] &quot;Satellite data no good&quot; and &quot;modeling errors&quot; with	gpsd-2.94 and Fastrax UP500</H1>
+    <B>Stefan Steuerwald</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20%22Satellite%20data%20no%20good%22%20and%20%22modeling%20errors%22%20with%0A%09gpsd-2.94%20and%20Fastrax%20UP500&In-Reply-To=%3CAANLkTik8UTPYflRHkBQe4H7jgeOk4nAVdpYxvf2Z-N3F%40mail.gmail.com%3E"
+       TITLE="[Gpsd-users] &quot;Satellite data no good&quot; and &quot;modeling errors&quot; with	gpsd-2.94 and Fastrax UP500">salsasepp at googlemail.com
+       </A><BR>
+    <I>Fri Jun 11 11:13:21 CEST 2010</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="004532.html">[Gpsd-users] GPS loses lock (funny GPGSA line?) - reboot fixes
+</A></li>
+        <LI>Next message: <A HREF="004536.html">[Gpsd-users] Infinite loop with gps_query() on dropped connection
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#4535">[ date ]</a>
+              <a href="thread.html#4535">[ thread ]</a>
+              <a href="subject.html#4535">[ subject ]</a>
+              <a href="author.html#4535">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi,
+
+I have a Fastrax UP500 GPS/antenna module (
+<A HREF="http://www.fastraxgps.com/products/gpsantennamodules/500series/up500/">http://www.fastraxgps.com/products/gpsantennamodules/500series/up500/</A>),
+attached to a current debian squeeze system via /dev/ttyS2.
+It used to work all right with the libgps17/gpsd that is currently in debian
+lenny.
+With gpsd-2.94 and libgps19 from debian squeeze I see &quot;Satellite data no
+good&quot; and &quot;modeling errors&quot; in the gpsd debug output, please see below.
+
+Even when the module has a fix according to the raw NMEA data, libgps
+reports NaN for latitude, longitude and altitude.
+
+How would I go about to narrow down the problem?
+What meaningful debug info to provide?
+
+Thank you,
+  Stefan.
+
+-------
+Output of gpsd, in this sample case the GPS module sees no satellites
+(that's ok, module is indoors):
+
+&gt;<i> gpsd -nbND 5 /dev/ttyS2
+</I>
+gpsd: launching (Version 2.94)
+gpsd: opening IPv4 socket
+gpsd: opening IPv6 socket
+gpsd: listening on port gpsd
+gpsd: NTPD shmat(0,0,0) succeeded, segment 0
+gpsd: NTPD shmat(32769,0,0) succeeded, segment 1
+gpsd: NTPD shmat(65538,0,0) succeeded, segment 2
+gpsd: NTPD shmat(98307,0,0) succeeded, segment 3
+gpsd: successfully connected to the DBUS system bus
+gpsd: running with effective group ID 0
+gpsd: running with effective user ID 0
+gpsd: opening read-only GPS data source type 2 and at '/dev/ttyS2'
+gpsd: speed 9600, 8N1
+gpsd: Probing TSIP
+gpsd: speed 9600, 8O1
+gpsd: speed 9600, 8N1
+gpsd: no probe matched...
+gpsd: gpsd_activate(): opened GPS (fd 6)
+gpsd: switch_driver(Generic NMEA) called...
+gpsd: selecting Generic NMEA driver...
+gpsd: NTPD ntpd_link_activate: 0
+gpsd: /dev/ttyS2 identified as type Generic NMEA (0.630940 sec @ 9600bps)
+gpsd: =&gt; Probing device subtype 0
+gpsd: PPS Create Thread gpsd_ppsmonitor
+gpsd: &lt;= GPS:
+$GPGGA,001136.027,8960.0000,N,00000.0000,E,0,0,,137.0,M,13.0,M,,*43\x0d
+
+gpsd: GGA: hhmmss=001136.027 lat=nan lon=nan alt=nan mode=0 status=0
+mask={STATUS}
+gpsd: modeling errors: mode=0, masks={ONLINE|STATUS|DEVICE|PACKET}
+gpsd: =&gt; Probing device subtype 1
+gpsd: &lt;= GPS: $GPGSA,A,1,,,,,,,,,,,,,,,*1E\x0d
+
+gpsd: GPGSA sets mode 1
+gpsd: GPGSA: mode=1 used=0 pdop=0.00 hdop=0.00 vdop=0.00
+mask={MODE|DOP|USED}
+gpsd: modeling errors: mode=1, masks={ONLINE|MODE|DOP|USED|PACKET}
+gpsd: =&gt; Probing device subtype 2
+gpsd: &lt;= GPS: $GPGSV,1,1,00*79\x0d
+
+gpsd: Satellite data no good (1 of 1).
+gpsd: modeling errors: mode=1, masks={ONLINE|ERROR|PACKET}
+gpsd: =&gt; Probing device subtype 3
+gpsd: &lt;= GPS:
+$GPRMC,001136.027,V,8960.0000,N,00000.0000,E,0.00,0.00,060180,,,N*7E\x0d
+
+gpsd: RMC: ddmmyy=060180 hhmmss=001136.027 lat=nan lon=nan speed=nan
+track=nan mode=0 status=0 mask={ONLINE}
+gpsd: modeling errors: mode=1, masks={ONLINE|PACKET}
+gpsd: =&gt; Probing device subtype 4
+gpsd: &lt;= GPS:
+$GPGGA,001137.027,8960.0000,N,00000.0000,E,0,0,,137.0,M,13.0,M,,*42\x0d
+
+gpsd: GGA: hhmmss=001137.027 lat=nan lon=nan alt=nan mode=0 status=0
+mask={STATUS}
+gpsd: modeling errors: mode=1, masks={ONLINE|STATUS|PACKET}
+gpsd: =&gt; Probing device subtype 5
+gpsd: &lt;= GPS: $GPGSA,A,1,,,,,,,,,,,,,,,*1E\x0d
+
+gpsd: GPGSA sets mode 1
+gpsd: GPGSA: mode=1 used=0 pdop=0.00 hdop=0.00 vdop=0.00
+mask={MODE|DOP|USED}
+gpsd: modeling errors: mode=1, masks={ONLINE|MODE|DOP|USED|PACKET}
+gpsd: =&gt; Probing device subtype 6
+gpsd: &lt;= GPS: $GPGSV,1,1,00*79\x0d
+
+gpsd: Satellite data no good (1 of 1).
+gpsd: modeling errors: mode=1, masks={ONLINE|ERROR|PACKET}
+gpsd: =&gt; Probing device subtype 7
+gpsd: &lt;= GPS:
+$GPRMC,001137.027,V,8960.0000,N,00000.0000,E,0.00,0.00,060180,,,N*7F\x0d
+
+gpsd: RMC: ddmmyy=060180 hhmmss=001137.027 lat=nan lon=nan speed=nan
+track=nan mode=0 status=0 mask={ONLINE}
+gpsd: modeling errors: mode=1, masks={ONLINE|PACKET}
+gpsd: =&gt; Probing device subtype 8
+gpsd: =&gt; GPS: UBX class: 0a, id: 04, len: 0, data:, crc: 0e34
+gpsd: &lt;= GPS:
+$GPGGA,001138.027,8960.0000,N,00000.0000,E,0,0,,137.0,M,13.0,M,,*4D\x0d
+
+gpsd: GGA: hhmmss=001138.027 lat=nan lon=nan alt=nan mode=0 status=0
+mask={STATUS}
+gpsd: modeling errors: mode=1, masks={ONLINE|STATUS|PACKET}
+gpsd: &lt;= GPS: $GPGSA,A,1,,,,,,,,,,,,,,,*1E\x0d
+
+gpsd: GPGSA sets mode 1
+gpsd: GPGSA: mode=1 used=0 pdop=0.00 hdop=0.00 vdop=0.00
+mask={MODE|DOP|USED}
+gpsd: modeling errors: mode=1, masks={ONLINE|MODE|DOP|USED|PACKET}
+gpsd: &lt;= GPS: $GPGSV,1,1,00*79\x0d
+
+gpsd: Satellite data no good (1 of 1).
+gpsd: modeling errors: mode=1, masks={ONLINE|ERROR|PACKET}
+gpsd: &lt;= GPS:
+$GPRMC,001138.027,V,8960.0000,N,00000.0000,E,0.00,0.00,060180,,,N*70\x0d
+
+gpsd: RMC: ddmmyy=060180 hhmmss=001138.027 lat=nan lon=nan speed=nan
+track=nan mode=0 status=0 mask={ONLINE}
+gpsd: modeling errors: mode=1, masks={ONLINE|PACKET}
+gpsd: &lt;= GPS:
+$GPGGA,001139.027,8960.0000,N,00000.0000,E,0,0,,137.0,M,13.0,M,,*4C\x0d
+
+gpsd: GGA: hhmmss=001139.027 lat=nan lon=nan alt=nan mode=0 status=0
+mask={STATUS}
+gpsd: modeling errors: mode=1, masks={ONLINE|STATUS|PACKET}
+gpsd: &lt;= GPS: $GPGSA,A,1,,,,,,,,,,,,,,,*1E\x0d
+
+gpsd: GPGSA sets mode 1
+gpsd: GPGSA: mode=1 used=0 pdop=0.00 hdop=0.00 vdop=0.00
+mask={MODE|DOP|USED}
+gpsd: modeling errors: mode=1, masks={ONLINE|MODE|DOP|USED|PACKET}
+gpsd: &lt;= GPS: $GPGSV,1,1,00*79\x0d
+
+gpsd: Satellite data no good (1 of 1).
+gpsd: modeling errors: mode=1, masks={ONLINE|ERROR|PACKET}
+gpsd: &lt;= GPS:
+$GPRMC,001139.027,V,8960.0000,N,00000.0000,E,0.00,0.00,060180,,,N*71\x0d
+
+gpsd: RMC: ddmmyy=060180 hhmmss=001139.027 lat=nan lon=nan speed=nan
+track=nan mode=0 status=0 mask={ONLINE}
+gpsd: modeling errors: mode=1, masks={ONLINE|PACKET}
+gpsd: Received terminating signal 2. Exiting...
+gpsd: closing GPS=/dev/ttyS2 (6)
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="004532.html">[Gpsd-users] GPS loses lock (funny GPGSA line?) - reboot fixes
+</A></li>
+	<LI>Next message: <A HREF="004536.html">[Gpsd-users] Infinite loop with gps_query() on dropped connection
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#4535">[ date ]</a>
+              <a href="thread.html#4535">[ thread ]</a>
+              <a href="subject.html#4535">[ subject ]</a>
+              <a href="author.html#4535">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

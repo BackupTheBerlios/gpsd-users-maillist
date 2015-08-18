@@ -1,0 +1,109 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] gpslib stops yielding data
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2007-March/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20gpslib%20stops%20yielding%20data&In-Reply-To=%3C25583-66704%40sneakemail.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="002506.html">
+   <LINK REL="Next"  HREF="002500.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] gpslib stops yielding data</H1>
+    <B>Yang</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20gpslib%20stops%20yielding%20data&In-Reply-To=%3C25583-66704%40sneakemail.com%3E"
+       TITLE="[Gpsd-users] gpslib stops yielding data">wtfc2m902 at sneakemail.com
+       </A><BR>
+    <I>Sun Mar 25 04:30:03 CEST 2007</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="002506.html">[Gpsd-users] the forthcoming gpsd-2.35 release
+</A></li>
+        <LI>Next message: <A HREF="002500.html">[Gpsd-users] gpslib stops yielding data
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2501">[ date ]</a>
+              <a href="thread.html#2501">[ thread ]</a>
+              <a href="subject.html#2501">[ subject ]</a>
+              <a href="author.html#2501">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi all,
+
+I wrote a simple C++ program, pasted below, which uses libgps.
+However, after running for some time, it stops producing output (no
+more callbacks). To figure out what was going on, I telnetted into
+gpsd and entered 'r'. This caused the callbacks to resume again.
+
+It wasn't just a random occurrence. This has happened to me several
+times now (in less than a day of usage). Is this a bug in either
+libgps or gpsd? How can I work around this? Is another way of using
+libgps more reliable? Or should I forget libgps and parse the data
+myself? I'm using gpsd 2.34 on FC5.
+
+Thanks a lot,
+
+Yang
+
+#include &lt;unistd.h&gt;
+#include &lt;iostream&gt;
+#include &lt;gps.h&gt;
+
+using namespace std;
+
+void cb( struct gps_data_t * data,
+         char * buf,
+         size_t len,
+         int level ) {
+  const gps_fix_t &amp; f = data-&gt;fix;
+  cout
+    &lt;&lt; &quot;online: &quot; &lt;&lt; (data-&gt;online &gt; 0 ? &quot;true &quot; : &quot;false &quot;) &lt;&lt;
+data-&gt;online &lt;&lt; endl
+    &lt;&lt; &quot;mode: &quot; &lt;&lt; f.mode &lt;&lt; endl
+    &lt;&lt; &quot;lat: &quot; &lt;&lt; f.latitude &lt;&lt; endl
+    &lt;&lt; &quot;lon: &quot; &lt;&lt; f.longitude &lt;&lt; endl
+    &lt;&lt; &quot;spd: &quot; &lt;&lt; f.speed &lt;&lt; endl
+    &lt;&lt; &quot;buf: &quot; &lt;&lt; buf &lt;&lt; endl
+    &lt;&lt; endl;
+}
+
+int main() {
+  pthread_t handler;
+  struct gps_data_t * g = gps_open( &quot;golf&quot;, &quot;2947&quot; );
+  gps_set_callback( g, &amp;cb, &amp;handler );
+  while (true) {
+    sleep(1);
+  }
+  return 0;
+}
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="002506.html">[Gpsd-users] the forthcoming gpsd-2.35 release
+</A></li>
+	<LI>Next message: <A HREF="002500.html">[Gpsd-users] gpslib stops yielding data
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2501">[ date ]</a>
+              <a href="thread.html#2501">[ thread ]</a>
+              <a href="subject.html#2501">[ subject ]</a>
+              <a href="author.html#2501">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

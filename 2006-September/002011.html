@@ -1,0 +1,146 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] PPS on RTS?
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2006-September/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20PPS%20on%20RTS%3F&In-Reply-To=%3CPine.LNX.4.64.0609261705010.14874%40catbert.rellim.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="002010.html">
+   <LINK REL="Next"  HREF="002013.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] PPS on RTS?</H1>
+    <B>Gary E. Miller</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20PPS%20on%20RTS%3F&In-Reply-To=%3CPine.LNX.4.64.0609261705010.14874%40catbert.rellim.com%3E"
+       TITLE="[Gpsd-users] PPS on RTS?">gem at rellim.com
+       </A><BR>
+    <I>Wed Sep 27 02:16:31 CEST 2006</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="002010.html">[Gpsd-users] PPS on RTS?
+</A></li>
+        <LI>Next message: <A HREF="002013.html">[Gpsd-users] PPS on RTS?
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2011">[ date ]</a>
+              <a href="thread.html#2011">[ thread ]</a>
+              <a href="subject.html#2011">[ subject ]</a>
+              <a href="author.html#2011">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>-----BEGIN PGP SIGNED MESSAGE-----
+Hash: SHA1
+
+Yo Dave!
+
+If you are serious about the GPS-18/LVC I have been checking on some code
+to SVN to use the GPS in Garmin Serial Binary mode.  It is still flakey
+so you may want to hold off some more.  There are few advantages to the
+binary mode.  One advantage is that the messages are fixed length.  That
+means the offset from &quot;real&quot; time to when I decode the PVT message is
+pretty stable.  Stable to without maybe +/- 10mS so even without PPS
+I can get a fair time stamp from it now.
+
+On Wed, 27 Sep 2006, Dave C wrote:
+
+&gt;<i> &gt; Actually, I like it so far.  Not as sensitive as some newer GPS but rock
+</I>&gt;<i> &gt; solid.  Mine is mounted on an antenna mast above my office and gets
+</I>&gt;<i> &gt; hail, rain, snow, etc. and never missed a beat.  Not like the antarctic
+</I>&gt;<i> &gt; but still a bit challenging.
+</I>&gt;<i>
+</I>&gt;<i> It's good news that you've had a good run with it on the roof. I'm thinking
+</I>&gt;<i> about doing the same for my server gear.
+</I>&gt;<i> I agree that the specs are great - -40 to +85 Celsius.
+</I>
+And a 1/4&quot; socket at the bottom for firm mounting!
+
+&gt;<i>  It's not the
+</I>&gt;<i> environmental issues that I'm worried about this time - I'm just hoping that
+</I>&gt;<i> it doesn't get nuked by static electricity on the I/O lines. Static is a real
+</I>&gt;<i> problem in the Antarctic - my experience is that the dry blowing snow acts as
+</I>&gt;<i> a giant Van de Graff generator that will kill pretty much anything in a
+</I>&gt;<i> plastic box if you're not careful.
+</I>
+The humidity at my office is often 10% or lower, but not a lot of static
+problems here.  I have been at places with static problems and then you
+have to be real careful.  My experience with static is that most of the
+experts are just wrong.  Things like pink poly, heel straps, and wrist
+straps are just useless.  The US Mil-Std is right, the only worksatation
+anti-stat measure with a good change of working is an ion-generator
+pointed directly at the workspace.
+
+&gt;<i> &gt; Actually, it IS suitable for conenction straight to a UART since those
+</I>&gt;<i> &gt; run at TTL levels.  It is the RS-232 toi TTL level shifters that get
+</I>&gt;<i> &gt; you.  I also find that about 2/3 of the time you can connet directly to
+</I>&gt;<i> &gt; an RS-232 level input and get away with it.  No need for ANY circuitry.
+</I>&gt;<i>
+</I>&gt;<i> I disagree here. While the voltage levels are correct TTL, there is an
+</I>&gt;<i> inversion required for TxD &amp; RxD to get the sense right. Been there, wasted
+</I>&gt;<i> time on it. I can get a screenshot from my CRO if you're interested.
+</I>
+Been running mine for almost 2 years, and not an inverter in sight.  Remember
+that the RS-232-&gt;TTL level converter is also an inverter.  Since you have
+no level converter you need to have your own TTL-TTL inverter.
+
+&gt;<i> &gt; &gt; Will look at this today. Will let you know how I get on.
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; We can always make it a compile time option if it works for you.
+</I>&gt;<i>
+</I>&gt;<i> That would be nice. My first cursory glance of the code looks like the change
+</I>&gt;<i> is straight forward. Just looking into what the 'state' variable holds so I
+</I>&gt;<i> don't tromp on something else.
+</I>
+Just use it the way that DCD does and you'll be fine.
+
+&gt;<i> &gt; You can pay me to go look at it if you want. :-)
+</I>&gt;<i>
+</I>&gt;<i> You wish. I didn't get a trip this time - so all the gear had to be able to be
+</I>&gt;<i> assembled by an (electronically) untrained field assistant.....
+</I>
+Life is tough...
+
+RGDS
+GARY
+- ---------------------------------------------------------------------------
+Gary E. Miller Rellim 20340 Empire Blvd, Suite E-3, Bend, OR 97701
+	<A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">gem at rellim.com</A>  Tel:+1(541)382-8588
+
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v1.4.3 (GNU/Linux)
+
+iD8DBQFFGcLi8KZibdeR3qURAp0EAJwI90P1t7CDK8p9L4osvvkqihRUJwCg6cOb
+HccaRVcMKPwTbZfx8hau5ZY=
+=t6iO
+-----END PGP SIGNATURE-----
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="002010.html">[Gpsd-users] PPS on RTS?
+</A></li>
+	<LI>Next message: <A HREF="002013.html">[Gpsd-users] PPS on RTS?
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2011">[ date ]</a>
+              <a href="thread.html#2011">[ thread ]</a>
+              <a href="subject.html#2011">[ subject ]</a>
+              <a href="author.html#2011">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

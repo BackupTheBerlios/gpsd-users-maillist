@@ -1,0 +1,83 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] gpslib stops yielding data
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2007-March/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20gpslib%20stops%20yielding%20data&In-Reply-To=%3C91981b3e0703282227t5a45d835m5f680cb72bd33007%40mail.gmail.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="002529.html">
+   <LINK REL="Next"  HREF="002503.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] gpslib stops yielding data</H1>
+    <B>Chris Kuethe</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20gpslib%20stops%20yielding%20data&In-Reply-To=%3C91981b3e0703282227t5a45d835m5f680cb72bd33007%40mail.gmail.com%3E"
+       TITLE="[Gpsd-users] gpslib stops yielding data">chris.kuethe at gmail.com
+       </A><BR>
+    <I>Thu Mar 29 07:27:14 CEST 2007</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="002529.html">[Gpsd-users] gpslib stops yielding data
+</A></li>
+        <LI>Next message: <A HREF="002503.html">[Gpsd-users] Enhanced gps.py?
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2530">[ date ]</a>
+              <a href="thread.html#2530">[ thread ]</a>
+              <a href="subject.html#2530">[ subject ]</a>
+              <a href="author.html#2530">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>On 3/28/07, Eric S. Raymond &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">esr at thyrsus.com</A>&gt; wrote:
+&gt;<i> This doesn't match any bug known to us.  It sounds to me like some kind of
+</I>&gt;<i> buffering-related stallout on the client side.  The C++ binding was
+</I>&gt;<i> contributed by a user and hasn't been tested as thoroughly as one
+</I>&gt;<i> might like.
+</I>
+Near the bottom of my log dumps I saw gpsd say &quot;Resource temporarily
+unavailable&quot; ... ie. errno = 35 on a write().
+
+After patching gpsd.c to handle retryable errors, I've processed 10
+times more (and counting) log data as I was previously able to process
+without the patch and the daemon is stable. Incidentally, reading gps
+data directly from a file means I can process data hundreds of times
+faster than real-time speed.
+
+Not sure if this is what Yang is suffering from, but it certainly
+fixes my little red wagon... I'll commit it shortly.
+
+CK
+
+-- 
+GDB has a 'break' feature; why doesn't it have 'fix' too?
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="002529.html">[Gpsd-users] gpslib stops yielding data
+</A></li>
+	<LI>Next message: <A HREF="002503.html">[Gpsd-users] Enhanced gps.py?
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2530">[ date ]</a>
+              <a href="thread.html#2530">[ thread ]</a>
+              <a href="subject.html#2530">[ subject ]</a>
+              <a href="author.html#2530">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

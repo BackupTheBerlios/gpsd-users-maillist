@@ -1,0 +1,97 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] GPSD 2.35 (SVN4408) and Navilock NL-209PU
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2007-August/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20GPSD%202.35%20%28SVN4408%29%20and%20Navilock%20NL-209PU&In-Reply-To=%3C46C0749D.9080402%40arcor.de%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="002807.html">
+   <LINK REL="Next"  HREF="002810.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] GPSD 2.35 (SVN4408) and Navilock NL-209PU</H1>
+    <B>Jason Curl</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20GPSD%202.35%20%28SVN4408%29%20and%20Navilock%20NL-209PU&In-Reply-To=%3C46C0749D.9080402%40arcor.de%3E"
+       TITLE="[Gpsd-users] GPSD 2.35 (SVN4408) and Navilock NL-209PU">jcurlnews at arcor.de
+       </A><BR>
+    <I>Mon Aug 13 17:11:25 CEST 2007</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="002807.html">[Gpsd-users] Another baud rate hunting problem on Jentro BT-GPS-8, causing segfault in gpsd 2.34
+</A></li>
+        <LI>Next message: <A HREF="002810.html">[Gpsd-users] Fw: Re: [DebianGIS] What is up with gpsd in Debian?
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2809">[ date ]</a>
+              <a href="thread.html#2809">[ thread ]</a>
+              <a href="subject.html#2809">[ subject ]</a>
+              <a href="author.html#2809">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>I'd like to report success (although it's somewhat limited) with 2.35b 
+(SVN 4408) with this particular GPS bought from Conrad in Germany.
+
+1. Model Name: NaviLock NL-209PU
+2. Works: Yes (NMEA only)
+3. URL: 
+<A HREF="http://www.navilock.de/produkte/gruppen/3/Kabel_Empfaenger/61371_NL-209PU.html?show=spec">http://www.navilock.de/produkte/gruppen/3/Kabel_Empfaenger/61371_NL-209PU.html?show=spec</A>
+   (in German)
+4. Sony CXD2951 Low Power with PL-2303 prolific
+5. Interface: Serial interface using 6-pin connector with power supply 
+at 4800 8 N 1. Comes with a 6-pin adaptor to USB so it's powered 
+directly from USB.
+6. Vendor: NaviLock
+7. Version: 2.35beta (SVN 4408)
+8. NMEA: v2.2
+9. When running, need to use the -b option, else the device will hang 
+during GPSD's probing phase and it needs to be unplugged and reinserted. 
+For the &quot;fudge&quot; factor of NTP, I had to use a time of 0.840. There is no 
+PPS signal associated with this device that I know of.
+
+# GPSD
+server 127.127.28.0 minpoll 4 maxpoll 4
+fudge 127.127.28.0 time1 0.840 refid GPS
+
+server 127.127.28.1 minpoll 4 maxpoll 4 prefer
+fudge 127.127.28.1 refid GPS1
+
+The technical information talks about 1us accuracy on the clock, but I 
+can't find any specs for their interface to know if there's a 1PPS 
+signal or not that can be used (except it's TTL).
+
+
+Best Regards,
+Jason.
+
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="002807.html">[Gpsd-users] Another baud rate hunting problem on Jentro BT-GPS-8, causing segfault in gpsd 2.34
+</A></li>
+	<LI>Next message: <A HREF="002810.html">[Gpsd-users] Fw: Re: [DebianGIS] What is up with gpsd in Debian?
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2809">[ date ]</a>
+              <a href="thread.html#2809">[ thread ]</a>
+              <a href="subject.html#2809">[ subject ]</a>
+              <a href="author.html#2809">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

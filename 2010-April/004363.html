@@ -1,0 +1,114 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] Compiling as root?
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2010-April/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Compiling%20as%20root%3F&In-Reply-To=%3C20100407162219.07edfa4b%40dragon.localdomain%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="004366.html">
+   <LINK REL="Next"  HREF="004372.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] Compiling as root?</H1>
+    <B>Charles Curley</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Compiling%20as%20root%3F&In-Reply-To=%3C20100407162219.07edfa4b%40dragon.localdomain%3E"
+       TITLE="[Gpsd-users] Compiling as root?">charlescurley at charlescurley.com
+       </A><BR>
+    <I>Thu Apr  8 00:22:19 CEST 2010</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="004366.html">[Gpsd-users] gpsd via telnet
+</A></li>
+        <LI>Next message: <A HREF="004372.html">[Gpsd-users] Compiling as root?
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#4363">[ date ]</a>
+              <a href="thread.html#4363">[ thread ]</a>
+              <a href="subject.html#4363">[ subject ]</a>
+              <a href="author.html#4363">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>On Tue, 23 Mar 2010 16:39:02 -0600
+Charles Curley &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">charlescurley at charlescurley.com</A>&gt; wrote:
+
+&gt;<i> Just for the halibut, I pulled in the anonymous git clone, running as
+</I>&gt;<i> a non-privileged user. Again, as a non-privileged user, everything
+</I>&gt;<i> compiled just fine. For the &quot;make install&quot;, I used sudo to gain root
+</I>&gt;<i> privileges, and that appeared to run fine.
+</I>&gt;<i> 
+</I>&gt;<i> I notice, however, that several files end up owned by root:
+</I>&gt;<i> 
+</I>&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">ccurley at white</A>:~/versioned/gpsd$ find -user root -o -group root
+</I>&gt;<i> ./build/lib.linux-i586-2.6
+</I>&gt;<i> ./build/lib.linux-i586-2.6/gps
+</I>&gt;<i> ./build/lib.linux-i586-2.6/gps/client.so
+</I>&gt;<i> ./build/lib.linux-i586-2.6/gps/__init__.py
+</I>&gt;<i> ./build/lib.linux-i586-2.6/gps/packet.so
+</I>&gt;<i> ./build/lib.linux-i586-2.6/gps/gps.py
+</I>&gt;<i> ./build/lib.linux-i586-2.6/gps/fake.py
+</I>&gt;<i> ./stamp-python-modules
+</I>&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">ccurley at white</A>:~/versioned/gpsd$
+</I>&gt;<i> 
+</I>&gt;<i> I'm not wild about having files owned by root in a user directory
+</I>&gt;<i> tree. Is this necessary? Would it be possible to populate the build
+</I>&gt;<i> tree as the unprivileged user, and change ownership on copying into
+</I>&gt;<i> place?
+</I>&gt;<i> 
+</I>
+This has gotten a bit better. I now see:
+
+<A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">ccurley at white</A>:~/versioned/gpsd$ time sudo make install &gt; OUT.install
+2&gt;&amp;1
+[sudo] password for ccurley: 
+
+real    0m14.278s
+user    0m8.833s
+sys     0m1.904s
+<A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">ccurley at white</A>:~/versioned/gpsd$ find -user root -o -group root 
+./build/lib.linux-i586-2.6/gps/client.so
+./build/lib.linux-i586-2.6/gps/packet.so
+./build/lib.linux-i586-2.6/gps/gps.py
+./stamp-python-modules
+<A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">ccurley at white</A>:~/versioned/gpsd$ 
+
+Thanks.
+
+-- 
+
+Charles Curley                  /&quot;\    ASCII Ribbon Campaign
+Looking for fine software       \ /    Respect for open standards
+and/or writing?                  X     No HTML/RTF in email
+<A HREF="http://www.charlescurley.com">http://www.charlescurley.com</A>    / \    No M$ Word docs in email
+
+Key fingerprint = CE5C 6645 A45A 64E4 94C0  809C FFF6 4C48 4ECD DFDB
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="004366.html">[Gpsd-users] gpsd via telnet
+</A></li>
+	<LI>Next message: <A HREF="004372.html">[Gpsd-users] Compiling as root?
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#4363">[ date ]</a>
+              <a href="thread.html#4363">[ thread ]</a>
+              <a href="subject.html#4363">[ subject ]</a>
+              <a href="author.html#4363">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

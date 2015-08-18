@@ -1,0 +1,96 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] Scope of gpsd
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2007-June/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Scope%20of%20gpsd&In-Reply-To=%3C11b08d4a0706211654p6ca47ed3v187debcdccf8c4ea%40mail.gmail.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="002724.html">
+   <LINK REL="Next"  HREF="002723.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] Scope of gpsd</H1>
+    <B>Nic Roets</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Scope%20of%20gpsd&In-Reply-To=%3C11b08d4a0706211654p6ca47ed3v187debcdccf8c4ea%40mail.gmail.com%3E"
+       TITLE="[Gpsd-users] Scope of gpsd">nroets at gmail.com
+       </A><BR>
+    <I>Fri Jun 22 01:54:26 CEST 2007</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="002724.html">[Gpsd-users] how use tomtom gps
+</A></li>
+        <LI>Next message: <A HREF="002723.html">[Gpsd-users] how use tomtom gps
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2722">[ date ]</a>
+              <a href="thread.html#2722">[ thread ]</a>
+              <a href="subject.html#2722">[ subject ]</a>
+              <a href="author.html#2722">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>I'm writing an open-source viewer for the openstreetmap.org data and
+I'm pleased at how easy it was to interface the program with gpsd. It
+can in fact now give quite accurate &quot;turn-by-turn&quot; directions while
+the user is driving to the destination.
+<A HREF="http://wiki.openstreetmap.org/index.php/Gosmore">http://wiki.openstreetmap.org/index.php/Gosmore</A>
+
+Before explain my critism of gpsd, I want to ask a question : Is it
+reasonable to assume that gps_data_t.fix.speed will be valid ?
+
+I've read nearly every page on the site numerous times and somewhere
+deep inside, it says the main purpose of gpsd is to provide you with
+14 variables, namely position (3), velocity (3), time (1) and accuracy
+(7). But if you look at the manpages / documentation, position and the
+other are not even mentioned ! On the front page it tells you not to
+parse NMEA sentences and that the software does not have any bugs, but
+neither does /bin/true.
+
+I feel the scope of gpsd should be defined as
+1. Distribute GPSr data so multiple apps can use it, and
+2. Provide an API that hides the ugly part of supporting every dialect
+of every GPS protocol used by all the different receivers out there.
+
+For example in the FAQ it mentions that the time variable may
+alternate between the correct value and n/a with some units and it's
+the applications job to handle this. A better solution would be for
+the fix data structure to have this format :
+struct {
+...
+time_t timeReported;
+boolean receiverUpdatedTimeVariableInLastMessage;
+...
+}
+This way a simple gpsd client like xgps can just use the timeReported
+variable while a robust client like one that updates the system clock
+will only act when receiverUpdatedTimeVariableInLastMessage is true.
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="002724.html">[Gpsd-users] how use tomtom gps
+</A></li>
+	<LI>Next message: <A HREF="002723.html">[Gpsd-users] how use tomtom gps
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2722">[ date ]</a>
+              <a href="thread.html#2722">[ thread ]</a>
+              <a href="subject.html#2722">[ subject ]</a>
+              <a href="author.html#2722">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

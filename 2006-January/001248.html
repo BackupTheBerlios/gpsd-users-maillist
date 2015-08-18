@@ -1,0 +1,162 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] gpxlogger bug and gpxlogger RFE
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2006-January/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20gpxlogger%20bug%20and%20gpxlogger%20RFE&In-Reply-To=%3C20060125131219.0ed3ff31.hamish_nospam%40yahoo.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="001246.html">
+   <LINK REL="Next"  HREF="001249.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] gpxlogger bug and gpxlogger RFE</H1>
+    <B>Hamish</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20gpxlogger%20bug%20and%20gpxlogger%20RFE&In-Reply-To=%3C20060125131219.0ed3ff31.hamish_nospam%40yahoo.com%3E"
+       TITLE="[Gpsd-users] gpxlogger bug and gpxlogger RFE">hamish_nospam at yahoo.com
+       </A><BR>
+    <I>Wed Jan 25 01:12:19 CET 2006</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="001246.html">[Gpsd-users] gpxlogger bug and gpxlogger RFE
+</A></li>
+        <LI>Next message: <A HREF="001249.html">[Gpsd-users] gpxlogger bug and gpxlogger RFE
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1248">[ date ]</a>
+              <a href="thread.html#1248">[ thread ]</a>
+              <a href="subject.html#1248">[ subject ]</a>
+              <a href="author.html#1248">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>&gt;<i> &gt; Also, two things would be nice for gpxlogger to have:
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; a) better command line parsing: &quot;gpxlogger --help&quot; currently starts 
+</I>&gt;<i> &gt; logging to a file called &quot;--help&quot;. argh.
+</I>&gt;<i>
+</I>&gt;<i> yeah, the thing is currently particularly brain dead ;D
+</I>
+here is some command line parsing code I wrote for a simple client,
+
+        if(argc &gt; 3) {
+                printf(&quot;Usage: gpsdlog [-q] time_interval\n   default 10 (sec), non-quiet\n&quot;);
+                exit(1);
+        }
+
+        for(i=1; i&lt;3; i++) {
+            if(i &gt;= argc) continue;
+
+            if( strcmp(argv[i],&quot;-q&quot;) == 0 ) {
+                quiet_mode = 1;
+                continue;
+            }
+            if(1 == sscanf(argv[i], &quot;%d&quot;, &amp;interval))
+                continue;
+            /* shouldn't get this far */
+            printf(&quot;Usage: gpsdlog [-q] time_interval\n   default: 10 (sec), non-quiet\n&quot;);
+            exit(1);
+        }
+
+        fprintf(stderr, &quot;time interval is %d seconds\n&quot;, interval);
+
+
+I don't claim it is very good, but you are welcome to it if you think it
+would be useful for gpxlogger.
+
+
+&gt;<i> &gt; Also, two things would be nice for gpxlogger to have:
+</I>..
+&gt;<i> &gt; b) a command line option to set the time between trackpoints.
+</I>&gt;<i> &gt; Currently gpxlogger logs every positon that comes through which
+</I>&gt;<i> &gt; leads to HUGE log  files if you leave it running for hours at a
+</I>&gt;<i> &gt; time. It takes only a few  minutes to get to 100k.. For me, anything
+</I>&gt;<i> &gt; less than every 10 sec is  overkill. It should still retain
+</I>&gt;<i> &gt; tracklimit test though, even if that  limit is shorter than the
+</I>&gt;<i> &gt; logging interval.
+</I>&gt;<i> 
+</I>&gt;<i> yeah, I can understand your point, however
+</I>&gt;<i> * gzipping the file will reduce it by a large amount
+</I>
+Yes, but, I don't need or want the extra data. Also I log for weeks at a
+time, and don't want to have to resort to cron jobs to stop, gzip, &amp; 
+restart the file &amp; break the track to do that every hour. Only once a day.
+:<i>)
+</I>
+Logging is on a solid-state MiniITX logger to a compact flash
+filesystem. Resources are limited.
+
+
+&gt;<i> * doing that when going at highway speeds will lead to something 
+</I>&gt;<i> like a point every 500m or so, which is not acceptable
+</I>
+I ask for it to be an optional setting, the default could still be to 
+log every fix.
+
+Logging every 10 sec may not be appropriate for car/street use, but in 
+my case I am logging the position of a ship at sea where the turn time
+is slow enough that I can interpolate position very well between two
+track points. Besides, my other equipment is only sampling data every
+ten seconds, and it is that data which I want to geo-locate. :)
+The less post-processing I have to do the better. :)
+
+
+&gt;<i> a better idea I guess would be to depend on zlib and use it on the fly
+</I>
+That makes it overly complicated IMO. Personally, I would prefer to log 
+to a text file and have a cron script break &amp; gzip it. It makes `tail -f`
+type checking all the more difficult..
+
+ 
+&gt;<i> &gt; Similar to above, add a new timestamp call when a track point is 
+</I>&gt;<i> &gt; written and then before track point write, add
+</I>&gt;<i> &gt; 
+</I>&gt;<i> &gt; if (fabs(gpsfix.time - timestamp) &gt; dt) {
+</I>&gt;<i> &gt; 
+</I>&gt;<i> &gt; ?
+</I>&gt;<i> 
+</I>&gt;<i> hmm, I fail to understand that one ;D
+</I>
+More refined: logging every 10sec, or perhaps easier to understand at 
+30sec and 60sec intervals, it would be nice if it waited for the first
+fix to come after the start of each (10sec) epoch, and then didn't 
+write to file again until the next epoch is reached. i.e. the output
+fixes happen on the &quot;round&quot; clicks of the clock. e.g. for 1 minute 
+sampling when the logging started at 0:42, the position would be 
+recorded near 1:00, 2:00, 3:00  not 0:42, 1:42, 2:42.
+
+New time_t epoch_timestamp and int epoch_hit variables needed. Test &amp; 
+set against current gpsfix.time before each fprintf(track point).
+
+
+thanks,
+Hamish
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="001246.html">[Gpsd-users] gpxlogger bug and gpxlogger RFE
+</A></li>
+	<LI>Next message: <A HREF="001249.html">[Gpsd-users] gpxlogger bug and gpxlogger RFE
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1248">[ date ]</a>
+              <a href="thread.html#1248">[ thread ]</a>
+              <a href="subject.html#1248">[ subject ]</a>
+              <a href="author.html#1248">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

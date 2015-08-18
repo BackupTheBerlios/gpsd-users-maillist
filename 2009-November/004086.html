@@ -1,0 +1,166 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] bluetooth blues
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2009-November/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20bluetooth%20blues&In-Reply-To=%3C4B0E3E54.6000408%40gmail.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="004085.html">
+   <LINK REL="Next"  HREF="004088.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] bluetooth blues</H1>
+    <B>Jos Meijer</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20bluetooth%20blues&In-Reply-To=%3C4B0E3E54.6000408%40gmail.com%3E"
+       TITLE="[Gpsd-users] bluetooth blues">josessex at gmail.com
+       </A><BR>
+    <I>Thu Nov 26 09:37:40 CET 2009</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="004085.html">[Gpsd-users] PPS data from gpsd on OpenBSD??
+</A></li>
+        <LI>Next message: <A HREF="004088.html">[Gpsd-users] bluetooth blues
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#4086">[ date ]</a>
+              <a href="thread.html#4086">[ thread ]</a>
+              <a href="subject.html#4086">[ subject ]</a>
+              <a href="author.html#4086">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>hello,
+
+in my struggle to get rid of Bill Gates I tried to get my GPS working.
+I neatly followed the instructions about installing a bluetooth gps and
+it went well untill I got to the part about adding
+gps_device to gpsd in init_d.
+
+The howto assumes there is already a #GPS_DEV=&quot;/dev/ttyS3&quot; or so to be
+found which can be uncommented and altered to the correct
+GPS_DEV=&quot;/dev/rfcomm0&quot; .
+
+My gpsd in init_d has no such entry, so I put it where I thought it
+would be at the right place, but I should confess that that is in my
+case merely guessing.
+
+Anyway, as I go on with the procedure and start telnet, it reports
+nothing and after a while it says &quot;connection closed by foreign host&quot;.
+
+Anyone has any clue how I should go on?    kind regards  Jos Meijer
+
+init_d/gpsd looks like:
+
+
+#!/bin/sh
+#
+#    Authors: Tilman Koschnick &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">til at subnetz.org</A>&gt;
+#                Bernd Zeimetz &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">bzed at debian.org</A>&gt;
+#
+
+### BEGIN INIT INFO
+# Provides:          gpsd
+# Required-Start:    $syslog $network dbus
+# Should-Start:      bluetooth
+# Required-Stop:     $syslog $network
+# Default-Start:     2 3 4 5
+# Default-Stop:      0 1 6
+# Short-Description: Start the GPS (Global Positioning System) daemon
+### END INIT INFO
+
+set -e
+
+PATH=/usr/local/sbin:/usr/local/bin:/sbin:/bin:/usr/sbin:/usr/bin
+DAEMON=/usr/sbin/gpsd
+DESC=&quot;GPS (Global Positioning System) daemon&quot;
+PIDFILE=&quot;/var/run/gpsd.pid&quot;
+SELF=$(cd $(dirname $0); pwd -P)/$(basename $0)
+GPS_DEV=&quot;/dev/rfcomm0&quot;
+
+
+test -x $DAEMON || exit 0
+
+. /lib/lsb/init-functions
+
+# include gpsd defaults
+if [ -f /etc/default/gpsd ] ; then
+    . /etc/default/gpsd
+else
+    log_failure_msg &quot;gpsd: error: Cannot find /etc/default/gpsd.&quot;
+    exit 1
+fi
+
+case &quot;$1&quot; in
+  start)
+    if [ &quot;x$START_DAEMON&quot; = &quot;xtrue&quot; ] ; then
+        log_daemon_msg &quot;Starting $DESC&quot; &quot;gpsd&quot;
+        start-stop-daemon --start --quiet \
+            --exec $DAEMON -- $DAEMON_OPTS -P $PIDFILE $DEVICES \
+            &amp;&amp; log_end_msg 0 \
+            || log_end_msg 1
+    else
+        log_daemon_msg &quot;Not starting $DESC&quot; &quot;gpsd&quot; &amp;&amp; log_end_msg 0
+    fi
+    ;;
+  stop)
+    if [ &quot;x$START_DAEMON&quot; = &quot;xtrue&quot; ] ; then
+        log_daemon_msg &quot;Stopping $DESC&quot; &quot;gpsd&quot;
+        WARN=$(start-stop-daemon --stop --quiet --oknodo --pidfile $PIDFILE)
+        log_end_msg 0
+        [ -n &quot;$WARN&quot; ] &amp;&amp; log_warning_msg &quot;$WARN&quot;
+    else
+        log_daemon_msg &quot;Not stopping $DESC&quot; &quot;gpsd&quot; &amp;&amp; log_end_msg 0
+    fi
+    ;;
+  reload|force-reload)
+    log_action_msg &quot;gpsd: Resetting connection to GPS device&quot;
+    WARN=$(start-stop-daemon --stop --signal 1 --quiet --oknodo
+--pidfile $PIDFILE)
+    [ -n &quot;$WARN&quot; ] &amp;&amp; log_warning_msg &quot;$WARN&quot;
+    ;;
+  restart)
+    set +e; $SELF stop; set -e
+        $SELF start
+    ;;
+  status)
+    status_of_proc $DAEMON gpsd
+    ;;
+  *)
+    N=/etc/init.d/gpsd
+    echo &quot;Usage: $N {start|stop|restart|reload|force-reload|status}&quot; &gt;&amp;2
+    exit 1
+    ;;
+esac
+
+exit 0
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="004085.html">[Gpsd-users] PPS data from gpsd on OpenBSD??
+</A></li>
+	<LI>Next message: <A HREF="004088.html">[Gpsd-users] bluetooth blues
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#4086">[ date ]</a>
+              <a href="thread.html#4086">[ thread ]</a>
+              <a href="subject.html#4086">[ subject ]</a>
+              <a href="author.html#4086">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

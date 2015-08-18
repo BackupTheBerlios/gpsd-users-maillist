@@ -1,0 +1,128 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] Preparing for 2.93 point release
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2010-April/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Preparing%20for%202.93%20point%20release&In-Reply-To=%3C20100407165436.GA31463%40thyrsus.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="004352.html">
+   <LINK REL="Next"  HREF="004362.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] Preparing for 2.93 point release</H1>
+    <B>Eric Raymond</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Preparing%20for%202.93%20point%20release&In-Reply-To=%3C20100407165436.GA31463%40thyrsus.com%3E"
+       TITLE="[Gpsd-users] Preparing for 2.93 point release">esr at thyrsus.com
+       </A><BR>
+    <I>Wed Apr  7 18:54:36 CEST 2010</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="004352.html">[Gpsd-users] Preparing for 2.93 point release
+</A></li>
+        <LI>Next message: <A HREF="004362.html">[Gpsd-users] Preparing for 2.93 point release
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#4360">[ date ]</a>
+              <a href="thread.html#4360">[ thread ]</a>
+              <a href="subject.html#4360">[ subject ]</a>
+              <a href="author.html#4360">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Ji&#345;&#237; Techet &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">techet at gmail.com</A>&gt;:
+&gt;<i> What I miss here is class DEVICE. The documentation says:
+</I>&gt;<i> 
+</I>&gt;<i> &quot;When a client is in watcher mode, the daemon will ship it DEVICE
+</I>&gt;<i> notifications when a device is added to the pool or deactivated.&quot;
+</I>&gt;<i> 
+</I>&gt;<i> I would expect that when I connect to gpsd and send ?WATCH, the device
+</I>&gt;<i> &quot;is added to the pool&quot; and therefore I should get DEVICE class
+</I>&gt;<i> response. It's really no problem for me to check the contents of
+</I>&gt;<i> DEVICES instead if this is the expected behavior, but in this case the
+</I>&gt;<i> documentation should be corrected. (And by the way, the python client
+</I>&gt;<i> library also doesn't check for DEVICES messages and only looks at
+</I>&gt;<i> DEVICE notifications.)
+</I>&gt;<i> 
+</I>&gt;<i> I also don't get DEVICE notification when the gps device is switched
+</I>&gt;<i> off - it might be related to the 100pct CPU bug, but it might be
+</I>&gt;<i> separate bug as well. I believe this worked in 2.39.
+</I>
+Hmmmm....
+
+Script started on Wed 07 Apr 2010 12:32:34 PM EDT
+<A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">esr at snark</A>:~/software/gpsd$ telnet localhost 2947
+Trying ::1...
+Connected to snark.thyrsus.com.
+Escape character is '^]'.
+{&quot;class&quot;:&quot;VERSION&quot;,&quot;release&quot;:&quot;2.93dev&quot;,&quot;rev&quot;:&quot;2010-04-07T01:23:00&quot;,&quot;proto_major&quot;:3,&quot;proto_minor&quot;:2}
+?WATCH;
+{&quot;class&quot;:&quot;DEVICES&quot;,&quot;devices&quot;:[{&quot;class&quot;:&quot;DEVICE&quot;,&quot;path&quot;:&quot;/dev/ttyUSB0&quot;,&quot;activated&quot;:1270657991.08,&quot;flags&quot;:1,&quot;driver&quot;:&quot;SiRF binary&quot;,&quot;native&quot;:1,&quot;bps&quot;:4800,&quot;parity&quot;:&quot;N&quot;,&quot;stopbits&quot;:1,&quot;cycle&quot;:1.00}]}
+{&quot;class&quot;:&quot;WATCH&quot;,&quot;enable&quot;:false,&quot;json&quot;:false,&quot;nmea&quot;:false,&quot;raw&quot;:0,&quot;scaled&quot;:false,&quot;timing&quot;:false}
+?WATCH={&quot;enable&quot;:true,&quot;json&quot;:true}
+{&quot;class&quot;:&quot;DEVICES&quot;,&quot;devices&quot;:[{&quot;class&quot;:&quot;DEVICE&quot;,&quot;path&quot;:&quot;/dev/ttyUSB0&quot;,&quot;activated&quot;:1270658036.08,&quot;flags&quot;:1,&quot;driver&quot;:&quot;SiRF binary&quot;,&quot;native&quot;:1,&quot;bps&quot;:4800,&quot;parity&quot;:&quot;N&quot;,&quot;stopbits&quot;:1,&quot;cycle&quot;:1.00}]}
+{&quot;class&quot;:&quot;WATCH&quot;,&quot;enable&quot;:true,&quot;json&quot;:true,&quot;nmea&quot;:false,&quot;raw&quot;:0,&quot;scaled&quot;:false,&quot;timing&quot;:false}
+{&quot;class&quot;:&quot;SKY&quot;,&quot;tag&quot;:&quot;MID4&quot;,&quot;device&quot;:&quot;/dev/ttyUSB0&quot;,&quot;time&quot;:1270658026.020,&quot;hdop&quot;:50.00,&quot;satellites&quot;:[{&quot;PRN&quot;:15,&quot;el&quot;:49,&quot;az&quot;:48,&quot;ss&quot;:34,&quot;used&quot;:false},{&quot;PRN&quot;:5,&quot;el&quot;:7,&quot;az&quot;:94,&quot;ss&quot;:0,&quot;used&quot;:false},{&quot;PRN&quot;:6,&quot;el&quot;:12,&quot;az&quot;:304,&quot;ss&quot;:0,&quot;used&quot;:false},{&quot;PRN&quot;:3,&quot;el&quot;:6,&quot;az&quot;:313,&quot;ss&quot;:0,&quot;used&quot;:false},{&quot;PRN&quot;:21,&quot;el&quot;:72,&quot;az&quot;:264,&quot;ss&quot;:27,&quot;used&quot;:false},{&quot;PRN&quot;:24,&quot;el&quot;:73,&quot;az&quot;:274,&quot;ss&quot;:0,&quot;used&quot;:false},{&quot;PRN&quot;:26,&quot;el&quot;:68,&quot;az&quot;:238,&quot;ss&quot;:0,&quot;used&quot;:false},{&quot;PRN&quot;:18,&quot;el&quot;:57,&quot;az&quot;:307,&quot;ss&quot;:0,&quot;used&quot;:false},{&quot;PRN&quot;:27,&quot;el&quot;:49,&quot;az&quot;:120,&quot;ss&quot;:0,&quot;used&quot;:false},{&quot;PRN&quot;:22,&quot;el&quot;:24,&quot;az&quot;:288,&quot;ss&quot;:31,&quot;used&quot;:false}]}
+{&quot;class&quot;:&quot;TPV&quot;,&quot;tag&quot;:&quot;MID2&quot;,&quot;device&quot;:&quot;/dev/ttyUSB0&quot;,&quot;time&quot;:1270658026.020,&quot;ept&quot;:0.005,&quot;mode&quot;:1}
+{&quot;class&quot;:&quot;SKY&quot;,&quot;tag&quot;:&quot;MID4&quot;,&quot;device&quot;:&quot;/dev/ttyUSB0&quot;,&quot;time&quot;:1270658027.020,&quot;hdop&quot;:50.00,&quot;satellites&quot;:[{&quot;PRN&quot;:15,&quot;el&quot;:49,&quot;az&quot;:48,&quot;ss&quot;:35,&quot;used&quot;:false},{&quot;PRN&quot;:5,&quot;el&quot;:7,&quot;az&quot;:94,&quot;ss&quot;:0,&quot;used&quot;:false},{&quot;PRN&quot;:6,&quot;el&quot;:12,&quot;az&quot;:304,&quot;ss&quot;:0,&quot;used&quot;:false},{&quot;PRN&quot;:3,&quot;el&quot;:6,&quot;az&quot;:313,&quot;ss&quot;:0,&quot;used&quot;:false},{&quot;PRN&quot;:21,&quot;el&quot;:72,&quot;az&quot;:264,&quot;ss&quot;:28,&quot;used&quot;:false},{&quot;PRN&quot;:24,&quot;el&quot;:73,&quot;az&quot;:274,&quot;ss&quot;:0,&quot;used&quot;:false},{&quot;PRN&quot;:26,&quot;el&quot;:68,&quot;az&quot;:238,&quot;ss&quot;:0,&quot;used&quot;:false},{&quot;PRN&quot;:18,&quot;el&quot;:57,&quot;az&quot;:307,&quot;ss&quot;:0,&quot;used&quot;:false},{&quot;PRN&quot;:27,&quot;el&quot;:49,&quot;az&quot;:120,&quot;ss&quot;:0,&quot;used&quot;:false},{&quot;PRN&quot;:22,&quot;el&quot;:24,&quot;az&quot;:288,&quot;ss&quot;:32,&quot;used&quot;:false}]}
+{&quot;class&quot;:&quot;TPV&quot;,&quot;tag&quot;:&quot;MID2&quot;,&quot;device&quot;:&quot;/dev/ttyUSB0&quot;,&quot;time&quot;:1270658027.020,&quot;ept&quot;:0.005,&quot;mode&quot;:1}
+{&quot;class&quot;:&quot;DEVICE&quot;,&quot;path&quot;:&quot;/dev/ttyUSB0&quot;,&quot;activated&quot;:0}
+^]
+
+telnet&gt; Connection closed.
+<A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">esr at snark</A>:~/software/gpsd$ exit
+
+Script done on Wed 07 Apr 2010 12:34:26 PM EDT
+
+I'm getting a DEVICE notification when I pull the GPS plug -- you can see it
+at the end of session there.  That's definitely a result of today's spin-bug
+fix. You should pull HEAD and verify.
+
+You've misunderstood the documentation slightly.  I may need to rewrite to 
+clarify.  ?WATCH; doesn't add or subtract devices.  It never alters the device
+pool at all.
+
+The device pool is altered in only these ways:
+
+1. When command-line arguments specify initial devices.
+
+2. When EOF is read on a device due to it being disconnected.
+
+3. When a control-channel + or - command (e.g. generated by a 
+   hotplug event) notifies the daemon that a device has
+   become available or is going away.
+
+When you issue a ?WATCH; to a daemon with a stable set of devices that
+the daemon has already recognized, you shouldn't expect any ?DEVICE
+responses at all.
+-- 
+		&lt;a href=&quot;<A HREF="http://www.catb.org/~esr/">http://www.catb.org/~esr/</A>&quot;&gt;Eric S. Raymond&lt;/a&gt;
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="004352.html">[Gpsd-users] Preparing for 2.93 point release
+</A></li>
+	<LI>Next message: <A HREF="004362.html">[Gpsd-users] Preparing for 2.93 point release
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#4360">[ date ]</a>
+              <a href="thread.html#4360">[ thread ]</a>
+              <a href="subject.html#4360">[ subject ]</a>
+              <a href="author.html#4360">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

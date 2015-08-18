@@ -1,0 +1,134 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] Garmin GPS-18 USB device working??
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2007-December/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Garmin%20GPS-18%20USB%20device%20working%3F%3F&In-Reply-To=%3C4762E46F.1030003%40foxgulch.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="003002.html">
+   <LINK REL="Next"  HREF="003004.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] Garmin GPS-18 USB device working??</H1>
+    <B>Sent by Larry from the Dell Laptop</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Garmin%20GPS-18%20USB%20device%20working%3F%3F&In-Reply-To=%3C4762E46F.1030003%40foxgulch.com%3E"
+       TITLE="[Gpsd-users] Garmin GPS-18 USB device working??">larry at foxgulch.com
+       </A><BR>
+    <I>Fri Dec 14 21:15:43 CET 2007</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="003002.html">[Gpsd-users] Success report: Motorola T805
+</A></li>
+        <LI>Next message: <A HREF="003004.html">[Gpsd-users] Garmin GPS-18 USB device working??
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3003">[ date ]</a>
+              <a href="thread.html#3003">[ thread ]</a>
+              <a href="subject.html#3003">[ subject ]</a>
+              <a href="author.html#3003">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>I can't get Kismet to accept input my Garmin GPS-18 USB puck or even to 
+acknowledge that it's connected. Neither does xgps or cgps show any info 
+from the GPS 18 nor does GPSDrive.  So reading here and other places, in 
+a terminal (Ubuntu Gutsy 7.10) I do:
+ 
+sudo gpsd -nND4 /dev/ttyUSB0
+[sudo] password for lj:
+
+gpsd returns speaks back in the terminal window:
+
+gpsd: launching (Version 2.34)
+gpsd: listening on port gpsd
+gpsd: shmat(0,0,0) succeeded
+gpsd: shmat(0,0,0) succeeded
+gpsd: shmat(0,0,0) succeeded
+gpsd: shmat(0,0,0) succeeded
+gpsd: successfully connected to the DBUS system bus
+gpsd: running with effective group ID 0
+gpsd: running with effective user ID 0
+gpsd: opening GPS data source at '/dev/ttyUSB0'
+gpsd: speed 9600, 8N1
+gpsd: Can't open /proc/bus/usb/devices
+gpsd: no probe matched...
+gpsd: gpsd_activate(1): opened GPS (5)
+
+In another terminal I start telnet
+
+$ telnet localhost 2947
+
+In this terminal window I see:
+
+Trying 127.0.0.1...
+Connected to localhost.
+Escape character is '^]'.
+
+I found experimentally that if I enter the character x, I see this line 
+in the terminal window:
+
+x
+GPSD,X=1197653384.189074
+
+which is our longitude. but still no NEMA sentence.
+
+At about the same time, in the gpsd: terminal window, this is displayed:
+gpsd: &lt;= client(0): x
+gpsd: client(0): assigning channel...
+gpsd: User requires 2, channel type is -1
+gpsd: client(0): channel 5 already active.
+gpsd: =&gt; client(0): GPSD,X=1197653384.189074
+
+
+I was expecting the nema sentence in response to a carriage 
+return/newline or just sentence after sentence to scroll.
+
+It appears my puck is recognized...when I un-plug and plug it back in 
+dmesg says
+
+[61557.084000] garmin_gps 2-1:1.0: device disconnected
+[61571.204000] usb 2-1: new full speed USB device using uhci_hcd and 
+address 6
+[61571.360000] usb 2-1: configuration #1 chosen from 1 choice
+[61571.368000] garmin_gps 2-1:1.0: Garmin GPS usb/tty converter detected
+[61571.368000] usb 2-1: Garmin GPS usb/tty converter now attached to ttyUSB0
+
+. The puck works fine with Garmin's NMap in Windows Vista so I'm fairly 
+confident that the device hardware is working OK.
+
+What am I doing wrong?
+
+And if I've provided enough information, why doesn't Kismet accept data 
+from my Garmin GPS-18 usb puck?
+
+Larry
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="003002.html">[Gpsd-users] Success report: Motorola T805
+</A></li>
+	<LI>Next message: <A HREF="003004.html">[Gpsd-users] Garmin GPS-18 USB device working??
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3003">[ date ]</a>
+              <a href="thread.html#3003">[ thread ]</a>
+              <a href="subject.html#3003">[ subject ]</a>
+              <a href="author.html#3003">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

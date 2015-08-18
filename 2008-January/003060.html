@@ -1,0 +1,76 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] Garmin 18LVC Weirdness
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2008-January/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Garmin%2018LVC%20Weirdness&In-Reply-To=%3C20080101141625.GB15701%40thyrsus.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="003059.html">
+   <LINK REL="Next"  HREF="003062.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] Garmin 18LVC Weirdness</H1>
+    <B>Eric S. Raymond</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Garmin%2018LVC%20Weirdness&In-Reply-To=%3C20080101141625.GB15701%40thyrsus.com%3E"
+       TITLE="[Gpsd-users] Garmin 18LVC Weirdness">esr at thyrsus.com
+       </A><BR>
+    <I>Tue Jan  1 15:16:25 CET 2008</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="003059.html">[Gpsd-users] Garmin 18LVC Weirdness
+</A></li>
+        <LI>Next message: <A HREF="003062.html">[Gpsd-users] Garmin 18LVC Weirdness
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3060">[ date ]</a>
+              <a href="thread.html#3060">[ thread ]</a>
+              <a href="subject.html#3060">[ subject ]</a>
+              <a href="author.html#3060">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Dave C &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">gpsd at creativesilicon.com.au</A>&gt;:
+&gt;<i> Unit 2 is currently sitting on my desk, waiting to be shipped (tomorrow, of 
+</I>&gt;<i> course). It too was working perfectly up until end of year. However, this 
+</I>&gt;<i> unit is now absolutely adamant that the date is 2008-01-02 - i.e. one day 
+</I>&gt;<i> LATER than it really is. I've power cycled it, and upgraded the firmware as 
+</I>&gt;<i> a last resort, but GPSD still tells me that the date is 2 Jan, not 1 Jan.
+</I>
+Rob Janssen reported this this morning.  Seems our implementation of mkgmtime()
+was defective, but we never noticed before because it was introduced after 
+the last leap-day.
+
+I have committed a fix to SVN.  I'm going to cut a release today.  If you
+can, please test immediately to check that the fix works in your environment.
+-- 
+		&lt;a href=&quot;<A HREF="http://www.catb.org/~esr/">http://www.catb.org/~esr/</A>&quot;&gt;Eric S. Raymond&lt;/a&gt;
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="003059.html">[Gpsd-users] Garmin 18LVC Weirdness
+</A></li>
+	<LI>Next message: <A HREF="003062.html">[Gpsd-users] Garmin 18LVC Weirdness
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3060">[ date ]</a>
+              <a href="thread.html#3060">[ thread ]</a>
+              <a href="subject.html#3060">[ subject ]</a>
+              <a href="author.html#3060">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

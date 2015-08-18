@@ -1,0 +1,104 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] Autobaud - does it have to be that way?
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2008-August/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Autobaud%20-%20does%20it%20have%20to%20be%20that%20way%3F&In-Reply-To=%3C91981b3e0808071010l64383f6cgf09e5e9325eaf566%40mail.gmail.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="003306.html">
+   <LINK REL="Next"  HREF="003307.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] Autobaud - does it have to be that way?</H1>
+    <B>Chris Kuethe</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Autobaud%20-%20does%20it%20have%20to%20be%20that%20way%3F&In-Reply-To=%3C91981b3e0808071010l64383f6cgf09e5e9325eaf566%40mail.gmail.com%3E"
+       TITLE="[Gpsd-users] Autobaud - does it have to be that way?">chris.kuethe at gmail.com
+       </A><BR>
+    <I>Thu Aug  7 19:10:04 CEST 2008</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="003306.html">[Gpsd-users] Autobaud - does it have to be that way?
+</A></li>
+        <LI>Next message: <A HREF="003307.html">[Gpsd-users] Autobaud - does it have to be that way?
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3309">[ date ]</a>
+              <a href="thread.html#3309">[ thread ]</a>
+              <a href="subject.html#3309">[ subject ]</a>
+              <a href="author.html#3309">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>On Thu, Aug 7, 2008 at 8:39 AM, Paul Fox &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">pgf at foxharp.boston.ma.us</A>&gt; wrote:
+&gt;<i> i guess i understand the pushback against commandline options,
+</I>&gt;<i> and clearly autoconfig is better than manual config, but really --
+</I>&gt;<i> lots of daemons have configuration files.  a configuration file
+</I>&gt;<i> could drop the number of (required) command-line options to zero.
+</I>&gt;<i> adding a means of forcing certain behaviors would simply be an
+</I>&gt;<i> admission that the problem being solved is a hard one.
+</I>
+sure it's a hard problem. the fact that we have &quot;-b&quot; is already an
+admission of that. it sucks that we have cripple part of gpsd's
+functionality (probing the device) because lots of receivers are to
+crappy to be able to handle it.
+
+there was some talk of a hybrid approach to configuration. a file full
+of protocol commands that could be read in at startup, sort of like
+running .login. anything you can type in a shell can go in .login,
+anything you could send as a gpsd command could go in the startup
+file. this would allow the existing command parser to be reused, and
+would promote consistency between startup configuration and runtime
+reconfiguration. de-jittering - aka &quot;the J flag&quot; is one example. you
+can set de-jittering on a per-connection basis now, but what if you
+could set it as a general policy...
+
+&gt;<i> that's a little harsh.  the main argument against command-line
+</I>&gt;<i> options in the above links is that they're user-unfriendly.  i'd
+</I>&gt;<i> submit that suggesting re-compilation takes that to something of
+</I>&gt;<i> an extreme.  :-)
+</I>
+Yep. I posted that as a &quot;if you really know what you're doing, and
+you're absolutely sure you need this fixed configuration, here's a way
+to do it.&quot; If you don't like the autoconfiguration, please explain
+why. Complaints submitted in triplicate on $100 bills will be given
+higher priority, as will those that come with patches.
+
+Extra options are user-unfriendly, and they're contrary to gpsd's main
+purpose: to quietly, simply, and reliably mediate transactions between
+arbitrary clients and gps receivers. By forcing gpsd into a fixed
+configuration, you impair your ability to use more receivers.
+
+I guess I forgot to ask &quot;what problem are you trying to solve?&quot;
+
+-- 
+GDB has a 'break' feature; why doesn't it have 'fix' too?
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="003306.html">[Gpsd-users] Autobaud - does it have to be that way?
+</A></li>
+	<LI>Next message: <A HREF="003307.html">[Gpsd-users] Autobaud - does it have to be that way?
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3309">[ date ]</a>
+              <a href="thread.html#3309">[ thread ]</a>
+              <a href="subject.html#3309">[ subject ]</a>
+              <a href="author.html#3309">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

@@ -1,0 +1,107 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] CentOS 5 NTPD - permissions on shared memory blocks
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2008-April/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20CentOS%205%20NTPD%20-%20permissions%20on%20shared%20memory%20blocks&In-Reply-To=%3Calpine.LNX.1.00.0804111249190.29041%40catbert.rellim.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="003189.html">
+   <LINK REL="Next"  HREF="003191.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] CentOS 5 NTPD - permissions on shared memory blocks</H1>
+    <B>Gary E. Miller</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20CentOS%205%20NTPD%20-%20permissions%20on%20shared%20memory%20blocks&In-Reply-To=%3Calpine.LNX.1.00.0804111249190.29041%40catbert.rellim.com%3E"
+       TITLE="[Gpsd-users] CentOS 5 NTPD - permissions on shared memory blocks">gem at rellim.com
+       </A><BR>
+    <I>Fri Apr 11 21:53:27 CEST 2008</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="003189.html">[Gpsd-users] CentOS 5 NTPD - permissions on shared memory blocks
+</A></li>
+        <LI>Next message: <A HREF="003191.html">[Gpsd-users] Real-time DGPS thru the Internet
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3190">[ date ]</a>
+              <a href="thread.html#3190">[ thread ]</a>
+              <a href="subject.html#3190">[ subject ]</a>
+              <a href="author.html#3190">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>-----BEGIN PGP SIGNED MESSAGE-----
+Hash: SHA1
+
+Yo Askar!
+
+On Fri, 11 Apr 2008, Askar Ibragimov wrote:
+
+Several problems here.
+
+&gt;<i> I just migrated from Fedora 7 to CentOS5.1. I use source-compiled gpsd 2.36
+</I>
+First, you should be using 2.37, not 2.36.
+
+&gt;<i> Apr 11 14:57:33 nm2 kernel: audit(1207925853.372:4): avc:  denied  {
+</I>&gt;<i> ipc_owner } for  pid=8163 comm=&quot;ntpd&quot; capability=15
+</I>&gt;<i> scontext=root:system_r:ntpd_t:s0 tcontext=root:system_r:ntpd_t:s0
+</I>&gt;<i> tclass=capability
+</I>
+Looks like you have some weird 'capabilties' failure.  Are you running
+a hardened kernel?  Not sure what to do with that.
+
+&gt;<i> Apr 11 14:57:33 nm2 ntpd[8163]: configuration of 127.127.28.0 failed
+</I>&gt;<i> Apr 11 14:57:33 nm2 ntpd[8163]: configure: keyword &quot;step&quot; unknown, line
+</I>&gt;<i> ignored
+</I>&gt;<i> Apr 11 14:57:33 nm2 ntpd[8163]: getaddrinfo: &quot;None&quot; invalid host address,
+</I>&gt;<i> ignored
+</I>
+This is saying you have an error in your ntp.conf file.  Can you show
+us what that looks like?  Are you sure you have the shm thing compiled
+into your ntp?
+
+RGDS
+GARY
+- ---------------------------------------------------------------------------
+Gary E. Miller Rellim 109 NW Wilmington Ave., Suite E, Bend, OR 97701
+	<A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">gem at rellim.com</A>  Tel:+1(541)382-8588
+
+
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v1.4.3 (GNU/Linux)
+
+iD8DBQFH/8G68KZibdeR3qURAiwRAKC039AD3LuDJSl2Xu9SOAAiuus0xQCgr4fO
+HPlroGMnHhb74uh2OfWznug=
+=9lPf
+-----END PGP SIGNATURE-----
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="003189.html">[Gpsd-users] CentOS 5 NTPD - permissions on shared memory blocks
+</A></li>
+	<LI>Next message: <A HREF="003191.html">[Gpsd-users] Real-time DGPS thru the Internet
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3190">[ date ]</a>
+              <a href="thread.html#3190">[ thread ]</a>
+              <a href="subject.html#3190">[ subject ]</a>
+              <a href="author.html#3190">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

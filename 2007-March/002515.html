@@ -1,0 +1,80 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] [Gpsd-dev] What does your application need from	the config variables?
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2007-March/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20%5BGpsd-dev%5D%20What%20does%20your%20application%20need%20from%0A%09the%20config%20variables%3F&In-Reply-To=%3C20070327000444.GA25177%40thyrsus.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="002519.html">
+   <LINK REL="Next"  HREF="002521.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] [Gpsd-dev] What does your application need from	the config variables?</H1>
+    <B>Eric S. Raymond</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20%5BGpsd-dev%5D%20What%20does%20your%20application%20need%20from%0A%09the%20config%20variables%3F&In-Reply-To=%3C20070327000444.GA25177%40thyrsus.com%3E"
+       TITLE="[Gpsd-users] [Gpsd-dev] What does your application need from	the config variables?">esr at thyrsus.com
+       </A><BR>
+    <I>Tue Mar 27 02:04:44 CEST 2007</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="002519.html">[Gpsd-users] Semantics of libgps
+</A></li>
+        <LI>Next message: <A HREF="002521.html">[Gpsd-users] Setting the listener address,	and future design direction
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2515">[ date ]</a>
+              <a href="thread.html#2515">[ thread ]</a>
+              <a href="subject.html#2515">[ subject ]</a>
+              <a href="author.html#2515">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Iain * &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">iaingnome at gmail.com</A>&gt;:
+&gt;<i> &gt;My plan is to make gpsd.h into a generated file that includes definitions
+</I>&gt;<i> &gt;for a subset of the config switches.  To accomplish this, I need to know
+</I>&gt;<i> &gt;which config switches applications actually need.
+</I>&gt;<i> 
+</I>&gt;<i> I believe this is the offending missing define.
+</I>&gt;<i> #ifndef S_SPLINT_S
+</I>&gt;<i> /*
+</I>&gt;<i> * A nominally 30-bit word (24 bits of data, 6 bits of parity)
+</I>&gt;<i> * used both in the GPS downlink protocol described in IS-GPS-200
+</I>&gt;<i> * and in the format for DGPS corrections used in RTCM-104.
+</I>&gt;<i> */
+</I>&gt;<i> typedef /*@unsignedintegraltype@*/ uint32_t isgps30bits_t;
+</I>&gt;<i> #endif /* S_SPLINT_S */
+</I>
+That definition will be included by defauult, because it's wrapped 
+in an #ifndef.  How does this cause problems for you?
+-- 
+		&lt;a href=&quot;<A HREF="http://www.catb.org/~esr/">http://www.catb.org/~esr/</A>&quot;&gt;Eric S. Raymond&lt;/a&gt;
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="002519.html">[Gpsd-users] Semantics of libgps
+</A></li>
+	<LI>Next message: <A HREF="002521.html">[Gpsd-users] Setting the listener address,	and future design direction
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2515">[ date ]</a>
+              <a href="thread.html#2515">[ thread ]</a>
+              <a href="subject.html#2515">[ subject ]</a>
+              <a href="author.html#2515">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

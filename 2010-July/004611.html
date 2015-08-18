@@ -1,0 +1,306 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] Problems accessing gpsd data via client lib
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2010-July/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Problems%20accessing%20gpsd%20data%20via%20client%20lib&In-Reply-To=%3C1280339617.3253.15.camel%40kestrel%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="004610.html">
+   <LINK REL="Next"  HREF="004614.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] Problems accessing gpsd data via client lib</H1>
+    <B>Tom Smith</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Problems%20accessing%20gpsd%20data%20via%20client%20lib&In-Reply-To=%3C1280339617.3253.15.camel%40kestrel%3E"
+       TITLE="[Gpsd-users] Problems accessing gpsd data via client lib">smitty at smittypaddler.com
+       </A><BR>
+    <I>Wed Jul 28 19:53:37 CEST 2010</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="004610.html">[Gpsd-users] Problems accessing gpsd data via client lib
+</A></li>
+        <LI>Next message: <A HREF="004614.html">[Gpsd-users] Problems accessing gpsd data via client lib
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#4611">[ date ]</a>
+              <a href="thread.html#4611">[ thread ]</a>
+              <a href="subject.html#4611">[ subject ]</a>
+              <a href="author.html#4611">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>On Wed 28 Jul Satz Klauer wrote:
+
+&gt;<i> I'm using gpsd on Fedora, therefore I'm still working on version 1.38
+</I>&gt;<i> and the old style programming interface.
+</I>
+I'm using Fedora 13, and had no problem installing gpsd.  The things I
+did for Fedora 6, 9, and 13, and Ubuntu 10.04 are here:
+
+<A HREF="http://smittypaddler.com/chartview/tutorial/installgpsd.htm">http://smittypaddler.com/chartview/tutorial/installgpsd.htm</A>
+
+I'm running gpsd 2.39 currently on Fedora 13, so I must use the new
+interface.  It's annoying that the new interface seems to've lost some
+functionality that requires me to do more to simply get lat/lon, when
+all I used to have to do was send a &quot;p&quot; query and wait for a reply, but
+you might as well bite the bullet and go to the new API, as the old one
+goes away (if it hasn't already):
+
+#!/usr/bin/perl -w
+#--------------------------------------------------------------------------
+# Description: Prints on STDOUT positions in latitude and longitude as
+# reported by gpsd in raw nmea mode.  The script is much more elaborate
+# than it needs to be; I wrote it as a test vehicle when I was trying to
+# get gpsd to give me the position in chartview, e.g. -
+#       query:       &quot;p\n&quot;
+#       reply:       &quot;GPSD,P=36.000000 123.000000\r\n&quot;
+# and it stopped doing so when I upgraded to Fedora Core 12. Subroutine
+# gpsChild is run as a forked process, sending back position information
+# via STDOUT, which is seen by the parent on handle CHILD.  gpsChild
+# establishes the connection with gpsd, asks for the raw nmea data
+stream,
+# which is reads continuously, sending the most recent position back
+# to the parent only when the parent requests it by signalling SIGUSR1.
+I
+# know this seems overkill, and $socket-&gt;autoflush(1) should make the
+# connection to gpsd unbuffered, but during testing I discovered I could
+# get position information from gpsd for several minutes after I'd
+killed
+# the gpsd daemon, or unplugged the gps antenna; someone, somewhere, is
+# still doing buffering.
+#
+# Perhaps this script will help someone who's having trouble getting a
+FIX,
+# whatever that is.  When I upgraded to Fedora Core 12, I ran xgps for
+24
+# hours and it couldn't get a &quot;FIX&quot; even though it showed at least six
+# satellites in the green, which I presume means there's a solid signal.
+# I had another machine still running Fedora Core 9 sitting right next
+to
+# the one on FC12, and I could unplug the usb/gsp antenna from the fc12
+# machine, plug it into the fc9 machine, and gpsd would show a fix. The
+# fc9 system had gpsd-2.37-2.fc9.i386, and the fc12 had
+gpsd-2.39-5.fc12.i686,
+# so I tried downgrading the fc12 system to gpsd-2.27; same result.
+#
+# For awhile, at home in Wisconsin, I got it to work by adding a bunch
+of
+# blanks to the print &quot;p          \n&quot; statement I used to ask gpsd for a
+# position, but as soon as I got on my boat in Florida and tried, it
+failed.
+# It took me several weeks to work up this technique, which
+# is working consistently, and I've used it to navigate.
+#--------------------------------------------------------------------------
+# Changelog:
+# 20100317 Smitty created.
+#--------------------------------------------------------------------------
+use strict 'vars';
+use NAV;
+use Config;
+
+my (
+        $Crlf, $GpsPos, $GpsSocket, $GpsPid, $GpsSigUsr1, $GpsSigUsr2,
+
+);
+
+$Crlf=&quot;\r\n&quot;; # Gps data is terminated with this.
+$GpsPid=undef;
+$GpsPos=undef;
+$GpsSigUsr1=0;
+$GpsSigUsr2=1; # Default is to connect to gpsd.
+
+$SIG{CHLD}='IGNORE'; # Prevent child becoming a zombie if parent dies.
+if($GpsPid=open(CHILD,&quot;-|&quot;)) {
+        CHILD-&gt;autoflush(1); # Make it unbuffered.
+        sleep 1; # Without this, the child never gets called.
+        &amp;gpsParent();
+
+        # Note that in chartview there's some interaction with the
+        # terminal and recognition that the program should end. Here
+        # the kill below never gets done.  I left it in to illustrate
+        # what must be done in a full-blown application.
+        kill HUP =&gt; $GpsPid; # Terminate gpsChild.
+        wait;
+
+} else {
+        die &quot;cannot fork: $!&quot; unless(defined($GpsPid));
+        # Child process.
+        &amp;gpsChild();
+        exit;
+}
+
+sub gpsParent {
+#---------------------------------------------------------------------
+# Parent process.
+#---------------------------------------------------------------------
+        my(
+                $line, $pos, $str,
+
+        );
+
+        for(;;) {
+                kill USR1 =&gt; $GpsPid; # Tell child I want a line.
+                if(defined($line = &lt;CHILD&gt;)) {
+                        chomp($line);
+                        $pos=$line ? &amp;parsePosition($line) : 'undef';
+                } else {
+                        $pos=undef;
+                }
+                $str=$pos ? &amp;positionFormat($pos,1,1) : 'undef';
+                warn &quot;$str\n&quot;;
+        }
+} # end gpsParent
+
+sub gpsChild {
+#-------------------------------------------------------------------
+# This is a forked process that handles all communication with
+# gpsd, It responds to two signals:
+#
+# SIGUSR1: Parent is asking for the most recent position reported
+#       by gpsd.  The child writes the formatted position on piped
+#       STDOUT, which is connected to handle CHILD in the parent.
+# SIGUSR2: Parent is asking the child to disable communications
+#       with gpsd.  The child closes the socket, and checks back
+#       every 5 minutes to see if communication is to be enabled again.
+#
+# When communication to gpsd is enabled, the child puts the connection
+# into raw nmea mode, then loops, looking for $GPRMC records, which
+# are parsed as the most recent position to report.  If gpsd doesn't
+# respond to the read, the socket is closed, and the loop sleeps
+# $retryintvl seconds before attempting to make a new connection to
+# gpsd. In the meantime it will report the null string if the parent
+# asks by signalling SIGUSR1.
+#-------------------------------------------------------------------
+        my(
+                $crlf, @data, $ew, $i, $jonsw, $lat, $lon, $line,
+                $ns, $pos, $retryintvl, $save, $socket, $start, $str,
+                $t,
+
+        );
+        use IO::Socket::INET;
+
+        $crlf=&quot;\r\n&quot;; # Gps data is terminated with this.
+        $retryintvl=300; # Retry connecting to gpsd every 5 minutes.
+        $jonsw=0; # On if Javascript Object Notation detected.
+        local $SIG{USR1} = sub { $GpsSigUsr1=1 };
+        local $SIG{USR2} = sub { $GpsSigUsr2=!$GpsSigUsr2 };
+        for(;;) {
+                for(;;) {
+                        last if($GpsSigUsr2); # Out if connection
+wanted.
+                        if(defined($socket)) {
+                                close($socket);
+                                $socket=undef;
+                                $jonsw=0;
+                        }
+                        sleep $retryintvl;
+                }
+                # We get here only if $GpsSigUsr2==1.
+                if(!defined($socket)) {
+                        if($start) {
+                                if($GpsSigUsr1) { # Is parent asking?
+                                        $GpsSigUsr1=0;
+                                        print &quot;\n&quot;; # Tell the parent
+                                }
+                                sleep 1; # sleep a second.
+                                next if((time-$start) &lt; $retryintvl);
+                        }
+                        $socket =
+IO::Socket::INET-&gt;new('localhost:2947');
+                        if(!defined($socket)) {
+                                $start=time;
+                                next; # Try again.
+                        }
+                        $socket-&gt;autoflush(1); # Make it unbuffered.
+                        select($socket);
+                        print &quot;r+\n&quot;; # Tell gpsd I want raw nmea data.
+                        select STDOUT;
+                        $str=undef;
+                }
+                $save=$/; $/=$crlf;
+                eval {
+                        local $SIG{ALRM} = sub { die &quot;alarm\n&quot; };
+                        alarm 1;
+                        $line=&lt;$socket&gt;;
+                        alarm 0;
+                        chomp($line) if(defined($line));
+                };
+                $/=$save;
+                if ($@) {
+                        die unless $@ eq &quot;alarm\n&quot;; # propagate
+unexpected err
+                        close($socket);
+                        $socket=undef;
+                        $jonsw=0;
+                        next;
+                }
+                for(;;) {
+                        last unless(defined($line));
+                        if(length($line) &amp;&amp; substr($line,0,1) eq '{') {
+                                if(!$jonsw) {
+                                        $jonsw=1;
+                                        select($socket);
+                                        print
+'?WATCH={&quot;class&quot;:&quot;WATCH&quot;,&quot;raw&quot;:1,&quot;nmea&quot;:true}',&quot;\n&quot;;
+                                        select STDOUT;
+                                }
+                                last;
+                        }
+                        @data=split(',',$line);
+                        $t=$data[0];
+                        if($t eq '$GPRMC') {
+                                $i=3;
+                        } elsif($t eq '$GPGGA') {
+                                $i=2;
+                        } else {
+                                last;
+                        }
+                        $lat=$data[$i]; # ddmm.mmmm
+                        $ns=$data[$i+1]; # N or S
+                        $lat=substr($lat,0,2).' '.substr($lat,2).'
+'.$ns;
+                        $lon=$data[$i+2]; # dddmm.mmmm
+                        $ew=$data[$i+3];
+                        $lon=substr($lon,0,3).' '.substr($lon,3).'
+'.$ew;
+                        last unless($pos=&amp;parsePosition(&quot;$lat $lon&quot;));
+                        $str=&amp;positionFormat($pos,1,1); # New position.
+                        last;
+                }
+                next unless($GpsSigUsr1 &amp;&amp; defined($str));
+                $GpsSigUsr1=0;
+                print &quot;$str\n&quot;; # Give the parent most recent position.
+        }
+} # End gpsChild
+
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="004610.html">[Gpsd-users] Problems accessing gpsd data via client lib
+</A></li>
+	<LI>Next message: <A HREF="004614.html">[Gpsd-users] Problems accessing gpsd data via client lib
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#4611">[ date ]</a>
+              <a href="thread.html#4611">[ thread ]</a>
+              <a href="subject.html#4611">[ subject ]</a>
+              <a href="author.html#4611">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

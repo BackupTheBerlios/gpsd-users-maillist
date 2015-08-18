@@ -1,0 +1,88 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] gpsd hotplug - serial usb adaptor thinks its a mouse
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2006-February/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20gpsd%20hotplug%20-%20serial%20usb%20adaptor%20thinks%20its%20a%20mouse&In-Reply-To=%3C200602031530.42363.marr%40flex.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="001264.html">
+   <LINK REL="Next"  HREF="001266.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] gpsd hotplug - serial usb adaptor thinks its a mouse</H1>
+    <B>Marr</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20gpsd%20hotplug%20-%20serial%20usb%20adaptor%20thinks%20its%20a%20mouse&In-Reply-To=%3C200602031530.42363.marr%40flex.com%3E"
+       TITLE="[Gpsd-users] gpsd hotplug - serial usb adaptor thinks its a mouse">marr at flex.com
+       </A><BR>
+    <I>Fri Feb  3 21:30:42 CET 2006</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="001264.html">[Gpsd-users] gpsd hotplug - serial usb adaptor thinks its a mouse
+</A></li>
+        <LI>Next message: <A HREF="001266.html">[Gpsd-users] gpsd hotplug - serial usb adaptor thinks its a	mouse
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1265">[ date ]</a>
+              <a href="thread.html#1265">[ thread ]</a>
+              <a href="subject.html#1265">[ subject ]</a>
+              <a href="author.html#1265">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>On Friday 03 February 2006 06:33am, Les Smithson wrote:
+&gt;<i> I have a Garmin etrex connected to FC4 on a laptop using a Serial-USB
+</I>&gt;<i> Adaptor (Targus PA088). This setup used to work OK with older versions
+</I>&gt;<i> of gpsd. Now I've installed gpsd 2.30, the adaptor thinks its a mouse.
+</I>&gt;<i> In syslog,  get the error messages:
+</I>&gt;<i>
+</I>&gt;<i> Feb  3 11:08:08 hare kernel: input: USB HID v1.10 Mouse [MCT Corp.
+</I>&gt;<i> Serial Mouse Adaptor] on usb-0000:00:1d.3-2
+</I>
+On Friday 03 February 2006 01:00pm, Gary E. Miller wrote:
+&gt;<i> If you can find out what rs-232&lt;-&gt;usb chip is in the etrex you could then
+</I>&gt;<i> talk to that driver group about grabbing that device in their driver.
+</I>
+Gary, I think you're talking about the chip in the Targus PA088 adapter, no?
+
+Anyway, I could be wrong, but there's a good chance that it's Magic Control 
+Technology (based on the 'MCT' reference). They provide chipsets for 
+USB/RS-232 converters like the Belkin F5U109/F5U409 (and others). The Linux 
+kernel driver that supports these adapters is 'mct_u232'.
+
+Les, can you post the contents of 'cat /proc/bus/usb/devices', please? I'd 
+like to see what that Targus adapter looks like to the USB subsystem 
+(especially the PID/VID [Product/Vendor IDs]).
+
+HTH....
+
+Bill Marr
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="001264.html">[Gpsd-users] gpsd hotplug - serial usb adaptor thinks its a mouse
+</A></li>
+	<LI>Next message: <A HREF="001266.html">[Gpsd-users] gpsd hotplug - serial usb adaptor thinks its a	mouse
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1265">[ date ]</a>
+              <a href="thread.html#1265">[ thread ]</a>
+              <a href="subject.html#1265">[ subject ]</a>
+              <a href="author.html#1265">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

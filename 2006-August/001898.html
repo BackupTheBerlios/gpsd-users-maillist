@@ -1,0 +1,143 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] Fwd: NTP Problems
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2006-August/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Fwd%3A%20NTP%20Problems&In-Reply-To=%3CPine.LNX.4.64.0608291512530.6696%40catbert.rellim.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="001897.html">
+   <LINK REL="Next"  HREF="001902.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] Fwd: NTP Problems</H1>
+    <B>Gary E. Miller</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Fwd%3A%20NTP%20Problems&In-Reply-To=%3CPine.LNX.4.64.0608291512530.6696%40catbert.rellim.com%3E"
+       TITLE="[Gpsd-users] Fwd: NTP Problems">gem at rellim.com
+       </A><BR>
+    <I>Wed Aug 30 00:18:41 CEST 2006</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="001897.html">[Gpsd-users] Fwd: NTP Problems
+</A></li>
+        <LI>Next message: <A HREF="001902.html">[Gpsd-users] Fwd: NTP Problems
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1898">[ date ]</a>
+              <a href="thread.html#1898">[ thread ]</a>
+              <a href="subject.html#1898">[ subject ]</a>
+              <a href="author.html#1898">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>-----BEGIN PGP SIGNED MESSAGE-----
+Hash: SHA1
+
+Yo Karl!
+
+On Wed, 30 Aug 2006, Karl von Muller wrote:
+
+&gt;<i> seems weird to me. I'm thinking its possible that for some reason the struct
+</I>&gt;<i> isn't being intialised?
+</I>
+Are you sure you have ntp compiled in?  Can you send us your configure
+options and the configure status report you get?
+
+To be sure ntpshm_init is getting called you might want to add a
+gpsd_report() at the start of the function.
+
+&gt;<i> I couldn't see it being called in a strace I ran either. Geoffrey, could you
+</I>&gt;<i> post a little more from either side of your strace please?
+</I>
+This should help you find it.  My gps is on /dev/ttyS1 and the shm is
+set up just before the gps device is opened..
+
+# strace gpsd -Nn /dev/ttyS1
+
+[...]
+
+open(&quot;/etc/protocols&quot;, O_RDONLY)        = 3
+fcntl64(3, F_GETFD)                     = 0
+fcntl64(3, F_SETFD, FD_CLOEXEC)         = 0
+fstat64(3, {st_mode=S_IFREG|0644, st_size=5748, ...}) = 0
+old_mmap(NULL, 4096, PROT_READ|PROT_WRITE, MAP_PRIVATE|MAP_ANONYMOUS, -1, 0) = 0
+xb7f93000
+read(3, &quot;#\n# Internet protocols\n#\n# $Free&quot;..., 4096) = 4096
+close(3)                                = 0
+munmap(0xb7f93000, 4096)                = 0
+socket(PF_INET, SOCK_STREAM, IPPROTO_TCP) = 3
+setsockopt(3, SOL_SOCKET, SO_REUSEADDR, [1], 4) = 0
+bind(3, {sin_family=AF_INET, sin_port=htons(2947), sin_addr=inet_addr(&quot;0.0.0.0&quot;)
+}}, 16) = 0
+listen(3, 5)                            = 0
+getuid32()                              = 0
+getpriority(PRIO_PROCESS, 0)            = 20
+setpriority(PRIO_PROCESS, 0, -10)       = 0
+getpriority(PRIO_PROCESS, 0)            = 30
+shmget(1314148400, 80, IPC_CREAT|0x1a4|0644) = 0
+shmat(0, 0, 0)                          = 0xb7f93000
+shmget(1314148401, 80, IPC_CREAT|0x1a4|0644) = 32769
+shmat(32769, 0, 0)                      = 0xb7f92000
+shmget(1314148402, 80, IPC_CREAT|0x1a4|0644) = 65538
+shmat(65538, 0, 0)                      = 0xb7f91000
+shmget(1314148403, 80, IPC_CREAT|0x1a4|0644) = 98307
+shmat(98307, 0, 0)                      = 0xb7f90000
+getuid32()                              = 0
+getegid32()                             = 0
+geteuid32()                             = 0
+rt_sigaction(SIGHUP, {0x8049660, [HUP], SA_RESTART|0x4000000}, {SIG_DFL}, 8) = 0
+rt_sigaction(SIGINT, {0x8049660, [INT], SA_RESTART|0x4000000}, {SIG_DFL}, 8) = 0
+rt_sigaction(SIGTERM, {0x8049660, [TERM], SA_RESTART|0x4000000}, {SIG_DFL}, 8) =
+ 0
+rt_sigaction(SIGQUIT, {0x8049660, [QUIT], SA_RESTART|0x4000000}, {SIG_DFL}, 8) =
+ 0
+rt_sigaction(SIGPIPE, {SIG_IGN}, {SIG_DFL}, 8) = 0
+time(NULL)                              = 1156889543
+open(&quot;/dev/ttyS1&quot;, O_RDWR|O_NONBLOCK|O_NOCTTY) = 4
+ioctl(4, SNDCTL_TMR_TIMEBASE, {B19200 opost isig icanon echo ...}) = 0
+ioctl(4, 0x540b, 0x2)                   = 0
+
+
+RGDS
+GARY
+- ---------------------------------------------------------------------------
+Gary E. Miller Rellim 20340 Empire Blvd, Suite E-3, Bend, OR 97701
+	<A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">gem at rellim.com</A>  Tel:+1(541)382-8588
+
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v1.4.3 (GNU/Linux)
+
+iD8DBQFE9L1E8KZibdeR3qURAmlpAKCziotvItMokcdhpiUNPqxRtu0nTwCg6oGh
+XZ5VUn0o4S8ByodppyZh9Ik=
+=zK/G
+-----END PGP SIGNATURE-----
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="001897.html">[Gpsd-users] Fwd: NTP Problems
+</A></li>
+	<LI>Next message: <A HREF="001902.html">[Gpsd-users] Fwd: NTP Problems
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1898">[ date ]</a>
+              <a href="thread.html#1898">[ thread ]</a>
+              <a href="subject.html#1898">[ subject ]</a>
+              <a href="author.html#1898">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

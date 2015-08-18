@@ -1,0 +1,150 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] RoyalTek RCD-1100, how to make it working
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2009-April/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20RoyalTek%20RCD-1100%2C%20how%20to%20make%20it%20working&In-Reply-To=%3C787611.48320.qm%40web53004.mail.re2.yahoo.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="003715.html">
+   <LINK REL="Next"  HREF="003721.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] RoyalTek RCD-1100, how to make it working</H1>
+    <B>Nibbly</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20RoyalTek%20RCD-1100%2C%20how%20to%20make%20it%20working&In-Reply-To=%3C787611.48320.qm%40web53004.mail.re2.yahoo.com%3E"
+       TITLE="[Gpsd-users] RoyalTek RCD-1100, how to make it working">nibblyn at yahoo.com
+       </A><BR>
+    <I>Tue Apr 21 01:01:52 CEST 2009</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="003715.html">[Gpsd-users] RoyalTek RCD-1100, how to make it working
+</A></li>
+        <LI>Next message: <A HREF="003721.html">[Gpsd-users] RoyalTek RCD-1100, how to make it working
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3718">[ date ]</a>
+              <a href="thread.html#3718">[ thread ]</a>
+              <a href="subject.html#3718">[ subject ]</a>
+              <a href="author.html#3718">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>
+Thanks Matt for your quick answer! Don't know if I will be able to make this stuff working but it is always good to feel such a good spirit.
+
+It is a shame that Royaltek does not explain clearly if the device outputs gps data also through USB. I bought the device hoping that this model will be in any case easy enough to use. In fact I'm only interested in a gps receiver and not in such camera functionality. Ubuntu bluetooth wizard was unable to connect to the device by itself, so I did:
+
+* Added following lines to (as root): /etc/bluetooth/rfcomm.conf
+rfcomm4 {
+        bind yes;
+        device 00:0A:3A:2C:5C:CD;
+        channel 1;
+        comment &quot;Serial Port&quot;;	#could be anything, I suppose
+        }
+
+* sudo hcitool scan:
+
+Scanning ...
+
+	00:0A:3A:2C:5C:CD	BlueGPS 2C5CCD
+
+
+* sdptool records 00:0A:3A:2C:5C:CD
+
+Service Name: Dev B
+
+Service RecHandle: 0x10000
+
+Service Class ID List:
+
+  &quot;Serial Port&quot; (0x1101)
+
+Protocol Descriptor List:
+
+  &quot;L2CAP&quot; (0x0100)
+
+  &quot;RFCOMM&quot; (0x0003)
+
+    Channel: 1
+
+Language Base Attr List:
+
+  code_ISO639: 0x656e
+
+  encoding:    0x6a
+
+  base_offset: 0x100
+
+
+
+* sudo rfcomm connect 4
+
+Can't create RFCOMM TTY: Address already in use
+
+* sudo rfcomm release 4
+
+* sudo rfcomm connect 4
+
+Connected /dev/rfcomm4 to 00:0A:3A:2C:5C:CD on channel 1	#yep, going on
+
+Press CTRL-C for hangup
+
+
+* sudo gpsd -b -n -N -D2 /dev/rfcomm4
+
+gpsd: launching (Version 2.37)
+
+gpsd: listening on port gpsd
+
+gpsd: successfully connected to the DBUS system bus
+
+gpsd: running with effective group ID 0
+
+gpsd: running with effective user ID 0
+
+gpsd: opening read-only GPS data source at '/dev/rfcomm4'	#read-only??
+
+gpsd: speed 9600, 8N1						#device spec claim 57600 instead
+
+gpsd: garmin_gps not active.					#garmin??
+
+gpsd: gpsd_activate(1): opened GPS (5)
+
+gpsd: client 127.0.0.1 (0) connect on fd 6			#xgps client
+
+
+The device is catching a gps signal. Xgps seems to detect a gps device connected but reports nothing. Gpsdrive do not report a gps device present. I tried running gpsd without additional parameters but made no difference.
+Afaik, I'm not even sure that the device synced. Please, if someone has any idea what to try next (and how) that will be very appreciated.
+
+
+      
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="003715.html">[Gpsd-users] RoyalTek RCD-1100, how to make it working
+</A></li>
+	<LI>Next message: <A HREF="003721.html">[Gpsd-users] RoyalTek RCD-1100, how to make it working
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3718">[ date ]</a>
+              <a href="thread.html#3718">[ thread ]</a>
+              <a href="subject.html#3718">[ subject ]</a>
+              <a href="author.html#3718">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

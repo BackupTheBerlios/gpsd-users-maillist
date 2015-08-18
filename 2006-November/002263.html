@@ -1,0 +1,181 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] gpsd not working with Garmin GPS Map 60CSX
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2006-November/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20gpsd%20not%20working%20with%20Garmin%20GPS%20Map%2060CSX&In-Reply-To=%3C1164394915.4380.8.camel%40haktar%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="002262.html">
+   <LINK REL="Next"  HREF="002264.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] gpsd not working with Garmin GPS Map 60CSX</H1>
+    <B>Daniel</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20gpsd%20not%20working%20with%20Garmin%20GPS%20Map%2060CSX&In-Reply-To=%3C1164394915.4380.8.camel%40haktar%3E"
+       TITLE="[Gpsd-users] gpsd not working with Garmin GPS Map 60CSX">garkein at mailueberfall.de
+       </A><BR>
+    <I>Fri Nov 24 20:01:55 CET 2006</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="002262.html">[Gpsd-users] gpsd not working with Garmin GPS Map 60CSX
+</A></li>
+        <LI>Next message: <A HREF="002264.html">[Gpsd-users] gpsd not working with Garmin GPS Map 60CSX
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2263">[ date ]</a>
+              <a href="thread.html#2263">[ thread ]</a>
+              <a href="subject.html#2263">[ subject ]</a>
+              <a href="author.html#2263">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Am Freitag, den 24.11.2006, 04:28 -0500 schrieb Eric S. Raymond:
+&gt;<i>  
+</I>&gt;<i> &gt; Yesterday I updated my svn working copy, rebuilt, and huh? now gpsd
+</I>&gt;<i> &gt; doesn't even recognize my Garmin anymore.
+</I>&gt;<i> 
+</I>&gt;<i> What do you meant by &quot;doesn't recognize?&quot;
+</I>
+I mean this:
+(device connected as /dev/ttyUSB0)
+
+# ./gpsd -N -D 6 /dev/ttyUSB0
+gpsd: launching (Version 2.34)
+gpsd: listening on port gpsd
+gpsd: shmat(0,0,0) succeeded
+gpsd: shmat(0,0,0) succeeded
+gpsd: shmat(0,0,0) succeeded
+gpsd: shmat(0,0,0) succeeded
+gpsd: running with effective group ID 0
+gpsd: running with effective user ID 0
+gpsd: opening GPS data source at '/dev/ttyUSB0'
+gpsd: speed 9600, 8N1
+gpsd: flagging descriptor 4 in open_device
+[following triggered by gpsctl]
+gpsd: client connect on 5
+gpsd: checking client(0)
+gpsd: &lt;= client(0): K
+gpsd: =&gt; client(0): GPSD,K=1 /dev/ttyUSB0
+gpsd: checking client(0)
+gpsd: &lt;= client(0): OFIB
+gpsd: client(0): assigning channel...
+gpsd: User requires 2, channel type is -1
+gpsd: client(0): channel 4 already active.
+gpsd: GPS is confused about whether it has a fix (status=0, mode=0).
+gpsd: client(0): channel 4 already active.
+gpsd: client(0): channel 4 already active.
+gpsd: =&gt; client(0): GPSD,O=?,F=/dev/ttyUSB0,I=?,B=9600 8 N 1
+gpsd: checking client(0)
+gpsd: detaching 0 in detach_client
+
+while issuing:
+# ./gpsctl
+gpsctl: /dev/ttyUSB0 identified as (null) at 9600
+
+
+compared to version 2.33:
+# gpsd -N -D 6 /dev/ttyUSB0
+gpsd: launching (Version 2.33)
+gpsd: listening on port gpsd
+gpsd: successfully connected to the DBUS system bus
+gpsd: running with effective group ID 0
+gpsd: running with effective user ID 0
+gpsd: opening GPS data source at '/dev/ttyUSB0'
+gpsd: Set garmin_gps driver mode = 0
+gpsd: SendPacket(), writing 16 bytes
+gpsd: PrintPacket()
+gpsd: Private, Set Mode: 0
+gpsd: SendPacket(), wrote 16 bytes
+gpsd: Get garmin_gps driver version
+gpsd: SendPacket(), writing 12 bytes
+gpsd: PrintPacket()
+gpsd: Private, ID: Info Req
+gpsd: SendPacket(), wrote 12 bytes
+gpsd: GetPacket()
+gpsd: got 24 bytes
+gpsd: GotPacket() sz=24
+gpsd: PrintPacket()
+gpsd: Private, ID: Info Resp
+gpsd: Garmin USB Driver found, Version 0.23, Mode: 0, GPS Serial# xxxx
+gpsd: Send Garmin Start Session
+gpsd: SendPacket(), writing 12 bytes
+gpsd: PrintPacket()
+gpsd: Transport, Start Session req
+gpsd: SendPacket(), wrote 12 bytes
+gpsd: GetPacket()
+gpsd: got 16 bytes
+gpsd: GotPacket() sz=16
+gpsd: Got packet waiting for START_SESSION
+gpsd: PrintPacket()
+gpsd: Transport, Start Session resp, unit: 0xc51c5fdf
+gpsd: Get Garmin Product Data
+gpsd: SendPacket(), writing 12 bytes
+gpsd: PrintPacket()
+gpsd: Appl, Product Data req
+gpsd: SendPacket(), wrote 12 bytes
+gpsd: GetPacket()
+gpsd: got 64 bytes
+gpsd: got 64 bytes
+gpsd: got 64 bytes
+gpsd: got 64 bytes
+gpsd: GetPacket() packet too long!
+gpsd: GotPacket() sz=0
+gpsd: PrintPacket()
+gpsd: Transport, Packet: Type 0 0 0, ID: 2, Sz: 0
+gpsd: GetPacket()
+gpsd: got 64 bytes
+gpsd: got 63 bytes
+gpsd: GotPacket() sz=127
+gpsd: PrintPacket()
+gpsd: bogus packet, size too large=-901513015
+gpsd: garmin_probe() timeout, PRODUCT_DATA
+gpsd: no probe matched...
+gpsd: speed 9600, 8N1
+gpsd: gpsd_activate: opened GPS (5)
+gpsd: flagging descriptor 5 in open_device
+
+
+&gt;<i> 
+</I>&gt;<i> &gt; Is there any way in which I could help improve Garmin (USB) support?
+</I>&gt;<i> 
+</I>&gt;<i> Sure, if you have C coding skills.  Dive right in and work on the problem.
+</I>&gt;<i> Alternatively, buy a duplicate of your modem for one of the senior 
+</I>&gt;<i> developers other than the absent Gary, so we can test.
+</I>
+Hmm. As for the second my budget is too tight, I only could offer my
+coding skills. I don't know if I can dig into it fast enough to
+understand how things are working until Gary might have fixed it anyway,
+but let's see - if it annoys me long enough, I'll dig into it. ;)
+
+Daniel
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="002262.html">[Gpsd-users] gpsd not working with Garmin GPS Map 60CSX
+</A></li>
+	<LI>Next message: <A HREF="002264.html">[Gpsd-users] gpsd not working with Garmin GPS Map 60CSX
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2263">[ date ]</a>
+              <a href="thread.html#2263">[ thread ]</a>
+              <a href="subject.html#2263">[ subject ]</a>
+              <a href="author.html#2263">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

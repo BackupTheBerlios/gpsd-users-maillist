@@ -1,0 +1,184 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] Bidirectional 'raw' communication using libgpsd
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2010-December/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Bidirectional%20%27raw%27%20communication%20using%20libgpsd&In-Reply-To=%3C20101205105212.10b1b07b%40dragon%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="004790.html">
+   <LINK REL="Next"  HREF="004791.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] Bidirectional 'raw' communication using libgpsd</H1>
+    <B>Charles Curley</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Bidirectional%20%27raw%27%20communication%20using%20libgpsd&In-Reply-To=%3C20101205105212.10b1b07b%40dragon%3E"
+       TITLE="[Gpsd-users] Bidirectional 'raw' communication using libgpsd">charlescurley at charlescurley.com
+       </A><BR>
+    <I>Sun Dec  5 18:52:12 CET 2010</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="004790.html">[Gpsd-users] Bidirectional 'raw' communication using libgpsd
+</A></li>
+        <LI>Next message: <A HREF="004791.html">[Gpsd-users] gpsd tangogps over internet
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#4786">[ date ]</a>
+              <a href="thread.html#4786">[ thread ]</a>
+              <a href="subject.html#4786">[ subject ]</a>
+              <a href="author.html#4786">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>On Sun, 5 Dec 2010 17:45:33 +0100
+Mario De Weerd &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">m.deweerd at ieee.org</A>&gt; wrote:
+
+&gt;<i> Hi Eric
+</I>&gt;<i> 
+</I>&gt;<i> Thanks for the reply.
+</I>&gt;<i> 
+</I>&gt;<i> The virtual device came from this observation in the libgpsd source:
+</I>&gt;<i> 
+</I>&gt;<i>     /* uh, oh, magic file names!, this is not how RFC2783 was
+</I>&gt;<i> designed */ /* need to look in /sys/devices/virtual/pps/pps?/path
+</I>&gt;<i>      * (/sys/class/pps/pps?/path is just a link to that)
+</I>&gt;<i>      * to find the /dev/pps? that matches our serial port.
+</I>&gt;<i>      * this code fails
+</I>&gt;<i> 
+</I>&gt;<i> 
+</I>&gt;<i> But on a closer look that seems to be unrelated to the serial
+</I>&gt;<i> communication itself.
+</I>&gt;<i> 
+</I>&gt;<i> Modifying BT747 doesn't resemble hacking - it just needs anohter
+</I>&gt;<i> class to interface with GPSD to open, read and write on the serial
+</I>&gt;<i> link.
+</I>
+Methinks ESR mean &quot;hack&quot; as a compliment.
+<A HREF="http://www.catb.org/~esr/faqs/hacker-howto.html">http://www.catb.org/~esr/faqs/hacker-howto.html</A>
+
+To be clear, BT747 should go through libgps, not direct to gpsd itself.
+Then you leave all the intricacies of the vendor's mangling of NMEA,
+etc. to gpsd, and the BT747 code is a lot cleaner.
+
+A Java wrapper around libgps shouldn't be too hard to do. I would
+suggest a set of factory classes to produce beans with the various
+types of data libgps produces, per the &quot;set&quot; bit mask in struct
+gps_data_t (gps.h), or maybe just the interesting ones. Do that up
+right, and any gpsd client written in Java could use it.
+
+
+&gt;<i> 
+</I>&gt;<i> As security is a concern, gpsd could be listening on the localhost
+</I>&gt;<i> only and allow more specific transactions there rather than oblige
+</I>&gt;<i> the use of the library.  Or as an intermediate step propose a tool
+</I>&gt;<i> similar to 'gpsdcat' that would plug in to libgpsd and open up a port
+</I>&gt;<i> on the localhost (with some password protection) allowing the
+</I>&gt;<i> bidirectional serial communication through some 'simple' protocol.
+</I>&gt;<i> That way third party tools could use the lower layer without linking
+</I>&gt;<i> gpsd.  (the external tool could just fire up something like
+</I>&gt;<i> 'gpsdlowlevelport').
+</I>
+Again, link to libgps, not to gpsd.
+
+On a quick check of the gpsd hardware compatibility list
+(<A HREF="http://gpsd.berlios.de/hardware.html">http://gpsd.berlios.de/hardware.html</A>), I don't see any BT747 devices
+there. This may be because no-one has tested any with gpsd. I'd be
+curious to see how they fare together.
+
+If I understand what I read on the BT747 page, BT747 is capable of
+pulling logging data from a compatible receiver. Does gpsd support
+anything like that?
+
+
+&gt;<i> 
+</I>&gt;<i> Kind regards
+</I>&gt;<i> 
+</I>&gt;<i> Mario
+</I>&gt;<i> 
+</I>&gt;<i> On 5 December 2010 14:02, Eric Raymond &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">esr at thyrsus.com</A>&gt; wrote:
+</I>&gt;<i> 
+</I>&gt;<i> &gt; Mario De Weerd &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">m.deweerd at ieee.org</A>&gt;:
+</I>&gt;<i> &gt; &gt; The only solutions I see are:
+</I>&gt;<i> &gt; &gt; - Somehow 'kill' gpsd upon BT747 launch;
+</I>&gt;<i> &gt; &gt; - Uninstall gpsd;
+</I>&gt;<i> &gt; &gt; - Integrate an interface to gps in BT747.
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; That's pretty much the size of it.  I wasn't aware of BT747, but
+</I>&gt;<i> &gt; from you and the project website tell me it and gpsd are just plain
+</I>&gt;<i> &gt; mutually incompatible.  The whole premise of gpsd is that gpsd,
+</I>&gt;<i> &gt; *and nothing else*, manages the device.
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; &gt; It looks like some kind of virtual device is used - is it
+</I>&gt;<i> &gt; &gt; possible to connect to that?
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; I don't know what you mean by &quot;virtual device&quot; here.
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; &gt; BT747 needs to be able to write/read the serial data to/from the
+</I>&gt;<i> &gt; &gt; GPS
+</I>&gt;<i> &gt; device.
+</I>&gt;<i> &gt; &gt;  Some sample usage of libgpsd would be usefull.  It surely can be
+</I>&gt;<i> &gt; &gt; wrapped
+</I>&gt;<i> &gt; in
+</I>&gt;<i> &gt; &gt; a native library for java.
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; Posssibly, but you still wouldn't be able to run gpsd and BT747 on
+</I>&gt;<i> &gt; the same serial port.
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; &gt; The highlevel protocol does not allow bidirectional communication
+</I>&gt;<i> &gt; &gt; apparently.
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; Yes.  There are security reasons for this; allowing unrestricted
+</I>&gt;<i> &gt; sends to the device would enable DOS attacks against applications
+</I>&gt;<i> &gt; using it.
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; &gt; What are the GPSD expert suggestions?
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; Hack BT747 to be able to use gpsd as the device manager.
+</I>&gt;<i> &gt; --
+</I>&gt;<i> &gt;                &lt;a href=&quot;<A HREF="http://www.catb.org/~esr/">http://www.catb.org/~esr/</A>&quot;&gt;Eric S.
+</I>&gt;<i> &gt; Raymond&lt;/a&gt;
+</I>&gt;<i> &gt;
+</I>&gt;<i> _______________________________________________
+</I>&gt;<i> Gpsd-users mailing list
+</I>&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">Gpsd-users at lists.berlios.de</A>
+</I>&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">https://lists.berlios.de/mailman/listinfo/gpsd-users</A>
+</I>
+
+
+-- 
+
+Charles Curley                  /&quot;\    ASCII Ribbon Campaign
+Looking for fine software       \ /    Respect for open standards
+and/or writing?                  X     No HTML/RTF in email
+<A HREF="http://www.charlescurley.com">http://www.charlescurley.com</A>    / \    No M$ Word docs in email
+
+Key fingerprint = CE5C 6645 A45A 64E4 94C0  809C FFF6 4C48 4ECD DFDB
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="004790.html">[Gpsd-users] Bidirectional 'raw' communication using libgpsd
+</A></li>
+	<LI>Next message: <A HREF="004791.html">[Gpsd-users] gpsd tangogps over internet
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#4786">[ date ]</a>
+              <a href="thread.html#4786">[ thread ]</a>
+              <a href="subject.html#4786">[ subject ]</a>
+              <a href="author.html#4786">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

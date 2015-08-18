@@ -1,0 +1,173 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] Newbie: gpsfake questions (2nd try)
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2011-January/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Newbie%3A%20gpsfake%20questions%20%282nd%20try%29&In-Reply-To=%3C1294146095.13842.69.camel%40acme.pacific%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="004877.html">
+   <LINK REL="Next"  HREF="004889.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] Newbie: gpsfake questions (2nd try)</H1>
+    <B>Roger Oberholtzer</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Newbie%3A%20gpsfake%20questions%20%282nd%20try%29&In-Reply-To=%3C1294146095.13842.69.camel%40acme.pacific%3E"
+       TITLE="[Gpsd-users] Newbie: gpsfake questions (2nd try)">roger.oberholtzer at ramboll.se
+       </A><BR>
+    <I>Tue Jan  4 14:01:35 CET 2011</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="004877.html">[Gpsd-users] Newbie: gpsfake questions (2nd try)
+</A></li>
+        <LI>Next message: <A HREF="004889.html">[Gpsd-users] Newbie: gpsfake questions (2nd try)
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#4880">[ date ]</a>
+              <a href="thread.html#4880">[ thread ]</a>
+              <a href="subject.html#4880">[ subject ]</a>
+              <a href="author.html#4880">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>On Mon, 2011-01-03 at 11:35 -0500, Eric Raymond wrote: 
+&gt;<i> Roger Oberholtzer &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">roger.oberholtzer at ramboll.se</A>&gt;:
+</I>&gt;<i> &gt; 1. What are the minimum record types that gpsd needs to be able to
+</I>&gt;<i> &gt; provide a fix? It seems to me that it is GGA and RMC. GGA alone is not
+</I>&gt;<i> &gt; enough. Is this correct? The clients to gpsd that I am trying this with
+</I>&gt;<i> &gt; are Navit and TangoGPS. Perhaps it is more a question of what they are
+</I>&gt;<i> &gt; asking from gpsd?
+</I>&gt;<i> 
+</I>&gt;<i> GGA should be sufficient by itself, but I don't think that mode of gpsd
+</I>&gt;<i> operation is well tested.  I don't know of any devices that emit GGA but
+</I>&gt;<i> not RMC.
+</I>
+All Trimble / Applanix / OxTS devices that we use are fully
+configurable. You can get what you want. Some folk in these parts made a
+decision that since we only need GGA for our own uses, that would be all
+they keep. Seems like an innocent decision.
+
+&gt;<i> You might find rerading driver_nmea.c instructive.
+</I>
+That file provided the clue. gpsd has an apparent limit to the length of
+the GGA record. When I turn on debugging, I get this for the unhappy
+files:
+
+gpsd: &lt;= GPS: $GPGGA,094707.10,5055.89321076,N,00702.09807636,E,2,05,3.6,50.524,M,47.654,M,7.9,0100*75
+gpsd: Overlong packet rejected.
+
+As they only contain GGA and ZDA records, and all the GGA records are
+rejected, there can be no fix.
+
+In the files that work, the GGA record is:
+
+$GPGGA,092700.10,5534.361945,N,01302.158638,E,2,08,1.0,21.17,M,40.77,M,2.9,0000*75
+
+In the files that do not, the records are:
+
+$GPGGA,094707.10,5055.89321076,N,00702.09807636,E,2,05,3.6,50.524,M,47.654,M,7.9,0100*75
+
+Note that the decimal accuracy of the lat and long values is increased
+by two. Other values also have an added decimal point.
+
+There are some devices that have the increased resolution, but the
+entire string length is still short enough to not cause a rejection:
+
+$GPGGA,082559.00,3856.25368972,N,00621.76537476,W,1,9,0.9,260.000,M,50.995,M,,*47
+
+The records are from Trimble Ag132, BD960 (and similar quality)
+receivers and from Applanix Pos/LV devices. These devices can provide
+centimeter accuracy. When they do... So the resolution of these values
+has been increased by the manufacturer. In fact, all the high-end GPS
+devices that we see these days have this increased resolution. Some
+provide it even when the accuracy is not there. I suspect it is a
+trend. 
+
+&gt;<i> &gt; 2. I want to have the playback look somewhat realistic. With no options,
+</I>&gt;<i> &gt; the locations are provided as fast as they are available. Which when
+</I>&gt;<i> &gt; reading from a file means pretty quick. I have tried the -c option to
+</I>&gt;<i> &gt; gpsfake. But I get unexpected results. I have a 10 Hz receiver, with 4
+</I>&gt;<i> &gt; NMEA records per 'report'. That would mean 40 records per second. If I
+</I>&gt;<i> &gt; specify -c 0.25, the reports seem to slow to a snail's pace. The
+</I>&gt;<i> &gt; movement is in fact 50 km/h. I am guessing that I have misunderstood
+</I>&gt;<i> &gt; something.
+</I>&gt;<i> 
+</I>&gt;<i> &gt;From the manual page:
+</I>&gt;<i> 
+</I>&gt;<i>     The -c option sets the delay between sentences in
+</I>&gt;<i>     seconds. Fractional values of seconds are legal.  The default is zero
+</I>&gt;<i>     (no delay).
+</I>&gt;<i> 
+</I>&gt;<i> What part of this is difficult to understand?  If you're shipping 40
+</I>&gt;<i> records per second, a delay of 0.25 will balloon a single second's output
+</I>&gt;<i> to 10 seconds.  Of *course* it's slowed to a crawl; you'd need to drop 
+</I>&gt;<i> the delay to 0.025 to approximate a 1-second-to-1-second mapping. 
+</I>
+Sorry, I mistyped the value in my post. In fact it was 0.025 that I
+used. I do understand the concept. I must have mixed some files that had
+a different report rate. I am doing a survey of data collected by
+various measurement systems to see where each stand in terms of using
+these tools. I will investigate further.
+
+
+Yours sincerely,
+Roger Oberholtzer
+
+Ramboll RST
+
+Office: Int +46 10-615 60 20
+Mobile: Int +46 70-815 1696
+<A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">roger.oberholtzer at ramboll.se</A>
+
+
+Ramb&#246;ll Sverige AB
+Krukmakargatan 21
+P.O. Box 17009
+SE-104 62 Stockholm, Sweden
+www.rambollrst.se
+
+Yours sincerely,
+Roger Oberholtzer
+
+Ramboll RST
+
+Office: Int +46 10-615 60 20
+Mobile: Int +46 70-815 1696
+<A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">roger.oberholtzer at ramboll.se</A>
+
+
+Ramb&#246;ll Sverige AB
+Krukmakargatan 21
+P.O. Box 17009
+SE-104 62 Stockholm, Sweden
+www.rambollrst.se
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="004877.html">[Gpsd-users] Newbie: gpsfake questions (2nd try)
+</A></li>
+	<LI>Next message: <A HREF="004889.html">[Gpsd-users] Newbie: gpsfake questions (2nd try)
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#4880">[ date ]</a>
+              <a href="thread.html#4880">[ thread ]</a>
+              <a href="subject.html#4880">[ subject ]</a>
+              <a href="author.html#4880">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

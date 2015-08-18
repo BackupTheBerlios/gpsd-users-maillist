@@ -1,0 +1,114 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] bu353 and cold start
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2010-November/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20bu353%20and%20cold%20start&In-Reply-To=%3Calpine.LNX.1.00.1011191229570.6816%40catbert.rellim.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="004769.html">
+   <LINK REL="Next"  HREF="004766.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] bu353 and cold start</H1>
+    <B>Gary E. Miller</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20bu353%20and%20cold%20start&In-Reply-To=%3Calpine.LNX.1.00.1011191229570.6816%40catbert.rellim.com%3E"
+       TITLE="[Gpsd-users] bu353 and cold start">gem at rellim.com
+       </A><BR>
+    <I>Fri Nov 19 21:34:20 CET 2010</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="004769.html">[Gpsd-users] bu353 and cold start
+</A></li>
+        <LI>Next message: <A HREF="004766.html">[Gpsd-users] bu353 and cold start
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#4770">[ date ]</a>
+              <a href="thread.html#4770">[ thread ]</a>
+              <a href="subject.html#4770">[ subject ]</a>
+              <a href="author.html#4770">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>-----BEGIN PGP SIGNED MESSAGE-----
+Hash: SHA1
+
+Yo Tomalak!
+
+On Fri, 19 Nov 2010, Tomalak Geret'kal wrote:
+
+&gt;<i> 20.3.1 says: &quot;The data stream shall be transmitted by the SV on the L1 and L2
+</I>&gt;<i> channels at a rate of 50 bps.&quot;
+</I>&gt;<i>
+</I>&gt;<i> 20.3.2 says: &quot;As shown in Figure 20-1, the message structure shall utilize a
+</I>&gt;<i> basic format of a 1500
+</I>&gt;<i> bit long frame made up of five subframes, each subframe being 300 bits long.
+</I>&gt;<i> Subframes 4 and 5 shall be
+</I>&gt;<i> subcommutated 25 times each, so that a complete data message shall require the
+</I>&gt;<i> transmission of 25 full frames.&quot;
+</I>&gt;<i>
+</I>&gt;<i> This means the navigation message is 37500 bits (1500*25) long. At 50bps that
+</I>&gt;<i> is 750s, or 12.5 minutes.
+</I>&gt;<i>
+</I>&gt;<i> This corroborates with the value that I have heard in the past, and that we
+</I>&gt;<i> see with the GPS quality monitoring product that we develop.
+</I>
+That clears up the 12.5 mins thing.  That clearly describes the frames
+that we see.  But I do not believe that every message is required to be
+sent every frame.  Notice what 30.3.4.1 says:
+
+&quot;Broadcast system of messages is completely arbitrary, but sequenced
+to provide optimum user performance. Message types 10 and 11 shall be
+broadcast at least once every 48 seconds. All other messages shall be
+broadcast in-between, not exceeding the maximum broadcast interval in
+Table 30-XII. Message type 15 will be broadcast as needed, but will not
+reduce the maximum broadcast interval of the other messages.  Type 15
+messages that are longer than one page will not necessarily be broadcast
+consecutively.&quot;
+
+And as we previously saw, table 30-XII specficies some messages need
+only be seen every 20min, 30min or 120min.
+
+RGDS
+GARY
+- ---------------------------------------------------------------------------
+Gary E. Miller Rellim 109 NW Wilmington Ave., Suite E, Bend, OR 97701
+	<A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">gem at rellim.com</A>  Tel:+1(541)382-8588
+
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v1.4.3 (GNU/Linux)
+
+iD8DBQFM5t9PBmnRqz71OvMRAmEMAJ96KoXZK/PmKAYoMV7wbxAByd5h9ACdFv/9
+542Upbl+ql/f78lrRABQE1M=
+=6GH2
+-----END PGP SIGNATURE-----
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="004769.html">[Gpsd-users] bu353 and cold start
+</A></li>
+	<LI>Next message: <A HREF="004766.html">[Gpsd-users] bu353 and cold start
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#4770">[ date ]</a>
+              <a href="thread.html#4770">[ thread ]</a>
+              <a href="subject.html#4770">[ subject ]</a>
+              <a href="author.html#4770">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

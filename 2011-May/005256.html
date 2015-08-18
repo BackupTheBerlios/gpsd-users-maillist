@@ -1,0 +1,129 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] Prolific 2303 usb gps dongle erratic behaviour
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2011-May/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Prolific%202303%20usb%20gps%20dongle%20erratic%20behaviour&In-Reply-To=%3Calpine.LNX.1.00.1105271019321.16141%40catbert.rellim.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="005255.html">
+   <LINK REL="Next"  HREF="005258.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] Prolific 2303 usb gps dongle erratic behaviour</H1>
+    <B>Gary E. Miller</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Prolific%202303%20usb%20gps%20dongle%20erratic%20behaviour&In-Reply-To=%3Calpine.LNX.1.00.1105271019321.16141%40catbert.rellim.com%3E"
+       TITLE="[Gpsd-users] Prolific 2303 usb gps dongle erratic behaviour">gem at rellim.com
+       </A><BR>
+    <I>Fri May 27 19:58:33 CEST 2011</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="005255.html">[Gpsd-users] Prolific 2303 usb gps dongle erratic behaviour
+</A></li>
+        <LI>Next message: <A HREF="005258.html">[Gpsd-users] Prolific 2303 usb gps dongle erratic behaviour
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#5256">[ date ]</a>
+              <a href="thread.html#5256">[ thread ]</a>
+              <a href="subject.html#5256">[ subject ]</a>
+              <a href="author.html#5256">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>-----BEGIN PGP SIGNED MESSAGE-----
+Hash: SHA1
+
+Yo Sebastian!
+
+On Fri, 27 May 2011, Sebastian Arcus wrote:
+
+&gt;<i> According to Wikipedia, it takes maximum 12.5 minutes to download a full
+</I>&gt;<i> almanac from a single satellite
+</I>
+First off, the almanac is a subset of the ephemeris, best not to confuse
+them.
+
+- From the IS-GPS-200E, Sections 20.3.3.5.1.2
+
+&quot;The almanac data are a reduced-precision subset of the clock and
+ephemeris parameters.
+
+With the almanac the GPS can determine the best sats to try, and then has
+to download the current ephemeris for those sats for best accurary.
+
+Wikipedia is wrong, a FULL almanac can take hours.  This is a very
+commmon misconception.  In one 12.5 frame you will get ONE almanac set
+containing an item for each sat.  GPS sats send several alamanac sets
+for use at different times in the future.  Each set uses a different toa
+(almanac reference time) and IODC (Issue of Data, Clock) so they can be
+separated.  The current almanac set is transmitted frequently and the
+long range sets (21 to 62 days) as infrequently as every 24 hours.  See
+IS-GPS-200E, Table 20-XII.
+
+So a FULL almanac can take 24 hours!
+
+&gt;<i>  - so based on this information, I always
+</I>&gt;<i> assumed that, if I'm outdoors, without significant obstructions, and the
+</I>&gt;<i> dongle fails to obtain a lock in 12.5 minutes -
+</I>
+For a modern GPS.  Some older ones need to wait until the start of the cycle
+and then take the full 12.5 mins.  I often see older Garmin take 30 mins
+to get lock with a stale ephemeris.
+
+There is a chicken/egg issue here.  A GPS needs the almanac to find a good
+sat to lock on, but needs to lock on a sat to get the almanac!  So the
+initial search may just be a brute force one and that takes time.
+
+For a modern multiple channnel receiver the brute force approach works well.
+
+&gt;<i> there must be something else
+</I>&gt;<i> wrong with the dongle or the chip is stuck somehow. Am I missing something in
+</I>&gt;<i> my logic?
+</I>
+You have identified the problem is mostly in the car.  When in the car, is the
+antenna on the dash with a full sky view?  Or on the seat with a very bad
+sky view?  Most GPS will not get any lock when on the passenger seat.
+
+RGDS
+GARY
+- ---------------------------------------------------------------------------
+Gary E. Miller Rellim 109 NW Wilmington Ave., Suite E, Bend, OR 97701
+	<A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">gem at rellim.com</A>  Tel:+1(541)382-8588
+
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v1.4.3 (GNU/Linux)
+
+iD8DBQFN3+cHBmnRqz71OvMRAncwAJ9Tti0u1Q/4ipHSwbS1YuTNvbYDpACeNWGY
+k87kUIVlKXvB42d5u+gn9B8=
+=RdHY
+-----END PGP SIGNATURE-----
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="005255.html">[Gpsd-users] Prolific 2303 usb gps dongle erratic behaviour
+</A></li>
+	<LI>Next message: <A HREF="005258.html">[Gpsd-users] Prolific 2303 usb gps dongle erratic behaviour
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#5256">[ date ]</a>
+              <a href="thread.html#5256">[ thread ]</a>
+              <a href="subject.html#5256">[ subject ]</a>
+              <a href="author.html#5256">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

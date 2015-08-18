@@ -1,0 +1,134 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] Gpsd startup/hotplug system - new proposal
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2011-June/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Gpsd%20startup/hotplug%20system%20-%20new%20proposal&In-Reply-To=%3C4DE588F9.4090509%40open-t.co.uk%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="005280.html">
+   <LINK REL="Next"  HREF="005355.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] Gpsd startup/hotplug system - new proposal</H1>
+    <B>Sebastian Arcus</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Gpsd%20startup/hotplug%20system%20-%20new%20proposal&In-Reply-To=%3C4DE588F9.4090509%40open-t.co.uk%3E"
+       TITLE="[Gpsd-users] Gpsd startup/hotplug system - new proposal">shop at open-t.co.uk
+       </A><BR>
+    <I>Wed Jun  1 02:34:01 CEST 2011</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="005280.html">[Gpsd-users] [Gpsd-dev]     Gpsd configuration files
+</A></li>
+        <LI>Next message: <A HREF="005355.html">[Gpsd-users] [Gpsd-dev] Gpsd startup/hotplug system - new	proposal
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#5277">[ date ]</a>
+              <a href="thread.html#5277">[ thread ]</a>
+              <a href="subject.html#5277">[ subject ]</a>
+              <a href="author.html#5277">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>In the light of the recent discussion on these lists regarding possible 
+improvements to the current state of the startup and hotplug system used 
+by gpsd currently, I would like to make a new suggestions based on the 
+the points raised by those who contributed to the discussion:
+
+1. Create a gpsdctl (not gpsctl) program which acts as a client passing 
+commands to the gpsd daemon for the purpose of controlling the daemon 
+itself, not the gps device (which is done by the gpsctl, if I understand 
+correctly).
+2. This would take over most of the stuff done currently by gpsd.hotplug 
+and gpsd.hotplug.wrapper, namely:
+   a. Perform various basic checks, such as gpsd binary executable, /var 
+being read-write for creation of socket etc.
+   b. Check if a gpsd daemon is already running, and if not, start one 
+with basic options from /etc/gpsd.conf if found (bare with me on this one).
+   c. Ask gpsd to add a new device to its pool - through the socket and 
+pass any other commands through the socket, without the need for a 
+script and socket programming.
+
+This could be made to work (with minimal changes) for both embedded 
+environments and non-embedded ones:
+
+1. If /etc/gpsd.conf is not found, gpsd starts with assumed defaults, 
+just like now.
+2. If /etc/gpsd.conf is found, load basic settings from there.
+3. Gpsdctl would either use the socket path found in /etc/gpsd.conf, or 
+receive the socket path to use to talk to gpsd on the command line &quot;-F 
+/var/gpsd.sock&quot;. The second option would mean it can work without using 
+gpsd.conf, and would also allow the option of having several different 
+gpsd instances, using different ports, and different sockets to be 
+communicated with.
+
+Advantages of the above setup:
+
+1. Would require minimal modification - all gpsd behaviour and options 
+would stay the same as currently - it would just load the equivalent of 
+it's current command line options from /etc/gpsd.conf if it finds it, 
+otherwise behave just as it does now.
+2. /etc/gpsd.conf would not be such a major change, as /etc/default/gpsd 
+is already being used by /lib/udev/gpsd.hotplug.wrapper anyway and it 
+contains the same options.
+3. gpsdctl could be a proper binary, part of the distribution, located 
+in /usr/bin, with the other gpsd related binaries.
+4. The udev rule could be simplified to something like 
+&quot;RUN+=/usr/bin/gpsdctl --add-device /dev/ttyUSB%n&quot; or similar.
+5. Would provide a great deal of flexibility for very little extra 
+complexity - with straight forward configurations possible for 
+hotplugging using udev, running several gpsd daemons on different ports 
+(and different sockets), and running without any configuration files.
+
+
+This would do away with the two hotplug scripts, while hiding all the 
+socket communication in a nice binary, properly named and located with 
+the rest of the project - but without being included in gpsd or 
+affecting the gpsd code.
+
+In order to keep everything wrapped up neat - it would be probably good 
+(but not absolutely necessary) to end up starting and stopping and 
+controlling gpsd exclusively through gpsdctl. For example, if gpsdctl is 
+called without socket option and there is no gpsd.conf to specify a 
+socket option - then it will start gpsd without socket communication - 
+and will have no way to pass further commands to it. But it means all 
+command line syntax will refer to gpsdctl - instead of part of it 
+referencing gpsd and part of it gpsdctl. Gpsdctl will become effectively 
+a unified command line interface to gpsd (but able to start the daemon 
+if it's not running, do checks and be able to talk to several daemon 
+instances - all of which gpsd currently can't - and shouldn't be able to 
+anyway).
+
+Is this any closer to the spirit of the gpsd project and the desired goals?
+
+
+Sebastian
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="005280.html">[Gpsd-users] [Gpsd-dev]     Gpsd configuration files
+</A></li>
+	<LI>Next message: <A HREF="005355.html">[Gpsd-users] [Gpsd-dev] Gpsd startup/hotplug system - new	proposal
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#5277">[ date ]</a>
+              <a href="thread.html#5277">[ thread ]</a>
+              <a href="subject.html#5277">[ subject ]</a>
+              <a href="author.html#5277">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

@@ -1,0 +1,122 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] Gpsd on a Zaurus SL-C3000
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2005-March/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Gpsd%20on%20a%20Zaurus%20SL-C3000&In-Reply-To=%3C16971.35916.403102.354388%40desk.crynwr.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="000464.html">
+   <LINK REL="Next"  HREF="000490.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] Gpsd on a Zaurus SL-C3000</H1>
+    <B>Russell Nelson</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Gpsd%20on%20a%20Zaurus%20SL-C3000&In-Reply-To=%3C16971.35916.403102.354388%40desk.crynwr.com%3E"
+       TITLE="[Gpsd-users] Gpsd on a Zaurus SL-C3000">nelson at crynwr.com
+       </A><BR>
+    <I>Thu Mar 31 07:36:12 CEST 2005</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="000464.html">[Gpsd-users] Gpsd on a Zaurus SL-C3000
+</A></li>
+        <LI>Next message: <A HREF="000490.html">[Gpsd-users] Gpsd on a Zaurus SL-C3000
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#488">[ date ]</a>
+              <a href="thread.html#488">[ thread ]</a>
+              <a href="subject.html#488">[ subject ]</a>
+              <a href="author.html#488">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Eric S. Raymond writes:
+ &gt; &gt;                                            Also, I don't
+ &gt; &gt; have xmlto and the Makefile is not cognizant of that fact.
+ &gt; 
+ &gt; There are - prefuxes on all the commands.  What symptom are you seeing?
+
+Oh, just that it's whinging.  The Makefile runs to completion.
+
+ &gt; Crap.  The state machine in packet.c isn't doing the right thing, then.  I'd
+ &gt; fix this, but I can't test it. 
+
+Found two problems (patch below), but more remain.  For one, while
+it's sleeping 30 seconds after sending EARTHA, it accumulates a whole
+pile of packets.  That doesn't seem correct.  Second, it never
+recognizes a packet once it's switched.  It keeps discarding
+characters at the same time that it seems to be accumulating packets
+for a pending packet.
+
+By the way, while it's autobauding, it is essentially doing a
+busy-wait, calling the ioctl.  Sucks up 100% of available CPU.
+
+
+Index: packet.c
+===================================================================
+--- packet.c    (revision 2222)
++++ packet.c    (working copy)
+@@ -236,13 +236,13 @@
+        break;
+     case EARTHA_3:
+        if (c == 'T')
+-           session-&gt;packet_state = EARTHA_5;
++           session-&gt;packet_state = EARTHA_4;
+        else
+            session-&gt;packet_state = GROUND_STATE;
+        break;
+     case EARTHA_4:
+        if (c == 'H')
+-           session-&gt;packet_state = EARTHA_2;
++           session-&gt;packet_state = EARTHA_5;
+        else
+            session-&gt;packet_state = GROUND_STATE;
+        break;
+Index: drivers.c
+===================================================================
+--- drivers.c   (revision 2222)
++++ drivers.c   (working copy)
+@@ -201,7 +201,7 @@
+     sleep(30);
+     session-&gt;device_type = &amp;zodiac_binary;
+     zodiac_binary.wrapup = earthmate_close;
+-    zodiac_binary.initializer(session);
++    if (zodiac_binary.initializer) zodiac_binary.initializer(session);
+ }
+ 
+ struct gps_type_t earthmate = {
+
+-- 
+--My blog is at     blog.russnelson.com         | The laws of physics cannot
+Crynwr sells support for free software  | PGPok | be legislated.  Neither can
+521 Pleasant Valley Rd. | +1 315-323-1241 cell  | the laws of countries.
+Potsdam, NY 13676-3213  | +1 212-202-2318 VOIP  | 
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="000464.html">[Gpsd-users] Gpsd on a Zaurus SL-C3000
+</A></li>
+	<LI>Next message: <A HREF="000490.html">[Gpsd-users] Gpsd on a Zaurus SL-C3000
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#488">[ date ]</a>
+              <a href="thread.html#488">[ thread ]</a>
+              <a href="subject.html#488">[ subject ]</a>
+              <a href="author.html#488">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

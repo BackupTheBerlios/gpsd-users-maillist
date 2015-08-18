@@ -1,0 +1,94 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] Re: gpsd cpu usage
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2006-June/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Re%3A%20gpsd%20cpu%20usage&In-Reply-To=%3Ce6r40t%24523%241%40sea.gmane.org%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="001704.html">
+   <LINK REL="Next"  HREF="001716.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] Re: gpsd cpu usage</H1>
+    <B>Eivind Tagseth</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Re%3A%20gpsd%20cpu%20usage&In-Reply-To=%3Ce6r40t%24523%241%40sea.gmane.org%3E"
+       TITLE="[Gpsd-users] Re: gpsd cpu usage">eivindt-gmane at multinet.no
+       </A><BR>
+    <I>Thu Jun 15 09:59:25 CEST 2006</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="001704.html">[Gpsd-users] gpsd cpu usage
+</A></li>
+        <LI>Next message: <A HREF="001716.html">[Gpsd-users] Re: gpsd cpu usage
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1705">[ date ]</a>
+              <a href="thread.html#1705">[ thread ]</a>
+              <a href="subject.html#1705">[ subject ]</a>
+              <a href="author.html#1705">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Marshall Crocker wrote:
+&gt;<i> I'm running gpsd on an embedded system with an STPC Atlas processor
+</I>&gt;<i> (486/586 class). I have written an application to connect to gpsd and
+</I>&gt;<i> poll every second with the request &quot;p\n&quot;.  Whenever I run this
+</I>&gt;<i> application, gpsd's CPU usage runs over 70%.  Is there anyway to reduce
+</I>&gt;<i> the cpu usage?
+</I>
+We experiences similar problems when trying to run gpsd on a different
+embedded system.
+
+We found at least 2 issues:
+
+	1.  gpsd sets MAX_DEVICES to FD_SETSIZE, and creates that many
+instances of several structures.  Setting MAX_DEVICES lower doesn't help
+much, since FD_SETSIZE is also used for allocations and looping within
+the main loop.  This is both CPU intensive (for an embedded system) and
+very memory intensive.
+
+	2.  Issue 1 became a really big issue, since the main loop ran
+once per _byte_ received from the GPS, not per line.  Temporarily solved
+by adding a small delay in the main loop, but I guess this may be
+better solved by changing tty settings.
+
+
+I was hoping to create a patch for issue 1, making gpsd a bit more
+dynamic regarding memory/cpu and the maximum number of client connections
+vs the actual number of client connections, but I haven't gotten around
+to it yet.
+
+
+
+Eivind
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="001704.html">[Gpsd-users] gpsd cpu usage
+</A></li>
+	<LI>Next message: <A HREF="001716.html">[Gpsd-users] Re: gpsd cpu usage
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1705">[ date ]</a>
+              <a href="thread.html#1705">[ thread ]</a>
+              <a href="subject.html#1705">[ subject ]</a>
+              <a href="author.html#1705">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

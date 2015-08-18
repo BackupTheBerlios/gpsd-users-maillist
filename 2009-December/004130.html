@@ -1,0 +1,162 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] Problem with GARMIN GPS 18x LVC (and gpsd + ntpd)
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2009-December/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Problem%20with%20GARMIN%20GPS%2018x%20LVC%20%28and%20gpsd%20%2B%20ntpd%29&In-Reply-To=%3C2513a3270912210157m62d9ed5fjd4c85ff25413309c%40mail.gmail.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="004126.html">
+   <LINK REL="Next"  HREF="004132.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] Problem with GARMIN GPS 18x LVC (and gpsd + ntpd)</H1>
+    <B>Data Kungen</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Problem%20with%20GARMIN%20GPS%2018x%20LVC%20%28and%20gpsd%20%2B%20ntpd%29&In-Reply-To=%3C2513a3270912210157m62d9ed5fjd4c85ff25413309c%40mail.gmail.com%3E"
+       TITLE="[Gpsd-users] Problem with GARMIN GPS 18x LVC (and gpsd + ntpd)">datakungen at gmail.com
+       </A><BR>
+    <I>Mon Dec 21 10:57:06 CET 2009</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="004126.html">[Gpsd-users] Version 2.90 timestamps
+</A></li>
+        <LI>Next message: <A HREF="004132.html">[Gpsd-users] Problem with GARMIN GPS 18x LVC (and gpsd + ntpd)
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#4130">[ date ]</a>
+              <a href="thread.html#4130">[ thread ]</a>
+              <a href="subject.html#4130">[ subject ]</a>
+              <a href="author.html#4130">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi
+
+I have purchased and installed a GARMIN GPS 18x LVC for connection to
+a PC&#160;for use with
+gpsd and ntpd.
+
+The device is connected and I am receiving both time through NMEA 0182
+and PPS through cycling
+of DCD on the serial port. The device is setup (when shipped) to
+deliver data at 19200 baud.
+
+I start gpsd using gpsd -n /dev/ttyS0 and is is receiving data.
+
+I start ntpd with the following configuration, and it syncs time:
+
+server 127.127.28.0 minpoll 4 maxpoll 4
+#fudge 127.127.28.0 time1 0.420 refid GPS
+fudge 127.127.28.0 time1 0.155 refid GPS
+server 127.127.28.1 minpoll 4 maxpoll 4 prefer
+fudge 127.127.28.1 refid PPS
+server ntp1.sth.netnod.se iburst
+server ntp2.sth.netnod.se iburst
+server ntp1.gbg.netnod.se iburst
+server ntp2.gbg.netnod.se iburst
+server ntp1.mlm.netnod.se iburst
+server ntp2.mlm.netnod.se iburst
+driftfile /tmp/ntp.drift
+However, as I see it I have two problems that I hope someone could help me with:
+
+1. There is a large offset (differs between invocations) between
+SHM(0) (GPS) and SHM(1) (PPS)
+
+2. The jitter is higher then what I expected.
+
+#ntpq -p
+&#160;&#160;&#160;&#160; remote&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160; refid&#160;&#160;&#160;&#160;&#160; st t when poll reach&#160;&#160; delay&#160;&#160; offset&#160; jitter
+==============================================================================
+*SHM(0)&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160; .GPS.&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160; 0 l&#160;&#160; 10&#160;&#160; 16&#160; 377&#160;&#160;&#160; 0.000&#160;&#160; -0.941&#160;&#160; 2.120
+xSHM(1)&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160; .PPS.&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160; 0 l&#160;&#160;&#160; 9&#160;&#160; 16&#160; 377&#160;&#160;&#160; 0.000&#160; 695.665&#160;&#160; 2.956
++ntp1.sth.netnod .PPS.&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160; 1 u&#160;&#160; 13&#160;&#160; 64&#160; 377&#160;&#160; 23.395&#160;&#160; -5.739&#160;&#160; 2.204
+-ntp2.sth.netnod .PPS.&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160; 1 u&#160;&#160; 42&#160;&#160; 64&#160; 377&#160;&#160; 23.572&#160;&#160; -7.665&#160;&#160; 2.415
+-ntp1.gbg.netnod .PPS.&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160; 1 u&#160;&#160; 12&#160;&#160; 64&#160; 377&#160;&#160; 31.192&#160;&#160; -8.300&#160; 15.373
++ntp2.gbg.netnod .PPS.&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160; 1 u&#160;&#160; 28&#160;&#160; 64&#160; 377&#160;&#160; 31.355&#160;&#160; -3.722&#160; 13.657
+
+Looking in the log from gpsd (when running with -D6 and using egrep to filter
+out selected log records) I see that a lot of PPS pulses are rejected, I don't
+know if it is related or not. It appears to reject every pluse wich duration
+is equal to or greater than 100000. I don't know if that is &quot;correct&quot; or not.
+
+# egrep &quot;gpsd: 5Hz|PPS pulse rejected|PPS cycle:&quot; x |head -25
+gpsd: PPS cycle: 1797505352, duration: 1797505352 @ 1261386447.700296
+gpsd: PPS pulse rejected
+gpsd: PPS cycle: 1797605364, duration: 100012 @ 1261386447.800308
+gpsd: PPS pulse rejected
+gpsd: PPS cycle: 199998, duration: 99986 @ 1261386447.900294
+gpsd: PPS pulse rejected
+gpsd: PPS cycle: 199995, duration: 100009 @ 1261386448.000303
+gpsd: PPS pulse rejected
+gpsd: PPS cycle: 200002, duration: 99993 @ 1261386448.100296
+gpsd: 5Hz PPS pulse
+gpsd: PPS cycle: 200130, duration: 100137 @ 1261386448.200433
+gpsd: PPS pulse rejected
+gpsd: PPS cycle: 199981, duration: 99844 @ 1261386448.300277
+gpsd: 5Hz PPS pulse
+gpsd: PPS cycle: 199992, duration: 100148 @ 1261386448.400425
+gpsd: PPS pulse rejected
+gpsd: PPS cycle: 200021, duration: 99873 @ 1261386448.500298
+gpsd: 5Hz PPS pulse
+gpsd: PPS cycle: 199951, duration: 100078 @ 1261386448.600376
+gpsd: PPS pulse rejected
+gpsd: PPS cycle: 200004, duration: 99926 @ 1261386448.700302
+gpsd: 5Hz PPS pulse
+gpsd: PPS cycle: 200002, duration: 100076 @ 1261386448.800378
+gpsd: PPS pulse rejected
+
+It does not stabilize, it continues to reject pulses:
+
+gpsd: PPS cycle: 200026, duration: 100025 @ 1261386876.699065
+gpsd: PPS pulse rejected
+gpsd: PPS cycle: 200021, duration: 99996 @ 1261386876.799061
+gpsd: 5Hz PPS pulse
+gpsd: PPS cycle: 200001, duration: 100005 @ 1261386876.899066
+gpsd: PPS pulse rejected
+gpsd: PPS cycle: 200003, duration: 99998 @ 1261386876.999064
+gpsd: 5Hz PPS pulse
+gpsd: PPS cycle: 200006, duration: 100008 @ 1261386877.099072
+gpsd: PPS pulse rejected
+gpsd: PPS cycle: 200001, duration: 99993 @ 1261386877.199065
+gpsd: 5Hz PPS pulse
+gpsd: PPS cycle: 199999, duration: 100006 @ 1261386877.299071
+gpsd: PPS pulse rejected
+gpsd: PPS cycle: 200006, duration: 100000 @ 1261386877.399071
+gpsd: PPS pulse rejected
+gpsd: PPS cycle: 200006, duration: 100006 @ 1261386877.499077
+gpsd: PPS pulse rejected
+gpsd: PPS cycle: 200003, duration: 99997 @ 1261386877.599074
+gpsd: 5Hz PPS pulse
+
+Any help is appreciated.
+
+Torbj&#246;rn
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="004126.html">[Gpsd-users] Version 2.90 timestamps
+</A></li>
+	<LI>Next message: <A HREF="004132.html">[Gpsd-users] Problem with GARMIN GPS 18x LVC (and gpsd + ntpd)
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#4130">[ date ]</a>
+              <a href="thread.html#4130">[ thread ]</a>
+              <a href="subject.html#4130">[ subject ]</a>
+              <a href="author.html#4130">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

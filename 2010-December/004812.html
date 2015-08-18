@@ -1,0 +1,101 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] xgps no satellites bug
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2010-December/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20xgps%20no%20satellites%20bug&In-Reply-To=%3C20101217171619.7d619f70%40dragon%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="004808.html">
+   <LINK REL="Next"  HREF="004809.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] xgps no satellites bug</H1>
+    <B>Charles Curley</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20xgps%20no%20satellites%20bug&In-Reply-To=%3C20101217171619.7d619f70%40dragon%3E"
+       TITLE="[Gpsd-users] xgps no satellites bug">charlescurley at charlescurley.com
+       </A><BR>
+    <I>Sat Dec 18 01:16:19 CET 2010</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="004808.html">[Gpsd-users] xgps no satellites bug
+</A></li>
+        <LI>Next message: <A HREF="004809.html">[Gpsd-users] gps_logger
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#4812">[ date ]</a>
+              <a href="thread.html#4812">[ thread ]</a>
+              <a href="subject.html#4812">[ subject ]</a>
+              <a href="author.html#4812">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>On Thu, 16 Dec 2010 16:25:37 -0500
+Eric Raymond &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">esr at thyrsus.com</A>&gt; wrote:
+
+&gt;<i> Charles Curley &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">charlescurley at charlescurley.com</A>&gt;:
+</I>&gt;<i> &gt; If I plug it in indoors, it does not get a fix, and sends a bogus
+</I>&gt;<i> &gt; timestamp (March, 2005). I can then run xgps, which throws the
+</I>&gt;<i> &gt; following complaint:
+</I>&gt;<i> &gt; 
+</I>&gt;<i> &gt; Traceback (most recent call last):
+</I>&gt;<i> &gt;   File &quot;/usr/local/bin/xgps&quot;, line 668, in handle_response
+</I>&gt;<i> &gt;     self.update_skyview(self.daemon.data)
+</I>&gt;<i> &gt;   File &quot;/usr/local/bin/xgps&quot;, line 628, in update_skyview
+</I>&gt;<i> &gt;     satellites = data.satellites
+</I>&gt;<i> &gt; AttributeError: dictwrapper instance has no attribute 'satellites'
+</I>&gt;<i> &gt; 
+</I>&gt;<i> &gt; Indeed, there are no satellites &quot;visible&quot; at the time. xgps then
+</I>&gt;<i> &gt; stops, while gpsd continues to feed data to other clients.
+</I>&gt;<i> 
+</I>&gt;<i> I've attempted a fix, but I'm not certain it's right as I can't 
+</I>&gt;<i> reproduce this here.  Care to try again with the current repo head
+</I>&gt;<i> version of xgps?
+</I>
+Looks good.
+
+With version 2.96~dev Rev: 2010-12-17T22:30:54, Protocol 3.3, I do not
+see this problem. xgps simply hangs in there, processing packets. As
+soon as the receiver did get satellites and a fix, xgps reported the
+satellites and fix.
+
+Thanks!
+
+
+-- 
+
+Charles Curley                  /&quot;\    ASCII Ribbon Campaign
+Looking for fine software       \ /    Respect for open standards
+and/or writing?                  X     No HTML/RTF in email
+<A HREF="http://www.charlescurley.com">http://www.charlescurley.com</A>    / \    No M$ Word docs in email
+
+Key fingerprint = CE5C 6645 A45A 64E4 94C0  809C FFF6 4C48 4ECD DFDB
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="004808.html">[Gpsd-users] xgps no satellites bug
+</A></li>
+	<LI>Next message: <A HREF="004809.html">[Gpsd-users] gps_logger
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#4812">[ date ]</a>
+              <a href="thread.html#4812">[ thread ]</a>
+              <a href="subject.html#4812">[ subject ]</a>
+              <a href="author.html#4812">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

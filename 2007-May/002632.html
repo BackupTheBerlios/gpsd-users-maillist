@@ -1,0 +1,94 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] how to crosscompile gpsd for avr32
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2007-May/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20how%20to%20crosscompile%20gpsd%20for%20avr32&In-Reply-To=%3CPine.LNX.4.64.0705091437180.5214%40birdbird.example.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="002631.html">
+   <LINK REL="Next"  HREF="002633.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] how to crosscompile gpsd for avr32</H1>
+    <B>Matt Roberds</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20how%20to%20crosscompile%20gpsd%20for%20avr32&In-Reply-To=%3CPine.LNX.4.64.0705091437180.5214%40birdbird.example.com%3E"
+       TITLE="[Gpsd-users] how to crosscompile gpsd for avr32">mattroberds at cox.net
+       </A><BR>
+    <I>Wed May  9 21:50:39 CEST 2007</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="002631.html">[Gpsd-users] how to crosscompile gpsd for avr32
+</A></li>
+        <LI>Next message: <A HREF="002633.html">[Gpsd-users] how to crosscompile gpsd for avr32
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2632">[ date ]</a>
+              <a href="thread.html#2632">[ thread ]</a>
+              <a href="subject.html#2632">[ subject ]</a>
+              <a href="author.html#2632">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>On Wed, 9 May 2007, Chris Kuethe wrote:
+&gt;<i> On 5/9/07, Randy &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">wrr01 at yahoo.com</A>&gt; wrote:
+</I>&gt;<i>
+</I>&gt;&gt;<i> or, is libtool not being passed the correct parms to cause the
+</I>&gt;&gt;<i> complete static link to occur?
+</I>&gt;<i>
+</I>&gt;<i> Libtool is getting it wrong. Even if you set your CFLAGS and LDFLAGS
+</I>&gt;<i> to have &quot;-static&quot;, libtool just eats those. I haven't yet found a way
+</I>&gt;<i> to make it not do that... ok, there is the &quot;-all-static&quot; flag to
+</I>&gt;<i> libtool but there doesn't seem to be a libtool_flags environment
+</I>&gt;<i> variable you can pass in (already tried).
+</I>
+How about this: run configure and let it generate the Makefile.  Find
+the lines in the Makefile that look like
+
+LINK = $(LIBTOOL) --tag=CC --mode=link $(CCLD) $(AM_CFLAGS) $(CFLAGS) \
+ 	$(AM_LDFLAGS) $(LDFLAGS) -o $@
+
+CXXLINK = $(LIBTOOL) --tag=CXX --mode=link $(CXXLD) $(AM_CXXFLAGS) \
+ 	$(CXXFLAGS) $(AM_LDFLAGS) $(LDFLAGS) -o $@
+
+and adding the -all-static flag, like
+
+LINK = $(LIBTOOL) --tag=CC --mode=link $(CCLD) -all-static $(AM_CFLAGS) \
+ 	$(CFLAGS) $(AM_LDFLAGS) $(LDFLAGS) -o $@
+
+CXXLINK = $(LIBTOOL) --tag=CXX --mode=link $(CXXLD) -all-static \
+ 	$(AM_CXXFLAGS) $(CXXFLAGS) $(AM_LDFLAGS) $(LDFLAGS) -o $@
+
+and then run the make as normal.  It's a hack, but sometimes that's OK.
+
+Matt Roberds
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="002631.html">[Gpsd-users] how to crosscompile gpsd for avr32
+</A></li>
+	<LI>Next message: <A HREF="002633.html">[Gpsd-users] how to crosscompile gpsd for avr32
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2632">[ date ]</a>
+              <a href="thread.html#2632">[ thread ]</a>
+              <a href="subject.html#2632">[ subject ]</a>
+              <a href="author.html#2632">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

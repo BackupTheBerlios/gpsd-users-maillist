@@ -1,0 +1,146 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] Update freuency
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2011-July/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Update%20freuency&In-Reply-To=%3C1311666400.19997.49.camel%40acme.pacific%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="005397.html">
+   <LINK REL="Next"  HREF="005399.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] Update freuency</H1>
+    <B>Roger Oberholtzer</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Update%20freuency&In-Reply-To=%3C1311666400.19997.49.camel%40acme.pacific%3E"
+       TITLE="[Gpsd-users] Update freuency">roger.oberholtzer at ramboll.se
+       </A><BR>
+    <I>Tue Jul 26 09:46:40 CEST 2011</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="005397.html">[Gpsd-users] Update freuency
+</A></li>
+        <LI>Next message: <A HREF="005399.html">[Gpsd-users] Update freuency
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#5398">[ date ]</a>
+              <a href="thread.html#5398">[ thread ]</a>
+              <a href="subject.html#5398">[ subject ]</a>
+              <a href="author.html#5398">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>On Tue, 2011-07-26 at 00:08 +0100, Ed W wrote:
+&gt;<i> On 18/07/2011 19:47, Haavard Holm wrote:
+</I>&gt;<i> &gt; 
+</I>&gt;<i> &gt; Hello,
+</I>&gt;<i> &gt; 
+</I>&gt;<i> &gt; I have a gps,
+</I>&gt;<i> &gt; <A HREF="http://www.globalsat.com.tw/products-page.php?menu=2&amp;gs_en_product_id=2&amp;gs_en_product_cnt_id=28">http://www.globalsat.com.tw/products-page.php?menu=2&amp;gs_en_product_id=2&amp;gs_en_product_cnt_id=28</A>
+</I>&gt;<i> &gt; 
+</I>&gt;<i> &gt; This device communicates well with gpsd, but I am not satisfied with the
+</I>&gt;<i> &gt; update frequency.
+</I>&gt;<i> 
+</I>&gt;<i> Just be aware that 1Hz update freq is the norm for GPS.  There exist
+</I>&gt;<i> 3/5/10Hz devices, but they are not the norm and you should investigate
+</I>&gt;<i> if you get what you think you are getting...
+</I>
+or 100Hz or 250 HZ. These days, if you have the money, they have the
+report frequency.
+
+&gt;<i> Note that I am led to believe that the gps output for direction vectors
+</I>&gt;<i> is based on some doppler calculation and is more accurate than you can
+</I>&gt;<i> calculate using lagged 1Hz position reports (someone please correct this
+</I>&gt;<i> statement?).  I'm guessing at your requirements, but be aware of this
+</I>&gt;<i> and also consider using multiple GPS units around your vehicle if the
+</I>&gt;<i> goal is tracking a high speed vehicle (ie it might not travel in the
+</I>&gt;<i> direction its facing...).
+</I>&gt;<i> 
+</I>&gt;<i> Also be aware that many GPS units operate at some pitiful data rate like
+</I>&gt;<i> 4,800baud and so the output is lagged significantly over when it's
+</I>&gt;<i> measured (often multiple hundreds of millisecs). Raising the baud rate
+</I>&gt;<i> reduces this lag, but it's likely still delayed by a constant over when
+</I>&gt;<i> it's measured and if you are looking for sub 1Hz accuracy, it's probably
+</I>&gt;<i> something you need to calibrate?
+</I>
+We track a high speed vehicle. In fact, we use the GPS to locate
+position in real time. Our systems require action when at certain
+locations (which we may only pass tangentially). We have found that with
+a 10 Hz receiver and 38400 baud (and Linux which can have respectable
+throughput for these sorts of things) the GPS information allows more
+accuracy/repeatability than the operator pressing a button. In this
+case, we are talking 1 meter accuracy. I should note that in addition to
+the GPS we use a wheel pulse transducer. This helps between GPS fixes.
+After all, with a 10 Hz receiver, the locations will be provided every
+2.5 meters at 90 km/h.
+
+You can of course buy systems (e.g., www.oxts.com) that bundle all this
+(GPS + INS + wheel pulse) in to a nice package that provides NMEA data
+in real time at a very high frequency. It also provides data over UDP
+broadcasts for even less delay. Of course, these cost a bit more.
+
+
+
+Yours sincerely,
+
+Roger Oberholtzer
+
+OPQ Systems / Ramb&#246;ll RST
+
+Office: Int +46 10-615 60 20
+Mobile: Int +46 70-815 1696
+<A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">roger.oberholtzer at ramboll.se</A>
+________________________________________
+
+Ramb&#246;ll Sverige AB
+Krukmakargatan 21
+P.O. Box 17009
+SE-104 62 Stockholm, Sweden
+www.rambollrst.se
+
+
+Yours sincerely,
+Roger Oberholtzer
+
+Ramboll RST
+
+Office: Int +46 10-615 60 20
+Mobile: Int +46 70-815 1696
+<A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">roger.oberholtzer at ramboll.se</A>
+
+
+Ramb&#246;ll Sverige AB
+Krukmakargatan 21
+P.O. Box 17009
+SE-104 62 Stockholm, Sweden
+www.rambollrst.se
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="005397.html">[Gpsd-users] Update freuency
+</A></li>
+	<LI>Next message: <A HREF="005399.html">[Gpsd-users] Update freuency
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#5398">[ date ]</a>
+              <a href="thread.html#5398">[ thread ]</a>
+              <a href="subject.html#5398">[ subject ]</a>
+              <a href="author.html#5398">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

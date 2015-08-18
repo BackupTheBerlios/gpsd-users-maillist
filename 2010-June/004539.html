@@ -1,0 +1,106 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] Infinite loop with gps_query() on dropped connection
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2010-June/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Infinite%20loop%20with%20gps_query%28%29%20on%20dropped%0A%20connection&In-Reply-To=%3C20100617165509.58a778aa%40dragon.localdomain%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="004538.html">
+   <LINK REL="Next"  HREF="004540.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] Infinite loop with gps_query() on dropped connection</H1>
+    <B>Charles Curley</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Infinite%20loop%20with%20gps_query%28%29%20on%20dropped%0A%20connection&In-Reply-To=%3C20100617165509.58a778aa%40dragon.localdomain%3E"
+       TITLE="[Gpsd-users] Infinite loop with gps_query() on dropped connection">charlescurley at charlescurley.com
+       </A><BR>
+    <I>Fri Jun 18 00:55:09 CEST 2010</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="004538.html">[Gpsd-users] Infinite loop with gps_query() on dropped	connection
+</A></li>
+        <LI>Next message: <A HREF="004540.html">[Gpsd-users] Infinite loop with gps_query() on dropped	connection
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#4539">[ date ]</a>
+              <a href="thread.html#4539">[ thread ]</a>
+              <a href="subject.html#4539">[ subject ]</a>
+              <a href="author.html#4539">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>On Thu, 17 Jun 2010 14:49:22 -0600
+Adam Boggs &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">boggs-gpsd at aircrafter.org</A>&gt; wrote:
+
+&gt;<i> But as you mentioned, I'm not sure it solves my particular problem.
+</I>&gt;<i> I guess this is normal behavior for gpsd/libgps though (closing the
+</I>&gt;<i> connection), and what I need to add is code to check if the GPS is no
+</I>&gt;<i> longer activated, and if not, then close the socket and remove the
+</I>&gt;<i> input event handler for that socket.  Then set a timer to retry the
+</I>&gt;<i> gps_open().  Otherwise, the event loop is going to continue calling
+</I>&gt;<i> my callback repeatedly on a socket that is (half) closed.
+</I>&gt;<i> Unfortunately, it means I can't carry my gps_data around either,
+</I>&gt;<i> since it could change out from under me.
+</I>
+I am not seeing gpsd running wild in my testing. Are you using the
+latest version (git HEAD)? 2.39 and some of the 2.9x versions have a
+bug, which has since been handled. I see it in the debian gpsd
+2.90.1~svn6819-1 package. gpsd goes hog wild after I unplug the
+receiver.
+
+If the GPS is deactivated (which is what the code I showed you
+detects), you need only send a &quot;watch&quot;. This alerts the daemon to send
+you an update when it sees the receiver again.
+
+In a bit of testing, I just added a call to sendWatch () right after
+the code that sets up the &quot;GPS Found&quot; message for display, and that
+helps. So I begin to suspect that you have to call sendWatch () every
+time you get a DEVICE_SET message. If not, it's a harmless bit of
+overhead.
+
+But if you want to close down the socket and re-open it, you can do
+that, and it also works. I think it's overkill, though.
+
+I have been assuming that you should only look at gps_data from your
+callback. Any other time it could be modified out from under you. If
+you need data from it elsewhere, stuff the data you need into a separate
+buffer you control.
+
+-- 
+
+Charles Curley                  /&quot;\    ASCII Ribbon Campaign
+Looking for fine software       \ /    Respect for open standards
+and/or writing?                  X     No HTML/RTF in email
+<A HREF="http://www.charlescurley.com">http://www.charlescurley.com</A>    / \    No M$ Word docs in email
+
+Key fingerprint = CE5C 6645 A45A 64E4 94C0  809C FFF6 4C48 4ECD DFDB
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="004538.html">[Gpsd-users] Infinite loop with gps_query() on dropped	connection
+</A></li>
+	<LI>Next message: <A HREF="004540.html">[Gpsd-users] Infinite loop with gps_query() on dropped	connection
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#4539">[ date ]</a>
+              <a href="thread.html#4539">[ thread ]</a>
+              <a href="subject.html#4539">[ subject ]</a>
+              <a href="author.html#4539">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

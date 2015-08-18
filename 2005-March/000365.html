@@ -1,0 +1,130 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] Re: [Gpsd-dev] Rate-limiting SiRF sentence 4.
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2005-March/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Re%3A%20%5BGpsd-dev%5D%20Rate-limiting%20SiRF%20sentence%204.&In-Reply-To=%3C20050316152146.GA24028%40thyrsus.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="000361.html">
+   <LINK REL="Next"  HREF="000305.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] Re: [Gpsd-dev] Rate-limiting SiRF sentence 4.</H1>
+    <B>Eric S. Raymond</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Re%3A%20%5BGpsd-dev%5D%20Rate-limiting%20SiRF%20sentence%204.&In-Reply-To=%3C20050316152146.GA24028%40thyrsus.com%3E"
+       TITLE="[Gpsd-users] Re: [Gpsd-dev] Rate-limiting SiRF sentence 4.">esr at snark.thyrsus.com
+       </A><BR>
+    <I>Wed Mar 16 16:21:46 CET 2005</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="000361.html">[Gpsd-users] Re: [Gpsd-dev] Rate-limiting SiRF sentence 4.
+</A></li>
+        <LI>Next message: <A HREF="000305.html">[Gpsd-users] Hotplug interface problems
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#365">[ date ]</a>
+              <a href="thread.html#365">[ thread ]</a>
+              <a href="subject.html#365">[ subject ]</a>
+              <a href="author.html#365">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Chris Kuethe &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">ckuethe at ualberta.ca</A>&gt;:
+&gt;<i> Hexdump of a packet that should work.
+</I>&gt;<i> 
+</I>&gt;<i> a0 a2 00 08  a6 00 04 05 
+</I>&gt;<i> 00 00 00 00  00 af b0 b3
+</I>&gt;<i> 
+</I>&gt;<i> I say &quot;should work&quot; because I did not try send the packet, but the
+</I>&gt;<i> generator for this packet does control other packet rates properly.
+</I>&gt;<i> If that doesn't work... I'm not sure what to suggest.
+</I>
+It doesn't work.  Look...
+
+gpsd: launching (Version 2.16)
+gpsd: listening on port 2947
+gpsd: opening GPS data source at /dev/ttyUSB0
+gpsd: garmin_probe
+gpsd: garmin_gps not active.
+gpsd: hunting at speed 4800, 8N1
+gpsd: hunting at speed 9600, 8N1
+gpsd: hunting at speed 19200, 8N1
+gpsd: Selecting SiRF-II binary driver...
+gpsd: Setting GSV rate to 0.2Hz...
+gpsd: Writing SiRF control type a6: a0 a2 00 08 a6 00 04 05 00 00 00 00 00 af b0  b3
+gpsd: Probing for firmware version...
+gpsd: Writing SiRF control type 84: a0 a2 00 02 84 00 00 84 b0 b3
+gpsd: gpsd_activate: opened GPS (4)
+gpsd: THR 0x09: SegStatMax=0.000, SegStatLat=  0, AveTrkTime=1.000, Last MS=  0
+gpsd: ACK 0x0b: a6
+gpsd: FV  0x06: Firmware version: 231.000.000ES-01-39
+gpsd: Driver state flags are: 2
+gpsd: ACK 0x0b: 84
+gpsd: MTD 0x04: 7 satellites
+gpsd: &lt;= GPS: $GPGSV,2,1,07,07,72,049,35,24,63,042,33,04,64,247,30,28,38,159,28* 73
+$GPGSV,2,2,07,20,31,055,39,02,20,238,29,09,16,288,35*4C
+$GPGSV,2,3,07*7F
+gpsd: MND 0x02: Navtype = 0x4, Status = 1, mode = 3
+gpsd: &lt;= GPS: $GPGGA,201518.190,4002.1069,N,7531.2089,W,3,00,,154.0,M,,,,,*21
+$GPRMC,201518.19,A,4002.1069,N,7531.2089,W,0.0000,0.000,160305,,*2C
+$GPGSA,A,3,07,24,04,28,20,02,09,,,,,,0.0,1.2,0.0*37
+gpsd: THR 0x09: SegStatMax=0.000, SegStatLat=  0, AveTrkTime=1.000, Last MS=  0
+gpsd: MTD 0x04: 7 satellites
+gpsd: &lt;= GPS: $GPGSV,2,1,07,07,72,049,35,24,63,042,34,04,64,247,30,28,38,159,28* 74
+$GPGSV,2,2,07,20,31,055,40,02,20,238,28,09,16,288,35*43
+$GPGSV,2,3,07*7F
+gpsd: MND 0x02: Navtype = 0x4, Status = 1, mode = 3
+gpsd: &lt;= GPS: $GPGGA,201519.190,4002.1069,N,7531.2089,W,3,07,1.20,154.0,M,,,,,*3 A
+$GPRMC,201519.19,A,4002.1069,N,7531.2089,W,0.0000,0.000,160305,,*2D
+$GPGSA,A,3,07,24,04,28,20,02,09,,,,,,0.0,1.2,0.0*37
+gpsd: THR 0x09: SegStatMax=0.000, SegStatLat=  0, AveTrkTime=1.000, Last MS=  0
+gpsd: MTD 0x04: 7 satellites
+gpsd: &lt;= GPS: $GPGSV,2,1,07,07,72,049,34,24,63,042,34,04,64,247,31,28,38,159,28* 74
+$GPGSV,2,2,07,20,31,055,39,02,20,238,29,09,16,288,35*4C
+$GPGSV,2,3,07*7F
+gpsd: MND 0x02: Navtype = 0x4, Status = 1, mode = 3
+gpsd: &lt;= GPS: $GPGGA,201520.190,4002.1069,N,7531.2089,W,3,07,1.20,154.0,M,,,,,*3 0
+$GPRMC,201520.19,A,4002.1069,N,7531.2089,W,0.0000,0.000,160305,,*27
+$GPGSA,A,3,07,24,04,28,20,02,09,,,,,,0.0,1.2,0.0*37
+gpsd: THR 0x09: SegStatMax=0.000, SegStatLat=  0, AveTrkTime=1.000, Last MS=  0
+gpsd: MTD 0x04: 7 satellites
+gpsd: &lt;= GPS: $GPGSV,2,1,07,07,72,049,35,24,63,042,34,04,64,247,29,28,38,159,28* 7C
+$GPGSV,2,2,07,20,31,055,39,02,20,238,28,09,16,288,35*4D
+$GPGSV,2,3,07*7F
+
+The GPS even acknowledges tha a6 command, but it doesn't *do* it.
+
+In a related mystery, the GPS sometimes swallows the firmware version
+probe without responding.
+-- 
+		&lt;a href=&quot;<A HREF="http://www.catb.org/~esr/">http://www.catb.org/~esr/</A>&quot;&gt;Eric S. Raymond&lt;/a&gt;
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="000361.html">[Gpsd-users] Re: [Gpsd-dev] Rate-limiting SiRF sentence 4.
+</A></li>
+	<LI>Next message: <A HREF="000305.html">[Gpsd-users] Hotplug interface problems
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#365">[ date ]</a>
+              <a href="thread.html#365">[ thread ]</a>
+              <a href="subject.html#365">[ subject ]</a>
+              <a href="author.html#365">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

@@ -1,0 +1,80 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] Read and Write binary data using gpsd
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2011-June/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Read%20and%20Write%20binary%20data%20using%20gpsd&In-Reply-To=%3C01df01cc2a8c%24f0dec0e0%240302a8c0%40desarrollo%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="005344.html">
+   <LINK REL="Next"  HREF="005325.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] Read and Write binary data using gpsd</H1>
+    <B>Victor Andres</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Read%20and%20Write%20binary%20data%20using%20gpsd&In-Reply-To=%3C01df01cc2a8c%24f0dec0e0%240302a8c0%40desarrollo%3E"
+       TITLE="[Gpsd-users] Read and Write binary data using gpsd">victor at cymonline.com
+       </A><BR>
+    <I>Tue Jun 14 14:16:48 CEST 2011</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="005344.html">[Gpsd-users] Sirf Star III - always slow to get a fix?
+</A></li>
+        <LI>Next message: <A HREF="005325.html">[Gpsd-users] Read and Write binary data using gpsd
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#5324">[ date ]</a>
+              <a href="thread.html#5324">[ thread ]</a>
+              <a href="subject.html#5324">[ subject ]</a>
+              <a href="author.html#5324">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>I'm using Gpsd 2.95 with a U-Blox GPS connected to serial port in a linux 
+embedded system. I can access to GPS data in a C++ application using 
+libgpsd.
+But I need  to access to GPS serial port simultaneously to read and write to 
+binary data (ubx).  On this way I can connect with u-center while my 
+application is running (gpsd is blocking the serial com port) and see gps 
+state, update almanac ... or even update u-blox firmware.
+
+How can I do that?
+I'm trying with socat creating other pty port (virtual), but when connect 2 
+client, socat send information to one or to other, but not duplicate the com 
+GPS port information.
+Then I try to use Gpspipe with -R param, super-raw. gpspipe -R | socat - 
+tcp-listen:1496,fork  but I can't write binary and in u-center there are a 
+lot of unknow binary message.
+
+Thanks
+V&#237;ctor Andr&#233;s 
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="005344.html">[Gpsd-users] Sirf Star III - always slow to get a fix?
+</A></li>
+	<LI>Next message: <A HREF="005325.html">[Gpsd-users] Read and Write binary data using gpsd
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#5324">[ date ]</a>
+              <a href="thread.html#5324">[ thread ]</a>
+              <a href="subject.html#5324">[ subject ]</a>
+              <a href="author.html#5324">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

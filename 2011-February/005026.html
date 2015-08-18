@@ -1,0 +1,151 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] NTRIP/RTCM disconnects solved(?)
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2011-February/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20NTRIP/RTCM%20disconnects%20solved%28%3F%29&In-Reply-To=%3C4D58ED23.5060201%40googlemail.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="005024.html">
+   <LINK REL="Next"  HREF="005028.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] NTRIP/RTCM disconnects solved(?)</H1>
+    <B>Andre Naujoks</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20NTRIP/RTCM%20disconnects%20solved%28%3F%29&In-Reply-To=%3C4D58ED23.5060201%40googlemail.com%3E"
+       TITLE="[Gpsd-users] NTRIP/RTCM disconnects solved(?)">nautsch2 at googlemail.com
+       </A><BR>
+    <I>Mon Feb 14 09:51:47 CET 2011</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="005024.html">[Gpsd-users] NTRIP/RTCM disconnects solved(?)
+</A></li>
+        <LI>Next message: <A HREF="005028.html">[Gpsd-users] NTRIP/RTCM disconnects solved(?)
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#5026">[ date ]</a>
+              <a href="thread.html#5026">[ thread ]</a>
+              <a href="subject.html#5026">[ subject ]</a>
+              <a href="author.html#5026">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Am 13.02.2011 12:15, schrieb Eric Raymond:
+&gt;<i> Andre Naujoks &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">nautsch2 at googlemail.com</A>&gt;:
+</I>&gt;&gt;<i> The first thing I had to do to make RTCM work at all, was to remove
+</I>&gt;&gt;<i> the separate poll for the socket (the change in gpsd.c). The same
+</I>&gt;&gt;<i> stuff is done in consume_packet, so there is no loss here. In fact
+</I>&gt;&gt;<i> the duplicated read caused constant lock losses on the RTCM stream
+</I>&gt;&gt;<i> because of missing data, which was already read by the now removed
+</I>&gt;&gt;<i> read.
+</I>&gt;<i> 
+</I>&gt;<i> Excellent code simplification, thank you, I have committed this.  I aso
+</I>&gt;<i> removed a no-longer-used function that the removed code called, and I took
+</I>&gt;<i> your fix in your followup email to set the RTCM2 timestamp on receipt.
+</I>&gt;<i> Also I've added RTCM passthrough to the ubx driver as you suggested.
+</I>
+Thank you! :-)
+
+&gt;<i> 
+</I>&gt;&gt;<i> The first change in net_ntrip.c adds another string to the valid strings for
+</I>&gt;&gt;<i> rtcm2 to be recognized. See: <A HREF="http://www.sapos-ni-ntrip.de:2101/sourcetable.htm">http://www.sapos-ni-ntrip.de:2101/sourcetable.htm</A>
+</I>&gt;&gt;<i> for the sourcetable of the server. The mountpoint I am using is EPS_NI.
+</I>&gt;&gt;<i> The problem is the RTCM1_ data format. The people from sapos confirmed,
+</I>&gt;&gt;<i> that this is a RTCM2 stream and so far it works.
+</I>&gt;<i> 
+</I>&gt;<i> That change is also fine and I have committed it.
+</I>
+Great! Thanks.
+
+&gt;<i> 
+</I>&gt;&gt;<i> I then had to add the EAGAIN cases during the NTRIP probing and
+</I>&gt;&gt;<i> opening, because the server could not possibly answer as fast as was
+</I>&gt;&gt;<i> expected and the read failed every time on the nonblocking socket
+</I>&gt;&gt;<i> with EAGAIN. The downside of this is that a non answering server
+</I>&gt;&gt;<i> will cause an infinite loop here. Maybe a counter should be added
+</I>&gt;&gt;<i> there.
+</I>&gt;<i> 
+</I>&gt;<i> This on the other hand is not good.  Besides the failure case you have
+</I>&gt;<i> pointed out, another problem is that while the usleep(3) is executing
+</I>&gt;<i> gpsd will block input from other data sources.
+</I>&gt;<i> 
+</I>&gt;<i> Both problems should be solved in the same way: ntrip_open() should
+</I>&gt;<i> set a state in the device context that indicates an attempted open is
+</I>&gt;<i> in progress, and then the actual open should be retried on each trip
+</I>&gt;<i> around the main select(2) loop until we either hit a maximum-retry
+</I>&gt;<i> threshold or the connection is established.
+</I>
+Yes, you are right. The whole handshakish stuff should be decoupled. And
+I think usleep isn't even portable. But the current code just does not
+work, if the server doesn't answer in the microsecond it takes to get
+from the write to the read. Which should be always for a non local
+server. Another way would be to make the socket blocking. But there seem
+to be some things, that break other code. (I tried it :-) )
+
+I will hopefully get another GPS receiver with RTCM capabilities soon so
+I can do some experimenting with this. I have to delay this for now. Sorry.
+
+&gt;<i> 
+</I>&gt;&gt;<i> The last one fixes the sending of the current position to the RTCM
+</I>&gt;&gt;<i> caster. The current implementation sends exactly one GGA sentence to
+</I>&gt;&gt;<i> the server and then stops.  In my case that led to a closed
+</I>&gt;&gt;<i> connection by the server because of an NMEA timeout.  Since this is
+</I>&gt;&gt;<i> the only Server I could try this with, I don't know the implications
+</I>&gt;&gt;<i> of the change, but it works for me.
+</I>&gt;<i> 
+</I>&gt;<i> I don't understand this change yet, so I have not committed it.  Let's
+</I>&gt;<i> get the probe/open problem solved first.
+</I>
+Problem is, that the server (or maybe this particular one) drops the
+connection as soon as GPS updates fail to arrive in a certain timeout.
+The former code just sent exactly one update (a GGA sentence through
+gpsd_position_fix_dump()) and then nothing more, so the connection was
+dropped after about 20 seconds every time.
+
+This flag is set once and never reset: session-&gt;context-&gt;sentdgps = true
+But when it is set, no updates are sent to the server. The patch sends
+periodic updates to the server.
+
+This brought up another one, which is, that the updates stop as soon as
+the GPS fix is gone. I don't know what to do about that because this is
+something you can't influence from the code. Maybe something like an
+automatic reconnect to the NTRIP server is needed here.
+
+&gt;<i> 
+</I>&gt;<i> It's good to have someone actively interested in making NTRIP work.
+</I>&gt;<i> That code had gotten rather dusty.
+</I>
+Hehe. I *was* wondering about that :-)
+
+Regards
+  Andre
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="005024.html">[Gpsd-users] NTRIP/RTCM disconnects solved(?)
+</A></li>
+	<LI>Next message: <A HREF="005028.html">[Gpsd-users] NTRIP/RTCM disconnects solved(?)
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#5026">[ date ]</a>
+              <a href="thread.html#5026">[ thread ]</a>
+              <a href="subject.html#5026">[ subject ]</a>
+              <a href="author.html#5026">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

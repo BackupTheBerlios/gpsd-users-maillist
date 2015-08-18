@@ -1,0 +1,160 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] The mess near error modeling
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2005-March/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20The%20mess%20near%20error%20modeling&In-Reply-To=%3C200503111625.j2BGPfFW020820%40snark.thyrsus.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="000306.html">
+   <LINK REL="Next"  HREF="000310.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] The mess near error modeling</H1>
+    <B>Eric S. Raymond</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20The%20mess%20near%20error%20modeling&In-Reply-To=%3C200503111625.j2BGPfFW020820%40snark.thyrsus.com%3E"
+       TITLE="[Gpsd-users] The mess near error modeling">esr at snark.thyrsus.com
+       </A><BR>
+    <I>Fri Mar 11 17:25:41 CET 2005</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="000306.html">[Gpsd-users] Should sirfmon be part of the release?
+</A></li>
+        <LI>Next message: <A HREF="000310.html">[Gpsd-users] The mess near error modeling
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#307">[ date ]</a>
+              <a href="thread.html#307">[ thread ]</a>
+              <a href="subject.html#307">[ subject ]</a>
+              <a href="author.html#307">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>I should have called this &quot;the mess near uncertainty reporting&quot;.
+
+One of my goals has been to report an uncertainty along with every
+dimension of PVT, so that the return from the GPS actually (and
+realistically) describes the volume of kinematic state space within
+which it is located at 95% confidence.
+
+There are several problems with this. 
+
+A. I don't know how to derive or estimate uncertainty of time in the
+general case.  There are clock drift and bias fields in the SiRF
+binary protocol, but I don't know how to interpret these.  Does
+anyone?
+
+B. Only the Garmin reports estimated position error in meters, and I
+don't know whether its confidence level is 50% or 95%.  Does anyone?
+Gary?
+
+C. SiRF binary reports HDOP, SiRF and other NMEA devices report
+HDOP/VDOP/PDOP.
+
+Here is what I am presently doing in the new E command:
+
+1. I pass up the Garmin PGRME fields (uncertainty in meters) if
+   they're available.
+
+2. Otherwise, I apply the error model described in gpsd.h:
+
+/*
+ * User Equivalent Range Error
+ * UERE is the square root of the sum of the squares of individual
+ * errors.  We compute based on the following error budget for
+ * satellite range measurements.  Note: this is only used if the
+ * GPS doesn't report estimated position error itself.
+ *
+ * From R.B Langley's 1997 &quot;The GPS error budget&quot;. 
+ * GPS World , Vol. 8, No. 3, pp. 51-56
+ *
+ * Atmospheric error -- ionosphere                 7.0m
+ * Atmospheric error -- troposphere                0.7m
+ * Clock and ephemeris error                       3.6m
+ * Receiver noise                                  1.5m
+ * Multipath effect                                1.2m
+ *
+ * From Hoffmann-Wellenhof et al. (1997), &quot;GPS: Theory and Practice&quot;, 4th
+ * Ed., Springer.
+ *
+ * Code range noise (C/A)                          0.3m
+ * Code range noise (P-code)                       0.03m
+ * Phase range                                     0.005m
+ *
+ * Taking the square root of the sum of aa squares...
+ * UERE=sqrt(7.0^2 + 0.7^2 + 3.6^2 + 1.5^2 + 1.2^2 + 0.3^2 + 0.03^2 + 0.005^2)
+ *
+ * See <A HREF="http://www.seismo.berkeley.edu/~battag/GAMITwrkshp/lecturenotes/unit1/">http://www.seismo.berkeley.edu/~battag/GAMITwrkshp/lecturenotes/unit1/</A>
+ * for discussion.
+ *
+ * DGPS corrects for atmospheric distortion, ephemeris error, and satellite/
+ * receiver clock error.  Thus:
+ * UERE =  sqrt(1.5^2 + 1.2^2 + 0.3^2 + 0.03^2 + 0.005^2)
+ */
+#define UERE_NO_DGPS	8.1382
+#define UERE_WITH_DGPS	1.9444
+#define UERE(session)	((session-&gt;dsock==-1) ? UERE_NO_DGPS : UERE_WITH_DGPS)
+
+What non-Garmin GPSes will return in the E command is UERE multiplied
+by PDOP/HDOP/VDOP.  Annoyingly, SiRF binary mode only offers HDOP, the
+one respect in which it is functionally inferior to SiRF NMEA.
+
+I don't know, because my sources didn't say, whether the above is a
+50%-confidence or 95%-confidence error budget.  My educated guess
+is the latter, and that's what the gpsd documentation now says, but
+it needs to be confirmed.
+
+3. I don't currently pass back uncertainty of speed or track at
+all, though SiRF chips make those available.  To do so would 
+require yet another protocol extension, which gets into our
+final issue (&quot;Does the GPSD protocol need to be redesigned?&quot;).
+
+This area needs some attention from somebody who cares a lot about
+GPS accuracy and is willing to do research on error budgets to pin
+down the numbers and confidence levels.
+
+Still to come:
+
+* HAL integration
+
+* DGPS/WAAS/EGNOS/SBAS support
+
+* Multi-session semantics
+
+* Subsecond polling
+
+* Does the GPSD protocol need to be redesigned?
+-- 
+		&lt;a href=&quot;<A HREF="http://www.catb.org/~esr/">http://www.catb.org/~esr/</A>&quot;&gt;Eric S. Raymond&lt;/a&gt;
+
+Never could an increase of comfort or security be a sufficient good to be
+bought at the price of liberty.		-- Hillaire Belloc
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="000306.html">[Gpsd-users] Should sirfmon be part of the release?
+</A></li>
+	<LI>Next message: <A HREF="000310.html">[Gpsd-users] The mess near error modeling
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#307">[ date ]</a>
+              <a href="thread.html#307">[ thread ]</a>
+              <a href="subject.html#307">[ subject ]</a>
+              <a href="author.html#307">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

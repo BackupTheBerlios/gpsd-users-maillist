@@ -1,0 +1,152 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] bug: crash with 'F' command, debugging on
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2009-August/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20bug%3A%20crash%20with%20%27F%27%20command%2C%20debugging%20on&In-Reply-To=%3C1710.1249913810%40foxharp.boston.ma.us%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="003854.html">
+   <LINK REL="Next"  HREF="003862.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] bug: crash with 'F' command, debugging on</H1>
+    <B>Paul Fox</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20bug%3A%20crash%20with%20%27F%27%20command%2C%20debugging%20on&In-Reply-To=%3C1710.1249913810%40foxharp.boston.ma.us%3E"
+       TITLE="[Gpsd-users] bug: crash with 'F' command, debugging on">pgf at foxharp.boston.ma.us
+       </A><BR>
+    <I>Mon Aug 10 16:16:50 CEST 2009</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="003854.html">[Gpsd-users] bug:  crash with 'F' command, debugging on
+</A></li>
+        <LI>Next message: <A HREF="003862.html">[Gpsd-users] bug: crash with 'F' command, debugging on
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3860">[ date ]</a>
+              <a href="thread.html#3860">[ thread ]</a>
+              <a href="subject.html#3860">[ subject ]</a>
+              <a href="author.html#3860">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>eric s. raymond wrote:
+ &gt; Paul Fox &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">pgf at foxharp.boston.ma.us</A>&gt;:
+ &gt; &gt; 
+ &gt; &gt; hi --
+ &gt; &gt; 
+ &gt; &gt; i was trying to get some logging of gpsd (pretty current:  r5863)
+ &gt; &gt; with debug turned on.  gpsmon caused it to crash -- it's
+ &gt; &gt; reproducible with a simple &quot;echo f | nc localhost 2947&quot;.
+ &gt; &gt; 
+ &gt; &gt; let me know if i can provide any more information.
+ &gt; &gt; 
+ &gt; &gt; (the device is a sirf receiver, though i'm not sure that matters.)
+ &gt; 
+ &gt; I just committed a patch that probably fixes this; give it a try.
+
+not quite -- there was a logic thinko in the new 'if' expression. 
+but even with that, 'channel' needs to be initialized to make it
+work.  suspicious, i checked the other command cases -- i've
+tested the fix to 'J', but not the change to 'N'.  (i'm sure it's
+an appropriate fix, just not sure how to reproduce the case it's
+fixing in order to test it.)
+
+btw, the &quot;#ifdef ALLOW_RECONFIGURE&quot; at line 1261 is redundant -- but
+i left it, as it would be an unrelated change for this patch.
+
+thanks,
+paul
+
+Index: gpsd.c
+===================================================================
+--- gpsd.c	(revision 5871)
++++ gpsd.c	(working copy)
+@@ -1065,7 +1065,7 @@
+ {
+     char reply[BUFSIZ], phrase[BUFSIZ], *p, *stash;
+     int i, j;
+-    struct channel_t *channel;
++    struct channel_t *channel = NULL;
+ 
+     (void)strlcpy(reply, &quot;GPSD&quot;, BUFSIZ);
+     p = buf;
+@@ -1185,7 +1185,7 @@
+ 		}
+ 	    }
+ 	    /*@ +branchstate @*/
+-	    if (channel == NULL || channel-&gt;device != NULL)
++	    if (channel != NULL &amp;&amp; channel-&gt;device != NULL)
+ 		(void)snprintf(phrase, sizeof(phrase), &quot;,F=%s&quot;,
+ 			 channel-&gt;device-&gt;gpsdata.gps_device);
+ 	    else
+@@ -1222,15 +1222,18 @@
+ 		(void)strlcpy(phrase, &quot;,I=?&quot;, BUFSIZ);
+ 	    break;
+ 	case 'J':
+-	    if (*p == '=') ++p;
+-	    if (*p == '1' || *p == '+') {
+-		channel-&gt;conf.buffer_policy = nocasoc;
+-		p++;
+-	    } else if (*p == '0' || *p == '-') {
+-		channel-&gt;conf.buffer_policy = casoc;
+-		p++;
+-	    }
+-	    (void)snprintf(phrase, sizeof(phrase), &quot;,J=%u&quot;, channel-&gt;conf.buffer_policy);
++	    if (channel != NULL) {
++		if (*p == '=') ++p;
++		if (*p == '1' || *p == '+') {
++		    channel-&gt;conf.buffer_policy = nocasoc;
++		    p++;
++		} else if (*p == '0' || *p == '-') {
++		    channel-&gt;conf.buffer_policy = casoc;
++		    p++;
++		}
++		(void)snprintf(phrase, sizeof(phrase), &quot;,J=%u&quot;, channel-&gt;conf.buffer_policy);
++	    } else 
++		(void)strlcpy(phrase, &quot;,J=?&quot;, BUFSIZ);
+ 	    break;
+ 	case 'K':
+ 	    for (j = i = 0; i &lt; MAXDEVICES; i++)
+@@ -1272,7 +1275,7 @@
+ 		}
+ 	    }
+ #endif /* ALLOW_RECONFIGURE */
+-	    if (!channel-&gt;device)
++	    if (!channel || !channel-&gt;device)
+ 		(void)snprintf(phrase, sizeof(phrase), &quot;,N=?&quot;);
+ 	    else
+ 		(void)snprintf(phrase, sizeof(phrase), &quot;,N=%u&quot;, channel-&gt;device-&gt;gpsdata.driver_mode);
+
+
+=---------------------
+ paul fox, <A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">pgf at foxharp.boston.ma.us</A> (arlington, ma, where it's 70.7 degrees)
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="003854.html">[Gpsd-users] bug:  crash with 'F' command, debugging on
+</A></li>
+	<LI>Next message: <A HREF="003862.html">[Gpsd-users] bug: crash with 'F' command, debugging on
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3860">[ date ]</a>
+              <a href="thread.html#3860">[ thread ]</a>
+              <a href="subject.html#3860">[ subject ]</a>
+              <a href="author.html#3860">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

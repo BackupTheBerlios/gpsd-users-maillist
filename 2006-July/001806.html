@@ -1,0 +1,114 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] Is there a way to fine tune positions using gpsd
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2006-July/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Is%20there%20a%20way%20to%20fine%20tune%20positions%20using%20gpsd&In-Reply-To=%3C200607311420.15037.david.goodenough%40btconnect.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="001805.html">
+   <LINK REL="Next"  HREF="001808.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] Is there a way to fine tune positions using gpsd</H1>
+    <B>David Goodenough</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Is%20there%20a%20way%20to%20fine%20tune%20positions%20using%20gpsd&In-Reply-To=%3C200607311420.15037.david.goodenough%40btconnect.com%3E"
+       TITLE="[Gpsd-users] Is there a way to fine tune positions using gpsd">david.goodenough at btconnect.com
+       </A><BR>
+    <I>Mon Jul 31 15:20:13 CEST 2006</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="001805.html">[Gpsd-users] Is there a way to fine tune positions using gpsd
+</A></li>
+        <LI>Next message: <A HREF="001808.html">[Gpsd-users] Is there a way to fine tune positions using gpsd
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1806">[ date ]</a>
+              <a href="thread.html#1806">[ thread ]</a>
+              <a href="subject.html#1806">[ subject ]</a>
+              <a href="author.html#1806">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>On Monday 31 July 2006 13:31, pmarc wrote:
+&gt;<i> 2006/7/29, David Goodenough &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">david.goodenough at btconnect.com</A>&gt;:
+</I>&gt;<i> &gt; On Saturday 29 July 2006 17:25, Eric S. Raymond wrote:
+</I>&gt;<i> &gt; &gt; David Goodenough &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">david.goodenough at btconnect.com</A>&gt;:
+</I>&gt;<i> &gt; &gt; &gt; I have a GPS unit (a Fortune GPSmart) which consistently reports the
+</I>&gt;<i> &gt; &gt; &gt; wrong position.  The position is out by about 20m in one direction,
+</I>&gt;<i> &gt; &gt; &gt; and just under 10m in the other.  Is it possible to put a correction
+</I>&gt;<i> &gt; &gt; &gt; factor into the gpsd configuration so that it does not appear that I
+</I>&gt;<i> &gt; &gt; &gt; am driving through the fields next to the motorway?
+</I>&gt;<i> &gt; &gt;
+</I>&gt;<i> &gt; &gt; We don't currently have such a feature.
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; Would it be sensible to add it, or is there a more logical place?  If
+</I>&gt;<i> &gt; this is a logical place I will try to add the code and submit a patch.
+</I>&gt;<i>
+</I>&gt;<i> Hi David,
+</I>&gt;<i>
+</I>&gt;<i> What you are asking for is a GIS function, that is included in many
+</I>&gt;<i> GIS/mapping packages out there.
+</I>&gt;<i> What one does is snap the gps points to a vector network that
+</I>&gt;<i> represents the roads.
+</I>This would not help me as many of the points I wish to map are not on 
+roads (I run a rural wireless broadband network and I want to map both
+my access points many of which are on farm buildings and the general
+wireless reception).  
+&gt;<i>
+</I>&gt;<i> I think it doesn't make any sense to incluse this on gpsd, since that
+</I>&gt;<i> deviation should be time and position dependent, and also map
+</I>&gt;<i> dependent .
+</I>This error seems to be quite constant over the area I cover (an area about
+20 miles by 20 miles) and that is the only one that concerns me.  It was 
+also consistant when I drove from near Oxford to Birmingham, but I have not
+tried taking it out of country.
+
+It has been consistant for the last 3 years, ever since I got the unit.
+
+The main app I use when driving is gpsdrive, and I have not seen such a
+feature on that program.
+
+Is it possible to &quot;chain&quot; applications, i.e. for me to write a filter
+in between gpsd and gpsdrive?  Obviously it would have to run on a different
+port to the standard one, but then I could do this without modifying either.
+Alternatively does gpsd have any facility for running extra code on the 
+received data before it gets handed on to the main app(gpsd in this case)?
+
+David
+&gt;<i> Most of the time, we have maps that were made with a scale, and are
+</I>&gt;<i> only accurate to that scale. GPS also have an accuracy, but as the
+</I>&gt;<i> position is indicated up to the centimetre range, we rely on that when
+</I>&gt;<i> we should trust it up to 50m.
+</I>&gt;<i>
+</I>&gt;<i> So, your position error is well within the expected accuracy of the
+</I>&gt;<i> Global Positioning System.
+</I>
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="001805.html">[Gpsd-users] Is there a way to fine tune positions using gpsd
+</A></li>
+	<LI>Next message: <A HREF="001808.html">[Gpsd-users] Is there a way to fine tune positions using gpsd
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1806">[ date ]</a>
+              <a href="thread.html#1806">[ thread ]</a>
+              <a href="subject.html#1806">[ subject ]</a>
+              <a href="author.html#1806">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

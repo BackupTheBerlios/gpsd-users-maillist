@@ -1,0 +1,134 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] Prolific 2303 usb gps dongle erratic behaviour
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2011-May/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Prolific%202303%20usb%20gps%20dongle%20erratic%20behaviour&In-Reply-To=%3C4DE1414A.8000005%40open-t.co.uk%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="005256.html">
+   <LINK REL="Next"  HREF="005259.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] Prolific 2303 usb gps dongle erratic behaviour</H1>
+    <B>Sebastian Arcus</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Prolific%202303%20usb%20gps%20dongle%20erratic%20behaviour&In-Reply-To=%3C4DE1414A.8000005%40open-t.co.uk%3E"
+       TITLE="[Gpsd-users] Prolific 2303 usb gps dongle erratic behaviour">shop at open-t.co.uk
+       </A><BR>
+    <I>Sat May 28 20:39:06 CEST 2011</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="005256.html">[Gpsd-users] Prolific 2303 usb gps dongle erratic behaviour
+</A></li>
+        <LI>Next message: <A HREF="005259.html">[Gpsd-users] Prolific 2303 usb gps dongle erratic behaviour
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#5258">[ date ]</a>
+              <a href="thread.html#5258">[ thread ]</a>
+              <a href="subject.html#5258">[ subject ]</a>
+              <a href="author.html#5258">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>
+
+On 27/05/11 14:04, Sebastian Arcus wrote:
+&gt;<i> Hi all,
+</I>&gt;<i>
+</I>&gt;<i> I have two GPS USB dongles with the Prolific PL2303 chipset. They were
+</I>&gt;<i> bought about 1.5 years apart from Maplin in UK - and they appear to be
+</I>&gt;<i> two different models by same manufacturer - one is white and the other
+</I>&gt;<i> is black - but they look pretty much identical otherwise.
+</I>&gt;<i>
+</I>&gt;<i> I'm having problems getting them to work reliably. Sometime I would plug
+</I>&gt;<i> them in - and the blue led starts flashing almost straight away. Other
+</I>&gt;<i> times I could be driving 25 minutes with the laptop in my car, the
+</I>&gt;<i> dongle plugged in, and the blue led stays on solid and doesn't want to
+</I>&gt;<i> start flashing (which indicates a fix).
+</I>&gt;<i>
+</I>&gt;<i> I thought it might be some udev script or other software on my laptop
+</I>&gt;<i> that is sending data which is locking the chip up - so I tried to plug
+</I>&gt;<i> them in when the laptop is in stand-by - just power on the usb ports. It
+</I>&gt;<i> doesn't seem to make a difference. The strange thing is that, after they
+</I>&gt;<i> get going, they are great. I've taken the white dongle with me last year
+</I>&gt;<i> to France and used it all over the place with Navit as my GPS navigator.
+</I>&gt;<i>
+</I>&gt;<i> I would like some ideas to further troubleshoot them. How do I find out
+</I>&gt;<i> if, when the blue light is solid, the chipset is trying to lock onto
+</I>&gt;<i> satellites and it is failing because of weak signal - or it is in some
+</I>&gt;<i> inconsistent state because of some other reason? Gpsd only reports that
+</I>&gt;<i> there are no useful fixes coming in from the sensor - but it won't tell
+</I>&gt;<i> me if the chipset is otherwise working ok and responding to commands.
+</I>&gt;<i>
+</I>
+Just a follow-up to my previous emails. First, in answer to some 
+comments made by posters. I take onboard what people are saying about 
+long ttff's and their causes, but:
+
+1. I'm talking about warm starts - and by that, I mean that the dongle 
+would have been used (and locked onto satellites) one or two hours 
+prior, in the same location. I think in that case 20-40 minutes ttff is 
+a long time, in an open place, with no obstructions above, or tall 
+buildings in vicinity.
+
+2. Re: Gary's comment about older gps's taking a long time to start. 
+This is a brand new gps dongle, usb based, with Sirf III chipset and 
+internal ceramic antenna (whatever that means). I hope, in that case, 
+that the 30 minutes+ startup time shouldn't apply to this one.
+
+3. I don't think that the quality of the reception on the passenger seat 
+is a problem for this particular gps dongle. I always use it there, and 
+once it gets a lock, it works absolutely brilliantly. I've done hundreds 
+of miles with laptop+dongle on passenger seat, including in town/cities 
+among buildings - and once it obtains a lock, it will keep on working 
+rock solid until the end of the journey - no matter how long.
+
+However, I've done some more tests. Last night it took 22 minutes to 
+obtain a fix, after being used only 5 hours previously, (with the 
+previous journey ending where the later one started - so same location). 
+This was with the laptop on. Two hours later, on the way back, again 
+starting where the previous journey ended, it refused to obtain a fix 
+for the entire journey of over 40 minutes with the laptop on. All this 
+travelling was done on motorway/highway on flat, open fields.
+
+Today I've tried it on several occasions with the laptop in stand-by 
+(only power from usb, no data). Every time I plug it in with the laptop 
+in standby (in the car), it doesn't fail to obtain a fix within 1-2 
+minutes. The blue light just starts flashing, even when I'm in between 
+buildings.
+
+This is now looking distinctly like a software problem. I assume that 
+something is sending some commands to the usb port, which gets the gps 
+chipset confused. My main suspects are kernel/kernel tty drivers, udev 
+and gpsd. I will have to start narrowing things down.
+
+Sebastian
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="005256.html">[Gpsd-users] Prolific 2303 usb gps dongle erratic behaviour
+</A></li>
+	<LI>Next message: <A HREF="005259.html">[Gpsd-users] Prolific 2303 usb gps dongle erratic behaviour
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#5258">[ date ]</a>
+              <a href="thread.html#5258">[ thread ]</a>
+              <a href="subject.html#5258">[ subject ]</a>
+              <a href="author.html#5258">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

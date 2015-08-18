@@ -1,0 +1,125 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] GPSD Disconnect/Reconnect
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2005-March/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20GPSD%20Disconnect/Reconnect&In-Reply-To=%3C200503171902.j2HJ24fi031190%40ns4.i-mecca.net%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="000376.html">
+   <LINK REL="Next"  HREF="000378.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] GPSD Disconnect/Reconnect</H1>
+    <B>Willem</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20GPSD%20Disconnect/Reconnect&In-Reply-To=%3C200503171902.j2HJ24fi031190%40ns4.i-mecca.net%3E"
+       TITLE="[Gpsd-users] GPSD Disconnect/Reconnect">willem at pcfish.ca
+       </A><BR>
+    <I>Thu Mar 17 20:00:08 CET 2005</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="000376.html">[Gpsd-users] GPSD Disconnect/Reconnect
+</A></li>
+        <LI>Next message: <A HREF="000378.html">[Gpsd-users] GPSD Disconnect/Reconnect
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#377">[ date ]</a>
+              <a href="thread.html#377">[ thread ]</a>
+              <a href="subject.html#377">[ subject ]</a>
+              <a href="author.html#377">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Thanks Eric
+
+This is how I start Gpsd:
+
+1) GPS is connected and running
+
+2) gpsd -f /dev/ttyS0 -N -D 2 to run the server in the foreground with debug
+level 2
+
+4) I then telnet into localhost 2947
+
+5) From there I try a command such as p - it will report back with either a
+position or a question mark.
+
+6) I then unplug the GPS and the debug reports: closed GPS
+
+7) I then try a command from the telnet connection such as p.  Debug returns
+the following: opening GPS -- datasource at /dev/ttyS0 -- setting speed
+9600, 1 stopbits, no parity
+
+At this point I get no reponse whatsoever.  Typing any command such as p or
+r does nothing.
+
+8) I plug the GPS back in and it picks up where it left off.  It will again
+respond to my commands from the telnet connection.
+
+So the way I see it is this.  When the GPS is disconnected any command will
+open a connection to the server.  However, if there is no GPS running then
+the server will not respond back and we get stuck in an endless wait. 
+
+I've installed so many different versions that maybe I have some libraries
+mixed up - so I will look into that next.
+
+One last question though - how come we have lost the ability to set the baud
+rate?  With this latest version my program has to wait for the server to
+hunt down the correct baud rate which takes some time.  Is it possible to
+put back the option to set the baud rate when starting gpsd?
+
+Thanks,
+
+Willem 
+
+-----Original Message-----
+From: Eric S. Raymond [mailto:<A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">esr at thyrsus.com</A>] 
+Sent: Thursday, March 17, 2005 10:43 AM
+To: Willem
+Cc: <A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">gpsd-users at lists.berlios.de</A>
+Subject: Re: [Gpsd-users] GPSD Disconnect/Reconnect
+
+Willem &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">willem at pcfish.ca</A>&gt;:
+&gt;<i> I've had this problem with all of the versions back to 2.14 and before
+</I>that
+&gt;<i> gpsd wouldn't respond to my gps nmea gprmc string.  Thanks for all of your
+</I>&gt;<i> help Eric.  I guess its time to do some more mucking about myself.  I'll
+</I>&gt;<i> keep you posted.  In the meantime, I would really be interested if anyone
+</I>&gt;<i> else on this group could try and reproduce this effect.
+</I>
+I'm sorry I can't be more helpful.  I've already rewritten the packet getter
+once to solve the reconnect failure I could reproduce here, and I'm willing
+to work on this more if you develop a recipe by which I can tickle your bug.
+-- 
+		&lt;a href=&quot;<A HREF="http://www.catb.org/~esr/">http://www.catb.org/~esr/</A>&quot;&gt;Eric S. Raymond&lt;/a&gt;
+
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="000376.html">[Gpsd-users] GPSD Disconnect/Reconnect
+</A></li>
+	<LI>Next message: <A HREF="000378.html">[Gpsd-users] GPSD Disconnect/Reconnect
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#377">[ date ]</a>
+              <a href="thread.html#377">[ thread ]</a>
+              <a href="subject.html#377">[ subject ]</a>
+              <a href="author.html#377">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

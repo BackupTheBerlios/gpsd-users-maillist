@@ -1,0 +1,121 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] Re: Earthmate USB hotplug problem
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2005-December/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Re%3A%20Earthmate%20USB%20hotplug%20problem&In-Reply-To=%3C7b9ca310512021102g42e88682w89161942ea5427d8%40mail.gmail.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="001149.html">
+   <LINK REL="Next"  HREF="001153.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] Re: Earthmate USB hotplug problem</H1>
+    <B>Michael Ellis</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Re%3A%20Earthmate%20USB%20hotplug%20problem&In-Reply-To=%3C7b9ca310512021102g42e88682w89161942ea5427d8%40mail.gmail.com%3E"
+       TITLE="[Gpsd-users] Re: Earthmate USB hotplug problem">michael.f.ellis at gmail.com
+       </A><BR>
+    <I>Fri Dec  2 20:02:31 CET 2005</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="001149.html">[Gpsd-users] Earthmate USB hotplug problem
+</A></li>
+        <LI>Next message: <A HREF="001153.html">[Gpsd-users] Using 2 GPS-Receivers
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1150">[ date ]</a>
+              <a href="thread.html#1150">[ thread ]</a>
+              <a href="subject.html#1150">[ subject ]</a>
+              <a href="author.html#1150">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>More info.  Has anyone else seen behavior like this?
+Thanks,
+Mike Ellis
+
+With the Earthmate connected and running on /dev/tts/USB3, I added
+more syslog.syslog() calls in gpsd.hotplug.  Found that the script is
+hanging on the connect.recv() call that follows the connect.sendall
+call that adds and removes devices from the gpsd internal list.
+
+I began experimenting from the command line running gpsd in the
+foreground with the debug level set at 5. The output below shows what
+happens when I manually replicate the socket actions in gpsd.hotplug
+from a python session in a separate terminal window.
+
+
+bash-3.00$ sudo /usr/sbin/gpsd -n -N -D5 -F /var/run/gpsd.sock
+gpsd: control socket opened at /var/run/gpsd.sock
+gpsd: launching (Version 2.29)
+gpsd: listening on port 2947
+gpsd: running with effective group ID 0
+gpsd: running with effective user ID 0
+&lt;snip&gt;
+gpsd: control socket connect on 5
+gpsd: &lt;= control(5): +/dev/tts/USB3
+gpsd: &lt;= control(5): adding /dev/tts/USB3
+gpsd: opening GPS data source at '/dev/tts/USB3'
+gpsd: garmin_gps not active.
+gpsd: no probe matched...
+gpsd: speed 4800, 8N1
+gpsd: gpsd_activate: opened GPS (6)
+
+The corresponding output in the other terminal is
+
+bash-3.00$ sudo python
+Python 2.4 (#1, Jan  1 2005, 21:33:55)
+[GCC 3.3.4] on linux2
+Type &quot;help&quot;, &quot;copyright&quot;, &quot;credits&quot; or &quot;license&quot; for more information.
+&gt;&gt;&gt;<i> import socket
+</I>&gt;&gt;&gt;<i> CONTROL_SOCKET = &quot;/var/run/gpsd.sock&quot;
+</I>&gt;&gt;&gt;<i> sock = socket.socket(socket.AF_UNIX, socket.SOCK_STREAM, 0)
+</I>&gt;&gt;&gt;<i> sock.connect(CONTROL_SOCKET)
+</I>&gt;&gt;&gt;<i> sock.sendall(&quot;+/dev/tts/USB3&quot;)
+</I>&gt;&gt;&gt;<i> sock.recv(12)
+</I>'OK\n'
+&gt;&gt;&gt;<i>
+</I>
+So all looks good at that point, but when I telnet  gpsd still does
+not respond to commands.
+
+telnet localhost 2947
+Trying 127.0.0.1...
+Connected to localhost.
+Escape character is '^]'.
+x
+p
+a
+m
+s
+
+Arrrgh!
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="001149.html">[Gpsd-users] Earthmate USB hotplug problem
+</A></li>
+	<LI>Next message: <A HREF="001153.html">[Gpsd-users] Using 2 GPS-Receivers
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1150">[ date ]</a>
+              <a href="thread.html#1150">[ thread ]</a>
+              <a href="subject.html#1150">[ subject ]</a>
+              <a href="author.html#1150">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

@@ -1,0 +1,155 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] interpreting ntpq with 1 pps
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2010-February/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20interpreting%20ntpq%20with%201%20pps&In-Reply-To=%3C4B841916.60309%40scion-associates.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="004223.html">
+   <LINK REL="Next"  HREF="004256.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] interpreting ntpq with 1 pps</H1>
+    <B>Robert Livingston</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20interpreting%20ntpq%20with%201%20pps&In-Reply-To=%3C4B841916.60309%40scion-associates.com%3E"
+       TITLE="[Gpsd-users] interpreting ntpq with 1 pps">livingston at scion-associates.com
+       </A><BR>
+    <I>Tue Feb 23 19:06:14 CET 2010</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="004223.html">[Gpsd-users] gpsd 1 PPS problem
+</A></li>
+        <LI>Next message: <A HREF="004256.html">[Gpsd-users] interpreting ntpq with 1 pps
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#4255">[ date ]</a>
+              <a href="thread.html#4255">[ thread ]</a>
+              <a href="subject.html#4255">[ subject ]</a>
+              <a href="author.html#4255">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Gary,
+
+As you suggested in your reply a couple of weeks ago, moving to 2.90 
+under Debian Squeeze solved my 1 pps problems. Thanks.
+
+With the 1 pps, the typical 'ntpq -p' output looks like that below, i.e. 
+selection of the 1 pps and correspondingly low jitter. It will log 
+something like the following for hours/days:
+
+remote refid st t when poll reach delay offset jitter
+==========================================
++131.107.13.100 .ACTS. 1 u 14 64 337 57.288 2.164 0.238
++SHM(0) .GPS. 0 l 12 16 377 0.000 -23.984 2.135
+*SHM(1) .GPS1. 0 l 5 16 377 0.000 -0.003 0.001
+
+However, there was one period I observed when ntpd suddenly bounced 
+around the servers, discarding all at one point, and mostly ignoring the 
+1 pps. These log entries are separated by 10 minutes:
+
+remote refid st t when poll reach delay offset jitter
+=======================================
+131.107.13.100 .ACTS. 1 u 129 64 0 57.456 3.205 0.000
+xSHM(0) .GPS. 0 l 10 16 377 0.000 -31.983 4.781
+xSHM(1) .GPS1. 0 l 14 16 377 0.000 -2.915 0.256
+remote refid st t when poll reach delay offset jitter
+=======================================
+x131.107.13.100 .ACTS. 1 u 18 64 357 57.539 7.029 4.929
++SHM(0) .GPS. 0 l 9 16 377 0.000 -19.983 5.856
+*SHM(1) .GPS1. 0 l 8 16 377 0.000 3.066 0.227
+remote refid st t when poll reach delay offset jitter
+=======================================
+131.107.13.100 .ACTS. 1 u 39 64 300 57.306 6.150 0.358
++SHM(0) .GPS. 0 l 15 16 377 0.000 0.016 15.042
+*SHM(1) .GPS1. 0 l 3 16 377 0.000 2.851 0.677
+remote refid st t when poll reach delay offset jitter
+=======================================
+x131.107.13.100 .ACTS. 1 u 2 64 376 57.548 3.578 0.668
+xSHM(0) .GPS. 0 l 3 16 377 0.000 -35.983 12.095
+xSHM(1) .GPS1. 0 l 15 16 377 0.000 0.045 0.019
+remote refid st t when poll reach delay offset jitter
+=======================================
+131.107.13.100 .ACTS. 1 u 22 64 0 58.081 3.197 0.000
+xSHM(0) .GPS. 0 l 11 16 377 0.000 -39.983 16.970
+xSHM(1) .GPS1. 0 l 9 16 377 0.000 0.185 0.079
+remote refid st t when poll reach delay offset jitter
+=======================================
++131.107.13.100 .ACTS. 1 u 45 64 17 56.978 1.852 0.158
++SHM(0) .GPS. 0 l 8 16 377 0.000 -39.983 9.681
+*SHM(1) .GPS1. 0 l 18 16 377 0.000 -0.698 0.426
+
+Once settled back, the jitter will drop down to 0.001 and stay there 
+again for hours/days.
+
+Is there anything systematic about such excursions (e.g. incorrect ntpd 
+settings), or was this one a fluke?
+
+Robert
+
+
+
+
+Gary E. Miller wrote:
+&gt;<i> -----BEGIN PGP SIGNED MESSAGE-----
+</I>&gt;<i> Hash: SHA1
+</I>&gt;<i>
+</I>&gt;<i> Yo Robert!
+</I>&gt;<i>
+</I>&gt;<i> On Thu, 11 Feb 2010, Robert Livingston wrote:
+</I>&gt;<i>
+</I>&gt;<i>   
+</I>&gt;&gt;<i> I'm using Debian Lenny, gpsd 2.37, ntp (not openntp), Trimble Resolution
+</I>&gt;&gt;<i> -T receiver, TSIP protocol, serial port ttyS0.
+</I>&gt;&gt;<i>     
+</I>&gt;<i>
+</I>&gt;<i> 2.37 is ancient.  Lot's of PPS fixes up to 2.90.  Upgrade now.
+</I>&gt;<i>
+</I>&gt;<i> RGDS
+</I>&gt;<i> GARY
+</I>&gt;<i> - ---------------------------------------------------------------------------
+</I>&gt;<i> Gary E. Miller Rellim 109 NW Wilmington Ave., Suite E, Bend, OR 97701
+</I>&gt;<i> 	<A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">gem at rellim.com</A>  Tel:+1(541)382-8588
+</I>&gt;<i>
+</I>&gt;<i> -----BEGIN PGP SIGNATURE-----
+</I>&gt;<i> Version: GnuPG v1.4.3 (GNU/Linux)
+</I>&gt;<i>
+</I>&gt;<i> iD8DBQFLdL1kBmnRqz71OvMRAli2AKCpRSvchojK56Nxmkr/M44pDveNDQCgnaW0
+</I>&gt;<i> +ckkshAMGhKQ4YI4Ww40N9k=
+</I>&gt;<i> =RaaD
+</I>&gt;<i> -----END PGP SIGNATURE-----
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i>   
+</I>
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="004223.html">[Gpsd-users] gpsd 1 PPS problem
+</A></li>
+	<LI>Next message: <A HREF="004256.html">[Gpsd-users] interpreting ntpq with 1 pps
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#4255">[ date ]</a>
+              <a href="thread.html#4255">[ thread ]</a>
+              <a href="subject.html#4255">[ subject ]</a>
+              <a href="author.html#4255">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

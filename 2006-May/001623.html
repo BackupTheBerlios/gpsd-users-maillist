@@ -1,0 +1,109 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] Cross-Compiled and Released: GPSD 2.10_mipsel for Openwrt
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2006-May/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Cross-Compiled%20and%20Released%3A%20GPSD%202.10_mipsel%20for%20Openwrt&In-Reply-To=%3C20060523033134.26751.qmail%40web32512.mail.mud.yahoo.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="001625.html">
+   <LINK REL="Next"  HREF="001626.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] Cross-Compiled and Released: GPSD 2.10_mipsel for Openwrt</H1>
+    <B>Michael R. Davis</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Cross-Compiled%20and%20Released%3A%20GPSD%202.10_mipsel%20for%20Openwrt&In-Reply-To=%3C20060523033134.26751.qmail%40web32512.mail.mud.yahoo.com%3E"
+       TITLE="[Gpsd-users] Cross-Compiled and Released: GPSD 2.10_mipsel for Openwrt">mrdvt92 at yahoo.com
+       </A><BR>
+    <I>Tue May 23 05:31:34 CEST 2006</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="001625.html">[Gpsd-users] Cross-Compiled and Released: GPSD 2.10_mipsel for Openwrt
+</A></li>
+        <LI>Next message: <A HREF="001626.html">[Gpsd-users] Cross-Compiled and Released: GPSD 2.10_mipsel for Openwrt
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1623">[ date ]</a>
+              <a href="thread.html#1623">[ thread ]</a>
+              <a href="subject.html#1623">[ subject ]</a>
+              <a href="author.html#1623">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>--- Beakmyn &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">beakmyn at frontiernet.net</A>&gt; wrote:
+
+&gt;<i> Since GPSD 2.30 is not compatible with Kismet I've compiled 2.10
+</I>&gt;<i> which 
+</I>&gt;<i> is the last version before the baud-matching logic was introduced and
+</I>&gt;<i> seems to be the most stable with Kismet. It's compiled for NMEA
+</I>&gt;<i> protocol 
+</I>&gt;<i> and should install without issues as it's a single binary, but does 
+</I>&gt;<i> carry dependencies as listed by the ipkg.
+</I>&gt;<i> 
+</I>&gt;<i> Check it out here.  
+</I>&gt;<i> 
+</I>
+This gave me a great opportunity to get back on my SL.  And the bottom
+line, your gpsd runs just find on my wrtsl54gs OpenWRT RC5.  I got the
+pl2303 working and all.  I had to kludge (download without a package)
+the stty from some web site.  stty -F /dev/usb/tts/0 4800
+
+But, it looks like gpsd must take care of this after reboot.
+
+Also, it didn't want to change my BU-303 from SIRF to NMEA so I went
+back to sirfmon on my laptop.
+sirfmon /dev/ttyUSB0 then press n to exit in NMEA.
+
+I added this file to start gpsd after reboot.
+&gt;<i> cat /etc/init.d/S50gpsd
+</I>#!/bin/sh
+gpsd -p /dev/usb/tts/0 -s 4800 -P /var/run/gpsd.pid
+
+But, 2.10 is so old it doesn't have the &quot;o&quot; command which is what I
+based most of my Perl library (Net::GPSD) on.  
+
+So, I went to upgrade and...
+Looks like Nico's 2.30 version is no longer available.  Does anyone
+have gpsd 2.32 version complied for the mipsel processor?
+
+Or shall I figure out how to get the cross compiler working?
+
+I put most of this information on the wiki.
+<A HREF="http://gpsd.davisnetworks.com/bin/view/Main/DistOpenWRT">http://gpsd.davisnetworks.com/bin/view/Main/DistOpenWRT</A>
+
+Thanks,
+Mike (mrdvt92)
+
+__________________________________________________
+Do You Yahoo!?
+Tired of spam?  Yahoo! Mail has the best spam protection around 
+<A HREF="http://mail.yahoo.com">http://mail.yahoo.com</A> 
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="001625.html">[Gpsd-users] Cross-Compiled and Released: GPSD 2.10_mipsel for Openwrt
+</A></li>
+	<LI>Next message: <A HREF="001626.html">[Gpsd-users] Cross-Compiled and Released: GPSD 2.10_mipsel for Openwrt
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1623">[ date ]</a>
+              <a href="thread.html#1623">[ thread ]</a>
+              <a href="subject.html#1623">[ subject ]</a>
+              <a href="author.html#1623">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

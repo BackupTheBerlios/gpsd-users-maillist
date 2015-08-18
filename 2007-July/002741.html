@@ -1,0 +1,106 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] Getting GPSD to pick up PPS from Delorme Earthmate Serial GPS
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2007-July/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Getting%20GPSD%20to%20pick%20up%20PPS%20from%20Delorme%20Earthmate%0A%20Serial%20GPS&In-Reply-To=%3CPine.LNX.4.64.0707031002270.9335%40birdbird.example.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="002740.html">
+   <LINK REL="Next"  HREF="002739.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] Getting GPSD to pick up PPS from Delorme Earthmate Serial GPS</H1>
+    <B>Matt Roberds</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Getting%20GPSD%20to%20pick%20up%20PPS%20from%20Delorme%20Earthmate%0A%20Serial%20GPS&In-Reply-To=%3CPine.LNX.4.64.0707031002270.9335%40birdbird.example.com%3E"
+       TITLE="[Gpsd-users] Getting GPSD to pick up PPS from Delorme Earthmate Serial GPS">mattroberds at cox.net
+       </A><BR>
+    <I>Tue Jul  3 17:12:43 CEST 2007</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="002740.html">[Gpsd-users] Getting GPSD to pick up PPS from Delorme Earthmate	Serial GPS
+</A></li>
+        <LI>Next message: <A HREF="002739.html">[Gpsd-users] cgpxlogger skipping timestamp; Furuno NMEA nav data
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2741">[ date ]</a>
+              <a href="thread.html#2741">[ thread ]</a>
+              <a href="subject.html#2741">[ subject ]</a>
+              <a href="author.html#2741">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>On Tue, 3 Jul 2007, Adam Dosch wrote:
+&gt;<i> 1) My Deolorme Earthmate Serial GPS cold boot is crazy long.  We're
+</I>&gt;<i> talking like 6-8 minutes before it gets a fix on any satellites and
+</I>&gt;<i> I start seeing NMEA lines.
+</I>
+I don't think the long bootup is the major source of your PPS trouble,
+but: once you do start it up, how long have you left it on for?  Some
+GPS receivers take a while to receive and store everything they need to
+start again quickly, even after they've gotten a fix.  If possible,
+power it up and leave it outside all day or all night, and see if that
+improves the startup time.
+
+&gt;<i> (Don't ask me why, it's made to take 4 AAA batteries (6 volts), but
+</I>&gt;<i> it will take power in on pin 9 on the serial port (which is cool),
+</I>&gt;<i> so I've been powering it via 5 volt USB soldering hack I fit in on
+</I>&gt;<i> my PPS circuit.  So lower voltage causing the longer cold boot for
+</I>&gt;<i> satellite fixing?  Got me, man)
+</I>
+I think it's unlikely, but possible.  Since you seem to know which end
+of a soldering iron to hold, you could regulate down the +12 V from
+inside your computer with something like an LM317 adjustable regulator,
+a resistor, a pot, and a couple of caps, and put that question out of
+the way very quickly.  Or you could even go buy some AAAs and install
+them, but what's the fun in that?  :)
+
+&gt;<i>   gpsd: Our duration is (244765447), must be atleast 80000 - 100100 to be a true pulse
+</I>&gt;<i>   gpsd: PPS pulse rejected.  cycle: 200, duration: 244765447
+</I>&gt;<i>
+</I>&gt;<i> To me, that pulse duration is huge and doesn't even fit the ranges
+</I>&gt;<i> the code it looking at for a 'true' pulse.
+</I>
+This looks to me like Dave C might be on the right track - you may need
+one more inverter somewhere in the PPS line.  You may be able to rework
+your level-shifting circuit to do it.
+
+&gt;<i> You're the man, I'm going to definitely try hooking a jumper up tonight
+</I>&gt;<i> (on both CTS and DCD) and see where that takes me.
+</I>
+This should show you pretty quick whether or not your serial port is up
+to spec.  If you have access to another machine, or an older serial port
+card with discrete hardware (not an all-in-one chip), you might see if
+you can get better results from that.
+
+Matt Roberds
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="002740.html">[Gpsd-users] Getting GPSD to pick up PPS from Delorme Earthmate	Serial GPS
+</A></li>
+	<LI>Next message: <A HREF="002739.html">[Gpsd-users] cgpxlogger skipping timestamp; Furuno NMEA nav data
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2741">[ date ]</a>
+              <a href="thread.html#2741">[ thread ]</a>
+              <a href="subject.html#2741">[ subject ]</a>
+              <a href="author.html#2741">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

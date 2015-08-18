@@ -1,0 +1,147 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] PPS Pulses rejected
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2010-August/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20PPS%20Pulses%20rejected&In-Reply-To=%3C0A5FE2F1C1F58D4B9A821C362DA7C5E3045821EA%40roswell.ticom-geo.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="004643.html">
+   <LINK REL="Next"  HREF="004647.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] PPS Pulses rejected</H1>
+    <B>Roderick Medina</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20PPS%20Pulses%20rejected&In-Reply-To=%3C0A5FE2F1C1F58D4B9A821C362DA7C5E3045821EA%40roswell.ticom-geo.com%3E"
+       TITLE="[Gpsd-users] PPS Pulses rejected">rmedina at ticom-geo.com
+       </A><BR>
+    <I>Fri Aug 20 23:48:02 CEST 2010</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="004643.html">[Gpsd-users] PPS Pulses rejected
+</A></li>
+        <LI>Next message: <A HREF="004647.html">[Gpsd-users] PPS Pulses rejected
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#4646">[ date ]</a>
+              <a href="thread.html#4646">[ thread ]</a>
+              <a href="subject.html#4646">[ subject ]</a>
+              <a href="author.html#4646">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi Gary,
+
+I am running version 2.94
+
+gpsd: NTPD shmat(0,0,0) succeeded, segment 0
+gpsd: NTPD shmat(32769,0,0) succeeded, segment 1
+gpsd: NTPD shmat(229380,0,0) succeeded, segment 2
+gpsd: NTPD shmat(262149,0,0) succeeded, segment 3
+gpsd: NTPD ntpd_link_activate: 0
+gpsd: PPS Create Thread gpsd_ppsmonitor
+gpsd: NTPD ntpshm_put: Clock: 1282340762.000000 @ 1282340762.426963,
+fudge: 0.000
+gpsd: NTPD ntpd_link_activate: 1
+gpsd: PPS pps-detect (DCD) on /dev/ttyS0 changed to 0
+gpsd: PPS cycle: 967585246, duration: 967585246 @ 1282340763.217374
+gpsd: PPS no fix.
+gpsd: PPS pulse rejected
+gpsd: PPS pps-detect (DCD) on /dev/ttyS0 changed to 1
+gpsd: PPS cycle: 967785231, duration: 199985 @ 1282340763.417359
+gpsd: PPS no fix.
+gpsd: PPS pulse rejected
+gpsd: NTPD ntpshm_put: Clock: 1282340763.000000 @ 1282340763.424603,
+fudge: 0.000
+gpsd: PPS pps-detect (DCD) on /dev/ttyS0 changed to 0
+gpsd: PPS cycle: 1000197, duration: 800212 @ 1282340764.217571
+gpsd: PPS 1Hz leading edge
+gpsd: PPS ntpshm_pps 1282340764.000 @ 1282340764.217571, preci -2
+gpsd: PPS pps-detect (DCD) on /dev/ttyS0 changed to 1
+gpsd: PPS cycle: 1000195, duration: 199983 @ 1282340764.417554
+gpsd: PPS 1Hz trailing edge
+gpsd: PPS pulse rejected
+gpsd: NTPD ntpshm_put: Clock: 1282340764.000000 @ 1282340764.424837,
+fudge: 0.000
+gpsd: PPS pps-detect (DCD) on /dev/ttyS0 changed to 0
+gpsd: PPS cycle: 1000196, duration: 800213 @ 1282340765.217767
+gpsd: PPS 1Hz leading edge
+
+Thanks,
+
+
+Roderick
+
+
+-----Original Message-----
+From: Gary E. Miller [mailto:<A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">gem at rellim.com</A>] 
+Sent: Friday, August 20, 2010 4:07 PM
+To: Roderick Medina
+Cc: <A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">gpsd-users at lists.berlios.de</A>
+Subject: Re: [Gpsd-users] PPS Pulses rejected
+
+-----BEGIN PGP SIGNED MESSAGE-----
+Hash: SHA1
+
+Yo Roderick!
+
+On Fri, 20 Aug 2010, Roderick Medina wrote:
+
+&gt;<i> Hello, I was trying to get gpsd to update ntpd and though they seem
+</I>&gt;<i> connected, the system time just keeps continually drifting further
+</I>away
+&gt;<i> in &quot;delay&quot;. Upon looking at the debug out from GPSD, I saw these
+</I>&gt;<i> messages:
+</I>
+What version are you using?  Up the debug level and send the results of
+this:
+
+
+	gpsd -nNGD 10 /dev/ttyS0 2&gt;&amp;1 | egrep 'NTP|PPS'
+
+
+RGDS
+GARY
+-
+------------------------------------------------------------------------
+---
+Gary E. Miller Rellim 109 NW Wilmington Ave., Suite E, Bend, OR 97701
+	<A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">gem at rellim.com</A>  Tel:+1(541)382-8588
+
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v1.4.3 (GNU/Linux)
+
+iD8DBQFMbu54BmnRqz71OvMRAtfGAKCXAjCR2hBwP8Gq65TrUbXuPKYxxgCfVaUQ
+H/X2ks1ErxnhYWDGvIwaChM=
+=IHS4
+-----END PGP SIGNATURE-----
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="004643.html">[Gpsd-users] PPS Pulses rejected
+</A></li>
+	<LI>Next message: <A HREF="004647.html">[Gpsd-users] PPS Pulses rejected
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#4646">[ date ]</a>
+              <a href="thread.html#4646">[ thread ]</a>
+              <a href="subject.html#4646">[ subject ]</a>
+              <a href="author.html#4646">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

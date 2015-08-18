@@ -1,0 +1,126 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] Ntp and gpsd problem oem4
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2006-September/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Ntp%20and%20gpsd%20problem%20oem4&In-Reply-To=%3C6579443.post%40talk.nabble.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="002044.html">
+   <LINK REL="Next"  HREF="002048.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] Ntp and gpsd problem oem4</H1>
+    <B>xterm</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Ntp%20and%20gpsd%20problem%20oem4&In-Reply-To=%3C6579443.post%40talk.nabble.com%3E"
+       TITLE="[Gpsd-users] Ntp and gpsd problem oem4">gpapadak at ims.forth.gr
+       </A><BR>
+    <I>Sat Sep 30 15:45:41 CEST 2006</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="002044.html">[Gpsd-users] Ntp and gpsd problem oem4
+</A></li>
+        <LI>Next message: <A HREF="002048.html">[Gpsd-users] Ntp and gpsd problem oem4
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2046">[ date ]</a>
+              <a href="thread.html#2046">[ thread ]</a>
+              <a href="subject.html#2046">[ subject ]</a>
+              <a href="author.html#2046">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>
+OK i have set In ntpshm.c
+#define PUT_MAX_OFFSET  600000          /* microseconds for lost lock */
+I recompiled and i an still not getting pps in ntp:
+
+<A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">gpapadak at mars</A>:~/diplomatique/prog/c++$ ntpq -p
+     remote           refid      st t when poll reach   delay   offset 
+jitter
+=============================================
+*SHM(0)          .GPS.            0 l    2   16  377    0.000    2.021  
+2.946
+ SHM(1)          .GPS1.           0 l    -   16    0    0.000    0.000  
+0.004
+
+This is the debug log from gpsd and it seems that everything is right.
+My receiver transimts pps every 1sec and logs GPGGA,GPRMC,GPGSA every 1 sec
+
+
+gpsd: GPGGA sets status 1
+gpsd: polling 4
+gpsd: polling 4
+gpsd: polling 4
+gpsd: polling 4
+gpsd: polling 4
+gpsd: polling 4
+gpsd: polling 4
+gpsd: polling 4
+gpsd: polling 4
+gpsd: polling 4
+gpsd: &lt;= GPS:
+$GPRMC,134006.00,A,3531.9162056,N,02404.1840201,E,0.017,195.3,300906,0.0,E*5B
+gpsd: polling 4
+gpsd: polling 4
+gpsd: polling 4
+gpsd: polling 4
+gpsd: polling 4
+gpsd: polling 4
+gpsd: &lt;= GPS: $GPGSA,M,3,14,02,30,24,05,04,09,06,,,,,2.1,1.6,1.8*3F
+gpsd: GPGSA sets mode 3
+gpsd: pps-detect (CTS) on /dev/ttyS0 changed to 1
+gpsd: polling 4
+gpsd: polling 4
+gpsd: polling 4
+gpsd: polling 4
+gpsd: polling 4
+gpsd: polling 4
+gpsd: polling 4
+gpsd: polling 4
+gpsd: polling 4
+gpsd: polling 4
+gpsd: &lt;= GPS:
+$GPGGA,134007.00,3531.9162,N,02404.1840,E,1,08,1.1,155.39,M,23.73,M,,*6C
+gpsd: GPGGA sets status 1
+gpsd: polling 4
+gpsd: polling 4
+gpsd: polling 4
+gpsd: polling 4
+gpsd: polling 4
+gpsd: polling 4
+gpsd: polling 4
+
+-- 
+View this message in context: <A HREF="http://www.nabble.com/Ntp-and-gpsd-problem-oem4-tf2358954.html#a6579443">http://www.nabble.com/Ntp-and-gpsd-problem-oem4-tf2358954.html#a6579443</A>
+Sent from the GPSd - Users mailing list archive at Nabble.com.
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="002044.html">[Gpsd-users] Ntp and gpsd problem oem4
+</A></li>
+	<LI>Next message: <A HREF="002048.html">[Gpsd-users] Ntp and gpsd problem oem4
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2046">[ date ]</a>
+              <a href="thread.html#2046">[ thread ]</a>
+              <a href="subject.html#2046">[ subject ]</a>
+              <a href="author.html#2046">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

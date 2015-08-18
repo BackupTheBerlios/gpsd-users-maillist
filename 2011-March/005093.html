@@ -1,0 +1,128 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] gps_read() does not block
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2011-March/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20gps_read%28%29%20does%20not%20block&In-Reply-To=%3C4D74C710.50902%40googlemail.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="005092.html">
+   <LINK REL="Next"  HREF="005094.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] gps_read() does not block</H1>
+    <B>Andre Naujoks</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20gps_read%28%29%20does%20not%20block&In-Reply-To=%3C4D74C710.50902%40googlemail.com%3E"
+       TITLE="[Gpsd-users] gps_read() does not block">nautsch2 at googlemail.com
+       </A><BR>
+    <I>Mon Mar  7 12:52:48 CET 2011</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="005092.html">[Gpsd-users] gpsd closes serial port then gets no more NMEA frames.
+</A></li>
+        <LI>Next message: <A HREF="005094.html">[Gpsd-users] gps_read() does not block
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#5093">[ date ]</a>
+              <a href="thread.html#5093">[ thread ]</a>
+              <a href="subject.html#5093">[ subject ]</a>
+              <a href="author.html#5093">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi.
+
+I recently tried to write a very small tool, that connects to gpsd and sets the system time.
+It tries to connect to gpsd untill a time is read. Then it quits.
+
+The thing is, gps_read does not seem to block, which it should.
+I get thousands of &quot;read&quot;s in a second and then a time.
+
+Am I doing something wrong here, or is this a bug?
+
+I am using the git head of gpsd for this.
+
+
+I would appreciate input on this.
+
+
+#include &lt;stdio.h&gt;
+#include &lt;unistd.h&gt;
+#include &lt;stdlib.h&gt;
+#include &lt;sys/time.h&gt;
+#include &lt;gps.h&gt;
+
+
+int main()
+{
+	struct timeval now;
+	struct gps_data_t *gpsd;
+	int r;
+
+	gpsd = malloc(sizeof(struct gps_data_t));
+
+	while (1) {
+		while (1) {
+			while (gps_open(&quot;localhost&quot;, &quot;2947&quot;, gpsd)) {
+				sleep(1);
+			}
+
+			if (gps_stream(gpsd, WATCH_ENABLE | WATCH_JSON, NULL) != 0) {
+				gps_close(gpsd);
+				sleep(1); // just to make sure this does not kill the host.
+				continue; // go back and reconnect
+			}
+			break;
+		}
+
+		r = 0;
+		while (1) {
+			r = gps_read(gpsd);
+			fprintf(stderr, &quot;read\n&quot;);
+			if (r &lt; 0) { // should be &quot;&lt;= 0&quot; for a blocking read.
+				fprintf(stderr, &quot;gps_read failed %d\n&quot;, r);
+				gps_close(gpsd);
+				sleep(1);
+				break;
+			}
+			if (gpsd-&gt;set &amp; TIME_SET) {
+				fprintf(stderr, &quot;time was set. %d %d\n&quot;, gpsd-&gt;fix.time);
+				now.tv_sec = gpsd-&gt;fix.time;
+				now.tv_usec = 0;
+				gps_close(gpsd);
+				// settimeofday(&amp;now, NULL);
+				return 0;
+			}
+		}
+	}
+	return 1;
+}
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="005092.html">[Gpsd-users] gpsd closes serial port then gets no more NMEA frames.
+</A></li>
+	<LI>Next message: <A HREF="005094.html">[Gpsd-users] gps_read() does not block
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#5093">[ date ]</a>
+              <a href="thread.html#5093">[ thread ]</a>
+              <a href="subject.html#5093">[ subject ]</a>
+              <a href="author.html#5093">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

@@ -1,0 +1,149 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] Not Getting Output from Garmin GPS-18 (USB)
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2006-March/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Not%20Getting%20Output%20from%20Garmin%20GPS-18%20%28USB%29&In-Reply-To=%3C89cb55a50603281234s78bffce3mf8762af9b3b5af7e%40mail.gmail.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="001482.html">
+   <LINK REL="Next"  HREF="001486.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] Not Getting Output from Garmin GPS-18 (USB)</H1>
+    <B>Adam VanBerlo</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Not%20Getting%20Output%20from%20Garmin%20GPS-18%20%28USB%29&In-Reply-To=%3C89cb55a50603281234s78bffce3mf8762af9b3b5af7e%40mail.gmail.com%3E"
+       TITLE="[Gpsd-users] Not Getting Output from Garmin GPS-18 (USB)">NiX0n at fragfest.cx
+       </A><BR>
+    <I>Tue Mar 28 22:34:43 CEST 2006</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="001482.html">[Gpsd-users] Not Getting Output from Garmin GPS-18 (USB)
+</A></li>
+        <LI>Next message: <A HREF="001486.html">[Gpsd-users] Not Getting Output from Garmin GPS-18 (USB)
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1485">[ date ]</a>
+              <a href="thread.html#1485">[ thread ]</a>
+              <a href="subject.html#1485">[ subject ]</a>
+              <a href="author.html#1485">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>there is a 64bit rpm, I originally used that.
+I can go back to using it, but idk exactly how to properly remove
+gpsd.  (sorry, kinda nooberish of me).  Perhaps I could use a list of
+files that need to be removed so I can reinstall the rpm properly.
+
+Adam &quot;NiX0n&quot;
+
+On 3/26/06, Gary E. Miller &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">gem at rellim.com</A>&gt; wrote:
+&gt;<i> -----BEGIN PGP SIGNED MESSAGE-----
+</I>&gt;<i> Hash: SHA1
+</I>&gt;<i>
+</I>&gt;<i> Yo Adam!
+</I>&gt;<i>
+</I>&gt;<i> On Sat, 25 Mar 2006, Adam VanBerlo wrote:
+</I>&gt;<i>
+</I>&gt;<i> &gt; Well, as I said in the first email, I'm running Fedora Core 5 x86_64
+</I>&gt;<i>
+</I>&gt;<i> Uh, oh.  You might be the first person to try this ona 64 bit OS.
+</I>&gt;<i>
+</I>&gt;<i> &gt; I should note, your changes appear to crash my computer when gpsd is
+</I>&gt;<i> &gt; ran normally.  It crashed almost like there was a memory leak (a slow
+</I>&gt;<i> &gt; but steady drop in performance, until it dies).
+</I>&gt;<i>
+</I>&gt;<i> Yeah, that was sorta expected.  The Garmin packet is laid in to the
+</I>&gt;<i> Packet_t union and since the size is wrong it follows that the
+</I>&gt;<i> union is not laid out the way the program expects.
+</I>&gt;<i>
+</I>&gt;<i> &gt; I think the moral of the story is, the change is not helping.  Thanks though.
+</I>&gt;<i>
+</I>&gt;<i> Oh, it helped me a lot.  That point the problem at the structure packing
+</I>&gt;<i> on the 64 gcc.
+</I>&gt;<i>
+</I>&gt;<i> Here is the structure in garmin.c that is giving us problems:
+</I>&gt;<i>
+</I>&gt;<i> typedef struct {
+</I>&gt;<i>     unsigned char  mPacketType;
+</I>&gt;<i>     unsigned char  mReserved1;
+</I>&gt;<i>     unsigned short mReserved2;
+</I>&gt;<i>     unsigned short mPacketId;
+</I>&gt;<i>     unsigned short mReserved3;
+</I>&gt;<i>     unsigned long  mDataSize;
+</I>&gt;<i>     union {
+</I>&gt;<i>             char chars[MAX_BUFFER_SIZE];
+</I>&gt;<i>             unsigned char uchars[MAX_BUFFER_SIZE];
+</I>&gt;<i>             cpo_pvt_data pvt;
+</I>&gt;<i>             cpo_sat_data sats;
+</I>&gt;<i>     } mData;
+</I>&gt;<i> } Packet_t;
+</I>&gt;<i>
+</I>&gt;<i> An unsigned char should be one byte, an unsigned short 2 bytes and an
+</I>&gt;<i> unsigned long 4 bytes.  Add all those up and you should get 12 bytes.
+</I>&gt;<i> Then add in MAX_BUFFER_SIZE (4096) of chars and that should be the
+</I>&gt;<i> size of the buffer (4096+12).
+</I>&gt;<i>
+</I>&gt;<i> We know the structure should be packed since this statement is just
+</I>&gt;<i> above the structure: #pragma pack(1).
+</I>&gt;<i>
+</I>&gt;<i> So either the structure is not being packed in tight by gcc, or the
+</I>&gt;<i> sizes are not as above.
+</I>&gt;<i>
+</I>&gt;<i> I do not have a 64 bit host to try on.  Do you have any idea which it
+</I>&gt;<i> might be?
+</I>&gt;<i>
+</I>&gt;<i> Maybe you could try this option to the gcc command line: -fpack-struct?
+</I>&gt;<i>
+</I>&gt;<i> Maybe you could chnage the last line of the struct from this:
+</I>&gt;<i>
+</I>&gt;<i> } Packet_t;
+</I>&gt;<i>
+</I>&gt;<i> to this:
+</I>&gt;<i>
+</I>&gt;<i> } __attribute__((packed)) Packet_t;
+</I>&gt;<i>
+</I>&gt;<i> RGDS
+</I>&gt;<i> GARY
+</I>&gt;<i> - ---------------------------------------------------------------------------
+</I>&gt;<i> Gary E. Miller Rellim 20340 Empire Blvd, Suite E-3, Bend, OR 97701
+</I>&gt;<i>         <A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">gem at rellim.com</A>  Tel:+1(541)382-8588
+</I>&gt;<i>
+</I>&gt;<i> -----BEGIN PGP SIGNATURE-----
+</I>&gt;<i> Version: GnuPG v1.4.2.1 (GNU/Linux)
+</I>&gt;<i>
+</I>&gt;<i> iD8DBQFEJjZN8KZibdeR3qURAmHtAKCdYNvguC0EiXftpxRk4OpqqXtcSQCeK9Mf
+</I>&gt;<i> O0RUFVbNYrhti2oyXFSK/38=
+</I>&gt;<i> =g4wW
+</I>&gt;<i> -----END PGP SIGNATURE-----
+</I>&gt;<i>
+</I>&gt;<i>
+</I>
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="001482.html">[Gpsd-users] Not Getting Output from Garmin GPS-18 (USB)
+</A></li>
+	<LI>Next message: <A HREF="001486.html">[Gpsd-users] Not Getting Output from Garmin GPS-18 (USB)
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1485">[ date ]</a>
+              <a href="thread.html#1485">[ thread ]</a>
+              <a href="subject.html#1485">[ subject ]</a>
+              <a href="author.html#1485">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

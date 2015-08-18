@@ -1,0 +1,165 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] Not Getting Output from Garmin GPS-18 (USB)
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2006-March/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Not%20Getting%20Output%20from%20Garmin%20GPS-18%20%28USB%29&In-Reply-To=%3C89cb55a50603251124u15e87385qfc201e03b8943e0a%40mail.gmail.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="001617.html">
+   <LINK REL="Next"  HREF="001482.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] Not Getting Output from Garmin GPS-18 (USB)</H1>
+    <B>Adam VanBerlo</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Not%20Getting%20Output%20from%20Garmin%20GPS-18%20%28USB%29&In-Reply-To=%3C89cb55a50603251124u15e87385qfc201e03b8943e0a%40mail.gmail.com%3E"
+       TITLE="[Gpsd-users] Not Getting Output from Garmin GPS-18 (USB)">NiX0n at fragfest.cx
+       </A><BR>
+    <I>Sat Mar 25 20:24:00 CET 2006</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="001617.html">[Gpsd-users] Not Getting Output from Garmin GPS-18 (USB)
+</A></li>
+        <LI>Next message: <A HREF="001482.html">[Gpsd-users] Not Getting Output from Garmin GPS-18 (USB)
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1479">[ date ]</a>
+              <a href="thread.html#1479">[ thread ]</a>
+              <a href="subject.html#1479">[ subject ]</a>
+              <a href="author.html#1479">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Well, as I said in the first email, I'm running Fedora Core 5 x86_64
+(That's an Athlon 3000+ 64bit Mobile).  I'm not positive, but I'm
+thinking it was compiled with gcc (4.1.0-3).  Wasn't really paying
+attention, other than making sure garmin was getting installed, and
+'make'-ing and 'make install'-ing.
+
+I should note, your changes appear to crash my computer when gpsd is
+ran normally.  It crashed almost like there was a memory leak (a slow
+but steady drop in performance, until it dies).
+
+I've emailed dumps of the ./configure, make, and make install.
+I also got this output while 'make'-ing
+
+[<A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">root at epona</A> gpsd-2.32]# make &gt; ~/make_dump.txt
+rtcm.c: In function 'rtcm_undump':
+rtcm.c:1076: warning: dereferencing type-punned pointer will break
+strict-aliasing rules
+rtcm.c:1080: warning: dereferencing type-punned pointer will break
+strict-aliasing rules
+rtcm.c:1081: warning: dereferencing type-punned pointer will break
+strict-aliasing rules
+make[1]: xmlto: Command not found
+make[1]: [gps.1] Error 127 (ignored)
+
+idk if that means anything, but mind-as-well give as much info as i
+can.  I had similar errors when 'make install'-ing, but I crashed
+before i could save this email.
+
+I'm sure you want to see the gpsd debug.
+
+[<A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">root at epona</A> gpsd-2.32]# gpsd -nN -D 5 /dev/ttyUSB0
+gpsd: launching (Version 2.32)
+gpsd: listening on port gpsd
+gpsd: running with effective group ID 0
+gpsd: running with effective user ID 0
+gpsd: opening GPS data source at '/dev/ttyUSB0'
+gpsd: Set garmin_gps driver mode = 0
+gpsd: SendPacket(), writing 16 bytes
+gpsd: PrintPacket()
+gpsd: Private, Set Mode: 0
+gpsd: SendPacket(), wrote 16 bytes
+gpsd: Get garmin_gps driver version
+gpsd: SendPacket(), writing 12 bytes
+gpsd: PrintPacket()
+gpsd: Private, ID: Info Req
+gpsd: SendPacket(), wrote 12 bytes
+gpsd: GetPacket()
+gpsd: got 24 bytes
+gpsd: GotPacket() sz=24
+gpsd: PrintPacket()
+gpsd: bogus packet, size too large=12
+gpsd: Send Garmin Start Session
+gpsd: SendPacket(), writing 12 bytes
+gpsd: PrintPacket()
+gpsd: bogus packet, size too large=0
+
+
+gpsd: closing GPS=/dev/ttyUSB0 (4)
+gpsd: Received terminating signal 2. Exiting...
+
+I think the moral of the story is, the change is not helping.  Thanks though.
+
+Adam &quot;NiX0n&quot;
+
+On 3/24/06, Gary E. Miller &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">gem at rellim.com</A>&gt; wrote:
+&gt;<i> -----BEGIN PGP SIGNED MESSAGE-----
+</I>&gt;<i> Hash: SHA1
+</I>&gt;<i>
+</I>&gt;<i> Yo Adam!
+</I>&gt;<i>
+</I>&gt;<i> On Thu, 23 Mar 2006, Adam VanBerlo wrote:
+</I>&gt;<i>
+</I>&gt;<i> &gt; I'm gonna go out on a limb and suggest that this line
+</I>&gt;<i> &gt; gpsd: garmin_probe: Compile error, garmin.Buffer too small.
+</I>&gt;<i> &gt; is an indicator of the problem.
+</I>&gt;<i>
+</I>&gt;<i> Yeah, that would do it.  Sounds like your C compiler is not
+</I>&gt;<i> packing structures?  Which compiler, OS and CPU are you on?
+</I>&gt;<i>
+</I>&gt;<i> Try this.  In gpsd.h change this line:
+</I>&gt;<i>             unsigned char Buffer[4096+12];      /* Garmin packet buffer */
+</I>&gt;<i>
+</I>&gt;<i> To this:
+</I>&gt;<i>             unsigned char Buffer[4096+40];      /* Garmin packet buffer */
+</I>&gt;<i>
+</I>&gt;<i> I suspect that will get you past the immediate problem, but I fear
+</I>&gt;<i> other problems if the structures are not laying in nicely.
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i> RGDS
+</I>&gt;<i> GARY
+</I>&gt;<i> - ---------------------------------------------------------------------------
+</I>&gt;<i> Gary E. Miller Rellim 20340 Empire Blvd, Suite E-3, Bend, OR 97701
+</I>&gt;<i>         <A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">gem at rellim.com</A>  Tel:+1(541)382-8588
+</I>&gt;<i>
+</I>&gt;<i> -----BEGIN PGP SIGNATURE-----
+</I>&gt;<i> Version: GnuPG v1.4.2.1 (GNU/Linux)
+</I>&gt;<i>
+</I>&gt;<i> iD8DBQFEI4U58KZibdeR3qURAq1HAJ90VmSPC+Vthc2C16UDiUIBmEteNwCg5qC7
+</I>&gt;<i> 0/IlD1LTw7kZx5gDkvsArNo=
+</I>&gt;<i> =jOCS
+</I>&gt;<i> -----END PGP SIGNATURE-----
+</I>&gt;<i>
+</I>&gt;<i>
+</I>
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="001617.html">[Gpsd-users] Not Getting Output from Garmin GPS-18 (USB)
+</A></li>
+	<LI>Next message: <A HREF="001482.html">[Gpsd-users] Not Getting Output from Garmin GPS-18 (USB)
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1479">[ date ]</a>
+              <a href="thread.html#1479">[ thread ]</a>
+              <a href="subject.html#1479">[ subject ]</a>
+              <a href="author.html#1479">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

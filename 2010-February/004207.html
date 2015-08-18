@@ -1,0 +1,165 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] USB PPS support for Garmin GPS18?
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2010-February/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20USB%20PPS%20support%20for%20Garmin%20GPS18%3F&In-Reply-To=%3Calpine.DEB.1.10.1002040857100.6384%40org-pc51.fy.chalmers.se%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="004204.html">
+   <LINK REL="Next"  HREF="004210.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] USB PPS support for Garmin GPS18?</H1>
+    <B>H&#229;kan Johansson</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20USB%20PPS%20support%20for%20Garmin%20GPS18%3F&In-Reply-To=%3Calpine.DEB.1.10.1002040857100.6384%40org-pc51.fy.chalmers.se%3E"
+       TITLE="[Gpsd-users] USB PPS support for Garmin GPS18?">f96hajo at chalmers.se
+       </A><BR>
+    <I>Thu Feb  4 09:01:08 CET 2010</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="004204.html">[Gpsd-users] USB PPS support for Garmin GPS18?
+</A></li>
+        <LI>Next message: <A HREF="004210.html">[Gpsd-users] USB PPS support for Garmin GPS18?
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#4207">[ date ]</a>
+              <a href="thread.html#4207">[ thread ]</a>
+              <a href="subject.html#4207">[ subject ]</a>
+              <a href="author.html#4207">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>
+I guess you mean the message ID 52?  This is just a companion of the real 
+PPS pulse which is received on either the DCD or CTS pin.  The timing of
+the message 52 itself is not accurate.
+
+gpsd knows how to deal with the PPS pulses and extract the correct time 
+associated with each from the protocol data from the GPS device.
+
+Cheers,
+H&#229;kan
+
+
+On Thu, 4 Feb 2010, Matthew Dunn wrote:
+
+&gt;<i> Hello Hakan,
+</I>&gt;<i> I'm happy to be corrected on this but I'm pretty sure a few of the binary protocols (definitely sirf) Have a PPS 'pulse' they send down as
+</I>&gt;<i> part of the binary protocol
+</I>&gt;<i> This is what I was trying to get at by saying USB binary PPS.
+</I>&gt;<i> I haven't looked into the details but I believe they leave some sort of padding before and after the pulse to help applications empty queues
+</I>&gt;<i> etc and tag this more accurately.
+</I>&gt;<i> Does GPSD support this kind of thing?
+</I>&gt;<i> The manual here talks about it:
+</I>&gt;<i> <A HREF="http://www.navmanwirelessoem.com/assets/files/Docs/SiRF%20Binary%20Protocol%20Reference%20ManualR2.4.pdf">http://www.navmanwirelessoem.com/assets/files/Docs/SiRF%20Binary%20Protocol%20Reference%20ManualR2.4.pdf</A>
+</I>&gt;<i> Thanks,
+</I>&gt;<i> &#160;
+</I>&gt;<i> Matthew
+</I>&gt;<i> &#160;
+</I>&gt;<i> 
+</I>&gt;<i> &#160;
+</I>&gt;<i> 2010/2/4 H&#229;kan Johansson &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">f96hajo at chalmers.se</A>&gt;
+</I>&gt;<i>
+</I>&gt;<i>       I'd agree with that except 'or&#160;USB with a&#160;binary protocol that supports PPS'. &#160;It does not make sense or matter; the PPS is not
+</I>&gt;<i>       really part of the protocol, but a signal received on another pin with well-defined timing.
+</I>&gt;<i>
+</I>&gt;<i>       As for the interrupt, if you have a real serial port, you should in general also have the interrupt. &#160;However, we currently have
+</I>&gt;<i>       the issue of a latency somewhere around 20-40 us (depending on processor speed) from the actual signal until we reach
+</I>&gt;<i>       user-space/gpsd such that we can pick the time. &#160;(The latency is quite stable though, so the stability is not affected.) &#160;(I'm
+</I>&gt;<i>       working on a way to remove this unknown latency by polling, but this still needs the interrupts to not waste large amount of CPU
+</I>&gt;<i>       on polling. &#160;I'm trying to clean it up to only keep the necessary pieces of extra logics needed to do the polling at the right
+</I>&gt;<i>       moments.)
+</I>&gt;<i>
+</I>&gt;<i>       Cheers,
+</I>&gt;<i>       H&#229;kan
+</I>&gt;<i> 
+</I>&gt;<i> 
+</I>&gt;<i> 
+</I>&gt;<i> On Thu, 4 Feb 2010, Matthew Dunn wrote:
+</I>&gt;<i>
+</I>&gt;<i>       Sorry, if I'm intruding. But perhaps a better wording would be something
+</I>&gt;<i>       like:
+</I>&gt;<i>       &#160;
+</I>&gt;<i>       Without any PPS at all, performance will be about +-250 milliseconds
+</I>&gt;<i>       &#160;
+</I>&gt;<i>       With a hardware serial port and PPS interrupt(Is this correct or can
+</I>&gt;<i>       serial polling achieve good performance?). The performance will be about:
+</I>&gt;<i>       1 microsecond?
+</I>&gt;<i>       &#160;
+</I>&gt;<i>       When using either a USB -RS232 convertor that has a PPS pin hooked up.,
+</I>&gt;<i>       or&#160;USB with a&#160;binary protocol that supports PPS. The performance will be
+</I>&gt;<i>       about 1 millisecond.
+</I>&gt;<i>       &#160;
+</I>&gt;<i>       This is the information I wanted to know in the first place. What was the
+</I>&gt;<i>       downsides of using USB PPS.
+</I>&gt;<i>       &#160;
+</I>&gt;<i>       Thanks,
+</I>&gt;<i>       &#160;
+</I>&gt;<i>       Matthew.
+</I>&gt;<i> 
+</I>&gt;<i>
+</I>&gt;<i>       &#160;
+</I>&gt;<i>       2010/2/4 H&#229;kan Johansson &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">f96hajo at chalmers.se</A>&gt;
+</I>&gt;<i>
+</I>&gt;<i>       &#160; &#160; &#160;Hi Gary,
+</I>&gt;<i>
+</I>&gt;<i>       &#160; &#160; &#160;perhaps better to point MR-350P to
+</I>&gt;<i>
+</I>&gt;<i>       &#160; &#160; &#160;<A HREF="http://www.usglobalsat.com/p-58-mr-350p-bulkhead.aspx">http://www.usglobalsat.com/p-58-mr-350p-bulkhead.aspx</A>
+</I>&gt;<i>
+</I>&gt;<i>       &#160; &#160; &#160;the one right now points to a MR-350 (no P). &#160;It seems there
+</I>&gt;<i>       &#160; &#160; &#160;are two versions out there, and one without PPS. &#160;(I was in
+</I>&gt;<i>       &#160; &#160; &#160;contact with my local dealer, who finally said that what they
+</I>&gt;<i>       &#160; &#160; &#160;had was one without PPS :-( )
+</I>&gt;<i>
+</I>&gt;<i>       &#160; &#160; &#160;--
+</I>&gt;<i>
+</I>&gt;<i>       &#160; &#160; &#160;To this note:
+</I>&gt;<i>
+</I>&gt;<i>       &#160; &#160; &#160;&quot;Note that a direct RS-232 connection is required for PPS.
+</I>&gt;<i>       &#160; &#160; &#160;GPS that natively use USB or an RS-232 to USB converter will
+</I>&gt;<i>       &#160; &#160; &#160;not provide time more accurate than about 250mS.&quot;
+</I>&gt;<i>
+</I>&gt;<i>       &#160; &#160; &#160;one may add &quot;, or about 1 mS with PPS.&quot; &#160;Just to be fair :-)
+</I>&gt;<i>
+</I>&gt;<i>       &#160; &#160; &#160;Cheers,
+</I>&gt;<i>       &#160; &#160; &#160;H&#229;kan
+</I>&gt;<i>       &#160; &#160; &#160;_______________________________________________
+</I>&gt;<i>       &#160; &#160; &#160;Gpsd-users mailing list
+</I>&gt;<i>       &#160; &#160; &#160;<A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">Gpsd-users at lists.berlios.de</A>
+</I>&gt;<i>       &#160; &#160; &#160;<A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">https://lists.berlios.de/mailman/listinfo/gpsd-users</A>
+</I>&gt;<i> 
+</I>&gt;<i> 
+</I>&gt;<i> 
+</I>&gt;<i> 
+</I>&gt;<i> 
+</I>&gt;<i>
+</I></PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="004204.html">[Gpsd-users] USB PPS support for Garmin GPS18?
+</A></li>
+	<LI>Next message: <A HREF="004210.html">[Gpsd-users] USB PPS support for Garmin GPS18?
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#4207">[ date ]</a>
+              <a href="thread.html#4207">[ thread ]</a>
+              <a href="subject.html#4207">[ subject ]</a>
+              <a href="author.html#4207">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

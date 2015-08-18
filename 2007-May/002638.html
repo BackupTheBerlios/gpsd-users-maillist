@@ -1,0 +1,120 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] how to crosscompile gpsd for avr32
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2007-May/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20how%20to%20crosscompile%20gpsd%20for%20avr32&In-Reply-To=%3C20070510142813.32AFA90C3C%40mail.berlios.de%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="002635.html">
+   <LINK REL="Next"  HREF="002627.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] how to crosscompile gpsd for avr32</H1>
+    <B>Randy</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20how%20to%20crosscompile%20gpsd%20for%20avr32&In-Reply-To=%3C20070510142813.32AFA90C3C%40mail.berlios.de%3E"
+       TITLE="[Gpsd-users] how to crosscompile gpsd for avr32">wrr01 at yahoo.com
+       </A><BR>
+    <I>Thu May 10 17:25:47 CEST 2007</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="002635.html">[Gpsd-users] how to crosscompile gpsd for avr32
+</A></li>
+        <LI>Next message: <A HREF="002627.html">[Gpsd-users] how to crosscompile gpsd for avr32
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2638">[ date ]</a>
+              <a href="thread.html#2638">[ thread ]</a>
+              <a href="subject.html#2638">[ subject ]</a>
+              <a href="author.html#2638">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Your advice on linking appears to have worked.  I can get the gpsd loaded into memory
+and it responds on the client port via telnet.  I have another problem that I  am trying to
+figure out now that is not really a gpsd problem i think.
+
+My only serial port on the NGW100 (avr32) is also the console port. I'm not sure gpsd 
+is able to attach to that port properly since it is the console, so I'm running some tests to
+check that.  Is there any other way to get gps info coming in to verify that gpsd is processing
+properly?
+
+My next problem even if it attaches to that port is that the port is hardcoded to 115200bps at
+boot time and there is no stty command to change the bit rate so i'm looking for how to set that 
+differently at boot time.  
+
+Ha the challenges never seem to end!
+
+Thanks for your help.
+
+Randy Rainwater
+
+On Wed, 09 May 2007 15:34:07 -0600, Randy wrote:
+
+&gt;<i>Chris and Matt - many thanks for the advice.  I'm about to try your suggestions.
+</I>&gt;<i>I agree, when we get this to work I can get my notes and we can add support for avr32
+</I>&gt;<i>or whatever else we need to crosscompile!
+</I>
+&gt;<i>Randy
+</I>&gt;<i>On Wed, 9 May 2007 12:50:35 -0600, Chris Kuethe wrote:
+</I>
+&gt;&gt;<i>On 5/9/07, Randy &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">wrr01 at yahoo.com</A>&gt; wrote:
+</I>
+&gt;&gt;&gt;<i> Is there a utility that will display the unlinked archives and can link everything?  or, is libtool
+</I>&gt;&gt;&gt;<i> not being passed the correct parms to cause the complete static link to occur?
+</I>&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;<i> if i can get this lib to link i should be there or at least very close!
+</I>
+&gt;&gt;<i>Libtool is getting it wrong. Even if you set your CFLAGS and LDFLAGS
+</I>&gt;&gt;<i>to have &quot;-static&quot;, libtool just eats those. I haven't yet found a way
+</I>&gt;&gt;<i>to make it not do that... ok, there is the &quot;-all-static&quot; flag to
+</I>&gt;&gt;<i>libtool but there doesn't seem to be a libtool_flags environment
+</I>&gt;&gt;<i>variable you can pass in (already tried).
+</I>
+&gt;&gt;<i>A slightly ugly solution is to pay attention to the gcc command that
+</I>&gt;&gt;<i>is run at the link stage. Just run that by hand with the addition of
+</I>&gt;&gt;<i>-static.
+</I>
+&gt;&gt;<i>CK
+</I>
+&gt;&gt;<i>-- 
+</I>&gt;&gt;<i>GDB has a 'break' feature; why doesn't it have 'fix' too?
+</I>
+
+
+&gt;<i>_______________________________________________
+</I>&gt;<i>Gpsd-users mailing list
+</I>&gt;<i><A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">Gpsd-users at lists.berlios.de</A>
+</I>&gt;<i><A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">https://lists.berlios.de/mailman/listinfo/gpsd-users</A>
+</I>
+
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="002635.html">[Gpsd-users] how to crosscompile gpsd for avr32
+</A></li>
+	<LI>Next message: <A HREF="002627.html">[Gpsd-users] how to crosscompile gpsd for avr32
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2638">[ date ]</a>
+              <a href="thread.html#2638">[ thread ]</a>
+              <a href="subject.html#2638">[ subject ]</a>
+              <a href="author.html#2638">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

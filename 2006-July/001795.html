@@ -1,0 +1,153 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] [Gpsd-dev] Have we cut	processor	utilization	any?
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2006-July/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20%5BGpsd-dev%5D%20Have%20we%20cut%09processor%09utilization%09any%3F&In-Reply-To=%3Cs4c79db7.065%40groupwise.erc-win.erc.msstate.edu%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="001794.html">
+   <LINK REL="Next"  HREF="001797.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] [Gpsd-dev] Have we cut	processor	utilization	any?</H1>
+    <B>Marshall Crocker</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20%5BGpsd-dev%5D%20Have%20we%20cut%09processor%09utilization%09any%3F&In-Reply-To=%3Cs4c79db7.065%40groupwise.erc-win.erc.msstate.edu%3E"
+       TITLE="[Gpsd-users] [Gpsd-dev] Have we cut	processor	utilization	any?">crocker at cavs.msstate.edu
+       </A><BR>
+    <I>Wed Jul 26 23:52:00 CEST 2006</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="001794.html">[Gpsd-users] [Gpsd-dev] Have we cut processor	utilization	any?
+</A></li>
+        <LI>Next message: <A HREF="001797.html">[Gpsd-users] [Gpsd-dev] Have we cut	processor	utilization	any?
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1795">[ date ]</a>
+              <a href="thread.html#1795">[ thread ]</a>
+              <a href="subject.html#1795">[ subject ]</a>
+              <a href="author.html#1795">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Compiling with --enable-max-client-fd=8 and --enable-max-devices=1
+produces
+
+~$ gpsd -n -N -D 1 /dev/ttyS2
+gpsd: launching (version 2.33)
+gpsd: listening on port 2947
+gpsd: opening GPS data source at '/dev/ttyS2'
+gpsd: speed 4800, 8N1
+gpsd: gpsd_activate: opened GPS (5)
+Segmentation fault
+
+Compiling with -D_FD_SETSIZE=8 and removing the --enable max-devices
+and max-client-fd stops the segmentation fault but processor utilization
+is around 50 - 60 percent which is about what I get with the hacked gpsd
+version.
+
+I don't know why I was seeing 20-30 percent earlier today unless it had
+something to do with that code being broken.  The utilization I'm seeing
+now may be because I'm getting data from gpsd by querying it every
+second.  I tried implementing a call back function in my code but that
+caused my application to seg fault even though the callback function
+would actually get data from gpsd once before seg faulting.  This may
+have something to do with the way pthreads are implemented in the uClibc
+library.
+
+I guess profiling is going to be the best option for figuring out
+what's going on as far as utilization goes.  If you can figure out why
+gpsd is seg faulting with the max client and max devices options I can
+recompile and test.  
+
+How much improvement do you think I should see with max-devices set to
+1?  Is it worth trying or should I just wait until I get profiling
+enabled?
+
+Marshall
+
+&gt;&gt;&gt;<i> &quot;Eric S. Raymond&quot; &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">esr at thyrsus.com</A>&gt; 7/26/2006 3:14:12 PM &gt;&gt;&gt;
+</I>Marshall Crocker &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">crocker at cavs.msstate.edu</A>&gt;:
+&gt;<i> I still haven't taken time to figure out how to enable profiling
+</I>with
+&gt;<i> my cross toolchain.  The 20% - 30% utilization is ok for now so I'm
+</I>&gt;<i> going to save the profiling for later.
+</I>
+One of my to-do items is to modify configure.ac to make building for
+profiling easier.  Fortunately, it seems the existing
+--enable-profiling
+is a knob with no mechanism attached; I think that happened when I
+implemented the $ command and scrapped the previous iteration of 
+profiling support.
+ 
+&gt;<i> I see those options now in the configure script.  The max-client-fd
+</I>&gt;<i> limits the numer of clients correct? 
+</I>
+It does what it says, limiting the maximum fd that gpsd can use.  This
+is not
+exactly the same as limiting the maximum client count; fds are not 
+nercssarily allocated consecutively from the point of view of any
+given
+userspace program, and some fds get allocated to GPS devices rather
+than
+client sessions.
+
+I'm going to have to go stare at that code for a while.  The
+difference
+is subtle and could trip someone up.  Maybe there's a better way.
+
+&gt;<i>                                  This option should be the same as
+</I>&gt;<i> compiling with  -D_FD_SETSIZE=n right?
+</I>
+That, on the other hand, is true.
+
+&gt;<i>                                           And the max-devices limits
+</I>the
+&gt;<i> number of gps devices? I didn't realize gpsd could support more than
+</I>one
+&gt;<i> gps device connected to the system.
+</I>
+Sure can.  Users can switch channels among any number of GPS devices
+up to the compiled-in maximum.  Comes in handy if (say) you have two
+GPSes at bow and stern of an oil tanker.
+
+&gt;<i> I'll compile with max-client-fd=8 and max-devices=1 and report the
+</I>&gt;<i> performance with these options.
+</I>
+Looking forward to it.
+-- 
+		&lt;a href=&quot;<A HREF="http://www.catb.org/~esr/">http://www.catb.org/~esr/</A>&quot;&gt;Eric S. Raymond&lt;/a&gt;
+_______________________________________________
+Gpsd-users mailing list
+<A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">Gpsd-users at lists.berlios.de</A> 
+<A HREF="http://bat.berlios.de/mailman/listinfo/gpsd-users">http://bat.berlios.de/mailman/listinfo/gpsd-users</A> 
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="001794.html">[Gpsd-users] [Gpsd-dev] Have we cut processor	utilization	any?
+</A></li>
+	<LI>Next message: <A HREF="001797.html">[Gpsd-users] [Gpsd-dev] Have we cut	processor	utilization	any?
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1795">[ date ]</a>
+              <a href="thread.html#1795">[ thread ]</a>
+              <a href="subject.html#1795">[ subject ]</a>
+              <a href="author.html#1795">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

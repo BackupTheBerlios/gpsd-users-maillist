@@ -1,0 +1,81 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] u-blox Antaris with strange NMEA &quot;dialect&quot;
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2006-February/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20u-blox%20Antaris%20with%20strange%20NMEA%20%22dialect%22&In-Reply-To=%3C20060227091624.GA28469%40thyrsus.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="001331.html">
+   <LINK REL="Next"  HREF="001327.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] u-blox Antaris with strange NMEA &quot;dialect&quot;</H1>
+    <B>Eric S. Raymond</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20u-blox%20Antaris%20with%20strange%20NMEA%20%22dialect%22&In-Reply-To=%3C20060227091624.GA28469%40thyrsus.com%3E"
+       TITLE="[Gpsd-users] u-blox Antaris with strange NMEA &quot;dialect&quot;">esr at thyrsus.com
+       </A><BR>
+    <I>Mon Feb 27 10:16:25 CET 2006</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="001331.html">[Gpsd-users] u-blox Antaris with strange NMEA &quot;dialect&quot;
+</A></li>
+        <LI>Next message: <A HREF="001327.html">[Gpsd-users] No depression
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1357">[ date ]</a>
+              <a href="thread.html#1357">[ thread ]</a>
+              <a href="subject.html#1357">[ subject ]</a>
+              <a href="author.html#1357">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Andreas Stricker &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">andreas.stricker at fela.ch</A>&gt;:
+&gt;<i> I noticed that even if the GPS Signal was good and the position right,
+</I>&gt;<i> gpsd never send a position but said there is &quot;no fix&quot;. So I found out
+</I>&gt;<i> that the GPS send an invalid GSA record with the character 'E' at the
+</I>&gt;<i> second field. NMEA 0183 defines just the values '1', '2' and '3'.
+</I>&gt;<i> Looking at nmea_parse.c I found out that the field is converted by
+</I>&gt;<i> atoi() to an int, resulting in 0 if there is a 'E' character. This
+</I>&gt;<i> sets the mode to zero resulting in &quot;no fix&quot; mode.
+</I>
+That's non-NMEA behavior, all right.  Sounds like they tried to jam the
+FAA mode indicator and the status field together.
+ 
+&gt;<i> A similar problem occurs at the GGA record: The status field returns
+</I>&gt;<i> not &quot;0&quot; (no fix), &quot;1&quot; (GPS), &quot;2&quot; (DGPS) but &quot;6&quot;! don't know what this
+</I>&gt;<i> means, but finally it results in an unknown situation.
+</I>
+It's the NMEA code for a dead-reckoning fix.  The nmea_parse code should
+accept this with no problem.
+-- 
+		&lt;a href=&quot;<A HREF="http://www.catb.org/~esr/">http://www.catb.org/~esr/</A>&quot;&gt;Eric S. Raymond&lt;/a&gt;
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="001331.html">[Gpsd-users] u-blox Antaris with strange NMEA &quot;dialect&quot;
+</A></li>
+	<LI>Next message: <A HREF="001327.html">[Gpsd-users] No depression
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1357">[ date ]</a>
+              <a href="thread.html#1357">[ thread ]</a>
+              <a href="subject.html#1357">[ subject ]</a>
+              <a href="author.html#1357">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

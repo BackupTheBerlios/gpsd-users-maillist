@@ -1,0 +1,152 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] 2.39 has shipped - roadmap for 2.40
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2009-March/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%202.39%20has%20shipped%20-%20roadmap%20for%202.40&In-Reply-To=%3C20090318212408.GA2978%40thyrsus.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="003676.html">
+   <LINK REL="Next"  HREF="003679.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] 2.39 has shipped - roadmap for 2.40</H1>
+    <B>Eric S. Raymond</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%202.39%20has%20shipped%20-%20roadmap%20for%202.40&In-Reply-To=%3C20090318212408.GA2978%40thyrsus.com%3E"
+       TITLE="[Gpsd-users] 2.39 has shipped - roadmap for 2.40">esr at thyrsus.com
+       </A><BR>
+    <I>Wed Mar 18 22:24:08 CET 2009</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="003676.html">[Gpsd-users] I need help for FURUNO GH-82
+</A></li>
+        <LI>Next message: <A HREF="003679.html">[Gpsd-users] 2.39 has shipped - roadmap for 2.40
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3677">[ date ]</a>
+              <a href="thread.html#3677">[ thread ]</a>
+              <a href="subject.html#3677">[ subject ]</a>
+              <a href="author.html#3677">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>With 2.39 shipping; it's time to plan ahead for the 2.40 release cycle.
+
+The following projects are unfinished:
+
+1. AIVDM/AIVDO decoding works and is tested in gpsdecode, but is not yet 
+use or reported by gpsd in any way at all.
+
+The AIDVM data doesn't quite fit inside an 'O' report, so this probably 
+will not change until we define GPSD-NG, the new request/response protocol.
+
+AIVDM is changing my thinking about the scope and semantics of GPSD's
+behavior. In the past, GPSD has always been about kinematic awareness
+of devices we presume to be local to where it's running.  With AIVDM,
+GPSD could become an aggregator for kinematic data from remote sources
+as well - Marine AIS transceivers, today, maybe aircraft transponders
+tomorrow?
+
+2. RTCM104v3 is passed to GPSes from RTCM104v3 sources, but the code for
+analyzing RTCM3 packets and dumping them is incomplete smd untested.
+
+I'm stalled on this because there is little point in trying to finish it
+before I have a test load.  A test load would consist of a log of
+representative RTCM3 packets *and* a falthful text dump of the data
+in that log.  An RTCM3 log by itself is not sufficient because there's
+no way to check it's being dumpred correctly.
+
+The good news is that if I *had* such a test load, I could make this work 
+in a day or two.
+
+3. gpsflash is still in an untested pre-alpha state.
+
+This is Chris Kuethe's baby. It's been hanging fire for a long time.
+The trouble with this subproject is partly that it's expensive -- you need
+a development kit with flash-to-RAM capoability, otherwise you risk toating
+a lot of devices.  Partly it's that GPS makers keep a really close rein on
+who can get their firmware images and how; theiy're copyrighted and the 
+legal barriers are significant.
+
+Chris has agreed to try to make a case to Google that it should foot the
+bill for a SiRF devkit.  If nothing happens by 2.40 release we'll probably 
+officially kill this subproject.
+
+4. The GPS simulator, gpssim, needs a skyview calculator.
+
+The blocker on this is that I need a way to compute a satellite skyview
+from GPS satellite orbital elements, and don't have one.  Other than that,
+the mathematical modeling is done and the report generation is pretty simple.
+
+New projects:
+
+1. D-Bus support
+
+We've actually had rudimentary D-Bus support since 2005 -- one of our
+test clients use it if it's available -- but it's poorly documenterd, 
+obscure, and experimental
+
+Recently we've been challenged by Gypsy, a competing GPS monitor
+daemon with better D-Bus support as its main selling point.  It's a
+pretty weak effort in most ways -- scratchy code, no packet sniffer --
+but the author's ideas on how to use D-Bus seem sound.
+
+It's not clear whether the right thing to do is exactly emulate 
+the Gypsy D-Bus interface or build a better one of our own (and
+a client library to go with it).
+
+2. Dumping pseudorange and subframe information.
+
+Some devices let you get this stuff.  For the drivers that can support
+it, it will require about doublying the complexity of the packet
+analyzer. We'll probably have to envent our own dump format, as the
+quasi-standard RINEX is file-oriented rather than streaming.
+
+This project needs GPSD-NG, so we'll have a way to encapsulate dump
+messages.
+
+3. GPSD-NG, the next-generation request/reponse protocol.
+
+With full AIVDM support and pseudorange dumping moving to near the
+top of the todo list, the day I've been putting off for two years
+seems to be here -- it's time to design an improved request/reponse
+protocol.  There are two major reasons for this:
+
+1. We've run out of command letters
+
+2. We're going need a way to encapsulate multline responses.
+
+I'll expand on the design issues around this in another post.
+ 
+
+-- 
+		&lt;a href=&quot;<A HREF="http://www.catb.org/~esr/">http://www.catb.org/~esr/</A>&quot;&gt;Eric S. Raymond&lt;/a&gt;
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="003676.html">[Gpsd-users] I need help for FURUNO GH-82
+</A></li>
+	<LI>Next message: <A HREF="003679.html">[Gpsd-users] 2.39 has shipped - roadmap for 2.40
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3677">[ date ]</a>
+              <a href="thread.html#3677">[ thread ]</a>
+              <a href="subject.html#3677">[ subject ]</a>
+              <a href="author.html#3677">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

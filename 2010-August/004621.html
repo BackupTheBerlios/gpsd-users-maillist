@@ -1,0 +1,79 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] GPSD and NTP/Openntp SHM
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2010-August/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20GPSD%20and%20NTP/Openntp%20SHM&In-Reply-To=%3Calpine.DEB.1.10.1008031020490.693%40org-pc51.fy.chalmers.se%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="004620.html">
+   <LINK REL="Next"  HREF="004622.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] GPSD and NTP/Openntp SHM</H1>
+    <B>H&#229;kan Johansson</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20GPSD%20and%20NTP/Openntp%20SHM&In-Reply-To=%3Calpine.DEB.1.10.1008031020490.693%40org-pc51.fy.chalmers.se%3E"
+       TITLE="[Gpsd-users] GPSD and NTP/Openntp SHM">f96hajo at chalmers.se
+       </A><BR>
+    <I>Tue Aug  3 10:26:37 CEST 2010</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="004620.html">[Gpsd-users] GPSD and NTP/Openntp SHM
+</A></li>
+        <LI>Next message: <A HREF="004622.html">[Gpsd-users] Java Client
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#4621">[ date ]</a>
+              <a href="thread.html#4621">[ thread ]</a>
+              <a href="subject.html#4621">[ subject ]</a>
+              <a href="author.html#4621">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>&gt;<i> server 127.127.28.0 mode 0 minpoll4 maxpoll 16
+</I>&gt;<i>
+</I>&gt;<i> fudge 127.127.28.0 refid GPS
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i> server 127.127.28.0 mode 0 minpoll4 maxpoll 16
+</I>&gt;<i>
+</I>&gt;<i> fudge 127.127.28.0 refid GPS1
+</I>
+This second one should be 127.127.28.1 (to not be the same as the first).
+
+gpsd -D 6 and looking at the few first messages could help to find out 
+which of the ntpshm segments are attached (and why the others failed). 
+Since you have declared all 4 (0,1 used by / for root only in gpsd, 2,3 by 
+others), my guess would have been that it should have worked as any user.
+
+Cheers,
+H&#229;kan
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="004620.html">[Gpsd-users] GPSD and NTP/Openntp SHM
+</A></li>
+	<LI>Next message: <A HREF="004622.html">[Gpsd-users] Java Client
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#4621">[ date ]</a>
+              <a href="thread.html#4621">[ thread ]</a>
+              <a href="subject.html#4621">[ subject ]</a>
+              <a href="author.html#4621">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

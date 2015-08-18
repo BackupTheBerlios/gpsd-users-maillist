@@ -1,0 +1,174 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] GPSD segfault
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2006-April/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20GPSD%20segfault&In-Reply-To=%3Cadbbf73e0604070752w340d79a7h664bd3d3bfb682c2%40mail.gmail.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="001501.html">
+   <LINK REL="Next"  HREF="001503.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] GPSD segfault</H1>
+    <B>Jim Hogan</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20GPSD%20segfault&In-Reply-To=%3Cadbbf73e0604070752w340d79a7h664bd3d3bfb682c2%40mail.gmail.com%3E"
+       TITLE="[Gpsd-users] GPSD segfault">jim.hogan at gmail.com
+       </A><BR>
+    <I>Fri Apr  7 16:52:34 CEST 2006</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="001501.html">[Gpsd-users] GPSD segfault
+</A></li>
+        <LI>Next message: <A HREF="001503.html">[Gpsd-users] Weird Long/Lat output
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1502">[ date ]</a>
+              <a href="thread.html#1502">[ thread ]</a>
+              <a href="subject.html#1502">[ subject ]</a>
+              <a href="author.html#1502">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Robin,
+
+On 4/6/06, Robin L Darroch &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">robin at spade-men.com</A>&gt; wrote:
+&gt;<i>
+</I>&gt;<i> Try starting gpsd using the -n switch,
+</I>
+
+[....snip]
+&gt;<i>
+</I>&gt;<i> Try:
+</I>&gt;<i>
+</I>&gt;<i> ./configure --disable-evermore
+</I>&gt;<i> make
+</I>&gt;<i> sudo make install
+</I>
+
+Thanks very much.  That is very helpful.  I figured it might be of some use
+to post the problem case with the as-is RPM install, but I'll rebuild from
+source this eve and go from there.
+
+(I see you are from WA as well.)
+
+Thanks again,
+
+Jim
+
+
+
+And see if that fixes your problem.
+&gt;<i>
+</I>&gt;<i> Cheers,
+</I>&gt;<i> Robin
+</I>&gt;<i>
+</I>&gt;<i> At 21:18 -0700 6/4/06, Jim Hogan wrote:
+</I>&gt;<i> &gt;I've installed gpsd 2.32-1 for x86_64 from RPM (on Fedora Core 4
+</I>&gt;<i> &gt;2.6.15-1.1831_FC4smp, gcc version 4.02).    I have a reproduceable
+</I>&gt;<i> &gt;segfault that isn't as yet very informative.  I seem to be able to run
+</I>&gt;<i> &gt;gpsd for lengthy periods, like overnight, but not long after I fire up
+</I>&gt;<i> &gt;a client like xgps, it segfaults.
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt;I am seeing some things, though, that suggest that maybe I have a
+</I>&gt;<i> &gt;problem -- that I may be abusing gpsd :)    Let me list some of these
+</I>&gt;<i> &gt;oddities.
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt;If I run &quot;gpsd -N -D128 /dev/ttyS0&quot;  I can see a preponderance or
+</I>&gt;<i> &gt;messages like
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt;/************* SAMPLE ***************/
+</I>&gt;<i> &gt;gpsd: select waits
+</I>&gt;<i> &gt;gpsd: polling 4
+</I>&gt;<i> &gt;gpsd: Read 2 chars to buffer offset 0 (total 2): 2a32
+</I>&gt;<i> &gt;gpsd: ISGPS word tag not correct, skipping
+</I>&gt;<i> &gt;gpsd: 00014076: character '*' [2a], new state: GROUND_STATE
+</I>&gt;<i> &gt;gpsd: Character discarded, buffer 1 chars = 32
+</I>&gt;<i> &gt;gpsd: ISGPS word tag not correct, skipping
+</I>&gt;<i> &gt;gpsd: 00014077: character '2' [32], new state: GROUND_STATE
+</I>&gt;<i> &gt;gpsd: Character discarded, buffer 0 chars =
+</I>&gt;<i> &gt;gpsd: packet sniff finds type -1
+</I>&gt;<i> &gt;gpsd: GPS sent 2 new characters
+</I>&gt;<i> &gt;gpsd: New data, not yet a packet
+</I>&gt;<i> &gt;gpsd: select waits
+</I>&gt;<i> &gt;gpsd: polling 4
+</I>&gt;<i> &gt;/*************** END SAMPLE ************/
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt;I also see long periods where &quot;select waits&quot; will repeat endlessly.
+</I>&gt;<i> &gt;This &quot;select waits&quot; loop will usually end when I fire up xgps - and I
+</I>&gt;<i> &gt;get fine-looking output on xgps for a while - but then a segfault.
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt;Now, for all I know, some or all of this is normal, but I didn't like
+</I>&gt;<i> &gt;the look of repeated
+</I>&gt;<i> &gt;&quot;New data, not yet a packet&quot; with only the occasional NMEA string.  It
+</I>&gt;<i> &gt;seems to suggest I have a problem with the serial output from my GPS
+</I>&gt;<i> &gt;(an Oncore GT+ with Larry Cochrane's interface board).
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt;I can produce a longer section of debug output, but thought I wouldn't
+</I>&gt;<i> &gt;overdo it until posting an initial query.  Any thoughts of what i
+</I>&gt;<i> &gt;could do to improve diagnostic output welcome.
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt;Unrelated question: If you reenable 1PPS feature in gpsd, is it built
+</I>&gt;<i> &gt;to just look on serial pin like pin 1 on DB9?  What does it expect to
+</I>&gt;<i> &gt;see, voltage/signal-wise.  I ask just because Cochrane's board has
+</I>&gt;<i> &gt;solder pad for 1PPS and it seems like it would be a shame to waste it
+</I>&gt;<i> &gt;:)
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt;Thanks,
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt;Jim
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt;--
+</I>&gt;<i> &gt;-*-  Jim Hogan
+</I>&gt;<i> &gt;      Seattle, WA
+</I>&gt;<i> &gt;_______________________________________________
+</I>&gt;<i> &gt;Gpsd-users mailing list
+</I>&gt;<i> &gt;<A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">Gpsd-users at lists.berlios.de</A>
+</I>&gt;<i> &gt;<A HREF="http://lists.berlios.de/mailman/listinfo/gpsd-users">http://lists.berlios.de/mailman/listinfo/gpsd-users</A>
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i> --
+</I>&gt;<i>
+</I>&gt;<i> -------------------------------------------------------------------------
+</I>&gt;<i>   Robin L. Darroch - PO Box 2715, South Hedland WA 6722 - +61 421 503 966
+</I>&gt;<i>        <A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">robin at darroch.id.au</A> - <A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">robin at nyca.org.au</A> - <A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">robin at spade-men.com</A>
+</I>&gt;<i>
+</I>&gt;<i>
+</I>
+
+--
+-*-  Jim Hogan
+     Seattle, WA
+-------------- next part --------------
+An HTML attachment was scrubbed...
+URL: &lt;<A HREF="https://lists.berlios.de/pipermail/gpsd-users/attachments/20060407/549715bf/attachment.html">https://lists.berlios.de/pipermail/gpsd-users/attachments/20060407/549715bf/attachment.html</A>&gt;
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="001501.html">[Gpsd-users] GPSD segfault
+</A></li>
+	<LI>Next message: <A HREF="001503.html">[Gpsd-users] Weird Long/Lat output
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1502">[ date ]</a>
+              <a href="thread.html#1502">[ thread ]</a>
+              <a href="subject.html#1502">[ subject ]</a>
+              <a href="author.html#1502">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

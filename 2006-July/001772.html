@@ -1,0 +1,147 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] gpsd cpu usage
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2006-July/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20gpsd%20cpu%20usage&In-Reply-To=%3C20060721134242.GC28671%40thyrsus.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="001771.html">
+   <LINK REL="Next"  HREF="001761.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] gpsd cpu usage</H1>
+    <B>Eric S. Raymond</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20gpsd%20cpu%20usage&In-Reply-To=%3C20060721134242.GC28671%40thyrsus.com%3E"
+       TITLE="[Gpsd-users] gpsd cpu usage">esr at thyrsus.com
+       </A><BR>
+    <I>Fri Jul 21 15:42:42 CEST 2006</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="001771.html">[Gpsd-users] gpsd cpu usage
+</A></li>
+        <LI>Next message: <A HREF="001761.html">[Gpsd-users] gpsd cpu usage
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1772">[ date ]</a>
+              <a href="thread.html#1772">[ thread ]</a>
+              <a href="subject.html#1772">[ subject ]</a>
+              <a href="author.html#1772">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Eivind Tagseth &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">eivindt-gmane at multinet.no</A>&gt;:
+&gt;<i> 	1.  The main loop seems to be a bit too expensive for an embedded
+</I>&gt;<i> device.  Just going through 1024 array elements 3 times (once for all
+</I>&gt;<i> potential gps devices, once for all potential clients and a second time
+</I>&gt;<i> for all clients if nowait is unset) takes enough time to be noticeable.
+</I>
+I like Wallace Owen's idea of tracking the upper bound on that loop by
+watching accept(2) returns.  I have code that I think implements that;
+I need to test it.  In the typical case it should reduce the poll cycle
+time by a factor of about a thousand!
+
+Wallace's approach fits the philosophy I'm trying to carry through the
+whole project, which is that as much as possible gpsd should configure
+itself for best operation by watching its environment, rather than
+relying on directives passed in by humans.
+ 
+&gt;<i> Problem number 1 is a problem both when it comes to performace and
+</I>&gt;<i> especially when it comes to memory consumption.  Many embedded devices
+</I>&gt;<i> have no MMU, and therefore no swapping capabilities.  Allocating 1024 *
+</I>&gt;<i> sizeof(subscriber_t) + 1024 * sizeof(gps_device_t) (gps_device_t is
+</I>&gt;<i> _huge_!) is a major resource problem.
+</I>
+That's because FD_SETSIZE is normally 1024 on modern machines, of
+course.  That's *way* larger than any set of devices I can imagine
+being hooked up to gpsd, but I dislike having artificial limits in my
+code when memory is cheap.
+
+In the SBC context, however, your point is more than fair.  I think
+this is best addressed by reducing the size of that array at
+compilation time in environments where you know in advance that (a)
+you're memory-constrained, and (b) there will be few devices.
+
+&gt;<i> Problem number 2 may be a serial port configuration issue I guess.
+</I>&gt;<i> Maybe if the port was initialized with ICANON, things would be better?
+</I>&gt;<i> We did try that with our device, but without success.  Didn't check why
+</I>&gt;<i> though.
+</I>
+Starting serial ports with ICANON would break the type-hunting logic,
+making it unable to sync up devices that send binary packets.  I like
+the idea of setting it in the NMEA driver, though.  That would be 
+a nice efficiency hack.  I'll put that on the to-do list.
+
+&gt;<i> Possible solutions:
+</I>&gt;<i> 
+</I>&gt;<i> I have a patch solving problem number 1.  It adds two new parameters to
+</I>&gt;<i> configure, limiting the maximum number of gps devices and the maximum
+</I>&gt;<i> file descriptor of the clients.  I'm not very pleased with it though,
+</I>&gt;<i> I'd like to try changing how the subscribers array is used, and add the
+</I>&gt;<i> client's file descriptor to the subscriber_t, just as what's done with
+</I>&gt;<i> the gps_device_t type, so that one can set the maximum number of
+</I>&gt;<i> clients, rather than the maximum value of the clients' file descriptor.
+</I>
+I think I only need part of this patch now, if Wallace Owen's idea
+works out (and I think it will)
+ 
+&gt;<i> Problem number two is harder.  I don't think you'd like a sleep() in the
+</I>&gt;<i> main loop as it is a rather ugly hack.
+</I>
+Quite right; not only is it ugly, I don't like anything that adds latency.
+
+&gt;<i>                                 But I'm not sure if configuring
+</I>&gt;<i> the serial port differently is good either, setting ICANON would surely
+</I>&gt;<i> be a bad idea for binary protocols? 
+</I>
+It is, as I noted above.
+
+&gt;<i>                                      This problem may be locally
+</I>&gt;<i> solvable on our side by making sure the serial port is properly
+</I>&gt;<i> configured before starting gpsd.
+</I>
+You shouldn't have to do that.  If you can live with expensive polling
+for a few seconds while gpsd syncs to the device type, it seems to
+me that setting ICANON in the initialization function of the NMEA
+driver would be useful.  I'd take a patch for that instantly.
+
+Even the startup overhead could be eliminated, in principle.  If you
+want to hack the configuration machinery so people deploying on SBCs
+can wire gpsd down to a single device type, avoiding the hunt logic
+altogether, I'd take a patch for that too.  
+
+I'd refuse a gpsd startup option for this purpose because it would 
+tempt us to be lazy and not get the autoconfiguration problem right 
+in PC environments where it matters.  But a compile-time option -- 
+so long as it's not the default -- would be acceptable.
+-- 
+		&lt;a href=&quot;<A HREF="http://www.catb.org/~esr/">http://www.catb.org/~esr/</A>&quot;&gt;Eric S. Raymond&lt;/a&gt;
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="001771.html">[Gpsd-users] gpsd cpu usage
+</A></li>
+	<LI>Next message: <A HREF="001761.html">[Gpsd-users] gpsd cpu usage
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1772">[ date ]</a>
+              <a href="thread.html#1772">[ thread ]</a>
+              <a href="subject.html#1772">[ subject ]</a>
+              <a href="author.html#1772">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

@@ -1,0 +1,101 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] 2.16 and GPS 18
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2005-March/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%202.16%20and%20GPS%2018&In-Reply-To=%3CPine.LNX.4.62.0503131624590.13059%40catbert.rellim.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="000345.html">
+   <LINK REL="Next"  HREF="000348.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] 2.16 and GPS 18</H1>
+    <B>Gary E. Miller</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%202.16%20and%20GPS%2018&In-Reply-To=%3CPine.LNX.4.62.0503131624590.13059%40catbert.rellim.com%3E"
+       TITLE="[Gpsd-users] 2.16 and GPS 18">gem at rellim.com
+       </A><BR>
+    <I>Mon Mar 14 01:34:17 CET 2005</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="000345.html">[Gpsd-users] 2.16 and GPS 18
+</A></li>
+        <LI>Next message: <A HREF="000348.html">[Gpsd-users] 2.16 and GPS 18
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#346">[ date ]</a>
+              <a href="thread.html#346">[ thread ]</a>
+              <a href="subject.html#346">[ subject ]</a>
+              <a href="author.html#346">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>-----BEGIN PGP SIGNED MESSAGE-----
+Hash: SHA1
+
+Yo Eric!
+
+On Sun, 13 Mar 2005, Eric S. Raymond wrote:
+
+&gt;<i> Gary E. Miller &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">gem at rellim.com</A>&gt;:
+</I>&gt;<i> &gt; Something in today's SVN broke the garmin interface.  Could have been added
+</I>&gt;<i> &gt; any time in the last few days.
+</I>&gt;<i>
+</I>&gt;<i> I'm about to commit a big rewrite of the packet engine that brings
+</I>&gt;<i> back reliable disconnect/reconnect.  That shouldn't affect the Garmin
+</I>&gt;<i> driver, but...
+</I>
+By packet engine I assume you mean the port 2947 interface and not the
+serial.c interface?  Then go for it.  If it affects what I am doing would
+rather face it now.
+
+Think I have found the Garmin problem, but not coded the patch.  For some
+reason O_NONDELAY was being set when the tty was open()ed, but now
+is set AFTER the garmin_probe().  I would rather not have two garmin
+GetPacket() routines.  Either O_NONDELAY should be always set before
+calling garmin_* or never set before calling.  Yoyr choice, pick one and
+I'll code around it.
+
+RGDS
+GARY
+- ---------------------------------------------------------------------------
+Gary E. Miller Rellim 20340 Empire Blvd, Suite E-3, Bend, OR 97701
+	<A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">gem at rellim.com</A>  Tel:+1(541)382-8588 Fax: +1(541)382-8676
+
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v1.2.3 (GNU/Linux)
+
+iD8DBQFCNNwM8KZibdeR3qURArlTAJ9eLPbNnwtfxZgP/4rwAPMY/fm1SACePoHT
+cn+wKWu/ugfTuUqj4XTKM/E=
+=+zZk
+-----END PGP SIGNATURE-----
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="000345.html">[Gpsd-users] 2.16 and GPS 18
+</A></li>
+	<LI>Next message: <A HREF="000348.html">[Gpsd-users] 2.16 and GPS 18
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#346">[ date ]</a>
+              <a href="thread.html#346">[ thread ]</a>
+              <a href="subject.html#346">[ subject ]</a>
+              <a href="author.html#346">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

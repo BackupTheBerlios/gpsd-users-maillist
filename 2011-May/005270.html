@@ -1,0 +1,92 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] [Gpsd-dev]   Gpsd configuration files
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2011-May/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20%5BGpsd-dev%5D%20%20%20Gpsd%20configuration%20files&In-Reply-To=%3C20110531125548.41d9f941%40yendi%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="005268.html">
+   <LINK REL="Next"  HREF="005271.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] [Gpsd-dev]   Gpsd configuration files</H1>
+    <B>Charles Curley</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20%5BGpsd-dev%5D%20%20%20Gpsd%20configuration%20files&In-Reply-To=%3C20110531125548.41d9f941%40yendi%3E"
+       TITLE="[Gpsd-users] [Gpsd-dev]   Gpsd configuration files">charlescurley at charlescurley.com
+       </A><BR>
+    <I>Tue May 31 20:55:48 CEST 2011</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="005268.html">[Gpsd-users] [Gpsd-dev]   Gpsd configuration files
+</A></li>
+        <LI>Next message: <A HREF="005271.html">[Gpsd-users] [Gpsd-dev]   Gpsd configuration files
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#5270">[ date ]</a>
+              <a href="thread.html#5270">[ thread ]</a>
+              <a href="subject.html#5270">[ subject ]</a>
+              <a href="author.html#5270">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>On Tue, 31 May 2011 13:25:56 -0400
+Eric Raymond &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">esr at thyrsus.com</A>&gt; wrote:
+
+&gt;<i> &gt; I was suggesting an approach which would have used one single
+</I>&gt;<i> &gt; /etc/gpsd.conf instead of the four above.  
+</I>&gt;<i> 
+</I>&gt;<i> Bad, *bad* idea.  It would involve our C code with the details of the
+</I>&gt;<i> Linux /sys interface, which is (a) complex, (b) poorly documented, and
+</I>&gt;<i> (c) a moving target.  The hotplug scripts loosen the coupling
+</I>&gt;<i> somewhat, reducing total maintainance burden and preventing our core
+</I>&gt;<i> code from getting destabilized every time /sys changes.
+</I>
+Also, such code would not be portable to non-Linux OSs. Again, our
+primary customers are embedded developers, where hot plugging is usually
+an unnecessary complication. Even the notion that gpsd should read a
+file has implications for embedded systems that designers might prefer
+to avoid.
+
+Also, this would violate the Unix ideal that each program should do one
+thing, and only one thing, and do it very very well. gpsd as it stands
+complies with that ideal. gpsd should leave hot plugging to the hot
+plug code (if any), display to the display code (if any), etc.
+
+-- 
+
+Charles Curley                  /&quot;\    ASCII Ribbon Campaign
+Looking for fine software       \ /    Respect for open standards
+and/or writing?                  X     No HTML/RTF in email
+<A HREF="http://www.charlescurley.com">http://www.charlescurley.com</A>    / \    No M$ Word docs in email
+
+Key fingerprint = CE5C 6645 A45A 64E4 94C0  809C FFF6 4C48 4ECD DFDB
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="005268.html">[Gpsd-users] [Gpsd-dev]   Gpsd configuration files
+</A></li>
+	<LI>Next message: <A HREF="005271.html">[Gpsd-users] [Gpsd-dev]   Gpsd configuration files
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#5270">[ date ]</a>
+              <a href="thread.html#5270">[ thread ]</a>
+              <a href="subject.html#5270">[ subject ]</a>
+              <a href="author.html#5270">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

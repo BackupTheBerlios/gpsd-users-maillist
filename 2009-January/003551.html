@@ -1,0 +1,117 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] gpsd doesn't sync with my RS232--&gt;USB gps
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2009-January/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20gpsd%20doesn%27t%20sync%20with%20my%20RS232--%3EUSB%20gps&In-Reply-To=%3Cf646a2190901161617l1286b713i3217acd4f484babe%40mail.gmail.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="003550.html">
+   <LINK REL="Next"  HREF="003553.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] gpsd doesn't sync with my RS232--&gt;USB gps</H1>
+    <B>Romain Aviolat</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20gpsd%20doesn%27t%20sync%20with%20my%20RS232--%3EUSB%20gps&In-Reply-To=%3Cf646a2190901161617l1286b713i3217acd4f484babe%40mail.gmail.com%3E"
+       TITLE="[Gpsd-users] gpsd doesn't sync with my RS232--&gt;USB gps">r.aviolat at gmail.com
+       </A><BR>
+    <I>Sat Jan 17 01:17:08 CET 2009</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="003550.html">[Gpsd-users] GPS i-Blue 747
+</A></li>
+        <LI>Next message: <A HREF="003553.html">[Gpsd-users] GPSDproxy: how to proxy GPSD data over UDP	(unreliable) connection.
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3551">[ date ]</a>
+              <a href="thread.html#3551">[ thread ]</a>
+              <a href="subject.html#3551">[ subject ]</a>
+              <a href="author.html#3551">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hello,
+
+I'm using a Kirrio BR-306 GPS head with gpsd (some info there:
+<A HREF="http://xens.dyndns.org/index.php?post/2008/06/28/Adapter-son-GPS-kirrio-sur-son-laptop">http://xens.dyndns.org/index.php?post/2008/06/28/Adapter-son-GPS-kirrio-sur-son-laptop</A>).
+I can use it directly on my laptop's serial port. Gpsd sets the serial port
+at the right speed (4'800bds) and I can display the NMEA output with a &quot;cat
+/dev/ttyS0&quot;, it works fine even with xpgs or other gpsd based applications.
+
+
+But today I'd like to add a USB adapter (/dev/ttyUSB0) for a netbook without
+serial port, here's the problem:
+
+If I manually sets the serial port speed (stty -F /dev/ttyUSB0 4800) I can
+watch the NMEA output, it works.
+
+gpsd tries different speeds but never sync up with the device,
+
+----------------------------------------------------------------------------------
+gpsd: successfully connected to the DBUS system bus
+gpsd: running with effective group ID 0
+gpsd: running with effective user ID 0
+gpsd: opening GPS data source at '/dev/ttyUSB0'
+gpsd: speed 4800, 8N1
+gpsd: =&gt; GPS: $PASHQ,RID*28\x0d
+.......................
+gpsd: packet sniff finds type -1
+gpsd: packet sniff finds type -1
+gpsd: packet sniff finds type -1
+gpsd: packet sniff finds type -1
+.......................
+gpsd: speed 9600, 8N1
+gpsd: =&gt; GPS: $PASHQ,RID*28\x0d
+.......................
+gpsd: packet sniff finds type -1
+gpsd: packet sniff finds type -1
+gpsd: packet sniff finds type -1
+gpsd: speed 57600, 8N1
+gpsd: =&gt; GPS: $PASHQ,RID*28\x0d
+gpsd: Navcom: command dump: 0299661c0800040200001203
+gpsd: =&gt; GPS: 0299661c0800040200001203
+gpsd: Navcom: sent command 0x1c (Test Support Block)
+gpsd: Navcom: command 0x1c mode = 02, length = 0
+gpsd: Navcom: command dump: 029966200e000001ae02000071000000f203
+gpsd: =&gt; GPS: 029966200e000001ae02000071000000f203
+gpsd: Navcom: sent command 0x20 (Data Request) - data block id = ae at rate
+00
+gpsd: Navcom: command dump: 029966200e00000186020a0071000000d003
+gpsd: =&gt; GPS: 029966200e00000186020a0071000000d003
+gpsd: Navcom: sent command 0x20 (Data Request) - data block id = 86 at rate
+0a
+gpsd: Received terminating signal 2. Exiting...
+gpsd: closing GPS=/dev/ttyUSB0 (5)
+
+any idea?
+
+Romain
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="003550.html">[Gpsd-users] GPS i-Blue 747
+</A></li>
+	<LI>Next message: <A HREF="003553.html">[Gpsd-users] GPSDproxy: how to proxy GPSD data over UDP	(unreliable) connection.
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3551">[ date ]</a>
+              <a href="thread.html#3551">[ thread ]</a>
+              <a href="subject.html#3551">[ subject ]</a>
+              <a href="author.html#3551">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

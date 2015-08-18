@@ -1,0 +1,119 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] problems building 2.2, bug in running gpsd
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2004-October/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20problems%20building%202.2%2C%20bug%20in%20running%20gpsd&In-Reply-To=%3Cp06110411bda3e7b34405%40%5B210.10.215.33%5D%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="000111.html">
+   <LINK REL="Next"  HREF="000126.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] problems building 2.2, bug in running gpsd</H1>
+    <B>Robin L Darroch</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20problems%20building%202.2%2C%20bug%20in%20running%20gpsd&In-Reply-To=%3Cp06110411bda3e7b34405%40%5B210.10.215.33%5D%3E"
+       TITLE="[Gpsd-users] problems building 2.2, bug in running gpsd">robin at spade-men.com
+       </A><BR>
+    <I>Tue Oct 26 14:09:49 CEST 2004</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="000111.html">[Gpsd-users] Announcing release 2.2 of gpsd
+</A></li>
+        <LI>Next message: <A HREF="000126.html">[Gpsd-users] problems building 2.2, bug in running gpsd
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#123">[ date ]</a>
+              <a href="thread.html#123">[ thread ]</a>
+              <a href="subject.html#123">[ subject ]</a>
+              <a href="author.html#123">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi folks,
+
+I've run into a couple of problems while trying to build 2.2 on Mac 
+OS X 10.3 (Darwin), but the main reason I'm trying to build 2.2 is to 
+find out whether it fixes some bugs in the output of some basic 
+commands.  The first error I got was while trying to &quot;make&quot;, in 
+libgpsd_core.c, line 37, &quot;implicit declaration of calloc&quot;... which of 
+course means the library header containing calloc hadn't been 
+#included.  The fix for that was as simple as adding
+
+#include &lt;stdlib.h&gt;
+
+to the list in libgpsd_core.c
+
+Similarly, while compiling gps.c, it ran into a whole bunch of 
+implicit declarations, this time from missing stdio.h
+
+gpsd.c ended up with a huge number of includes missing, and the only 
+way I could find them all was to compare it against the same file 
+from version 2.0.  I added the following includes:
+
+sys/ioctl.h
+sys/types.h
+netinet/in.h
+netinet/tcp.h
+
+Perhaps all of those weren't necessary, but at least it gets a clean 
+compile with them in.
+
+Anyhow, I now have it running, and am pleased to report that it's now 
+reporting correct altitude in response to an &quot;A&quot; command (rather than 
+just zero, as seemed to be the case in 2.0).  However, the &quot;Q&quot; 
+command does not give an accurate report of the number of satellites 
+used for the fix (which is the only meaningful number of satellites 
+to report).  For some reason I can't figure out, it seems always to 
+report &quot;12&quot; (which is the number of channels my GPS unit has) rather 
+than the actual number of satellites used for the fix.  The number 
+which *should* be returned by &quot;Q&quot; can either be found in the GPGGA or 
+GPGSA sentences:
+
+$GPGGA,123519,4807.038,N,01131.324,E,1,08,0.9,545.4,M,46.9,M, , *42
+                                        ^^ (8 satellites)
+
+$GPGSA,A,3,04,05,,09,12,,,24,,,,,2.5,1.3,2.1*39
+            ^^ ^^  ^^ ^^   ^^    (5 satellites)
+
+I would suggest GGA is the best place to get it, as it's just given 
+(rather than needing gpsd to count them).
+
+Anyhow, hope that helps make 2.3 even better... fantastic work, guys!
+
+Cheers,
+Robin
+-- 
+
+------------------------------------------------------------
+Robin L. Darroch - <A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">robin at spade-men.com</A> - <A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">robin at darroch.id.au</A>
+       <A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">robin_darroch at nyca.org.au</A>   -   +61 421 503 966
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="000111.html">[Gpsd-users] Announcing release 2.2 of gpsd
+</A></li>
+	<LI>Next message: <A HREF="000126.html">[Gpsd-users] problems building 2.2, bug in running gpsd
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#123">[ date ]</a>
+              <a href="thread.html#123">[ thread ]</a>
+              <a href="subject.html#123">[ subject ]</a>
+              <a href="author.html#123">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

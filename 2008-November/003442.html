@@ -1,0 +1,114 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] Help needed for a newly installed gpsd 2.37
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2008-November/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Help%20needed%20for%20a%20newly%20installed%20gpsd%202.37&In-Reply-To=%3C1226890367.8065.19.camel%40bol-lenovo%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="003441.html">
+   <LINK REL="Next"  HREF="003446.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] Help needed for a newly installed gpsd 2.37</H1>
+    <B>Bo Li</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Help%20needed%20for%20a%20newly%20installed%20gpsd%202.37&In-Reply-To=%3C1226890367.8065.19.camel%40bol-lenovo%3E"
+       TITLE="[Gpsd-users] Help needed for a newly installed gpsd 2.37">bli0406 at gmail.com
+       </A><BR>
+    <I>Mon Nov 17 03:52:47 CET 2008</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="003441.html">[Gpsd-users] Help needed for a newly installed gpsd 2.37
+</A></li>
+        <LI>Next message: <A HREF="003446.html">[Gpsd-users] Help needed for a newly installed gpsd 2.37
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3442">[ date ]</a>
+              <a href="thread.html#3442">[ thread ]</a>
+              <a href="subject.html#3442">[ subject ]</a>
+              <a href="author.html#3442">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi,
+
+Sorry for bothering again.  
+My gpsd is still not running well, I really appreciate if you can give
+some adivce.  Thanks in advance!
+
+System information:
+OS: CentOS 5.1
+gpsd: 2.37 (installed from tar ball)
+hardware: USB PHAROS GPS-500 sirf III gps
+
+Here is what I did: 
+1, Start daemon
+gpsd -N -n -D 2 /dev/ttyUSB0
+2, Test gpsd with telnet
+telnet localhost 2947 (sometimes command 'p' can return a position) 
+3, Test gpsd with a c program
+The most important part is:
+////////////////////////////////////////////
+   struct gps_data_t* gpsdata;
+   gpsdata = gps_open(&quot;127.0.0.1&quot;, &quot;2947&quot;);
+   (void)gps_query(gpsdata, &quot;p\n&quot;);
+   lat = gpsdata-&gt;fix.latitude;
+   lon = gpsdata-&gt;fix.longitude;
+   gps_close(gpsdata);
+   printf(&quot;%f - %f\n&quot;,lat, lon);
+   sleep(80);
+/////////////////////////////////////////////
+But the lat and lon is always nan.
+
+So what is the problem?  What should I do?
+
+Thanks,
+Bo Li
+
+On Tue, 2008-11-11 at 23:23 +0100, Jan-Benedict Glaw wrote:
+&gt;<i> On Tue, 2008-11-11 16:43:03 -0500, Bo Li &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">bli0406 at gmail.com</A>&gt; wrote:
+</I>&gt;<i> &gt; I guess I missed the other warning message:
+</I>&gt;<i> &gt; 
+</I>&gt;<i> &gt; gpsd: can't use GGA time until after ZDA or RMC has supplied a year.
+</I>&gt;<i> &gt; 
+</I>&gt;<i> &gt; Do we just ignore it too?
+</I>&gt;<i> 
+</I>&gt;<i> Yes. GGA only uses a 2-digit year, so you don't know the century.
+</I>&gt;<i> However, the ZDA and RMC sentences of NMEA actually supply the
+</I>&gt;<i> complete year number, including the century.
+</I>&gt;<i> 
+</I>&gt;<i> So if you don't need your system to tell you the exact date and time
+</I>&gt;<i> (including a non-guesses century), this is only a cosmetic problem.
+</I>&gt;<i> 
+</I>&gt;<i> MfG, JBG
+</I>&gt;<i> 
+</I>
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="003441.html">[Gpsd-users] Help needed for a newly installed gpsd 2.37
+</A></li>
+	<LI>Next message: <A HREF="003446.html">[Gpsd-users] Help needed for a newly installed gpsd 2.37
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3442">[ date ]</a>
+              <a href="thread.html#3442">[ thread ]</a>
+              <a href="subject.html#3442">[ subject ]</a>
+              <a href="author.html#3442">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

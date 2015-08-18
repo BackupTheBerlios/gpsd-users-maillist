@@ -1,0 +1,100 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] Private-use fields vs. GPSD-NG queries
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2006-December/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Private-use%20fields%20vs.%20GPSD-NG%20queries&In-Reply-To=%3C20061211051803.GA5964%40thyrsus.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="002314.html">
+   <LINK REL="Next"  HREF="002325.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] Private-use fields vs. GPSD-NG queries</H1>
+    <B>Eric S. Raymond</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Private-use%20fields%20vs.%20GPSD-NG%20queries&In-Reply-To=%3C20061211051803.GA5964%40thyrsus.com%3E"
+       TITLE="[Gpsd-users] Private-use fields vs. GPSD-NG queries">esr at thyrsus.com
+       </A><BR>
+    <I>Mon Dec 11 06:18:03 CET 2006</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="002314.html">[Gpsd-users] Private-use fields vs. GPSD-NG queries
+</A></li>
+        <LI>Next message: <A HREF="002325.html">[Gpsd-users] Private-use fields vs. GPSD-NG queries
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2320">[ date ]</a>
+              <a href="thread.html#2320">[ thread ]</a>
+              <a href="subject.html#2320">[ subject ]</a>
+              <a href="author.html#2320">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Diego Berge &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">gpsd at nippur.net</A>&gt;:
+&gt;<i>    As it happens, the above is exactly what the O message gives now.
+</I>&gt;<i> Thus, adding extra sensor data to it would no longer make it a strict
+</I>&gt;<i> PVT report.
+</I>
+I'm well aware of that.  The problem is that some data doesn't want to be 
+separated from a PVT report, lest we end up replicating NMEA's horrible
+botch with respect to altitude reports.
+ 
+&gt;<i>    OTOH, the new protocol could supply a mechanism for clients to define
+</I>&gt;<i> exactly which data they want in a report (be it one-off or streamed),
+</I>&gt;<i> and we could go from there.  A client could say, for example:
+</I>&gt;<i> 
+</I>&gt;<i> EXAMPLE=timestamp latitude longitude height course speed depth
+</I>&gt;<i> water_temp hrms vrms course_err speed_err depth_err water_temp_err
+</I>&gt;<i> 
+</I>&gt;<i> to define a message named &quot;EXAMPLE&quot; which would return the requested
+</I>&gt;<i> bits of information (along with their error estimates).  Some mechanism
+</I>&gt;<i> could then be provided to specify when and how this information should
+</I>&gt;<i> be returned, e.g., one could say:
+</I>&gt;<i> 
+</I>&gt;<i> EXAMPLE:onchange
+</I>&gt;<i> EXAMPLE:1Hz
+</I>&gt;<i> EXAMPLE
+</I>&gt;<i> 
+</I>&gt;<i> to send the message when the information changes, every one second, or
+</I>&gt;<i> just once, respectively.
+</I>
+Clever.  You've handwaved one big issue, though, which is how the 
+command interpreter knows which fields have associated error estamates,
+and how they get inserted in the reply.
+
+But there's a larger problem.  This design doesn't actually solve any
+problem *except* that of satisfying a religious desire to keep &quot;extra&quot;
+information out of PVT reports.  In particular, it doesn't save us
+from being stuck with the nasty latency vs. jitter problem created by
+having more than one report per cycle.
+-- 
+		&lt;a href=&quot;<A HREF="http://www.catb.org/~esr/">http://www.catb.org/~esr/</A>&quot;&gt;Eric S. Raymond&lt;/a&gt;
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="002314.html">[Gpsd-users] Private-use fields vs. GPSD-NG queries
+</A></li>
+	<LI>Next message: <A HREF="002325.html">[Gpsd-users] Private-use fields vs. GPSD-NG queries
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2320">[ date ]</a>
+              <a href="thread.html#2320">[ thread ]</a>
+              <a href="subject.html#2320">[ subject ]</a>
+              <a href="author.html#2320">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

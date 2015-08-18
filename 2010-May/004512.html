@@ -1,0 +1,126 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] GPS DATA CONVERSION : latitude, longitude to x, y
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2010-May/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20GPS%20DATA%20CONVERSION%20%3A%20latitude%2C%20longitude%20to%20x%2C%20y&In-Reply-To=%3C516525.14847.qm%40web110015.mail.gq1.yahoo.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="004509.html">
+   <LINK REL="Next"  HREF="004515.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] GPS DATA CONVERSION : latitude, longitude to x, y</H1>
+    <B>Hamish</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20GPS%20DATA%20CONVERSION%20%3A%20latitude%2C%20longitude%20to%20x%2C%20y&In-Reply-To=%3C516525.14847.qm%40web110015.mail.gq1.yahoo.com%3E"
+       TITLE="[Gpsd-users] GPS DATA CONVERSION : latitude, longitude to x, y">hamish_b at yahoo.com
+       </A><BR>
+    <I>Fri May 28 00:29:04 CEST 2010</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="004509.html">[Gpsd-users] GPS DATA CONVERSION : latitude, longitude to x, y
+</A></li>
+        <LI>Next message: <A HREF="004515.html">[Gpsd-users] GPS DATA CONVERSION : latitude, longitude to x, y
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#4512">[ date ]</a>
+              <a href="thread.html#4512">[ thread ]</a>
+              <a href="subject.html#4512">[ subject ]</a>
+              <a href="author.html#4512">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Lucian wrote:
+&gt;<i> Thank you for your suggestions.
+</I>&gt;<i> But I just need a simple *lat, lon* to *x, y* conversion
+</I>&gt;<i> like described below:
+</I>&gt;<i> 
+</I>&gt;<i> I stumbled upon the following link
+</I>&gt;<i> 
+</I>&gt;<i> <A HREF="http://www.whoi.edu/marine/ndsf/utility/NDSFutility.html">http://www.whoi.edu/marine/ndsf/utility/NDSFutility.html</A>
+</I>&gt;<i> 
+</I>&gt;<i> with this option
+</I>&gt;<i> 
+</I>&gt;<i> <A HREF="http://www.whoi.edu/marine/ndsf/cgi-bin/NDSFutility.cgi?form=0&amp;from=LatLon&amp;to=XY">http://www.whoi.edu/marine/ndsf/cgi-bin/NDSFutility.cgi?form=0&amp;from=LatLon&amp;to=XY</A>
+</I>&gt;<i> 
+</I>&gt;<i> I have a GPS log file where I have the *lat, lon* values
+</I>&gt;<i> out of which I want
+</I>&gt;<i> to compute to *x, y* values, so that I can determine the
+</I>&gt;<i> distance in meters
+</I>&gt;<i> from a origin entry of *lat, lon* to another.
+</I>&gt;<i> I have looked in the web-page's source code and found the
+</I>&gt;<i> *NDSFutility.js*file, but I could not wrap my head around
+</I>&gt;<i> it.
+</I>&gt;<i> 
+</I>&gt;<i> For example,
+</I>&gt;<i> my origin entry is:
+</I>&gt;<i> 
+</I>&gt;<i>    double lat1 = 4646.44949; N
+</I>&gt;<i>    double lon1 = 02336.44599; E
+</I>&gt;<i> 
+</I>&gt;<i> and the next entry is:
+</I>&gt;<i> 
+</I>&gt;<i>    double lat2 = 4646.44983; N
+</I>&gt;<i>    double lon2 = 02336.44670; E
+</I>&gt;<i> 
+</I>&gt;<i> and the distance between these two coordinates is:
+</I>&gt;<i> 
+</I>&gt;<i>    sqrt((0.9 * 0.9) + (0.6 * 0.6)) =
+</I>&gt;<i> 1.08166538 [meters]
+</I>&gt;<i> 
+</I>&gt;<i> as seen in the screenshot.
+</I>&gt;<i> 
+</I>&gt;<i> I was wondering if you could help me with the formulas or
+</I>&gt;<i> if you can provide me the C functions created by Louis Whitcomb ?
+</I>&gt;<i> 
+</I>&gt;<i> Thank you in advance.
+</I>
+
+Do yourself a big favor. Do it properly. Use the PROJ.4 library, it's
+not too bad and probably a lot less effort in both the short and long
+term versus messing around with any number of DIY Mercator projection code
+out there (e.g. the &quot;macgps45&quot; source code).
+
+
+regardless of how you do it you'll have to pick a map projection method
+to convert the WGS84 ellipsoid sphere-like surface of the Earth into a
+flattened Cartesian coordinate system.
+
+<A HREF="http://grass.osgeo.org/wiki/Gis_Concepts#Geodesy_and_Cartography">http://grass.osgeo.org/wiki/Gis_Concepts#Geodesy_and_Cartography</A>
+
+
+
+good luck,
+Hamish
+
+
+      
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="004509.html">[Gpsd-users] GPS DATA CONVERSION : latitude, longitude to x, y
+</A></li>
+	<LI>Next message: <A HREF="004515.html">[Gpsd-users] GPS DATA CONVERSION : latitude, longitude to x, y
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#4512">[ date ]</a>
+              <a href="thread.html#4512">[ thread ]</a>
+              <a href="subject.html#4512">[ subject ]</a>
+              <a href="author.html#4512">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

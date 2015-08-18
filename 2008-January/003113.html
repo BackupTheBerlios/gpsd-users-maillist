@@ -1,0 +1,201 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] NavMan PiN 570 - Pocket PC 2003 working with gpds
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2008-January/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20NavMan%20PiN%20570%20-%20Pocket%20PC%202003%20working%20with%20gpds&In-Reply-To=%3C000001c86149%249541bf40%240101a8c0%40beastie%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="003112.html">
+   <LINK REL="Next"  HREF="003114.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] NavMan PiN 570 - Pocket PC 2003 working with gpds</H1>
+    <B>Stuart Whelan</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20NavMan%20PiN%20570%20-%20Pocket%20PC%202003%20working%20with%20gpds&In-Reply-To=%3C000001c86149%249541bf40%240101a8c0%40beastie%3E"
+       TITLE="[Gpsd-users] NavMan PiN 570 - Pocket PC 2003 working with gpds">stuart at somepointinthefuture.co.nz
+       </A><BR>
+    <I>Mon Jan 28 02:03:23 CET 2008</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="003112.html">[Gpsd-users] GPSD
+</A></li>
+        <LI>Next message: <A HREF="003114.html">[Gpsd-users] CPU Load
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3113">[ date ]</a>
+              <a href="thread.html#3113">[ thread ]</a>
+              <a href="subject.html#3113">[ subject ]</a>
+              <a href="author.html#3113">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi Folks,
+
+I have managed to get my NavMan PiN 570 working with gpsd.
+
+I am going to detail what I did and what issues I faced so if anyone else
+wants to do the same they can hopefully get some clues from here.
+
+I also a tidy up question. :)
+
+The 570 runs Pocket Pc 2003 and has a 9600 baud gps module.
+
+The module reports its version as 2.3.2-GSW2-2.05.024-C1Prod1
+
+There were several difficulties I faced:
+
+1) The GPS module powers down when you leave the SmartST software shipped
+with the 570.
+2) The NMEA GGA sentence is not output by default by the GPS module.
+3) How do I connect to gpsd with the output of the gps module which is
+running windows ce and running on a hardware with no external interfaces
+apart from ActiveSync.
+
+1: 
+
+There is a Gps Power applet in the control panel. By decompiling the applet
+I could tell they were controlling the GPS power using the DeviceIoControl
+API call with device 'BKL1:', which is normally a backlight control. 
+
+The 570 has a backlight, and it is also controlled in this way. Using brute
+force I found that if you pass a control word of 0x40e, you can change the
+state of the GPS Module. A CEDEVICE_POWER_STATE of D0 will turn the device
+off. D1 will turn it on and make the status LED blink, D2 will turn it on
+and make the status LED steady.
+
+The full API call was: 
+
+HANDLE hdev = CreateFile(_T(&quot;BKL1:&quot;), GENERIC_READ, GENERIC_WRITE, 0, NULL,
+OPEN_EXISTING, 0, NULL);
+DWORD ControlWord = 0x40e;
+CEDEVICE_POWER_STATE powerState = D2;
+BOOL iocResult = DeviceIoControl(hdev, controlWord, &amp;powerState, 4, NULL, 0,
+NULL, NULL);
+CloseHandle(hdev);
+
+2:
+
+This was a bit of a learning curve. I knew nothing of the NMEA sentences,
+and could not figure out why other apps could not get a fix off the module.
+I found WinFast Navigator, and found that if I reset the NMEA sentence
+frequencies, the gps would work with other software.
+
+I logged the output of the module before and after a WinFast reset, and
+found the GGA sentence was missing.
+
+It was then a simple case of opening the serial port (Com8, 9600N81) and
+sending the NMEA sentence to get GGA to be output again.
+
+The command was:
+
+'PSRF103,00,00,01,01*xx'where XX is the checksum.
+
+I am happy to throw up the full source code I use if anyone is interested.
+
+3:
+
+The next step was to try get the gps output to gpsd. I usually Sync with 570
+with windows XP, but I use Ubuntu on my laptop. The 570 syncs over USB.
+
+I found that the synce packet will let me establish a ppp connection between
+the 570 and my laptop over USB.
+
+I wrote a small app that simply listens for a TCP connection, and outputs
+anything on COM8 to any client that connects. Netcat then allows be to
+connect to that port and view the GPS info.
+
+On the laptop I simply 'nc 192.168.3.3 4000 | sudo gpsd -n -N -D3
+/dev/stdin'
+
+I have since found that I may need a '-j' to gpsd to stop the '3D fix, 2D
+fix, no fix' flickering.
+
+This leads me to my question:
+
+If I don't want to use netcat, but have gpsd know about and connect to the
+gps via tcp itself, will I need to write a device driver for gpsd, or is
+there a generic networking type gps driver?
+
+I hope this info is of use and interest to someone.
+
+Here is a snapshot of the output of the module when GGA is enabled:
+
+<A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">stuartw at stuartw-laptop</A>:~$ nc 192.168.3.4 4000
+$GPRMC,193112.306,A,4329.2947,S,17238.2212,E,39.475,267.75,270108,23.3,E*42
+$GPVTG,267.75,T,244.44,M,39.48,N,73.11,K*4F
+$GPGGA,193113.306,4329.2951,S,17238.2061,E,1,06,1.6,13.6,M,11.4,M,0.0,0000*5
+A
+$GPRMC,193113.306,A,4329.2951,S,17238.2061,E,39.471,268.24,270108,23.3,E*4D
+$GPVTG,268.24,T,244.93,M,39.47,N,73.10,K*40
+$GPGGA,193114.306,4329.2954,S,17238.1911,E,1,06,1.6,14.0,M,11.4,M,0.0,0000*5
+4
+$GPRMC,193114.306,A,4329.2954,S,17238.1911,E,39.420,268.73,270108,23.3,E*44
+$GPVTG,268.73,T,245.42,M,39.42,N,73.01,K*4A
+$GPGGA,193115.306,4329.2956,S,17238.1761,E,1,06,1.6,14.3,M,11.4,M,0.0,0000*5
+D
+$GPGSA,A,3,22,14,18,01,19,21,,,,,,,2.6,1.6,2.0*35
+$GPGSV,3,1,10,22,78,145,45,14,69,280,40,18,40,083,43,01,36,296,36*7D
+$GPGSV,3,2,10,09,34,126,35,19,18,264,40,21,12,022,38,31,08,348,00*7F
+$GPGSV,3,3,10,03,07,291,23,05,06,066,00*74
+$GPRMC,193115.306,A,4329.2956,S,17238.1761,E,39.360,269.09,270108,23.3,E*41
+$GPVTG,269.09,T,245.78,M,39.36,N,72.90,K*45
+$GPGGA,193116.306,4329.2958,S,17238.1611,E,1,06,1.6,14.5,M,11.4,M,0.0,0000*5
+0
+$GPRMC,193116.306,A,4329.2958,S,17238.1611,E,39.347,269.63,270108,23.3,E*43
+$GPVTG,269.63,T,246.32,M,39.35,N,72.87,K*41
+$GPGGA,193117.306,4329.2958,S,17238.1462,E,1,07,1.2,14.6,M,11.4,M,0.0,0000*5
+1
+$GPRMC,193117.306,A,4329.2958,S,17238.1462,E,39.343,270.70,270108,23.3,E*4A
+$GPVTG,270.70,T,247.39,M,39.34,N,72.86,K*41
+$GPGGA,193118.306,4329.2954,S,17238.1313,E,1,07,1.2,14.8,M,11.4,M,0.0,0000*5
+D
+$GPRMC,193118.306,A,4329.2954,S,17238.1313,E,39.273,272.72,270108,23.3,E*4A
+$GPVTG,272.72,T,249.41,M,39.27,N,72.73,K*48
+$GPGGA,193119.306,4329.2948,S,17238.1164,E,1,06,1.8,14.9,M,11.4,M,0.0,0000*5
+9
+$GPRMC,193119.306,A,4329.2948,S,17238.1164,E,39.313,274.45,270108,23.3,E*41
+$GPVTG,274.45,T,251.14,M,39.31,N,72.81,K*49
+$GPGGA,193120.305,4329.2937,S,17238.1014,E,1,07,1.2,14.7,M,11.4,M,0.0,0000*5
+B
+$GPGSA,A,3,22,14,18,09,01,19,21,,,,,,2.0,1.2,1.6*3B
+$GPGSV,3,1,10,22,78,144,46,14,69,279,39,18,40,083,43,01,36,296,29*79
+$GPGSV,3,2,10,09,34,126,42,19,18,264,34,21,12,022,32,31,08,348,00*76
+$GPGSV,3,3,10,03,07,291,23,05,06,066,00*74
+$GPRMC,193120.305,A,4329.2937,S,17238.1014,E,39.315,276.21,270108,23.3,E*40
+$GPVTG,276.21,T,252.90,M,39.31,N,72.81,K*46
+$GPGGA,193121.305,4329.2923,S,17238.0865,E,1,06,1.2,14.4,M,11.4,M,0.0,0000*5
+2
+
+Kind Regards,
+Stuart.
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="003112.html">[Gpsd-users] GPSD
+</A></li>
+	<LI>Next message: <A HREF="003114.html">[Gpsd-users] CPU Load
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3113">[ date ]</a>
+              <a href="thread.html#3113">[ thread ]</a>
+              <a href="subject.html#3113">[ subject ]</a>
+              <a href="author.html#3113">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

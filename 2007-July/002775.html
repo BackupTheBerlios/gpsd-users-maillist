@@ -1,0 +1,80 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] Issue with 'D' command
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2007-July/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Issue%20with%20%27D%27%20command&In-Reply-To=%3C91981b3e0707231653i5309ef97mc7a5c38bccbf60c5%40mail.gmail.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="002785.html">
+   <LINK REL="Next"  HREF="002778.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] Issue with 'D' command</H1>
+    <B>Chris Kuethe</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Issue%20with%20%27D%27%20command&In-Reply-To=%3C91981b3e0707231653i5309ef97mc7a5c38bccbf60c5%40mail.gmail.com%3E"
+       TITLE="[Gpsd-users] Issue with 'D' command">chris.kuethe at gmail.com
+       </A><BR>
+    <I>Tue Jul 24 01:53:21 CEST 2007</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="002785.html">[Gpsd-users] Intro and a couple of questions
+</A></li>
+        <LI>Next message: <A HREF="002778.html">[Gpsd-users] gps_del_callback() hangs
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2775">[ date ]</a>
+              <a href="thread.html#2775">[ thread ]</a>
+              <a href="subject.html#2775">[ subject ]</a>
+              <a href="author.html#2775">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>On 7/23/07, Dave C &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">gpsd at creativesilicon.com.au</A>&gt; wrote:
+&gt;<i> After telnet connection to gpsd, the F command will not return a response
+</I>&gt;<i> until any other command has been processed by gpsd. eg:
+</I>
+That makes sense. Until you ask gpsd for some data, i don't think it
+fills in all the state. we do that because you could have multiple
+devices, and you may want to use this, that or the other device. If
+you don't specify one, gpsd assumes you want to use the first one it
+knows about.
+
+glycosine:ttyp4# nc gpsd 2947
+FFDFDF
+GPSD,F=?,F=?,D=2007-07-23T23:48:22.00Z,F=/dev/cuaU0,D=2007-07-23T23:48:22.00Z,F=/dev/cuaU0
+^C
+
+CK
+
+-- 
+GDB has a 'break' feature; why doesn't it have 'fix' too?
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="002785.html">[Gpsd-users] Intro and a couple of questions
+</A></li>
+	<LI>Next message: <A HREF="002778.html">[Gpsd-users] gps_del_callback() hangs
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2775">[ date ]</a>
+              <a href="thread.html#2775">[ thread ]</a>
+              <a href="subject.html#2775">[ subject ]</a>
+              <a href="author.html#2775">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

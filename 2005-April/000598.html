@@ -1,0 +1,116 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] Failed to complie man pages
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2005-April/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Failed%20to%20complie%20man%20pages&In-Reply-To=%3CPine.LNX.4.62.0504260020000.8186%40catbert.rellim.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="000597.html">
+   <LINK REL="Next"  HREF="000600.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] Failed to complie man pages</H1>
+    <B>Gary E. Miller</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Failed%20to%20complie%20man%20pages&In-Reply-To=%3CPine.LNX.4.62.0504260020000.8186%40catbert.rellim.com%3E"
+       TITLE="[Gpsd-users] Failed to complie man pages">gem at rellim.com
+       </A><BR>
+    <I>Tue Apr 26 09:27:53 CEST 2005</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="000597.html">[Gpsd-users] Failed to complie man pages
+</A></li>
+        <LI>Next message: <A HREF="000600.html">[Gpsd-users] Failed to complie man pages
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#598">[ date ]</a>
+              <a href="thread.html#598">[ thread ]</a>
+              <a href="subject.html#598">[ subject ]</a>
+              <a href="author.html#598">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>-----BEGIN PGP SIGNED MESSAGE-----
+Hash: SHA1
+
+Yo Glen!
+
+On Tue, 26 Apr 2005, Glen Barnes wrote:
+
+&gt;<i> There doesn't seem to be the sources there so i copied my version of the
+</I>&gt;<i> docbook directory to releases-2.22/docbook and recompiled, This time I get:
+</I>
+There is never a need to move around docbook files.  You just need
+to have your xml catalog setup properly.  On Linux the file you
+need is /etc/xml/catalog.  Not sure where it is on OS X.
+
+In the catalog file you need a line to tell your xml where to find the
+local docbook files that match the ones needed.  Mine looks like this:
+
+  &lt;public publicId=&quot;-//OASIS//DTD DocBook XML V4.1.2//EN&quot; uri=&quot;<A HREF="file:///usr/share/xml/docbook/dtd/4.1.2/docbookx.dtd">file:///usr/share/xml/docbook/dtd/4.1.2/docbookx.dtd</A>&quot;/&gt;
+
+That said, it is slower, but acceptable to get them from the URL your
+system was trying:
+<A HREF="http://docbook.sourceforge.net/release/xsl/current/manpages/docbook.xsl">http://docbook.sourceforge.net/release/xsl/current/manpages/docbook.xsl</A>
+
+Since that failed there is a problem with your xsl installation.  That
+is outside of the gpsd project and a pain to debug.
+
+The easiest thing is to just get the man pages from the regular gpsd distro.
+
+
+RGDS
+GARY
+- ---------------------------------------------------------------------------
+Gary E. Miller Rellim 20340 Empire Blvd, Suite E-3, Bend, OR 97701
+	<A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">gem at rellim.com</A>  Tel:+1(541)382-8588 Fax: +1(541)382-8676
+
+&gt;<i>
+</I>&gt;<i> xmlto man gpsd.xml
+</I>&gt;<i> I/O error : Attempt to load network entity
+</I>&gt;<i> <A HREF="http://docbook.sourceforge.net/release/xsl/current/manpages/docbook.xsl">http://docbook.sourceforge.net/release/xsl/current/manpages/docbook.xsl</A>
+</I>&gt;<i> warning: failed to load external entity
+</I>&gt;<i> &quot;<A HREF="http://docbook.sourceforge.net/release/xsl/current/manpages/docbook.xsl">http://docbook.sourceforge.net/release/xsl/current/manpages/docbook.xsl</A>&quot;
+</I>&gt;<i> cannot parse
+</I>&gt;<i> <A HREF="http://docbook.sourceforge.net/release/xsl/current/manpages/docbook.xsl">http://docbook.sourceforge.net/release/xsl/current/manpages/docbook.xsl</A>
+</I>&gt;<i> Variable $SGML_CATALOG_FILES not set
+</I>&gt;<i>
+</I>&gt;<i> Is there someway I should be setting xmlto up differently to get it to compile
+</I>&gt;<i> the man pages correctly?
+</I>-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v1.2.3 (GNU/Linux)
+
+iD8DBQFCbe178KZibdeR3qURAhklAJ9XLjhp80nObcRVc0o+TWVr6dUqvQCg0ckl
+AS1M+VB5/goldFGe9FHGsTA=
+=Mppc
+-----END PGP SIGNATURE-----
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="000597.html">[Gpsd-users] Failed to complie man pages
+</A></li>
+	<LI>Next message: <A HREF="000600.html">[Gpsd-users] Failed to complie man pages
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#598">[ date ]</a>
+              <a href="thread.html#598">[ thread ]</a>
+              <a href="subject.html#598">[ subject ]</a>
+              <a href="author.html#598">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

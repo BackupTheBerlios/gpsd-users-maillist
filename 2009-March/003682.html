@@ -1,0 +1,126 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] State of my AIVDM decoder
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2009-March/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20State%20of%20my%20AIVDM%20decoder&In-Reply-To=%3C20090326093129.83F48830291%40snark.thyrsus.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="003681.html">
+   <LINK REL="Next"  HREF="003683.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] State of my AIVDM decoder</H1>
+    <B>Eric S. Raymond</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20State%20of%20my%20AIVDM%20decoder&In-Reply-To=%3C20090326093129.83F48830291%40snark.thyrsus.com%3E"
+       TITLE="[Gpsd-users] State of my AIVDM decoder">esr at snark.thyrsus.com
+       </A><BR>
+    <I>Thu Mar 26 10:31:29 CET 2009</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="003681.html">[Gpsd-users] gpspipe and serial
+</A></li>
+        <LI>Next message: <A HREF="003683.html">[Gpsd-users] Fwd: Set Ephemeris and Set Almanac
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3682">[ date ]</a>
+              <a href="thread.html#3682">[ thread ]</a>
+              <a href="subject.html#3682">[ subject ]</a>
+              <a href="author.html#3682">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Kurt, you'll probably just have received my dev-list email on the
+redesign of GPSD's request-response protocol.  This note is a heads-up
+on the state of my AIVDM decoder.  I'm copying to GPSD's user list as
+well; many of them may not be aware of the new capability.
+
+I'm informing you about this because you are both my best information
+source on AIVDM and, potentially, my first customer. I am aiming to
+field AIVDM decoder tools that are open source, well tested, fast
+(as in compiled-C-fast) and deployable in constrained environments
+such as scientific instrumentation packages.
+
+Here is the state of play:
+
+* Currently, I decode messages of types 1,2,3,4,5,9, and 18.
+
+* I have relied on your example sentence decodings to verify the 
+decoder.
+
+* The decoder's assumptions about the AIVDM format are fully documented 
+at <A HREF="http://gpsd.berlios.de/AIVDM.html">http://gpsd.berlios.de/AIVDM.html</A>
+
+* The decoder is accessible through a gpsdecode utility which filteres
+AIVDM sentences on standard input to an un-armored dump on standard output.
+
+* My output format is CSV.  Each line dumps message fields in the order
+they occur in the message; spare bits are omitted.  String data is
+decoded to ASCII, numeric data to numeric literals.  
+
+* An output-mode option controls whether numeric data is scaled to real
+numbers; the same option controls whether enumerated types (such as
+ship type in message 5) are dumped as integer literals or equivalent
+string legends.
+
+* A second output-mode option prefixes each field with a field label
+followed by an equal sign, for human readability.
+
+* Within the limits of what it does, I believe the decoder is now
+production-quality - fast, small, and with a decent test suite.  It
+has shipped in gpsd-2.39.
+
+Here is where I'd like to go with it in the future:
+
+* More message types. If you can supply example sentence decodings for
+more types, implementation will follow swiftly.  I'm particularly
+interested in being able to decode messages containing text 
+information, such as safety-related broadcasts.
+
+* Stream-decoding support in GPSD.  This is somewhat tangled up
+with the GPSD-NG design issues.  The goal is to allow GPSD clients
+to subscribe to real-time reports from an attached AIS transciever
+and get them either in CSV form or (via the GPS client library)
+decoded into a C structure for convenient processing.
+
+One not-insignificant benefit of the above will be the ability to
+rectify the incomplete timestamps in AIVDM messages into full UTC
+before clients see them.
+
+What do *you* want a production-quality AIVDM decoder to do?  (A
+question for you gpsd-users people as well.)
+-- 
+		&lt;a href=&quot;<A HREF="http://www.catb.org/~esr/">http://www.catb.org/~esr/</A>&quot;&gt;Eric S. Raymond&lt;/a&gt;
+
+The direct use of physical force is so poor a solution to the problem of
+limited resources that it is commonly employed only by small children and
+great nations.		-- David Friedman
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="003681.html">[Gpsd-users] gpspipe and serial
+</A></li>
+	<LI>Next message: <A HREF="003683.html">[Gpsd-users] Fwd: Set Ephemeris and Set Almanac
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3682">[ date ]</a>
+              <a href="thread.html#3682">[ thread ]</a>
+              <a href="subject.html#3682">[ subject ]</a>
+              <a href="author.html#3682">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

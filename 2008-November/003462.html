@@ -1,0 +1,183 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] gpsd with pps
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2008-November/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20gpsd%20with%20pps&In-Reply-To=%3C4.3.2.7.2.20081126084122.0357af08%40postoffice.creativesilicon.com.au%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="003461.html">
+   <LINK REL="Next"  HREF="003472.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] gpsd with pps</H1>
+    <B>Dave C</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20gpsd%20with%20pps&In-Reply-To=%3C4.3.2.7.2.20081126084122.0357af08%40postoffice.creativesilicon.com.au%3E"
+       TITLE="[Gpsd-users] gpsd with pps">gpsd at creativesilicon.com.au
+       </A><BR>
+    <I>Tue Nov 25 23:56:03 CET 2008</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="003461.html">[Gpsd-users] gpsd with pps
+</A></li>
+        <LI>Next message: <A HREF="003472.html">[Gpsd-users] gpsd with pps
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3462">[ date ]</a>
+              <a href="thread.html#3462">[ thread ]</a>
+              <a href="subject.html#3462">[ subject ]</a>
+              <a href="author.html#3462">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hiya Sandor,
+
+I have been using a Gumstix Connex as the basis of a data logger, using the 
+GPS as position and time sync. I didn't use the Gumstix GPS board as it 
+wasn't available when I started - I used the Garmin 18LVC instead.
+
+I recall having a number of issues at the beginning of the project - not 
+all UARTS can do all things. In particular, I seem to recall that the 
+FF(Full Featured) UART was not - only the TX &amp; RX lines had been brought 
+out for console use. Anyway, below are some of my configurations that work 
+for me. Hope that they are of some help to you.
+
+My Gumstix UART configuration:
+
+FFUART	/dev/ttyS0	CONSOLE
+BTUART	/dev/ttyS1	BLUETOOTH (I have the bluetooth module on my connex)
+STUART	/dev/ttyS2	GPS
+HWUART	/dev/ttyS4	GSM MODEM
+
+My GPIO setup is as follows (in /etc/init.d/S10gpio)
+
+&lt;snip&gt;
+#! /bin/sh
+#
+# Configure the GPIOs for our system
+#		It is called from the boot, halt and reboot scripts.
+#
+
+#. /etc/default/rcS
+
+
+
+case &quot;$1&quot; in
+	start|&quot;&quot;)
+		if [ &quot;$VERBOSE&quot; != no ]
+		then
+			echo -n &quot;Initializing GPIO... &quot;
+		fi
+
+	# set up ttyS1 (Bluetooth)
+		echo &quot;AF1 in&quot; &gt; /proc/gpio/GPIO42
+		echo &quot;AF2 out&quot; &gt; /proc/gpio/GPIO43
+
+	# set up ttyS2 (STUART) for connect to GPS
+		echo &quot;AF2 in&quot; &gt; /proc/gpio/GPIO46
+		echo &quot;AF1 out&quot; &gt; /proc/gpio/GPIO47
+
+	# set up ttyS3 (HWUART) as hardware port, rather than bluetooth
+	# also use CTS/RTS flow control
+		echo &quot;AF1 in&quot; &gt; /proc/gpio/GPIO49
+		echo &quot;AF1 out&quot; &gt; /proc/gpio/GPIO48
+#		echo &quot;AF1 in&quot; &gt; /proc/gpio/GPIO50
+#		echo &quot;AF1 out&quot; &gt; /proc/gpio/GPIO51
+
+		[ &quot;$VERBOSE&quot; != no ] &amp;&amp; echo &quot;done.&quot;
+		;;
+	stop)
+		[ &quot;$VERBOSE&quot; != no ] &amp;&amp; echo -n &quot;Stopping GPIO... &quot;
+
+	# do nothing here
+
+		[ &quot;$VERBOSE&quot; != no ] &amp;&amp; echo &quot;done.&quot;
+		;;
+	*)
+		echo &quot;Usage: GPIO {start|stop}&quot; &gt;&amp;2
+		exit 1
+		;;
+esac
+
+&lt;/snip&gt;
+My GPSD setup (S45gpsd) is as follows:
+
+&lt;snip&gt;
+#! /bin/sh
+#
+# Start gpsd	This script starts the GPS daemon
+#		It is called from the boot, halt and reboot scripts.
+#
+
+#. /etc/default/rcS
+
+GPSD=`which gpsd 2&gt; /dev/null`
+
+# check for presence of ntpd before trying anything
+
+if [ &quot;${GPSD}x&quot; = &quot;x&quot; ] ; then
+
+	if [ &quot;$VERBOSE&quot; != no ] ; then
+		echo &quot;$0: **FATAL** gpsd is not installed. Aborting...&quot;
+	fi
+
+	exit 1
+
+fi
+
+GPSOPTS=&quot; -n&quot;
+GPSPORT=&quot;/dev/ttyS2&quot;
+
+case &quot;$1&quot; in
+	start|&quot;&quot;)
+		if [ &quot;$VERBOSE&quot; != no ]
+		then
+			echo -n &quot;Starting GPSD ... &quot;
+		fi
+		$GPSD $GPSOPTS $GPSPORT
+		[ &quot;$VERBOSE&quot; != no ] &amp;&amp; echo &quot;done.&quot;
+		;;
+	stop)
+		[ &quot;$VERBOSE&quot; != no ] &amp;&amp; echo -n &quot;Stopping GPSD ... &quot;
+		killall -9 gpsd
+		[ &quot;$VERBOSE&quot; != no ] &amp;&amp; echo &quot;done.&quot;
+		;;
+	*)
+		echo &quot;Usage: $0 {start|stop}&quot; &gt;&amp;2
+		exit 1
+		;;
+esac
+
+&lt;/snip&gt;
+
+ciao, Dave
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="003461.html">[Gpsd-users] gpsd with pps
+</A></li>
+	<LI>Next message: <A HREF="003472.html">[Gpsd-users] gpsd with pps
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3462">[ date ]</a>
+              <a href="thread.html#3462">[ thread ]</a>
+              <a href="subject.html#3462">[ subject ]</a>
+              <a href="author.html#3462">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

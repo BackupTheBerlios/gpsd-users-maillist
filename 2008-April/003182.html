@@ -1,0 +1,265 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] GPSD not changing status on signal disconnect
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2008-April/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20GPSD%20not%20changing%20status%20on%20signal%20disconnect&In-Reply-To=%3C2A5101FD3FD60641A96E811A8972B3EC01D1CF00%40SEC-USMB1.aeroflex.corp%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="003181.html">
+   <LINK REL="Next"  HREF="003183.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] GPSD not changing status on signal disconnect</H1>
+    <B>Paglia, Gino</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20GPSD%20not%20changing%20status%20on%20signal%20disconnect&In-Reply-To=%3C2A5101FD3FD60641A96E811A8972B3EC01D1CF00%40SEC-USMB1.aeroflex.corp%3E"
+       TITLE="[Gpsd-users] GPSD not changing status on signal disconnect">Gino.Paglia at aeroflex.com
+       </A><BR>
+    <I>Wed Apr  2 00:33:39 CEST 2008</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="003181.html">[Gpsd-users] GPSD not changing status on signal disconnect
+</A></li>
+        <LI>Next message: <A HREF="003183.html">[Gpsd-users] Trouble Incorporating gpsd into application
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3182">[ date ]</a>
+              <a href="thread.html#3182">[ thread ]</a>
+              <a href="subject.html#3182">[ subject ]</a>
+              <a href="author.html#3182">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Yes, that is where we first tested it.  Using cgps you will notice that
+NOTHING changes when you press &quot;j&quot;.  It ignores the setting and
+continues to report stale FIX data on signal disconnect no matter how
+many times you press &quot;j&quot;.  GPSD 2.37 acts like it is in J=1 mode by
+default, and permanently in that mode, even though the man page says
+otherwise.
+
+I don't think you should trust documentation in any case.  It can be
+wrong and often is.  The best thing to do is test.
+
+Thanks for you help.
+
+
+-----Original Message-----
+From: Marton Kadar [mailto:<A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">marton.kadar at mail.com</A>] 
+Sent: Tuesday, April 01, 2008 2:43 PM
+To: Paglia, Gino
+Cc: <A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">gpsd-users at lists.berlios.de</A>
+Subject: RE: [Gpsd-users] GPSD not changing status on signal disconnect
+
+Sorry, can't check it right now... 
+One thing you should know, is that the J option is
+handled separately for each gpsd client, so if you
+telnet in one terminal window to gpsd, and try to
+change the setting while cgps is running in another 
+terminal window, it will not affect cgps because it is
+another gpsd client.
+One thing I can think of, try to press the j key
+in cgps. According to the manpage, it switches the
+buffering policy on the fly... but it is not likely to
+help you because the default setting for gpsd is no
+buffering... so I am pretty clueless.
+
+Good luck anyway.
+
+&gt;<i> ----- Original Message -----
+</I>&gt;<i> From: &quot;Paglia, Gino&quot; &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">Gino.Paglia at aeroflex.com</A>&gt;
+</I>&gt;<i> To: &quot;Marton Kadar&quot; &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">marton.kadar at mail.com</A>&gt;,
+</I><A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">gpsd-users at lists.berlios.de</A>
+&gt;<i> Subject: RE: [Gpsd-users] GPSD not changing status on signal
+</I>disconnect
+&gt;<i> Date: Mon, 31 Mar 2008 13:37:17 -0400
+</I>&gt;<i> 
+</I>&gt;<i> 
+</I>&gt;<i> Hello,
+</I>&gt;<i> 
+</I>&gt;<i> I'm still seeing this whether J=0 or J=1.  I telnet to gpsd (using
+</I>&gt;<i> gpsd's port number) and when I change the J option, the result is
+</I>always
+&gt;<i> the same when seen on cgps: no status change when the satellite signal
+</I>&gt;<i> is disconnected.
+</I>&gt;<i> 
+</I>&gt;<i> I retested this on 2.33 and it works fine.  The status on 2.33 does
+</I>&gt;<i> change when the signal is removed.
+</I>&gt;<i> 
+</I>&gt;<i> I think there's a bug in 2.37 that's ignoring the J setting and always
+</I>&gt;<i> using J=1.  Can you check this out on your side?
+</I>&gt;<i> 
+</I>&gt;<i> Thanks,
+</I>&gt;<i> Gino
+</I>&gt;<i> Aeroflex Inc.
+</I>&gt;<i> 
+</I>&gt;<i> -----Original Message-----
+</I>&gt;<i> From: Marton Kadar [mailto:<A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">marton.kadar at mail.com</A>]
+</I>&gt;<i> Sent: Saturday, March 29, 2008 3:10 PM
+</I>&gt;<i> To: Paglia, Gino; <A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">gpsd-users at lists.berlios.de</A>
+</I>&gt;<i> Subject: Re: [Gpsd-users] GPSD not changing status on signal
+</I>disconnect
+&gt;<i> 
+</I>&gt;<i> Look at <A HREF="http://gpsd.berlios.de/gpsd.html">http://gpsd.berlios.de/gpsd.html</A>
+</I>&gt;<i> and find the string &quot;buffering policy&quot;.
+</I>&gt;<i> 
+</I>&gt;<i> Also see a deeper discussion at
+</I>&gt;<i> <A HREF="http://gpsd.berlios.de/hacking.html#buffering">http://gpsd.berlios.de/hacking.html#buffering</A>
+</I>&gt;<i> 
+</I>&gt;<i> 
+</I>&gt;<i> &gt; ----- Original Message -----
+</I>&gt;<i> &gt; From: &quot;Paglia, Gino&quot; &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">Gino.Paglia at aeroflex.com</A>&gt;
+</I>&gt;<i> &gt; To: <A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">gpsd-users at lists.berlios.de</A>
+</I>&gt;<i> &gt; Subject: [Gpsd-users] GPSD not changing status on signal disconnect
+</I>&gt;<i> &gt; Date: Fri, 28 Mar 2008 19:19:29 -0400
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; Hello,
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; We've run into a little issue with v2.37.  When disconnecting the
+</I>&gt;<i> &gt; satellite signal from our system (using our code), gpsd still
+</I>reports
+&gt;<i> &gt; that we have a fix status, though properly with no updates.  It has
+</I>&gt;<i> been
+</I>&gt;<i> &gt; confirmed that in previous versions (like v2.33) this was not the
+</I>&gt;<i> case.
+</I>&gt;<i> &gt; We would get a &quot;NO_FIX&quot; status.  We also tested this out with cgps
+</I>and
+&gt;<i> &gt; saw the same issue with no fix status change on disconnect.
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; Is there an option that was added to v2.37 to maintain this FIX even
+</I>&gt;<i> &gt; when the signal is disconnected or could this be a bug?
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; PS: Also would like to know why we're seeing 20+ satellites (with
+</I>our
+&gt;<i> &gt; code as well as cgps) when we know there should only be about 5 to 8
+</I>&gt;<i> &gt; visible at any given time.  Are we being reported the FULL
+</I>&gt;<i> constellation
+</I>&gt;<i> &gt; of satellites and not just the ones in view?
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; Thanks,
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; Gino
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; Aeroflex Inc.
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; Notice: This e-mail is intended solely for use of the individual or
+</I>&gt;<i> entity to which it is
+</I>&gt;<i> &gt; addressed and may contain information that is proprietary,
+</I>privileged,
+&gt;<i> company confidential
+</I>&gt;<i> &gt; and/or exempt from disclosure under applicable law. If the reader is
+</I>&gt;<i> not the intended recipient
+</I>&gt;<i> &gt; or agent responsible for delivering the message to the intended
+</I>&gt;<i> recipient, you are hereby
+</I>&gt;<i> &gt; notified that any dissemination, distribution or copying of this
+</I>&gt;<i> communication is strictly
+</I>&gt;<i> &gt; prohibited.  If this communication has been transmitted from a U.S.
+</I>&gt;<i> location it may also contain
+</I>&gt;<i> &gt; data subject to the International Traffic in Arms Regulations or
+</I>U.S.
+&gt;<i> Export Administration
+</I>&gt;<i> &gt; Regulations and cannot be disseminated, distributed or copied to
+</I>&gt;<i> foreign nationals, residing in
+</I>&gt;<i> &gt; the U.S. or abroad, without the prior approval of the U.S.
+</I>Department
+&gt;<i> of State or appropriate
+</I>&gt;<i> &gt; export licensing authority. If you have received this communication
+</I>in
+&gt;<i> error, please notify the
+</I>&gt;<i> &gt; sender by reply e-mail or collect telephone call and del
+</I>&gt;<i> &gt;   ete or destroy all copies of this e-mail message, any physical
+</I>&gt;<i> copies made of this e-mail
+</I>&gt;<i> &gt; message and/or any file attachment(s).
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; _______________________________________________
+</I>&gt;<i> &gt; Gpsd-users mailing list
+</I>&gt;<i> &gt; <A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">Gpsd-users at lists.berlios.de</A>
+</I>&gt;<i> &gt; <A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">https://lists.berlios.de/mailman/listinfo/gpsd-users</A>
+</I>&gt;<i> 
+</I>&gt;<i> &gt;
+</I>&gt;<i> 
+</I>&gt;<i> 
+</I>&gt;<i> --
+</I>&gt;<i> Want an e-mail address like mine?
+</I>&gt;<i> Get a free e-mail account today at www.mail.com!
+</I>&gt;<i> 
+</I>&gt;<i> 
+</I>&gt;<i> 
+</I>&gt;<i> Notice: This e-mail is intended solely for use of the individual or
+</I>entity to which it is 
+&gt;<i> addressed and may contain information that is proprietary, privileged,
+</I>company confidential 
+&gt;<i> and/or exempt from disclosure under applicable law. If the reader is
+</I>not the intended recipient 
+&gt;<i> or agent responsible for delivering the message to the intended
+</I>recipient, you are hereby 
+&gt;<i> notified that any dissemination, distribution or copying of this
+</I>communication is strictly 
+&gt;<i> prohibited.  If this communication has been transmitted from a U.S.
+</I>location it may also contain 
+&gt;<i> data subject to the International Traffic in Arms Regulations or U.S.
+</I>Export Administration 
+&gt;<i> Regulations and cannot be disseminated, distributed or copied to
+</I>foreign nationals, residing in 
+&gt;<i> the U.S. or abroad, without the prior approval of the U.S. Department
+</I>of State or appropriate 
+&gt;<i> export licensing authority. If you have received this communication in
+</I>error, please notify the 
+&gt;<i> sender by reply e-mail or collect telephone call and delete or destroy
+</I>all copies of this e-mail 
+&gt;<i> message, any physical copies made of this e-mail message and/or any
+</I>file attachment(s).
+
+&gt;<i>
+</I>
+
+-- 
+Want an e-mail address like mine?
+Get a free e-mail account today at www.mail.com!
+
+
+
+Notice: This e-mail is intended solely for use of the individual or entity to which it is addressed and may contain information that is proprietary, privileged, company confidential and/or exempt from disclosure under applicable law. If the reader is not the intended recipient or agent responsible for delivering the message to the intended recipient, you are hereby notified that any dissemination, distribution or copying of this communication is strictly prohibited.  If this communication has been transmitted from a U.S. location it may also contain data subject to the International Traffic in Arms Regulations or U.S. Export Administration Regulations and cannot be disseminated, distributed or copied to foreign nationals, residing in the U.S. or abroad, without the prior approval of the U.S. Department of State or appropriate export licensing authority. If you have received this communication in error, please notify the sender by reply e-mail or collect telephone call and delete or destroy all copies of this e-mail message, any physical copies made of this e-mail message and/or any file attachment(s).
+
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="003181.html">[Gpsd-users] GPSD not changing status on signal disconnect
+</A></li>
+	<LI>Next message: <A HREF="003183.html">[Gpsd-users] Trouble Incorporating gpsd into application
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3182">[ date ]</a>
+              <a href="thread.html#3182">[ thread ]</a>
+              <a href="subject.html#3182">[ subject ]</a>
+              <a href="author.html#3182">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

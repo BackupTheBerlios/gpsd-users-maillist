@@ -1,0 +1,154 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] gpsfake does not seem to like AIS packets
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2009-March/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20gpsfake%20does%20not%20seem%20to%20like%20AIS%20packets&In-Reply-To=%3Cfe4ac51e0903091053l6811af62i5d58e216294d5d9b%40mail.gmail.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="003642.html">
+   <LINK REL="Next"  HREF="003646.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] gpsfake does not seem to like AIS packets</H1>
+    <B>Doug Robinson</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20gpsfake%20does%20not%20seem%20to%20like%20AIS%20packets&In-Reply-To=%3Cfe4ac51e0903091053l6811af62i5d58e216294d5d9b%40mail.gmail.com%3E"
+       TITLE="[Gpsd-users] gpsfake does not seem to like AIS packets">fdr at mytemyke.net
+       </A><BR>
+    <I>Mon Mar  9 18:53:09 CET 2009</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="003642.html">[Gpsd-users] gpsfake does not seem to like AIS packets
+</A></li>
+        <LI>Next message: <A HREF="003646.html">[Gpsd-users] gpsfake does not seem to like AIS packets
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3643">[ date ]</a>
+              <a href="thread.html#3643">[ thread ]</a>
+              <a href="subject.html#3643">[ subject ]</a>
+              <a href="author.html#3643">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hmmm,
+These folks have figured it out and its open source.   You need to modify
+the gpsd driver so you don't have to mod the receiver circuits
+(discriminator output only) and can input the data thru gpsd.  But wait, how
+are you collecting these strings?  I guess I would like to see the overall
+systems design.  Oh I note you are using an AIS receiver, then why doesn't
+gpsdrive get modified to display the data?
+
+<A HREF="http://sourceforge.net/projects/gnuais">http://sourceforge.net/projects/gnuais</A>
+
+Why is a standard not available in the pubic domain?  This data is requested
+by the Coast Guard then they ought to ,make the format available to the
+public on their website, we have already paid for it.
+
+At any rate I would be interested in the end product (boat goes back in in
+less than a month).
+
+Doug Robinson,
+s/v Nemesis  US20837
+
+On Mon, Mar 9, 2009 at 1:02 PM, Eric Fowler &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">eric.fowler at gmail.com</A>&gt; wrote:
+
+&gt;<i> I'd found that stuff, thanks.
+</I>&gt;<i>
+</I>&gt;<i> As far as the standard, I was figuring we would use *your* credit card for
+</I>&gt;<i> that.  ;-)
+</I>&gt;<i>
+</I>&gt;<i> Seriously, I am considering buying the spec but apparently copywrongs on it
+</I>&gt;<i> are really fierce. We shall see.
+</I>&gt;<i>
+</I>&gt;<i> Eric
+</I>&gt;<i>
+</I>&gt;<i> On Mon, Mar 9, 2009 at 9:20 AM, Eric S. Raymond &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">esr at thyrsus.com</A>&gt; wrote:
+</I>&gt;<i>
+</I>&gt;<i> &gt; Eric Fowler &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">eric.fowler at gmail.com</A>&gt;:
+</I>&gt;<i> &gt; &gt; Well, guess what ... I need to process AIS strings. So it looks like I
+</I>&gt;<i> &gt; will
+</I>&gt;<i> &gt; &gt; be writing some code to handle those AIVDM packets. So I have a few
+</I>&gt;<i> &gt; &gt; questions before I start:
+</I>&gt;<i> &gt; &gt;
+</I>&gt;<i> &gt; &gt; 1) Do you know of any code that will take that gobbledegook (e.g.
+</I>&gt;<i> &gt; &gt; '177KQJ5000G?tOK&gt;RA1wUbN0TKH')
+</I>&gt;<i> &gt; &gt; and process it into standard lat/long?
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; This might do it: &lt;<A HREF="http://www.aisparser.com/">http://www.aisparser.com/</A>&gt;. But it's closed source.
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; &gt; 2) Is it more reasonable that this functionality live in the gpsd
+</I>&gt;<i> daemon
+</I>&gt;<i> &gt; at
+</I>&gt;<i> &gt; &gt; all, or in a client? The case could be made that the daemon is intended
+</I>&gt;<i> &gt; to
+</I>&gt;<i> &gt; &gt; track status of a &quot;device&quot; (boat, car, etc) that has the gps attached
+</I>&gt;<i> to
+</I>&gt;<i> &gt; it,
+</I>&gt;<i> &gt; &gt; whereas AIS data can track several vessels at once, as well as static
+</I>&gt;<i> &gt; data
+</I>&gt;<i> &gt; &gt; for the vessel (draft, tonnage, etc). This IMO is quite different from
+</I>&gt;<i> &gt; what
+</I>&gt;<i> &gt; &gt; gpsd does right now. On the other hand, gpsd can interpret many kinds
+</I>&gt;<i> of
+</I>&gt;<i> &gt; &gt; strings, so perhaps it stands to reason that AIS data is just one more
+</I>&gt;<i> &gt; kind
+</I>&gt;<i> &gt; &gt; of string.
+</I>&gt;<i> &gt; &gt;
+</I>&gt;<i> &gt; &gt; Opinions?
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; Not sure yet.  What I'd like to see is a copy of the AIVDM standard, but
+</I>&gt;<i> &gt; I haven't yet found one that isn't behind a paywall.  There are some
+</I>&gt;<i> &gt; clues at <A HREF="http://www.bosunsmate.org/ais/">http://www.bosunsmate.org/ais/</A>
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; It is at least theoretically possible that we might want to write an AIS
+</I>&gt;<i> &gt; driver that unpacks some of these sentences into GPSD PVT reports. It
+</I>&gt;<i> &gt; doesn't
+</I>&gt;<i> &gt; look like this would be very difficult, actually.
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; If you can get me a copy of that standard I'll rough-cut some code.
+</I>&gt;<i> &gt; --
+</I>&gt;<i> &gt;                 &lt;a href=&quot;<A HREF="http://www.catb.org/~esr/&lt;http://www.catb.org/%7Eesr/">http://www.catb.org/~esr/&lt;http://www.catb.org/%7Eesr/</A>&gt;
+</I>&gt;<i> &lt;<A HREF="http://www.catb.org/%7Eesr/">http://www.catb.org/%7Eesr/</A>&gt;&quot;&gt;Eric
+</I>&gt;<i> &gt; S. Raymond&lt;/a&gt;
+</I>&gt;<i> &gt;
+</I>&gt;<i> _______________________________________________
+</I>&gt;<i> Gpsd-users mailing list
+</I>&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">Gpsd-users at lists.berlios.de</A>
+</I>&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">https://lists.berlios.de/mailman/listinfo/gpsd-users</A>
+</I>&gt;<i>
+</I>
+
+
+-- 
+Doug Robinson
+office:      <A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">fdr at mytemyke.com</A>
+direct:     <A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">fdr at mytemyke.net</A> (gmail)
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="003642.html">[Gpsd-users] gpsfake does not seem to like AIS packets
+</A></li>
+	<LI>Next message: <A HREF="003646.html">[Gpsd-users] gpsfake does not seem to like AIS packets
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3643">[ date ]</a>
+              <a href="thread.html#3643">[ thread ]</a>
+              <a href="subject.html#3643">[ subject ]</a>
+              <a href="author.html#3643">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

@@ -1,0 +1,105 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] Problem with Garmin GPS 18 USB
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2005-April/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Problem%20with%20Garmin%20GPS%2018%20USB&In-Reply-To=%3CPine.LNX.4.62.0504061055040.26862%40catbert.rellim.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="000544.html">
+   <LINK REL="Next"  HREF="000547.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] Problem with Garmin GPS 18 USB</H1>
+    <B>Gary E. Miller</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Problem%20with%20Garmin%20GPS%2018%20USB&In-Reply-To=%3CPine.LNX.4.62.0504061055040.26862%40catbert.rellim.com%3E"
+       TITLE="[Gpsd-users] Problem with Garmin GPS 18 USB">gem at rellim.com
+       </A><BR>
+    <I>Wed Apr  6 20:00:51 CEST 2005</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="000544.html">[Gpsd-users] Problem with Garmin GPS 18 USB
+</A></li>
+        <LI>Next message: <A HREF="000547.html">[Gpsd-users] Enabling WAAS
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#545">[ date ]</a>
+              <a href="thread.html#545">[ thread ]</a>
+              <a href="subject.html#545">[ subject ]</a>
+              <a href="author.html#545">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>-----BEGIN PGP SIGNED MESSAGE-----
+Hash: SHA1
+
+Yo Hagedus!
+
+On Wed, 6 Apr 2005, Hegedus Ferenc wrote:
+
+&gt;<i> I have a Garmin GPS 18 USB and it have a problem with it.
+</I>&gt;<i> I use 2.6.11 kernel and the garmin_gps modul detect the gps:
+</I>&gt;<i>
+</I>&gt;<i> kernel: garmin_gps 1-1:1.0: Garmin GPS usb/tty converter detected
+</I>&gt;<i> kernel: usb 1-1: Garmin GPS usb/tty converter now attached to ttyUSB0
+</I>&gt;<i> kernel: usbcore: registered new driver garmin_gps
+</I>&gt;<i> kernel: drivers/usb/serial/garmin_gps.c: garmin gps driver v0.23
+</I>
+Looks good.  Lucky you. No kernel past 2.6.8.1 works for me.  Firewire
+driver crashes, KBD driver failures, ALSA failures...
+
+&gt;<i> I use gpsd 2.13 (Debian Sarge version, but i tried 2.20 too), with
+</I>
+The garmin driver is new and undergoing change.
+2.20 should work for you.  2.13 would be problematic.
+
+&gt;<i> these parameters: /usr/bin/gpsd -T g -p /dev/ttyUSB0
+</I>
+Start it this way, -T g is deprecated:
+
+/usr/bin/gpsd -nN -D 5 -p /dev/ttyUSB0
+
+Then send me what you get.
+
+RGDS
+GARY
+- ---------------------------------------------------------------------------
+Gary E. Miller Rellim 20340 Empire Blvd, Suite E-3, Bend, OR 97701
+	<A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">gem at rellim.com</A>  Tel:+1(541)382-8588 Fax: +1(541)382-8676
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v1.2.3 (GNU/Linux)
+
+iD8DBQFCVCPY8KZibdeR3qURAjFtAKC/VGasO1IxiRDry1XulfFM8BQVAgCdEayb
+iXRvHCxX3fakyWchEnaGiu8=
+=iME5
+-----END PGP SIGNATURE-----
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="000544.html">[Gpsd-users] Problem with Garmin GPS 18 USB
+</A></li>
+	<LI>Next message: <A HREF="000547.html">[Gpsd-users] Enabling WAAS
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#545">[ date ]</a>
+              <a href="thread.html#545">[ thread ]</a>
+              <a href="subject.html#545">[ subject ]</a>
+              <a href="author.html#545">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

@@ -1,0 +1,93 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] problems building 2.2, bug in running gpsd
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2004-October/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20problems%20building%202.2%2C%20bug%20in%20running%20gpsd&In-Reply-To=%3C20041026191427.GB19787%40thyrsus.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="000123.html">
+   <LINK REL="Next"  HREF="000124.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] problems building 2.2, bug in running gpsd</H1>
+    <B>Eric S. Raymond</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20problems%20building%202.2%2C%20bug%20in%20running%20gpsd&In-Reply-To=%3C20041026191427.GB19787%40thyrsus.com%3E"
+       TITLE="[Gpsd-users] problems building 2.2, bug in running gpsd">esr at thyrsus.com
+       </A><BR>
+    <I>Tue Oct 26 21:14:27 CEST 2004</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="000123.html">[Gpsd-users] problems building 2.2, bug in running gpsd
+</A></li>
+        <LI>Next message: <A HREF="000124.html">[Gpsd-users] fix for erroneous Q output
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#126">[ date ]</a>
+              <a href="thread.html#126">[ thread ]</a>
+              <a href="subject.html#126">[ subject ]</a>
+              <a href="author.html#126">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Robin L Darroch &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">robin at spade-men.com</A>&gt;:
+&gt;<i> I've run into a couple of problems while trying to build 2.2 on Mac 
+</I>&gt;<i> OS X 10.3 (Darwin), but the main reason I'm trying to build 2.2 is to 
+</I>&gt;<i> find out whether it fixes some bugs in the output of some basic 
+</I>&gt;<i> commands.  The first error I got was while trying to &quot;make&quot;, in 
+</I>&gt;<i> libgpsd_core.c, line 37, &quot;implicit declaration of calloc&quot;... which of 
+</I>&gt;<i> course means the library header containing calloc hadn't been 
+</I>&gt;<i> #included.  The fix for that was as simple as adding
+</I>&gt;<i> 
+</I>&gt;<i> #include &lt;stdlib.h&gt;
+</I>&gt;<i> 
+</I>&gt;<i> to the list in libgpsd_core.c
+</I>&gt;<i> 
+</I>&gt;<i> Similarly, while compiling gps.c, it ran into a whole bunch of 
+</I>&gt;<i> implicit declarations, this time from missing stdio.h
+</I>&gt;<i> 
+</I>&gt;<i> gpsd.c ended up with a huge number of includes missing, and the only 
+</I>&gt;<i> way I could find them all was to compare it against the same file 
+</I>&gt;<i> from version 2.0.  I added the following includes:
+</I>&gt;<i> 
+</I>&gt;<i> sys/ioctl.h
+</I>&gt;<i> sys/types.h
+</I>&gt;<i> netinet/in.h
+</I>&gt;<i> netinet/tcp.h
+</I>&gt;<i> 
+</I>&gt;<i> Perhaps all of those weren't necessary, but at least it gets a clean 
+</I>&gt;<i> compile with them in.
+</I>
+We got an equivalent fix from somebody else a few days ago.  It's 
+already in the Subversion head.
+-- 
+		&lt;a href=&quot;<A HREF="http://www.catb.org/~esr/">http://www.catb.org/~esr/</A>&quot;&gt;Eric S. Raymond&lt;/a&gt;
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="000123.html">[Gpsd-users] problems building 2.2, bug in running gpsd
+</A></li>
+	<LI>Next message: <A HREF="000124.html">[Gpsd-users] fix for erroneous Q output
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#126">[ date ]</a>
+              <a href="thread.html#126">[ thread ]</a>
+              <a href="subject.html#126">[ subject ]</a>
+              <a href="author.html#126">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

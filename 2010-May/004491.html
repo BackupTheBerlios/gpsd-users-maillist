@@ -1,0 +1,93 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] Using TCP data sources
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2010-May/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Using%20TCP%20data%20sources&In-Reply-To=%3C761AC5AC-14A0-4583-B685-E675885D6D6C%40mac.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="004501.html">
+   <LINK REL="Next"  HREF="004511.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] Using TCP data sources</H1>
+    <B>Rick Workman</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Using%20TCP%20data%20sources&In-Reply-To=%3C761AC5AC-14A0-4583-B685-E675885D6D6C%40mac.com%3E"
+       TITLE="[Gpsd-users] Using TCP data sources">ridgeworks at mac.com
+       </A><BR>
+    <I>Tue May 25 21:38:15 CEST 2010</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="004501.html">[Gpsd-users] Using garmin devices in new distros (no ttyUSB)?
+</A></li>
+        <LI>Next message: <A HREF="004511.html">[Gpsd-users] Using TCP data sources
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#4491">[ date ]</a>
+              <a href="thread.html#4491">[ thread ]</a>
+              <a href="subject.html#4491">[ subject ]</a>
+              <a href="author.html#4491">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>The gpsd  documentation ( <A HREF="http://gpsd.berlios.de/gpsd.html">http://gpsd.berlios.de/gpsd.html</A> ) would suggest that NMEA formatted GPS data over TCP/IP can be specified as  a data source:
+
+
+TCP feed
+A URI with the prefix &quot;<A HREF="tcp://">tcp://</A>&quot;, followed by a hostname, a colon, and a port number. The daemon will open a socket to the indicated address and port and read data packets from it, which will be interpreted as though they had been issued by a serial device. Example: <A HREF="tcp://data.aishub.net:4006.">tcp://data.aishub.net:4006.</A>
+
+When I try to use gpsd in this manner, it fails, e.g.,:
+
+$ gpsd -N -n -D5 <A HREF="tcp://127.0.0.1:10110">tcp://127.0.0.1:10110</A>
+gpsd: launching (Version 2.94)
+gpsd: opening IPv4 socket
+gpsd: opening IPv6 socket
+gpsd: listening on port gpsd
+gpsd: NTPD shmat(65539,0,0) succeeded, segment 2
+gpsd: NTPD shmat(65540,0,0) succeeded, segment 3
+gpsd: running with effective group ID 502
+gpsd: running with effective user ID 502
+gpsd: opening read-only GPS data source type 0 and at '<A HREF="tcp://127.0.0.1:10110">tcp://127.0.0.1:10110</A>'
+gpsd: device open failed: No such file or directory - retrying read-only
+gpsd: read-only device open failed: No such file or directory
+gpsd: GPS device <A HREF="tcp://127.0.0.1:10110">tcp://127.0.0.1:10110</A> nonexistent or can't be read
+
+
+
+I'm fairly confident the source works because I've used it with other software clients (MacENC, NavMonPC). From the source end I can't detect any attempt to connect to the specified socket. 
+
+Is this a working feature, or am I misinterpreting the documentation?
+
+Rick
+
+
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="004501.html">[Gpsd-users] Using garmin devices in new distros (no ttyUSB)?
+</A></li>
+	<LI>Next message: <A HREF="004511.html">[Gpsd-users] Using TCP data sources
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#4491">[ date ]</a>
+              <a href="thread.html#4491">[ thread ]</a>
+              <a href="subject.html#4491">[ subject ]</a>
+              <a href="author.html#4491">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

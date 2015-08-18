@@ -1,0 +1,134 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] Some problems? too many satellites?
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2006-August/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Some%20problems%3F%20too%20many%20satellites%3F&In-Reply-To=%3C200608101136.08416.marr%40flex.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="001846.html">
+   <LINK REL="Next"  HREF="001851.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] Some problems? too many satellites?</H1>
+    <B>Marr</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Some%20problems%3F%20too%20many%20satellites%3F&In-Reply-To=%3C200608101136.08416.marr%40flex.com%3E"
+       TITLE="[Gpsd-users] Some problems? too many satellites?">marr at flex.com
+       </A><BR>
+    <I>Thu Aug 10 17:36:08 CEST 2006</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="001846.html">[Gpsd-users] Some problems? too many satellites?
+</A></li>
+        <LI>Next message: <A HREF="001851.html">[Gpsd-users] Some problems? too many satellites?
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1847">[ date ]</a>
+              <a href="thread.html#1847">[ thread ]</a>
+              <a href="subject.html#1847">[ subject ]</a>
+              <a href="author.html#1847">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>On Thursday 10 August 2006 4:13am, Gary E. Miller wrote:
+&gt;<i> Since the sats in GPGSV's come in 4 at a time we prolly need this too:
+</I>&gt;<i>
+</I>&gt;<i> --- gps.h       (revision 3369)
+</I>&gt;<i> +++ gps.h       (working copy)
+</I>&gt;<i> @@ -18,7 +18,7 @@
+</I>&gt;<i>  #endif
+</I>&gt;<i>
+</I>&gt;<i>  #define MAXTAGLEN      8       /* maximum length of sentence tag name */
+</I>&gt;<i> -#define MAXCHANNELS    14      /* maximum GPS channels (*not* satellites!)
+</I>&gt;<i> */ +#define MAXCHANNELS    16      /* maximum GPS channels (*not*
+</I>&gt;<i> satellites!) */ #define SIRF_CHANNELS  12      /* max channels allowed in
+</I>&gt;<i> SiRF format */
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i> Do any of the other devleopers see a problem with these two tweaks?
+</I>
+Yes, there is a small problem. The 'xgps' app's main window isn't designed to 
+accommodate anything over 14 satellites in the Motif &quot;list&quot; widget. If you 
+change the 'MAXCHANNELS' from 14 to 16, it expands the size of the table, 
+pushing the data content line off the bottom of the window. That would need 
+to be addressed somehow.
+
+We discussed this a bit back when I first pointed out (see 15 Feb 2006 email) 
+a discrepancy in the header files that defined 2 versions (12 and 14) of the 
+'maximum GPS channel count'.
+
+Back then, we fixed it by bumping it to 14 and fixing 'xgps' widget layout to 
+allow that many satellites in the list without messing up the display.
+
+But, as I pointed out back then, 'xgps' is a rather badly-designed Motif 
+application and doesn't do widget layout (and other things) quite right. 
+Ideally, that satellite list might be a &quot;scrolled window&quot; widget wrapped 
+around that &quot;list&quot; widget.
+
+On Monday 20 February 2006 3:00pm, Marr wrote:
+&gt;<i> For example, certain widgets (like the satellite info table) might best be
+</I>&gt;<i> made to scroll vertically, to allow for even more than 14 satellites. Of
+</I>&gt;<i> course, that scrollbar takes real-estate. I know some toolkits can
+</I>&gt;<i> conditionally display the scrollbar as needed, but I don't recall if that
+</I>&gt;<i> applies to Motif and besides, you need to account for the worst-case size
+</I>&gt;<i> anyway.
+</I>
+At the time, ESR had this to say:
+
+On Monday 20 February 2006 3:14pm, Eric S. Raymond wrote:
+
+&gt;<i> I considered and rejected a scrolling window.  12 satellites is normal, so
+</I>&gt;<i> we wouldn't want it to be any smaller.  And the extra two rows for
+</I>&gt;<i> WAAS/EGNOS satellites aren't a serious problem since, as you say, the app
+</I>&gt;<i> size is under 800x600.
+</I>
+And I didn't completely disagree with that decision (or I would have politely 
+said so :^] ).
+
+However, it may be time to reconsider this, especially in light of this:
+
+On Thursday 10 August 2006 6:07am, Ville Nuorvala wrote:
+&gt;<i> Gary E. Miller wrote:
+</I>&gt;<i> &gt; Uh, oh, that says 16 channels!  So I guess we gotta bump .channels up
+</I>&gt;<i> &gt; to 16.
+</I>&gt;<i>
+</I>&gt;<i> Just a side note; many SiRFStarIII based GPS receivers boast with 20
+</I>&gt;<i> channels, for example:
+</I>
+Who knows? Some day, maybe even 20 slots may not be enough. It seems clear 
+that we need to somehow plan for more than 14 now, though.
+
+P.S. (Side mini-rant): Why do people (e.g. Ville, Eric) omit the timestamp 
+from the format for 'Reply-To' in their emails? It makes the content slightly 
+less useful with no appreciable gain that I can see. :^(
+
+Bill Marr
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="001846.html">[Gpsd-users] Some problems? too many satellites?
+</A></li>
+	<LI>Next message: <A HREF="001851.html">[Gpsd-users] Some problems? too many satellites?
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1847">[ date ]</a>
+              <a href="thread.html#1847">[ thread ]</a>
+              <a href="subject.html#1847">[ subject ]</a>
+              <a href="author.html#1847">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

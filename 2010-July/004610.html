@@ -1,0 +1,106 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] Problems accessing gpsd data via client lib
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2010-July/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Problems%20accessing%20gpsd%20data%20via%20client%20lib&In-Reply-To=%3CAANLkTi%3DA5NLrMtt5Mf18KV3Y6dvzBj_D_tX-EtF6aNVb%40mail.gmail.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="004607.html">
+   <LINK REL="Next"  HREF="004611.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] Problems accessing gpsd data via client lib</H1>
+    <B>Satz Klauer</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Problems%20accessing%20gpsd%20data%20via%20client%20lib&In-Reply-To=%3CAANLkTi%3DA5NLrMtt5Mf18KV3Y6dvzBj_D_tX-EtF6aNVb%40mail.gmail.com%3E"
+       TITLE="[Gpsd-users] Problems accessing gpsd data via client lib">satzklauer at googlemail.com
+       </A><BR>
+    <I>Wed Jul 28 06:47:21 CEST 2010</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="004607.html">[Gpsd-users] Using TCP data sources (Round 2)
+</A></li>
+        <LI>Next message: <A HREF="004611.html">[Gpsd-users] Problems accessing gpsd data via client lib
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#4610">[ date ]</a>
+              <a href="thread.html#4610">[ thread ]</a>
+              <a href="subject.html#4610">[ subject ]</a>
+              <a href="author.html#4610">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi,
+
+I'm using gpsd on Fedora, therefore I'm still working on version 1.38
+and the old style programming interface.
+
+Unfortunately I can't get it working. What I have at the moment was
+taken out of the C-example and looks like this:
+
+data-&gt;gpsdata=gps_open(data-&gt;source.server,data-&gt;source.port);
+...
+while (condition)
+{
+   if (gps_poll(data-&gt;gpsdata))
+   {
+      if (data-&gt;gpsdata-&gt;fix.mode &gt;= MODE_2D &amp;&amp;
+isnan(data-&gt;gpsdata-&gt;fix.latitude) == 0)
+data-&gt;m_lat=data-&gt;gpsdata-&gt;fix.latitude;
+      if (data-&gt;gpsdata-&gt;fix.mode &gt;= MODE_2D &amp;&amp;
+isnan(data-&gt;gpsdata-&gt;fix.longitude) == 0)
+data-&gt;m_lon=data-&gt;gpsdata-&gt;fix.longitude;
+      if (data-&gt;gpsdata-&gt;fix.mode == MODE_3D &amp;&amp;
+isnan(data-&gt;gpsdata-&gt;fix.altitude) == 0)
+data-&gt;m_height=data-&gt;gpsdata-&gt;fix.altitude;
+      if (data-&gt;gpsdata-&gt;fix.mode &gt;= MODE_2D &amp;&amp;
+isnan(data-&gt;gpsdata-&gt;fix.track) == 0)
+data-&gt;m_speed=data-&gt;gpsdata-&gt;fix.speed;
+      if (isnan(data-&gt;gpsdata-&gt;fix.time) == 0)
+data-&gt;m_timestamp=data-&gt;gpsdata-&gt;fix.time;
+   }	
+   if (data-&gt;gpsdata-&gt;online!=0)
+   {
+      // i have a fix
+      ...
+   }
+   ...
+}
+
+Here gps_poll() never returns. When I replace it with gps_query() I
+can'T find a valid format string that fills me the latitude,
+loingitude, height, speed and time members of the GPS-strucutre with
+valid data.
+
+So what is missing here, what have I done wrong?
+
+Mike
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="004607.html">[Gpsd-users] Using TCP data sources (Round 2)
+</A></li>
+	<LI>Next message: <A HREF="004611.html">[Gpsd-users] Problems accessing gpsd data via client lib
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#4610">[ date ]</a>
+              <a href="thread.html#4610">[ thread ]</a>
+              <a href="subject.html#4610">[ subject ]</a>
+              <a href="author.html#4610">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

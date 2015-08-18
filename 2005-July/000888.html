@@ -1,0 +1,145 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] Compiling/running gpsd 2.25+ on Zaurus
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2005-July/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Compiling/running%20gpsd%202.25%2B%20on%20Zaurus&In-Reply-To=%3C20050727152737.GA9704%40thyrsus.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="000885.html">
+   <LINK REL="Next"  HREF="000889.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] Compiling/running gpsd 2.25+ on Zaurus</H1>
+    <B>Eric S. Raymond</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Compiling/running%20gpsd%202.25%2B%20on%20Zaurus&In-Reply-To=%3C20050727152737.GA9704%40thyrsus.com%3E"
+       TITLE="[Gpsd-users] Compiling/running gpsd 2.25+ on Zaurus">esr at thyrsus.com
+       </A><BR>
+    <I>Wed Jul 27 17:27:37 CEST 2005</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="000885.html">[Gpsd-users] Compiling/running gpsd 2.25+ on Zaurus
+</A></li>
+        <LI>Next message: <A HREF="000889.html">[Gpsd-users] Compiling/running gpsd 2.25+ on Zaurus
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#888">[ date ]</a>
+              <a href="thread.html#888">[ thread ]</a>
+              <a href="subject.html#888">[ subject ]</a>
+              <a href="author.html#888">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Lance F. &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">ashikase at users.sourceforge.net</A>&gt;:
+&gt;<i> &gt;Just an update, I found out why gpsd is crashing in processGPGSA in my 
+</I>&gt;<i> &gt;case. If you look at the log below, you'll see that my GPS (i.Trek M3) 
+</I>&gt;<i> &gt;returns a GPGSA line with only 7 fields; processGPGSA expects 18, and 
+</I>&gt;<i> &gt;hence ends up reading beyond the fields array. If I wait until my 
+</I>&gt;<i> &gt;receiver has a fix before starting gpsd, it seems to work ok.
+</I>&gt;<i> 
+</I>&gt;<i> Eric said he'll look into it; I have sent appropriate log files to him.
+</I>&gt;<i> He has also patches the issue that I was having with anonymous unions.
+</I>
+A fix for the i.Trek is in svn head now.  As a matter of potential interest,
+here is the entire text of the fix:
+
+    /*
+     * One chipset called the i.Trek M3 issues GPGSA lines that look like
+     * this: &quot;$GPGSA,A,1,,,,*32&quot; when it has no fix.  This is broken
+     * in at least two ways: it's got the wrong number of fields, and
+     * it claims to be a valid sentence (A flag) when it isn't.
+     * Alarmingly, it's possible this error may be generic to SiRF-IIIs.
+     */
+    if (count &lt; 17)
+	return ONLINE_SET;
+
+&gt;<i> - packet_names.h is not generated automatically; I had to run 'make 
+</I>&gt;<i> packet_names.h&quot;
+</I>
+Not reproducible here.  The following is a script capture; I have surrounded
+the key line with asterisks.
+
+<A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">esr at snark</A>:~/svn/gpsd/trunk$ rm packet_names.h
+<A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">esr at snark</A>:~/svn/gpsd/trunk$ make
+make  all-recursive
+make[1]: Entering directory `/home/esr/svn/gpsd/trunk'
+Making all in contrib
+/home/esr/svn/gpsd/trunk/contrib
+make[2]: Entering directory `/home/esr/svn/gpsd/trunk/contrib'
+make[2]: Nothing to be done for `all'.
+make[2]: Leaving directory `/home/esr/svn/gpsd/trunk/contrib'
+make[2]: Entering directory `/home/esr/svn/gpsd/trunk'
+if /bin/sh ./libtool --mode=compile --tag=CC gcc4 -DHAVE_CONFIG_H -I. -I. -I. -I/usr/X11R6/include  -g -O2 -Wall -Wcast-align -Wmissing-declarations -Wmissing-prototypes -Wstrict-prototypes -Wpointer-arith -Wreturn-type -D_GNU_SOURCE  -I/usr/X11R6/include -MT nmea_parse.lo -MD -MP -MF &quot;.deps/nmea_parse.Tpo&quot; -c -o nmea_parse.lo nmea_parse.c; \
+then mv -f &quot;.deps/nmea_parse.Tpo&quot; &quot;.deps/nmea_parse.Plo&quot;; else rm -f &quot;.deps/nmea_parse.Tpo&quot;; exit 1; fi
+ gcc4 -DHAVE_CONFIG_H -I. -I. -I. -I/usr/X11R6/include -g -O2 -Wall -Wcast-align -Wmissing-declarations -Wmissing-prototypes -Wstrict-prototypes -Wpointer-arith -Wreturn-type -D_GNU_SOURCE -I/usr/X11R6/include -MT nmea_parse.lo -MD -MP -MF .deps/nmea_parse.Tpo -c nmea_parse.c -o nmea_parse.o
+***********************************************************
+sed -e '/^ *\([A-Z][A-Z0-9_]*\),/s//   &quot;\1&quot;,/' &lt;packet_states.h &gt;packet_names.h
+***********************************************************
+if /bin/sh ./libtool --mode=compile --tag=CC gcc4 -DHAVE_CONFIG_H -I. -I. -I. -I/usr/X11R6/include  -g -O2 -Wall -Wcast-align -Wmissing-declarations -Wmissing-prototypes -Wstrict-prototypes -Wpointer-arith -Wreturn-type -D_GNU_SOURCE  -I/usr/X11R6/include -MT packet.lo -MD -MP -MF &quot;.deps/packet.Tpo&quot; -c -o packet.lo packet.c; \
+then mv -f &quot;.deps/packet.Tpo&quot; &quot;.deps/packet.Plo&quot;; else rm -f &quot;.deps/packet.Tpo&quot;; exit 1; fi
+ gcc4 -DHAVE_CONFIG_H -I. -I. -I. -I/usr/X11R6/include -g -O2 -Wall -Wcast-align -Wmissing-declarations -Wmissing-prototypes -Wstrict-prototypes -Wpointer-arith -Wreturn-type -D_GNU_SOURCE -I/usr/X11R6/include -MT packet.lo -MD -MP -MF .deps/packet.Tpo -c packet.c -o packet.o
+/bin/sh ./libtool --mode=link --tag=CXX g++  -g -O2  -L/usr/X11R6/lib -o libgps.la -rpath /usr/lib -version-number 15:0:0 netlib.lo nmea_parse.lo serial.lo drivers.lo zodiac.lo garmin.lo tsip.lo evermore.lo italk.lo libgpsd_core.lo ntpshm.lo libgps.lo packet.lo gpsutils.lo geoid.lo dgpsip.lo sirf.lo report.lo isgps.lo rtcm.lo srecord.lo libgpsmm.lo -lm -lc -lnsl  -lpthread
+rm -fr  .libs/libgps.a .libs/libgps.la .libs/libgps.lai
+ar cru .libs/libgps.a  netlib.o nmea_parse.o serial.o drivers.o zodiac.o garmin.o tsip.o evermore.o italk.o libgpsd_core.o ntpshm.o libgps.o packet.o gpsutils.o geoid.o dgpsip.o sirf.o report.o isgps.o rtcm.o srecord.o libgpsmm.o
+ranlib .libs/libgps.a
+creating libgps.la
+(cd .libs &amp;&amp; rm -f libgps.la &amp;&amp; ln -s ../libgps.la libgps.la)
+/bin/sh ./libtool --mode=link --tag=CC gcc4  -g -O2 -Wall -Wcast-align -Wmissing-declarations -Wmissing-prototypes -Wstrict-prototypes -Wpointer-arith -Wreturn-type -D_GNU_SOURCE  -I/usr/X11R6/include  -L/usr/X11R6/lib -o xgps  display.o xgps.o -lm -lc -lnsl  -lXm -lXt -L/usr/X11R6/lib -lSM -lICE libgps.la -lm -lpthread
+gcc4 -g -O2 -Wall -Wcast-align -Wmissing-declarations -Wmissing-prototypes -Wstrict-prototypes -Wpointer-arith -Wreturn-type -D_GNU_SOURCE -I/usr/X11R6/include -o xgps display.o xgps.o  -L/usr/X11R6/lib -lc -lXm -lXt -lSM -lICE ./.libs/libgps.a -lnsl -lm -lpthread
+/bin/sh ./libtool --mode=link --tag=CC gcc4  -g -O2 -Wall -Wcast-align -Wmissing-declarations -Wmissing-prototypes -Wstrict-prototypes -Wpointer-arith -Wreturn-type -D_GNU_SOURCE  -I/usr/X11R6/include  -L/usr/X11R6/lib -o xgpsspeed  xgpsspeed.o Tachometer.o -lm -lc -lnsl  -lXaw -lXm -L/usr/X11R6/lib -lSM -lICE libgps.la -lm -lpthread
+gcc4 -g -O2 -Wall -Wcast-align -Wmissing-declarations -Wmissing-prototypes -Wstrict-prototypes -Wpointer-arith -Wreturn-type -D_GNU_SOURCE -I/usr/X11R6/include -o xgpsspeed xgpsspeed.o Tachometer.o  -L/usr/X11R6/lib -lc -lXaw -lXm -lSM -lICE ./.libs/libgps.a -lnsl -lm -lpthread
+/bin/sh ./libtool --mode=link --tag=CC gcc4  -g -O2 -Wall -Wcast-align -Wmissing-declarations -Wmissing-prototypes -Wstrict-prototypes -Wpointer-arith -Wreturn-type -D_GNU_SOURCE  -I/usr/X11R6/include  -L/usr/X11R6/lib -o sirfmon  sirfmon.o -lm -lncurses libgps.la -lm -lpthread
+gcc4 -g -O2 -Wall -Wcast-align -Wmissing-declarations -Wmissing-prototypes -Wstrict-prototypes -Wpointer-arith -Wreturn-type -D_GNU_SOURCE -I/usr/X11R6/include -o sirfmon sirfmon.o  -L/usr/X11R6/lib -lncurses ./.libs/libgps.a -lnsl -lm -lpthread
+/bin/sh ./libtool --mode=link --tag=CC gcc4  -g -O2 -Wall -Wcast-align -Wmissing-declarations -Wmissing-prototypes -Wstrict-prototypes -Wpointer-arith -Wreturn-type -D_GNU_SOURCE  -I/usr/X11R6/include  -L/usr/X11R6/lib -o rtcmdecode  rtcmdecode.o -lm -lncurses libgps.la -lm -lpthread
+gcc4 -g -O2 -Wall -Wcast-align -Wmissing-declarations -Wmissing-prototypes -Wstrict-prototypes -Wpointer-arith -Wreturn-type -D_GNU_SOURCE -I/usr/X11R6/include -o rtcmdecode rtcmdecode.o  -L/usr/X11R6/lib -lncurses ./.libs/libgps.a -lnsl -lm -lpthread
+/bin/sh ./libtool --mode=link --tag=CC gcc4  -g -O2 -Wall -Wcast-align -Wmissing-declarations -Wmissing-prototypes -Wstrict-prototypes -Wpointer-arith -Wreturn-type -D_GNU_SOURCE  -I/usr/X11R6/include  -L/usr/X11R6/lib -o gpsflash  gpsflash.o sirfflash.o -lm libgps.la -lm
+gcc4 -g -O2 -Wall -Wcast-align -Wmissing-declarations -Wmissing-prototypes -Wstrict-prototypes -Wpointer-arith -Wreturn-type -D_GNU_SOURCE -I/usr/X11R6/include -o gpsflash gpsflash.o sirfflash.o  -L/usr/X11R6/lib ./.libs/libgps.a -lnsl -lpthread -lm
+/bin/sh ./libtool --mode=link --tag=CC gcc4  -g -O2 -Wall -Wcast-align -Wmissing-declarations -Wmissing-prototypes -Wstrict-prototypes -Wpointer-arith -Wreturn-type -D_GNU_SOURCE  -I/usr/X11R6/include  -L/usr/X11R6/lib -o gpsd  gpsd_dbus.o gpsd.o  -lm libgps.la -lm -lpthread
+gcc4 -g -O2 -Wall -Wcast-align -Wmissing-declarations -Wmissing-prototypes -Wstrict-prototypes -Wpointer-arith -Wreturn-type -D_GNU_SOURCE -I/usr/X11R6/include -o gpsd gpsd_dbus.o gpsd.o  -L/usr/X11R6/lib ./.libs/libgps.a -lnsl -lm -lpthread
+make[2]: Leaving directory `/home/esr/svn/gpsd/trunk'
+make[1]: Leaving directory `/home/esr/svn/gpsd/trunk'
+<A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">esr at snark</A>:~/svn/gpsd/trunk$
+
+&gt;<i> - 'xmlto' is needed to generate some of the documentation; neither my 
+</I>&gt;<i> Zaurus nor any of the Linux boxes I have access to have this installed 
+</I>&gt;<i> (by default).
+</I>
+I have checked the generated manual pages into the repo, so you should
+find they no longer need to be rebuilt after a checkout.
+ 
+&gt;<i> - there is still an issue with stdbool.h, libgpsmm.cpp, and g++: 
+</I>&gt;<i> libgpsmm includes gps.h, which itself includes stdbool.h; putting 
+</I>&gt;<i> &quot;#ifndef __cplusplus ... #endif&quot; around the include stifles the issue
+</I>
+Would removing one of the includes be cleaner?
+-- 
+		&lt;a href=&quot;<A HREF="http://www.catb.org/~esr/">http://www.catb.org/~esr/</A>&quot;&gt;Eric S. Raymond&lt;/a&gt;
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="000885.html">[Gpsd-users] Compiling/running gpsd 2.25+ on Zaurus
+</A></li>
+	<LI>Next message: <A HREF="000889.html">[Gpsd-users] Compiling/running gpsd 2.25+ on Zaurus
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#888">[ date ]</a>
+              <a href="thread.html#888">[ thread ]</a>
+              <a href="subject.html#888">[ subject ]</a>
+              <a href="author.html#888">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

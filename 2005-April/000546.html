@@ -1,0 +1,121 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] please help debugging my new setup
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2005-April/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20please%20help%20debugging%20my%20new%20setup&In-Reply-To=%3CPine.LNX.4.62.0504061111380.26862%40catbert.rellim.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="000543.html">
+   <LINK REL="Next"  HREF="000539.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] please help debugging my new setup</H1>
+    <B>Gary E. Miller</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20please%20help%20debugging%20my%20new%20setup&In-Reply-To=%3CPine.LNX.4.62.0504061111380.26862%40catbert.rellim.com%3E"
+       TITLE="[Gpsd-users] please help debugging my new setup">gem at rellim.com
+       </A><BR>
+    <I>Wed Apr  6 20:18:41 CEST 2005</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="000543.html">[Gpsd-users] please help debugging my new setup
+</A></li>
+        <LI>Next message: <A HREF="000539.html">[Gpsd-users] Preparing for 2.21
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#546">[ date ]</a>
+              <a href="thread.html#546">[ thread ]</a>
+              <a href="subject.html#546">[ subject ]</a>
+              <a href="author.html#546">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>-----BEGIN PGP SIGNED MESSAGE-----
+Hash: SHA1
+
+Yo Bob!
+
+On Wed, 6 Apr 2005, Bob Alexander wrote:
+
+&gt;<i> &gt; Do not bother with the Garmin driver.  That only works if the Garmin
+</I>&gt;<i> &gt; is directly USB connected and the kernel garmin driver sees it.  If the
+</I>&gt;<i> &gt; Garmin is talking on a plain serial port you must use NMEA.
+</I>&gt;<i> &gt;
+</I>&gt;<i>
+</I>&gt;<i> Howdy Gary. How's life in OR ? :)
+</I>
+Lovin' it.
+
+&gt;<i> As a matter of fact the unit was set on the Garmin protocol and that worked
+</I>&gt;<i> very well via the serial port with an application called GPSMAN and BTW the
+</I>&gt;<i> same application does NOT work anymore with the etrx switched to NMEA :(
+</I>
+There is garmin protocol and there is garmin protocol.  One is
+the content of the binary packets and one is the way packets are
+transmitted.  YOu can send the binary packets over the RS-232 or USB.
+WIth a true Garmin USB the way the pckets are sent is also unique to
+Garmin.
+
+The garmin driver in gpsd does not talk garmin over RS-232, or even over
+USB.  It can only talk to the linux kernel driver that talks to the
+garmin USB device.  The garmin USB protocol uses both the USB control
+and data channel in a novel way.  This will not work with serial/USB
+converters.
+
+&gt;<i> GPSD seems happy with the eTrex on NMEA.
+</I>
+You are not losing anything but speed.  Unless you have native USB directly
+from the GPS you could not get real USB speed anyway.
+
+&gt;<i> The problem I have now is that even though GPSD seems working well, when
+</I>&gt;<i> kismet starts it immediately says &quot;GPS Signal Lost&quot; and never logs GPS data :(
+</I>
+Never tested gpsd against kismet.  The guys doing the NMEA driver will
+have to look in to that.
+
+Have you recompiled kismet to match the version of gpsd you installed?
+There are changes to the protocol so the gpsd client and server must match.
+
+RGDS
+GARY
+- ---------------------------------------------------------------------------
+Gary E. Miller Rellim 20340 Empire Blvd, Suite E-3, Bend, OR 97701
+	<A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">gem at rellim.com</A>  Tel:+1(541)382-8588 Fax: +1(541)382-8676
+
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v1.2.3 (GNU/Linux)
+
+iD8DBQFCVCgE8KZibdeR3qURAu8kAJ9wOS+U3QeeJpXmxGRbHLEevaiGGgCgr69Z
+BWmhocXzOfzNsNvacWKwO0s=
+=odFe
+-----END PGP SIGNATURE-----
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="000543.html">[Gpsd-users] please help debugging my new setup
+</A></li>
+	<LI>Next message: <A HREF="000539.html">[Gpsd-users] Preparing for 2.21
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#546">[ date ]</a>
+              <a href="thread.html#546">[ thread ]</a>
+              <a href="subject.html#546">[ subject ]</a>
+              <a href="author.html#546">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

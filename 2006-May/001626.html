@@ -1,0 +1,108 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] Cross-Compiled and Released: GPSD 2.10_mipsel for Openwrt
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2006-May/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Cross-Compiled%20and%20Released%3A%20GPSD%202.10_mipsel%20for%0A%20Openwrt&In-Reply-To=%3C4472E124.9020805%40frontiernet.net%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="001623.html">
+   <LINK REL="Next"  HREF="001622.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] Cross-Compiled and Released: GPSD 2.10_mipsel for Openwrt</H1>
+    <B>Beakmyn</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Cross-Compiled%20and%20Released%3A%20GPSD%202.10_mipsel%20for%0A%20Openwrt&In-Reply-To=%3C4472E124.9020805%40frontiernet.net%3E"
+       TITLE="[Gpsd-users] Cross-Compiled and Released: GPSD 2.10_mipsel for Openwrt">beakmyn at frontiernet.net
+       </A><BR>
+    <I>Tue May 23 12:17:08 CEST 2006</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="001623.html">[Gpsd-users] Cross-Compiled and Released: GPSD 2.10_mipsel for Openwrt
+</A></li>
+        <LI>Next message: <A HREF="001622.html">[Gpsd-users] Not Getting Output from Garmin GPS-18 (USB)
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1626">[ date ]</a>
+              <a href="thread.html#1626">[ thread ]</a>
+              <a href="subject.html#1626">[ subject ]</a>
+              <a href="author.html#1626">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Michael R. Davis wrote:
+
+&gt;<i>This gave me a great opportunity to get back on my SL.  And the bottom
+</I>&gt;<i>line, your gpsd runs just find on my wrtsl54gs OpenWRT RC5.  I got the
+</I>&gt;<i>pl2303 working and all.  I had to kludge (download without a package)
+</I>&gt;<i>the stty from some web site.  stty -F /dev/usb/tts/0 4800
+</I>&gt;<i>
+</I>&gt;<i>But, it looks like gpsd must take care of this after reboot.
+</I>&gt;<i>
+</I>&gt;<i>Also, it didn't want to change my BU-303 from SIRF to NMEA so I went
+</I>&gt;<i>back to sirfmon on my laptop.
+</I>&gt;<i>sirfmon /dev/ttyUSB0 then press n to exit in NMEA.
+</I>&gt;<i>
+</I>&gt;<i>I added this file to start gpsd after reboot.
+</I>&gt;<i>  
+</I>&gt;<i>
+</I>&gt;&gt;<i>cat /etc/init.d/S50gpsd
+</I>&gt;&gt;<i>    
+</I>&gt;&gt;<i>
+</I>&gt;<i>#!/bin/sh
+</I>&gt;<i>gpsd -p /dev/usb/tts/0 -s 4800 -P /var/run/gpsd.pid
+</I>&gt;<i>
+</I>&gt;<i>But, 2.10 is so old it doesn't have the &quot;o&quot; command which is what I
+</I>&gt;<i>based most of my Perl library (Net::GPSD) on.  
+</I>&gt;<i>
+</I>&gt;<i>So, I went to upgrade and...
+</I>&gt;<i>Looks like Nico's 2.30 version is no longer available.  Does anyone
+</I>&gt;<i>have gpsd 2.32 version complied for the mipsel processor?
+</I>&gt;<i>
+</I>&gt;<i>Or shall I figure out how to get the cross compiler working?
+</I>&gt;<i>
+</I>&gt;<i>I put most of this information on the wiki.
+</I>&gt;<i><A HREF="http://gpsd.davisnetworks.com/bin/view/Main/DistOpenWRT">http://gpsd.davisnetworks.com/bin/view/Main/DistOpenWRT</A>
+</I>&gt;<i>
+</I>&gt;<i>Thanks,
+</I>&gt;<i>Mike (mrdvt92)
+</I>&gt;<i>
+</I>&gt;<i>  
+</I>&gt;<i>
+</I>
+GPSD 2.30 is still available but has been moved to the backports repository.
+<A HREF="http://downloads.openwrt.org/backports/rc5/">http://downloads.openwrt.org/backports/rc5/</A>
+
+I have a short guide on my website about cross-compiling, I'll add the 
+toolchains I use as text files later this afternoon.
+I'll cross-compile 2.32 while I'm at it.
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="001623.html">[Gpsd-users] Cross-Compiled and Released: GPSD 2.10_mipsel for Openwrt
+</A></li>
+	<LI>Next message: <A HREF="001622.html">[Gpsd-users] Not Getting Output from Garmin GPS-18 (USB)
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1626">[ date ]</a>
+              <a href="thread.html#1626">[ thread ]</a>
+              <a href="subject.html#1626">[ subject ]</a>
+              <a href="author.html#1626">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

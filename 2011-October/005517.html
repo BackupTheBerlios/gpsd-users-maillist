@@ -1,0 +1,100 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] How to set initial time?
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2011-October/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20How%20to%20set%20initial%20time%3F&In-Reply-To=%3Cce1b50dd02a597020d9773753b225a84.squirrel%40mail.seiner.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="005524.html">
+   <LINK REL="Next"  HREF="005518.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] How to set initial time?</H1>
+    <B>Yan Seiner</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20How%20to%20set%20initial%20time%3F&In-Reply-To=%3Cce1b50dd02a597020d9773753b225a84.squirrel%40mail.seiner.com%3E"
+       TITLE="[Gpsd-users] How to set initial time?">yan at seiner.com
+       </A><BR>
+    <I>Fri Oct 28 19:11:13 CEST 2011</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="005524.html">[Gpsd-users] How to set initial time?
+</A></li>
+        <LI>Next message: <A HREF="005518.html">[Gpsd-users] How to set initial time?
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#5517">[ date ]</a>
+              <a href="thread.html#5517">[ thread ]</a>
+              <a href="subject.html#5517">[ subject ]</a>
+              <a href="author.html#5517">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>
+On Wed, October 26, 2011 8:22 am, Eric S. Raymond wrote:
+&gt;<i> Yan Seiner &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">yan at seiner.com</A>&gt;:
+</I>&gt;&gt;<i> AFAICT gpsd does not report the time it gets from gps.  I've looked at
+</I>&gt;&gt;<i> the
+</I>&gt;&gt;<i> code, and apparently the date and time information are discarded.
+</I>&gt;<i>
+</I>&gt;<i> That's bizarre.  What code are you talking about?  What mode is the device
+</I>&gt;<i> in? Can you send us a test log?
+</I>
+I'm working on upgrading; I am running openwrt and I'm having
+cross-compile issues with 3.x right now.  (I have the cero packages by
+Dave T&#228;ht but something is broken in the build scripts; I'll figure it out
+eventually.)
+
+In the meantime, here's what I'm talking about:
+
+<A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">root at OpenWrt</A>:~# echo &quot;?POLL;&quot; | nc localhost 2947
+{&quot;class&quot;:&quot;VERSION&quot;,&quot;release&quot;:&quot;2.94&quot;,&quot;rev&quot;:&quot;2011-07-11T23:50:42&quot;,&quot;proto_major&quot;:3,&quot;proto_minor&quot;:2}
+{&quot;class&quot;:&quot;POLL&quot;,&quot;timestamp&quot;:15934.428,&quot;active&quot;:1,&quot;fixes&quot;:[{&quot;class&quot;:&quot;TPV&quot;,&quot;tag&quot;:&quot;MID27&quot;,&quot;device&quot;:&quot;/dev/ttyUSB0&quot;,&quot;time&quot;:700506251.000,&quot;ept&quot;:0.005,&quot;lat&quot;:44.088336590,&quot;lon&quot;:-123.139326403,&quot;alt&quot;:121.029,&quot;track&quot;:316.8218,&quot;speed&quot;:0.100,&quot;climb&quot;:-0.075,&quot;mode&quot;:3}],&quot;skyviews&quot;:[{&quot;class&quot;:&quot;SKY&quot;,&quot;tag&quot;:&quot;MID27&quot;,&quot;device&quot;:&quot;/dev/ttyUSB0&quot;,&quot;time&quot;:700506250.990,&quot;hdop&quot;:0.80,&quot;satellites&quot;:[{&quot;PRN&quot;:17,&quot;el&quot;:58,&quot;az&quot;:51,&quot;ss&quot;:40,&quot;used&quot;:true},{&quot;PRN&quot;:2,&quot;el&quot;:15,&quot;az&quot;:180,&quot;ss&quot;:35,&quot;used&quot;:true},{&quot;PRN&quot;:4,&quot;el&quot;:40,&quot;az&quot;:145,&quot;ss&quot;:41,&quot;used&quot;:true},{&quot;PRN&quot;:1,&quot;el&quot;:5,&quot;az&quot;:31,&quot;ss&quot;:28,&quot;used&quot;:true},{&quot;PRN&quot;:26,&quot;el&quot;:4,&quot;az&quot;:202,&quot;ss&quot;:23,&quot;used&quot;:false},{&quot;PRN&quot;:15,&quot;el&quot;:15,&quot;az&quot;:237,&quot;ss&quot;:19,&quot;used&quot;:true},{&quot;PRN&quot;:12,&quot;el&quot;:19,&quot;az&quot;:289,&quot;ss&quot;:25,&quot;used&quot;:true},{&quot;PRN&quot;:9,&quot;el&quot;:53,&quot;az&quot;:297,&quot;ss&quot;:32,&quot;used&quot;:true},{&quot;PRN&quot;:28,&quot;el&quot;:28,&quot;az&quot;:91,&quot;ss&quot;:43,&quot;used&quot;:true},{&quot;PRN&quot;:20,&quot;el&quot;:2,&quot;az&quot;:58,&quot;ss&quot;:22,&quot;used&quot;:false}]}]}]}
+
+Notice the time report - that Epoch date is March 1, 1992 (???)  I have no
+idea where gpsd gets that from.  The system date is 1970 when it boots. 
+Once the date is set via rdate it keeps it just fine.
+
+Here's the info on gpsd:
+
+<A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">root at OpenWrt</A>:~# echo '?WATCH={&quot;enable&quot;:true,&quot;json&quot;:true}' | nc localhost 2947
+{&quot;class&quot;:&quot;VERSION&quot;,&quot;release&quot;:&quot;2.94&quot;,&quot;rev&quot;:&quot;2011-07-11T23:50:42&quot;,&quot;proto_major&quot;:3,&quot;proto_minor&quot;:2}
+{&quot;class&quot;:&quot;DEVICES&quot;,&quot;devices&quot;:[{&quot;class&quot;:&quot;DEVICE&quot;,&quot;path&quot;:&quot;/dev/ttyUSB0&quot;,&quot;activated&quot;:16226.81,&quot;flags&quot;:1,&quot;driver&quot;:&quot;SiRF
+binary&quot;,&quot;native&quot;:1,&quot;bps&quot;:4800,&quot;parity&quot;:&quot;N&quot;,&quot;stopbits&quot;:1,&quot;cycle&quot;:1.00}]}
+{&quot;class&quot;:&quot;WATCH&quot;,&quot;enable&quot;:true,&quot;json&quot;:true,&quot;nmea&quot;:false,&quot;raw&quot;:0,&quot;scaled&quot;:false,&quot;timing&quot;:false}
+
+
+-- 
+Pain is temporary. It may last a minute, or an hour, or a day, or a year,
+but eventually it will subside and something else will take its place. If
+I quit, however, it lasts forever.
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="005524.html">[Gpsd-users] How to set initial time?
+</A></li>
+	<LI>Next message: <A HREF="005518.html">[Gpsd-users] How to set initial time?
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#5517">[ date ]</a>
+              <a href="thread.html#5517">[ thread ]</a>
+              <a href="subject.html#5517">[ subject ]</a>
+              <a href="author.html#5517">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

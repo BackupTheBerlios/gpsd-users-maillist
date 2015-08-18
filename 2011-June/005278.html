@@ -1,0 +1,144 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] [Gpsd-dev]     Gpsd configuration files
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2011-June/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20%5BGpsd-dev%5D%20%20%20%20%20Gpsd%20configuration%20files&In-Reply-To=%3C20110601023909.GA23569%40thyrsus.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="005276.html">
+   <LINK REL="Next"  HREF="005279.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] [Gpsd-dev]     Gpsd configuration files</H1>
+    <B>Eric Raymond</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20%5BGpsd-dev%5D%20%20%20%20%20Gpsd%20configuration%20files&In-Reply-To=%3C20110601023909.GA23569%40thyrsus.com%3E"
+       TITLE="[Gpsd-users] [Gpsd-dev]     Gpsd configuration files">esr at thyrsus.com
+       </A><BR>
+    <I>Wed Jun  1 04:39:09 CEST 2011</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="005276.html">[Gpsd-users] [Gpsd-dev]   Gpsd configuration files
+</A></li>
+        <LI>Next message: <A HREF="005279.html">[Gpsd-users] [Gpsd-dev]     Gpsd configuration files
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#5278">[ date ]</a>
+              <a href="thread.html#5278">[ thread ]</a>
+              <a href="subject.html#5278">[ subject ]</a>
+              <a href="author.html#5278">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Sebastian Arcus &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">shop at open-t.co.uk</A>&gt;:
+&gt;<i> Why not modify gpsctl so that &quot;gpsctl add /dev/foo&quot; can start gpsd
+</I>&gt;<i> if it is not already started.
+</I>
+Because you can already do exactly this with gpsd.hotplug, and I fail
+to see how duplicating that functionality (and tangling C code up
+with the details of things like the control-socket location) would
+improve matters.
+
+&gt;<i> Well, on Linux the line between &quot;end users&quot; and &quot;system
+</I>&gt;<i> administrators&quot; and &quot;software packagers&quot; is never a clear cut one.
+</I>
+It is very clear-cut here.  End-users are people who plug a
+USB GPS into a port and expect it to work without having to configure
+anytthing.  Software packagers are the people whose job it is to
+mate the distributed GPSD source to a distro so that the end-users
+have a seamless it-just-works experience
+
+I am optimizing for end-users, and I'm not interested in a pointless 
+definitional wrangle about the boundaries of that category.
+
+&gt;<i> That is the whole point of open source, with people being encouraged
+</I>&gt;<i> to setup and maintain their own systems. So, sooner or later, the
+</I>&gt;<i> end users of gpsd come into equation by having to deal with the
+</I>&gt;<i> issue of configuring the gpsd hotplug/startup one way or another.
+</I>
+No, they don't.  Your premise is incorrect, because you have confused
+&quot;end users&quot; with &quot;inveterate tinkerers who run Slackware&quot;. All that
+follows from your premise is therefore merely noise.
+
+&gt;<i> So please, stop using the expression &quot;zero-configuration&quot;.
+</I>
+When a gpsd binary package is built correctly on a hotplug-supporting
+system, it is indeed zero-configuration for most GPSes, so I will
+continue to use that expression and mean it.  And even if gpsd had not
+achieved zero-configuration on many production systems, that would
+be a worthy goal that explains why we don't do things like proliferating
+configuration files and switches.
+
+&gt;<i> &gt;If you explain how they're failing, perhaps they can be fixed.
+</I>&gt;<i> 
+</I>&gt;<i> I've spent most of the weekend trying to get gpsd working properly
+</I>&gt;<i> on Slackware. In Slackware, the first pass of udev during boot is
+</I>&gt;<i> done while the file system is read-only. I've implemented your
+</I>&gt;<i> scripts and the udev rule - but gpsd can't start because it needs RW
+</I>&gt;<i> access to create /var/run/gpsd.sock.
+</I>
+If that was your problem, why didn't you just say so instead of going
+on a rant about the architecture?  You're not an end-user, you're
+a hacker who's trying to do something unusual. That's OK, but all this 
+talk of end-users and everyone having to configure eventually is a
+distraction from the actual issue.
+
+&gt;<i> I'm sorry, but all those evil pieces of software you talked about
+</I>&gt;<i> earlier which use config files manage on only one or two config
+</I>&gt;<i> files. Somehow, you've managed to keep the mess out of your code and
+</I>&gt;<i> dump it all over the place elsewhere.
+</I>
+Yes, and you've just demonstrated exactly why that was the right thing
+to do.  Because fixing the startup scripts to cope with that will be
+easier than if we'd had to modify C to do it.  
+
+&gt;<i> I agree with software being able to do one thing, and do it well.
+</I>&gt;<i> But in that case provide a simpler interface, so that udev can
+</I>&gt;<i> notify gpsd or gpsctl directly of new devices - without using a
+</I>&gt;<i> chain of scripts and configs ridiculously long. And maybe include
+</I>&gt;<i> some of that mess inside gpsd - for the sake of providing a simpler
+</I>&gt;<i> and cleaner interface to the world.
+</I>
+Including that mess inside gpsd absolutely will not happen, for reasons
+I and others have explained.  If you want to work with us on simplifying
+and improving the hotplug scripts, that we'll do.
+
+&gt;<i>                           It's called compromise and it's
+</I>&gt;<i> called making your software useful and simpler for users - not only
+</I>&gt;<i> clean and pure inside for the programmers working on it.
+</I>
+What you are doing is called &quot;being pointlessly annoying&quot;, and you
+should stop.  Pretending that your complaints have anything to do with
+the end-user experience is a species of bullshit up with which I will
+not put.  Just so we understand each other.
+-- 
+		&lt;a href=&quot;<A HREF="http://www.catb.org/~esr/">http://www.catb.org/~esr/</A>&quot;&gt;Eric S. Raymond&lt;/a&gt;
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="005276.html">[Gpsd-users] [Gpsd-dev]   Gpsd configuration files
+</A></li>
+	<LI>Next message: <A HREF="005279.html">[Gpsd-users] [Gpsd-dev]     Gpsd configuration files
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#5278">[ date ]</a>
+              <a href="thread.html#5278">[ thread ]</a>
+              <a href="subject.html#5278">[ subject ]</a>
+              <a href="author.html#5278">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

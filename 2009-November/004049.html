@@ -1,0 +1,141 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] Ntp Problems
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2009-November/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Ntp%20Problems&In-Reply-To=%3Ca2d3b4550911130637n63475f1ds5a66d6f7696fba5c%40mail.gmail.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="004048.html">
+   <LINK REL="Next"  HREF="004050.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] Ntp Problems</H1>
+    <B>Don Weeks</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Ntp%20Problems&In-Reply-To=%3Ca2d3b4550911130637n63475f1ds5a66d6f7696fba5c%40mail.gmail.com%3E"
+       TITLE="[Gpsd-users] Ntp Problems">don.l.weeks.jr at gmail.com
+       </A><BR>
+    <I>Fri Nov 13 15:37:29 CET 2009</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="004048.html">[Gpsd-users] Ntp Problems
+</A></li>
+        <LI>Next message: <A HREF="004050.html">[Gpsd-users] Ntp Problems
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#4049">[ date ]</a>
+              <a href="thread.html#4049">[ thread ]</a>
+              <a href="subject.html#4049">[ subject ]</a>
+              <a href="author.html#4049">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Gary,
+   Thanks for the reply. The select error is from ntpd. I don't have
+pps yet and will probably be grabbing it via NTP.  I have to write my
+own PPS driver as the PPS signal will come in through a CPLD from a
+signal across the backplane (90% written by the vendor anyway).
+Therefore, I just need the NMEA data to ntpd. With the PPS commented
+back in, the PPS does not show anything either.
+
+Just so you know, the hardware here is 2 MicroTCA boards in a chassis
+and the GPS is being supplied from one board to the other via serial.
+The serial lines on the backplane do not provide DCD to the serial
+UART so PPS will come in via one of the clocking lines that terminates
+in the CPLD.
+
+GPSD traces of interest:
+
+gpsd: ntpshm_put: Clock: 1258077320 @ 1258077319.780354
+gpsd: polling 4
+
+My problem based on data from a google search seems more along the
+lines of the shared memory segments and it looks to me like ntp is not
+opening the same segment as gpsd based on the data in /proc. But I
+could be wrong.
+           Don
+
+On Thu, Nov 12, 2009 at 8:09 PM, Gary E. Miller &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">gem at rellim.com</A>&gt; wrote:
+&gt;<i> -----BEGIN PGP SIGNED MESSAGE-----
+</I>&gt;<i> Hash: SHA1
+</I>&gt;<i>
+</I>&gt;<i> Yo Don!
+</I>&gt;<i>
+</I>&gt;<i> On Thu, 12 Nov 2009, Don Weeks wrote:
+</I>&gt;<i>
+</I>&gt;&gt;<i> I am having NTP problems I am pretty sure.
+</I>&gt;<i>
+</I>&gt;<i> It happens. &#160;Lot's of recent ntp changes in the current SVN, have
+</I>&gt;<i> you tried that?
+</I>&gt;<i>
+</I>&gt;&gt;<i> poll_update: at 2431 127.127.28.0 flags 1021 poll 4 burst 0 last 2431 next 2448
+</I>&gt;<i>
+</I>&gt;<i> 127.127.28.0 is the NMEA time being sent to ntpd.
+</I>&gt;<i>
+</I>&gt;<i> Do you ever see 127.127.28.1 ?
+</I>&gt;<i>
+</I>&gt;&gt;<i> addto_syslog: select(): nfound=-1, error: Interrupted system call
+</I>&gt;<i>
+</I>&gt;<i> That is weird. &#160;That from ntpd or gpsd?
+</I>&gt;<i>
+</I>&gt;&gt;<i> #server 127.127.28.1 minpoll 4 maxpoll 4
+</I>&gt;&gt;<i> #fudge 127.127.28.1 time1 0.420 refid GPS
+</I>&gt;<i> &#160; &#160; &#160; &#160; &#160; &#160; &#160; &#160; &#160; &#160; &#160; &#160; &#160; &#160;^^^^^
+</I>&gt;<i>
+</I>&gt;<i> That fudge should probably be zero.
+</I>&gt;<i>
+</I>&gt;<i> Plus, you notice they are commented out? &#160;Not going to do much good
+</I>&gt;<i> that way.
+</I>&gt;<i>
+</I>&gt;&gt;<i> /usr/local/gpsd/sbin/gpsd -N -n -D 6 /dev/ttyS1
+</I>&gt;<i>
+</I>&gt;<i> This give us the logs we want to debug PPS:
+</I>&gt;<i>
+</I>&gt;<i> /usr/local/gpsd/sbin/gpsd -N -n -D 6 /dev/ttyS1 | fgrep -i pps
+</I>&gt;<i>
+</I>&gt;<i> Try again
+</I>&gt;<i>
+</I>&gt;<i> RGDS
+</I>&gt;<i> GARY
+</I>&gt;<i> - ---------------------------------------------------------------------------
+</I>&gt;<i> Gary E. Miller Rellim 109 NW Wilmington Ave., Suite E, Bend, OR 97701
+</I>&gt;<i> &#160; &#160; &#160; &#160;<A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">gem at rellim.com</A> &#160;Tel:+1(541)382-8588
+</I>&gt;<i>
+</I>&gt;<i> -----BEGIN PGP SIGNATURE-----
+</I>&gt;<i> Version: GnuPG v1.4.3 (GNU/Linux)
+</I>&gt;<i>
+</I>&gt;<i> iD8DBQFK/L/VBmnRqz71OvMRAlCMAJ9Kg9EaRuLxS4AQCnDvUPWRkei11wCg3CzQ
+</I>&gt;<i> OcUnOrufX7Cr0D3IgFwtL6o=
+</I>&gt;<i> =Jgiv
+</I>&gt;<i> -----END PGP SIGNATURE-----
+</I>&gt;<i>
+</I>&gt;<i>
+</I>
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="004048.html">[Gpsd-users] Ntp Problems
+</A></li>
+	<LI>Next message: <A HREF="004050.html">[Gpsd-users] Ntp Problems
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#4049">[ date ]</a>
+              <a href="thread.html#4049">[ thread ]</a>
+              <a href="subject.html#4049">[ subject ]</a>
+              <a href="author.html#4049">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

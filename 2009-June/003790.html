@@ -1,0 +1,204 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] problem with the haicom  hi-204s
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2009-June/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20problem%20with%20the%20haicom%20%20hi-204s&In-Reply-To=%3C4A48AC32.7000903%40gmail.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="003789.html">
+   <LINK REL="Next"  HREF="003791.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] problem with the haicom  hi-204s</H1>
+    <B>Marc Coevoet</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20problem%20with%20the%20haicom%20%20hi-204s&In-Reply-To=%3C4A48AC32.7000903%40gmail.com%3E"
+       TITLE="[Gpsd-users] problem with the haicom  hi-204s">sintsixtus at gmail.com
+       </A><BR>
+    <I>Mon Jun 29 13:57:38 CEST 2009</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="003789.html">[Gpsd-users] problem with the haicom  hi-204s
+</A></li>
+        <LI>Next message: <A HREF="003791.html">[Gpsd-users] problem with the haicom hi-204s
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3790">[ date ]</a>
+              <a href="thread.html#3790">[ thread ]</a>
+              <a href="subject.html#3790">[ subject ]</a>
+              <a href="author.html#3790">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Max Afonov schreef:
+&gt;<i> It looks like you're not using the right device node. You should not create your own /tmp/gps. Instead, compare /dev before and after the modprobe. Ideally new device nodes (such as /dev/ttyUSB0) should have sprung up after the module was inserted. One of those nodes is your GPS.
+</I>&gt;<i>
+</I>&gt;<i>   
+</I>
+An,other thing is the dmesg,
+
+[  387.577794] usb 2-2: new low speed USB device using ohci_hcd and 
+address 2
+[  387.785033] usb 2-2: configuration #1 chosen from 1 choice
+[  387.803498] input: HID 04d9:1400 as 
+/devices/pci0000:00/0000:00:13.1/usb2/2-2/2-2:1.0/input/input11
+[  387.833746] input,hidraw1: USB HID v1.10 Keyboard [HID 04d9:1400] on 
+usb-0000:00:13.1-2
+[  387.847300] input: HID 04d9:1400 as 
+/devices/pci0000:00/0000:00:13.1/usb2/2-2/2-2:1.1/input/input12
+[  387.889771] input,hidraw2: USB HID v1.10 Mouse [HID 04d9:1400] on 
+usb-0000:00:13.1-2
+
+
+if I add to this ps/2 to usb cable the antenna:
+
+[  387.577794] usb 2-2: new low speed USB device using ohci_hcd and 
+address 2
+[  387.785033] usb 2-2: configuration #1 chosen from 1 choice
+[  387.803498] input: HID 04d9:1400 as 
+/devices/pci0000:00/0000:00:13.1/usb2/2-2/2-2:1.0/input/input11
+[  387.833746] input,hidraw1: USB HID v1.10 Keyboard [HID 04d9:1400] on 
+usb-0000:00:13.1-2
+[  387.847300] input: HID 04d9:1400 as 
+/devices/pci0000:00/0000:00:13.1/usb2/2-2/2-2:1.1/input/input12
+[  387.889771] input,hidraw2: USB HID v1.10 Mouse [HID 04d9:1400] on 
+usb-0000:00:13.1-2
+
+
+So nothing is added...
+
+Thats's why I did modprobe myself...
+
+But what is the right name of device then??
+
+a modprobe doesn't change the drivers list;..
+
+modprobe -l &gt; alist and
+modprobe pl2303
+modprobe -l &gt; alist2
+diff alist alist2
+(no diff)
+
+
+[  936.499046] usb 1-2: new low speed USB device using ohci_hcd and 
+address 5
+[  936.706164] usb 1-2: configuration #1 chosen from 1 choice
+[  936.725366] input: HID 04d9:1400 as 
+/devices/pci0000:00/0000:00:13.0/usb1/1-2/1-2:1.0/input/input13
+[  936.755000] input,hidraw1: USB HID v1.10 Keyboard [HID 04d9:1400] on 
+usb-0000:00:13.0-2
+[  936.768408] input: HID 04d9:1400 as 
+/devices/pci0000:00/0000:00:13.0/usb1/1-2/1-2:1.1/input/input14
+[  936.811036] input,hidraw2: USB HID v1.10 Mouse [HID 04d9:1400] on 
+usb-0000:00:13.0-2
+
+This ps/2 to usb adapter cable can connect mouse + keyboard, and I 
+suppose it works for other devices too..
+
+Marc
+&gt;<i> -----Original Message-----
+</I>&gt;<i> From: Marc Coevoet &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">sintsixtus at gmail.com</A>&gt;
+</I>&gt;<i>
+</I>&gt;<i> Date: Mon, 29 Jun 2009 12:02:35 
+</I>&gt;<i> To: &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">gpsd-users at lists.berlios.de</A>&gt;
+</I>&gt;<i> Subject: [Gpsd-users] problem with the haicom  hi-204s
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i> Hello,
+</I>&gt;<i>
+</I>&gt;<i> I connect it with a ps/2 to usb cable,
+</I>&gt;<i>
+</I>&gt;<i> I did
+</I>&gt;<i>
+</I>&gt;<i> mknode /tmp/gps  p
+</I>&gt;<i>
+</I>&gt;<i> modprobe pl2303
+</I>&gt;<i>
+</I>&gt;<i> # sudo gpsd -N -n -D 4 /tmp/gps
+</I>&gt;<i> gpsd: launching (Version 2.36)
+</I>&gt;<i> gpsd: listening on port gpsd
+</I>&gt;<i> gpsd: shmat(0,0,0) succeeded
+</I>&gt;<i> gpsd: shmat(0,0,0) succeeded
+</I>&gt;<i> gpsd: shmat(0,0,0) succeeded
+</I>&gt;<i> gpsd: shmat(0,0,0) succeeded
+</I>&gt;<i> gpsd: successfully connected to the DBUS system bus
+</I>&gt;<i> gpsd: running with effective group ID 0
+</I>&gt;<i> gpsd: running with effective user ID 0
+</I>&gt;<i> gpsd: opening read-only GPS data source at '/tmp/gps'
+</I>&gt;<i> gpsd: garmin_gps not active.
+</I>&gt;<i> gpsd: no probe matched...
+</I>&gt;<i> gpsd: gpsd_activate(1): opened GPS (5)
+</I>&gt;<i> gpsd: client 127.0.0.1 (0) connect on fd 6
+</I>&gt;<i> gpsd: checking client(0)
+</I>&gt;<i> gpsd: &lt;= client(0): w+x
+</I>&gt;<i> gpsd: client(0): assigning channel...
+</I>&gt;<i> gpsd: User requires 2, channel type is -1
+</I>&gt;<i> gpsd: client(0): channel 5 already active.
+</I>&gt;<i> gpsd: client(0): channel 5 already active.
+</I>&gt;<i> gpsd: =&gt; client(0): GPSD,W=1,X=1246268568.187791
+</I>&gt;<i> gpsd: checking client(0)
+</I>&gt;<i> gpsd: detaching 127.0.0.1 (sub0, fd 6) in detach_client
+</I>&gt;<i> gpsd: client 127.0.0.1 (0) connect on fd 6
+</I>&gt;<i> gpsd: checking client(0)
+</I>&gt;<i> gpsd: &lt;= client(0): w+x
+</I>&gt;<i> gpsd: client(0): assigning channel...
+</I>&gt;<i> gpsd: User requires 2, channel type is -1
+</I>&gt;<i> gpsd: client(0): channel 5 already active.
+</I>&gt;<i> gpsd: client(0): channel 5 already active.
+</I>&gt;<i> gpsd: =&gt; client(0): GPSD,W=1,X=1246268568.187791
+</I>&gt;<i>
+</I>&gt;<i> and now, it remains quiet for more than 10 minutes, it does not give me 
+</I>&gt;<i> the position...
+</I>&gt;<i>
+</I>&gt;<i> In the user manual, they talk about a led on the antenna that is 
+</I>&gt;<i> off/flashing/on.  Does the led work with gpsd??  Or is it a windows 
+</I>&gt;<i> driver thing??
+</I>&gt;<i>
+</I>&gt;<i> $lsusb
+</I>&gt;<i> Bus 003 Device 001: ID 0000:0000
+</I>&gt;<i> Bus 002 Device 001: ID 0000:0000
+</I>&gt;<i> Bus 001 Device 006: ID 04d9:1400 Holtek Semiconductor, Inc.    ---&gt; the 
+</I>&gt;<i> ps/2 to usb cable
+</I>&gt;<i> Bus 001 Device 004: ID 15ca:00c3
+</I>&gt;<i> Bus 001 Device 001: ID 0000:0000
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i> Marc
+</I>&gt;<i>
+</I>&gt;<i>   
+</I>
+
+-- 
+Shortwave transmissions in English, Francais, Nederlands, Deutsch, Suid-Afrikaans, Chinese, Dansk, Urdu, Cantonese, Greek, Spanish, Portuguese, ...
+<A HREF="http://users.fulladsl.be/spb13810/swlist/">http://users.fulladsl.be/spb13810/swlist/</A> <A HREF="http://radiolanguages.tk">http://radiolanguages.tk</A>  
+Stations list: <A HREF="http://users.fulladsl.be/spb13810/txlist/">http://users.fulladsl.be/spb13810/txlist/</A>
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="003789.html">[Gpsd-users] problem with the haicom  hi-204s
+</A></li>
+	<LI>Next message: <A HREF="003791.html">[Gpsd-users] problem with the haicom hi-204s
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3790">[ date ]</a>
+              <a href="thread.html#3790">[ thread ]</a>
+              <a href="subject.html#3790">[ subject ]</a>
+              <a href="author.html#3790">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

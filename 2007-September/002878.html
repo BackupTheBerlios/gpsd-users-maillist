@@ -1,0 +1,106 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] gpsd on windows
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2007-September/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20gpsd%20on%20windows&In-Reply-To=%3C46E05D01.7050203%40web.de%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="002875.html">
+   <LINK REL="Next"  HREF="002873.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] gpsd on windows</H1>
+    <B>Ulf Lamping</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20gpsd%20on%20windows&In-Reply-To=%3C46E05D01.7050203%40web.de%3E"
+       TITLE="[Gpsd-users] gpsd on windows">ulf.lamping at web.de
+       </A><BR>
+    <I>Thu Sep  6 22:03:13 CEST 2007</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="002875.html">[Gpsd-users] gpsd on windows
+</A></li>
+        <LI>Next message: <A HREF="002873.html">[Gpsd-users] gpsd on windows
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2878">[ date ]</a>
+              <a href="thread.html#2878">[ thread ]</a>
+              <a href="subject.html#2878">[ subject ]</a>
+              <a href="author.html#2878">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Andreas Stricker schrieb:
+&gt;<i> Ulf Lamping schrieb:
+</I>&gt;<i>   
+</I>&gt;&gt;<i> Of course this can easily be solved by using something like:
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> FIELD_INIT(.field =) value
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> and a corresponding definition like:
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> #ifdef _MSC_VER
+</I>&gt;&gt;<i> #define FIELD_INIT(init)
+</I>&gt;&gt;<i> #else
+</I>&gt;&gt;<i> #define FIELD_INIT(init) init
+</I>&gt;&gt;<i> #endif
+</I>&gt;&gt;<i>     
+</I>&gt;<i> This was exactly my solution too. Not nice, but it preserves the more
+</I>&gt;<i> verbose C99 form on compilers who support it.
+</I>&gt;<i>
+</I>&gt;<i> I've had some idea how to entirely keep those C99 initializations by
+</I>&gt;<i> using a filter program. A bit complicated.
+</I>&gt;<i>
+</I>&gt;<i> But why stick on VC? Isn't MinGW gcc not sufficient for a Windows port?
+</I>&gt;<i>   
+</I>Yes and no.
+
+In principle, you could use MinGW:
+a) free (as in speech) solution
+b) ANSI C99 support (so no need to tweak for the cause mentioned above - 
+but to be honest this is really a minor point IMHO)
+
+As VC is simply *the standard* for Windows development, using MSVC has 
+some *real* advantages:
+A) Windows developers are familiar with it (no need to setup a different 
+- strange - toolchain, don't underestimate this!)
+B) get a libgps.lib file, so other third-party applications using MSVC 
+can easily link to libgps
+
+I can follow the argument of using cygwin - least effort to get gpsd up 
+and running (for the reasons already mentioned).
+
+Using MinGW in comparison will cause much more trouble / confusion than 
+it will help spreading gpsd on windows ...
+
+Regards, ULFL
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="002875.html">[Gpsd-users] gpsd on windows
+</A></li>
+	<LI>Next message: <A HREF="002873.html">[Gpsd-users] gpsd on windows
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2878">[ date ]</a>
+              <a href="thread.html#2878">[ thread ]</a>
+              <a href="subject.html#2878">[ subject ]</a>
+              <a href="author.html#2878">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

@@ -1,0 +1,99 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] Royaltek RGM-3800 working with gpsd
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2008-August/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Royaltek%20RGM-3800%20working%20with%20gpsd&In-Reply-To=%3C48AD905E.7050501%40web.de%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="003345.html">
+   <LINK REL="Next"  HREF="003333.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] Royaltek RGM-3800 working with gpsd</H1>
+    <B>Philipp Klenze</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Royaltek%20RGM-3800%20working%20with%20gpsd&In-Reply-To=%3C48AD905E.7050501%40web.de%3E"
+       TITLE="[Gpsd-users] Royaltek RGM-3800 working with gpsd">hq.ks at web.de
+       </A><BR>
+    <I>Thu Aug 21 17:57:18 CEST 2008</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="003345.html">[Gpsd-users] Ocean Server digital compass,	combining data with	GPS position
+</A></li>
+        <LI>Next message: <A HREF="003333.html">[Gpsd-users] sirfII/et-102 gpsd linuxpps freebsd 5.4
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3331">[ date ]</a>
+              <a href="thread.html#3331">[ thread ]</a>
+              <a href="subject.html#3331">[ subject ]</a>
+              <a href="author.html#3331">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hello everyone,
+The RGM-3800 seems to be working with gpsd. As I did not find that fact
+documented either on the hardware page or in the mail list archive, I'll 
+assume this is a new finding and report it. I hope that's ok.
+
+
+GPS model name:               Royaltek RGM-3800
+Whether or not it works:      Works (additional tool required)
+URL to a technical reference:
+<A HREF="http://www.royaltek.com/products_dtl.php?cid=2&amp;id=23&amp;argPage=1&amp;argI=3">http://www.royaltek.com/products_dtl.php?cid=2&amp;id=23&amp;argPage=1&amp;argI=3</A>
+
+GPS and USB-to-serial chip:
+lsusb: Bus 002 Device 003: ID 067b:2303 Prolific Technology, Inc. PL2303
+Serial Port.
+chip (source: reference):  Sirf GSC3f/LP
+
+interface type:               USB
+vendor:                       Royaltek
+Version of gpsd:              gpsd 2.32 (blame gentoo, not me)
+NMEA version (src: reference):NMEA 0183 ver. 3.0
+Notes on the device:
+This is a GPS data logger with gmouse functionality. Before it can be
+used with gpsd, the gmouse functionality has to be switched on. That can
+be done with Karsten Petersen's rgm3800py utility. The author of said 
+tool has been very helpful to me by describing how to do that on the 
+project page: <A HREF="http://code.google.com/p/rgm3800py/wiki/GPSd">http://code.google.com/p/rgm3800py/wiki/GPSd</A> . Basically, 
+one needs to run &quot;rgm3800.py -d /dev/ttyUSB0 gmouse on&quot; before starting 
+gpsd.
+
+Attached is a log from the device (when it is put in gmouse mode), as
+required by <A HREF="http://gpsd.berlios.de/hardware.html#report_format.">http://gpsd.berlios.de/hardware.html#report_format.</A>
+
+Greetings,
+      Philipp Klenze
+
+-------------- next part --------------
+An embedded and charset-unspecified text was scrubbed...
+Name: klenze-rgm-3800.txt
+URL: &lt;<A HREF="https://lists.berlios.de/pipermail/gpsd-users/attachments/20080821/b3530328/attachment.txt">https://lists.berlios.de/pipermail/gpsd-users/attachments/20080821/b3530328/attachment.txt</A>&gt;
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="003345.html">[Gpsd-users] Ocean Server digital compass,	combining data with	GPS position
+</A></li>
+	<LI>Next message: <A HREF="003333.html">[Gpsd-users] sirfII/et-102 gpsd linuxpps freebsd 5.4
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3331">[ date ]</a>
+              <a href="thread.html#3331">[ thread ]</a>
+              <a href="subject.html#3331">[ subject ]</a>
+              <a href="author.html#3331">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

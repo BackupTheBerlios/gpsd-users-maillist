@@ -1,0 +1,96 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] Release of 2.35 is imminent (question on 1pps	handling)
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2007-December/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Release%20of%202.35%20is%20imminent%20%28question%20on%201pps%0A%09handling%29&In-Reply-To=%3C200712172321.18068.mick.durkin%40saunalahti.fi%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="003008.html">
+   <LINK REL="Next"  HREF="003009.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] Release of 2.35 is imminent (question on 1pps	handling)</H1>
+    <B>Mick Durkin</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Release%20of%202.35%20is%20imminent%20%28question%20on%201pps%0A%09handling%29&In-Reply-To=%3C200712172321.18068.mick.durkin%40saunalahti.fi%3E"
+       TITLE="[Gpsd-users] Release of 2.35 is imminent (question on 1pps	handling)">mick.durkin at saunalahti.fi
+       </A><BR>
+    <I>Mon Dec 17 22:21:17 CET 2007</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="003008.html">[Gpsd-users] Release of 2.35 is imminent (question on 1pps	handling)
+</A></li>
+        <LI>Next message: <A HREF="003009.html">[Gpsd-users] Release of 2.35 is imminent
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3010">[ date ]</a>
+              <a href="thread.html#3010">[ thread ]</a>
+              <a href="subject.html#3010">[ subject ]</a>
+              <a href="author.html#3010">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Michael St. Laurent said
+&gt;<i>Was anything done to allow configuration of which edge of the PPS signal
+</I>&gt;<i>to sync to for units that have a square wave instead of a pulse?
+</I>
+Michael,
+
+The code handling the 1pps pulses is direction insensitive. It handles 2 
+cases:-
+
+1) a &quot;conventional&quot; 1pps waveform, where the 1 second event is marked by the 
+front edge of a &quot;short&quot; (typ. 100- 200 ms) pulse with the remaining part of 
+the waveform (typ. 900 -800 ms) being idle.
+
+2) a square wave of 0.5 Hz where EVERY edge represents a 1 second event.
+
+It does this by measuring the time between successive transitions; in 
+the &quot;conventional&quot; case, a pair of transitions will be (for example) 200 
+milliseconds apart surrounding the active pulse and 800 milliseconds apart 
+surrounding the idle portion. This allows the code to detect the significant 
+transition whatever its direction.
+
+The square wave is checked so that each transition has to be 1000 milliseconds 
+after the previous one and every transition is significant.
+
+Are you saying you have a waveform of 1 Hz where one transition is 
+the &quot;wanted&quot; one and the other is &quot;unwanted&quot;?
+
+If so, the present code cannot handle that and I would suspect it might be 
+difficult to handle such a case. It would probably mean that we would have to 
+hard code the significant direction which would lose the current direction 
+insensitivity.
+
+Best Regards
+
+Mick Durkin
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="003008.html">[Gpsd-users] Release of 2.35 is imminent (question on 1pps	handling)
+</A></li>
+	<LI>Next message: <A HREF="003009.html">[Gpsd-users] Release of 2.35 is imminent
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3010">[ date ]</a>
+              <a href="thread.html#3010">[ thread ]</a>
+              <a href="subject.html#3010">[ subject ]</a>
+              <a href="author.html#3010">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

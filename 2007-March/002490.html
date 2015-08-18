@@ -1,0 +1,147 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] Some assistance setting up please
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2007-March/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Some%20assistance%20setting%20up%20please&In-Reply-To=%3C45F68131.8080305%40aus-city.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="002489.html">
+   <LINK REL="Next"  HREF="002491.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] Some assistance setting up please</H1>
+    <B>David Cottle</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Some%20assistance%20setting%20up%20please&In-Reply-To=%3C45F68131.8080305%40aus-city.com%3E"
+       TITLE="[Gpsd-users] Some assistance setting up please">webmaster at aus-city.com
+       </A><BR>
+    <I>Tue Mar 13 11:47:13 CET 2007</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="002489.html">[Gpsd-users] Some assistance setting up please
+</A></li>
+        <LI>Next message: <A HREF="002491.html">[Gpsd-users] Some assistance setting   up please
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2490">[ date ]</a>
+              <a href="thread.html#2490">[ thread ]</a>
+              <a href="subject.html#2490">[ subject ]</a>
+              <a href="author.html#2490">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>-----BEGIN PGP SIGNED MESSAGE-----
+Hash: SHA1
+
+Hi Ulrich
+
+Thanks for the reply.  Sorry I am running Fedora Core 6.
+
+Output of ntpq -p
++thor.midhgard.1   62.101.81.203
++41.223.43.5         18.26.4.105
+*ns.heitec.net       .PPS
+NTP.MCAST.NET   .MCST
+LOCAL (0)   .LOCL
+
+I installed gpsd from yum (the fedora extra's repo) and its version 2.34
+
+Thanks!
+
+David
+
+
+
+Ulrich Voigt wrote:
+&gt;<i>
+</I>&gt;<i> David Cottle-2 wrote:
+</I>&gt;&gt;<i> Hi All,
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> I got a motorola oncore GPS set to NMEA mode.  I want to use it to 
+</I>&gt;&gt;<i> sync up my main server (NTPD).
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> I have installed gpsd.  Now a few questions and assistance please.
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> 1 - How can I set /usr/sbin/gpsd -n /dev/ttyS0 to run automatically at 
+</I>&gt;&gt;<i> boot / power up, but also running as root, not falling back to nobody?
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> 2- I can not get ntpd to use the GPS.  Now I ran as root:
+</I>&gt;&gt;<i> /usr/sbin/gpsd -n -N /dev/ttyS0
+</I>&gt;&gt;<i> I then telneted in to port 2947 and indeed it works just fine.
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> I put into /etc/ntp.conf this:
+</I>&gt;&gt;<i> server 127.127.28.0 minpoll 4 maxpoll 4
+</I>&gt;&gt;<i> fudge 127.127.28.0 time1 0.000 refid GPS
+</I>&gt;&gt;<i> server 127.127.28.1 minpoll 4 maxpoll 4 prefer
+</I>&gt;&gt;<i> fudge 127.127.28.1 refid GPS1
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> Restarted ntpd
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> But a ntpq -d never shows any gps at all, its all on external servers..
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> I did a ps aux | grep gpsd and indeed its being run as root
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> I also ran gsd in -D5 mode, it looks okay. A few complaints, but nothing
+</I>&gt;&gt;<i> bad..
+</I>&gt;&gt;<i> Satellite data OK (split up over 3 sets)
+</I>&gt;&gt;<i> LOS matrix is singular cant calculate DOPS
+</I>&gt;&gt;<i> GPGGA sets status 1
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> and repeats over and over.
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> Any idea's?
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> Thanks all!
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> _______________________________________________
+</I>&gt;&gt;<i> Gpsd-users mailing list
+</I>&gt;&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">Gpsd-users at lists.berlios.de</A>
+</I>&gt;&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">https://lists.berlios.de/mailman/listinfo/gpsd-users</A>
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i> Hi David,
+</I>&gt;<i>
+</I>&gt;<i> which linux and which version do you use (ubuntu, suse etc.?).
+</I>&gt;<i> Please attache the ntpq -p output.
+</I>&gt;<i>
+</I>&gt;<i> Ulrich
+</I>
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v1.4.7 (GNU/Linux)
+Comment: Using GnuPG with Fedora - <A HREF="http://enigmail.mozdev.org">http://enigmail.mozdev.org</A>
+
+iD8DBQFF9oEwi1lOcz5YUMgRAsl2AJ98HebN25v+7SzomXfR9S8b9Z0ZAQCgtZna
+w9E7xNr9t6udLAE8QzyB5DI=
+=+nEJ
+-----END PGP SIGNATURE-----
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="002489.html">[Gpsd-users] Some assistance setting up please
+</A></li>
+	<LI>Next message: <A HREF="002491.html">[Gpsd-users] Some assistance setting   up please
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2490">[ date ]</a>
+              <a href="thread.html#2490">[ thread ]</a>
+              <a href="subject.html#2490">[ subject ]</a>
+              <a href="author.html#2490">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

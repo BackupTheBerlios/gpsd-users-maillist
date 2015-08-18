@@ -1,0 +1,116 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] gpsd issues
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2005-May/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20gpsd%20issues&In-Reply-To=%3C20050522224139.2dd4592b%40localhost%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="000696.html">
+   <LINK REL="Next"  HREF="000699.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] gpsd issues</H1>
+    <B>Steve Arnold</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20gpsd%20issues&In-Reply-To=%3C20050522224139.2dd4592b%40localhost%3E"
+       TITLE="[Gpsd-users] gpsd issues">nerdboy at gentoo.org
+       </A><BR>
+    <I>Mon May 23 07:41:39 CEST 2005</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="000696.html">[Gpsd-users] Missing Library for gpsd 2.25
+</A></li>
+        <LI>Next message: <A HREF="000699.html">[Gpsd-users] gpsd issues
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#695">[ date ]</a>
+              <a href="thread.html#695">[ thread ]</a>
+              <a href="subject.html#695">[ subject ]</a>
+              <a href="author.html#695">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Howdy:
+
+I couldn't view your Gentoo ebuild so I made my own; it works
+nicely, except for a couple of issues, either Python version or
+user/packager ignorance...
+
+1) gpsd only sees the device (and receives data) when I start it as
+root (or with sudo and my normal user in the wheel group), and then
+only when I use the -p /dev/ttyUSB0 on the command line.
+
+I have myself in the tty group, and the device is created correctly:
+
+crw-rw----  1 root tty 188, 0 May 22 22:25 /dev/tts/USB0
+lrwxrwxrwx  1 root root 8 May 22 21:12 /dev/ttyUSB0 -&gt; tts/USB0
+
+It doesn't seem to matter whether I start it with the usb script or
+a real init script, the thing always runs as user/group nobody/tty.
+
+So I assume the issue is my lack of the proper group setup, but I'm
+not sure how to go about it...
+
+2) gpsprof barfs with a TypeError with Python 2.3, and I couldn't
+see anywhere that specified a particular version.  Instrumented with
+a couple of print statements:
+
+&lt;type 'float'&gt;
+gpsprof: looking for fix...0.0
+&lt;type 'float'&gt;
+first fix in 0.36sec, gathering samples...0.0
+&lt;type 'float'&gt;
+23 18 144 0 0
+&lt;type 'str'&gt;
+Traceback (most recent call last):
+  File &quot;/usr/bin/gpsprof&quot;, line 459, in ?
+   
+sys.stdout.write(plotframe(await,formatter,speed,threshold,title)) 
+File &quot;/usr/bin/gpsprof&quot;, line 429, in plotframe   
+session.query(&quot;w-z-&quot;)  File
+&quot;/usr/lib/python2.3/site-packages/gps.py&quot;, line 392, in query   
+return self.poll()  File &quot;/usr/lib/python2.3/site-packages/gps.py&quot;,
+line 384, in poll    self.timings.c_decode_time = time.time() -
+basetime TypeError: unsupported operand type(s) for -: 'float' and
+'str'
+
+Thanks in advance for any pointers.
+
+-- 
+Steve Arnold                           <A HREF="http://arnolds.dhs.org/">http://arnolds.dhs.org/</A>
+gnupg key:      <A HREF="http://arnolds.dhs.org/static/files/pubkey.txt">http://arnolds.dhs.org/static/files/pubkey.txt</A>
+-------------- next part --------------
+A non-text attachment was scrubbed...
+Name: not available
+Type: application/pgp-signature
+Size: 189 bytes
+Desc: not available
+URL: &lt;<A HREF="https://lists.berlios.de/pipermail/gpsd-users/attachments/20050522/d5c0b8f8/attachment.pgp">https://lists.berlios.de/pipermail/gpsd-users/attachments/20050522/d5c0b8f8/attachment.pgp</A>&gt;
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="000696.html">[Gpsd-users] Missing Library for gpsd 2.25
+</A></li>
+	<LI>Next message: <A HREF="000699.html">[Gpsd-users] gpsd issues
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#695">[ date ]</a>
+              <a href="thread.html#695">[ thread ]</a>
+              <a href="subject.html#695">[ subject ]</a>
+              <a href="author.html#695">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

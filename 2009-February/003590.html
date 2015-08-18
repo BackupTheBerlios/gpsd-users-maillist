@@ -1,0 +1,128 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] Garmin GPS 60 - Mac OS X
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2009-February/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Garmin%20GPS%2060%20-%20Mac%20OS%20X&In-Reply-To=%3C7d8eaece8bfa7aef3eef7a4e21cb672a%40s3.nexpaserver.de%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="003608.html">
+   <LINK REL="Next"  HREF="003592.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] Garmin GPS 60 - Mac OS X</H1>
+    <B>skyout at wired-security.net</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Garmin%20GPS%2060%20-%20Mac%20OS%20X&In-Reply-To=%3C7d8eaece8bfa7aef3eef7a4e21cb672a%40s3.nexpaserver.de%3E"
+       TITLE="[Gpsd-users] Garmin GPS 60 - Mac OS X">skyout at wired-security.net
+       </A><BR>
+    <I>Thu Feb 12 00:02:47 CET 2009</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="003608.html">[Gpsd-users] {c|x}gps does not show altitude
+</A></li>
+        <LI>Next message: <A HREF="003592.html">[Gpsd-users] Garmin GPS 60 - Mac OS X
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3590">[ date ]</a>
+              <a href="thread.html#3590">[ thread ]</a>
+              <a href="subject.html#3590">[ subject ]</a>
+              <a href="author.html#3590">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>
+Dear GPSD Developers and Users,
+
+due to the fact I have tested everything I could
+think of to get my GPS Adapter by the company Garmin
+to work and even read a lot of mailing lists, sites
+and your &quot;upstream bugs&quot;, my last idea is now to tell
+all what I tried to do... Here we go:
+
+- System: Mac OS X 10.5.6 (Intel)
+
+- Device: Garmin GPS 60 (USB/Serial) - bought 2009
+
+- GPSD Version: Tried with 2.33, 2.38 and latest snapshot,
+furthermore tried to install over Fink and compile manually
+(the installation, no matter if done by Fink or manually, always
+worked fine)
+
+- Driver: Tried with pl2303, Prolific and about three others
+
+The first thing I realized was, that no matter what driver I used
+the device was not recognized, so I looked in the System Profiler
+of Mac OS X and found the informations:
+
+idVendor: 0x091e -&gt; to hex -&gt; 2334
+idProduct: 0x0003 -&gt; to hex -&gt; 0003
+
+The I went into /System/Library/Extensions and changed the
+Info.plist of the pl2303 driver to match these values, finally
+kextunload and kextload and AT LEAST the device made a loud BEEP...
+
+So it was recognized by the system now. I tried the same with about
+4 other drivers (also including Prolific). Neither unchanged or with
+changed values it did recognize the device at any time.
+
+I tried with reboot after every driver and every change I did, no reaction
+at all.
+
+Finally (using pl2303) I had two device /dev/cu.PL2303... and
+/dev/tty.PL2303...
+if I remember correctly. I tried to now connect GPSD to both of them,
+without
+any reaction. No data came through. I tried with Kismac-ng to get data
+through GPSD or directly &quot;talking&quot; to that device. I tried several
+arguments when
+starting GPSD, no matter what option I used, nothing happened.
+
+I read this is a problem connected to the select() function used by the
+pl2303 driver, so I tried with other software to get data from the GPS
+Adapter.
+First I tried with official software provided by Garmin for Mac OS X, I got
+data. Then I tried with 3rd party applications and also got data. So the
+device
+seems to work fine, besides those 3rd party applications seem to use their
+own
+drivers to load the device, at least I made a kextunload on pl2303 driver
+before
+starting those tools to test what happens.
+
+Okay, this email was very long and I tried to tell everything I did the
+last days
+out of my mind... Hope you can help me because after 20+ hours try and
+error I am
+really stuck now.
+
+Nice Greets,
+Marcell 'SkyOut' Dietl
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="003608.html">[Gpsd-users] {c|x}gps does not show altitude
+</A></li>
+	<LI>Next message: <A HREF="003592.html">[Gpsd-users] Garmin GPS 60 - Mac OS X
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3590">[ date ]</a>
+              <a href="thread.html#3590">[ thread ]</a>
+              <a href="subject.html#3590">[ subject ]</a>
+              <a href="author.html#3590">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

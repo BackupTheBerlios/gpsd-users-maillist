@@ -1,0 +1,118 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] Not connecting to satellite
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2006-August/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Not%20connecting%20to%20satellite&In-Reply-To=%3C91981b3e0608211536q82038a6p4498ed5a6e3b3b2b%40mail.gmail.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="001873.html">
+   <LINK REL="Next"  HREF="001875.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] Not connecting to satellite</H1>
+    <B>Chris Kuethe</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Not%20connecting%20to%20satellite&In-Reply-To=%3C91981b3e0608211536q82038a6p4498ed5a6e3b3b2b%40mail.gmail.com%3E"
+       TITLE="[Gpsd-users] Not connecting to satellite">chris.kuethe at gmail.com
+       </A><BR>
+    <I>Tue Aug 22 00:36:08 CEST 2006</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="001873.html">[Gpsd-users] Not connecting to satellite
+</A></li>
+        <LI>Next message: <A HREF="001875.html">[Gpsd-users] Not connecting to satellite
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1874">[ date ]</a>
+              <a href="thread.html#1874">[ thread ]</a>
+              <a href="subject.html#1874">[ subject ]</a>
+              <a href="author.html#1874">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>On 8/21/06, Andreas Volz &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">lists at brachttal.net</A>&gt; wrote:
+&gt;<i> Ok, I'm new to GPS stuff. What means &quot;fix&quot; for GPS? Are you sure that
+</I>&gt;<i> this isn't a protocol problem? I read this in the manpage:
+</I>
+To say that a GPS has a fix means that it has computed your position;
+sometimes called a navigation solution, or a solution. But &quot;a fix&quot; is
+shorter. :)
+
+I had a garmin that could take up to 15 minutes to get a fix when it
+had not been used in a while or if I had moved a long distance from
+the last place I used it. Perhaps your receiver is just taking a while
+to get a fix. I also have a bunch of receivers that advertise a
+45second cold-start time: outside my office, with what should be very
+good sky view they take closer to 3 minutes to start.
+
+&gt;<i>        n      Get or set the GPS driver mode. Without  argument,
+</I>&gt;<i> reports  the mode as &quot;N=%d&quot;; N=0 means NMEA mode and N=1 means
+</I>&gt;<i> alternate mode (binary if it has one, for SiRF and Evermore chipsets in
+</I>&gt;<i> partic- ular).  With  argument,  set  the mode if possible; the new mode
+</I>&gt;<i>               will be reported in the response. The &quot;N=&quot; form is
+</I>&gt;<i> rejected  if more than one client is attached to the channel.
+</I>&gt;<i>
+</I>&gt;<i> Should I configure gpsd for the &quot;Evermore chipsets&quot;? And how could I do
+</I>&gt;<i> this?
+</I>
+You compiled gpsd with the default protocol set, right? In your case,
+that means that NMEA is enabled, but the Evermore binary protocol is
+not. This implies a couple of things:
+1) gpsd will not be able to switch the communication protocol to or from binary
+2) gpsd will not be able to decode responses from your receiver if
+they are in binary mode
+
+That's OK. NMEA generally has all the required information, or enough to matter.
+
+This shouldn't a protocol problem. There are a few of ways you can verify this:
+1) use R=2 - this puts your connection into super-raw mode and you
+will get a copy of everything the receiver outputs, with no
+interpretation. If you connect to my test server (gpsd.mainframe.cx)
+and send R=2, you'll get the raw binary stream. The point of this test
+is to check that your receiver is sending NMEA.
+2) use R=1 - this will ouput a stream of NMEA produced by gpsd. This
+NMEA is generated based on what the receiver sends, but is not a
+verbatim copy. Assuming valid NMEA comes back, gpsd is able to parse
+whatever your receiver is sending.
+3) use a program like minicom, cu or tip to connect directly to the
+gps and check that NMEA and not the binary protocol is being produced.
+4) assuming that this receiver is targetted at windows users with
+something like streets&amp;trips, the receiver will default to NMEA
+
+If it turns out that your receiver is sending binary, you should turn
+on the Evermore protocol. I'd have to check the commit logs to see why
+it's not enabled. Probably lack of testing.
+
+CK
+
+-- 
+GDB has a 'break' feature; why doesn't it have 'fix' too?
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="001873.html">[Gpsd-users] Not connecting to satellite
+</A></li>
+	<LI>Next message: <A HREF="001875.html">[Gpsd-users] Not connecting to satellite
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1874">[ date ]</a>
+              <a href="thread.html#1874">[ thread ]</a>
+              <a href="subject.html#1874">[ subject ]</a>
+              <a href="author.html#1874">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

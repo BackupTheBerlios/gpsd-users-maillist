@@ -1,0 +1,143 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] pilot plug II
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2011-April/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20pilot%20plug%20II&In-Reply-To=%3C20110429074137.GA6880%40dizzy.vulkor.net%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="005226.html">
+   <LINK REL="Next"  HREF="005230.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] pilot plug II</H1>
+    <B>vwf</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20pilot%20plug%20II&In-Reply-To=%3C20110429074137.GA6880%40dizzy.vulkor.net%3E"
+       TITLE="[Gpsd-users] pilot plug II">vwf at vulkor.net
+       </A><BR>
+    <I>Fri Apr 29 09:41:37 CEST 2011</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="005226.html">[Gpsd-users] gpsd 3.0~dev cross compilation
+</A></li>
+        <LI>Next message: <A HREF="005230.html">[Gpsd-users] pilot plug II
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#5229">[ date ]</a>
+              <a href="thread.html#5229">[ thread ]</a>
+              <a href="subject.html#5229">[ subject ]</a>
+              <a href="author.html#5229">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hello,
+
+After some problems and success yesterday I am back to my original problem:
+gpsd does not accept/provide data
+
+gpsd 
+  is via a 
+MOXA UPort 1130 converter
+  connected to 
+SAAB AIS/GPS positioning system 
+
+The Moxa is detected and the driver loaded.
+$ lsmod | grep serial
+usbserial              26472  1 mxu11x0
+usbcore               118224  7 mxu11x0,usbserial,hci_usb,usbhid,ehci_hcd,uhci_hcd
+
+Minicom provides data (38400, 8N1) which looks normal:
+$GPVTG,137.7,T,,,0.00,N,,,D*12                                                  
+$GPRMC,135432.00,A,4948.124,N,01006.969,W,0.0,137.7,290411,,A*68                
+$GPDTM,W84,C*52                                                                 
+$PFEC,AIcmd,0,35,A,29042011,135433*0B                                           
+!AIVDO,1,1,,B,15Mf5w?000wAdAtLOkWog01205cH,0*08                                 
+$GPZDA,135433,29,04,2011,01,00*47                                               
+$GPGLL,4948.124,N,01006.969,W,135433,A,D*54                                     
+$GPGGA,135433,4948.124,N,01006.969,W,2,,,,,,,*65                                
+$GPVTG,198.0,T,,,0.00,N,,,D*10                                                  
+$GPRMC,135433.00,A,4948.124,N,01006.969,W,0.0,198.0,290411,,A*6B                
+$GPDTM,W84,C*52                                                                 
+$PFEC,AIcmd,0,35,A,29042011,135434*0C                                           
+!AIVDO,1,1,,B,15Mf5w?000wAdArLOkWm2h1405cH,0*07                                 
+
+
+Unfortunately, gpsd gets stuck:
+# gpsd -N -D3 -F /var/run/gpsd.sock /dev/ttyUSB0
+gpsd: launching (Version 2.95)
+gpsd: listening on port gpsd
+gpsd: running with effective group ID 0
+gpsd: running with effective user ID 0
+gpsd: stashing device /dev/ttyUSB0 at slot 0
+
+And after 15 minutes still no progress
+
+Any suggestions? (gpsd.berlios.de is down, so I cannot check the FAQ)
+A few more details:
+All on Debian oldstable, gpsd: 2.95 (revision 2010-11-17T19:31:47)
+
+Thank you,
+Frits
+
+
+The dmesg part:
+
+[   87.788808] usb 4-2: new full speed USB device using uhci_hcd and address 2
+[   87.984827] usb 4-2: configuration #1 chosen from 1 choice
+[   87.992748] usb 4-2: New USB device found, idVendor=110a, idProduct=1130
+[   87.992748] usb 4-2: New USB device strings: Mfr=1, Product=2, SerialNumber=0
+[   87.992748] usb 4-2: Product: UPort 1130
+[   87.992748] usb 4-2: Manufacturer: Moxa Technologies Co., Ltd.
+[   88.168148] usbcore: registered new interface driver usbserial
+[   88.168148] usbserial: USB Serial support registered for generic
+[   88.168148] usbcore: registered new interface driver usbserial_generic
+[   88.168148] usbserial: USB Serial Driver core
+[   88.184146] usbserial: USB Serial support registered for MOXA UPort 1110
+[   88.184146] usbserial: USB Serial support registered for MOXA UPort 1130
+[   88.184146] usbserial: USB Serial support registered for MOXA UPort 1150
+[   88.184146] usbserial: USB Serial support registered for MOXA UPort 1150I
+[   88.184146] usbserial: USB Serial support registered for MOXA UPort 1130I
+[   88.184146] mxusb 4-2:1.0: MOXA UPort 1130 converter detected
+[   88.714280] mxusb: probe of 4-2:1.0 failed with error -5
+[   88.714315] usbcore: registered new interface driver mxusb
+[   88.714321] mxu11x0: MOXA UPort 11x0 USB to Serial Hub Driver 1.2
+[   88.967633] usb 4-2: USB disconnect, address 2
+[   89.208001] usb 4-2: new full speed USB device using uhci_hcd and address 3
+[   89.402329] usb 4-2: configuration #2 chosen from 1 choice
+[   89.409322] mxusb 4-2:2.0: MOXA UPort 1130 converter detected
+[   89.409322] usb 4-2: MOXA UPort 1130 converter now attached to ttyUSB0
+[   89.409322] usb 4-2: New USB device found, idVendor=110a, idProduct=1130
+[   89.409322] usb 4-2: New USB device strings: Mfr=1, Product=2, SerialNumber=0
+[   89.409322] usb 4-2: Product: UPort 1130
+[   89.409322] usb 4-2: Manufacturer: Moxa Technologies Co., Ltd.
+[   90.730940] CE: hpet increasing min_delta_ns to 15000 nsec
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="005226.html">[Gpsd-users] gpsd 3.0~dev cross compilation
+</A></li>
+	<LI>Next message: <A HREF="005230.html">[Gpsd-users] pilot plug II
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#5229">[ date ]</a>
+              <a href="thread.html#5229">[ thread ]</a>
+              <a href="subject.html#5229">[ subject ]</a>
+              <a href="author.html#5229">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

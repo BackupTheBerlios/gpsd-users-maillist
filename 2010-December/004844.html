@@ -1,0 +1,145 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] Ubuntu 10.10 Udev package problems
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2010-December/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Ubuntu%2010.10%20Udev%20package%20problems&In-Reply-To=%3C20101228210646.1b6dccf7%40dragon%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="004842.html">
+   <LINK REL="Next"  HREF="004848.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] Ubuntu 10.10 Udev package problems</H1>
+    <B>Charles Curley</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Ubuntu%2010.10%20Udev%20package%20problems&In-Reply-To=%3C20101228210646.1b6dccf7%40dragon%3E"
+       TITLE="[Gpsd-users] Ubuntu 10.10 Udev package problems">charlescurley at charlescurley.com
+       </A><BR>
+    <I>Wed Dec 29 05:06:46 CET 2010</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="004842.html">[Gpsd-users] Ubuntu 10.10 Udev package problems
+</A></li>
+        <LI>Next message: <A HREF="004848.html">[Gpsd-users] Ubuntu 10.10 Udev package problems
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#4844">[ date ]</a>
+              <a href="thread.html#4844">[ thread ]</a>
+              <a href="subject.html#4844">[ subject ]</a>
+              <a href="author.html#4844">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>On Tue, 28 Dec 2010 22:40:25 -0500
+Eric Raymond &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">esr at thyrsus.com</A>&gt; wrote:
+
+&gt;<i> Charles Curley &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">charlescurley at charlescurley.com</A>&gt;:
+</I>&gt;<i> &gt; I got down to the udev paragraph. I killed the daemon and removed
+</I>&gt;<i> &gt; the socket. I then plugged in the receiver, and got:
+</I>&gt;<i> &gt; 
+</I>&gt;<i> &gt; Dec 28 19:08:57 dragon kernel: [168215.304044] usb 3-1: new full
+</I>&gt;<i> &gt; speed USB device using uhci_hcd and address 6 Dec 28 19:08:57
+</I>&gt;<i> &gt; dragon kernel: [168215.525141] pl2303 3-1:1.0: pl2303 converter
+</I>&gt;<i> &gt; detected Dec 28 19:08:57 dragon kernel: [168215.537267] usb 3-1:
+</I>&gt;<i> &gt; pl2303 converter now attached to ttyUSB0 Dec 28 19:08:57 dragon
+</I>&gt;<i> &gt; gpsd.hotplug: gpsd_control(action=add, arg=/dev/ttyUSB0) Dec 28
+</I>&gt;<i> &gt; 19:08:57 dragon gpsd.hotplug: socket /var/run/gpsd.sock doesn't
+</I>&gt;<i> &gt; exist Dec 28 19:08:57 dragon gpsd.hotplug: launching gpsd
+</I>&gt;<i> &gt; -F /var/run/gpsd.sock
+</I>&gt;<i> 
+</I>&gt;<i> So far, so good.
+</I>&gt;<i>  
+</I>&gt;<i> &gt; gpsd launched. But lsof indicates that gpsd never acquired the
+</I>&gt;<i> &gt; device:
+</I>&gt;<i> 
+</I>&gt;<i> Nor should it.  When gpsd gets the add request it does not normally
+</I>&gt;<i> open the device immediately.  Instead it get stashed until the
+</I>&gt;<i> next ?WATCH request, at which point all stashed devices are opened.
+</I>
+Right. My client, which was running at the time, reports broken
+connections to the daemon. It then tries to re-connect. As soon as it
+re-connects, it issues a ?WATCH.
+
+    ret = gps_open(host, port, &amp;our_gps_data);
+    if (ret != 0) {
+       ...
+    } else {
+        /* If we got here, we're good to go. */
+        gtk_progress_bar_set_text (progress, &quot;Ahhh, a gpsd connection!&quot;);
+        gps_set_raw_hook (&amp;our_gps_data, showData);
+
+        gpsLost = false;
+        haveConnection = true;
+        sendWatch ();
+    }
+}
+
+
+
+inline void sendWatch (void) {
+    /* Tell libgps to keep shoveling data at us, and use JSON rather
+     * than gpsd's corrected nmea. */
+    (void) gps_stream(&amp;our_gps_data, WATCH_ENABLE | WATCH_JSON, NULL);
+}
+
+
+&gt;<i> 
+</I>&gt;<i> &gt; I did the &quot;make udev-test&quot; as root and got lots of stuff, some of
+</I>&gt;<i> &gt; which indicated that the test code found gpsd and gpsd found the
+</I>&gt;<i> &gt; receiver.
+</I>&gt;<i> 
+</I>&gt;<i> Did you see data that looked like fixes in the log?  That production
+</I>&gt;<i> runs gpsd with -n, which tells gpsd to open each devicename as it's
+</I>&gt;<i> passed in through the control socket, rather rgan just stashing it.
+</I>
+gpsd: SiRF: MND 0x02: time=1293589466.85 lat=43.64 lon=-108.21
+alt=1315.15 track=0.00 speed=0.00 mode=1 status=0 hdop=0.00 used=0
+mask={TIME|LATLON|ALTITUDE|SPEED|TRACK|STATUS|MODE|DOP|USED}
+
+
+BTW, something else to add to the udev debugging list: On Ubuntu/Debian,
+check for /etc/default/gpsd having
+
+START_DAEMON=&quot;false&quot;
+
+If that is &quot;true&quot; the startup code will launch gpsd at boot, which will
+be confusing if you aren't expecting it.
+
+
+-- 
+
+Charles Curley                  /&quot;\    ASCII Ribbon Campaign
+Looking for fine software       \ /    Respect for open standards
+and/or writing?                  X     No HTML/RTF in email
+<A HREF="http://www.charlescurley.com">http://www.charlescurley.com</A>    / \    No M$ Word docs in email
+
+Key fingerprint = CE5C 6645 A45A 64E4 94C0  809C FFF6 4C48 4ECD DFDB
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="004842.html">[Gpsd-users] Ubuntu 10.10 Udev package problems
+</A></li>
+	<LI>Next message: <A HREF="004848.html">[Gpsd-users] Ubuntu 10.10 Udev package problems
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#4844">[ date ]</a>
+              <a href="thread.html#4844">[ thread ]</a>
+              <a href="subject.html#4844">[ subject ]</a>
+              <a href="author.html#4844">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

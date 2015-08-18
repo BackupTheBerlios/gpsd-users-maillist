@@ -1,0 +1,183 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] getting ntpd to work with gpsd
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2010-February/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20getting%20ntpd%20to%20work%20with%20gpsd&In-Reply-To=%3C9114FF5C9483EC46AAE0526E0433F022017EB3%40mail5.amherst.edu%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="004228.html">
+   <LINK REL="Next"  HREF="004231.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] getting ntpd to work with gpsd</H1>
+    <B>Ryan Turcotte 10E</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20getting%20ntpd%20to%20work%20with%20gpsd&In-Reply-To=%3C9114FF5C9483EC46AAE0526E0433F022017EB3%40mail5.amherst.edu%3E"
+       TITLE="[Gpsd-users] getting ntpd to work with gpsd">rturcotte10 at amherst.edu
+       </A><BR>
+    <I>Tue Feb 16 20:48:46 CET 2010</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="004228.html">[Gpsd-users] getting ntpd to work with gpsd
+</A></li>
+        <LI>Next message: <A HREF="004231.html">[Gpsd-users] getting ntpd to work with gpsd
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#4230">[ date ]</a>
+              <a href="thread.html#4230">[ thread ]</a>
+              <a href="subject.html#4230">[ subject ]</a>
+              <a href="author.html#4230">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Alright, so here appears to be my problem.
+
+I've compiled gpsd 2.90 from source, it gets a 3D fix, but ntpd is not updating. Run both gpsd and ntpd from su -
+
+These are the opening debug lines:
+gpsd: NTPD shmat(0,0,0) succeeded
+gpsd: NTPD shmat(32769,0,0) succeeded
+gpsd: NTPD shmat(491533,0,0) succeeded
+gpsd: NTPD shmat(524302,0,0) succeeded
+
+ntpd, obv:
+delta:~# ntpq -p
+     remote           refid      st t when poll reach   delay   offset  jitter
+==============================================================================
+ SHM(0)          .GPS.            0 l    -   16    0    0.000    0.000   0.002
+ SHM(1)          .GPS1.           0 l    -   16    0    0.000    0.000   0.002
+
+Here is my ntp.conf, with rest of commented lines deleted for brevity:
+# /etc/ntp.conf, configuration for ntpd; see ntp.conf(5) for help
+
+driftfile /var/lib/ntp/ntp.drift
+
+statistics loopstats 
+# Enable this if you want statistics to be logged.
+#statsdir /var/log/ntpstats/peerstats clockstats
+filegen loopstats file loopstats type day enable
+filegen peerstats file peerstats type day enable
+filegen clockstats file clockstats type day enable
+
+restrict -4 default kod notrap nomodify nopeer noquery
+restrict -6 default kod notrap nomodify nopeer noquery
+
+restrict 127.0.0.1
+restrict ::1
+
+server 127.127.28.0 minpoll 4 maxpoll 4
+fudge 127.127.28.0 time1 0.420 refid GPS
+
+server 127.127.28.1 minpoll 4 maxpoll 4 prefer
+fudge 127.127.28.1 refid GPS1
+
+I've tried ntpd and ntpd -g with no luck.
+
+Here is the cat command:
+delta:~# cat /proc/sysvipc/shm
+       key      shmid perms       size  cpid  lpid nattch   uid   gid  cuid  cgid      atime      dtime      ctime
+1314148400          0   700         80  3444  5749      2     0     0     0     0 1266378629 1266378610 1266375444
+1314148401      32769   700         80  3444  5749      2     0     0     0     0 1266378629 1266378610 1266375444
+         1      98306   600     655360  3421  3592      2     0     0     0     0 1266375446 1266375446 1266375445
+         0     163843  1600     393216  3633  3716      2  1000  1000  1000  1000 1266375494 1266375494 1266375491
+         0     196612  1600     393216  3706  5275      2  1000  1000  1000  1000 1266378035 1266378036 1266375494
+         0     229381  1600     393216  3722  3421      2  1000  1000  1000  1000 1266375495          0 1266375495
+         0     262150  1600     393216  3704  3737      2  1000  1000  1000  1000 1266375496 1266375496 1266375496
+         0     294919  1600     393216  3730  3421      2  1000  1000  1000  1000 1266375498          0 1266375498
+         0     327688  1600     393216  3704  3421      2  1000  1000  1000  1000 1266375498          0 1266375498
+         0     360457  1600     393216  3743  3421      2  1000  1000  1000  1000 1266375498          0 1266375498
+         0     393226  1600     393216  3791  4341      2  1000  1000  1000  1000 1266376236 1266376236 1266375598
+         0     425995  1600     393216  3700  4339      2  1000  1000  1000  1000 1266376235 1266376235 1266375598
+         0     458764  1600     393216  3700  4339      2  1000  1000  1000  1000 1266376235 1266376235 1266375598
+1314148402     491533   644         80  3830  5749      1     0     0     0     0 1266378629 1266378020 1266375616
+1314148403     524302   644         80  3830  5749      1     0     0     0     0 1266378629 1266378020 1266375616
+         0     557071  1600     393216  4268  3421      2  1000  1000  1000  1000 1266376086          0 1266376086
+         0     720912  1600     393216  5275  3421      2  1000  1000  1000  1000 1266378038          0 1266378038
+         0     753681  1600     393216  5275  3421      2  1000  1000  1000  1000 1266378040          0 1266378040
+
+No idea why this isn't working now because I had the same thing working on a similar box.
+
+Thanks Gary et. al.
+
+Ryan
+
+
+
+
+-----Original Message-----
+From: Gary E. Miller [mailto:<A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">gem at rellim.com</A>]
+Sent: Fri 2/12/2010 11:35 AM
+To: Ryan Turcotte 10E
+Cc: <A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">gpsd-users at lists.berlios.de</A>
+Subject: RE: [Gpsd-users] getting ntpd to work with gpsd
+ 
+-----BEGIN PGP SIGNED MESSAGE-----
+Hash: SHA1
+
+Yo Ryan!
+
+On Fri, 12 Feb 2010, Ryan Turcotte 10E wrote:
+
+&gt;<i> I've been trying to troubleshoot the problem and it appears I've got it to
+</I>&gt;<i> work on two computers, including one of the Debian machines.
+</I>
+Excellent.
+
+&gt;<i> The problem may be as simple (or as stupid) as not having a 3D GPS lock.
+</I>
+Odd, 2D should be enough.  So far most GPS we have checked make no
+guarantee in time quality without a lock, so best to ignore it until
+then.
+
+If you really need a 3D lock instead of just 2D then that would be a bug.
+
+&gt;<i> Also, I believe there is no PPS pin because of the USB dongle.
+</I>
+Correct, PPS is RS-232, although some report around a 1uS repeatability
+when using an RS-232 to USB converter.
+
+
+RGDS
+GARY
+- ---------------------------------------------------------------------------
+Gary E. Miller Rellim 109 NW Wilmington Ave., Suite E, Bend, OR 97701
+	<A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">gem at rellim.com</A>  Tel:+1(541)382-8588
+
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v1.4.3 (GNU/Linux)
+
+iD8DBQFLdYNnBmnRqz71OvMRAg48AJ40cFxiu6I54geY2px4qHFjE/HeFACfUwD0
+190Nl9hcnqmEFE8TYl7DvbU=
+=5x41
+-----END PGP SIGNATURE-----
+
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="004228.html">[Gpsd-users] getting ntpd to work with gpsd
+</A></li>
+	<LI>Next message: <A HREF="004231.html">[Gpsd-users] getting ntpd to work with gpsd
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#4230">[ date ]</a>
+              <a href="thread.html#4230">[ thread ]</a>
+              <a href="subject.html#4230">[ subject ]</a>
+              <a href="author.html#4230">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

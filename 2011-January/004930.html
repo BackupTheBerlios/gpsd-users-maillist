@@ -1,0 +1,126 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] gps_query issue
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2011-January/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20gps_query%20issue&In-Reply-To=%3CAANLkTik7zvUq2r_hzUiJnzE_O%2BeFVW8sPwb7Q%2BZ6aaci%40mail.gmail.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="004928.html">
+   <LINK REL="Next"  HREF="004931.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] gps_query issue</H1>
+    <B>Ahmed Ramadan</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20gps_query%20issue&In-Reply-To=%3CAANLkTik7zvUq2r_hzUiJnzE_O%2BeFVW8sPwb7Q%2BZ6aaci%40mail.gmail.com%3E"
+       TITLE="[Gpsd-users] gps_query issue">eng.a.ramdan at gmail.com
+       </A><BR>
+    <I>Sat Jan 15 16:01:27 CET 2011</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="004928.html">[Gpsd-users] gps_query issue
+</A></li>
+        <LI>Next message: <A HREF="004931.html">[Gpsd-users] gps_query issue
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#4930">[ date ]</a>
+              <a href="thread.html#4930">[ thread ]</a>
+              <a href="subject.html#4930">[ subject ]</a>
+              <a href="author.html#4930">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>you are right tom, but it didn't work for me, same thing &quot;nan&quot; for all GPS
+attributes. and &quot;0&quot; for fix status
+if you can provide a code snippet that works for you it will be great.
+
+On Sat, Jan 15, 2011 at 4:43 PM, Tomalak Geret'kal &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">tom at kera.name</A>&gt; wrote:
+
+&gt;<i> Ahmed (&amp; Don),
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i> On 15/01/2011 14:29, ahmedNU wrote:
+</I>&gt;<i> &gt; Don Weeks wrote:
+</I>&gt;<i> &gt; &gt; Not sure if this goes to the developers list or the
+</I>&gt;<i> &gt; &gt; users list
+</I>&gt;<i>
+</I>&gt;<i> It is a little confusing, but the developers list is for those working on
+</I>&gt;<i> developing gpsd itself, whereas the users list is for those developing their
+</I>&gt;<i> own applications using gpsd. So this is fine.
+</I>&gt;<i>
+</I>&gt;<i>    if (!&amp;gpsdata) {
+</I>&gt;&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i> This will never be the case, because `&amp;gpsdata` is the address of a pointer
+</I>&gt;<i> that you declared in the same file. `gpsdata` itself may be NULL if the
+</I>&gt;<i> gps_open failed, so try:
+</I>&gt;<i>
+</I>&gt;<i>     if (!gpsdata) {
+</I>&gt;<i>
+</I>&gt;<i> What I tend to do in my applications is to do my gps_query (just once, and
+</I>&gt;<i> actually this is deprecated and replaced by gps_watch now) to set watch
+</I>&gt;<i> mode, then do to gps_poll repeatedly in a loop, as you have demonstrated,
+</I>&gt;<i> for ever.
+</I>&gt;<i>
+</I>&gt;<i> I do this in a *SEPARATE THREAD*, sharing the gps_data handle between this
+</I>&gt;<i> separate thread and my main thread, protected by a mutex. When another part
+</I>&gt;<i> of my application wishes to procure the latest GPS data, it calls a &quot;get()&quot;
+</I>&gt;<i> function in my *MAIN THREAD*, which copies the underlying gps_data structure
+</I>&gt;<i> and returns the copy.
+</I>&gt;<i>
+</I>&gt;<i> It's basically adding a second layer of streaming/polling on top of gpsd,
+</I>&gt;<i> so that the other parts of my application don't have to wait for the GPS.
+</I>&gt;<i>
+</I>&gt;<i> It may not be the most efficient way -- equivalent alternatives would be
+</I>&gt;<i> very welcome -- but it works very well.
+</I>&gt;<i>
+</I>&gt;<i> Don (I'm not sure when the original message was posted; the OP did not
+</I>&gt;<i> provide a full reply header in his message text) I would also be interested
+</I>&gt;<i> in learning what you came up with. Ahmed, the above is my solution.
+</I>&gt;<i>
+</I>&gt;<i> Best regards
+</I>&gt;<i> Tom
+</I>&gt;<i> _______________________________________________
+</I>&gt;<i> Gpsd-users mailing list
+</I>&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">Gpsd-users at lists.berlios.de</A>
+</I>&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">https://lists.berlios.de/mailman/listinfo/gpsd-users</A>
+</I>&gt;<i>
+</I>
+
+
+-- 
+*A.Ramadan
+
+Cellular: +20-12-9961294
+Tel: +202-22392779
+
+*
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="004928.html">[Gpsd-users] gps_query issue
+</A></li>
+	<LI>Next message: <A HREF="004931.html">[Gpsd-users] gps_query issue
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#4930">[ date ]</a>
+              <a href="thread.html#4930">[ thread ]</a>
+              <a href="subject.html#4930">[ subject ]</a>
+              <a href="author.html#4930">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

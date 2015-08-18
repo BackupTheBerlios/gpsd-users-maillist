@@ -1,0 +1,95 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] Some problems? too many satellites?
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2006-August/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Some%20problems%3F%20too%20many%20satellites%3F&In-Reply-To=%3C20060809113923.48293.qmail%40web32513.mail.mud.yahoo.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="001832.html">
+   <LINK REL="Next"  HREF="001834.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] Some problems? too many satellites?</H1>
+    <B>Michael R. Davis</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Some%20problems%3F%20too%20many%20satellites%3F&In-Reply-To=%3C20060809113923.48293.qmail%40web32513.mail.mud.yahoo.com%3E"
+       TITLE="[Gpsd-users] Some problems? too many satellites?">mrdvt92 at yahoo.com
+       </A><BR>
+    <I>Wed Aug  9 13:39:23 CEST 2006</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="001832.html">[Gpsd-users] Some problems? too many satellites?
+</A></li>
+        <LI>Next message: <A HREF="001834.html">[Gpsd-users] Some problems? too many satellites?
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1833">[ date ]</a>
+              <a href="thread.html#1833">[ thread ]</a>
+              <a href="subject.html#1833">[ subject ]</a>
+              <a href="author.html#1833">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>&gt;<i> $GPGSV,4,1,13,02,26,063,33,05,20,173,16,25,12,293,18,06,67,295,36*71
+</I>&gt;<i> gpsd: &lt;= GPS:
+</I>&gt;<i> $GPGSV,4,2,13,13,05,016,,51,32,160,42,30,51,204,44,10,52,094,30*70
+</I>&gt;<i> gpsd: &lt;= GPS:
+</I>&gt;<i> $GPGSV,4,3,13,07,04,293,23,47,11,246,38,16,02,325,,35,31,205,36*79
+</I>&gt;<i> gpsd: &lt;= GPS: $GPGSV,4,4,13,21,24,240,38*43
+</I>&gt;<i> gpsd: internal error - too many satellites!
+</I>&gt;<i> gpsd: GPGSV field 3 value of 13 != actual count 0
+</I>
+But, what I'm surprised about is that gpsd didn't fail on the first
+sentence with 13 sats in it.  It waited until the 4th line.  Looks like
+this GPS receiver is listing sats that it's &quot;not tracking&quot; as well.  I
+guess now that we have the WAAS signal we occasionally may have more
+than 12 satellites in view.  So, it looks like the NMEA standard is yet
+again aging.  We may want to support this sats&gt;12 extension.
+
+# GPS-35:
+# $GPGSV,&lt;1&gt;,&lt;2&gt;,&lt;3&gt;,&lt;4&gt;,&lt;5&gt;,&lt;6&gt;,&lt;7&gt;,...&lt;4&gt;,&lt;5&gt;,&lt;6&gt;,&lt;7&gt;*hh
+# 1) Total number of GSV sentences to be transmitted
+# 2) Number of current GSV sentence
+# 3) Total number of satellites in view, 00 to 12 (leading zeros sent)
+# 4) Satellite PRN number, 01 to 32 (leading zeros sent)
+# 5) Satellite elevation, 00 to 90 degrees (leading zeros sent)
+# 6) Satellite azimuth, 000 to 359 degrees, true (leading zeros sent)
+# 7) Signal to Noise ratio (C/No) 00 to 99 dB, null when not tracking
+(leading zeros sent)
+
+Mike (mrdvt92)
+
+
+__________________________________________________
+Do You Yahoo!?
+Tired of spam?  Yahoo! Mail has the best spam protection around 
+<A HREF="http://mail.yahoo.com">http://mail.yahoo.com</A> 
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="001832.html">[Gpsd-users] Some problems? too many satellites?
+</A></li>
+	<LI>Next message: <A HREF="001834.html">[Gpsd-users] Some problems? too many satellites?
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1833">[ date ]</a>
+              <a href="thread.html#1833">[ thread ]</a>
+              <a href="subject.html#1833">[ subject ]</a>
+              <a href="author.html#1833">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

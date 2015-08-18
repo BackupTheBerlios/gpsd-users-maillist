@@ -1,0 +1,86 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] Ntp Problems
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2009-November/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Ntp%20Problems&In-Reply-To=%3Ca2d3b4550911130820x3c7d65c3vfcc578574e9a6092%40mail.gmail.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="004049.html">
+   <LINK REL="Next"  HREF="004051.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] Ntp Problems</H1>
+    <B>Don Weeks</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Ntp%20Problems&In-Reply-To=%3Ca2d3b4550911130820x3c7d65c3vfcc578574e9a6092%40mail.gmail.com%3E"
+       TITLE="[Gpsd-users] Ntp Problems">don.l.weeks.jr at gmail.com
+       </A><BR>
+    <I>Fri Nov 13 17:20:37 CET 2009</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="004049.html">[Gpsd-users] Ntp Problems
+</A></li>
+        <LI>Next message: <A HREF="004051.html">[Gpsd-users] Ntp Problems
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#4050">[ date ]</a>
+              <a href="thread.html#4050">[ thread ]</a>
+              <a href="subject.html#4050">[ subject ]</a>
+              <a href="author.html#4050">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Further investigation yields that the interrupted call is normal and not a
+problem. The troubling thing is that the select should break when a message
+is received via SHM and this is not happening. So, on shared memory, should
+the shm look like this:
+
+cat /proc/sysvipc/shm
+
+     key      shmid perms       size  cpid  lpid nattch   uid   gid cuid
+ cgid      atime      dtime      ctime
+1314148400          0   700                    80  2468 25708      1 0     0
+    0     0 1258074980 1258074955  946684819
+1314148401      32769   700                    80  2468 25668      0 0     0
+    0     0 1258072998 1258072999  946684819
+1314148402      65538   644                    96  2601 25726      1 0     0
+    0     0 1258076897 1258076885  946684821
+1314148403      98307   644                    96  2601 25726      1 0     0
+    0     0 1258076897 1258076885  946684821
+2030157850     131076   666                   808  2668  3055      0 0     0
+    0     0 1258069672 1258069677  946684825
+
+UID        PID  PPID  C STIME TTY          TIME CMD
+root     25726 32397  0 01:48 pts/1    00:00:00 /usr/local/gpsd/sbin/gpsd -N
+-n -D 6 /dev/ttyS1
+root     25708  2659  0 01:16 pts/0    00:00:00 /usr/local/ntp/bin/ntpd -D9
+-g
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="004049.html">[Gpsd-users] Ntp Problems
+</A></li>
+	<LI>Next message: <A HREF="004051.html">[Gpsd-users] Ntp Problems
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#4050">[ date ]</a>
+              <a href="thread.html#4050">[ thread ]</a>
+              <a href="subject.html#4050">[ subject ]</a>
+              <a href="author.html#4050">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

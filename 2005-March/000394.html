@@ -1,0 +1,125 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] gpsfake is too old to work well together with gpsd2.16
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2005-March/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20gpsfake%20is%20too%20old%20to%20work%20well%20together%20with%20gpsd2.16&In-Reply-To=%3Che949679856141.27010%40send2.inner-21cn.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="000392.html">
+   <LINK REL="Next"  HREF="000396.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] gpsfake is too old to work well together with gpsd2.16</H1>
+    <B>jjhou</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20gpsfake%20is%20too%20old%20to%20work%20well%20together%20with%20gpsd2.16&In-Reply-To=%3Che949679856141.27010%40send2.inner-21cn.com%3E"
+       TITLE="[Gpsd-users] gpsfake is too old to work well together with gpsd2.16">xhwu001 at 21cn.com
+       </A><BR>
+    <I>Sun Mar 20 07:36:45 CET 2005</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="000392.html">[Gpsd-users] semi-success report with Techway TH-011
+</A></li>
+        <LI>Next message: <A HREF="000396.html">[Gpsd-users] [Announce] EarthMate Userland Library 1.0.1 release
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#394">[ date ]</a>
+              <a href="thread.html#394">[ thread ]</a>
+              <a href="subject.html#394">[ subject ]</a>
+              <a href="author.html#394">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>gpsd-users:
+  My environment is Fedora Core3, gcc3.4. I downloaded gpsd-2.16.tar.gz, 
+the process of configure&amp;make&amp;install had no problem, and gpsd can work 
+well with my GPS receiver. Oh, I was so happy!
+  After that , i want to test the gpsfake, then the problem was coming:
+
+[<A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">root at shenzhen</A> wxh]# gpsfake -s 4800 'gpsdata'
+gpsd: invalid option -- s
+usage:  gpsd [options] 
+  Options include: 
+  -f string (default /dev/gps)  	= set GPS device name 
+  -S integer (default 2947)	= set port for daemon 
+  -d host[:port]         	= set DGPS server 
+  -P pidfile              	= set file to record process ID 
+  -D integer (default 0)  	= set debug level 
+  -h                     	= help message 
+gpsfake: gpsd launch OK.
+Traceback (most recent call last):
+  File &quot;/usr/bin/gpsfake&quot;, line 43, in ?
+    fp = open(&quot;/tmp/gpsfakes&quot;  os.getpid())
+IOError: [Errno 2] No such file or directory: '/tmp/gpsfake10649'
+
+See that? I think it's because gpsfake transfer the option '-s' to gpsd, 
+but gpsd doesn't support it now. ok, let me ignore the '-s' and try again:
+
+[<A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">root at shenzhen</A> wxh]# gpsfake 'gpsdata'
+gpsfake: gpsd launch OK.
+
+It seems that it works, then i telnet to 2947, but there is nothing output,
+even i input 'r','w','f' and anything. 
+I also tried this much times:
+[<A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">root at shenzhen</A> usr]# stty -F /dev/pts/0 ispeed 4800 &amp;&amp; cat &lt;/dev/pts/0
+
+for my test, there are 3 possible response:
+1. answer &quot;stty: /dev/pts/0: unable to perform all requested operations&quot; and exit;
+2. no output nor exit,like hung up,must press ^C to exit;
+3. circularly print the NMEA sentences in gpsdata file correctly! (that's what i wanted)
+
+In my 10 times test, 4 times response No.1, 3 times response No.2, and 3 times response No.3.
+Yes, i also tried xgps/xgpsspeed of course, they runned after hung up a long time, with some 
+UI fields showed &quot;offline&quot;,&quot;no data arrived&quot; and so on.
+
+I have read the gpsfake source code ,though I don't know about python too much. I 
+think the problem is caused by the below lines, may be something wrong set to parameter 'raw':
+    raw = termios.tcgetattr(ttyfp.fileno())
+    raw[0] = 0					# iflag
+    raw[1] = termios.ONLCR				# oflag
+    raw[2] &amp;= ~(termios.PARENB | termios.CRTSCTS)	# cflag
+    raw[2] |= (termios.CSIZE &amp; termios.CS8)		# cflag
+    raw[2] |= termios.CREAD | termios.CLOCAL	# cflag
+    raw[3] = 0					# lflag
+    raw[4] = raw[5] = eval(&quot;termios.B&quot; + `speed`)
+    termios.tcsetattr(ttyfp.fileno(), termios.TCSANOW, raw)
+
+By the way, i found gpsd -D n doesn't take effect, there is nothing to be print to sdtout or 
+sdterr. why? I remember when autogen.sh finished, there was a line &quot;LogFile&quot; not set to yes, 
+does that cause -D don't work? And how to set &quot;LogFile&quot; to yes?
+
+
+&#12288;&#12288;&#12288;&#12288;&#12288;&#12288;&#12288;&#12288;jjhou
+&#12288;&#12288;&#12288;&#12288;&#12288;&#12288;&#12288;&#12288;<A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">xhwu001 at 21cn.com</A>
+&#12288;&#12288;&#12288;&#12288;&#12288;&#12288;&#12288;&#12288;&#12288;&#12288;2005-02-02
+
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="000392.html">[Gpsd-users] semi-success report with Techway TH-011
+</A></li>
+	<LI>Next message: <A HREF="000396.html">[Gpsd-users] [Announce] EarthMate Userland Library 1.0.1 release
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#394">[ date ]</a>
+              <a href="thread.html#394">[ thread ]</a>
+              <a href="subject.html#394">[ subject ]</a>
+              <a href="author.html#394">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

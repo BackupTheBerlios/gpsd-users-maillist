@@ -1,0 +1,92 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] reading reports with python blocked
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2011-January/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20reading%20reports%20with%20python%20blocked&In-Reply-To=%3C20110125184501.GA8350%40thyrsus.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="004955.html">
+   <LINK REL="Next"  HREF="004961.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] reading reports with python blocked</H1>
+    <B>Eric Raymond</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20reading%20reports%20with%20python%20blocked&In-Reply-To=%3C20110125184501.GA8350%40thyrsus.com%3E"
+       TITLE="[Gpsd-users] reading reports with python blocked">esr at thyrsus.com
+       </A><BR>
+    <I>Tue Jan 25 19:45:01 CET 2011</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="004955.html">[Gpsd-users] reading reports with python blocked
+</A></li>
+        <LI>Next message: <A HREF="004961.html">[Gpsd-users] Mapping NMEA Sentence name to tag
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#4956">[ date ]</a>
+              <a href="thread.html#4956">[ thread ]</a>
+              <a href="subject.html#4956">[ subject ]</a>
+              <a href="author.html#4956">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Eric Raymond &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">esr at thyrsus.com</A>&gt;:
+&gt;<i> Thomas Mueller &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">thomas at chaschperli.ch</A>&gt;:
+</I>&gt;<i> &gt; Any hints? Any examples how to print reliable longitude/latitude on
+</I>&gt;<i> &gt;  stdin with python?
+</I>&gt;<i> 
+</I>&gt;<i> For a nearly minimal example, look at the main part at the end of
+</I>&gt;<i> gps/gps.py.Start a daemon instance, then run 'gps/gps.py' to watc it
+</I>&gt;<i> stream.
+</I>&gt;<i> 
+</I>&gt;<i> The main part just looks like this:
+</I>&gt;<i> 
+</I>&gt;<i>     session = gps(**opts)
+</I>&gt;<i>     session.set_raw_hook(lambda s: sys.stdout.write(s.strip() + &quot;\n&quot;))
+</I>&gt;<i>     session.stream(WATCH_ENABLE|WATCH_NEWSTYLE)
+</I>&gt;<i>     for report in session:
+</I>&gt;<i>         print report
+</I>
+Writing this reply reminded me that set_raw_hook was scheduled to be
+removed. It's now gone from the repo version, and gpsd will ship that
+way in 2.9.6.  The minimal example now reads
+
+     session = gps(**opts)
+     session.stream(WATCH_ENABLE|WATCH_NEWSTYLE)
+     for report in session:
+         print report
+
+Each report object will have a 'response' member contraining the last 
+buffer of data shipped up from the daemon which your client code can
+look at directly; this replaces the raw_hook feature.
+-- 
+		&lt;a href=&quot;<A HREF="http://www.catb.org/~esr/">http://www.catb.org/~esr/</A>&quot;&gt;Eric S. Raymond&lt;/a&gt;
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="004955.html">[Gpsd-users] reading reports with python blocked
+</A></li>
+	<LI>Next message: <A HREF="004961.html">[Gpsd-users] Mapping NMEA Sentence name to tag
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#4956">[ date ]</a>
+              <a href="thread.html#4956">[ thread ]</a>
+              <a href="subject.html#4956">[ subject ]</a>
+              <a href="author.html#4956">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

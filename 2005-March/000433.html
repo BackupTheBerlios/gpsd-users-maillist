@@ -1,0 +1,136 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] Re: [Gpsd-dev] autogen.sh doesn't work on Mac OS X - Should it?
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2005-March/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Re%3A%20%5BGpsd-dev%5D%20autogen.sh%20doesn%27t%20work%20on%20Mac%20OS%20X%20-%20Should%20it%3F&In-Reply-To=%3C69556aca09d103065b25be0ba737d995%40nicholasfamilycentral.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="000432.html">
+   <LINK REL="Next"  HREF="000435.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] Re: [Gpsd-dev] autogen.sh doesn't work on Mac OS X - Should it?</H1>
+    <B>Frank Nicholas</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Re%3A%20%5BGpsd-dev%5D%20autogen.sh%20doesn%27t%20work%20on%20Mac%20OS%20X%20-%20Should%20it%3F&In-Reply-To=%3C69556aca09d103065b25be0ba737d995%40nicholasfamilycentral.com%3E"
+       TITLE="[Gpsd-users] Re: [Gpsd-dev] autogen.sh doesn't work on Mac OS X - Should it?">frank at nicholasfamilycentral.com
+       </A><BR>
+    <I>Sat Mar 26 01:35:09 CET 2005</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="000432.html">[Gpsd-users] Experience using IBM/RFMD chipsets?
+</A></li>
+        <LI>Next message: <A HREF="000435.html">[Gpsd-users] man am I going fast
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#433">[ date ]</a>
+              <a href="thread.html#433">[ thread ]</a>
+              <a href="subject.html#433">[ subject ]</a>
+              <a href="author.html#433">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Thanks for the quick replay.  I'm familiar with fink, but didn't want 
+to set it up on the machine I'm working on.
+
+I have access to XCode 2.0.  Do you know if it has the correct 
+versions?  If not, I'll probably wait until next week (it seems a new 
+version of gpsd is being released weekly....)  Or, if the rumor sites 
+are to be believed, wait a couple of weeks and purchase Tiger and 
+download XCode 2.0.....
+
+BTW:  I'm using this on a Mac mini I'm installing in my truck.  I don't 
+necessarily need gpsd to start on boot, just after login.  I have the 
+Mac mini set to auto-logon, and fire up several different apps (iTunes, 
+MacXM, gpsd, KisMAC, etc.)  For me, it's OK for gpsd being started as 
+an auto-run item on login.
+
+If I wanted it to startup on boot, I would write/plagiarize a 
+'/Library/StartupItems/' script.....
+
+Thanks,
+Frank
+
+On Mar 25, 2005, at 7:24 PM, Jason W wrote:
+
+Hi,
+
+You'll either have to wait for a newer version of XCode or do what I 
+did, install autoconf and automake from fink (<A HREF="http://fink.sf.net">http://fink.sf.net</A>).
+
+jasonpowerbook:~ jason$ dpkg -l | grep auto
+ii  autoconf2.5  2.59-6   System for generating configure scripts
+ii  automake1.7  1.7.6-3  Tool for generating GNU Standards-compliant
+
+After I installed both of those I was able to compile and install gpsd. 
+Then you'll need some way to start it on boot. For that I am using 
+daemonic, also from fink.
+
+Hope this helps,
+
+Jason Weathered
+
+On 2005/03/26 10:18, Frank Nicholas wrote:
+&gt;<i> It looks like it doesn't like the version of automake &amp; libtool.  
+</I>&gt;<i> Also, it want's libtoolize.....
+</I>&gt;<i> I'm using Apple's developer's tools, XCode 1.5, with the latest 
+</I>&gt;<i> updates.  I compile the distributions with the following:
+</I>&gt;<i> ./configure
+</I>&gt;<i> make
+</I>&gt;<i> sudo make install
+</I>&gt;<i> I'd rather not mix the Apple tools (I use them for other purposes), 
+</I>&gt;<i> and new versions any suggestions, or am I just stuck waiting for the 
+</I>&gt;<i> next release?
+</I>&gt;<i> Thanks,
+</I>&gt;<i> Frank
+</I>&gt;<i> ./autogen.sh output:
+</I>&gt;<i> $ sh autogen.sh
+</I>&gt;<i> Your automake version 1.6.3 is older than the suggested one, 1.7.6
+</I>&gt;<i> Go on at your own risk. :-)
+</I>&gt;<i> libtool: unknown option character `-' in: --version
+</I>&gt;<i> Usage: libtool -static [-] file [...] [-filelist listfile[,dirname]] 
+</I>&gt;<i> [-arch_only arch] [-sacLT]
+</I>&gt;<i> Usage: libtool -dynamic [-] file [...] [-filelist listfile[,dirname]] 
+</I>&gt;<i> [-arch_only arch] [-o output] [-install_name name] 
+</I>&gt;<i> [-compatibility_version #] [-current_version #] [-seg1addr 0x#] 
+</I>&gt;<i> [-segs_read_only_addr 0x#] [-segs_read_write_addr 0x#] 
+</I>&gt;<i> [-seg_addr_table &lt;filename&gt;] [-seg_addr_table_filename 
+</I>&gt;<i> &lt;file_system_path&gt;] [-all_load] [-noall_load]
+</I>&gt;<i> autogen.sh: line 76: [: 1: unary operator expected
+</I>&gt;<i> autogen.sh: line 79: [: 1: unary operator expected
+</I>&gt;<i> Configuring build environment for gpsd
+</I>&gt;<i> autogen.sh: line 97: libtoolize: command not found
+</I>&gt;<i> _______________________________________________
+</I>&gt;<i> Gpsd-dev mailing list
+</I>&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">Gpsd-dev at lists.berlios.de</A>
+</I>&gt;<i> <A HREF="http://lists.berlios.de/mailman/listinfo/gpsd-dev">http://lists.berlios.de/mailman/listinfo/gpsd-dev</A>
+</I>
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="000432.html">[Gpsd-users] Experience using IBM/RFMD chipsets?
+</A></li>
+	<LI>Next message: <A HREF="000435.html">[Gpsd-users] man am I going fast
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#433">[ date ]</a>
+              <a href="thread.html#433">[ thread ]</a>
+              <a href="subject.html#433">[ subject ]</a>
+              <a href="author.html#433">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

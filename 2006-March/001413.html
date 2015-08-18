@@ -1,0 +1,121 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] Announcing release 2.32 of gpsd
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2006-March/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Announcing%20release%202.32%20of%20gpsd&In-Reply-To=%3C380-220063113201041141%40M2W098.mail2web.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="001411.html">
+   <LINK REL="Next"  HREF="001414.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] Announcing release 2.32 of gpsd</H1>
+    <B>robin at spade-men.com</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Announcing%20release%202.32%20of%20gpsd&In-Reply-To=%3C380-220063113201041141%40M2W098.mail2web.com%3E"
+       TITLE="[Gpsd-users] Announcing release 2.32 of gpsd">robin at spade-men.com
+       </A><BR>
+    <I>Mon Mar 13 21:10:41 CET 2006</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="001411.html">[Gpsd-users] Announcing release 2.32 of gpsd
+</A></li>
+        <LI>Next message: <A HREF="001414.html">[Gpsd-users] Announcing release 2.32 of gpsd
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1413">[ date ]</a>
+              <a href="thread.html#1413">[ thread ]</a>
+              <a href="subject.html#1413">[ subject ]</a>
+              <a href="author.html#1413">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>The serious bug in the velocity output of GPSD (identified and patched in
+2.30 and 2.31) is still in this point release.  
+Updated patch follows:
+
+6:36 [~/src/gpsd-2.32] robin&gt; diff -u gpsd-orig.c gpsd.c
+--- gpsd-orig.c 2006-03-14 06:24:47.000000000 +1030
++++ gpsd.c      2006-03-14 06:27:20.000000000 +1030
+@@ -868,7 +868,7 @@
+            break;
+        case 'V':
+            if (assign_channel(whoami) &amp;&amp; have_fix(whoami-&gt;device) &amp;&amp;
+isnan(whoami-&gt;device-&gt;gpsdata.fix.track)
+==0)
+-               (void)snprintf(phrase, sizeof(phrase), &quot;,V=%.3f&quot;,
+whoami-&gt;device-&gt;gpsdata.fix.speed / KNOTS_TO_KPH);
++               (void)snprintf(phrase, sizeof(phrase), &quot;,V=%.3f&quot;,
+whoami-&gt;device-&gt;gpsdata.fix.speed * MPS_TO_KNOTS);
+            else
+                (void)strcpy(phrase, &quot;,V=?&quot;);
+            break;
+
+
+Also, Evermore support is still on by default, which is worth disabling
+(using ./configure --disable-evermore) for 
+anyone who has trouble using gpsd with a standard NMEA GPS.
+
+
+Original Message:
+-----------------
+From: Eric S. Raymond <A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">esr at snark.thyrsus.com</A>
+Date: Sun, 12 Mar 2006 22:36:17 -0500
+To: <A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">gpsd-announce at lists.berlios.de</A>, <A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">gpsd-users at lists.berlios.de</A>,
+<A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">gpsd-dev at lists.berlios.de</A>
+Subject: [Gpsd-users] Announcing release 2.32 of gpsd
+
+
+Release 2.32 of gpsd is now available at:
+
+	<A HREF="http://developer.berlios.de/projects/gpsd/">http://developer.berlios.de/projects/gpsd/</A>
+
+Here are the most recent changes:
+
+- Cleanup of the xgps layout, and minor memory-leak fixes for xgps.  Fix
+  to cope with Antares uBlox by Andreas Stricker.  Minor fix to libgps
+  cgpxlogger.  Merge cgpxlogger and gpxlogger documentation onto
+  the xgps(1) manual page and rename it gps(1).
+
+--
+                             shipper, acting for <A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">esr at snark.thyrsus.com</A>
+_______________________________________________
+Gpsd-users mailing list
+<A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">Gpsd-users at lists.berlios.de</A>
+<A HREF="http://lists.berlios.de/mailman/listinfo/gpsd-users">http://lists.berlios.de/mailman/listinfo/gpsd-users</A>
+
+
+--------------------------------------------------------------------
+mail2web - Check your email from the web at
+<A HREF="http://mail2web.com/">http://mail2web.com/</A> .
+
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="001411.html">[Gpsd-users] Announcing release 2.32 of gpsd
+</A></li>
+	<LI>Next message: <A HREF="001414.html">[Gpsd-users] Announcing release 2.32 of gpsd
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1413">[ date ]</a>
+              <a href="thread.html#1413">[ thread ]</a>
+              <a href="subject.html#1413">[ subject ]</a>
+              <a href="author.html#1413">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

@@ -1,0 +1,173 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] compiling gpsd on ipod touch
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2009-July/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20compiling%20gpsd%20on%20ipod%20touch&In-Reply-To=%3C4A5FA7B9.1040404%40neuf.fr%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="003820.html">
+   <LINK REL="Next"  HREF="003822.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] compiling gpsd on ipod touch</H1>
+    <B>Romain Quidet</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20compiling%20gpsd%20on%20ipod%20touch&In-Reply-To=%3C4A5FA7B9.1040404%40neuf.fr%3E"
+       TITLE="[Gpsd-users] compiling gpsd on ipod touch">romain.quidet at neuf.fr
+       </A><BR>
+    <I>Fri Jul 17 00:20:41 CEST 2009</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="003820.html">[Gpsd-users] compiling gpsd on ipod touch
+</A></li>
+        <LI>Next message: <A HREF="003822.html">[Gpsd-users] compiling gpsd on ipod touch
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3821">[ date ]</a>
+              <a href="thread.html#3821">[ thread ]</a>
+              <a href="subject.html#3821">[ subject ]</a>
+              <a href="author.html#3821">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Ok I get c++ aside, so I've got gpsd compiled and linked... in linux elf 
+format, not mach-o !!
+
+I'm losing my strength ... :) Did you succeed in compiling for macos ????
+
+Rq
+
+Romain Quidet a &#233;crit :
+&gt;<i> Hello again,
+</I>&gt;<i>
+</I>&gt;<i> I need help. Can I disable the c++ wrapper, it is the only one needing 
+</I>&gt;<i> C++ compilator, which does not seems to work correctly on the ipod ...
+</I>&gt;<i>
+</I>&gt;<i> Tks!
+</I>&gt;<i>
+</I>&gt;<i> rq
+</I>&gt;<i>
+</I>&gt;<i> Romain Quidet a &#233;crit :
+</I>&gt;<i>   
+</I>&gt;&gt;<i> I can get everything compiled. Just another error in netlib.c using ip.h 
+</I>&gt;&gt;<i> which is not in my includes. Used tcp.h instead... worked...
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> now the link is not working :
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> libtool: link: g++ -dynamiclib -Wl,-undefined -Wl,dynamic_lookup -o 
+</I>&gt;&gt;<i> .libs/libgps.18.dylib  .libs/bits.o .libs/bsd-base64.o .libs/crc24q.o 
+</I>&gt;&gt;<i> .libs/dgnss.o .libs/dgpsip.o .libs/gpsd_report.o .libs/gpsutils.o 
+</I>&gt;&gt;<i> .libs/geoid.o .libs/hex.o .libs/isgps.o .libs/libgps.o 
+</I>&gt;&gt;<i> .libs/gpsdclient.o .libs/libgpsd_core.o .libs/netlib.o .libs/ntpshm.o 
+</I>&gt;&gt;<i> .libs/ntrip.o .libs/packet.o .libs/serial.o .libs/srecord.o .libs/strl.o 
+</I>&gt;&gt;<i> .libs/subframe.o .libs/drivers.o .libs/driver_aivdm.o 
+</I>&gt;&gt;<i> .libs/driver_evermore.o .libs/driver_garmin.o .libs/driver_garmin_txt.o 
+</I>&gt;&gt;<i> .libs/driver_italk.o .libs/driver_navcom.o .libs/driver_nmea.o 
+</I>&gt;&gt;<i> .libs/driver_rtcm2.o .libs/driver_rtcm3.o .libs/driver_sirf.o 
+</I>&gt;&gt;<i> .libs/driver_superstar2.o .libs/driver_tsip.o .libs/driver_ubx.o 
+</I>&gt;&gt;<i> .libs/driver_zodiac.o .libs/libgpsmm.o   -lm -lc -lpthread    
+</I>&gt;&gt;<i> -install_name  /usr/local/lib/libgps.18.dylib -compatibility_version 19 
+</I>&gt;&gt;<i> -current_version 19.0 -Wl,-single_module
+</I>&gt;&gt;<i> ld: library not found for -lstdc++
+</I>&gt;&gt;<i> collect2: ld returned 1 exit status
+</I>&gt;&gt;<i> make[1]: *** [libgps.la] Error 1
+</I>&gt;&gt;<i> make[1]: Leaving directory `/private/var/mobile/Documents/dev/gpsd-2.39'
+</I>&gt;&gt;<i> make: *** [all] Error 2
+</I>&gt;&gt;<i> iPod-Romain:/User/Documents/dev/gpsd-2.39 mobile$
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> it seems to come from my environment...
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> Romain
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> Romain Quidet a &#233;crit :
+</I>&gt;&gt;<i>   
+</I>&gt;&gt;<i>     
+</I>&gt;&gt;&gt;<i> hello,
+</I>&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;<i> I succeeded in getting ./configure to work
+</I>&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;<i> the make reports me an error :
+</I>&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;<i> libtool: compile:  gcc -DHAVE_CONFIG_H -I. -g -O2 -Wall -Wcast-align 
+</I>&gt;&gt;&gt;<i> -Wmissing-declarations -Wmissing-prototypes -Wstrict-prototypes 
+</I>&gt;&gt;&gt;<i> -Wpointer-arith -Wreturn-type -D_GNU_SOURCE -MT libgpsd_core.lo -MD -MP 
+</I>&gt;&gt;&gt;<i> -MF .deps/libgpsd_core.Tpo -c libgpsd_core.c  -fno-common -DPIC -o 
+</I>&gt;&gt;&gt;<i> .libs/libgpsd_core.o
+</I>&gt;&gt;&gt;<i> libgpsd_core.c: In function 'gpsd_switch_driver':
+</I>&gt;&gt;&gt;<i> libgpsd_core.c:50: error: 'const struct gps_type_t' has no member named 
+</I>&gt;&gt;&gt;<i> 'min_cycle'
+</I>&gt;&gt;&gt;<i> libgpsd_core.c: In function 'gpsd_error_model':
+</I>&gt;&gt;&gt;<i> libgpsd_core.c:606: warning: implicit declaration of function 'finite'
+</I>&gt;&gt;&gt;<i> make[1]: *** [libgpsd_core.lo] Error 1
+</I>&gt;&gt;&gt;<i> make[1]: Leaving directory `/private/var/mobile/Documents/dev/gpsd-2.39'
+</I>&gt;&gt;&gt;<i> make: *** [all] Error 2
+</I>&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;<i> can you help me about that error ?
+</I>&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;<i> I disabled the reconfiguration as there was a bug in my holux gps device 
+</I>&gt;&gt;&gt;<i> (I discovered it 2years ago with the team).
+</I>&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;<i> min_cycle seems to be in the reconfiguration define, but is use without 
+</I>&gt;&gt;&gt;<i> border in the code...
+</I>&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;<i> Thanks!
+</I>&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;<i> romain
+</I>&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;<i> _______________________________________________
+</I>&gt;&gt;&gt;<i> Gpsd-users mailing list
+</I>&gt;&gt;&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">Gpsd-users at lists.berlios.de</A>
+</I>&gt;&gt;&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">https://lists.berlios.de/mailman/listinfo/gpsd-users</A>
+</I>&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;<i>   
+</I>&gt;&gt;&gt;<i>     
+</I>&gt;&gt;&gt;<i>       
+</I>&gt;&gt;<i> _______________________________________________
+</I>&gt;&gt;<i> Gpsd-users mailing list
+</I>&gt;&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">Gpsd-users at lists.berlios.de</A>
+</I>&gt;&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">https://lists.berlios.de/mailman/listinfo/gpsd-users</A>
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i>   
+</I>&gt;&gt;<i>     
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i> _______________________________________________
+</I>&gt;<i> Gpsd-users mailing list
+</I>&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">Gpsd-users at lists.berlios.de</A>
+</I>&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">https://lists.berlios.de/mailman/listinfo/gpsd-users</A>
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i>   
+</I>
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="003820.html">[Gpsd-users] compiling gpsd on ipod touch
+</A></li>
+	<LI>Next message: <A HREF="003822.html">[Gpsd-users] compiling gpsd on ipod touch
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3821">[ date ]</a>
+              <a href="thread.html#3821">[ thread ]</a>
+              <a href="subject.html#3821">[ subject ]</a>
+              <a href="author.html#3821">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

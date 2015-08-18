@@ -1,0 +1,151 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] Week Number issue
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2011-February/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Week%20Number%20issue&In-Reply-To=%3C20110227202114.5af734be%40yendi%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="005069.html">
+   <LINK REL="Next"  HREF="005073.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] Week Number issue</H1>
+    <B>Charles Curley</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Week%20Number%20issue&In-Reply-To=%3C20110227202114.5af734be%40yendi%3E"
+       TITLE="[Gpsd-users] Week Number issue">charlescurley at charlescurley.com
+       </A><BR>
+    <I>Mon Feb 28 04:21:14 CET 2011</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="005069.html">[Gpsd-users] Week Number issue
+</A></li>
+        <LI>Next message: <A HREF="005073.html">[Gpsd-users] Week Number issue
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#5071">[ date ]</a>
+              <a href="thread.html#5071">[ thread ]</a>
+              <a href="subject.html#5071">[ subject ]</a>
+              <a href="author.html#5071">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>On Sun, 27 Feb 2011 01:03:30 -0500
+Eric Raymond &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">esr at thyrsus.com</A>&gt; wrote:
+
+&gt;<i> &gt; I also conjecture that gpsd sets the week correctly when it first
+</I>&gt;<i> &gt; fires up or first sees a receiver, but not on re-plugging the same
+</I>&gt;<i> &gt; receiver (or type of receiver).  
+</I>&gt;<i> 
+</I>&gt;<i> I regret to tell you that gpsd doesn't try to set the week itself.
+</I>
+Sorry, I was not using precise terminology.
+
+For lack of a better term in your discussion, I'm going to show off my
+knowledge of things medieval and byzantine and swipe the term
+&quot;indiction&quot; to refer to the 19.6 year interval.
+<A HREF="http://en.wikipedia.org/wiki/Indiction.">http://en.wikipedia.org/wiki/Indiction.</A> So what I meant was that I get
+the correct indiction on first firing up the daemon and receiver, but
+not thereafter. The week number is correct, it's just that we are
+assuming the wrong indiction.
+
+&gt;<i> It
+</I>&gt;<i> does use the daemon start time to deduce what rollover period, year,
+</I>&gt;<i> and century it started in, but this information is used only to
+</I>&gt;<i> compensate for rollovers and year or century transitions that happen
+</I>&gt;<i> *while the daemon is running*.
+</I>
+It doesn't seem to be doing that, since the daemon is running
+continuously even during the time the receiver is unplugged. I
+conjecture that the daemon doesn't maintain an internal clock. Even if
+the system clock were wrong, you could still use it to time intervals
+closely enough to get back in synch once the receiver did re-appear.
+
+&gt;<i> 
+</I>&gt;<i> I did consider trying to write code to deduce when a time reported
+</I>&gt;<i> after cold or warm boot is incorrect. In fact I gave this problem
+</I>&gt;<i> concentrated attention for about two weeks.  I concluded that trying 
+</I>&gt;<i> to &quot;fix&quot; it was a bad idea, as all the disambiguation methods I
+</I>&gt;<i> could come up with were both inadequate for most cases or seemed
+</I>&gt;<i> prone to weird bugs in edge cases or both (usually both, in fact).
+</I>&gt;<i> 
+</I>&gt;<i> Some of my travails are described here: <A HREF="http://esr.ibiblio.org/?p=2882">http://esr.ibiblio.org/?p=2882</A>
+</I>
+I read that, its predecessor, and many of the comments. I'm not sure you
+are stating the problem *as it applies to gpsd* correctly. I think even
+if the system clock is wrong, you may still find it useful. You could
+assume it is correct to within the indiction, i.e. +/- a semi-indiction.
+So you are either in indiction N or indiction N+1. The week number tells
+you which one.
+
+You can still use the gps time to set the system clock, just make sure
+you know which indiction you are in before you do.
+
+If your system clock is off by more than that, human observation will
+tell you so, and you have other problems.
+
+&gt;<i> 
+</I>&gt;<i> &gt; I would be glad to write a braindead client in Perl to check for
+</I>&gt;<i> &gt; this (and verify the 19.6 year conjecture), but I expect you would
+</I>&gt;<i> &gt; prefer that in Python.  
+</I>&gt;<i> 
+</I>&gt;<i> Nah.  I believe your report. Got some similar tire tracks in my back.
+</I>
+I was thinking of adding it to the live testing tools.
+
+&gt;<i>  
+</I>&gt;<i> &gt; Any suggestions on how to proceed, other than buy a new receiver
+</I>&gt;<i> &gt; capable of dealing with a 13 bit week number?  
+</I>&gt;<i> 
+</I>&gt;<i> Don't trust your GPS date.  Time is generally accurate, because GPS
+</I>&gt;<i> TOW isn't subject to rollover effects.
+</I>
+I take it TOW is Time of the Week, i.e. seconds since week rollover.
+
+Position, as far as I can tell, is also accurate. If I understand
+correctly how the GPS works, that is as it should be. I'd want reports
+from other observers far from me before I were confident of that,
+though.
+
+If I trusted my GPS date, I wouldn't have reported the observations or
+the problem. I'd be complimenting myself on being well preserved for my
+age, except for the one time when I got a GPS year in the early 1900s.
+And I'd be confusing the hell out of my friends, creditors and bank.
+
+-- 
+
+Charles Curley                  /&quot;\    ASCII Ribbon Campaign
+Looking for fine software       \ /    Respect for open standards
+and/or writing?                  X     No HTML/RTF in email
+<A HREF="http://www.charlescurley.com">http://www.charlescurley.com</A>    / \    No M$ Word docs in email
+
+Key fingerprint = CE5C 6645 A45A 64E4 94C0  809C FFF6 4C48 4ECD DFDB
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="005069.html">[Gpsd-users] Week Number issue
+</A></li>
+	<LI>Next message: <A HREF="005073.html">[Gpsd-users] Week Number issue
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#5071">[ date ]</a>
+              <a href="thread.html#5071">[ thread ]</a>
+              <a href="subject.html#5071">[ subject ]</a>
+              <a href="author.html#5071">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

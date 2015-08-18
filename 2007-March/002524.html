@@ -1,0 +1,91 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] gpslib stops yielding data
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2007-March/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20gpslib%20stops%20yielding%20data&In-Reply-To=%3C20070328063652.GA12321%40thyrsus.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="002502.html">
+   <LINK REL="Next"  HREF="002527.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] gpslib stops yielding data</H1>
+    <B>Eric S. Raymond</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20gpslib%20stops%20yielding%20data&In-Reply-To=%3C20070328063652.GA12321%40thyrsus.com%3E"
+       TITLE="[Gpsd-users] gpslib stops yielding data">esr at thyrsus.com
+       </A><BR>
+    <I>Wed Mar 28 08:36:52 CEST 2007</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="002502.html">[Gpsd-users] gpslib stops yielding data
+</A></li>
+        <LI>Next message: <A HREF="002527.html">[Gpsd-users] gpslib stops yielding data
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2524">[ date ]</a>
+              <a href="thread.html#2524">[ thread ]</a>
+              <a href="subject.html#2524">[ subject ]</a>
+              <a href="author.html#2524">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Yang &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">wtfc2m902 at sneakemail.com</A>&gt;:
+&gt;<i> I wrote a simple C++ program, pasted below, which uses libgps'
+</I>&gt;<i> set_callback. However, after running for some time, it stops producing
+</I>&gt;<i> output (no more callbacks). Another connection or command to gpsd
+</I>&gt;<i> seems to make the callbacks resume again.
+</I>&gt;<i> 
+</I>&gt;<i> This has happened to me twice (in one day of usage). The first time, I
+</I>&gt;<i> figured something was wrong, so I asked my colleague to check it out.
+</I>&gt;<i> He telnet-ed in (from his own terminal), entered 'r', and I saw my
+</I>&gt;<i> program resume (on my terminal). We hadn't made the connection at that
+</I>&gt;<i> point. The second time (several minutes after it resumed), I thought
+</I>&gt;<i> it would resume on its own, but after several hours, I tried
+</I>&gt;<i> telnet+'r' myself, and that's when I realized what was happening. FWIW
+</I>&gt;<i> (not much with just 2 data ponits), each time a hangup happened, the
+</I>&gt;<i> last one or two gps_data_t had online==0. I haven't since seen another
+</I>&gt;<i> hangup, but I also haven't seen another message where online==0.
+</I>&gt;<i> 
+</I>&gt;<i> Is this a bug in libgps or gpsd? How can I work around this? Should I
+</I>&gt;<i> use a periodic gps_query instead? I'm using gpsd 2.34 on FC5.
+</I>
+This doesn't match any bug known to us.  It sounds to me like some kind of 
+buffering-related stallout on the client side.  The C++ binding was
+contributed by a user and hasn't been tested as thoroughly as one
+might like.
+
+You might try running gpsd in foreground with a high debug level and
+watching to see if it emits any suspicious messsages when the stall
+occurs.
+-- 
+		&lt;a href=&quot;<A HREF="http://www.catb.org/~esr/">http://www.catb.org/~esr/</A>&quot;&gt;Eric S. Raymond&lt;/a&gt;
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="002502.html">[Gpsd-users] gpslib stops yielding data
+</A></li>
+	<LI>Next message: <A HREF="002527.html">[Gpsd-users] gpslib stops yielding data
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2524">[ date ]</a>
+              <a href="thread.html#2524">[ thread ]</a>
+              <a href="subject.html#2524">[ subject ]</a>
+              <a href="author.html#2524">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

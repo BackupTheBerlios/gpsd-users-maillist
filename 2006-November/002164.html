@@ -1,0 +1,87 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] Problem with gpsd.c
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2006-November/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Problem%20with%20gpsd.c&In-Reply-To=%3C200611051600.57593.mick.durkin%40napierdeltic.demon.co.uk%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="002163.html">
+   <LINK REL="Next"  HREF="002165.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] Problem with gpsd.c</H1>
+    <B>mick</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Problem%20with%20gpsd.c&In-Reply-To=%3C200611051600.57593.mick.durkin%40napierdeltic.demon.co.uk%3E"
+       TITLE="[Gpsd-users] Problem with gpsd.c">mick.durkin at napierdeltic.demon.co.uk
+       </A><BR>
+    <I>Sun Nov  5 15:00:57 CET 2006</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="002163.html">[Gpsd-users] Suspected error in ligpsd_core.c
+</A></li>
+        <LI>Next message: <A HREF="002165.html">[Gpsd-users] The state of play
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2164">[ date ]</a>
+              <a href="thread.html#2164">[ thread ]</a>
+              <a href="subject.html#2164">[ subject ]</a>
+              <a href="author.html#2164">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi,
+
+In /* $Id: gpsd.c 3781 2006-11-02 20:43:23Z ckuethe $ */ there seems to be a 
+problem which prevents compilation if the --disable-reconfigure option is 
+chosen. It appears gpsd.c and gpsd.h don't have matching #ifdef blocks for 
+this option.
+
+Here is a proposed patch to fix it.
+
+--- ../trunk/gpsd.c 2006-11-04 21:18:23.000000000 +0200
++++ ../micks/gpsd.c     2006-11-05 15:50:08.000000000 +0200
+@@ -77,7 +77,9 @@
+ static jmp_buf restartbuf;
+ /*@ -initallelements -nullassign -nullderef @*/
+ static struct gps_context_t context = {
++#ifdef ALLOW_RECONFIGURE
+     .enable_reconfigure = true,
++#endif /* ALLOW_RECONFIGURE */
+     .valid              = 0,
+     .sentdgps           = false,
+     .dgnss_service      = dgnss_none,
+
+
+BR
+
+Mick Durkin
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="002163.html">[Gpsd-users] Suspected error in ligpsd_core.c
+</A></li>
+	<LI>Next message: <A HREF="002165.html">[Gpsd-users] The state of play
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2164">[ date ]</a>
+              <a href="thread.html#2164">[ thread ]</a>
+              <a href="subject.html#2164">[ subject ]</a>
+              <a href="author.html#2164">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

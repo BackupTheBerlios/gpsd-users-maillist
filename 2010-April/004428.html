@@ -1,0 +1,153 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] Bluetooth issues (was: Re: Preparing for 2.93	point release)
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2010-April/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Bluetooth%20issues%20%28was%3A%20Re%3A%20Preparing%20for%202.93%0A%09point%20release%29&In-Reply-To=%3Ci2h2196fd761004251612v8392ff8ew841ff597232d426f%40mail.gmail.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="004426.html">
+   <LINK REL="Next"  HREF="004435.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] Bluetooth issues (was: Re: Preparing for 2.93	point release)</H1>
+    <B>Ji&#345;&#237; Techet</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Bluetooth%20issues%20%28was%3A%20Re%3A%20Preparing%20for%202.93%0A%09point%20release%29&In-Reply-To=%3Ci2h2196fd761004251612v8392ff8ew841ff597232d426f%40mail.gmail.com%3E"
+       TITLE="[Gpsd-users] Bluetooth issues (was: Re: Preparing for 2.93	point release)">techet at gmail.com
+       </A><BR>
+    <I>Mon Apr 26 01:12:27 CEST 2010</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="004426.html">[Gpsd-users] Bluetooth issues (was: Re: Preparing for 2.93	point release)
+</A></li>
+        <LI>Next message: <A HREF="004435.html">[Gpsd-users] Bluetooth issues (was: Re: Preparing for 2.93	point release)
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#4428">[ date ]</a>
+              <a href="thread.html#4428">[ thread ]</a>
+              <a href="subject.html#4428">[ subject ]</a>
+              <a href="author.html#4428">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>On Sat, Apr 24, 2010 at 11:00, Eric Raymond &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">esr at thyrsus.com</A>&gt; wrote:
+&gt;<i> Ji&#345;&#237; Techet &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">techet at gmail.com</A>&gt;:
+</I>&gt;&gt;<i> On Fri, Apr 23, 2010 at 08:00, Eric Raymond &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">esr at thyrsus.com</A>&gt; wrote:
+</I>&gt;&gt;<i> Hmm, I'm not quite sure what's so hard to understand about this - if
+</I>&gt;&gt;<i> you look at the interface sample I gave, I mean these two lines:
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> self.sock = socket.socket(af, socktype, proto)
+</I>&gt;&gt;<i> self.sock.connect(sa) &#160;# &lt;-- TALKING ABOUT THIS CONNECT - NORMAL
+</I>&gt;&gt;<i> TCP/IP CONNECTION :-)
+</I>&gt;<i>
+</I>&gt;<i> OK, that's what I was trying to pin down.
+</I>&gt;<i>
+</I>&gt;&gt;<i> And why couldn't it be in the order 4, 1, 2? What I would like to see is:
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> 1. gpsd daemon is running, client application is started, connects
+</I>&gt;&gt;<i> (hope it's clear now) gpsd, issues WATCH.
+</I>&gt;&gt;<i> 2. like your 2 above
+</I>&gt;&gt;<i> 3. gpsd checks if some clients are watching. If not, it only adds the
+</I>&gt;&gt;<i> device into its pool. If someone is watching (and if he isn't watching
+</I>&gt;&gt;<i> a different device), start sending him data from the device.
+</I>&gt;<i>
+</I>&gt;<i> But....that *is* how it works. &#160;Or at least, how I designed it to work,
+</I>&gt;<i> and how it seems to work when I test it. &#160;I am deeply confused now.
+</I>&gt;<i>
+</I>&gt;&gt;<i> Or I'll try to tell it from the perspective of a user of say GPS
+</I>&gt;&gt;<i> navigation application:
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> 1. User starts the application (which internally does the same as in
+</I>&gt;&gt;<i> step 1 above)
+</I>&gt;&gt;<i> 2. He starts his GPS device - his position will start updating
+</I>&gt;&gt;<i> 3. An interference comes so the bluetooth connection gets lost - his
+</I>&gt;&gt;<i> position isn't updated any more
+</I>&gt;&gt;<i> 4. The bluetooth connection gets reestablished after a while - the
+</I>&gt;&gt;<i> position starts updating again
+</I>&gt;&gt;<i> 5. The user turns off his bluetooth GPS device - his position isn't
+</I>&gt;&gt;<i> updated any more
+</I>&gt;&gt;<i> 6. The user connects his USB GPS device - &#160;the position starts updating again
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> &gt;From your description, this isn't possible now - you have to reissue
+</I>&gt;&gt;<i> WATCH after 2, 4 and 6 in order to get updates again (and looks like
+</I>&gt;&gt;<i> some remains of the pull interface where you have to issue a command
+</I>&gt;&gt;<i> first in order to get some data).
+</I>&gt;<i>
+</I>&gt;<i> No. &#160;You only have to issue WATCH once. &#160;The way to think about it is
+</I>&gt;<i> that whenever one or more WATCHES is active, gpsd wants to have every
+</I>&gt;<i> device in its pool open. &#160;Whenever the hotplug system tells it one has
+</I>&gt;<i> gone live, it tries to open the device and stream reports from it to
+</I>&gt;<i> everybody.
+</I>&gt;<i>
+</I>&gt;<i> I talked about a race condition before because gpsd will throw a device
+</I>&gt;<i> out of its pool if a read from it fails.
+</I>&gt;<i>
+</I>&gt;<i> If all client sessions close, then gpsd revets to putting devices
+</I>&gt;<i> it's notified about in its pool without trying to open them.
+</I>&gt;<i>
+</I>&gt;&gt;<i> Is there some technical problem implementing this behaviour? From what
+</I>&gt;&gt;<i> you say it seems that gpsd gets informed when the device gets
+</I>&gt;&gt;<i> available so I don't see a reason why, when some clients are still
+</I>&gt;&gt;<i> connected and watching, the clients couldn't start receiving data from
+</I>&gt;&gt;<i> the device (after first receiving the DEVICE message). This is
+</I>&gt;&gt;<i> actually what I expected would happen even from the documentation.
+</I>&gt;<i>
+</I>&gt;<i> Yes, that's how it's supposed to work. &#160;If it's not working that
+</I>&gt;<i> way for you we need to fugure out why.
+</I>
+No, it doesn't work that way - good to hear it's a bug after all :-).
+If I'm listening on the port and issue WATCH before the device is
+started, I never get data from gpsd (until I re-issue WATCH when after
+the device is started).
+
+So I have been experimenting with it a bit and there is one
+interesting thing. The GPS device has a LED indicator that shows
+whether it is communicating with PC (I actually don't know exactly
+what this means - whether the fact that bluetooth connection was
+established or that it is sending data or something else). What
+happens when the device is started after WATCH is sent is that it
+indicates that it is disconnected. However when you send WATCH again,
+it starts indicating connected and starts sending data.
+
+Aren't you doing something special related to the device when WATCH is
+sent? It looks like WATCH performs some connection or device
+initialization and only when this happens, it starts sending data. If
+you do something like that, you should do it also in the case when
+some watching clients are connected and a device is detected and added
+to the pool - and it seems this doesn't happen right now.
+
+Jiri
+
+
+&gt;<i> --
+</I>&gt;<i> &#160; &#160; &#160; &#160; &#160; &#160; &#160; &#160;&lt;a href=&quot;<A HREF="http://www.catb.org/~esr/">http://www.catb.org/~esr/</A>&quot;&gt;Eric S. Raymond&lt;/a&gt;
+</I>&gt;<i>
+</I>
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="004426.html">[Gpsd-users] Bluetooth issues (was: Re: Preparing for 2.93	point release)
+</A></li>
+	<LI>Next message: <A HREF="004435.html">[Gpsd-users] Bluetooth issues (was: Re: Preparing for 2.93	point release)
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#4428">[ date ]</a>
+              <a href="thread.html#4428">[ thread ]</a>
+              <a href="subject.html#4428">[ subject ]</a>
+              <a href="author.html#4428">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

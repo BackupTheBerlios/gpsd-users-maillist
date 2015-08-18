@@ -1,0 +1,101 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] ntp pps with garmin 18lvc
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2006-January/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20ntp%20pps%20with%20garmin%2018lvc&In-Reply-To=%3C1137519490l.25332l.0l%40oyster.stnhbr.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="001230.html">
+   <LINK REL="Next"  HREF="001220.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] ntp pps with garmin 18lvc</H1>
+    <B>Tim Cwik</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20ntp%20pps%20with%20garmin%2018lvc&In-Reply-To=%3C1137519490l.25332l.0l%40oyster.stnhbr.com%3E"
+       TITLE="[Gpsd-users] ntp pps with garmin 18lvc">tcwik at stnhbr.com
+       </A><BR>
+    <I>Tue Jan 17 18:38:10 CET 2006</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="001230.html">[Gpsd-users] a slightly obvious question...
+</A></li>
+        <LI>Next message: <A HREF="001220.html">[Gpsd-users] ntp pps with garmin 18lvc
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1219">[ date ]</a>
+              <a href="thread.html#1219">[ thread ]</a>
+              <a href="subject.html#1219">[ subject ]</a>
+              <a href="author.html#1219">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Is anyone using the gpsd pps driver to feed ntpd?
+
+I am using gpsd 2.30 built with --enable-pps and a garmin 18lvc receiver.
+gpsd works as normal. ntpq reports
+ntpq&gt; peers
+      remote           refid      st t when poll reach   delay   offset  jitter
+==============================================================================
+*SHM(0)          .GPS.            0 l    4   16  377    0.000  -22.778   8.831
+  SHM(1)          .GPS1.           0 l    -   16    0    0.000    0.000 4000.00
+ntpq&gt; asso
+
+ind assID status  conf reach auth condition  last_event cnt
+===========================================================
+   1 24484  9634   yes   yes  none  sys.peer   reachable  3
+   2 24485  8000   yes   yes  none    reject
+
+With debugging -D5, the log contains:
+Jan 17 11:55:17 octopus gpsd[6950]: gpsd: Satellite data OK.
+Jan 17 11:55:17 octopus gpsd[6950]: gpsd: carrier-detect on /dev/ttyS0 changed  
+to 1
+Jan 17 11:55:17 octopus gpsd[6950]: gpsd: ntpshm_pps: lost PPS lock
+Jan 17 11:55:17 octopus gpsd[6950]: gpsd: polling 5
+Jan 17 11:55:17 octopus gpsd[6950]: gpsd: polling 5
+Jan 17 11:55:17 octopus gpsd[6950]: gpsd: carrier-detect on /dev/ttyS0 changed  
+to 0
+Jan 17 11:55:17 octopus gpsd[6950]: gpsd: polling 5
+
+This repeats every second.
+
+Does anyone have any thoughts on how to keep the PPS locked. I assume this is  
+necessary to use PPS to discipline the ntpd system.
+
+Thanks,
+Tim
+
+-- 
+Tim Cwik
+<A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">tcwik at stnhbr.com</A>                            spamtrap: <A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">tjc123 at stnhbr.com</A>
+Voice: 609-368-2482                         Fax: 609-368-3695
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="001230.html">[Gpsd-users] a slightly obvious question...
+</A></li>
+	<LI>Next message: <A HREF="001220.html">[Gpsd-users] ntp pps with garmin 18lvc
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1219">[ date ]</a>
+              <a href="thread.html#1219">[ thread ]</a>
+              <a href="subject.html#1219">[ subject ]</a>
+              <a href="author.html#1219">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

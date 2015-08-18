@@ -1,0 +1,273 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] gpsd can not find device garminGPS60
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2009-May/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20gpsd%20can%20not%20find%20device%20garminGPS60&In-Reply-To=%3C14377A5C-FA16-4587-ADA3-906F4FF8A096%40gmail.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="003742.html">
+   <LINK REL="Next"  HREF="003744.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] gpsd can not find device garminGPS60</H1>
+    <B>TheMrOrange</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20gpsd%20can%20not%20find%20device%20garminGPS60&In-Reply-To=%3C14377A5C-FA16-4587-ADA3-906F4FF8A096%40gmail.com%3E"
+       TITLE="[Gpsd-users] gpsd can not find device garminGPS60">themrorange at gmail.com
+       </A><BR>
+    <I>Tue May 19 19:03:23 CEST 2009</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="003742.html">[Gpsd-users] gpsd can not find device garminGPS60
+</A></li>
+        <LI>Next message: <A HREF="003744.html">[Gpsd-users] Garmin GPS 60 USB - real time acquisition
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3743">[ date ]</a>
+              <a href="thread.html#3743">[ thread ]</a>
+              <a href="subject.html#3743">[ subject ]</a>
+              <a href="author.html#3743">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>I've downloaded the complete packet (<A HREF="http://prdownload.berlios.de/gpsd/gpsd-2.39.tar.gz">http://prdownload.berlios.de/gpsd/gpsd-2.39.tar.gz</A> 
+) insted install from synaptic.
+./configure
+make
+make install
+system tell command not found for gpscat
+
+
+to see if gps device is sending data through USB I tried:
+# mount -t debufs none debugs /sys/kernel/debug
+# modprobe usbmon
+# cat /sys/kernel/debug/usbmon/0u
+  no message displayed
+
+
+
+
+
+On 19/mag/09, at 17:07, Andrew D Kirch wrote:
+
+&gt;<i> Try using gpscat (part of GPSd) to go through the ttyS[0-9] with 4800
+</I>&gt;<i> 8n1.  This would be a good start for finding a GPS data stream.
+</I>&gt;<i>
+</I>&gt;<i> Andrew
+</I>&gt;<i>
+</I>&gt;<i> TheMrOrange wrote:
+</I>&gt;&gt;<i> I've some problems using Garmin GPS60 on Ubuntu 8.10
+</I>&gt;&gt;<i> I would like to capture packets from GPS in realtime but I can't find
+</I>&gt;&gt;<i> the device in /dev
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> ttyUSB0 is not present inside /dev/ so I tried tty0, ttyS0 and others
+</I>&gt;&gt;<i> but output is almost the same
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> # gpsd -N -D 6 /dev/ttyS0
+</I>&gt;&gt;<i> gpsd: launching (Version 2.37)
+</I>&gt;&gt;<i> gpsd: listening on port gpsd
+</I>&gt;&gt;<i> gpsd: shmat(0,0,0) succeeded
+</I>&gt;&gt;<i> gpsd: shmat(0,0,0) succeeded
+</I>&gt;&gt;<i> gpsd: shmat(0,0,0) succeeded
+</I>&gt;&gt;<i> gpsd: shmat(0,0,0) succeeded
+</I>&gt;&gt;<i> gpsd: successfully connected to the DBUS system bus
+</I>&gt;&gt;<i> gpsd: running with effective group ID 0
+</I>&gt;&gt;<i> gpsd: running with effective user ID 0
+</I>&gt;&gt;<i> gpsd: opening GPS data source at '/dev/ttyS0'
+</I>&gt;&gt;<i> gpsd: speed 9600, 8N1
+</I>&gt;&gt;<i> gpsd: =&gt; GPS: $PASHQ,RID*28\x0d
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> gpsd: Navcom: command dump: 0299661c0800040200001203
+</I>&gt;&gt;<i> gpsd: =&gt; GPS: 0299661c0800040200001203
+</I>&gt;&gt;<i> gpsd: Navcom: sent command 0x1c (Test Support Block)
+</I>&gt;&gt;<i> gpsd: Navcom: command 0x1c mode = 02, length = 0
+</I>&gt;&gt;<i> gpsd: Navcom: command dump: 029966200e000001ae02000071000000f203
+</I>&gt;&gt;<i> gpsd: =&gt; GPS: 029966200e000001ae02000071000000f203
+</I>&gt;&gt;<i> gpsd: Navcom: sent command 0x20 (Data Request) - data block id = ae  
+</I>&gt;&gt;<i> at
+</I>&gt;&gt;<i> rate 00
+</I>&gt;&gt;<i> gpsd: Navcom: command dump: 029966200e00000186020a0071000000d003
+</I>&gt;&gt;<i> gpsd: =&gt; GPS: 029966200e00000186020a0071000000d003
+</I>&gt;&gt;<i> gpsd: Navcom: sent command 0x20 (Data Request) - data block id = 86  
+</I>&gt;&gt;<i> at
+</I>&gt;&gt;<i> rate 0a
+</I>&gt;&gt;<i> gpsd: garmin_gps not active.
+</I>&gt;&gt;<i> gpsd: no probe matched...
+</I>&gt;&gt;<i> gpsd: gpsd_activate(0): opened GPS (5)
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> # gpsd -N -D 6 /dev/ttyUSB0
+</I>&gt;&gt;<i> psd: launching (Version 2.37)
+</I>&gt;&gt;<i> gpsd: listening on port gpsd
+</I>&gt;&gt;<i> gpsd: shmat(0,0,0) succeeded
+</I>&gt;&gt;<i> gpsd: shmat(0,0,0) succeeded
+</I>&gt;&gt;<i> gpsd: shmat(0,0,0) succeeded
+</I>&gt;&gt;<i> gpsd: shmat(0,0,0) succeeded
+</I>&gt;&gt;<i> gpsd: successfully connected to the DBUS system bus
+</I>&gt;&gt;<i> gpsd: running with effective group ID 0
+</I>&gt;&gt;<i> gpsd: running with effective user ID 0
+</I>&gt;&gt;<i> gpsd: opening GPS data source at '/dev/ttyUSB0'
+</I>&gt;&gt;<i> gpsd: device open failed: No such file or directory - retrying read- 
+</I>&gt;&gt;<i> only
+</I>&gt;&gt;<i> gpsd: read-only device open failed: No such file or directory
+</I>&gt;&gt;<i> gpsd: GPS device /dev/ttyUSB0 nonexistent or can't be read
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> xgps e cgps  can't find GPSdevice but as you can see from dmesg and
+</I>&gt;&gt;<i> lsusb GPS is connected
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> # dmesg
+</I>&gt;&gt;<i> [22793.600226] usb 4-1: USB disconnect, address 5
+</I>&gt;&gt;<i> [22798.800104] usb 4-1: new full speed USB device using uhci_hcd and
+</I>&gt;&gt;<i> address 6
+</I>&gt;&gt;<i> [22798.952314] usb 4-1: configuration #1 chosen from 1 choice
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> /dev/uhci_hcd doesn't exist!
+</I>&gt;&gt;<i> also /dev/ttyUSB0doesn't exist...
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> no others USB device were plugged...
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> I really don't know how to select the device
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> uhci_hcd sound like a problem...
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> # lsusb
+</I>&gt;&gt;<i> Bus 004 Device 003: ID 091e:0003 Garmin International GPSmap (various
+</I>&gt;&gt;<i> models)
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> # lsusb -s 004:003 -vvv
+</I>&gt;&gt;<i> Bus 004 Device 003: ID 091e:0003 Garmin International GPSmap (various
+</I>&gt;&gt;<i> models)
+</I>&gt;&gt;<i> Device Descriptor:
+</I>&gt;&gt;<i>  bLength                18
+</I>&gt;&gt;<i>  bDescriptorType         1
+</I>&gt;&gt;<i>  bcdUSB               1.10
+</I>&gt;&gt;<i>  bDeviceClass          255 Vendor Specific Class
+</I>&gt;&gt;<i>  bDeviceSubClass       255 Vendor Specific Subclass
+</I>&gt;&gt;<i>  bDeviceProtocol       255 Vendor Specific Protocol
+</I>&gt;&gt;<i>  bMaxPacketSize0         8
+</I>&gt;&gt;<i>  idVendor           0x091e Garmin International
+</I>&gt;&gt;<i>  idProduct          0x0003 GPSmap (various models)
+</I>&gt;&gt;<i>  bcdDevice            0.01
+</I>&gt;&gt;<i>  iManufacturer           0
+</I>&gt;&gt;<i>  iProduct                0
+</I>&gt;&gt;<i>  iSerial                 0
+</I>&gt;&gt;<i>  bNumConfigurations      1
+</I>&gt;&gt;<i>  Configuration Descriptor:
+</I>&gt;&gt;<i>    bLength                 9
+</I>&gt;&gt;<i>    bDescriptorType         2
+</I>&gt;&gt;<i>    wTotalLength           39
+</I>&gt;&gt;<i>    bNumInterfaces          1
+</I>&gt;&gt;<i>    bConfigurationValue     1
+</I>&gt;&gt;<i>    iConfiguration          0
+</I>&gt;&gt;<i>    bmAttributes         0xc0
+</I>&gt;&gt;<i>      Self Powered
+</I>&gt;&gt;<i>    MaxPower                0mA
+</I>&gt;&gt;<i>    Interface Descriptor:
+</I>&gt;&gt;<i>      bLength                 9
+</I>&gt;&gt;<i>      bDescriptorType         4
+</I>&gt;&gt;<i>      bInterfaceNumber        0
+</I>&gt;&gt;<i>      bAlternateSetting       0
+</I>&gt;&gt;<i>      bNumEndpoints           3
+</I>&gt;&gt;<i>      bInterfaceClass       255 Vendor Specific Class
+</I>&gt;&gt;<i>      bInterfaceSubClass    255 Vendor Specific Subclass
+</I>&gt;&gt;<i>      bInterfaceProtocol    255 Vendor Specific Protocol
+</I>&gt;&gt;<i>      iInterface              0
+</I>&gt;&gt;<i>      Endpoint Descriptor:
+</I>&gt;&gt;<i>        bLength                 7
+</I>&gt;&gt;<i>        bDescriptorType         5
+</I>&gt;&gt;<i>        bEndpointAddress     0x81  EP 1 IN
+</I>&gt;&gt;<i>        bmAttributes            3
+</I>&gt;&gt;<i>          Transfer Type            Interrupt
+</I>&gt;&gt;<i>          Synch Type               None
+</I>&gt;&gt;<i>          Usage Type               Data
+</I>&gt;&gt;<i>        wMaxPacketSize     0x0040  1x 64 bytes
+</I>&gt;&gt;<i>        bInterval               1
+</I>&gt;&gt;<i>      Endpoint Descriptor:
+</I>&gt;&gt;<i>        bLength                 7
+</I>&gt;&gt;<i>        bDescriptorType         5
+</I>&gt;&gt;<i>        bEndpointAddress     0x02  EP 2 OUT
+</I>&gt;&gt;<i>        bmAttributes            2
+</I>&gt;&gt;<i>          Transfer Type            Bulk
+</I>&gt;&gt;<i>          Synch Type               None
+</I>&gt;&gt;<i>          Usage Type               Data
+</I>&gt;&gt;<i>        wMaxPacketSize     0x0040  1x 64 bytes
+</I>&gt;&gt;<i>        bInterval               0
+</I>&gt;&gt;<i>      Endpoint Descriptor:
+</I>&gt;&gt;<i>        bLength                 7
+</I>&gt;&gt;<i>        bDescriptorType         5
+</I>&gt;&gt;<i>        bEndpointAddress     0x83  EP 3 IN
+</I>&gt;&gt;<i>        bmAttributes            2
+</I>&gt;&gt;<i>          Transfer Type            Bulk
+</I>&gt;&gt;<i>          Synch Type               None
+</I>&gt;&gt;<i>          Usage Type               Data
+</I>&gt;&gt;<i>        wMaxPacketSize     0x0008  1x 8 bytes
+</I>&gt;&gt;<i>        bInterval               0
+</I>&gt;&gt;<i> Device Status:     0x0001
+</I>&gt;&gt;<i>  Self Powered
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> help
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> How can select the correct device and how I can understand if is
+</I>&gt;&gt;<i> correct?
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> MrOrange
+</I>&gt;&gt;<i> _______________________________________________
+</I>&gt;&gt;<i> Gpsd-users mailing list
+</I>&gt;&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">Gpsd-users at lists.berlios.de</A>
+</I>&gt;&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">https://lists.berlios.de/mailman/listinfo/gpsd-users</A>
+</I>&gt;&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i> _______________________________________________
+</I>&gt;<i> Gpsd-users mailing list
+</I>&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">Gpsd-users at lists.berlios.de</A>
+</I>&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">https://lists.berlios.de/mailman/listinfo/gpsd-users</A>
+</I>
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="003742.html">[Gpsd-users] gpsd can not find device garminGPS60
+</A></li>
+	<LI>Next message: <A HREF="003744.html">[Gpsd-users] Garmin GPS 60 USB - real time acquisition
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3743">[ date ]</a>
+              <a href="thread.html#3743">[ thread ]</a>
+              <a href="subject.html#3743">[ subject ]</a>
+              <a href="author.html#3743">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

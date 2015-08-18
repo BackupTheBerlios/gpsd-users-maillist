@@ -1,0 +1,130 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] Release of 2.35 is imminent
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2007-December/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Release%20of%202.35%20is%20imminent&In-Reply-To=%3C20071211201723.539f023b.hamish_nospam%40yahoo.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="002984.html">
+   <LINK REL="Next"  HREF="002986.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] Release of 2.35 is imminent</H1>
+    <B>Hamish</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Release%20of%202.35%20is%20imminent&In-Reply-To=%3C20071211201723.539f023b.hamish_nospam%40yahoo.com%3E"
+       TITLE="[Gpsd-users] Release of 2.35 is imminent">hamish_nospam at yahoo.com
+       </A><BR>
+    <I>Tue Dec 11 08:17:23 CET 2007</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="002984.html">[Gpsd-users] Release of 2.35 is imminent
+</A></li>
+        <LI>Next message: <A HREF="002986.html">[Gpsd-users] Release of 2.35 is imminent
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2985">[ date ]</a>
+              <a href="thread.html#2985">[ thread ]</a>
+              <a href="subject.html#2985">[ subject ]</a>
+              <a href="author.html#2985">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Eric wrote:
+&gt;<i> We've had considerable success, and release of 2.35 is now imminent.
+</I>...
+&gt;<i> If you have any last-minute, fixes, send them *now*.
+</I>
+
+Any thoughts on the applicability of this patch?
+  <A HREF="https://lists.berlios.de/pipermail/gpsd-users/2007-October/002937.html">https://lists.berlios.de/pipermail/gpsd-users/2007-October/002937.html</A>
+
+... it seems the mailing list strips off attachments?! argh, I have had a
+proper hard drive head crash since then &amp; lost my local dev copy of it and
+my field copy is on a boat some distance away.
+
+
+Subject: [Gpsd-users] patch for cgpxlogger.c
+&gt;<i> Here is a small patch for cgpxlogger.c  (against latest SVN)
+</I>&gt;<i>
+</I>&gt;<i> it does two things-
+</I>&gt;<i> 
+</I>&gt;<i> * decide to output timestamp based on if the GPS has a valid fix, not if
+</I>&gt;<i> it knows what satellites are in the sky. Like several other GPSs, our
+</I>&gt;<i> Furuno GP-31 doesn't ship GSA.
+</I>&gt;<i> <A HREF="http://www.furuno.com/Furuno/Doc/0/5OS1KKAL2OP434ND790LNUEPEB/GP31-GP36%20Operator%27s%20Manual%20%20k.pdf">http://www.furuno.com/Furuno/Doc/0/5OS1KKAL2OP434ND790LNUEPEB/GP31-GP36%20Operator%27s%20Manual%20%20k.pdf</A>
+</I>&gt;<i> 
+</I>&gt;<i> * output lat/lon doubles as %.7f. RTK will get you a position within 2mm
+</I>&gt;<i> in the horizontal. I speculate the vertical to be an order of magnitude
+</I>&gt;<i> worse, ~2cm, which is ok as elevation is already given at %.2f.
+</I>&gt;<i>  1852m/naut mi. * 60nm/deg_lat * %.6f = 11cm.  (* %.7f = 1.1cm)
+</I>
+
+the gist of the patch is this:  (untested/from memory, but simple)
+
+--- cgpxlogger.c.SVN    2007-12-11 19:07:44.000000000 +1300
++++ cgpxlogger.c        2007-12-11 19:15:38.000000000 +1300
+@@ -203,8 +203,8 @@
+ 
+ void write_record(struct gps_data_t *gpsdata){
+        track_start();
+-       printf(&quot;      &lt;trkpt lat=\&quot;%.6f\&quot; &quot;, gpsdata-&gt;fix.latitude );
+-       printf(&quot;lon=\&quot;%.6f\&quot;&gt;\n&quot;, gpsdata-&gt;fix.longitude );
++       printf(&quot;      &lt;trkpt lat=\&quot;%.7f\&quot; &quot;, gpsdata-&gt;fix.latitude );
++       printf(&quot;lon=\&quot;%.7f\&quot;&gt;\n&quot;, gpsdata-&gt;fix.longitude );
+ 
+        if ((gpsdata-&gt;status &gt;= 2) &amp;&amp; (gpsdata-&gt;fix.mode &gt;= 3)){
+                /* dgps or pps */
+@@ -233,7 +233,7 @@
+                printf(&quot;        &lt;sat&gt;%d&lt;/sat&gt;\n&quot;, gpsdata-&gt;satellites_used);
+        }
+ 
+-       if (gpsdata-&gt;satellites_used) { /* plausible timestamp */
++       if (gpsdata-&gt;status &gt;= 1) {
+                char scr[128];
+                printf(&quot;        &lt;time&gt;%s&lt;/time&gt;\n&quot;,
+                    unix_to_iso8601(gpsdata-&gt;fix.time, scr, sizeof(scr)));
+
+
+
+
+also:
+  <A HREF="https://lists.berlios.de/pipermail/gpsd-users/2007-June/002710.html">https://lists.berlios.de/pipermail/gpsd-users/2007-June/002710.html</A>
+
+[gps.xml man pages: cgpxlogger]
+&quot;the man page in 2.34 is missing what the -j CaSoC command line option does&quot;
+
+I don't know enough about that to write a patch documenting it. (no clue)
+
+
+thanks,
+Hamish
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="002984.html">[Gpsd-users] Release of 2.35 is imminent
+</A></li>
+	<LI>Next message: <A HREF="002986.html">[Gpsd-users] Release of 2.35 is imminent
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2985">[ date ]</a>
+              <a href="thread.html#2985">[ thread ]</a>
+              <a href="subject.html#2985">[ subject ]</a>
+              <a href="author.html#2985">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

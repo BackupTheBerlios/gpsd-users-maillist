@@ -1,0 +1,307 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] [Bug?] Can't reconnect after last client disconnects
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2005-June/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20%5BBug%3F%5D%20Can%27t%20reconnect%20after%20last%20client%20disconnects&In-Reply-To=%3C42C09717.4080305%40afoyi.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="000794.html">
+   <LINK REL="Next"  HREF="000795.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] [Bug?] Can't reconnect after last client disconnects</H1>
+    <B>Darryl Ross</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20%5BBug%3F%5D%20Can%27t%20reconnect%20after%20last%20client%20disconnects&In-Reply-To=%3C42C09717.4080305%40afoyi.com%3E"
+       TITLE="[Gpsd-users] [Bug?] Can't reconnect after last client disconnects">spam at afoyi.com
+       </A><BR>
+    <I>Tue Jun 28 02:17:27 CEST 2005</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="000794.html">[Gpsd-users] SirfII Problem?
+</A></li>
+        <LI>Next message: <A HREF="000795.html">[Gpsd-users] Popular soft - duty-free prices
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#792">[ date ]</a>
+              <a href="thread.html#792">[ thread ]</a>
+              <a href="subject.html#792">[ subject ]</a>
+              <a href="author.html#792">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>-----BEGIN PGP SIGNED MESSAGE-----
+Hash: SHA1
+
+Note: I've CCed this to the devel list, although I'm not subscribed to
+that list. If it doesn't make it can someone else please forward it on
+again?
+
+- --
+
+Hey All,
+
+Another problem I am having is that after the last client disconnects
+and gpsd has closed the serial port its not able to reconnect to the GPS.
+
+This is with a BU303 USB 'mouse' gps:
+
+&gt;<i> [<A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">root at unleashed</A> ~]# gpsd -D 3 -N /dev/ttyUSB0
+</I>&gt;<i> gpsd: launching (Version 2.26)
+</I>&gt;<i> gpsd: listening on port 2947
+</I>&gt;<i> gpsd: changing to group 14
+</I>&gt;<i> gpsd: running with effective group ID 14
+</I>&gt;<i> gpsd: running with effective user ID 99
+</I>&gt;<i> gpsd: client connect on 4
+</I>&gt;<i> gpsd: checking 4
+</I>&gt;<i> gpsd: &lt;= client: p
+</I>&gt;<i> gpsd: closing GPS=/dev/ttyUSB0
+</I>&gt;<i> gpsd: opening GPS data source at '/dev/ttyUSB0'
+</I>&gt;<i> gpsd: no probe matched...
+</I>&gt;<i> gpsd: speed 9600, 8N1
+</I>&gt;<i> gpsd: gpsd_activate: opened GPS (5)
+</I>&gt;<i> gpsd: GPS is confused about whether it has a fix (status=0, mode=0).
+</I>&gt;<i> gpsd: =&gt; client(4): GPSD,P=?
+</I>&gt;<i> gpsd: speed 4800, 8N1
+</I>&gt;<i> gpsd: packet sniff finds type 0
+</I>&gt;<i> gpsd: Selecting Generic NMEA driver...
+</I>&gt;<i> gpsd: =&gt; GPS: $PFEC,GPint,GSA01,DTM00,ZDA01,RMC01,GLL00,VTG00,GSV05*3B^M
+</I>&gt;<i> gpsd: =&gt; GPS: $PMOTG,ZDA,1*2F^M
+</I>&gt;<i> gpsd: =&gt; GPS: $PGRM0,GSA,1*5C^M
+</I>&gt;<i> gpsd: =&gt; GPS: $PSRF105,1*3E^M
+</I>&gt;<i> gpsd: &lt;= GPS: $GPGGA,001210.445,3448.1724,S,13839.1420,E,1,04,5.4,15.8,M,0.3,M,0.0,0000*6E
+</I>&gt;<i> gpsd: GPGGA sets status 1
+</I>&gt;<i> gpsd: can't use GGA/GGL time until after ZDA or RMC has supplied a year.
+</I>&gt;<i> gpsd: &lt;= GPS: $GPGSA,A,3,07,26,29,08,,,,,,,,,9.4,5.4,7.6*3F
+</I>&gt;<i> gpsd: GPGSA sets mode 3
+</I>&gt;<i> gpsd: &lt;= GPS: $GPRMC,001210.445,A,3448.1724,S,13839.1420,E,0.48,198.07,280605,,*17
+</I>&gt;<i> gpsd: &lt;= GPS: $Ack Input105.
+</I>&gt;<i> gpsd: found $Ack Input105..
+</I>&gt;<i> gpsd: Selecting SiRF-II binary driver...
+</I>&gt;<i> gpsd: Switching chip mode to SiRF binary.
+</I>&gt;<i> gpsd: =&gt; GPS: $PSRF100,0,4800,8,1,0*0F^M
+</I>&gt;<i> gpsd: checking 4
+</I>&gt;<i> gpsd: &lt;= client: p
+</I>&gt;<i> gpsd: GPS has a fix (status=1, mode=0).
+</I>&gt;<i> gpsd: =&gt; client(4): GPSD,P=-34.802873 138.652367
+</I>&gt;<i> gpsd: &lt;= GPS: $GPGSV,2,1,08,07,75,118,32,05,06,265,00,26,46,285,26,29,41,313,33*7E
+</I>&gt;<i> $GPGSV,2,2,08,28,34,118,00,08,24,055,31,24,27,078,00,09,24,225,00*7E
+</I>&gt;<i> gpsd: &lt;= GPS: $GPGGA,001211,3448.1731,S,13839.1420,E,3,04,5.40,16.9,M,-1.801,M,,*48
+</I>&gt;<i> $GPRMC,001211,A,3448.1731,S,13839.1420,E,0.2619,193.255,280605,,*37
+</I>&gt;<i> $GPGSA,A,3,07,05,26,29,,,,,,,,,9.4,5.4,7.6*32
+</I>&gt;<i> $PGRME,43.20,0.00,75.20*7A
+</I>&gt;<i> gpsd: checking 4
+</I>&gt;<i> gpsd: closing GPS=/dev/ttyUSB0
+</I>&gt;<i> 
+</I>&gt;<i> ;; &lt;---- Client disconnects, waits a few seconds and then reconnects
+</I>&gt;<i> 
+</I>&gt;<i> gpsd: client connect on 4
+</I>&gt;<i> gpsd: checking 4
+</I>&gt;<i> gpsd: &lt;= client: p
+</I>&gt;<i> gpsd: closing GPS=/dev/ttyUSB0
+</I>&gt;<i> gpsd: opening GPS data source at '/dev/ttyUSB0'
+</I>&gt;<i> gpsd: no probe matched...
+</I>&gt;<i> gpsd: speed 9600, 8N1
+</I>&gt;<i> gpsd: gpsd_activate: opened GPS (5)
+</I>&gt;<i> gpsd: GPS is confused about whether it has a fix (status=0, mode=0).
+</I>&gt;<i> gpsd: =&gt; client(4): GPSD,P=?
+</I>&gt;<i> gpsd: GPS is offline
+</I>&gt;<i> gpsd: closing GPS=/dev/ttyUSB0
+</I>
+If I run it with the '-n' command line switch it automatically selects
+Sirf-II mode and the client can't get any position reports until it
+issues a 'w'. If the client switches it to NMEA mode and then
+disconnects and reconnects it's able to get position reports straight away.
+
+If I unplug the receiver, ttyUSB0 goes away which gpsd detects and then
+closes the port. However, when I plug it back in gpsd then tries to talk
+to the GPS at 9800, even though it was using 4800 before, and doesn't
+retrain when it fails.
+
+&gt;<i> [<A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">root at unleashed</A> ~]# gpsd -D 3 -N -n /dev/ttyUSB0
+</I>&gt;<i> gpsd: launching (Version 2.26)
+</I>&gt;<i> gpsd: listening on port 2947
+</I>&gt;<i> gpsd: changing to group 14
+</I>&gt;<i> gpsd: running with effective group ID 14
+</I>&gt;<i> gpsd: running with effective user ID 99
+</I>&gt;<i> gpsd: opening GPS data source at '/dev/ttyUSB0'
+</I>&gt;<i> gpsd: no probe matched...
+</I>&gt;<i> gpsd: speed 9600, 8N1
+</I>&gt;<i> gpsd: gpsd_activate: opened GPS (4)
+</I>&gt;<i> gpsd: speed 4800, 8N1
+</I>&gt;<i> gpsd: packet sniff finds type 0
+</I>&gt;<i> gpsd: Selecting Generic NMEA driver...
+</I>&gt;<i> gpsd: =&gt; GPS: $PFEC,GPint,GSA01,DTM00,ZDA01,RMC01,GLL00,VTG00,GSV05*3B
+</I>&gt;<i> 
+</I>&gt;<i> gpsd: =&gt; GPS: $PMOTG,ZDA,1*2F
+</I>&gt;<i> 
+</I>&gt;<i> gpsd: =&gt; GPS: $PGRM0,GSA,1*5C
+</I>&gt;<i> 
+</I>&gt;<i> gpsd: =&gt; GPS: $PSRF105,1*3E
+</I>&gt;<i> 
+</I>&gt;<i> gpsd: &lt;= GPS: $GPGGA,000512.492,3448.1553,S,13839.1481,E,1,05,2.2,46.1,M,0.3,M,3.1,0000*64
+</I>&gt;<i> gpsd: GPGGA sets status 1
+</I>&gt;<i> gpsd: can't use GGA/GGL time until after ZDA or RMC has supplied a year.
+</I>&gt;<i> gpsd: &lt;= GPS: $GPGSA,A,3,07,26,29,28,24,,,,,,,,3.9,2.2,3.2*3D
+</I>&gt;<i> gpsd: GPGSA sets mode 3
+</I>&gt;<i> gpsd: &lt;= GPS: $GPRMC,000512.492,A,3448.1553,S,13839.1481,E,0.15,248.05,280605,,*14
+</I>&gt;<i> gpsd: &lt;= GPS: $Ack Input105.
+</I>&gt;<i> gpsd: found $Ack Input105..
+</I>&gt;<i> gpsd: Selecting SiRF-II binary driver...
+</I>&gt;<i> gpsd: Switching chip mode to SiRF binary.
+</I>&gt;<i> gpsd: =&gt; GPS: $PSRF100,0,4800,8,1,0*0F
+</I>&gt;<i> 
+</I>&gt;<i> gpsd: &lt;= GPS: $GPGSV,3,1,09,07,77,108,36,26,47,280,25,29,44,309,29,28,36,121,27*71
+</I>&gt;<i> $GPGSV,3,2,09,08,27,057,24,24,25,075,28,09,21,225,00,04,18,031,00*71
+</I>&gt;<i> $GPGSV,3,3,09,11,05,136,00*41
+</I>&gt;<i> gpsd: &lt;= GPS: $GPGGA,000513,3448.1556,S,13839.1480,E,3,05,2.20,47.7,M,-1.800,M,,*4E
+</I>&gt;<i> $GPRMC,000513,A,3448.1556,S,13839.1480,E,0.0000,-0.000,280605,,*12
+</I>&gt;<i> $GPGSA,A,3,07,26,29,28,08,,,,,,,,3.9,2.2,3.2*33
+</I>&gt;<i> $PGRME,17.60,0.00,31.20*7F
+</I>&gt;<i> gpsd: &lt;= GPS: $GPGGA,000514,3448.1556,S,13839.1480,E,3,04,2.60,47.7,M,-1.800,M,,*4C
+</I>&gt;<i> $GPRMC,000514,A,3448.1556,S,13839.1480,E,0.0000,-0.000,280605,,*15
+</I>&gt;<i> $GPGSA,A,3,07,26,29,28,,,,,,,,,3.9,2.6,3.2*3F
+</I>&gt;<i> $PGRME,20.80,0.00,31.20*75
+</I>&gt;<i> gpsd: client connect on 5
+</I>&gt;<i> gpsd: &lt;= GPS: $GPGGA,000515,3448.1558,S,13839.1476,E,3,04,2.60,47.1,M,-1.800,M,,*4C
+</I>&gt;<i> $GPRMC,000515,A,3448.1558,S,13839.1476,E,0.0000,-0.000,280605,,*13
+</I>&gt;<i> $GPGSA,A,3,07,26,29,28,,,,,,,,,3.9,2.6,3.2*3F
+</I>&gt;<i> $PGRME,20.80,0.00,31.20*75
+</I>&gt;<i> gpsd: checking 5
+</I>&gt;<i> gpsd: &lt;= client: o
+</I>&gt;<i> gpsd: =&gt; client(5): GPSD,O=?
+</I>&gt;<i> gpsd: &lt;= GPS: $GPGGA,000520,3448.1558,S,13839.1476,E,3,06,1.80,45.4,M,-1.800,M,,*42
+</I>&gt;<i> $GPRMC,000520,A,3448.1558,S,13839.1476,E,0.0000,-0.000,280605,,*15
+</I>&gt;<i> $GPGSA,A,3,07,26,29,28,08,24,,,,,,,3.9,1.8,3.2*3C
+</I>&gt;<i> $PGRME,14.40,0.00,31.20*7E
+</I>&gt;<i> gpsd: checking 5
+</I>&gt;<i> gpsd: &lt;= client: w
+</I>&gt;<i> gpsd: 5 turned on watching
+</I>&gt;<i> gpsd: =&gt; client(5): GPSD,W=1
+</I>&gt;<i> gpsd: &lt;= GPS: $GPGGA,000521,3448.1558,S,13839.1476,E,3,06,1.80,45.4,M,-1.800,M,,*43
+</I>&gt;<i> $GPRMC,000521,A,3448.1558,S,13839.1476,E,0.0000,-0.000,280605,,*14
+</I>&gt;<i> $GPGSA,A,3,07,26,29,28,08,24,,,,,,,3.9,1.8,3.2*3C
+</I>&gt;<i> $PGRME,14.40,0.00,31.20*7E
+</I>&gt;<i> gpsd: GPS has a fix (status=1, mode=3).
+</I>&gt;<i> gpsd: =&gt; client(5): GPSD,O=MID2 1119917121.49 0.005 -34.802596 138.652461   45.40 14.40        ?  -0.0000    0.000  0.000             ? 28.80       ?
+</I>&gt;<i> gpsd: &lt;= GPS: $GPGSV,3,1,09,07,77,108,39,26,47,280,29,29,44,309,33,28,36,121,30*7F
+</I>&gt;<i> $GPGSV,3,2,09,08,27,057,29,24,25,075,31,09,21,225,00,04,18,031,00*74
+</I>&gt;<i> $GPGSV,3,3,09,11,05,136,00*41
+</I>&gt;<i> gpsd: =&gt; client(5): GPSD,Y=MID4 1119917122.490000 9:7 77 108 39 1:26 47 280 29 1:29 44 309 33 1:28 36 121 30 1:8 27 57 29 1:24 25 75 31 1:9 21 225 0 0:4 18 31 0 0:11 5 136 0 0:
+</I>&gt;<i> gpsd: &lt;= GPS: $GPGGA,000522,3448.1558,S,13839.1476,E,3,06,1.80,45.4,M,-1.800,M,,*40
+</I>&gt;<i> $GPRMC,000522,A,3448.1558,S,13839.1476,E,0.0000,-0.000,280605,,*17
+</I>&gt;<i> $GPGSA,A,3,07,26,29,28,08,24,,,,,,,3.9,1.8,3.2*3C
+</I>&gt;<i> $PGRME,14.40,0.00,31.20*7E
+</I>&gt;<i> gpsd: GPS has a fix (status=1, mode=3).
+</I>&gt;<i> gpsd: =&gt; client(5): GPSD,O=MID2 1119917122.49 0.005 -34.802596 138.652461   45.40 14.40        ?  -0.0000    0.000  0.000             ? 28.80       ?
+</I>&gt;<i> gpsd: checking 5
+</I>&gt;<i> gpsd: &lt;= client: w
+</I>&gt;<i> gpsd: =&gt; client(5): GPSD,W=0
+</I>&gt;<i> gpsd: &lt;= GPS: $GPGGA,000523,3448.1558,S,13839.1476,E,3,06,1.80,45.4,M,-1.800,M,,*41
+</I>&gt;<i> $GPRMC,000523,A,3448.1558,S,13839.1476,E,0.0000,-0.000,280605,,*16
+</I>&gt;<i> $GPGSA,A,3,07,26,29,28,08,24,,,,,,,3.9,1.8,3.2*3C
+</I>&gt;<i> $PGRME,14.40,0.00,31.20*7E
+</I>&gt;<i> gpsd: GPS is offline
+</I>&gt;<i> gpsd: closing GPS=/dev/ttyUSB0
+</I>&gt;<i> gpsd: closing GPS=/dev/ttyUSB0
+</I>&gt;<i> gpsd: opening GPS data source at '/dev/ttyUSB0'
+</I>&gt;<i> gpsd: device open failed: No such file or directory
+</I>&gt;<i> gpsd: closing GPS=/dev/ttyUSB0
+</I>
+&lt;snipped more retries&gt;
+
+&gt;<i> gpsd: opening GPS data source at '/dev/ttyUSB0'
+</I>&gt;<i> gpsd: no probe matched...
+</I>&gt;<i> gpsd: speed 9600, 8N1
+</I>&gt;<i> gpsd: gpsd_activate: opened GPS (4)
+</I>&gt;<i> gpsd: GPS is offline
+</I>&gt;<i> gpsd: closing GPS=/dev/ttyUSB0
+</I>&gt;<i> gpsd: closing GPS=/dev/ttyUSB0
+</I>&gt;<i> gpsd: opening GPS data source at '/dev/ttyUSB0'
+</I>&gt;<i> gpsd: no probe matched...
+</I>&gt;<i> gpsd: speed 9600, 8N1
+</I>&gt;<i> gpsd: gpsd_activate: opened GPS (4)
+</I>&gt;<i> gpsd: GPS is offline
+</I>&gt;<i> gpsd: closing GPS=/dev/ttyUSB0
+</I>&gt;<i> gpsd: closing GPS=/dev/ttyUSB0
+</I>&gt;<i> gpsd: opening GPS data source at '/dev/ttyUSB0'
+</I>&gt;<i> gpsd: no probe matched...
+</I>&gt;<i> gpsd: speed 9600, 8N1
+</I>&gt;<i> gpsd: gpsd_activate: opened GPS (4)
+</I>&gt;<i> gpsd: GPS is offline
+</I>&gt;<i> gpsd: closing GPS=/dev/ttyUSB0
+</I>&gt;<i> gpsd: closing GPS=/dev/ttyUSB0
+</I>&gt;<i> gpsd: Received terminating signal 2. Exiting...
+</I>
+And just to confirm that it really is running at 4800, I re-ran gpsd:
+
+&gt;<i> [<A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">root at unleashed</A> ~]# gpsd -D 3 -N -n /dev/ttyUSB0
+</I>&gt;<i> gpsd: launching (Version 2.26)
+</I>&gt;<i> gpsd: listening on port 2947
+</I>&gt;<i> gpsd: changing to group 14
+</I>&gt;<i> gpsd: running with effective group ID 14
+</I>&gt;<i> gpsd: running with effective user ID 99
+</I>&gt;<i> gpsd: opening GPS data source at '/dev/ttyUSB0'
+</I>&gt;<i> gpsd: no probe matched...
+</I>&gt;<i> gpsd: speed 9600, 8N1
+</I>&gt;<i> gpsd: gpsd_activate: opened GPS (4)
+</I>&gt;<i> gpsd: speed 4800, 8N1
+</I>&gt;<i> gpsd: packet sniff finds type 1
+</I>&gt;<i> gpsd: Selecting SiRF-II binary driver...
+</I>&gt;<i> gpsd: &lt;= GPS: $GPGGA,000816,3448.1525,S,13839.1474,E,2,03,15.60,,-1.800,M,,*07
+</I>&gt;<i> $GPRMC,000816,A,3448.1525,S,13839.1474,E,0.0000,-0.000,280605,,*15
+</I>&gt;<i> $GPGSA,A,2,00,00,00,,,,,,,,,,0.0,15.6,0.0*01
+</I>&gt;<i> $PGRME,124.80,0.00,0.00*70
+</I>&gt;<i> gpsd: &lt;= GPS: $GPGSV,2,1,08,07,76,114,40,05,05,267,00,26,47,283,00,29,43,310,36*72
+</I>&gt;<i> $GPGSV,2,2,08,28,35,120,00,08,26,057,32,24,26,076,00,09,22,225,00*7E
+</I>&gt;<i> gpsd: LOS matrix is singular, can't calculate DOPs.
+</I>&gt;<i> gpsd: &lt;= GPS: $GPGGA,000817,3448.1525,S,13839.1474,E,2,03,15.60,,-1.800,M,,*06
+</I>&gt;<i> $GPRMC,000817,A,3448.1525,S,13839.1474,E,0.0000,-0.000,280605,,*14
+</I>&gt;<i> $GPGSA,A,2,07,05,26,,,,,,,,,,0.0,15.6,0.0*07
+</I>&gt;<i> $PGRME,124.80,0.00,0.00*70
+</I>&gt;<i> gpsd: &lt;= GPS: $GPGGA,000818,3448.1525,S,13839.1474,E,2,03,15.60,,-1.800,M,,*09
+</I>&gt;<i> $GPRMC,000818,A,3448.1525,S,13839.1474,E,0.0000,-0.000,280605,,*1B
+</I>&gt;<i> $GPGSA,A,2,07,05,26,,,,,,,,,,0.0,15.6,0.0*07
+</I>&gt;<i> $PGRME,124.80,0.00,0.00*70
+</I>&gt;<i> gpsd: closing GPS=/dev/ttyUSB0
+</I>&gt;<i> gpsd: Received terminating signal 2. Exiting...
+</I>
+Regards
+Darryl
+
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v1.4.1 (GNU/Linux)
+
+iD8DBQFCwJcX/XQ6DbmPjokRAkrUAJ4pNlbBOlgDzqqyd1EI3qnWuq74LQCghSCy
+kv8axijJ/wasKnM4GpQ8wMc=
+=W+xj
+-----END PGP SIGNATURE-----
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="000794.html">[Gpsd-users] SirfII Problem?
+</A></li>
+	<LI>Next message: <A HREF="000795.html">[Gpsd-users] Popular soft - duty-free prices
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#792">[ date ]</a>
+              <a href="thread.html#792">[ thread ]</a>
+              <a href="subject.html#792">[ subject ]</a>
+              <a href="author.html#792">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

@@ -1,0 +1,137 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] Garmin NMEA Sentence $HCHDG (Compass Heading)
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2007-July/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Garmin%20NMEA%20Sentence%20%24HCHDG%20%28Compass%20Heading%29&In-Reply-To=%3C46988549.6040700%40nippur.net%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="002752.html">
+   <LINK REL="Next"  HREF="002751.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] Garmin NMEA Sentence $HCHDG (Compass Heading)</H1>
+    <B>Diego Berge</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Garmin%20NMEA%20Sentence%20%24HCHDG%20%28Compass%20Heading%29&In-Reply-To=%3C46988549.6040700%40nippur.net%3E"
+       TITLE="[Gpsd-users] Garmin NMEA Sentence $HCHDG (Compass Heading)">gpsd at nippur.net
+       </A><BR>
+    <I>Sat Jul 14 10:11:53 CEST 2007</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="002752.html">[Gpsd-users] Garmin NMEA Sentence $HCHDG (Compass Heading)
+</A></li>
+        <LI>Next message: <A HREF="002751.html">[Gpsd-users] gps.py - how to retrieve data from the gps?
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2762">[ date ]</a>
+              <a href="thread.html#2762">[ thread ]</a>
+              <a href="subject.html#2762">[ subject ]</a>
+              <a href="author.html#2762">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Jason Curl wrote:
+
+&gt;<i> What about comparing compass direction with gps direction and using the 
+</I>&gt;<i> difference for when we stop to know what direction we're facing?
+</I>
+   Not something for gpsd to do, IMO.  There could be hundreds of
+variables stopping us from establishing a direct correlation between the
+mag reading and the gps (Nort, East) velocities.
+
+   From an academic point of view:  the mag compass gives an indication
+of heading (which way the vehicle is pointing), while the GPS gives an
+indication of track (course for North Americans).
+
+   In a car travelling along a straight segment of road, the heading
+matches the track (i.e., the car points forward.  Unless the car is in a
+very bad state---and I have seen some of those.)  On a sea- or air-going
+craft, on the other hand, the two normally do not coincide, as they are
+travelling through a dynamic medium.  The difference between heading and
+track is known as &quot;crab angle&quot;.
+
+   To determine heading respect to True North from a magnetic compass
+reading, at least two corrections must be known and applied: compass
+deviation and magnetic variation (known as declination in the Earth
+sciences). A brief description of each follows:
+
+  * Compass deviation is the effect of compass construction and
+installation in the readings. On compasses permanently installed on a
+vehicle and used for navigation, this effect is observed and either
+corrected (by means of tiny magnets carefully installed on different
+places in the compass) or documented on a &quot;compass deviation card&quot;,
+which tells you the amount by which to correct the compass reading, as a
+function of heading (nope, it's not a constant factor).  This process is
+called &quot;swinging the compass&quot; and can be awfully expensive, as the
+compass must be installed on the craft in question, which must be in
+operational configuration, e.g., incl. engines running in the case of an
+aircraft.
+
+ * Magnetic variation is the angular difference between Magnetic North
+and True North at a given location, caused by the non homogeneity of the
+Earth's magnetic properties.  The magnitude of variation varies at
+different locations and is also changing in time.  Magnetic variation
+can be determined by observation, or by reference to published charts
+and tables.
+
+   Technically, one could obtain true heading from a compass reading by
+adding the appropiate compass correction and magnetic variation values
+to it.  Whether or not heading in itself is useful to determine track or
+not depends on one's form of travel.  For ground vehicular travel, track
+and heading can be considered equivalent.
+
+   However, there are hosts of other factors which influence magnetic
+readings as to make them a very poor substitute for proper track
+determination.  E.g., we have not even considered the effects of
+inertia, local disturbances of the magnetic field, compass sensor noise,
+or, more basic than anything else, the orientation in space of the
+instrument containing the magnetic sensor.  In other words, if you are
+holding your compass vertically, it does not matter how many corrections
+you apply, your readings are still going to be rubbish (unless you
+happen to be right over one of the magnetic poles).
+
+   So in short, if you want to see the output of your compass gadget,
+fine (something like the pass-through mode Chris has mentioned).  On the
+other hand, if you want gpsd to somehow work out which way you're
+facing/going based on it, forget it.
+
+   And if all you want is your car nav to know which was is forward when
+you're stopped at a traffic light, then you need either a gps receiver
+or a navigation software that applies better filtering.  Again, I do not
+think this is the job of a data daemon.
+
+   Hope this has helped.
+
+Regards,
+Diego Berge.
+
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="002752.html">[Gpsd-users] Garmin NMEA Sentence $HCHDG (Compass Heading)
+</A></li>
+	<LI>Next message: <A HREF="002751.html">[Gpsd-users] gps.py - how to retrieve data from the gps?
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2762">[ date ]</a>
+              <a href="thread.html#2762">[ thread ]</a>
+              <a href="subject.html#2762">[ subject ]</a>
+              <a href="author.html#2762">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

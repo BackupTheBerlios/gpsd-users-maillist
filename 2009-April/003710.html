@@ -1,0 +1,166 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] PHP client
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2009-April/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20PHP%20client&In-Reply-To=%3C49E500E8.6060509%40pl.net%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="003709.html">
+   <LINK REL="Next"  HREF="003711.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] PHP client</H1>
+    <B>Peter</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20PHP%20client&In-Reply-To=%3C49E500E8.6060509%40pl.net%3E"
+       TITLE="[Gpsd-users] PHP client">webwiz at pl.net
+       </A><BR>
+    <I>Tue Apr 14 23:32:24 CEST 2009</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="003709.html">[Gpsd-users] thales Ac-12 help
+</A></li>
+        <LI>Next message: <A HREF="003711.html">[Gpsd-users] PHP client
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3710">[ date ]</a>
+              <a href="thread.html#3710">[ thread ]</a>
+              <a href="subject.html#3710">[ subject ]</a>
+              <a href="author.html#3710">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>After reading the FAQs i found the php client in the source package. That as it turns out is all i need. And with the usual muddling around in the linux dark...
+
+What i did FTR (on debian Lenny):
+
+#install packages
+aptitude install gpsd proj
+{insert usb gps device}
+#start gpsd
+gpsd /dev/gps0
+#test
+echo 'w' | nc localhost 2947
+{run php file below}
+
+In case its any use to anyone included below is the essence of the php client. It also includes my brief code to convert wgs84 to NZMG (fairly roughly). 
+
+cs2cs returns three digits like so:
+2473526.00 5758584.84 -6.61
+im not sure what the third field is, and the man page doesnt say.
+
+Also does anyone have a simple algorithm to create a fix quality attribute (say 1-10) from the data the gpsd spits out?
+-Fix Type 
+-Satellites 
+-HDOP 
+-VDOP 
+
+
+Peter
+
+
+
+--------------------------
+DISTILLED PHP CLIENT
+--------------------------
+
+&lt;?php
+
+$GPS =getgpsinfo();
+
+if ($GPS['Error']) print &quot;The gpsd instance that this page monitors is not running.&quot;;
+
+print &quot;
+	Position= {$GPS['x']}  y= {$GPS['y']} (NZMG)&lt;br&gt;
+	Altitude {$GPS['alt']}m&lt;br&gt;
+	Fix Type {$GPS['fix']}&lt;br&gt;
+	Satellites {$GPS['sat']}&lt;br&gt;
+	HDOP {$GPS['hdop']}&lt;br&gt;
+	VDOP {$GPS['vdop']}&lt;br&gt;
+&quot;;
+
+exit;
+
+
+function getgpsinfo(){
+	$sock = @fsockopen('localhost', 2947, $errno, $errstr, 2);
+	@fwrite($sock, &quot;J=1,W=1\n&quot;);	# watcher mode and buffering
+	$z = 0;
+	do {	$resp = @fread($sock, 384);$z++;	} 
+	while ((strncmp($resp, 'GPSD,O=', 7) || (	strncmp($resp, 'GPSD,O=', 7) == 0 &amp;&amp; strlen($resp) &lt;= 8)) &amp;&amp; 	$z &lt; 6);
+	@fwrite($sock, &quot;SPAMQY\n&quot;);	# Query what we actually want
+	# the O report doesn't give us satellite usage or DOP
+	$resp = @fread($sock, 384);
+	@fclose($sock);
+	if (strlen($resp)){
+		$GPS['fix']  = 'No';
+		if (preg_match('/M=(\d),/', $resp, $m)){
+			switch ($m[1]){
+				case 2:	$GPS['fix']  = '2D';	break;
+				case 3:	$GPS['fix']  = '3D';	break;
+				case 4:	$GPS['fix']  = '3D (PPS)';	break;
+				default:	$GPS['fix']  = &quot;No&quot;;
+			}
+		}
+		if (preg_match('/S=(\d),/', $resp, $m)){
+			$GPS['fix'] .= ' (';
+			if ($m[1] != 2)$GPS['fix'] .= 'not ';
+			$GPS['fix'] .= 'DGPS corrected)';
+		}
+		if (preg_match('/A=([0-9\.-]+),/', $resp, $m))	$GPS['alt'] = round($m[1],0);
+		if (preg_match('/P=([0-9\.-]+) ([0-9\.-]+),/', $resp, $m)){	$GPS['lat'] = $m[1]; $GPS['lon'] = $m[2];		}
+		if (preg_match('/Q=(\d+) ([0-9\.]+) ([0-9\.]+) ([0-9\.]+) ([0-9\.]+)/', $resp, $m)){
+			$GPS['sat']  = $m[1]; $GPS['gdop'] = $m[2];
+			$GPS['hdop'] = $m[3]; $GPS['vdop'] = $m[4];
+		}
+		if (preg_match('/^No/', $GPS['fix'])) $GPS['Error']=1;
+	} 
+	else $GPS['Error']=1;
+	if (!$sock) $GPS['Error']=1;
+
+	$lat =trim($GPS['lat']);
+	$lon =trim($GPS['lon']);
+	
+	//convert wgs84 to nzmg
+	$result= exec(&quot;echo '$lon $lat' | cs2cs +proj=latlong +datum=WGS84 +to +init=epsg:4272 +proj=nzmg&quot;);
+	$terms =explode (' ', $result);
+	list($gps_pos_x,$gps_pos_y)=explode (&quot;\t&quot;, $terms[0]);
+
+	$GPS['x']=round($gps_pos_x);
+	$GPS['y']=round($gps_pos_y);
+	
+	return $GPS;
+}
+
+
+
+?&gt;
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="003709.html">[Gpsd-users] thales Ac-12 help
+</A></li>
+	<LI>Next message: <A HREF="003711.html">[Gpsd-users] PHP client
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3710">[ date ]</a>
+              <a href="thread.html#3710">[ thread ]</a>
+              <a href="subject.html#3710">[ subject ]</a>
+              <a href="author.html#3710">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

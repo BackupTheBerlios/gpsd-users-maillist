@@ -1,0 +1,495 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] No data from Garmin GPSMap 76CSx through gpsd to tango GPS
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2010-October/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20No%20data%20from%20Garmin%20GPSMap%2076CSx%20through%20gpsd%20to%0A%20tango%20GPS&In-Reply-To=%3C20101016202706.4e588611%40dragon.localdomain%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="004691.html">
+   <LINK REL="Next"  HREF="004693.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] No data from Garmin GPSMap 76CSx through gpsd to tango GPS</H1>
+    <B>Charles Curley</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20No%20data%20from%20Garmin%20GPSMap%2076CSx%20through%20gpsd%20to%0A%20tango%20GPS&In-Reply-To=%3C20101016202706.4e588611%40dragon.localdomain%3E"
+       TITLE="[Gpsd-users] No data from Garmin GPSMap 76CSx through gpsd to tango GPS">charlescurley at charlescurley.com
+       </A><BR>
+    <I>Sun Oct 17 04:27:06 CEST 2010</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="004691.html">[Gpsd-users] No data from Garmin GPSMap 76CSx through gpsd to tango GPS
+</A></li>
+        <LI>Next message: <A HREF="004693.html">[Gpsd-users] No data from Garmin GPSMap 76CSx through gpsd to tango GPS
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#4692">[ date ]</a>
+              <a href="thread.html#4692">[ thread ]</a>
+              <a href="subject.html#4692">[ subject ]</a>
+              <a href="author.html#4692">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>I'm CCing this to the list so that we have a permanent record and for
+the benefit of other users.
+
+On Sat, 16 Oct 2010 18:03:00 -0700
+Peter Freeman &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">petersfreeman at gmail.com</A>&gt; wrote:
+
+&gt;<i>  Hi Charles,
+</I>&gt;<i> 
+</I>&gt;<i> Thank you for your speedy reply.  To respond to your comments:
+</I>&gt;<i> 
+</I>&gt;<i> &quot;I take it that you know that you have acquired satellites by
+</I>&gt;<i> examining the display on the Garmin.&quot;
+</I>&gt;<i> 
+</I>&gt;<i> Yes, I have the Garmin unit beside the laptop and it is locked into
+</I>&gt;<i> 4-6 satellites at any one time
+</I>
+OK.
+
+&gt;<i> 
+</I>&gt;<i> &quot;This is probably good, but I'd like to see your /etc/default/gps to
+</I>&gt;<i> be sure. By way of comparison, mine looks like so:&quot;
+</I>&gt;<i> 
+</I>&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">root at dragon</A>:~# cat /etc/default/gpsd
+</I>&gt;<i> # START_DAEMON=&quot;true&quot;
+</I>&gt;<i> # DAEMON_OPTS=&quot;-F /var/run/gpsd.sock -G&quot;
+</I>&gt;<i> # DEVICES=&quot;/dev/ttyUSB0&quot;
+</I>&gt;<i> 
+</I>&gt;<i> USBAUTO=&quot;true&quot;
+</I>&gt;<i> GPSD_OPTIONS=&quot;-G&quot;
+</I>&gt;<i> GPSD_SOCKET=&quot;/var/run/gpsd.sock&quot;
+</I>&gt;<i> 
+</I>&gt;<i> I made mine the same, so now gpsd does not load when I reboot my
+</I>&gt;<i> laptop.
+</I>
+OK. Now you will need to ensure that plugging in the gps receiver cable
+forces the creation of the device file.
+
+&gt;<i> 
+</I>&gt;<i> I don't get this. You had a good gpsd with a working connection for
+</I>&gt;<i> clients. If it works, don't fix it.
+</I>&gt;<i> 
+</I>&gt;<i> I used the &quot;sudo kill 1320&quot; so that I could restart gpsd with
+</I>&gt;<i> different parameters.  I was trying something I had read in a forum.
+</I>
+Ah, OK, I see now that you were trying to run in the foreground.
+
+&gt;<i> 
+</I>&gt;<i> Generally the udev daemon will create it for you.
+</I>&gt;<i> 
+</I>&gt;<i> This is related to /dev/ttyUSB0.  If it is created, why is it not
+</I>&gt;<i> listed in the /dev/ folder?  All I have is a bunch of tty# devices,
+</I>&gt;<i> some ttyS# and usbmon#, but no ttyUSB# devices.
+</I>
+OK, something is wrong here then. udev isn't doing its job properly.
+Unfortunately that's no surprise. If you don't want to get into
+debugging udev, I suggest you go back to having gpsd start on boot.
+
+&gt;<i> 
+</I>&gt;<i> <A HREF="http://gpsd.berlios.de/hardware.html">http://gpsd.berlios.de/hardware.html</A>
+</I>&gt;<i> 
+</I>&gt;<i> 
+</I>&gt;<i> I checked out this link and noticed that the Garmin GPSMap 76 devices
+</I>&gt;<i> (mine is a 76CSx) is for the RS232 port in the back of the GPS.  This
+</I>&gt;<i> device has both a USB port and a serial one.  I could purchase the
+</I>&gt;<i> special serial cable to use the serial device but then, I would need
+</I>&gt;<i> to convert it back to USB before connecting it to my laptop.  Seems
+</I>&gt;<i> the wrong way to go.
+</I>
+Ah, then you are going pure USB to USB. Now you are outside my
+expertise. Any Garmin experts in the house?
+
+Until one volunteers, I do recall that some Garmin devices require a
+kernel module, which has its own problems. But you were getting good
+data for a while there.
+
+&gt;<i> 
+</I>&gt;<i> I'm not sure what you mean by &quot;USB port&quot;. udev should create the
+</I>&gt;<i> device file for you, and it appears to be /dev/ttyUSB0.
+</I>&gt;<i> 
+</I>&gt;<i> Hmmm...perhaps udev is not creating the device file.  I am assuming
+</I>&gt;<i> that it would a be created in the /dev/ folder.  Does gpsd call udev
+</I>&gt;<i> to create this device file.  If it is not appearing in /dev/, how can
+</I>&gt;<i> I find out what is happening?
+</I>
+udev watches the hardware. When it detects a new device, it examines
+it, and runs one or more appropriate scripts. These set the device up
+properly. gpsd provides two scripts for udev to
+call, /lib/udev/gpsd.hotplug and /lib/udev/gpsd.hotplug.wrapper. These
+in turn fire up gpsd.
+
+They do log to /var/log/syslog, so try running
+
+tail -n 20 -f /var/log/syslog
+
+Then plug the gps receiver in, and see what you get. I've gone into
+those two scripts and commented in some progress messages, so I see
+(minus time stamps):
+
+kernel: [670732.524109] hub 3-0:1.0: unable to enumerate USB device on port 1
+kernel: [670733.272051] usb 3-1: new full speed USB device using uhci_hcd and address 112
+kernel: [670733.430524] usb 3-1: configuration #1 chosen from 1 choice
+kernel: [670733.433406] pl2303 3-1:1.0: pl2303 converter detected
+kernel: [670733.445922] usb 3-1: pl2303 converter now attached to ttyUSB0
+gpsd.hotplug: gpsd_control(action=add, arg=/dev/ttyUSB0)
+gpsd.hotplug: socket /var/run/gpsd.sock doesn't exist
+gpsd.hotplug: launching gpsd -G -F /var/run/gpsd.sock
+gpsd.hotplug: socket /var/run/gpsd.sock created OK
+gpsd[23074]: gpsd: can't bind to IPv6 port gpsd, Address already in use
+gpsd[23074]: gpsd: maybe gpsd is already running!
+gpsd.hotplug: gpsd_control ends
+gpsd.hotplug: gpsd.hotplug ends
+
+This is normal. As I don't have IPV6 on this machine, the message about
+not binding to IPV6 and the one below it are normal and expected.
+
+
+&gt;<i> 
+</I>&gt;<i> Right now it looks like this:  LAPTOP       gpsd       xgps      are
+</I>&gt;<i> not connected.  I would like at least have either: 
+</I>&gt;<i> LAPTOP&lt;--------&gt;gpsd         xgps     or LAPTOP       
+</I>&gt;<i> gpsd&lt;----------&gt;xgps to progress towards connecting all three: 
+</I>&gt;<i> LAPTOP&lt;----------&gt;gpsd&lt;----------&gt;xgps
+</I>&gt;<i> 
+</I>&gt;<i> Thanks Charles,
+</I>&gt;<i> 
+</I>&gt;<i> Peter
+</I>&gt;<i> 
+</I>&gt;<i> 
+</I>&gt;<i> Peter Freeman
+</I>&gt;<i> 180 Musgrave Place
+</I>&gt;<i> Salt Spring Island, V8K 1V5
+</I>&gt;<i> British Columbia, Canada
+</I>&gt;<i> (250) 653-4623
+</I>&gt;<i> 
+</I>&gt;<i> On 10-10-16 03:16 PM, Charles Curley wrote:
+</I>&gt;<i> &gt; On Sat, 16 Oct 2010 12:19:29 -0700
+</I>&gt;<i> &gt; Peter Freeman &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">petersfreeman at gmail.com</A>&gt; wrote:
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt;&gt;  Summary
+</I>&gt;<i> &gt;&gt; -------
+</I>&gt;<i> &gt;&gt;
+</I>&gt;<i> &gt;&gt; I have a GPS unit that I am trying to get working with gpsd and
+</I>&gt;<i> &gt;&gt; tangoGPS.  I have tried many things listed in other forum posts so
+</I>&gt;<i> &gt;&gt; far with no success.  I need to have a comprehensive step-by-step
+</I>&gt;<i> &gt;&gt; testing process to determine that each step of the communication
+</I>&gt;<i> &gt;&gt; process between the GPS unit and tangoGPS is working.
+</I>&gt;<i> &gt;&gt;
+</I>&gt;<i> &gt;&gt; Environment
+</I>&gt;<i> &gt;&gt; -----------
+</I>&gt;<i> &gt;&gt;
+</I>&gt;<i> &gt;&gt; Ubuntu 10.10 Maverick Meerkat i386
+</I>&gt;<i> &gt; I have Ubunto 10.04, cose enough, and I am using the git head of
+</I>&gt;<i> &gt; gpsd, so I have a similar environment.
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt;&gt; Linux 2.6.35-22-generic-pae
+</I>&gt;<i> &gt;&gt; GNOME 2.32.0
+</I>&gt;<i> &gt;&gt; Memory 4GB
+</I>&gt;<i> &gt; All looks good.
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt;&gt; Garmin GPSMap 76CSx
+</I>&gt;<i> &gt;&gt; Interface set to NMEA In and NMEA Out
+</I>&gt;<i> &gt;&gt; Baud Rate 4800
+</I>&gt;<i> &gt;&gt;
+</I>&gt;<i> &gt;&gt; tangoGPS 0.99.3
+</I>&gt;<i> &gt; Looks good.
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt;&gt; Process
+</I>&gt;<i> &gt;&gt; -------
+</I>&gt;<i> &gt;&gt;
+</I>&gt;<i> &gt;&gt; 1. Boot Computer
+</I>&gt;<i> &gt;&gt; 2. Plug in USB cable
+</I>&gt;<i> &gt;&gt; 3. Connect GPS unit
+</I>&gt;<i> &gt;&gt; 4. Turn on GPS unit
+</I>&gt;<i> &gt;&gt; 4. When satellites have been acquired, start tangoGPS
+</I>&gt;<i> &gt; I take it that you know that you have acquired satellites by
+</I>&gt;<i> &gt; examining the display on the Garmin.
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt;&gt; Configuration
+</I>&gt;<i> &gt;&gt; -------------
+</I>&gt;<i> &gt;&gt;
+</I>&gt;<i> &gt;&gt; <A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">peter at Laptop</A>:~$ sudo dpkg-reconfigure gpsd
+</I>&gt;<i> &gt;&gt;
+</I>&gt;<i> &gt;&gt; Question and responses:
+</I>&gt;<i> &gt;&gt;
+</I>&gt;<i> &gt;&gt; If you accept this option, gpsd will be started automatically
+</I>&gt;<i> &gt;&gt; Start gpsd automatically? YES]
+</I>&gt;<i> &gt;&gt;
+</I>&gt;<i> &gt;&gt; As gpsd only handles GPS devices, it is safe to choose this option.
+</I>&gt;<i> &gt;&gt; However, you can disable it if gpsd is causing interference with
+</I>&gt;<i> &gt;&gt; other attached devices or programs. Should gpsd handle attached
+</I>&gt;<i> &gt;&gt; USB GPS receivers automatically?  YES
+</I>&gt;<i> &gt;&gt;
+</I>&gt;<i> &gt;&gt; Please enter the device the GPS receiver is attached to. It will
+</I>&gt;<i> &gt;&gt; probably be something like /dev/ttyS0 or /dev/ttyUSB0.
+</I>&gt;<i> &gt;&gt; Multiple devices may be specified as a space-separated list. Leave
+</I>&gt;<i> &gt;&gt; empty if you don't want to connect gpsd to a device on boot or if
+</I>&gt;<i> &gt;&gt; you want to use device autodetection only.
+</I>&gt;<i> &gt;&gt; Device the GPS receiver is attached to:  /dev/ttyUSB0
+</I>&gt;<i> &gt;&gt;
+</I>&gt;<i> &gt;&gt; You can give additional arguments when starting gpsd; see gpsd(8)
+</I>&gt;<i> &gt;&gt; for a list of options.
+</I>&gt;<i> &gt;&gt; Do not use '-F' here. The control socket path is set independently.
+</I>&gt;<i> &gt;&gt; Options to gpsd: &lt;no options listed&gt;
+</I>&gt;<i> &gt;&gt;
+</I>&gt;<i> &gt;&gt; Please enter the gpsd control socket location. Usually you want to
+</I>&gt;<i> &gt;&gt; keep the default setting.
+</I>&gt;<i> &gt;&gt; gpsd control socket path: /var/run/gpsd.sock
+</I>&gt;<i> &gt; This is probably good, but I'd like to see your /etc/default/gps to
+</I>&gt;<i> &gt; be sure. By way of comparison, mine looks like so:
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; <A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">root at dragon</A>:~# cat /etc/default/gpsd
+</I>&gt;<i> &gt; # START_DAEMON=&quot;true&quot;
+</I>&gt;<i> &gt; # DAEMON_OPTS=&quot;-F /var/run/gpsd.sock -G&quot;
+</I>&gt;<i> &gt; # DEVICES=&quot;/dev/ttyUSB0&quot;
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; USBAUTO=&quot;true&quot;
+</I>&gt;<i> &gt; GPSD_OPTIONS=&quot;-G&quot;
+</I>&gt;<i> &gt; GPSD_SOCKET=&quot;/var/run/gpsd.sock&quot;
+</I>&gt;<i> &gt; <A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">root at dragon</A>:~# 
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; I've commented out the first three lines because I prefer to depend
+</I>&gt;<i> &gt; on the udev scripts to load gpsd as needed. The last three are
+</I>&gt;<i> &gt; appropriate for udev.
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; The first three lines are from an old run of the dpkg setup code, so
+</I>&gt;<i> &gt; may or may not apply to the version in MM.
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt;&gt; Tests
+</I>&gt;<i> &gt;&gt; -----
+</I>&gt;<i> &gt;&gt;
+</I>&gt;<i> &gt;&gt; When tangoGPS Loads, two messages in status area at bottom of
+</I>&gt;<i> &gt;&gt; window:
+</I>&gt;<i> &gt;&gt;
+</I>&gt;<i> &gt;&gt; * No GPS
+</I>&gt;<i> &gt;&gt; * No GPSD
+</I>&gt;<i> &gt; Let's leave tangogps until last. But when you finally do get to it,
+</I>&gt;<i> &gt; be sure it's set up correctly. Turn the Information display on (top
+</I>&gt;<i> &gt; button on the left). Click on the left arrow until you get to the
+</I>&gt;<i> &gt; Configuration display. Scroll down. It should be looking at
+</I>&gt;<i> &gt; 127.0.0.1 and port 2947. Note that it does not like host names; you
+</I>&gt;<i> &gt; must use IP addresses (pffftttt, but that's the way it is).
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt;&gt; <A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">peter at Laptop</A>:~$ gpscat -s 4800N1
+</I>&gt;<i> &gt;&gt; Traceback (most recent call last):
+</I>&gt;<i> &gt;&gt;   File &quot;/usr/bin/gpscat&quot;, line 66, in &lt;module&gt;
+</I>&gt;<i> &gt;&gt;     tty = os.open(arguments[0], os.O_RDWR)
+</I>&gt;<i> &gt;&gt; IndexError: list index out of range
+</I>&gt;<i> &gt; Once gpsd is running, nothing else should try to attach to the
+</I>&gt;<i> &gt; serial device, so if you have gpsd set to run on boot, this is
+</I>&gt;<i> &gt; probably your problem here.
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt;&gt; <A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">peter at Laptop</A>:~$ lsmod | grep 'usb'
+</I>&gt;<i> &gt;&gt; usbhid                 36978  0
+</I>&gt;<i> &gt;&gt; hid                    67742  1 usbhid
+</I>&gt;<i> &gt; OK. I know nothing about Garmin devices so I can't say if this is
+</I>&gt;<i> &gt; correct. I see:
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; <A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">root at dragon</A>:~# lsmod | grep 'usb'
+</I>&gt;<i> &gt; usbserial              33019  3 pl2303
+</I>&gt;<i> &gt; usb_storage            39553  0 
+</I>&gt;<i> &gt; <A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">root at dragon</A>:~# 
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; And the pl2303 device is a common serial to USB chip; in this case
+</I>&gt;<i> &gt; my gps receiver, a BU 353.
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt;&gt; <A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">peter at Laptop</A>:~$ gpspipe -w -n 100
+</I>&gt;<i> &gt;&gt; netlib_connectsock() returns socket on fd 3
+</I>&gt;<i> &gt;&gt; {&quot;class&quot;:&quot;VERSION&quot;,&quot;release&quot;:&quot;2.94&quot;,&quot;rev&quot;:&quot;2010-05-13T11:53:05&quot;,&quot;proto_major&quot;:3,&quot;proto_minor&quot;:2}
+</I>&gt;<i> &gt;&gt; {&quot;class&quot;:&quot;DEVICES&quot;,&quot;devices&quot;:[{&quot;class&quot;:&quot;DEVICE&quot;,&quot;path&quot;:&quot;/dev/ttyUSB0&quot;}]}
+</I>&gt;<i> &gt;&gt; {&quot;class&quot;:&quot;WATCH&quot;,&quot;enable&quot;:true,&quot;json&quot;:true,&quot;nmea&quot;:false,&quot;raw&quot;:0,&quot;scaled&quot;:false,&quot;timing&quot;:false}
+</I>&gt;<i> &gt; You have a good connection to gpsd, and it is telling you its
+</I>&gt;<i> &gt; version. It sees one device, as indicated in the DEVICES line.
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; With no gps receiver plugged in but gpsd running, I get:
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; <A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">ccurley at dragon</A>:~/projects/wlg$ gpspipe -w -n 20
+</I>&gt;<i> &gt; close(3) in netlib_connectsock()
+</I>&gt;<i> &gt; netlib_connectsock() returns socket on fd 3
+</I>&gt;<i> &gt; {&quot;class&quot;:&quot;VERSION&quot;,&quot;release&quot;:&quot;2.96~dev&quot;,&quot;rev&quot;:&quot;2010-10-09T20:34:56&quot;,&quot;proto_major&quot;:3,&quot;proto_minor&quot;:3}
+</I>&gt;<i> &gt; {&quot;class&quot;:&quot;DEVICES&quot;,&quot;devices&quot;:[]}
+</I>&gt;<i> &gt; {&quot;class&quot;:&quot;WATCH&quot;,&quot;enable&quot;:true,&quot;json&quot;:true,&quot;nmea&quot;:false,&quot;raw&quot;:0,&quot;scaled&quot;:false,&quot;timing&quot;:false}
+</I>&gt;<i> &gt; gpspipe: read error Resource temporarily unavailable(11)
+</I>&gt;<i> &gt; <A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">ccurley at dragon</A>:~/projects/wlg$ 
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; Now I plug a receiver in and run it again, without waiting for it to
+</I>&gt;<i> &gt; acquire any satellites:
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; <A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">ccurley at dragon</A>:~/projects/wlg$ gpspipe -w -n 20
+</I>&gt;<i> &gt; close(3) in netlib_connectsock()
+</I>&gt;<i> &gt; netlib_connectsock() returns socket on fd 3
+</I>&gt;<i> &gt; {&quot;class&quot;:&quot;VERSION&quot;,&quot;release&quot;:&quot;2.96~dev&quot;,&quot;rev&quot;:&quot;2010-10-09T20:34:56&quot;,&quot;proto_major&quot;:3,&quot;proto_minor&quot;:3}
+</I>&gt;<i> &gt; {&quot;class&quot;:&quot;DEVICES&quot;,&quot;devices&quot;:[{&quot;class&quot;:&quot;DEVICE&quot;,&quot;path&quot;:&quot;/dev/ttyUSB0&quot;}]}
+</I>&gt;<i> &gt; {&quot;class&quot;:&quot;WATCH&quot;,&quot;enable&quot;:true,&quot;json&quot;:true,&quot;nmea&quot;:false,&quot;raw&quot;:0,&quot;scaled&quot;:false,&quot;timing&quot;:false}
+</I>&gt;<i> &gt; gpspipe: read error Resource temporarily unavailable(11)
+</I>&gt;<i> &gt; <A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">ccurley at dragon</A>:~/projects/wlg$ 
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; Note that this time I have a device line, even without any
+</I>&gt;<i> &gt; satellites.
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt;&gt; <A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">peter at Laptop</A>:~$ ps -C gpsd -fww
+</I>&gt;<i> &gt;&gt; UID        PID  PPID  C STIME TTY          TIME CMD
+</I>&gt;<i> &gt;&gt; nobody    1320     1  0 09:48 ?        00:00:00 /usr/sbin/gpsd -F
+</I>&gt;<i> &gt;&gt; /var/run/gpsd.sock -P /var/run/gpsd.pid /dev/ttyUSB0
+</I>&gt;<i> &gt; Looks good. I usually run:
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; <A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">root at dragon</A>:~# ps aux | grep gpsd | grep -v grep ;
+</I>&gt;<i> &gt; ls /dev/ttyUSB* /var/run/gpsd.s* nobody    6602  0.0  0.1   3888
+</I>&gt;<i> &gt; 1288 ?        S&lt;s  Oct13   2:46 gpsd -G
+</I>&gt;<i> &gt; -F /var/run/gpsd.sock /dev/ttyUSB0  /var/run/gpsd.sock
+</I>&gt;<i> &gt; <A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">root at dragon</A>:~# 
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt;&gt; <A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">peter at Laptop</A>:~$ sudo kill 1320
+</I>&gt;<i> &gt; I don't get this. You had a good gpsd with a working connection for
+</I>&gt;<i> &gt; clients. If it works, don't fix it.
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt;&gt; <A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">peter at Laptop</A>:~$ gpsd -N -n -D 2 /dev/ttyUSB0
+</I>&gt;<i> &gt;&gt; gpsd: launching (Version 2.94)
+</I>&gt;<i> &gt;&gt; gpsd: listening on port gpsd
+</I>&gt;<i> &gt;&gt; gpsd: running with effective group ID 1000
+</I>&gt;<i> &gt;&gt; gpsd: running with effective user ID 1000
+</I>&gt;<i> &gt;&gt; gpsd: opening read-only GPS data source type 0 and at
+</I>&gt;<i> &gt;&gt; '/dev/ttyUSB0' gpsd: device open failed: No such file or directory
+</I>&gt;<i> &gt;&gt; - retrying read-only gpsd: read-only device open failed: No such
+</I>&gt;<i> &gt;&gt; file or directory gpsd: GPS device /dev/ttyUSB0 nonexistent or
+</I>&gt;<i> &gt;&gt; can't be read gpsd: opening read-only GPS data source type 0 and
+</I>&gt;<i> &gt;&gt; at '/dev/ttyUSB0' gpsd: device open failed: No such file or
+</I>&gt;<i> &gt;&gt; directory - retrying read-only gpsd: read-only device open failed:
+</I>&gt;<i> &gt;&gt; No such file or directory gpsd: client(0): device activation
+</I>&gt;<i> &gt;&gt; failed.
+</I>&gt;<i> &gt;&gt;
+</I>&gt;<i> &gt;&gt; <A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">peter at Laptop</A>:~$ gpsprof -f cycle
+</I>&gt;<i> &gt;&gt; gpsprof: gpsd unreachable.
+</I>&gt;<i> &gt;&gt;
+</I>&gt;<i> &gt;&gt; <A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">peter at Laptop</A>:~$ ls -la /dev/ttyU*
+</I>&gt;<i> &gt;&gt; ls: cannot access /dev/ttyU*: No such file or directory
+</I>&gt;<i> &gt;&gt;
+</I>&gt;<i> &gt;&gt; <A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">peter at Laptop</A>:~$ ls -la /dev/u*
+</I>&gt;<i> &gt;&gt; crw-r----- 1 root root  10, 223 2010-10-16 07:45 /dev/uinput
+</I>&gt;<i> &gt;&gt; crw-rw-rw- 1 root root   1,   9 2010-10-16 07:45 /dev/urandom
+</I>&gt;<i> &gt;&gt; crw-rw---- 1 root root 252,   0 2010-10-16 07:45 /dev/usbmon0
+</I>&gt;<i> &gt;&gt; crw------- 1 root root 252,   1 2010-10-16 07:45 /dev/usbmon1
+</I>&gt;<i> &gt;&gt; crw------- 1 root root 252,   2 2010-10-16 07:45 /dev/usbmon2
+</I>&gt;<i> &gt;&gt; crw------- 1 root root 252,   3 2010-10-16 07:45 /dev/usbmon3
+</I>&gt;<i> &gt;&gt; crw------- 1 root root 252,   4 2010-10-16 07:45 /dev/usbmon4
+</I>&gt;<i> &gt;&gt; crw------- 1 root root 252,   5 2010-10-16 07:45 /dev/usbmon5
+</I>&gt;<i> &gt;&gt; crw------- 1 root root 252,   6 2010-10-16 07:45 /dev/usbmon6
+</I>&gt;<i> &gt;&gt; crw------- 1 root root 252,   7 2010-10-16 07:45 /dev/usbmon7
+</I>&gt;<i> &gt;&gt; crw------- 1 root root 252,   8 2010-10-16 07:45 /dev/usbmon8
+</I>&gt;<i> &gt;&gt;
+</I>&gt;<i> &gt;&gt; Conclusion
+</I>&gt;<i> &gt;&gt;
+</I>&gt;<i> &gt;&gt; It seems to me that there is no ttyUSB0 device.
+</I>&gt;<i> &gt; There was one for a while, but it went away. I don't know why. Did
+</I>&gt;<i> &gt; you unplug or shut down the receiver.
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt;&gt; * Do I have to create ttyUSB0?
+</I>&gt;<i> &gt; Generally the udev daemon will create it for you.
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt;&gt; * Should I use another usb device?
+</I>&gt;<i> &gt; It looks to me like you were getting data to gpsd until you killed
+</I>&gt;<i> &gt; it, so I'd say, no for now.
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt;&gt; * Which device should I use?
+</I>&gt;<i> &gt; <A HREF="http://gpsd.berlios.de/hardware.html">http://gpsd.berlios.de/hardware.html</A>
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt;&gt; Request
+</I>&gt;<i> &gt;&gt;
+</I>&gt;<i> &gt;&gt; Can you tell me:
+</I>&gt;<i> &gt;&gt;
+</I>&gt;<i> &gt;&gt; 1. How can I determine which USB port is being used when I plug in
+</I>&gt;<i> &gt;&gt; the GPS unit?
+</I>&gt;<i> &gt; I'm not sure what you mean by &quot;USB port&quot;. udev should create the
+</I>&gt;<i> &gt; device file for you, and it appears to be /dev/ttyUSB0.
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt;&gt; 2. How do I tell if the USB port is being recognised by gpsd?
+</I>&gt;<i> &gt; See the output from gpspipe above.
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt;&gt; 3. How do I tell if the correct baud rate is being used by gpsd
+</I>&gt;<i> &gt; Unless you turn this feature off, gpsd will detect and select a
+</I>&gt;<i> &gt; suitable baud rate.
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt;&gt; 4. How do I test that gpsd is sending data to tangoGPS
+</I>&gt;<i> &gt; Turn &quot;Autocenter&quot; on (in the left column of buttons). If you are
+</I>&gt;<i> &gt; getting data and the receiver has a fix, tangogps will jump to your
+</I>&gt;<i> &gt; current location and show an icon consisting of a circle and a
+</I>&gt;<i> &gt; radius, which indicates your heading. See the first illustration on
+</I>&gt;<i> &gt; <A HREF="http://www.tangogps.org/gps/cat/News">http://www.tangogps.org/gps/cat/News</A>
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; To tell if you have a good connection to gpsd regardless of fix or
+</I>&gt;<i> &gt; satellites, launch tangogps from a terminal (tangogps &amp;) and watch
+</I>&gt;<i> &gt; its output. e.g.:
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; <A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">ccurley at dragon</A>:~/projects/wlg$ tangogps &amp;
+</I>&gt;<i> &gt; [2] 22208
+</I>&gt;<i> &gt; <A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">ccurley at dragon</A>:~/projects/wlg$ REPOLIST == NULL
+</I>&gt;<i> &gt; *** on_drawingarea1_configure_event(): 
+</I>&gt;<i> &gt; pixmap created
+</I>&gt;<i> &gt; connection to gpsd SUCCEEDED 
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt;&gt; 5. Should I start the GPS unit before starting tangoGPS or the
+</I>&gt;<i> &gt;&gt; other way around
+</I>&gt;<i> &gt; Get gpsd working correctly first with xgps or gpspipe. Only then
+</I>&gt;<i> &gt; bother with tangogps. The advantage of those two is that they are
+</I>&gt;<i> &gt; part of the gpsd package, and should never have protocol problems
+</I>&gt;<i> &gt; due to protocol changes.
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt;&gt; Finally, what steps should I take to get everything working?
+</I>&gt;<i> &gt; See above.
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt;&gt; Thank you,
+</I>&gt;<i> &gt;&gt;
+</I>&gt;<i> &gt;&gt; Peter Freeman
+</I>&gt;<i> &gt;&gt;
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt;
+</I>
+
+
+-- 
+
+Charles Curley                  /&quot;\    ASCII Ribbon Campaign
+Looking for fine software       \ /    Respect for open standards
+and/or writing?                  X     No HTML/RTF in email
+<A HREF="http://www.charlescurley.com">http://www.charlescurley.com</A>    / \    No M$ Word docs in email
+
+Key fingerprint = CE5C 6645 A45A 64E4 94C0  809C FFF6 4C48 4ECD DFDB
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="004691.html">[Gpsd-users] No data from Garmin GPSMap 76CSx through gpsd to tango GPS
+</A></li>
+	<LI>Next message: <A HREF="004693.html">[Gpsd-users] No data from Garmin GPSMap 76CSx through gpsd to tango GPS
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#4692">[ date ]</a>
+              <a href="thread.html#4692">[ thread ]</a>
+              <a href="subject.html#4692">[ subject ]</a>
+              <a href="author.html#4692">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

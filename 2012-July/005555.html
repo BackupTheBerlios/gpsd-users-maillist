@@ -1,0 +1,116 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] Gpsd-users Digest, Vol 72, Issue 1
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2012-July/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Gpsd-users%20Digest%2C%20Vol%2072%2C%20Issue%201&In-Reply-To=%3CCACEnT%3DcWSRmY7kNg4wLciJ8Ytuif6LL1Xs--B%3Dx1SUNb1SfiOw%40mail.gmail.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="005554.html">
+   <LINK REL="Next"  HREF="005556.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] Gpsd-users Digest, Vol 72, Issue 1</H1>
+    <B>Roy Barkas</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Gpsd-users%20Digest%2C%20Vol%2072%2C%20Issue%201&In-Reply-To=%3CCACEnT%3DcWSRmY7kNg4wLciJ8Ytuif6LL1Xs--B%3Dx1SUNb1SfiOw%40mail.gmail.com%3E"
+       TITLE="[Gpsd-users] Gpsd-users Digest, Vol 72, Issue 1">roy at rbdb.net
+       </A><BR>
+    <I>Thu Jul 19 14:52:48 CEST 2012</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="005554.html">[Gpsd-users] Gpsd-users Digest, Vol 72, Issue 1
+</A></li>
+        <LI>Next message: <A HREF="005556.html">[Gpsd-users] Gpsd-users Digest, Vol 72, Issue 1
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#5555">[ date ]</a>
+              <a href="thread.html#5555">[ thread ]</a>
+              <a href="subject.html#5555">[ subject ]</a>
+              <a href="author.html#5555">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Digging a bit deeper, it appears that version 3.4 is behaving as if I had
+added the command line -u switch.
+When I run the sentence on the old version with -u I get the same result as
+when I run it on the new version without the -u
+
+is there an un -u witch?
+
+On Thu, Jul 19, 2012 at 10:40 PM, Roy Barkas &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">roy at rbdb.net</A>&gt; wrote:
+
+&gt;<i> An older version of gpsdecode seems to return a different (correct)
+</I>&gt;<i> position for an AIVDM type 3 packet than version 3.4 that is packaged for
+</I>&gt;<i> Ubuntu 12.
+</I>&gt;<i> The old version returns an immediately useable lat and lon, the new
+</I>&gt;<i> version returns totally different numbers (see below).
+</I>&gt;<i> If I run the same sentence through <A HREF="http://rl.se/aivdm">http://rl.se/aivdm</A> it returns the
+</I>&gt;<i> correct info, same as the old gpsdecode version.
+</I>&gt;<i>
+</I>&gt;<i> Same thing happens with type 1 packets.
+</I>&gt;<i>
+</I>&gt;<i> The old version when run as *gpsdecode -V *returns : SVN ID: $Id:
+</I>&gt;<i> gpsdecode.c 6965 2010-01-30 14:19:42Z esr $
+</I>&gt;<i> This older version also returns &quot;Moored&quot; for status and the 3.4 version of
+</I>&gt;<i> gpsdecode returns 5 for status...
+</I>&gt;<i>
+</I>&gt;<i> gpsdecode -V
+</I>&gt;<i> SVN ID: $Id: gpsdecode.c 6965 2010-01-30 14:19:42Z esr $
+</I>&gt;<i>
+</I>&gt;<i> echo '!AIVDM,1,1,,A,37PCkb5000blLHWjG88enI8T2DW:,0*78' | gpsdecode -j
+</I>&gt;<i>
+</I>&gt;<i> {&quot;class&quot;:&quot;AIS&quot;,&quot;type&quot;:3,&quot;repeat&quot;:0,&quot;mmsi&quot;:503641000,&quot;scaled&quot;:true,*
+</I>&gt;<i> &quot;status&quot;:&quot;Moored&quot;*,&quot;turn&quot;:0,&quot;speed&quot;:0.0,&quot;accuracy&quot;:true,&quot;lon&quot;:*151.2666*
+</I>&gt;<i> ,&quot;lat&quot;:*-23.8352*
+</I>&gt;<i>
+</I>&gt;<i> ,&quot;course&quot;:3545,&quot;heading&quot;:292,&quot;second&quot;:18,&quot;maneuver&quot;:0,&quot;raim&quot;:true,&quot;radio&quot;:168852}
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i> The new version when run as *gpsdecode -V* returns : gpsdecode revision
+</I>&gt;<i> 3.4
+</I>&gt;<i>
+</I>&gt;<i> gpsdecode -V
+</I>&gt;<i> gpsdecode revision 3.4
+</I>&gt;<i>
+</I>&gt;<i> echo '!AIVDM,1,1,,A,37PCkb5000blLHWjG88enI8T2DW:,0*78' | gpsdecode -j
+</I>&gt;<i>
+</I>&gt;<i> {&quot;class&quot;:&quot;AIS&quot;,&quot;type&quot;:3,&quot;repeat&quot;:0,&quot;mmsi&quot;:503641000,&quot;scaled&quot;:false,*
+</I>&gt;<i> &quot;status&quot;:5*,&quot;turn&quot;:0,&quot;speed&quot;:0,&quot;accuracy&quot;:true,&quot;lon&quot;:*90759955*,&quot;lat&quot;:*
+</I>&gt;<i> -14301150*,
+</I>&gt;<i>
+</I>&gt;<i> &quot;course&quot;:3545,&quot;heading&quot;:292,&quot;second&quot;:18,&quot;maneuver&quot;:0,&quot;raim&quot;:true,&quot;radio&quot;:168852}
+</I>&gt;<i>
+</I>&gt;<i> the examples below were run on different systems, one with the old version
+</I>&gt;<i> and one with the new version.
+</I>&gt;<i> *Where have I gone wrong?  I can't imagine that gpsdecode 3.4 has a bug
+</I>&gt;<i> this bad that hasn't been noticed by others.*
+</I>&gt;<i>
+</I></PRE>
+
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="005554.html">[Gpsd-users] Gpsd-users Digest, Vol 72, Issue 1
+</A></li>
+	<LI>Next message: <A HREF="005556.html">[Gpsd-users] Gpsd-users Digest, Vol 72, Issue 1
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#5555">[ date ]</a>
+              <a href="thread.html#5555">[ thread ]</a>
+              <a href="subject.html#5555">[ subject ]</a>
+              <a href="author.html#5555">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

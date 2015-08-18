@@ -1,0 +1,126 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] GPSD with FC12 - a Fix
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2010-January/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20GPSD%20with%20FC12%20-%20a%20Fix&In-Reply-To=%3C798921.11130.qm%40web110010.mail.gq1.yahoo.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="004177.html">
+   <LINK REL="Next"  HREF="004179.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] GPSD with FC12 - a Fix</H1>
+    <B>Hamish</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20GPSD%20with%20FC12%20-%20a%20Fix&In-Reply-To=%3C798921.11130.qm%40web110010.mail.gq1.yahoo.com%3E"
+       TITLE="[Gpsd-users] GPSD with FC12 - a Fix">hamish_b at yahoo.com
+       </A><BR>
+    <I>Sun Jan 24 12:15:21 CET 2010</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="004177.html">[Gpsd-users] GPSD wins a prize
+</A></li>
+        <LI>Next message: <A HREF="004179.html">[Gpsd-users] OBD GPS Logger: another gpsd client
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#4178">[ date ]</a>
+              <a href="thread.html#4178">[ thread ]</a>
+              <a href="subject.html#4178">[ subject ]</a>
+              <a href="author.html#4178">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi Tom,
+
+&gt;<i> However, my chartview software
+</I>&gt;<i> (<A HREF="http://smittypaddler.com/chartview/index.htm">http://smittypaddler.com/chartview/index.htm</A>)
+</I>&gt;<i> does work on fc9.
+</I>
+(website down?)
+
+
+some off-topic (wrt gpsd) comments re. your program. Perhaps they can help
+you save some time by not having to reinvent some wheels, and are
+interesting to the rest of the list in some way.
+
+
+ - why make users geo-register the NOAA charts manually? The free RNCs
+you download from NOAA in BSB format can be very easily converted directly
+into a geo-registered GeoTIFF (or whatever) with the `gdalwarp` program
+from www.gdal.org. The `gdalinfo` program will give you access to the
+already-embedded x,y to lat/lon control points (or use libgdal directly
+in your app and make it all automagically work for the user on the fly).
+  <A HREF="http://www.gdal.org/frmt_various.html#BSB">http://www.gdal.org/frmt_various.html#BSB</A>
+some more tips here:
+  <A HREF="https://sourceforge.net/apps/mediawiki/gpsdrive/index.php?title=Marine_Howto">https://sourceforge.net/apps/mediawiki/gpsdrive/index.php?title=Marine_Howto</A>
+(GpsDrive wiki)
+
+
+ - JPEG is probably not as good as PNG or compressed TIFF for those
+charts as they are usually based on &lt; 16 color palette and large blocks
+of constant color. The JPEG image will be both a bigger file and of less
+quality.
+
+
+ - If you would like to support electronic nautical charts (vectorized ENCs) in S-57 format (also a free download from NOAA; but encrypted
+in the UK, other govts [ppht]) you can load it (well the unencrypted USA
+data anyway) with the OGR library from www.gdal.org.
+  <A HREF="http://www.gdal.org/ogr/drv_s57.html">http://www.gdal.org/ogr/drv_s57.html</A>
+  <A HREF="http://grass.osgeo.org/wiki/S-57_data">http://grass.osgeo.org/wiki/S-57_data</A>
+
+
+ - A very nice S-52 rendering library for that S-57 formatted data can
+be found here:
+  <A HREF="http://openev.cvs.sourceforge.net/openev/contrib/S52/">http://openev.cvs.sourceforge.net/openev/contrib/S52/</A>
+
+(libS52 stands out as one of the most impressive FOSS mostly-solo efforts
+I've seen. a huge effort &amp; incredible dedication by Sylvain Duclos... go
+man go.)
+
+
+ - there is some FOSS nav software called &quot;OpenCpn&quot; for plotting S-57 ENC
+and BSB charts based on an older version of Sylvain's libS52 library.
+links:
+  <A HREF="http://opencpn.org/">http://opencpn.org/</A>
+  <A HREF="https://sourceforge.net/projects/opencpn/">https://sourceforge.net/projects/opencpn/</A>
+  <A HREF="http://www.cruisersforum.com/forums/f134/">http://www.cruisersforum.com/forums/f134/</A>
+
+
+hopefully in all of that there is some room for collaboration.
+
+
+regards,
+Hamish
+
+
+
+      
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="004177.html">[Gpsd-users] GPSD wins a prize
+</A></li>
+	<LI>Next message: <A HREF="004179.html">[Gpsd-users] OBD GPS Logger: another gpsd client
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#4178">[ date ]</a>
+              <a href="thread.html#4178">[ thread ]</a>
+              <a href="subject.html#4178">[ subject ]</a>
+              <a href="author.html#4178">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

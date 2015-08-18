@@ -1,0 +1,174 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] Garmin Oregon
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2009-April/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Garmin%20Oregon&In-Reply-To=%3C200904091722.46529.scalpel4k%40google.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="003701.html">
+   <LINK REL="Next"  HREF="003703.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] Garmin Oregon</H1>
+    <B>M;chi</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Garmin%20Oregon&In-Reply-To=%3C200904091722.46529.scalpel4k%40google.com%3E"
+       TITLE="[Gpsd-users] Garmin Oregon">scalpel4k at googlemail.com
+       </A><BR>
+    <I>Thu Apr  9 17:22:46 CEST 2009</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="003701.html">[Gpsd-users] Gpsd on my Mac via Bluetooth
+</A></li>
+        <LI>Next message: <A HREF="003703.html">[Gpsd-users] Garmin Oregon
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3702">[ date ]</a>
+              <a href="thread.html#3702">[ thread ]</a>
+              <a href="subject.html#3702">[ subject ]</a>
+              <a href="author.html#3702">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi guys,
+
+I'm a bit frustrated with my Oregon 300, I don't get it to work in Spanner 
+mode. Maybe someone has a clue what's going on.
+First, I use gpsd 2.37 and I'm running a 2.6.29 kernel with its garmin_gps 
+module. I suppose this is everything I need to get started with my gps device, 
+right? At least I can connect to it.
+The problem now is that I don't get any readings from the device. Debug 
+messages are saying that gpsd is skipping responses, I guess due to an unknown 
+data format. Unfortunately I don't know anything about formats, so here is 
+what gpsd says:
+
+ **#&gt; /usr/sbin/gpsd -F /var/run/gpsd.socket -n -D 6 -N /dev/ttyUSB0
+gpsd: control socket opened at /var/run/gpsd.socket                 
+gpsd: launching (Version 2.37)                                      
+gpsd: listening on port gpsd                                        
+gpsd: shmat(0,0,0) succeeded                                        
+gpsd: shmat(0,0,0) succeeded                                        
+gpsd: shmat(0,0,0) succeeded                                        
+gpsd: shmat(0,0,0) succeeded                                        
+gpsd: successfully connected to the DBUS system bus                 
+gpsd: running with effective group ID 0                             
+gpsd: running with effective user ID 0                              
+gpsd: opening GPS data source at '/dev/ttyUSB0'                     
+gpsd: speed 9600, 8N1                                               
+gpsd: =&gt; GPS: $PASHQ,RID*28\x0d                                     
+
+gpsd: Navcom: command dump: 0299661c0800040200001203
+gpsd: =&gt; GPS: 0299661c0800040200001203              
+gpsd: Navcom: sent command 0x1c (Test Support Block)
+gpsd: Navcom: command 0x1c mode = 02, length = 0    
+gpsd: Navcom: command dump: 029966200e000001ae02000071000000f203
+gpsd: =&gt; GPS: 029966200e000001ae02000071000000f203              
+gpsd: Navcom: sent command 0x20 (Data Request) - data block id = ae at rate 00
+gpsd: Navcom: command dump: 029966200e00000186020a0071000000d003              
+gpsd: =&gt; GPS: 029966200e00000186020a0071000000d003                            
+gpsd: Navcom: sent command 0x20 (Data Request) - data block id = 86 at rate 0a
+gpsd: Set garmin_gps driver mode = 0                                          
+gpsd: PrintUSBPacket()                                                        
+gpsd: Private, Set Mode: 1                                                    
+gpsd: =&gt; GPS: 4b6e1001020000000400000001000000                                
+gpsd: SendPacket(), wrote 16 bytes                                            
+gpsd: probe found Garmin USB binary driver...                                 
+gpsd: ntpd_link_activate: 0                                                   
+gpsd: gpsd_activate(1): opened GPS (6)                                        
+gpsd: Get Garmin Product Data                                                 
+gpsd: SendPacket(), writing 6 bytes: 10fe00021003                             
+gpsd: PrintSERPacket(, 0xfe, 00, )                                            
+gpsd: Appl, Product Data req                                                  
+gpsd: PrintSERPacket(, 0xfe, 00, ) = 00                                       
+gpsd: Create Thread gpsd_ppsmonitor                                           
+gpsd: =&gt; GPS: 10fe00021003                                                    
+gpsd: SendPacket(), wrote 6 bytes                                             
+gpsd: Set Garmin to send reports every 1 second                               
+gpsd: SendPacket(), writing 8 bytes: 100a023100c31003                         
+gpsd: PrintSERPacket(, 0xa, 0x2, )                                            
+gpsd: Appl, Command Data: Start Xmit PVT data                                 
+gpsd: PrintSERPacket(, 0xa, 0x2, ) = 00                                       
+gpsd: =&gt; GPS: 100a023100c31003                                                
+gpsd: SendPacket(), wrote 8 bytes                                             
+gpsd: polling 6                                                               
+gpsd: Read 8 chars to buffer offset 0 (total 8): 100602fe00fa1003             
+gpsd: Character discarded, buffer 7 chars = 0602fe00fa1003                    
+gpsd: ISGPS word tag not correct, skipping                                    
+gpsd: Character discarded, buffer 6 chars = 02fe00fa1003                      
+gpsd: Character discarded, buffer 5 chars = fe00fa1003                        
+gpsd: ISGPS word tag not correct, skipping                                    
+gpsd: Character discarded, buffer 4 chars = 00fa1003                          
+gpsd: ISGPS word tag not correct, skipping                                    
+gpsd: Character discarded, buffer 3 chars = fa1003                            
+gpsd: ISGPS word tag not correct, skipping                                    
+gpsd: Character discarded, buffer 2 chars = 1003                              
+gpsd: Character discarded, buffer 1 chars = 03                                
+gpsd: ISGPS word tag not correct, skipping                                    
+gpsd: Character discarded, buffer 0 chars =                                   
+gpsd: polling 6                                                               
+gpsd: Read 8 chars to buffer offset 0 (total 8): 1006020a00ee1003             
+gpsd: Character discarded, buffer 7 chars = 06020a00ee1003                    
+gpsd: ISGPS word tag not correct, skipping                                    
+gpsd: Character discarded, buffer 6 chars = 020a00ee1003                      
+gpsd: Character discarded, buffer 5 chars = 0a00ee1003                        
+gpsd: ISGPS word tag not correct, skipping                                    
+gpsd: Character discarded, buffer 4 chars = 00ee1003                          
+gpsd: ISGPS word tag not correct, skipping                                    
+gpsd: Character discarded, buffer 3 chars = ee1003                            
+gpsd: ISGPS word tag not correct, skipping                                    
+gpsd: Character discarded, buffer 2 chars = 1003                              
+gpsd: Character discarded, buffer 1 chars = 03                                
+gpsd: ISGPS word tag not correct, skipping                                    
+gpsd: Character discarded, buffer 0 chars =                                   
+gpsd: client 127.0.0.1 (0) connect on fd 7                                    
+gpsd: checking client(0)                                                      
+gpsd: &lt;= client(0): w+xqk?fj0                                                 
+gpsd: client(0): assigning channel...                                         
+gpsd: User requires 2, channel type is -1                                     
+gpsd: client(0): channel 6 already active.                                    
+gpsd: client(0): channel 6 already active.                                    
+gpsd: client(0): channel 6 already active.                                    
+gpsd: =&gt; client(0): GPSD,W=1,X=1239285317.779056,Q=?,K=1 
+/dev/ttyUSB0,F=/dev/ttyUSB0,J=0
+gpsd: checking client(0)                                                                
+gpsd: &lt;= client(0): j0                                                                  
+gpsd: =&gt; client(0): GPSD,J=0                                                            
+gpsd: checking client(0)                                                                
+gpsd: &lt;= client(0): qs                                                                  
+gpsd: client(0): channel 6 already active.                                              
+gpsd: client(0): channel 6 already active.                                              
+gpsd: =&gt; client(0): GPSD,Q=?,S=0                                                        
+gpsd: checking client(0)                                                                
+gpsd: detaching 127.0.0.1 (sub0, fd 7) in detach_client                                 
+
+thanks for anybody's help (obviously that wasn't gpsd ;-)
+M;chi
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="003701.html">[Gpsd-users] Gpsd on my Mac via Bluetooth
+</A></li>
+	<LI>Next message: <A HREF="003703.html">[Gpsd-users] Garmin Oregon
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3702">[ date ]</a>
+              <a href="thread.html#3702">[ thread ]</a>
+              <a href="subject.html#3702">[ subject ]</a>
+              <a href="author.html#3702">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

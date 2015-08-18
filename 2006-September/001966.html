@@ -1,0 +1,220 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] Garmin Forerunner 305 compatibility
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2006-September/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Garmin%20Forerunner%20305%20compatibility&In-Reply-To=%3C8c15ae0609211251n37b292f8x9a5c92ef7a704368%40mail.gmail.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="001965.html">
+   <LINK REL="Next"  HREF="001967.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] Garmin Forerunner 305 compatibility</H1>
+    <B>Michael Robbert</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Garmin%20Forerunner%20305%20compatibility&In-Reply-To=%3C8c15ae0609211251n37b292f8x9a5c92ef7a704368%40mail.gmail.com%3E"
+       TITLE="[Gpsd-users] Garmin Forerunner 305 compatibility">mrobbert at gmail.com
+       </A><BR>
+    <I>Thu Sep 21 21:51:28 CEST 2006</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="001965.html">[Gpsd-users] Garmin Forerunner 305 compatibility
+</A></li>
+        <LI>Next message: <A HREF="001967.html">[Gpsd-users] Garmin Forerunner 305 compatibility
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1966">[ date ]</a>
+              <a href="thread.html#1966">[ thread ]</a>
+              <a href="subject.html#1966">[ subject ]</a>
+              <a href="author.html#1966">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>On 9/21/06, Chris Kuethe &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">chris.kuethe at gmail.com</A>&gt; wrote:
+&gt;<i>
+</I>&gt;<i> On 9/21/06, Michael Robbert &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">mrobbert at gmail.com</A>&gt; wrote:
+</I>&gt;<i> &gt; Yes, sorry I wasn't more informative in my first message, but I am
+</I>&gt;<i> currently
+</I>&gt;<i> &gt; running Ubuntu Linux 6.06. When I plug the forerunner into the USB
+</I>&gt;<i> interface
+</I>&gt;<i> &gt; I see this in dmesg
+</I>&gt;<i> &gt; [17181296.116000] garmin_gps 2-2.2:1.0: Garmin GPS usb/tty converter
+</I>&gt;<i> &gt; detected
+</I>&gt;<i> &gt; [17181296.116000] usb 2-2.2: Garmin GPS usb/tty converter now attached
+</I>&gt;<i> to
+</I>&gt;<i> &gt; ttyUSB0
+</I>&gt;<i>
+</I>&gt;<i> OK, that's a fairly good sign
+</I>&gt;<i>
+</I>&gt;<i> &gt; So, the driver is loaded and I have a device file to interact with. I
+</I>&gt;<i> just
+</I>&gt;<i> &gt; now found a troubleshooting guide here:
+</I>&gt;<i> &gt; <A HREF="http://gpsd.davisnetworks.com/bin/view/Main/TroubleShootingGuide">http://gpsd.davisnetworks.com/bin/view/Main/TroubleShootingGuide</A>
+</I>&gt;<i> &gt; I got to testing gpsd and this command seems to work:
+</I>&gt;<i> &gt; $ echo L | nc localhost 2947
+</I>&gt;<i> &gt; GPSD,L=2 2.30 abcdefgiklmnopqrstuvwxyz
+</I>&gt;<i>
+</I>&gt;<i> GPSD version 2.30, supporting protocol level 3, with the following
+</I>&gt;<i> command letters.... tells you that gpsd is running, but nothing about
+</I>&gt;<i> any devices
+</I>&gt;<i>
+</I>&gt;<i> &gt; but I'm not sure this one does:
+</I>&gt;<i> &gt; $ echo S | nc localhost 2947
+</I>&gt;<i> &gt; GPSD,S=0
+</I>&gt;<i>
+</I>&gt;<i> man gpsd
+</I>&gt;<i> says that your fix status is 0 ... ie. no fix.
+</I>&gt;<i>
+</I>&gt;<i> But that could be because the receiver doesn't have a fix or because
+</I>&gt;<i> it's not transmitting anything.
+</I>&gt;<i>
+</I>&gt;<i> &gt; I'm going to do a little more reading through the docs to see if I can
+</I>&gt;<i> &gt; figure out what is wrong, but if anybody can point me to some info
+</I>&gt;<i> that'll
+</I>&gt;<i> &gt; help get support added for this new device that would be greatly
+</I>&gt;<i> &gt; appreciated.
+</I>&gt;<i>
+</I>&gt;<i> Step back a bit and test the hardware. My old eTrex had a menu option
+</I>&gt;<i> that allowed me to set the output protocol to binary, nmea, or simple
+</I>&gt;<i> text. You might want to set your receiver to NMEA mode, and then
+</I>&gt;<i> connect directly to the tty with cu/tip/minicom or some other terminal
+</I>&gt;<i> emulator. See if you get NMEA coming out. The point of that is to
+</I>&gt;<i> verify that your receiver is capable of transmitting NMEA, and that
+</I>&gt;<i> you can even receive it off the tty correctly.
+</I>&gt;<i>
+</I>&gt;<i> Then, in one terminal, run &quot;gpsd -n -N -D3&quot;  which will be quite
+</I>&gt;<i> verbose, but it'll give you a good view to what gpsd is doing while
+</I>&gt;<i> starting up. This includes what gpsd is able to read from the tty.
+</I>&gt;<i>
+</I>&gt;<i> CK
+</I>&gt;<i>
+</I>&gt;<i> --
+</I>&gt;<i> GDB has a 'break' feature; why doesn't it have 'fix' too?
+</I>&gt;<i>
+</I>
+I can't find anywhere to set the device to send NMEA. I'm guessing that
+since this is really just meant for training(running, cycling, etc.) they
+may have left that feature out. I did fire up minicom and it was spitting
+out binary data, I'm guessing garmin protocol. Should gpsd be able to deal
+with garmin protocol? Documentation seems to indicate that it should.
+Here is the output of the command gpsd -n -N -D3 /dev/ttyUSB0
+It keeps going, but I cut it off after a few sentences
+
+gpsd: launching (Version 2.30)
+gpsd: listening on port gpsd
+gpsd: successfully connected to the DBUS system bus
+gpsd: running with effective group ID 1000
+gpsd: running with effective user ID 1000
+gpsd: opening GPS data source at '/dev/ttyUSB0'
+gpsd: Set garmin_gps driver mode = 0
+gpsd: PrintPacket()
+gpsd: Private, Set Mode: 0
+gpsd: Get garmin_gps driver version
+gpsd: PrintPacket()
+gpsd: Private, ID: Info Req
+gpsd: PrintPacket()
+gpsd: Private, ID: Info Resp
+gpsd: Garmin USB Driver found, Version 0.23, Mode: 0, GPS Serial# 3306852874
+gpsd: Send Garmin Start Session
+gpsd: PrintPacket()
+gpsd: Transport, Start Session req
+gpsd: Got packet waiting for START_SESSION
+gpsd: PrintPacket()
+gpsd: Transport, Start Session resp, unit: 0xc51a920a
+gpsd: Get Garmin Product Data
+gpsd: PrintPacket()
+gpsd: Appl, Product Data req
+gpsd: GetPacket() packet too long!
+gpsd: PrintPacket()
+gpsd: Appl, Product Data, sz: 40
+gpsd: Garmin Product ID: 484, SoftVer: 2.40
+gpsd: Garmin Product Desc: Forerunner305 Software Version 2.40
+gpsd: probe found Garmin binary driver...
+gpsd: Set garmin_gps driver mode = 0
+gpsd: PrintPacket()
+gpsd: Private, Set Mode: 0
+gpsd: Get garmin_gps driver version
+gpsd: PrintPacket()
+gpsd: Private, ID: Info Req
+gpsd: PrintPacket()
+gpsd: Private, ID: Info Resp
+gpsd: Garmin USB Driver found, Version 0.23, Mode: 0, GPS Serial# 3306852874
+gpsd: Send Garmin Start Session
+gpsd: PrintPacket()
+gpsd: Transport, Start Session req
+gpsd: Got packet waiting for START_SESSION
+gpsd: PrintPacket()
+gpsd: Transport, Start Session resp, unit: 0xc51a920a
+gpsd: Get Garmin Product Data
+gpsd: PrintPacket()
+gpsd: Appl, Product Data req
+gpsd: PrintPacket()
+gpsd: Appl, Product Data, sz: 40
+gpsd: Garmin Product ID: 484, SoftVer: 2.40
+gpsd: Garmin Product Desc: Forerunner305 Software Version 2.40
+gpsd: from garmin_probe() = 1
+gpsd: Set Garmin to send reports every 1 second
+gpsd: PrintPacket()
+gpsd: Appl, Command Data: Start Xmit PVT data
+gpsd: gpsd_activate: opened GPS (5)
+gpsd: PrintPacket()
+gpsd: Appl, ID: 248, Sz: 36
+gpsd: PrintPacket()
+gpsd: Appl, SAT Data Sz: 84
+gpsd: &lt;= GPS:
+$GPGSV,3,1,09,23,22,158,96,28,29,244,95,08,43,305,96,03,30,052,96*71\x0d\x0a$GPGSV,3,2,09,11,02,143,97,13,55,176,95,19,49,086,00,27,70,339,00*75\x0d\x0a$GPGSV,3,3,09,10,13,299,96*4E
+gpsd: PrintPacket()
+gpsd: Appl, SAT Data Sz: 84
+gpsd: &lt;= GPS:
+$GPGSV,3,1,09,23,22,158,96,28,29,244,95,08,43,305,96,03,30,052,96*71\x0d\x0a$GPGSV,3,2,09,11,02,143,97,13,55,176,95,19,49,086,00,27,70,339,00*75\x0d\x0a$GPGSV,3,3,09,10,13,299,96*4E
+gpsd: PrintPacket()
+gpsd: Appl, SAT Data Sz: 84
+gpsd: &lt;= GPS:
+$GPGSV,3,1,09,23,22,158,96,28,29,244,95,08,43,305,96,03,30,052,96*71\x0d\x0a$GPGSV,3,2,09,11,02,143,97,13,55,176,95,19,49,086,00,27,70,339,00*75\x0d\x0a$GPGSV,3,3,09,10,13,299,96*4E
+gpsd: PrintPacket()
+gpsd: Appl, SAT Data Sz: 84
+gpsd: &lt;= GPS:
+$GPGSV,3,1,09,23,22,158,96,28,29,244,95,08,43,305,96,03,30,052,96*71\x0d\x0a$GPGSV,3,2,09,11,02,143,97,13,55,176,95,19,49,086,00,27,70,339,00*75\x0d\x0a$GPGSV,3,3,09,10,13,299,96*4E
+gpsd: closing GPS=/dev/ttyUSB0 (5)
+gpsd: garmin_close()
+
+This all looks good to me, but I'm not able to get any useful data out of
+gpsd. While it is running I can &quot;telnet localhost 2947&quot; and issue commands.
+Most of the commands return ? including p, d, e, and o
+I can do an r1 and I see raw data, but why won't it return any formatted
+data. My device does have a fix while doing this.
+
+Thanks for looking into this. Hopefully we'll figure this out soon.
+
+Mike Robbert
+-------------- next part --------------
+An HTML attachment was scrubbed...
+URL: &lt;<A HREF="https://lists.berlios.de/pipermail/gpsd-users/attachments/20060921/1a9bc934/attachment.html">https://lists.berlios.de/pipermail/gpsd-users/attachments/20060921/1a9bc934/attachment.html</A>&gt;
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="001965.html">[Gpsd-users] Garmin Forerunner 305 compatibility
+</A></li>
+	<LI>Next message: <A HREF="001967.html">[Gpsd-users] Garmin Forerunner 305 compatibility
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1966">[ date ]</a>
+              <a href="thread.html#1966">[ thread ]</a>
+              <a href="subject.html#1966">[ subject ]</a>
+              <a href="author.html#1966">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

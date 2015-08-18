@@ -1,0 +1,156 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] thales Ac-12 help
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2009-April/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20thales%20Ac-12%20help&In-Reply-To=%3C70876eb0904121542ofd5cdc6jbba9851c8a26eef8%40mail.gmail.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="003708.html">
+   <LINK REL="Next"  HREF="003710.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] thales Ac-12 help</H1>
+    <B>JOAO BOSCO JUNIOR</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20thales%20Ac-12%20help&In-Reply-To=%3C70876eb0904121542ofd5cdc6jbba9851c8a26eef8%40mail.gmail.com%3E"
+       TITLE="[Gpsd-users] thales Ac-12 help">boscojr at gmail.com
+       </A><BR>
+    <I>Mon Apr 13 00:42:26 CEST 2009</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="003708.html">[Gpsd-users] thales Ac-12 help
+</A></li>
+        <LI>Next message: <A HREF="003710.html">[Gpsd-users] PHP client
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3709">[ date ]</a>
+              <a href="thread.html#3709">[ thread ]</a>
+              <a href="subject.html#3709">[ subject ]</a>
+              <a href="author.html#3709">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Thanks Chris.
+
+worked with 57600 8N1.
+
+I can see the NMEA sentences now.
+
+BOSCO
+
+
+
+2009/4/12 Chris Kuethe &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">chris.kuethe at gmail.com</A>&gt;
+
+&gt;<i> On Sun, Apr 12, 2009 at 2:37 PM, JOAO BOSCO JUNIOR &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">boscojr at gmail.com</A>&gt;
+</I>&gt;<i> wrote:
+</I>&gt;<i> &gt; Hi Chris.
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; yes I'm using only the bare module.
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; I'm using a USB to TTL converter FTDI232R. his does not work?
+</I>&gt;<i>
+</I>&gt;<i> Arduino cable? ;)
+</I>&gt;<i>
+</I>&gt;<i> Not sure if that'll work... I'd think it should, since I'm using the
+</I>&gt;<i> same sort of cable with my novatel superstar2
+</I>&gt;<i>
+</I>&gt;<i> &gt; I used the ashctl thus:
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; ashctl /dev/ttyUSB0 normal
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; If this in binary format how to decode?
+</I>&gt;<i>
+</I>&gt;<i> &quot;normal = 9600, GGA+GSA+GSV+RMC+ZDA\n&quot;
+</I>&gt;<i>
+</I>&gt;<i> That's NMEA at 9600bps. If you connected at 4800 that would produce
+</I>&gt;<i> strange characters. You're using minicom so it's easy to check all the
+</I>&gt;<i> other common speeds.
+</I>&gt;<i>
+</I>&gt;<i> Oh - one thing I've noticed. Sometimes these usb-serial cables get
+</I>&gt;<i> confused if you're sending data while plugging them in. This too can
+</I>&gt;<i> lead to strange characters. The workaround is to plug in the
+</I>&gt;<i> usb-serial, then power-on or connect the device that is sending data.
+</I>&gt;<i>
+</I>&gt;<i> CK
+</I>&gt;<i>
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; Thanks.
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; BOSCO.
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; 2009/4/12 Chris Kuethe &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">chris.kuethe at gmail.com</A>&gt;
+</I>&gt;<i> &gt;&gt;
+</I>&gt;<i> &gt;&gt; just the bare module? if so, you'll need a level shifter (MAX232) to
+</I>&gt;<i> &gt;&gt; connect a computer to it. depending on which mode you used in ashctl,
+</I>&gt;<i> &gt;&gt; the module may be running at 57600 with binary messages enabled - that
+</I>&gt;<i> &gt;&gt; could cause the strange characters you're seeing.
+</I>&gt;<i> &gt;&gt;
+</I>&gt;<i> &gt;&gt; CK
+</I>&gt;<i> &gt;&gt;
+</I>&gt;<i> &gt;&gt; On Sun, Apr 12, 2009 at 1:43 PM, JOAO BOSCO JUNIOR &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">boscojr at gmail.com</A>&gt;
+</I>&gt;<i> &gt;&gt; wrote:
+</I>&gt;<i> &gt;&gt; &gt; Hi all,
+</I>&gt;<i> &gt;&gt; &gt;
+</I>&gt;<i> &gt;&gt; &gt; I have a module Thales ac-12 and I can not use it.
+</I>&gt;<i> &gt;&gt; &gt;
+</I>&gt;<i> &gt;&gt; &gt; I used the ashctl to try to configure it, but all it displays strange
+</I>&gt;<i> &gt;&gt; &gt; characters on output.
+</I>&gt;<i> &gt;&gt; &gt;
+</I>&gt;<i> &gt;&gt; &gt; I tried to send some commands via minicom, but he does not respond.
+</I>&gt;<i> &gt;&gt; &gt;
+</I>&gt;<i> &gt;&gt; &gt; anyone have any idea?
+</I>&gt;<i> &gt;&gt; &gt;
+</I>&gt;<i> &gt;&gt; &gt; I'm using gpsd 2:39 and fedora 10.
+</I>&gt;<i> &gt;&gt; &gt;
+</I>&gt;<i> &gt;&gt; &gt; thanks,
+</I>&gt;<i> &gt;&gt; &gt;
+</I>&gt;<i> &gt;&gt; &gt; BOSCO.
+</I>&gt;<i> &gt;&gt; &gt; _______________________________________________
+</I>&gt;<i> &gt;&gt; &gt; Gpsd-users mailing list
+</I>&gt;<i> &gt;&gt; &gt; <A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">Gpsd-users at lists.berlios.de</A>
+</I>&gt;<i> &gt;&gt; &gt; <A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">https://lists.berlios.de/mailman/listinfo/gpsd-users</A>
+</I>&gt;<i> &gt;&gt; &gt;
+</I>&gt;<i> &gt;&gt;
+</I>&gt;<i> &gt;&gt;
+</I>&gt;<i> &gt;&gt;
+</I>&gt;<i> &gt;&gt; --
+</I>&gt;<i> &gt;&gt; GDB has a 'break' feature; why doesn't it have 'fix' too?
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt;
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i> --
+</I>&gt;<i> GDB has a 'break' feature; why doesn't it have 'fix' too?
+</I>&gt;<i>
+</I>
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="003708.html">[Gpsd-users] thales Ac-12 help
+</A></li>
+	<LI>Next message: <A HREF="003710.html">[Gpsd-users] PHP client
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3709">[ date ]</a>
+              <a href="thread.html#3709">[ thread ]</a>
+              <a href="subject.html#3709">[ subject ]</a>
+              <a href="author.html#3709">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

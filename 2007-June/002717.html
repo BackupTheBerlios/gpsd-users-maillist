@@ -1,0 +1,128 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] Notes on setting up gpsd, cgpxlogger,	and GpsDrive on Mac OSX
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2007-June/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Notes%20on%20setting%20up%20gpsd%2C%20cgpxlogger%2C%0A%09and%20GpsDrive%20on%20Mac%20OSX&In-Reply-To=%3C20070620201903.7551a8f4.hamish_nospam%40yahoo.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="002716.html">
+   <LINK REL="Next"  HREF="002718.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] Notes on setting up gpsd, cgpxlogger,	and GpsDrive on Mac OSX</H1>
+    <B>Hamish</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Notes%20on%20setting%20up%20gpsd%2C%20cgpxlogger%2C%0A%09and%20GpsDrive%20on%20Mac%20OSX&In-Reply-To=%3C20070620201903.7551a8f4.hamish_nospam%40yahoo.com%3E"
+       TITLE="[Gpsd-users] Notes on setting up gpsd, cgpxlogger,	and GpsDrive on Mac OSX">hamish_nospam at yahoo.com
+       </A><BR>
+    <I>Wed Jun 20 10:19:03 CEST 2007</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="002716.html">[Gpsd-users] GPSD in Raw Mode and 'o' Mode
+</A></li>
+        <LI>Next message: <A HREF="002718.html">[Gpsd-users] how use tomtom gps
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2717">[ date ]</a>
+              <a href="thread.html#2717">[ thread ]</a>
+              <a href="subject.html#2717">[ subject ]</a>
+              <a href="author.html#2717">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi,
+
+I recently set up gpsd, cgpxlogger, and GpsDrive on a newish MacBook Pro
+laptop (intel) running Mac OSX 10.4. It's all working nicely now. For the
+archives I thought I'd share some notes and throw a few little wrapper
+scripts out into the public domain.
+
+
+1) install the MaxOSX XCode packages from install DVD, including X11, gcc4
+2) install Fink, set to use unstable packages &amp; update to latest base
+3) install gpsdrive 2.09 using Fink (source package)
+4) rename /sw/usr/bin/gpsd from GpsDrive package to 'gpsd-1.06b'
+5) get gpsd 2.34 source code, expand
+
+6) I tried using &quot;stty&quot; to set/read the NMEA stream from the OSX Terminal
+prompt but no luck. stty on the Mac (&amp; I assume *BSD) works differently
+than the Linux version as given in the gpsd Readme. I couldn't get the
+baud rate to change. The following didn't exit with error, but didn't
+work either:  $ stty -f /dev/cu.KeySerial1 ispeed B4800
+
+7) gpsd ./autogen. Just at the start there were some errors about
+unmatched unary operators &quot;[&quot; etc; I assume that's something to do with
+a shell test for [ &quot;$FOO&quot; -ne 0 ] when $FOO is unset, but it went on so
+I left that. (sorry didn't write down the error)
+
+8) that didn't find the lesstif includes installed via Fink (so it
+wouldn't build xgps, etc apps), so I reran ./configure with 
+-x-includes=&quot;/usr/X11R6/include /sw/include&quot; to have it use Apple's X11
+headers but also find the Fink lesstif stuff (same for -x-libraries).
+But that broke during compile as make's gcc command line just threw in
+the second path as another command line option; I assume some sort of $*
+vs $@ whitespace quoting problem. I overcame that by making the string:
+-x-includes=&quot;/usr/X11R6/include -I/sw/include&quot; (same for -x-libraries=a -Lb).
+Not pretty, but it worked. Also OSX doesn't have a /usr/local/ by
+default so I opted to add --prefix=/sw to the ./configure line to have
+it live in Fink's dir structure. After all that, I had everything but
+gpxlogger building (something to do with DBUS), but I wasn't concerned
+with that as cgpxlogger built ok and is a delight to use.
+
+9) make gpsd load at boot time. Geordie suggested using the launchd
+script from gpsdX, and that's probably the best Mac-friendly option, but
+I'm not a mac-head so just whipped up a /etc/rc.local (as suggested by
+Chris). that contains a single line: &quot;/usr/local/bin/go_gpsd&quot; The
+go_gpsd launch script is attached to this email. It tests to see if a
+KeySpan or PL2303 based usb&lt;-&gt;serial adapter is present before deciding
+what device to use. If neither is attached it doesn't try to start gpsd.
+
+10) at this point GpsDrive works; fetch some maps from GpsDrive SVN,
+Google Maps via the JavaScript wget generator, and slice up some local
+GeoTIFF images for backdrops. (details in the GpsDrive wiki). Start it
+from a OSX Terminal (if not in X11 already) with &quot;open-x11 gpsdrive&quot;.
+
+11) Set up cgpxlogger for easy start&amp;stop with an auto unique timestamp
+filename. Scripts to launch the GPX logger and watch its progress are
+attached.
+
+12) Set up the X11 Applications menu to make running these really easy.
+com.apple.x11.plist contains:  (string'd)
+GpsDrive             /sw/bin/gpsdrive
+xGps                 /sw/bin/xgps -speedunits knots
+xGpsSpeed            /sw/bin/xgpsspeed -speedunits knots
+Start GPX logger     /usr/local/bin/go_cgpxlogger
+Monitor GPX logfile  xterm -geometry 50x30 -e /usr/local/bin/mon_cgpxlogger
+Stop GPX logger      killall cgpxlogger
+
+
+in the hope that it will be useful,
+Hamish
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="002716.html">[Gpsd-users] GPSD in Raw Mode and 'o' Mode
+</A></li>
+	<LI>Next message: <A HREF="002718.html">[Gpsd-users] how use tomtom gps
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2717">[ date ]</a>
+              <a href="thread.html#2717">[ thread ]</a>
+              <a href="subject.html#2717">[ subject ]</a>
+              <a href="author.html#2717">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

@@ -1,0 +1,85 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] Bidirectional 'raw' communication using libgpsd
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2010-December/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Bidirectional%20%27raw%27%20communication%20using%20libgpsd&In-Reply-To=%3C4CFC40FD.5020009%40kera.name%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="004787.html">
+   <LINK REL="Next"  HREF="004789.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] Bidirectional 'raw' communication using libgpsd</H1>
+    <B>Tomalak Geret'kal</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Bidirectional%20%27raw%27%20communication%20using%20libgpsd&In-Reply-To=%3C4CFC40FD.5020009%40kera.name%3E"
+       TITLE="[Gpsd-users] Bidirectional 'raw' communication using libgpsd">tom at kera.name
+       </A><BR>
+    <I>Mon Dec  6 02:48:46 CET 2010</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="004787.html">[Gpsd-users] Bidirectional 'raw' communication using libgpsd
+</A></li>
+        <LI>Next message: <A HREF="004789.html">[Gpsd-users] Bidirectional 'raw' communication using libgpsd
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#4788">[ date ]</a>
+              <a href="thread.html#4788">[ thread ]</a>
+              <a href="subject.html#4788">[ subject ]</a>
+              <a href="author.html#4788">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>On 06/12/2010 01:39, Mario De Weerd wrote:
+&gt;<i> A pity that this control port is a unix domain socket and not a TCP socket.
+</I>&gt;<i>   I do not think that security will be hurt a lot if it were a TCP socket
+</I>&gt;<i> listening on 127.0.0.1 only (accepting from the localhost only, and not
+</I>&gt;<i> listening on the public IP address).
+</I>
+Why? Why add the overhead of going through the network stack 
+-- even if you're avoiding the physical drivers -- if you're 
+just doing local IPC?
+
+Unix domain sockets are fine.
+
+&gt;<i> After connecting to the Unix socket @/var/run/gps.sock , I got 'OK'
+</I>&gt;<i> responses, but no reaction from the device.
+</I>&gt;<i> I requested a cold start using:
+</I>&gt;<i> !/dev/ttyS0=$PMTK103*30
+</I>&gt;<i> and I also tried the hex equivalent using '&amp;'.
+</I>&gt;<i> I got an 'OK' each time, but the device did not 'cold start'.
+</I>
+Your device is probably expecting a newline after 
+&quot;$PMTK103*30&quot;. I suggest hex-encoding the entire string 
+&quot;$PMTK103*30\n&quot; and sending it with the '&amp;' variant.
+
+Tom
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="004787.html">[Gpsd-users] Bidirectional 'raw' communication using libgpsd
+</A></li>
+	<LI>Next message: <A HREF="004789.html">[Gpsd-users] Bidirectional 'raw' communication using libgpsd
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#4788">[ date ]</a>
+              <a href="thread.html#4788">[ thread ]</a>
+              <a href="subject.html#4788">[ subject ]</a>
+              <a href="author.html#4788">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

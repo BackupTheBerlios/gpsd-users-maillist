@@ -1,0 +1,126 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] Error using Serial to USB adapter
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2011-June/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Error%20using%20Serial%20to%20USB%20adapter&In-Reply-To=%3CBANLkTikUo5a0D47%3D9f86EYq-02fjKMx%3D2Q%40mail.gmail.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="005341.html">
+   <LINK REL="Next"  HREF="005345.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] Error using Serial to USB adapter</H1>
+    <B>Doug Robinson</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Error%20using%20Serial%20to%20USB%20adapter&In-Reply-To=%3CBANLkTikUo5a0D47%3D9f86EYq-02fjKMx%3D2Q%40mail.gmail.com%3E"
+       TITLE="[Gpsd-users] Error using Serial to USB adapter">doug.robinson5 at gmail.com
+       </A><BR>
+    <I>Wed Jun 22 15:31:20 CEST 2011</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="005341.html">[Gpsd-users] Error using Serial to USB adapter
+</A></li>
+        <LI>Next message: <A HREF="005345.html">[Gpsd-users] embedded gpsd fails to return data 1 in 15 times. xgps, unblocks the flow. no watchdog?
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#5342">[ date ]</a>
+              <a href="thread.html#5342">[ thread ]</a>
+              <a href="subject.html#5342">[ subject ]</a>
+              <a href="author.html#5342">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>On Tue, Jun 21, 2011 at 11:50 PM, Charles Curley &lt;
+<A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">charlescurley at charlescurley.com</A>&gt; wrote:
+
+&gt;<i> On Tue, 21 Jun 2011 22:45:50 -0400
+</I>&gt;<i> Doug Robinson &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">doug.robinson5 at gmail.com</A>&gt; wrote:
+</I>&gt;<i>
+</I>&gt;<i> &gt; In trying to connect my data mux using it's PL2303 serial to usb, it
+</I>&gt;<i> &gt; returns the following error:
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; &quot;Jun 21 21:41:40 boat-laptop kernel: [  300.901484] pl2303 ttyUSB0:
+</I>&gt;<i> &gt; pl2303_open - failed submitting read urb, error -22&quot;
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; I see lots of entries in past years complaining about the early
+</I>&gt;<i> &gt; drivers returning code -28 but nothing listed for -22.  Are there docs
+</I>&gt;<i> &gt; somewhere that lists these error codes.
+</I>&gt;<i>
+</I>&gt;<i> Chances are the only place is the kernel source.
+</I>&gt;<i>
+</I>&gt;<i> I wonder, though. PL2303 is a common serial to USB converter chip and a
+</I>&gt;<i> lot of GPS receivers use it. What's the make and model number of the
+</I>&gt;<i> GPS receiver? GPS receiver chipset? Have you checked the gpsd Compatible
+</I>&gt;<i> Hardware list? <A HREF="http://gpsd.berlios.de/hardware.html">http://gpsd.berlios.de/hardware.html</A>
+</I>&gt;<i>
+</I>&gt;<i> &gt; snip&gt;
+</I>&gt;<i> Right, make sure the receiver works with gpsd's clients first.
+</I>&gt;<i>
+</I>
+Yes the Garmin 16LVS is on the list and driving the ICOM 504 DSC radio
+fine.In fact it drives the data into the TacTick NEMA interface on the way
+to the radio.  But I need the output from the ICOM AIS receiver and the GPS
+data to combine in the Brookhouse Mux and upload to the laptop running
+PolarNav.  The Brookhouse has a PL2303 imbedded but it isn't getting past
+the error code -28 (whatever that means).  It is recognized by the laptop on
+the usb port.  The Brookhouse Mux is required to merge the AIS receiver
+(ICOM mx1000) at 38400 with the gps data at 4800 and should put it on the
+USB link.
+
+I will today try to hook the mux low speed output port to my old old Toby
+which has a DB9 port and use GTKterm to see what it reports.  And I will set
+up my Holux gps puck to see if it still works with the  usb port on the
+Thinkpad.
+Thanx for the response....
+Oh joy...
+fdr
+
+&gt;<i> _________________________________
+</I>&gt;<i> &gt; Gpsd-users mailing list
+</I>&gt;<i> &gt; <A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">Gpsd-users at lists.berlios.de</A>
+</I>&gt;<i> &gt; <A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">https://lists.berlios.de/mailman/listinfo/gpsd-users</A>
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i> --
+</I>&gt;<i>
+</I>&gt;<i> Charles Curley                  /&quot;\    ASCII Ribbon Campaign
+</I>&gt;<i> Looking for fine software       \ /    Respect for open standards
+</I>&gt;<i> and/or writing?                  X     No HTML/RTF in email
+</I>&gt;<i> <A HREF="http://www.charlescurley.com">http://www.charlescurley.com</A>    / \    No M$ Word docs in email
+</I>&gt;<i>
+</I>&gt;<i> Key fingerprint = CE5C 6645 A45A 64E4 94C0  809C FFF6 4C48 4ECD DFDB
+</I>&gt;<i> _______________________________________________
+</I>&gt;<i> Gpsd-users mailing list
+</I>&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">Gpsd-users at lists.berlios.de</A>
+</I>&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">https://lists.berlios.de/mailman/listinfo/gpsd-users</A>
+</I>&gt;<i>
+</I>
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="005341.html">[Gpsd-users] Error using Serial to USB adapter
+</A></li>
+	<LI>Next message: <A HREF="005345.html">[Gpsd-users] embedded gpsd fails to return data 1 in 15 times. xgps, unblocks the flow. no watchdog?
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#5342">[ date ]</a>
+              <a href="thread.html#5342">[ thread ]</a>
+              <a href="subject.html#5342">[ subject ]</a>
+              <a href="author.html#5342">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

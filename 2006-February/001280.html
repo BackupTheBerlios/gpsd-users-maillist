@@ -1,0 +1,130 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] evermore eb-x315 not reading data
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2006-February/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20evermore%20eb-x315%20not%20reading%20data&In-Reply-To=%3C200602092315.50220.devendra%40localhost%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="001279.html">
+   <LINK REL="Next"  HREF="001281.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] evermore eb-x315 not reading data</H1>
+    <B>Devendra Laulkar</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20evermore%20eb-x315%20not%20reading%20data&In-Reply-To=%3C200602092315.50220.devendra%40localhost%3E"
+       TITLE="[Gpsd-users] evermore eb-x315 not reading data">devendralaulkar at gmail.com
+       </A><BR>
+    <I>Thu Feb  9 18:45:50 CET 2006</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="001279.html">[Gpsd-users] Microsoft Office 2003 - 75% OFF
+</A></li>
+        <LI>Next message: <A HREF="001281.html">[Gpsd-users] How to log GPS(d) positions?
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1280">[ date ]</a>
+              <a href="thread.html#1280">[ thread ]</a>
+              <a href="subject.html#1280">[ subject ]</a>
+              <a href="author.html#1280">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hello all,
+
+I chanced to find the evermore kit eb-x315.
+However, gpsd seems to hang up, not reading any data of the serial port.
+In no-wait mode, its reads a unit of data, and then stops polling after some 
+time.
+
+I am getting continous stream of NMEA data when I read the serial port 
+directly.
+
+I am attaching the log file.
+
+[<A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">root at mitlinux</A> gps]# gpsd /dev/ttyS0 -Nn -D5
+gpsd: launching (Version 2.30)
+gpsd: listening on port 2947
+gpsd: running with effective group ID 0
+gpsd: running with effective user ID 0
+gpsd: opening GPS data source at '/dev/ttyS0'
+gpsd: garmin_gps not active.
+gpsd: no probe matched...
+gpsd: speed 4800, 8N1
+gpsd: gpsd_activate: opened GPS (5)
+gpsd: flagging descriptor 5 in open_device
+gpsd: polling 5
+gpsd: packet sniff finds type -1
+gpsd: polling 5
+...
+&lt;snip&gt;
+gpsd: packet sniff finds type -1
+gpsd: polling 5
+gpsd: packet sniff finds type 0
+gpsd: Selecting Generic NMEA driver...
+gpsd: =&gt; GPS: $PFEC,GPint,GSA01,DTM00,ZDA01,RMC01,GLL00,VTG00,GSV05*3B\x0d
+gpsd: =&gt; GPS: @NC10151010\x0d
+gpsd: =&gt; GPS: $PMOTG,ZDA,1*2F\x0d
+gpsd: =&gt; GPS: $PGRMCE*0E\x0d
+gpsd: =&gt; GPS: $PSRF105,1*3E\x0d
+gpsd: =&gt; GPS: $PFST*11\x0d
+gpsd: =&gt; GPS: 1002068d0001008e1003
+gpsd: &lt;= GPS: $GPGSA,A,3,01,,,11,,,,,,14,20,,04.6,03.2,03.2*06
+gpsd: GPGSA sets mode 3
+gpsd: polling 5
+gpsd: &lt;= GPS: $GPGSV,3,1,12,01,42,358,40,10,32,108,,17,32,108,,11,31,287,40*79
+gpsd: Partial satellite data (1 of 3).
+gpsd: polling 5
+gpsd: &lt;= GPS: $GPGSV,3,2,12,05,31,287,,22,31,287,,25,31,287,,26,31,287,*7D
+gpsd: Partial satellite data (2 of 3).
+gpsd: polling 5
+gpsd: polling 5
+gpsd: polling 5
+gpsd: &lt;= GPS: $GPGSV,3,3,12,16,26,162,,14,25,043,35,20,11,320,39,30,08,052,*7A
+gpsd: Satellite data OK.
+gpsd: polling 5
+gpsd: polling 5
+gpsd: polling 5
+gpsd: &lt;= GPS: 
+$GPRMC,165613.890,A,1830.9215,N,07348.9680,E,000.0,000.0,090206,001.0,W*7B
+gpsd: polling 5
+gpsd: ISGPS parity failure, lost lock
+gpsd: polling 5
+....
+&lt;repeats some 10-15 times&gt;
+gpsd: polling 5
+gpsd: polling 5
+&lt;hangs here&gt;
+
+^C
+gpsd: closing GPS=/dev/ttyS0 (5)
+gpsd: Received terminating signal 2. Exiting...
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="001279.html">[Gpsd-users] Microsoft Office 2003 - 75% OFF
+</A></li>
+	<LI>Next message: <A HREF="001281.html">[Gpsd-users] How to log GPS(d) positions?
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1280">[ date ]</a>
+              <a href="thread.html#1280">[ thread ]</a>
+              <a href="subject.html#1280">[ subject ]</a>
+              <a href="author.html#1280">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

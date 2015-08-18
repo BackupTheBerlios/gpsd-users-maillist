@@ -1,0 +1,124 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] Please test the new scons-based build system
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2011-April/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Please%20test%20the%20new%20scons-based%20build%20system&In-Reply-To=%3C20110405185819.6153420C2AF%40snark.thyrsus.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="005175.html">
+   <LINK REL="Next"  HREF="005178.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] Please test the new scons-based build system</H1>
+    <B>Eric Raymond</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Please%20test%20the%20new%20scons-based%20build%20system&In-Reply-To=%3C20110405185819.6153420C2AF%40snark.thyrsus.com%3E"
+       TITLE="[Gpsd-users] Please test the new scons-based build system">esr at snark.thyrsus.com
+       </A><BR>
+    <I>Tue Apr  5 20:58:19 CEST 2011</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="005175.html">[Gpsd-users] Programming with libgps: I'm confused
+</A></li>
+        <LI>Next message: <A HREF="005178.html">[Gpsd-users] Please test the new scons-based build system - here's	how
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#5177">[ date ]</a>
+              <a href="thread.html#5177">[ thread ]</a>
+              <a href="subject.html#5177">[ subject ]</a>
+              <a href="author.html#5177">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>We now have a working and almost complete scons build recipe. I plan
+this to replace the autotools-based build system, probably in 3.0 and
+certainly in 3.1.  Please test - especially those of you with unusual
+platforms and compilers.
+
+Advantages: Much more maintainable. Blazingly fast
+Disadvantages:  Can't yet build the Qt client binding. No VPATH support,
+
+About maintainability, the line counts tell the story:
+
+  1024 SConstruct
+
+  1029 configure.ac
+   957 Makefile.am
+  9309 aclocal.m4
+  1693 config.sub
+  1533 config.guess
+ 14521 total
+
+The Python in SConstruct is a good deal more readable than the contents
+of configure.ac and Makefile.am, so the line counts understate the advantages
+of scons a bit.
+
+As for speed, here are times from my 2MHz Untel Core Duo:
+
+autotools:
+real	0m45.986s
+user	0m44.120s
+sys	0m6.210s
+
+scons:
+real	0m17.194s
+user	0m15.490s
+sys	0m2.360s
+
+That 66% drop is particularly impressive in view of the fact that scons
+is a one-phase system - does its equivalent of autotools configure every
+time.
+
+There is no problem in principle with the Qt client binding - the only
+reason that isn't working is I don't understand the particularly convoluted
+autotools quicksand around it.
+
+Out-of-directory builds are a thornier issue. Something functionally like a
+VPATH build is supposed to be possible under scons, but the conceptual
+model is quite different: see <A HREF="http://www.scons.org/wiki/UsingBuildDir">http://www.scons.org/wiki/UsingBuildDir</A> 
+for discussion. 
+
+I have, however, carefully preserved all the instances of $(srcdir)
+from Makefile.am, in case that's useful; they're now $SRCDIR in the
+scons recipe and it's just set to '.'.
+
+Somebody who groks VPATH builds will have to dive in and do the right
+thing using the VariantDir() and Repository() features of SCons.  It
+won't be me; I've never had any requirement for VPATH builds myself,
+so I don't have a good feel for the problems.
+-- 
+		&lt;a href=&quot;<A HREF="http://www.catb.org/~esr/">http://www.catb.org/~esr/</A>&quot;&gt;Eric S. Raymond&lt;/a&gt;
+
+You [should] not examine legislation in the light of the benefits it will
+convey if properly administered, but in the light of the wrongs it
+would do and the harm it would cause if improperly administered
+	-- Lyndon Johnson, former President of the U.S.
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="005175.html">[Gpsd-users] Programming with libgps: I'm confused
+</A></li>
+	<LI>Next message: <A HREF="005178.html">[Gpsd-users] Please test the new scons-based build system - here's	how
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#5177">[ date ]</a>
+              <a href="thread.html#5177">[ thread ]</a>
+              <a href="subject.html#5177">[ subject ]</a>
+              <a href="author.html#5177">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

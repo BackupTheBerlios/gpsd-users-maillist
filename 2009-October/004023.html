@@ -1,0 +1,134 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] gpsd and ntp
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2009-October/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20gpsd%20and%20ntp&In-Reply-To=%3C4AE618F1.7060104%40softdevsys.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="004022.html">
+   <LINK REL="Next"  HREF="004024.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] gpsd and ntp</H1>
+    <B>David Severt</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20gpsd%20and%20ntp&In-Reply-To=%3C4AE618F1.7060104%40softdevsys.com%3E"
+       TITLE="[Gpsd-users] gpsd and ntp">severtd at softdevsys.com
+       </A><BR>
+    <I>Mon Oct 26 22:47:29 CET 2009</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="004022.html">[Gpsd-users] gpsd and ntp
+</A></li>
+        <LI>Next message: <A HREF="004024.html">[Gpsd-users] gpsd and ntp
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#4023">[ date ]</a>
+              <a href="thread.html#4023">[ thread ]</a>
+              <a href="subject.html#4023">[ subject ]</a>
+              <a href="author.html#4023">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Tim;
+
+When I first tried to use gpsd with ntp, I was using Suse 10.2 and had 
+the same problem.  I did a grep on /var/log for &quot;ntpd&quot; and discovered 
+that ntpd was having trouble opening the shared memory file that it uses 
+to get data from gpsd.  The problem was that a security app, called &quot;app 
+armor&quot; under Suse, was preventing access to the shared memory file.  I 
+don't recall exactly what I did to fix it but I'm pretty sure I just 
+went into Yast to look at security issues and that it automatically came 
+up with a recommended fix that I just had to say &quot;yes&quot; to.  I hope this 
+points you in the right direction.
+
+Regards,
+David Severt
+
+
+Tim Cwik wrote:
+&gt;<i> Cross posted, hopefully not inappropriately.
+</I>&gt;<i>
+</I>&gt;<i> I am using gpsd with a Trimble Thunderbolt to supply time and PPS to 
+</I>&gt;<i> ntpd for a time server.
+</I>&gt;<i> The Tbolt shows serial output, PPS signal looks ok, and is detected by gpsd.
+</I>&gt;<i>
+</I>&gt;<i> ntpq -p shows:
+</I>&gt;<i>
+</I>&gt;<i> # ntpq -p
+</I>&gt;<i>       remote           refid      st t when poll reach   delay   offset  
+</I>&gt;<i> jitter
+</I>&gt;<i> ==============================================================================
+</I>&gt;<i> +nonce.prolixium 209.51.161.238   2 u   24   64  377   46.131   26.478  
+</I>&gt;<i> 59.117
+</I>&gt;<i>   u15161952.onlin 209.51.161.238   2 u  12h 1024    0  218.935  
+</I>&gt;<i> -38.878   0.000
+</I>&gt;<i>   skywiley.com    131.107.13.100   2 u  33d 1024    0   88.930    
+</I>&gt;<i> 2.426   0.000
+</I>&gt;<i> +redline.mednor. 209.81.9.7       2 u    7   64  377   92.425   21.976  
+</I>&gt;<i> 64.496
+</I>&gt;<i>   octopus.stnhbr. .STEP.          16 u    - 1024    0    0.000    
+</I>&gt;<i> 0.000   0.000
+</I>&gt;<i>   SHM(0)          .GPS.            0 l   5h   16    0    0.000  
+</I>&gt;<i> -641.16   0.001
+</I>&gt;<i> *SHM(1)          .GPS1.           0 l    4   16  377    0.000    0.024   
+</I>&gt;<i> 0.060
+</I>&gt;<i>   LOCAL(0)        .LOCL.          10 l    2   64  377    0.000    
+</I>&gt;<i> 0.000   0.001
+</I>&gt;<i>
+</I>&gt;<i> I never see ntpd use the SHM(0) output from gpsd. The shared memory is 
+</I>&gt;<i> ok, I think, because it does see the PPS time in SHM(1).
+</I>&gt;<i>
+</I>&gt;<i> My ntp.conf includes:
+</I>&gt;<i>
+</I>&gt;<i> server 127.127.28.0 minpoll 4 maxpoll 4
+</I>&gt;<i> fudge 127.127.28.0 refid GPS
+</I>&gt;<i>
+</I>&gt;<i> server 127.127.28.1 minpoll 4 maxpoll 4 prefer
+</I>&gt;<i> fudge 127.127.28.1 refid GPS1
+</I>&gt;<i>
+</I>&gt;<i> I assume I want to be using the GPS time from the serial port through 
+</I>&gt;<i> SHM(0) and that this should be one of the peers and would make my 
+</I>&gt;<i> solution more independent of external time servers should my network 
+</I>&gt;<i> connection fail.
+</I>&gt;<i>
+</I>&gt;<i> Thanks for any advice.
+</I>&gt;<i>
+</I>&gt;<i> Tim
+</I>&gt;<i> N2LTQ
+</I>&gt;<i> _______________________________________________
+</I>&gt;<i> Gpsd-users mailing list
+</I>&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">Gpsd-users at lists.berlios.de</A>
+</I>&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">https://lists.berlios.de/mailman/listinfo/gpsd-users</A>
+</I>&gt;<i>
+</I>&gt;<i>   
+</I>
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="004022.html">[Gpsd-users] gpsd and ntp
+</A></li>
+	<LI>Next message: <A HREF="004024.html">[Gpsd-users] gpsd and ntp
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#4023">[ date ]</a>
+              <a href="thread.html#4023">[ thread ]</a>
+              <a href="subject.html#4023">[ subject ]</a>
+              <a href="author.html#4023">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

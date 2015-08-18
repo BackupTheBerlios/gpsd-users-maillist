@@ -1,0 +1,91 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] Problems with gpsfake
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2005-December/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Problems%20with%20gpsfake&In-Reply-To=%3C20051219234334.0b3ec5b8.hamish_nospam%40yahoo.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="001176.html">
+   <LINK REL="Next"  HREF="001179.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] Problems with gpsfake</H1>
+    <B>Hamish</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Problems%20with%20gpsfake&In-Reply-To=%3C20051219234334.0b3ec5b8.hamish_nospam%40yahoo.com%3E"
+       TITLE="[Gpsd-users] Problems with gpsfake">hamish_nospam at yahoo.com
+       </A><BR>
+    <I>Mon Dec 19 11:43:34 CET 2005</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="001176.html">[Gpsd-users] Swiss watches - replica
+</A></li>
+        <LI>Next message: <A HREF="001179.html">[Gpsd-users] gpsprof error
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1177">[ date ]</a>
+              <a href="thread.html#1177">[ thread ]</a>
+              <a href="subject.html#1177">[ subject ]</a>
+              <a href="author.html#1177">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>&gt;<i> So now that I'm all squared away on that (?), here's the next problem:
+</I>&gt;<i> 
+</I>&gt;<i> [<A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">jamoore at tecra</A> ~]$ gpsfake start-at-costco.txt
+</I>&gt;<i> gpsfake: unknown packet type, leader G, (0x47)
+</I>&gt;<i> 
+</I>&gt;<i> The file &quot;start-at-costco.txt&quot; was generated using gpspipe; following 
+</I>&gt;<i> are some lines from the file:
+</I>&gt;<i> [<A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">jamoore at tecra</A> ~]$ head start-at-costco.txt
+</I>&gt;<i> GPSD,R=1
+</I>&gt;<i> $GPRMB,V,,,,MK001     ,3442.849,N,08633.047,W,,,,V,N*33
+</I>&gt;<i> $GPRMC,,V,,,,,,,,,,N*53
+</I>&gt;<i> $GPRMB,V,,,,MK001     ,3442.849,N,08633.047,W,,,,V,N*33
+</I>...
+&gt;<i> So I guess my question is, &quot;where is the error in gpsfake&quot;?
+</I>
+
+[sorry for the delayed response.]
+
+The first line &quot;GPSD,R=1&quot; is not a NMEA sentence. That will be confusing
+it. Delete the first line of the file &amp; try again.
+
+Larger issue is that if that halts the program, then the program needs
+better error handling. (not knowing any python) If the program freezes,
+does it need a return statement after the raise, or is that just a
+warning?
+
+This line is probably common enough to hardcode a noop case.
+
+
+Hamish
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="001176.html">[Gpsd-users] Swiss watches - replica
+</A></li>
+	<LI>Next message: <A HREF="001179.html">[Gpsd-users] gpsprof error
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1177">[ date ]</a>
+              <a href="thread.html#1177">[ thread ]</a>
+              <a href="subject.html#1177">[ subject ]</a>
+              <a href="author.html#1177">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

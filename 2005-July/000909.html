@@ -1,0 +1,155 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] Input buffer overrun
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2005-July/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Input%20buffer%20overrun&In-Reply-To=%3C42EB5B7C.8040901%40boilerbots.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="000908.html">
+   <LINK REL="Next"  HREF="000911.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] Input buffer overrun</H1>
+    <B>maillist</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Input%20buffer%20overrun&In-Reply-To=%3C42EB5B7C.8040901%40boilerbots.com%3E"
+       TITLE="[Gpsd-users] Input buffer overrun">maillist at boilerbots.com
+       </A><BR>
+    <I>Sat Jul 30 12:50:36 CEST 2005</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="000908.html">[Gpsd-users] Input buffer overrun
+</A></li>
+        <LI>Next message: <A HREF="000911.html">[Gpsd-users] Input buffer overrun
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#909">[ date ]</a>
+              <a href="thread.html#909">[ thread ]</a>
+              <a href="subject.html#909">[ subject ]</a>
+              <a href="author.html#909">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>I am working on the code right now. I will see what I can catch with 
+gdb. It crashes very quickly so it shouldn't be hard.
+
+
+Eric S. Raymond wrote:
+
+&gt;<i>maillist &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">maillist at boilerbots.com</A>&gt;:
+</I>&gt;<i>  
+</I>&gt;<i>
+</I>&gt;&gt;<i>It is me again with another issue. With the high data rates my GPS is 
+</I>&gt;&gt;<i>producing it appears that sometimes the input buffer overflows and it 
+</I>&gt;&gt;<i>crashes. I looked at the code and can't see anything obvious that would 
+</I>&gt;&gt;<i>cause it to crash and haven't tried to catch it yet with a debugger.
+</I>&gt;&gt;<i>    
+</I>&gt;&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i>I've stared at the code for a while myself, and I don't think it's the 
+</I>&gt;<i>input buffer itself.  More likely it's some auxiliary buffer that is not
+</I>&gt;<i>correctly scaled to the input buffer size.
+</I>&gt;<i>
+</I>&gt;<i>Could I possibly get you to compile with MAX_PACKET_LENGTH = 196 and then
+</I>&gt;<i>run under gdb long enough to crash gpsd?  I want to fix the underlying bug
+</I>&gt;<i>rather than the symptom, and I don't have a 20Hz GPS to test with.
+</I>&gt;<i>
+</I>&gt;<i>(Wherever did you get such a beast, anyway?)
+</I>&gt;<i>  
+</I>&gt;<i>
+</I>This is a fully unlocked receiver from Thales. It was donated to our 
+team, we are working on a Darpa Grand Challenge vehicle. It is their 
+model DG16. It has 14 receivers and can track 12 sattelites. It has lots 
+of options including the 20Hz sample rate. Since we are trying to drive 
+a vehicle at up to 30 Mph the fast updates help. By the way I have to 
+fix processGSV to handle 14 sattelites, or 3 sentences. I think I 
+already mentioned that in the other email.
+
+&gt;<i> 
+</I>&gt;<i>  
+</I>&gt;<i>
+</I>&gt;&gt;<i>Anyway, what it looks like is that sometimes a long/slow context switch 
+</I>&gt;&gt;<i>will cause the next read from the serial device to be very big. I 
+</I>&gt;&gt;<i>sometimes see a read of 250 characters or more. This exceeds the size of 
+</I>&gt;&gt;<i>the input buffer because it already contained partial packet data.
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i>I have re-defined MAX_PACKET_LENGTH to 512 and I have not yet had a crash.
+</I>&gt;&gt;<i>    
+</I>&gt;&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i>That wasn't the right define to tweak, I don't think.  Here's what I did:
+</I>&gt;<i>
+</I>&gt;<i>--- gpsd.h	(revision 3047)
+</I>&gt;<i>+++ gpsd.h	(working copy)
+</I>&gt;<i>@@ -100,6 +100,16 @@
+</I>&gt;<i>  */
+</I>&gt;<i> #define MAX_PACKET_LENGTH	196	/* 188 + 8 */
+</I>&gt;<i> 
+</I>&gt;<i>+/*
+</I>&gt;<i>+ * We used to define the inbut buffer length as MAX_PACKET_LENGTH*2+1.
+</I>&gt;<i>+ * However, as it turns out, this isn't enough.  We've had a report
+</I>&gt;<i>+ * from one user with a GPS that reports at 20Hz that &quot;sometimes a
+</I>&gt;<i>+ * long/slow context switch will cause the next read from the serial
+</I>&gt;<i>+ * device to be very big. I sometimes see a read of 250 characters or
+</I>&gt;<i>+ * more.&quot;
+</I>&gt;<i>+ */
+</I>&gt;<i>+#define INPUT_BUFFER_LENGTH	1024
+</I>&gt;<i>+
+</I>&gt;<i> struct gps_device_t {
+</I>&gt;<i> /* session object, encapsulates all global state */
+</I>&gt;<i>     struct gps_data_t gpsdata;
+</I>&gt;<i>@@ -120,7 +130,7 @@
+</I>&gt;<i>     unsigned int baudindex;
+</I>&gt;<i>     unsigned int packet_state;
+</I>&gt;<i>     size_t packet_length;
+</I>&gt;<i>-    unsigned char inbuffer[MAX_PACKET_LENGTH*2+1];
+</I>&gt;<i>+    unsigned char inbuffer[INPUT_BUFFER_LENGTH];
+</I>&gt;<i>     size_t inbuflen;
+</I>&gt;<i>     unsigned /*@observer@*/char *inbufptr;
+</I>&gt;<i>     unsigned char outbuffer[MAX_PACKET_LENGTH+1];
+</I>&gt;<i>
+</I>&gt;<i>  
+</I>&gt;<i>
+</I>&gt;&gt;<i>I can send you my gpsd output logs at level 6 showing the input buffer 
+</I>&gt;&gt;<i>growing very large sometimes and it takes a few cycles to empty out what 
+</I>&gt;&gt;<i>it has accumulated.
+</I>&gt;&gt;<i>    
+</I>&gt;&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i>I believe you.  My concern is that I want to harden the code so it will
+</I>&gt;<i>handle arbitrary data rates, not just balloon some buffers hoping the 
+</I>&gt;<i>overrun condition will never actually hit.
+</I>&gt;<i>
+</I>&gt;<i>Replies to your previous two messages are coming.
+</I>&gt;<i>  
+</I>&gt;<i>
+</I>
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="000908.html">[Gpsd-users] Input buffer overrun
+</A></li>
+	<LI>Next message: <A HREF="000911.html">[Gpsd-users] Input buffer overrun
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#909">[ date ]</a>
+              <a href="thread.html#909">[ thread ]</a>
+              <a href="subject.html#909">[ subject ]</a>
+              <a href="author.html#909">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

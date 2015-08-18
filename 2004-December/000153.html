@@ -1,0 +1,134 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] More GPSD on Cygwin
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2004-December/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20More%20GPSD%20on%20Cygwin&In-Reply-To=%3C080901c4d836%241d122ae0%240300a8c0%40betsy%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="000151.html">
+   <LINK REL="Next"  HREF="000155.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] More GPSD on Cygwin</H1>
+    <B>RenderMan</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20More%20GPSD%20on%20Cygwin&In-Reply-To=%3C080901c4d836%241d122ae0%240300a8c0%40betsy%3E"
+       TITLE="[Gpsd-users] More GPSD on Cygwin">render at renderlab.net
+       </A><BR>
+    <I>Thu Dec  2 07:11:50 CET 2004</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="000151.html">[Gpsd-users] No mode-refresh after a lost gps-signal
+</A></li>
+        <LI>Next message: <A HREF="000155.html">[Gpsd-users] success report - techway tp-051 USB GPS
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#153">[ date ]</a>
+              <a href="thread.html#153">[ thread ]</a>
+              <a href="subject.html#153">[ subject ]</a>
+              <a href="author.html#153">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Well, the latest build from the SVN server (rev 1110) builds much nicer and 
+requires no hand massaging to get compiled (thanks!).  Problems still 
+persist in running it but whatever you guys have been tinkering with lately 
+seems to be helping get closer.
+
+GPSD no longer seems to crash out after a short time, and continues running, 
+but cannot seem to open the device or deal with connected clients on the 
+network side without crashing with a 'select : bad file descriptor' error. 
+Output attached below.  Seems like 2 seperate problems.
+
+I can cat data from that port just fine with a simulator and a Garmin eTrex 
+Legend so I know that part works.
+
+Seems to be some wierdness with the linux select() implementation dealing 
+with the MS winsock function (no surprise there)
+
+Any idea on an appropriate bounty to offer to get GPSD working on Cygwin?
+
+Brad 'RenderMan' Haines
+
+-----------------
+
+$ ./gpsd -p /dev/ttyS2 -D 99
+gpsd: launching (Version 2.3)
+gpsd: listening on port 2947
+gpsd: Selecting Generic NMEA driver...
+gpsd: closed GPS
+gpsd: opening GPS data source at /dev/ttyS2
+gpsd: setting speed 4800, 8 bits, no parity
+gpsd: gpsd_activate: opened GPS (4)
+gpsd: closed GPS
+gpsd: closed GPS
+gpsd: opening GPS data source at /dev/ttyS2
+gpsd: closed GPS
+gpsd: opening GPS data source at /dev/ttyS2
+gpsd: client connect on 5
+gpsd: closed GPS
+gpsd: opening GPS data source at /dev/ttyS2
+gpsd: closed GPS
+gpsd: opening GPS data source at /dev/ttyS2
+gpsd: &lt;= client:
+gpsd: =&gt; client(5): GPSD
+gpsd: closed GPS
+gpsd: opening GPS data source at /dev/ttyS2
+gpsd: &lt;= client:
+gpsd: =&gt; client(64): GPSD
+gpsd: Client on 64 has vanished.
+gpsd: closed GPS
+gpsd: opening GPS data source at /dev/ttyS2
+gpsd: &lt;= client:
+gpsd: =&gt; client(66): GPSD
+gpsd: Client on 66 has vanished.
+gpsd: closed GPS
+gpsd: opening GPS data source at /dev/ttyS2
+gpsd: &lt;= client:
+gpsd: =&gt; client(67): GPSD
+gpsd: Client on 67 has vanished.
+gpsd: closed GPS
+gpsd: opening GPS data source at /dev/ttyS2
+gpsd: &lt;= client:
+gpsd: =&gt; client(73): GPSD
+gpsd: Client on 73 has vanished.
+gpsd: closed GPS
+gpsd: opening GPS data source at /dev/ttyS2
+gpsd: &lt;= client:
+gpsd: =&gt; client(75): GPSD
+gpsd: Client on 75 has vanished.
+gpsd: closed GPS
+gpsd: opening GPS data source at /dev/ttyS2
+gpsd: closed GPS
+gpsd: opening GPS data source at /dev/ttyS2
+gpsd: select: Bad file descriptor 
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="000151.html">[Gpsd-users] No mode-refresh after a lost gps-signal
+</A></li>
+	<LI>Next message: <A HREF="000155.html">[Gpsd-users] success report - techway tp-051 USB GPS
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#153">[ date ]</a>
+              <a href="thread.html#153">[ thread ]</a>
+              <a href="subject.html#153">[ subject ]</a>
+              <a href="author.html#153">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

@@ -1,0 +1,102 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] Initializing clock with gpsd &amp; ntpd
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2009-September/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Initializing%20clock%20with%20gpsd%20%26%20ntpd&In-Reply-To=%3C4ABE00E5.1000208%40wildgooses.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="003980.html">
+   <LINK REL="Next"  HREF="003986.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] Initializing clock with gpsd &amp; ntpd</H1>
+    <B>Ed W</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Initializing%20clock%20with%20gpsd%20%26%20ntpd&In-Reply-To=%3C4ABE00E5.1000208%40wildgooses.com%3E"
+       TITLE="[Gpsd-users] Initializing clock with gpsd &amp; ntpd">lists at wildgooses.com
+       </A><BR>
+    <I>Sat Sep 26 13:54:13 CEST 2009</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="003980.html">[Gpsd-users] Initializing clock with gpsd &amp; ntpd
+</A></li>
+        <LI>Next message: <A HREF="003986.html">[Gpsd-users] Initializing clock with gpsd &amp; ntpd
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3981">[ date ]</a>
+              <a href="thread.html#3981">[ thread ]</a>
+              <a href="subject.html#3981">[ subject ]</a>
+              <a href="author.html#3981">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>David Severt wrote:
+&gt;<i>
+</I>&gt;<i> Thanks for the tip, I'll definitely look into it.  I saw an issue 
+</I>&gt;<i> today that bothered me as well.  Last night, I shut down the Linux box 
+</I>&gt;<i> that was acting as a gateway for my embedded test box and I had 
+</I>&gt;<i> already killed gpsd.  This morning, I started up the gateway, started 
+</I>&gt;<i> up gpsd and ntpd was still running.  But even though ntpd was able to 
+</I>&gt;<i> contact the servers, it decided to reject both my ntp server and gpsd 
+</I>&gt;<i> as &quot;false tickers&quot; since the clock had drifted almost 30 seconds away 
+</I>&gt;<i> from the reference clocks during the time the network and gpsd were 
+</I>&gt;<i> unavailable.  So ntpd decided to use &quot;LOCAL(0)&quot; as it's preferred 
+</I>&gt;<i> clock even though it was way off and the servers were actually 
+</I>&gt;<i> correct.  Maybe if I let it run long enough, it would eventually start 
+</I>&gt;<i> believing the time servers but I wasn't patient enough to just let it 
+</I>&gt;<i> run, so I just killed it and restarted with &quot;-g&quot; to step the clock.  
+</I>&gt;<i> Does ntpd ignore a server forever if it's been flagged as a &quot;false 
+</I>&gt;<i> ticker&quot; or would it eventually start using ntp/gpsd server time 
+</I>&gt;<i> instead of LOCAL(0)?
+</I>
+I'm not an expert on ntp, but I think I believe it's default is to 
+remain out of step, hence the desire to run ntp-client on boot if you 
+need to step the clock?
+
+Give chrony a go, it's got a lot more features to help with this...
+
+&gt;<i> A lithium cell would be very nice.  Unfortunately, the hardware group 
+</I>&gt;<i> &quot;wins&quot; this argument every time and I'm stuck with a super-cap, mostly 
+</I>&gt;<i> due to lifetime and accessibility issues.  New hardware and we're 
+</I>&gt;<i> designing-in the same problems as the old hardware.  Sigh....
+</I>
+Given the lifetimes are usually good for a lithium cell this would imply 
+that you have long expected service times for these units?  Curious...
+
+I guess cost is a concern, but I would assume a supercap is more 
+expensive than a lithium cell?  Could you increase service intervals by 
+doubling up on cells?  Is a combo of both within budget?
+
+
+I think chrony will likely sort you out anyway.  Give it a try!
+
+Ed W
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="003980.html">[Gpsd-users] Initializing clock with gpsd &amp; ntpd
+</A></li>
+	<LI>Next message: <A HREF="003986.html">[Gpsd-users] Initializing clock with gpsd &amp; ntpd
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3981">[ date ]</a>
+              <a href="thread.html#3981">[ thread ]</a>
+              <a href="subject.html#3981">[ subject ]</a>
+              <a href="author.html#3981">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

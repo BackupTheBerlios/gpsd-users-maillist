@@ -1,0 +1,146 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] gpsd and serial earthmate
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2006-March/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20gpsd%20and%20serial%20earthmate&In-Reply-To=%3C4429DE5C.80409%40650.co.nz%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="001484.html">
+   <LINK REL="Next"  HREF="001488.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] gpsd and serial earthmate</H1>
+    <B>Jon Keller</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20gpsd%20and%20serial%20earthmate&In-Reply-To=%3C4429DE5C.80409%40650.co.nz%3E"
+       TITLE="[Gpsd-users] gpsd and serial earthmate">jon at 650.co.nz
+       </A><BR>
+    <I>Wed Mar 29 03:09:48 CEST 2006</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="001484.html">[Gpsd-users] Adobe Photoshop 8.0 - 75% OFF
+</A></li>
+        <LI>Next message: <A HREF="001488.html">[Gpsd-users] moving out
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1487">[ date ]</a>
+              <a href="thread.html#1487">[ thread ]</a>
+              <a href="subject.html#1487">[ subject ]</a>
+              <a href="author.html#1487">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>I'm trying to get a serial earthmate working with gpsd-2.32.
+
+When using version 2.13-1 from the stable debian package, all works 
+fine. I specify the driver to use on the command line, and the serial 
+port, with the command:
+
+# gpsd -T e -D 4 -p /dev/ttyS1
+gpsd: launching (Version 2.13)
+gpsd: listening on port gpsd
+gpsd: Selecting Delorme EarthMate (pre-2003, Zodiac chipset) driver...
+gpsd: client connect on 4
+gpsd: closed GPS
+gpsd: opening GPS data source at /dev/ttyS1
+gpsd: setting speed 9600, 1 stopbits, no parity
+gpsd: gpsd_activate: opened GPS (5)
+gpsd: checking 4
+gpsd: &lt;= client: w+x
+gpsd: 4 turned on watching
+gpsd: =&gt; client(4): GPSD,W=1,X=1
+gpsd: &lt;= GPS: EARTHA
+gpsd: found Delorme EarthMate (pre-2003, Zodiac chipset).
+gpsd: GPS has no fix (status=0, mode=1).
+gpsd: GPS has no fix (status=0, mode=1).
+gpsd: GPS has no fix (status=0, mode=1).
+gpsd: =&gt; client(4): GPSD,P=?,D=0028/06/1997T23:59:49Z,T=?,V=?,S=0,M=1
+gpsd: 
+$GPRMC,235949,V,3647.342962,S,17440.912698,E,0.000000,0.000000,280697,,gpsd: 
+GPS has no fix (status=0, mode=1).
+gpsd -T e -D 4 -p /dev/ttyS1
+
+About a minute goes by, the gps gets lock, and I get a 3d fix within xgps.
+
+But when using 2.32 compiled from source, This happens...
+
+# ./gpsd -N -D 4 /dev/ttyS1
+gpsd: launching (Version 2.32)
+gpsd: listening on port gpsd
+gpsd: running with effective group ID 0
+gpsd: running with effective user ID 0
+gpsd: opening GPS data source at '/dev/ttyS1'
+gpsd: no probe matched...
+gpsd: speed 9600, 8N1
+gpsd: gpsd_activate: opened GPS (4)
+gpsd: flagging descriptor 4 in open_device
+gpsd: packet sniff finds type 2
+gpsd: Selecting Zodiac binary driver...
+gpsd: unflagging descriptor 4 in open_device
+gpsd: closing GPS=/dev/ttyS1 (4)
+gpsd: client connect on 4
+gpsd: checking client(4)
+gpsd: &lt;= client(4): w+x
+gpsd: client(4): assigning channel...
+gpsd: User requires 2, channel type is 2
+gpsd: closing GPS=/dev/ttyS1 (-1)
+gpsd: opening GPS data source at '/dev/ttyS1'
+gpsd: no probe matched...
+gpsd: speed 9600, 8N1
+gpsd: gpsd_activate: opened GPS (5)
+gpsd: flagging descriptor 5 in assign_channel
+gpsd: =&gt; client(4): GPSD,X=1143593372.495841
+gpsd: client(4): channel 5 already active.
+gpsd: =&gt; client(4): GPSD,W=1,X=1143593372.495728
+gpsd: &lt;= GPS: 
+$GPRMC,235946,V,3647.3430,S,17440.9127,E,0.0000,0.000,280697,,*23
+gpsd: client(4): channel 5 already active.
+gpsd: GPS has no fix (status=0, mode=1).
+gpsd: =&gt; client(4): GPSD,O=?
+gpsd: client(4): channel 5 already active.
+gpsd: =&gt; client(4): GPSD,Y=?
+gpsd: zodiac_analyze packet type 0
+gpsd: zodiac_analyze packet type 0
+gpsd: zodiac_analyze packet type 0
+
+It seems that its finding the correct driver to use (zodiac), but for 
+some reason after that its failing. It just continuously prints &quot;gpsd: 
+zodiac_analyze packet type 0&quot; and gets no fix. I've left it for a good 
+20 minutes, but nothing.
+
+Any light that could be shed on debugging or fixing this issue would be 
+very greatfull as I eventually need to get this newer version working on 
+an embedded linux which can't use 2.13. Thanks in advance.
+
+    -Jon Keller
+
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="001484.html">[Gpsd-users] Adobe Photoshop 8.0 - 75% OFF
+</A></li>
+	<LI>Next message: <A HREF="001488.html">[Gpsd-users] moving out
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1487">[ date ]</a>
+              <a href="thread.html#1487">[ thread ]</a>
+              <a href="subject.html#1487">[ subject ]</a>
+              <a href="author.html#1487">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

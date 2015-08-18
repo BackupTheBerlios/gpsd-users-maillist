@@ -1,0 +1,99 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] Update on i.Trek M3/Sirf-III issue
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2005-August/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Update%20on%20i.Trek%20M3/Sirf-III%20issue&In-Reply-To=%3C42FADE63.5090104%40boilerbots.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="000988.html">
+   <LINK REL="Next"  HREF="000997.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] Update on i.Trek M3/Sirf-III issue</H1>
+    <B>maillist</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Update%20on%20i.Trek%20M3/Sirf-III%20issue&In-Reply-To=%3C42FADE63.5090104%40boilerbots.com%3E"
+       TITLE="[Gpsd-users] Update on i.Trek M3/Sirf-III issue">maillist at boilerbots.com
+       </A><BR>
+    <I>Thu Aug 11 07:13:07 CEST 2005</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="000988.html">[Gpsd-users] Update on i.Trek M3/Sirf-III issue
+</A></li>
+        <LI>Next message: <A HREF="000997.html">[Gpsd-users] Update on i.Trek M3/Sirf-III issue
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#996">[ date ]</a>
+              <a href="thread.html#996">[ thread ]</a>
+              <a href="subject.html#996">[ subject ]</a>
+              <a href="author.html#996">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Lance F. wrote:
+
+&gt;<i> Gary E. Miller wrote:
+</I>&gt;<i>
+</I>&gt;&gt;<i> Can you provide a sample of the bad GPGSA sentences?  This sort of thing
+</I>&gt;&gt;<i> should be easy to fix.
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i> Here's a sample, from the gpsd/Zaurus thread:
+</I>&gt;<i>
+</I>&gt;<i>   gpsd: &lt;= GPS: $GPGSA,A,1,,,,*32
+</I>&gt;<i>
+</I>&gt;<i> As you can see, several (blank) fields are missing; they correspond to 
+</I>&gt;<i> the 12 satellite data fields.
+</I>&gt;<i>
+</I>&gt;<i> Actually, Eric has already patched nmea_parser.c to handle it; his fix 
+</I>&gt;<i> is to simply ignore sentences that are not of the expected length.
+</I>&gt;<i>
+</I>I had a problem with this fix and had to remove it from my personal 
+version of gpsd. I have 4 different gps and 3 of them produces messages 
+of the same type with different numbers of fields.
+
+I guess no one has or is willing to pay for a copy of the official NMEA 
+standard but my guess is that on some sentences the order of the fields 
+are statically defined but in some cases the number of a certain field 
+is variable or a sentence can be cut short.
+
+I was fixing up the code last night to handle the RMC sentence. In this 
+sentence I see one of my units does not supply the last three fields 
+which specify the magnetic variation, direction and FAA indicator. With 
+the GSA sentence one unit can output up to 14 satellites followed by 
+PDOP,HDOP,VDOP where my other units have spaces for 12 and may or maynot 
+supply the PDOP,HDOP,VDOP.
+
+This NMEA &quot;standard&quot; is not very standard at all.
+
+Curt
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="000988.html">[Gpsd-users] Update on i.Trek M3/Sirf-III issue
+</A></li>
+	<LI>Next message: <A HREF="000997.html">[Gpsd-users] Update on i.Trek M3/Sirf-III issue
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#996">[ date ]</a>
+              <a href="thread.html#996">[ thread ]</a>
+              <a href="subject.html#996">[ subject ]</a>
+              <a href="author.html#996">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

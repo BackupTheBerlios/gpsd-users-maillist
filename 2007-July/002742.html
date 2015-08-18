@@ -1,0 +1,125 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] Getting GPSD to pick up PPS from Delorme Earthmate	Serial GPS
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2007-July/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Getting%20GPSD%20to%20pick%20up%20PPS%20from%20Delorme%20Earthmate%0A%09Serial%20GPS&In-Reply-To=%3C1183476648.468a6ba8a606c%40dev.getwebemail.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="002739.html">
+   <LINK REL="Next"  HREF="002744.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] Getting GPSD to pick up PPS from Delorme Earthmate	Serial GPS</H1>
+    <B>Adam Dosch</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Getting%20GPSD%20to%20pick%20up%20PPS%20from%20Delorme%20Earthmate%0A%09Serial%20GPS&In-Reply-To=%3C1183476648.468a6ba8a606c%40dev.getwebemail.com%3E"
+       TITLE="[Gpsd-users] Getting GPSD to pick up PPS from Delorme Earthmate	Serial GPS">adamdosch at fdlinux.com
+       </A><BR>
+    <I>Tue Jul  3 17:30:48 CEST 2007</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="002739.html">[Gpsd-users] cgpxlogger skipping timestamp; Furuno NMEA nav data
+</A></li>
+        <LI>Next message: <A HREF="002744.html">[Gpsd-users] Getting GPSD to pick up PPS from Delorme Earthmate Serial GPS
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2742">[ date ]</a>
+              <a href="thread.html#2742">[ thread ]</a>
+              <a href="subject.html#2742">[ subject ]</a>
+              <a href="author.html#2742">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Gary,
+
+On Mon, 2 Jul 2007, Adam Dosch wrote:
+
+&gt;<i> &gt; and as I stated, I am using -D6 flag on the `gpsd` command and not seeing
+</I>&gt;<i> &gt; any
+</I>&gt;<i> &gt; PPS entries at all.
+</I>
+&gt;<i> Your -D6 does not go long enough to show the PPS lock.  PPS only happens
+</I>&gt;<i> after you have received a solid fix.
+</I>
+Right, I dunno if you caught my previous post to Matt Roberds minutes ago, but
+after digging into the libgpsd_core.c code, I found you have to have a solid fix
+on at least 4.
+
+...so if that's the case, I'm curious what your debug looks like then?  Do you
+see this log line below in your any of your -D6 output on a regular basis before
+you get your solid fix?  
+
+   gpsd: TIOCMIWAIT returns unchanged state, ppsmonitor terminates
+
+It seems to me when I get this error, I know I am officially out of that
+everlasting ppsmonitor loop and I don't ever get back in it. (I put breakpoints
+all over the code going into that piece and from what I gathered, once I broke
+out of the loop, I never entered back in)
+
+Because if that's the case, I'll just need to wait a *really* long time (in my
+case) and see if I see any PPS output?  But even when I wait to get a solid fix
+the unchange state of the ppsmonitor hits it's threshold and it's breaks out of
+the loop while waiting.
+
+I dunno, just thinking aloud here.  
+
+Thanks for your insight on this.
+
+-Adam
+
+&gt;<i> &gt; -----BEGIN PGP SIGNED MESSAGE-----
+</I>&gt;<i> &gt; Hash: SHA1
+</I>&gt;<i> &gt; 
+</I>&gt;<i> &gt; Yo Adam!
+</I>&gt;<i> &gt; 
+</I>&gt;<i> &gt; On Mon, 2 Jul 2007, Adam Dosch wrote:
+</I>&gt;<i> &gt; 
+</I>&gt;<i> &gt; &gt; yep, I've ensured I've configured the gpsd source with at least this
+</I>&gt;<i> &gt; &gt; amongst
+</I>&gt;<i> &gt; &gt; other flags as well:
+</I>&gt;<i> &gt; &gt;
+</I>&gt;<i> &gt; &gt;      ./configure --enable-pps
+</I>&gt;<i> &gt; 
+</I>&gt;<i> &gt; Good.  I assume the configure output confirms that.
+</I>&gt;<i> &gt; 
+</I>&gt;<i> &gt; &gt; and as I stated, I am using -D6 flag on the `gpsd` command and not seeing
+</I>&gt;<i> &gt; any
+</I>&gt;<i> &gt; &gt; PPS entries at all.
+</I>&gt;<i> &gt; 
+</I>&gt;<i> &gt; Your -D6 does not go long enough to show the PPS lock.  PPS only happens
+</I>&gt;<i> &gt; after you have received a solid fix.
+</I>&gt;<i> &gt; 
+</I>
+
+
+
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="002739.html">[Gpsd-users] cgpxlogger skipping timestamp; Furuno NMEA nav data
+</A></li>
+	<LI>Next message: <A HREF="002744.html">[Gpsd-users] Getting GPSD to pick up PPS from Delorme Earthmate Serial GPS
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2742">[ date ]</a>
+              <a href="thread.html#2742">[ thread ]</a>
+              <a href="subject.html#2742">[ subject ]</a>
+              <a href="author.html#2742">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

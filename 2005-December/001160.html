@@ -1,0 +1,108 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] usb gps not working (reliable)
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2005-December/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20usb%20gps%20not%20working%20%28reliable%29&In-Reply-To=%3C20051208233837.65f99665.hamish_nospam%40yahoo.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="001159.html">
+   <LINK REL="Next"  HREF="001161.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] usb gps not working (reliable)</H1>
+    <B>Hamish</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20usb%20gps%20not%20working%20%28reliable%29&In-Reply-To=%3C20051208233837.65f99665.hamish_nospam%40yahoo.com%3E"
+       TITLE="[Gpsd-users] usb gps not working (reliable)">hamish_nospam at yahoo.com
+       </A><BR>
+    <I>Thu Dec  8 11:38:37 CET 2005</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="001159.html">[Gpsd-users] usb gps not working (reliable)
+</A></li>
+        <LI>Next message: <A HREF="001161.html">[Gpsd-users] usb gps not working (reliable)
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1160">[ date ]</a>
+              <a href="thread.html#1160">[ thread ]</a>
+              <a href="subject.html#1160">[ subject ]</a>
+              <a href="author.html#1160">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>&gt;<i> I'm using self compiled gpsd-2.30 on debian testing with a Navilock
+</I>&gt;<i> USB Mouse.
+</I>
+I too have a Navilock USB GPS (the NL-302U). It is a really a re-branded
+USGlobalSat BU-353 GPS, ie SiRFstarIII via the PL2303. Cute little
+thing.
+
+It works fine in NMEA mode, I have not attempted in any real way to set
+Sirf mode, baud rate to othern than 4800, low power mode, etc.
+(sirfmon doesn't detect it)
+
+I am using the debian/unstable gpsd-2.28 package back ported to
+Debian/stable. (I have made the package available to the DebianGIS
+project, it should make it into the Alioth repository at some point,
+search the DebianGis mailing list archives if you want a link)
+Running on a Mini-ITX VIA CL600 (i586) datalogger.
+
+I was not able to get hot-plug and auto-load via init scripts to work.
+Again, I didn't spend too much time trying though.
+
+I found I needed to use -n (the caffeine flag) to get it to work 
+reliably.
+
+# gpsd -n /dev/ttyUSB0
+
+ 
+&gt;<i> I'm having trouble getting a stable gps connection from gpsd 
+</I>&gt;<i> to my GPS-mouse
+</I>&gt;<i> For debugging I started 
+</I>&gt;<i>    gpsd -D 9 /dev/ttyUSB0
+</I>&gt;<i> I add some /var/log/messages output. I hope I got the relevant parts.
+</I>&gt;<i> After this I start cgps and wait for about 1 Minute. I receive
+</I>&gt;<i> acceptable  signals for one Minute and then the connection to the gps
+</I>&gt;<i> seems to break.  I have tested this with two Navilock reveivers. They
+</I>&gt;<i> both react the same.
+</I>
+are you sure the gpsd process itself isn't dying as soon as the first
+client connects to it? this is what I was seeing.
+
+find out gpsd's PID and watch it in top as you connect a client, or
+don't let gpsd daemonize itself and see if it exits to the command
+prompt when you connect.
+
+
+
+regards,
+Hamish
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="001159.html">[Gpsd-users] usb gps not working (reliable)
+</A></li>
+	<LI>Next message: <A HREF="001161.html">[Gpsd-users] usb gps not working (reliable)
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1160">[ date ]</a>
+              <a href="thread.html#1160">[ thread ]</a>
+              <a href="subject.html#1160">[ subject ]</a>
+              <a href="author.html#1160">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

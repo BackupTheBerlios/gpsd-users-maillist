@@ -1,0 +1,145 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] Polling Rate Max for SiRf III &amp; GPSD 2.32
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2006-July/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Polling%20Rate%20Max%20for%20SiRf%20III%20%26%20GPSD%202.32&In-Reply-To=%3C002001c6a846%24908f3800%24640aa8c0%40MICHAEL1%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="001759.html">
+   <LINK REL="Next"  HREF="001770.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] Polling Rate Max for SiRf III &amp; GPSD 2.32</H1>
+    <B>Michael Grollman</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Polling%20Rate%20Max%20for%20SiRf%20III%20%26%20GPSD%202.32&In-Reply-To=%3C002001c6a846%24908f3800%24640aa8c0%40MICHAEL1%3E"
+       TITLE="[Gpsd-users] Polling Rate Max for SiRf III &amp; GPSD 2.32">mgrollman at nscus.com
+       </A><BR>
+    <I>Sat Jul 15 21:40:44 CEST 2006</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="001759.html">[Gpsd-users] gpsd cpu usage
+</A></li>
+        <LI>Next message: <A HREF="001770.html">[Gpsd-users] Polling Rate Max for SiRf III &amp; GPSD 2.32
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1764">[ date ]</a>
+              <a href="thread.html#1764">[ thread ]</a>
+              <a href="subject.html#1764">[ subject ]</a>
+              <a href="author.html#1764">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Mike,
+
+That's good news.
+
+Any idea...
+
+1. Whether the Python wrapper is as solid as the Perl approach?
+2. SiRf III-based GPS units using SiRf binary can be told to cycle faster
+than once per second?  Clearly the 57kb rate would support it.
+
+- Michael
+
+-----Original Message-----
+From: Michael R. Davis [mailto:<A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">mrdvt92 at yahoo.com</A>] 
+Sent: Friday, July 14, 2006 7:26 PM
+To: <A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">mgrollman at nscus.com</A>
+Cc: <A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">gpsd-users at bat.berlios.de</A>
+Subject: Re: [Gpsd-users] Polling Rate Max for SiRf III &amp; GPSD 2.32
+
+You can use perl to ping gpsd as often as your processor will allow
+with code like....
+
+perl -MNet::GPSD -e '$g=new Net::GPSD;while($p=$g-&gt;get){print
+$p-&gt;latlon,&quot;\n&quot;;}'
+
+But, the update is still limited by the number of messages recieved
+from the GPS reciever (readonly) per minute.
+Mike
+
+--- Michael Grollman &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">mgrollman at nscus.com</A>&gt; wrote:
+
+&gt;<i> I am looking to do an experiment that has probably been done by
+</I>&gt;<i> others 
+</I>&gt;<i> before and better.  I want to take a fairly modern GPS (a SiRF
+</I>&gt;<i> III-based 
+</I>&gt;<i> unit USGLOBALSAT MR-350) that works fine with gpsd 2.32 at ~57kb
+</I>&gt;<i> using 
+</I>&gt;<i> SiRf binary protocol (from what I can tell, at least) when polling
+</I>&gt;<i> every 
+</I>&gt;<i> few seconds, and see if sub-second polling is possible.  I hope to
+</I>&gt;<i> use 
+</I>&gt;<i> the python wrapper that comes with gpsd for the test, as that is what
+</I>&gt;<i> 
+</I>&gt;<i> the application code uses.  Has anyone tried this before, and if so, 
+</I>&gt;<i> what happens?
+</I>&gt;<i> 
+</I>&gt;<i> - MichaelG
+</I>&gt;<i> &gt; begin:vcard
+</I>&gt;<i> fn:Michael Grollman
+</I>&gt;<i> n:Grollman;Michael
+</I>&gt;<i> org:National Scientific Corp
+</I>&gt;<i> adr:;;14505 N hayden Rd Ste 305;Scottsdale;AZ;85260;USA
+</I>&gt;<i> email;internet:<A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">mgrollman at nscus.com</A>
+</I>&gt;<i> tel;work:+1-480-948-8324 x 107
+</I>&gt;<i> tel;fax:+1 - 480-483-8893
+</I>&gt;<i> x-mozilla-html:TRUE
+</I>&gt;<i> url:<A HREF="http://www.national-scientific.com">http://www.national-scientific.com</A>
+</I>&gt;<i> version:2.1
+</I>&gt;<i> end:vcard
+</I>&gt;<i> 
+</I>&gt;<i> &gt; _______________________________________________
+</I>&gt;<i> Gpsd-users mailing list
+</I>&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">Gpsd-users at bat.berlios.de</A>
+</I>&gt;<i> <A HREF="http://bat.berlios.de/mailman/listinfo/gpsd-users">http://bat.berlios.de/mailman/listinfo/gpsd-users</A>
+</I>&gt;<i> 
+</I>
+
+__________________________________________________
+Do You Yahoo!?
+Tired of spam?  Yahoo! Mail has the best spam protection around 
+<A HREF="http://mail.yahoo.com">http://mail.yahoo.com</A> 
+
+-- 
+No virus found in this incoming message.
+Checked by AVG Free Edition.
+Version: 7.1.394 / Virus Database: 268.10.1/389 - Release Date: 7/14/2006
+ 
+
+-- 
+No virus found in this outgoing message.
+Checked by AVG Free Edition.
+Version: 7.1.394 / Virus Database: 268.10.1/389 - Release Date: 7/14/2006
+ 
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="001759.html">[Gpsd-users] gpsd cpu usage
+</A></li>
+	<LI>Next message: <A HREF="001770.html">[Gpsd-users] Polling Rate Max for SiRf III &amp; GPSD 2.32
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1764">[ date ]</a>
+              <a href="thread.html#1764">[ thread ]</a>
+              <a href="subject.html#1764">[ subject ]</a>
+              <a href="author.html#1764">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

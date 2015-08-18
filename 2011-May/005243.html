@@ -1,0 +1,77 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] why does gpsd not decode my data?
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2011-May/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20why%20does%20gpsd%20not%20decode%20my%20data%3F&In-Reply-To=%3C20110519170233.GA20493%40thyrsus.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="005242.html">
+   <LINK REL="Next"  HREF="005244.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] why does gpsd not decode my data?</H1>
+    <B>Eric Raymond</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20why%20does%20gpsd%20not%20decode%20my%20data%3F&In-Reply-To=%3C20110519170233.GA20493%40thyrsus.com%3E"
+       TITLE="[Gpsd-users] why does gpsd not decode my data?">esr at thyrsus.com
+       </A><BR>
+    <I>Thu May 19 19:02:33 CEST 2011</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="005242.html">[Gpsd-users] why does gpsd not decode my data?
+</A></li>
+        <LI>Next message: <A HREF="005244.html">[Gpsd-users] C++ interface problems
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#5243">[ date ]</a>
+              <a href="thread.html#5243">[ thread ]</a>
+              <a href="subject.html#5243">[ subject ]</a>
+              <a href="author.html#5243">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>vwf &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">vwf at vulkor.net</A>&gt;:
+&gt;<i> I get data from a pilot plug. As far as I can see perfectly good data,
+</I>&gt;<i> but gpsd does not seem to like it: xgps does not show position or AIS.
+</I>&gt;<i> Can someone tell me what can be wrong?
+</I>
+I used gpsfake to repeatedly loop through the data, running xgps.
+
+The reason you're not seeing any AIS data in the window is because 
+the log only contains type 1s.  Presently xgps assumes that the 
+data stream will include Type 5s and holds off displaying type 1s 
+until it has a ship name for the corresponding MMSI.
+
+If Pilot Plugs do not pass through type 5s perhaps I need to change
+xgps so it doesn't assume it will see them.
+-- 
+		&lt;a href=&quot;<A HREF="http://www.catb.org/~esr/">http://www.catb.org/~esr/</A>&quot;&gt;Eric S. Raymond&lt;/a&gt;
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="005242.html">[Gpsd-users] why does gpsd not decode my data?
+</A></li>
+	<LI>Next message: <A HREF="005244.html">[Gpsd-users] C++ interface problems
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#5243">[ date ]</a>
+              <a href="thread.html#5243">[ thread ]</a>
+              <a href="subject.html#5243">[ subject ]</a>
+              <a href="author.html#5243">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

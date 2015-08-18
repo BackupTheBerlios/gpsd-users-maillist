@@ -1,0 +1,173 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] u-blox LEA-4S &amp; unknown sentence
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2006-December/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20u-blox%20LEA-4S%20%26%20unknown%20sentence&In-Reply-To=%3C20061213134120.AFB13C637B%40bat.berlios.de%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="002340.html">
+   <LINK REL="Next"  HREF="002342.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] u-blox LEA-4S &amp; unknown sentence</H1>
+    <B>Ali Utku Selen</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20u-blox%20LEA-4S%20%26%20unknown%20sentence&In-Reply-To=%3C20061213134120.AFB13C637B%40bat.berlios.de%3E"
+       TITLE="[Gpsd-users] u-blox LEA-4S &amp; unknown sentence">selenau at kentkart.com.tr
+       </A><BR>
+    <I>Wed Dec 13 14:40:13 CET 2006</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="002340.html">[Gpsd-users] u-blox LEA-4S &amp; unknown sentence
+</A></li>
+        <LI>Next message: <A HREF="002342.html">[Gpsd-users] u-blox LEA-4S &amp; unknown sentence
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2341">[ date ]</a>
+              <a href="thread.html#2341">[ thread ]</a>
+              <a href="subject.html#2341">[ subject ]</a>
+              <a href="author.html#2341">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>&gt;<i> xgps -j should do it.  gpsctl will enable you to change modes once we get 
+</I>&gt;<i> the uBlox driver in place, but you'll never need to do that to make gpsd
+</I>&gt;<i> work.
+</I>
+I have to build gpsd from svn, since my (up to date fedora core 6) xgps did
+not recognise '-j'. 
+
+New xgps build have the same behaviour with '-j', too. (Everything looks OK,
+but status changes from &quot;3D fix&quot; to &quot;NO fix&quot; and to &quot;3D fix&quot; again each
+second.)
+
+So what's next? :)
+
+-AUS
+
+ps: &quot;/usr/sbin/gpsd -n -N -D4 /dev/ttyS1&quot;
+I can't remember well but this time it looked different. Nevermind if it is
+useless.
+
+gpsd: &lt;= GPS:
+$GPRMC,133017.00,A,3825.62203,N,02708.48631,E,0.030,175.07,131206,,,A*65
+gpsd: &lt;= GPS: $GPVTG,175.07,T,,M,0.030,N,0.056,K,A*39
+gpsd: &lt;= GPS:
+$GPGGA,133017.00,3825.62203,N,02708.48631,E,1,08,4.20,20.6,M,37.7,M,,*6E
+gpsd: GPGGA sets status 1
+gpsd: &lt;= GPS: $GPGSA,A,3,21,06,16,22,07,18,26,29,,,,,5.56,4.20,3.64*00
+gpsd: GPGSA sets mode 3
+gpsd: &lt;= GPS:
+$GPGSV,3,1,12,21,70,027,42,30,04,157,,06,37,101,46,03,19,301,22*72
+gpsd: Partial satellite data (1 of 3).
+gpsd: &lt;= GPS:
+$GPGSV,3,2,12,16,54,291,26,22,28,183,25,07,67,080,45,31,05,222,*7E
+gpsd: Partial satellite data (2 of 3).
+gpsd: &lt;= GPS:
+$GPGSV,3,3,12,18,54,144,46,26,07,074,33,25,04,232,,29,07,061,38*71
+gpsd: Satellite data OK.
+gpsd: &lt;= GPS: $GPGLL,3825.62203,N,02708.48631,E,133017.00,A,A*62
+gpsd: can't use GGA/GGL time until after ZDA or RMC has supplied a year.
+gpsd: GPGLL sets status 1
+gpsd: LOS matrix is singular, can't calculate DOPs.
+gpsd: &lt;= GPS: $GPZDA,133017.00,13,12,2006,00,00*64
+gpsd: &lt;= GPS:
+$GPRMC,133018.00,A,3825.62202,N,02708.48630,E,0.009,,131206,,,A*7A
+gpsd: &lt;= GPS: $GPVTG,,T,,M,0.009,N,0.016,K,A*2D
+gpsd: &lt;= GPS:
+$GPGGA,133018.00,3825.62202,N,02708.48630,E,1,08,4.20,20.6,M,37.7,M,,*61
+gpsd: GPGGA sets status 1
+gpsd: &lt;= GPS: $GPGSA,A,3,21,06,16,22,07,18,26,29,,,,,5.56,4.20,3.64*00
+gpsd: GPGSA sets mode 3
+gpsd: &lt;= GPS:
+$GPGSV,3,1,12,21,70,027,42,30,04,157,,06,37,101,46,03,19,301,22*72
+gpsd: Partial satellite data (1 of 3).
+gpsd: &lt;= GPS:
+$GPGSV,3,2,12,16,54,291,25,22,28,183,26,07,67,080,45,31,05,222,*7E
+gpsd: Partial satellite data (2 of 3).
+gpsd: &lt;= GPS:
+$GPGSV,3,3,12,18,54,144,46,26,07,074,33,25,04,232,,29,07,061,38*71
+gpsd: Satellite data OK.
+gpsd: &lt;= GPS: $GPGLL,3825.62202,N,02708.48630,E,133018.00,A,A*6D
+gpsd: can't use GGA/GGL time until after ZDA or RMC has supplied a year.
+gpsd: GPGLL sets status 1
+gpsd: LOS matrix is singular, can't calculate DOPs.
+gpsd: &lt;= GPS: $GPZDA,133018.00,13,12,2006,00,00*6B
+
+gpsd: &lt;= GPS:
+$GPRMC,133019.00,A,3825.62201,N,02708.48628,E,0.037,172.37,131206,,,A*62
+gpsd: &lt;= GPS: $GPVTG,172.37,T,,M,0.037,N,0.068,K,A*37
+gpsd: &lt;= GPS:
+$GPGGA,133019.00,3825.62201,N,02708.48628,E,1,08,4.20,20.6,M,37.7,M,,*6A
+gpsd: GPGGA sets status 1
+gpsd: &lt;= GPS: $GPGSA,A,3,21,06,16,22,07,18,26,29,,,,,5.56,4.20,3.64*00
+gpsd: GPGSA sets mode 3
+gpsd: &lt;= GPS:
+$GPGSV,3,1,12,21,70,027,42,30,04,157,,06,37,101,46,03,19,301,23*73
+gpsd: Partial satellite data (1 of 3).
+gpsd: &lt;= GPS:
+$GPGSV,3,2,12,16,54,291,23,22,28,183,25,07,67,080,45,31,05,222,*7B
+gpsd: Partial satellite data (2 of 3).
+gpsd: &lt;= GPS:
+$GPGSV,3,3,12,18,54,144,46,26,07,074,33,25,04,232,,29,07,061,38*71
+gpsd: Satellite data OK.
+gpsd: &lt;= GPS: $GPGLL,3825.62201,N,02708.48628,E,133019.00,A,A*66
+gpsd: can't use GGA/GGL time until after ZDA or RMC has supplied a year.
+gpsd: GPGLL sets status 1
+gpsd: LOS matrix is singular, can't calculate DOPs.
+gpsd: &lt;= GPS: $GPZDA,133019.00,13,12,2006,00,00*6A
+
+gpsd: &lt;= GPS:
+$GPRMC,133020.00,A,3825.62201,N,02708.48626,E,0.021,176.85,131206,,,A*6C
+gpsd: &lt;= GPS: $GPVTG,176.85,T,,M,0.021,N,0.039,K,A*39
+gpsd: &lt;= GPS:
+$GPGGA,133020.00,3825.62201,N,02708.48626,E,1,08,4.20,20.6,M,37.7,M,,*6E
+gpsd: GPGGA sets status 1
+gpsd: &lt;= GPS: $GPGSA,A,3,21,06,16,22,07,18,26,29,,,,,5.56,4.20,3.64*00
+gpsd: GPGSA sets mode 3
+gpsd: &lt;= GPS:
+$GPGSV,3,1,12,21,70,027,42,30,04,157,,06,37,101,46,03,19,301,23*73
+gpsd: Partial satellite data (1 of 3).
+gpsd: &lt;= GPS:
+$GPGSV,3,2,12,16,54,291,24,22,28,183,25,07,67,080,45,31,05,222,*7C
+gpsd: Partial satellite data (2 of 3).
+gpsd: &lt;= GPS:
+$GPGSV,3,3,12,18,54,144,46,26,07,074,33,25,04,232,,29,07,061,38*71
+gpsd: Satellite data OK.
+gpsd: &lt;= GPS: $GPGLL,3825.62201,N,02708.48626,E,133020.00,A,A*62
+gpsd: can't use GGA/GGL time until after ZDA or RMC has supplied a year.
+gpsd: GPGLL sets status 1
+gpsd: LOS matrix is singular, can't calculate DOPs.
+gpsd: &lt;= GPS: $GPZDA,133020.00,13,12,2006,00,00*60
+
+
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="002340.html">[Gpsd-users] u-blox LEA-4S &amp; unknown sentence
+</A></li>
+	<LI>Next message: <A HREF="002342.html">[Gpsd-users] u-blox LEA-4S &amp; unknown sentence
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2341">[ date ]</a>
+              <a href="thread.html#2341">[ thread ]</a>
+              <a href="subject.html#2341">[ subject ]</a>
+              <a href="author.html#2341">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

@@ -1,0 +1,147 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] [Roadmap-general] Compatibility warning for GPSD client projects
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2011-January/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20%5BRoadmap-general%5D%20Compatibility%20warning%20for%20GPSD%0A%20client%20projects&In-Reply-To=%3C1296415680.1903.657.camel%40pavilion%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="004982.html">
+   <LINK REL="Next"  HREF="004984.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] [Roadmap-general] Compatibility warning for GPSD client projects</H1>
+    <B>Danny Backx</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20%5BRoadmap-general%5D%20Compatibility%20warning%20for%20GPSD%0A%20client%20projects&In-Reply-To=%3C1296415680.1903.657.camel%40pavilion%3E"
+       TITLE="[Gpsd-users] [Roadmap-general] Compatibility warning for GPSD client projects">danny.backx at scarlet.be
+       </A><BR>
+    <I>Sun Jan 30 20:28:00 CET 2011</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="004982.html">[Gpsd-users] Compatibility warning for GPSD client projects
+</A></li>
+        <LI>Next message: <A HREF="004984.html">[Gpsd-users] [Roadmap-general] Compatibility warning for GPSD client projects
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#4983">[ date ]</a>
+              <a href="thread.html#4983">[ thread ]</a>
+              <a href="subject.html#4983">[ subject ]</a>
+              <a href="author.html#4983">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>[Resend after subscribing myself]
+
+Hi Eric,
+
+Thanks for the message. I have a few questions though.
+
+I'm a bit confused about this change vs. the one announced December
+2009. The release numbering then made me assume that that would be the
+API for 3.0. Has this changed ?
+
+Which release implements the API just announced ?
+
+Can you clarify which API works with which versions of gpsd ? (I'm
+interested in the C language API.) Basically I probably need the mapping
+between three things :
+- which API (e.g. how many parameters to gps_open)
+- which version of the software to download (e.g. 2.95)
+- which macros to use in #ifdef
+
+The dates in <A HREF="http://gpsd.berlios.de/protocol-transition.html">http://gpsd.berlios.de/protocol-transition.html</A> appear to
+be outdated, also its example still has two, not three, parameters in
+gps_open().
+
+Note that this is the very first link under the &quot;Urgent news&quot; heading on
+the <A HREF="http://gpsd.berlios.de">http://gpsd.berlios.de</A> page.
+
+Finally, (developer.)berlios.de doesn't appear to work.
+
+        Danny
+
+On za, 2011-01-29 at 14:04 -0500, Eric Raymond wrote:
+&gt;<i> Another GPSD release is coming up, with support for many new device types
+</I>&gt;<i> and tasty features including the ability to report subframe data and noise
+</I>&gt;<i> statistics. Also, the requirement for clients to define a gpsd_report() 
+</I>&gt;<i> hook is gone.
+</I>&gt;<i> 
+</I>&gt;<i> Sadly, this release also brings with it an ABI and API compatibility
+</I>&gt;<i> break in the C client library.  Yes, we know we've had too many binary
+</I>&gt;<i> compatibility breaks in the past, and have been striving mightily to
+</I>&gt;<i> avoid them over the last two years after one client maintainer
+</I>&gt;<i> justifiably slapped us around about the problems they cause.  But
+</I>&gt;<i> we've been defeated in our good intentions by GLONASS (the Russian
+</I>&gt;<i> satnav system), support for which has required us to increase the
+</I>&gt;<i> maximum allowed number of satellite channels.
+</I>&gt;<i> 
+</I>&gt;<i> Since the ABI had to change incompatibly, that opened a window.  We
+</I>&gt;<i> have had a few improvements planned to the client API - things like
+</I>&gt;<i> changing gps_open() to use a specified fix buffer rather than
+</I>&gt;<i> returning an internally allocated one, making re-entrant code
+</I>&gt;<i> possible.  Rather than spread these out over several releases, causing
+</I>&gt;<i> pain each time, we're doing them all at once in hopes we can stay
+</I>&gt;<i> forward-compatible without a break for the next few years.
+</I>&gt;<i> 
+</I>&gt;<i> Summary of changes:
+</I>&gt;<i> 
+</I>&gt;<i> gps_open() now takes three arguments instead of two, as previously noted.  
+</I>&gt;<i> 
+</I>&gt;<i> gps_poll() is renamed to gps_read().  The 'gps_poll()' name should be
+</I>&gt;<i> considered reserved, as we may have plans for it relating to the new
+</I>&gt;<i> semi-experimental ?POLL; command in the wire protocol.
+</I>&gt;<i> 
+</I>&gt;<i> gps_waiting() is now documented and officially available.
+</I>&gt;<i> 
+</I>&gt;<i> The set_raw_hook feature is gone.  Instead, code can just look at the 
+</I>&gt;<i> response buffer after a read.
+</I>&gt;<i> 
+</I>&gt;<i> GPSD_API_MAJOR_VERSION has been bumped, so you will be able to
+</I>&gt;<i> conditionalize your C code properly. As usual, cgps and gpxlogger
+</I>&gt;<i> provide live usage examples and the entrty points are fully
+</I>&gt;<i> documented.
+</I>&gt;<i> 
+</I>&gt;<i> At the wire-protocol level, timestamps in TPV and SKY objects are now
+</I>&gt;<i> ISO 8601 timestamp strings rather than floats expressing seconds since
+</I>&gt;<i> Unix epoch. The minor protocol version number in the VERSION response
+</I>&gt;<i> has been bumped accordingly. 
+</I>&gt;<i> 
+</I>&gt;<i> ?POLL; is a new facility for requesting a state dump from the daemon.
+</I>&gt;<i> The response is a pile of hair that aggregates TPV and SKY
+</I>&gt;<i> objects. Not yet supported in the C client API and, because of C static
+</I>&gt;<i> typing and choices made to keep the client JSON parser small, may
+</I>&gt;<i> never be.  It's intended for the use of client bindings in Python
+</I>&gt;<i> and Perl and other dynamic languages.
+</I>
+-- 
+Danny Backx ; danny.backx - at - scarlet.be ; <A HREF="http://danny.backx.info">http://danny.backx.info</A>
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="004982.html">[Gpsd-users] Compatibility warning for GPSD client projects
+</A></li>
+	<LI>Next message: <A HREF="004984.html">[Gpsd-users] [Roadmap-general] Compatibility warning for GPSD client projects
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#4983">[ date ]</a>
+              <a href="thread.html#4983">[ thread ]</a>
+              <a href="subject.html#4983">[ subject ]</a>
+              <a href="author.html#4983">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

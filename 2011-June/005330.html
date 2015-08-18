@@ -1,0 +1,124 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] ntp + gpsd + pps
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2011-June/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20ntp%20%2B%20gpsd%20%2B%20pps&In-Reply-To=%3C1308235340.15353.248.camel%40stevet61%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="005346.html">
+   <LINK REL="Next"  HREF="005331.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] ntp + gpsd + pps</H1>
+    <B>Stephan Skrodzki</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20ntp%20%2B%20gpsd%20%2B%20pps&In-Reply-To=%3C1308235340.15353.248.camel%40stevet61%3E"
+       TITLE="[Gpsd-users] ntp + gpsd + pps">skrodzki at stevekist.de
+       </A><BR>
+    <I>Thu Jun 16 16:42:20 CEST 2011</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="005346.html">[Gpsd-users] A python script feed gpsd to Google Earth
+</A></li>
+        <LI>Next message: <A HREF="005331.html">[Gpsd-users] ntp + gpsd + pps
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#5330">[ date ]</a>
+              <a href="thread.html#5330">[ thread ]</a>
+              <a href="subject.html#5330">[ subject ]</a>
+              <a href="author.html#5330">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi there,
+
+I have connected a SkyTraq based GPS (GPS-610F) to the system (ttyS1),
+configured to output only RMC sentence at 4800baud. PPS is connected to
+DCD and gpsd looks fine and detects all pps and gpsmon is also fine.
+
+Now using ntp.conf:
+
+server 127.127.28.0 minpoll 4
+fudge 127.127.28.0 time1 0.335 refid GPS
+
+server 127.127.28.1 minpoll 4 prefer
+fudge 127.127.28.1 refid PPS
+
+I get the following result while tracing ntpq -p with 
+while true ; do echo `date +%Y%m%d-%H%M%S: ` `ntpq -p | tail -2` &gt;&gt; ntpq_20110616.txt ; sleep 5 ; done
+
+20110616-162616: xSHM(0) .GPS. 0 l 10 16 377 0.000 5.545 1.740 xSHM(1) .PPS. 0 l 7 16 377 0.000 -2.618 0.350
+20110616-162621: xSHM(0) .GPS. 0 l 15 16 377 0.000 5.545 1.740 xSHM(1) .PPS. 0 l 12 16 377 0.000 -2.618 0.350
+20110616-162626: +SHM(0) .GPS. 0 l 4 16 377 0.000 -2.455 7.578 *SHM(1) .PPS. 0 l 17 16 377 0.000 -2.618 0.350
+20110616-162631: +SHM(0) .GPS. 0 l 9 16 377 0.000 -2.455 7.578 *SHM(1) .PPS. 0 l 5 16 377 0.000 -2.705 0.365
+20110616-162636: +SHM(0) .GPS. 0 l 14 16 377 0.000 -2.455 7.578 *SHM(1) .PPS. 0 l 10 16 377 0.000 -2.705 0.365
+20110616-162641: xSHM(0) .GPS. 0 l 2 16 377 0.000 3.656 2.863 xSHM(1) .PPS. 0 l 15 16 377 0.000 -2.705 0.365
+20110616-162646: xSHM(0) .GPS. 0 l 7 16 377 0.000 3.656 2.863 xSHM(1) .PPS. 0 l 4 16 377 0.000 -2.797 0.376
+20110616-162651: xSHM(0) .GPS. 0 l 12 16 377 0.000 3.656 2.863 xSHM(1) .PPS. 0 l 9 16 377 0.000 -2.797 0.376
+20110616-162656: xSHM(0) .GPS. 0 l 17 16 377 0.000 3.656 2.863 xSHM(1) .PPS. 0 l 14 16 377 0.000 -2.797 0.376
+20110616-162701: +SHM(0) .GPS. 0 l 4 16 377 0.000 -0.337 4.797 *SHM(1) .PPS. 0 l 2 16 377 0.000 -2.892 0.390
+20110616-162706: +SHM(0) .GPS. 0 l 9 16 377 0.000 -0.337 4.797 *SHM(1) .PPS. 0 l 7 16 377 0.000 -2.892 0.390
+20110616-162711: +SHM(0) .GPS. 0 l 14 16 377 0.000 -0.337 4.797 *SHM(1) .PPS. 0 l 12 16 377 0.000 -2.892 0.390
+20110616-162716: +SHM(0) .GPS. 0 l 1 16 377 0.000 -0.471 4.651 *SHM(1) .PPS. 0 l 17 16 377 0.000 -2.892 0.390
+20110616-162721: +SHM(0) .GPS. 0 l 6 16 377 0.000 -0.471 4.651 *SHM(1) .PPS. 0 l 5 16 377 0.000 -2.988 0.404
+20110616-162726: +SHM(0) .GPS. 0 l 11 16 377 0.000 -0.471 4.651 *SHM(1) .PPS. 0 l 10 16 377 0.000 -2.988 0.404
+20110616-162731: xSHM(0) .GPS. 0 l 1 16 377 0.000 6.668 5.277 xSHM(1) .PPS. 0 l 15 16 377 0.000 -2.988 0.404
+20110616-162736: xSHM(0) .GPS. 0 l 6 16 377 0.000 6.668 5.277 xSHM(1) .PPS. 0 l 2 16 377 0.000 -3.097 0.425
+20110616-162741: xSHM(0) .GPS. 0 l 11 16 377 0.000 6.668 5.277 xSHM(1) .PPS. 0 l 7 16 377 0.000 -3.097 0.425
+20110616-162746: xSHM(0) .GPS. 0 l 16 16 377 0.000 6.668 5.277 xSHM(1) .PPS. 0 l 12 16 377 0.000 -3.097 0.425
+20110616-162751: xSHM(0) .GPS. 0 l 3 16 377 0.000 7.689 6.062 xSHM(1) .PPS. 0 l 1 16 377 0.000 -3.202 0.439
+20110616-162756: xSHM(0) .GPS. 0 l 8 16 377 0.000 7.689 6.062 xSHM(1) .PPS. 0 l 6 16 377 0.000 -3.202 0.439
+20110616-162801: xSHM(0) .GPS. 0 l 13 16 377 0.000 7.689 6.062 xSHM(1) .PPS. 0 l 11 16 377 0.000 -3.202 0.439
+20110616-162806: xSHM(0) .GPS. 0 l 1 16 377 0.000 12.655 10.430 xSHM(1) .PPS. 0 l 16 16 377 0.000 -3.202 0.439
+20110616-162811: xSHM(0) .GPS. 0 l 6 16 377 0.000 12.655 10.430 xSHM(1) .PPS. 0 l 5 16 377 0.000 -3.302 0.447
+
+and the system has more and more the tendence to discard the PPS (GPS is discarded even more often)
+
+Using the GPS part above only works fine, using the PPS part only works
+also but there may second jumps happen (which I understood by the mail
+list).
+
+So I have several questions:
+
+1. If PPS works fine without the GPS, how could it be, it does not work
+with both? (and vice versa)
+
+2. How do I find out the &quot;perfect&quot; time1 parameter for the distance of
+PPS and GPS? 
+
+3. I have the feeling that I should always get a *SHM(1)... why is this
+not the case?
+
+Thanks &amp; best regards
+ Stephan
+
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="005346.html">[Gpsd-users] A python script feed gpsd to Google Earth
+</A></li>
+	<LI>Next message: <A HREF="005331.html">[Gpsd-users] ntp + gpsd + pps
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#5330">[ date ]</a>
+              <a href="thread.html#5330">[ thread ]</a>
+              <a href="subject.html#5330">[ subject ]</a>
+              <a href="author.html#5330">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

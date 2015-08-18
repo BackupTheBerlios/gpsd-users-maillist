@@ -1,0 +1,129 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] State of gpsd
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2005-July/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20State%20of%20gpsd&In-Reply-To=%3C200507081653.j68GrSEL006159%40snark.thyrsus.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="000826.html">
+   <LINK REL="Next"  HREF="000842.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] State of gpsd</H1>
+    <B>Eric S. Raymond</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20State%20of%20gpsd&In-Reply-To=%3C200507081653.j68GrSEL006159%40snark.thyrsus.com%3E"
+       TITLE="[Gpsd-users] State of gpsd">esr at snark.thyrsus.com
+       </A><BR>
+    <I>Fri Jul  8 18:53:28 CEST 2005</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="000826.html">[Gpsd-users] Switching to Sirf Mode (again)
+</A></li>
+        <LI>Next message: <A HREF="000842.html">[Gpsd-users] Re: [Gpsd-dev] State of gpsd
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#828">[ date ]</a>
+              <a href="thread.html#828">[ thread ]</a>
+              <a href="subject.html#828">[ subject ]</a>
+              <a href="author.html#828">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Things are quiet.  No known bugs are outstanding.  No urgent fixes have been
+received since 2.28.
+
+One report of hotplug troubles on Debian needs investigation.  I also
+need to look at Daryl Ross's logs re the 10-second-lag phenomenon.
+I'm not expecting serious difficulties with either.  I do not,
+accordingly, have any immediate plans for a point release.
+
+Changes since 2.28:
+
+* I have cleaned up the internal error modeling.  All drivers now
+  report error estimates with 95% confidence intervals.  Furthermore
+  the confidence interval to be used as a dilution factor is now a
+  #define set in a single spot in gpsd.h.
+
+* I have cleaned up the driver structures, moving some things from
+  the public gpsdata_t structure into private driver-specific storage
+  in gps_device_t or driver-local variables.
+
+* I have made it possible to compile the daemon without NMEA support.
+  While this is unlikely to be hugely useful, putting these #ifdefs
+  in place is documentation of the code partitioning.
+
+* I have added a driver prototype file to the distribution, and
+  extensively revised the hacking guide.
+
+* I have added untested support for Sony CXD2951 GPS chips.  This
+  is pretty trivial, just an initializer string that suppresses
+  some sentences we don't want.
+
+* Petter Reinhold sent a patch that fixes the configure script
+  to autodetect DBUS libraries and link them if present.
+
+Current projects:
+
+* Petr Slansky is finishing the driver for Evermore chipsets that
+  I started.  Unlike me, he has test hardware.
+
+* Chris Kuethe seems to be well along towards a SiRF firmware loader.
+
+* Amaury Jacquot has promised a manual page for his gpxlogger code.
+  When I get this, it will move out of contrib and into the clients
+  RPM.
+
+* Rob Janssen is supposed to be trying to fix the PPS-thread code.
+
+* I'm expecting Gary Miller to write gpspipe documentation when it
+  isn't so nice outside :-).
+
+Things nobody has tackled yet:
+
+* RINEX dumping.  After researching the matter. I'm now convinced that
+  this belongs in the daemon, mainly because the binary drivers are 
+  already doing the packet-cracking needed to extract range/phase/PRN
+  info.
+
+* RTCM104. I'm now convinced this is worth supporting, but have
+  no desire to write the RTCM104 decoder part myself.
+
+I will start thinking about a point release when one of the following
+happens: (1) a serious bug fix needs to be pushed out, (2) the
+Evermore driver gets finished, (3) the firmware loader gets
+finished.
+-- 
+		&lt;a href=&quot;<A HREF="http://www.catb.org/~esr/">http://www.catb.org/~esr/</A>&quot;&gt;Eric S. Raymond&lt;/a&gt;
+
+When only cops have guns, it's called a &quot;police state&quot;.
+        -- Claire Wolfe, &quot;101 Things To Do Until The Revolution&quot; 
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="000826.html">[Gpsd-users] Switching to Sirf Mode (again)
+</A></li>
+	<LI>Next message: <A HREF="000842.html">[Gpsd-users] Re: [Gpsd-dev] State of gpsd
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#828">[ date ]</a>
+              <a href="thread.html#828">[ thread ]</a>
+              <a href="subject.html#828">[ subject ]</a>
+              <a href="author.html#828">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

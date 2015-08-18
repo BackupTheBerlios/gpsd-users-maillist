@@ -1,0 +1,114 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] BINR, RTCM SC 104 data protocols
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2010-April/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20BINR%2C%20RTCM%20SC%20104%20data%20protocols&In-Reply-To=%3C20100423043418.GA9840%40thyrsus.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="004417.html">
+   <LINK REL="Next"  HREF="004421.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] BINR, RTCM SC 104 data protocols</H1>
+    <B>Eric Raymond</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20BINR%2C%20RTCM%20SC%20104%20data%20protocols&In-Reply-To=%3C20100423043418.GA9840%40thyrsus.com%3E"
+       TITLE="[Gpsd-users] BINR, RTCM SC 104 data protocols">esr at thyrsus.com
+       </A><BR>
+    <I>Fri Apr 23 06:34:18 CEST 2010</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="004417.html">[Gpsd-users] BINR, RTCM SC 104 data protocols
+</A></li>
+        <LI>Next message: <A HREF="004421.html">[Gpsd-users] Garmin GPS 18 LVC on Debian lenny?
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#4418">[ date ]</a>
+              <a href="thread.html#4418">[ thread ]</a>
+              <a href="subject.html#4418">[ subject ]</a>
+              <a href="author.html#4418">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>H&#229;ken Hveem &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">krbjhvee at online.no</A>&gt;:
+&gt;<i> Hello, are BINR, RTCM SC 104 data protocols supported by gpsd ?
+</I>
+No and yes.  That is, we do support RTCM but we do not support BINR.
+Yet. I know of it and a little about what it looks like, because I have
+a partial translation of a Russian manual for it.  I know enough
+to be pretty sure we could support it easily if we had documentation
+for it.
+ 
+&gt;<i> The BINR, RTCM SC 104 protocols is transmitted by the CF-4706 chip
+</I>&gt;<i> used in the CH-4711 GLONASS/GPS mouse:
+</I>&gt;<i> <A HREF="http://www.nvstech.ch/?page_id=230">http://www.nvstech.ch/?page_id=230</A>
+</I>&gt;<i> 
+</I>&gt;<i> By default the device does not report 2d fixes; the vendor
+</I>&gt;<i> configuration tool offers checkboxes to enable any combination of
+</I>&gt;<i> none, 2D fixes, 3D fixes, or both. The devices has only a very
+</I>&gt;<i> limited set of NMEA controls but speaks a proprietary vendor format
+</I>&gt;<i> called BINR with more capabilities.
+</I>&gt;<i> It is supported by gpsd ( NMEA data)
+</I>&gt;<i> 
+</I>&gt;<i> nvstech, that is the european vendor for Navis can be reached at:
+</I>&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">info at nvstech.ch</A>
+</I>&gt;<i> 
+</I>&gt;<i> the maker of the chip can be reached at :
+</I>&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">navis at navis.ru</A>
+</I>
+Right.  If you want it supported, here's what we need:
+
+1. English-language docs for the protocol (that is, both the NMEA
+subset and the BINR part).  A decent translation of the Russian or
+Norwegian manual (as opposed to vendor-issues docs in English) would
+be good enough.
+
+2. Log files of BINR data to test with.  They need to be annotated 
+with a source latitude and longitude so we can check that what we
+get from the decoding is sane.
+
+3. If the controls to change the reporting are documented BINR 
+or NMEA strings, that's all we need.  If they're something 
+else, we'll need you to capture them with a serial-port snooper
+and tell us what they are.
+
+The good news is that once we have these things, full support will
+be at most two man-daus of work.  Maybe one day.  We've done
+this dance before, a lot.
+
+I'll send a request for protocol documentation to these addresses, but
+you should assume it will fail and gather the information we need
+yourself.  GPS companies tend to be run by idiots who think protocol
+secrecy somehow adds value to their hardware rather than subtracting
+it; they'll probably ignore me.
+-- 
+		&lt;a href=&quot;<A HREF="http://www.catb.org/~esr/">http://www.catb.org/~esr/</A>&quot;&gt;Eric S. Raymond&lt;/a&gt;
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="004417.html">[Gpsd-users] BINR, RTCM SC 104 data protocols
+</A></li>
+	<LI>Next message: <A HREF="004421.html">[Gpsd-users] Garmin GPS 18 LVC on Debian lenny?
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#4418">[ date ]</a>
+              <a href="thread.html#4418">[ thread ]</a>
+              <a href="subject.html#4418">[ subject ]</a>
+              <a href="author.html#4418">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

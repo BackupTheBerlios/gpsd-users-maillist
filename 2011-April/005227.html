@@ -1,0 +1,98 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] pilot plug
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2011-April/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20pilot%20plug&In-Reply-To=%3C20110428082458.GA22528%40dizzy.vulkor.net%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="005218.html">
+   <LINK REL="Next"  HREF="005228.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] pilot plug</H1>
+    <B>vwf</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20pilot%20plug&In-Reply-To=%3C20110428082458.GA22528%40dizzy.vulkor.net%3E"
+       TITLE="[Gpsd-users] pilot plug">vwf at vulkor.net
+       </A><BR>
+    <I>Thu Apr 28 10:24:58 CEST 2011</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="005218.html">[Gpsd-users] pilot plug
+</A></li>
+        <LI>Next message: <A HREF="005228.html">[Gpsd-users] pilot plug
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#5227">[ date ]</a>
+              <a href="thread.html#5227">[ thread ]</a>
+              <a href="subject.html#5227">[ subject ]</a>
+              <a href="author.html#5227">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hello,
+
+I am trying to hook up gpsd to a pilot plug (today not a real one, but a
+Kongsberg simulator, tomorrow a real one). 
+So far unsuccesfully.
+
+The pilotplug is RS232, and I use a RS232-USB convertor to connect
+to my PC. The convertor is
+<A HREF="http://eu.startech.com/product/ICUSB232-USB-to-RS232-DB9-Serial-Adapter-Cable-Male-to-Male-Serial-Adapter-USB-to-Serial">http://eu.startech.com/product/ICUSB232-USB-to-RS232-DB9-Serial-Adapter-Cable-Male-to-Male-Serial-Adapter-USB-to-Serial</A>
+
+It is recognised as a pl2303, and the modules are loaded.
+[ 2431.441333] usb 4-2: new full speed USB device using uhci_hcd and address 3
+[ 2431.605100] usb 4-2: configuration #1 chosen from 1 choice
+[ 2431.608284] pl2303 4-2:1.0: pl2303 converter detected
+[ 2431.621548] usb 4-2: pl2303 converter now attached to ttyUSB0
+[ 2431.621548] usb 4-2: New USB device found, idVendor=0557, idProduct=2008
+[ 2431.621548] usb 4-2: New USB device strings: Mfr=1, Product=2, SerialNumber=0
+[ 2431.621548] usb 4-2: Product: USB-Serial Controller D
+[ 2431.621548] usb 4-2: Manufacturer: Prolific Technology Inc. 
+
+I can read data from the device using minicom (/dev/ttyUSB0, 38400, 8N1):
+!AIVDO,1,1,,A,13m=<A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">bRP1 at 3Pr9fnOkwff20000000</A>,0*16      
+!AIVDO,1,1,,A,13m=<A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">bRP1 at 3Pr9fnOkwfv20000000</A>,0*06      
+!AIVDO,1,1,,A,13m=<A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">bRP1 at 3Pr9fnOkwfv20000000</A>,0*06
+!AIVDO,1,1,,A,13m=<A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">bRP1 at 3Pr9fnOkwg</A>&gt;<A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">2 at 000000</A>,0*3F
+!AIVDO,1,1,,A,13m=<A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">bRP1 at 3Pr9fnOkwgN2</A>@000000,0*4F
+!AIVDM,1,1,,A,13m=bRh000Prs3`OmHMh10000000,0*50
+!AIVDO,1,1,,A,13m=<A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">bRP1 at 3Pr9fnOkwgf2</A>@000000,0*67
+
+Unfortunatey, gpsmon does not recognise the data (&quot;gpsmon /dev/ttyUSB0&quot;):
+   Unknown deviceNo matching monitor type.
+
+Does this mean that I do not have a properly configured pilotplug,
+or is something else going on?
+
+Thank you for any help.
+Frits
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="005218.html">[Gpsd-users] pilot plug
+</A></li>
+	<LI>Next message: <A HREF="005228.html">[Gpsd-users] pilot plug
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#5227">[ date ]</a>
+              <a href="thread.html#5227">[ thread ]</a>
+              <a href="subject.html#5227">[ subject ]</a>
+              <a href="author.html#5227">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

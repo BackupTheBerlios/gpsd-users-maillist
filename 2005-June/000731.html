@@ -1,0 +1,115 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] Garmin USB device
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2005-June/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Garmin%20USB%20device&In-Reply-To=%3CPine.LNX.4.63.0506030038230.11893%40catbert.rellim.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="000730.html">
+   <LINK REL="Next"  HREF="000732.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] Garmin USB device</H1>
+    <B>Gary E. Miller</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Garmin%20USB%20device&In-Reply-To=%3CPine.LNX.4.63.0506030038230.11893%40catbert.rellim.com%3E"
+       TITLE="[Gpsd-users] Garmin USB device">gem at rellim.com
+       </A><BR>
+    <I>Fri Jun  3 09:42:27 CEST 2005</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="000730.html">[Gpsd-users] Garmin USB device
+</A></li>
+        <LI>Next message: <A HREF="000732.html">[Gpsd-users] Garmin USB device
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#731">[ date ]</a>
+              <a href="thread.html#731">[ thread ]</a>
+              <a href="subject.html#731">[ subject ]</a>
+              <a href="author.html#731">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>-----BEGIN PGP SIGNED MESSAGE-----
+Hash: SHA1
+
+Yo Ragnar!
+
+On Fri, 3 Jun 2005, Ragnar Wisloff wrote:
+
+&gt;<i> I have a Garmin Etrex Legend C which is a USB only and Garmin binary protocol
+</I>&gt;<i> only device. I saw in the changelog that this should now work with gpsd, but
+</I>&gt;<i> that it required the kernel module garmin_usb.
+</I>
+Yes, you need garmin_usb.
+
+&gt;<i> I cannot find any trace of such a module on Google. There is a garmin_gps
+</I>&gt;<i> module, is that the one? That seems to come from the project that also
+</I>&gt;<i> produced the workaround garminusb2nmea. Using garmin_gps and garminusb2nmea I
+</I>&gt;<i> made this device talk to gpsd in the past.
+</I>
+Yes, that is the driver.  It is built in to Linux kernels 2.6.8.1 and
+higher.  Just compile it in to your kernel.
+
+&gt;<i> My laptop running Debian Sarge finds the device, loads the garmin_gps module
+</I>&gt;<i> successfully and attaches it to /dev/ttyUSB0. At least so it says in the
+</I>&gt;<i> syslog.
+</I>
+Sounds good.  If you download hte driver source that you found on Google it
+has a simple dump test progeam in it called: garmin_gps_test.  That is a
+good independent validation that things are configed properly.
+
+&gt;<i> Starting gpsd then says
+</I>&gt;<i>
+</I>&gt;<i> $ gpsd-2.25/gpsd
+</I>&gt;<i> gpsd: can't run with neither control socket nor devices
+</I>
+You need to start gpsd as root this way:
+
+gpsd -nN -p /dev/ttyUSB0 -D 5
+
+Then sendus the output.
+
+RGDS
+GARY
+- ---------------------------------------------------------------------------
+Gary E. Miller Rellim 20340 Empire Blvd, Suite E-3, Bend, OR 97701
+	<A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">gem at rellim.com</A>  Tel:+1(541)382-8588 Fax: +1(541)382-8676
+
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v1.2.3 (GNU/Linux)
+
+iD8DBQFCoAnm8KZibdeR3qURAlLKAJ9vt4tP+5t5jlftmp5NdSA3bNdqRgCgjmlT
+htoLrwa79uJD6yCBRu1nHVA=
+=jx0T
+-----END PGP SIGNATURE-----
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="000730.html">[Gpsd-users] Garmin USB device
+</A></li>
+	<LI>Next message: <A HREF="000732.html">[Gpsd-users] Garmin USB device
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#731">[ date ]</a>
+              <a href="thread.html#731">[ thread ]</a>
+              <a href="subject.html#731">[ subject ]</a>
+              <a href="author.html#731">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

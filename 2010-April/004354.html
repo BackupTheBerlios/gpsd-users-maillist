@@ -1,0 +1,140 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] gps problem - hardware or setup?
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2010-April/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20gps%20problem%20-%20hardware%20or%20setup%3F&In-Reply-To=%3Cm2la2d3b4551004061532xa60a5f51p7a01bc7d67e05aed%40mail.gmail.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="004353.html">
+   <LINK REL="Next"  HREF="004355.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] gps problem - hardware or setup?</H1>
+    <B>Don Weeks</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20gps%20problem%20-%20hardware%20or%20setup%3F&In-Reply-To=%3Cm2la2d3b4551004061532xa60a5f51p7a01bc7d67e05aed%40mail.gmail.com%3E"
+       TITLE="[Gpsd-users] gps problem - hardware or setup?">don.l.weeks.jr at gmail.com
+       </A><BR>
+    <I>Wed Apr  7 00:32:04 CEST 2010</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="004353.html">[Gpsd-users] gps problem - hardware or setup?
+</A></li>
+        <LI>Next message: <A HREF="004355.html">[Gpsd-users] Question about http string for gpsd.
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#4354">[ date ]</a>
+              <a href="thread.html#4354">[ thread ]</a>
+              <a href="subject.html#4354">[ subject ]</a>
+              <a href="author.html#4354">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>I would expect we would need to know what type of GPS? Can you log into gpsd
+(telnet 0 2947) and watch the raw data coming in? Does it disappear as
+well?
+        Don
+
+On Tue, Apr 6, 2010 at 4:43 PM, Ladislav Sladecek &lt;
+<A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">ladislav.sladecek at gmail.com</A>&gt; wrote:
+
+&gt;<i> Please help me with my gps(d) setup.
+</I>&gt;<i>
+</I>&gt;<i> I use the gpsd daemon with my application. Sometimes, the gpsd ceases
+</I>&gt;<i> to work with no apparent reason (clean sky).  Even the gpsmon monitor
+</I>&gt;<i> shows no fix. Are there any parameters which must be set? Or is it a
+</I>&gt;<i> hardware problem?
+</I>&gt;<i>
+</I>&gt;<i> I am surprissed that many satellites are visible but the &quot;Stat&quot; bitmap
+</I>&gt;<i> does not contain the bit 7 - ephemeris data available. Should i
+</I>&gt;<i> somewhat pre-configure my position to allow for correct ephemeris
+</I>&gt;<i> data?
+</I>&gt;<i>
+</I>&gt;<i> Here is my gpsmon screen:
+</I>&gt;<i>
+</I>&gt;<i>    127.0.0.1:2947:/dev/ttyS3     SiRF binary&gt; ^[[4~
+</I>&gt;<i>    -&#166;&#166;&#166;&#166;&#166;&#166;&#166;&#166;&#166;&#166;&#166; X &#166;&#166;&#166;&#166;&#166;&#166; Y &#166;&#166;&#166;&#166;&#166;&#166; Z &#166;&#166;&#166;&#166;&#166;&#166;&#166;&#166;&#166;&#166; North &#166;&#166;&#166;&#166; East &#166;&#166;&#166;&#166;&#166;
+</I>&gt;<i> Alt &#166;&#166;&#166;&#166;&#166;&#166;&#166;&#166;&#166;&#172;
+</I>&gt;<i>    -Pos:  3949260  1166016  4856299 m       49.89411&#176; 16.44920&#176;
+</I>&gt;<i> 1379 m        -
+</I>&gt;<i>    -Vel:      0.0      0.0      0.0 m/s          0.0       0.0
+</I>&gt;<i> 0.0 climb m/s-
+</I>&gt;<i>    -Week+TOW:1578+224837.06 Day: 2 14:27:17.06  Heading:   0.0&#176;
+</I>&gt;<i> 0.0 speed m/s-
+</I>&gt;<i>    -Skew:  -13.025817       TZ: -7200          HDOP: 0.0  M1:00
+</I>&gt;<i> M2: 00       -
+</I>&gt;<i>    -Fix:  0 =
+</I>&gt;<i>            -
+</I>&gt;<i>    L&#166;&#166;&#166;&#166;&#166;&#166;&#166;&#166;&#166;&#166;&#166;&#166;&#166;&#166;&#166;&#166;&#166;&#166;&#166;&#166;&#166;&#166;&#166; Packet type 2 (0x02)
+</I>&gt;<i> &#166;&#166;&#166;&#166;&#166;&#166;&#166;&#166;&#166;&#166;&#166;&#166;&#166;&#166;&#166;&#166;&#166;&#166;&#166;&#166;&#166;&#166;&#166;&#166;&#166;&#166;&#166;&#166;&#166;&#166;&#166;&#166;&#166;-
+</I>&gt;<i>
+</I>&gt;<i>  -&#166;&#166;&#166;&#166;&#166;&#166;&#166;&#166;&#166;&#166;&#166;&#166;&#166;&#166;&#166;&#166;&#166;&#166;&#166;&#166;&#166;&#166;&#166;&#166;&#166;&#166;&#166;&#166;&#172;-&#166;&#166;&#166;&#166;&#166;&#166;&#166;&#166;&#166;&#166;&#166;&#166;&#166;&#166;&#166;&#166;&#166;&#166;&#166;&#166;&#166;&#166;&#166;&#166;&#166;&#166;&#166;&#166;&#166;&#166;&#166;&#166;&#166;&#166;&#166;&#166;&#166;&#166;&#166;&#166;&#166;&#166;&#166;&#166;&#166;&#166;&#166;&#166;&#172;
+</I>&gt;<i>    -Ch PRN  Az El Stat  C/N ? A --Version:
+</I>&gt;<i>            -
+</I>&gt;<i>    - 0   2 243 19 003f 40.4     -L&#166;&#166;&#166;&#166;&#166;&#166;&#166; Packet Type 6 (0x06)
+</I>&gt;<i> &#166;&#166;&#166;&#166;&#166;&#166;&#166;&#166;&#166;&#166;&#166;&#166;&#166;&#166;&#166;&#166;&#166;&#166;&#166;-
+</I>&gt;<i>    - 1  10 249 68 003f 43.0
+</I>&gt;<i> --&#166;&#166;&#166;&#166;&#166;&#166;&#166;&#166;&#166;&#166;&#166;&#166;&#166;&#166;&#166;&#166;&#166;&#166;&#166;&#166;&#166;&#166;&#166;&#166;&#166;&#166;&#166;&#166;&#166;&#166;&#166;&#166;&#166;&#166;&#166;&#166;&#166;&#166;&#166;&#166;&#166;&#166;&#166;&#166;&#166;&#166;&#166;&#166;&#172;
+</I>&gt;<i>    - 2  13  90 30 003f 40.9     --SVs: 0  Drift: 96506  Bias:
+</I>&gt;<i> 135976716           -
+</I>&gt;<i>    - 3   7  66 67 003f 39.8     --Estimated GPS Time: 224837059
+</I>&gt;<i>            -
+</I>&gt;<i>    - 4   5 295 49 003d 39.7     -L&#166;&#166;&#166;&#166;&#166;&#166;&#166; Packet type 7 (0x07)
+</I>&gt;<i> &#166;&#166;&#166;&#166;&#166;&#166;&#166;&#166;&#166;&#166;&#166;&#166;&#166;&#166;&#166;&#166;&#166;&#166;&#166;-
+</I>&gt;<i>    - 5   8 210 69 003f 41.0
+</I>&gt;<i> --&#166;&#166;&#166;&#166;&#166;&#166;&#166;&#166;&#166;&#166;&#166;&#166;&#166;&#166;&#166;&#166;&#166;&#166;&#166;&#166;&#166;&#166;&#166;&#166;&#166;&#166;&#166;&#166;&#166;&#166;&#166;&#166;&#166;&#166;&#166;&#166;&#166;&#166;&#166;&#166;&#166;&#166;&#166;&#166;&#166;&#166;&#166;&#166;&#172;
+</I>&gt;<i>    - 6  23  96  5 002d 28.0     --Max: 167.570Lat: 132.129Time: 0.075
+</I>&gt;<i>  MS:  02   -
+</I>&gt;<i>    - 7   6  43  3 002d 23.1     -L&#166;&#166;&#166;&#166;&#166;&#166;&#166; Packet type 9 (0x09)
+</I>&gt;<i> &#166;&#166;&#166;&#166;&#166;&#166;&#166;&#166;&#166;&#166;&#166;&#166;&#166;&#166;&#166;&#166;&#166;&#166;&#166;-
+</I>&gt;<i>    - 8  28 163 16 003f 39.8
+</I>&gt;<i> --&#166;&#166;&#166;&#166;&#166;&#166;&#166;&#166;&#166;&#166;&#166;&#166;&#166;&#166;&#166;&#166;&#166;&#166;&#166;&#166;&#166;&#166;&#166;&#166;&#166;&#166;&#166;&#166;&#166;&#166;&#166;&#166;&#166;&#166;&#166;&#166;&#166;&#166;&#166;&#166;&#166;&#166;&#166;&#166;&#166;&#166;&#166;&#166;&#172;
+</I>&gt;<i>    - 9   0   0  0 0000  0.0     --SVs: 11 =  8 10  7  5 13  2 28 23  3
+</I>&gt;<i>  6  4      -
+</I>&gt;<i>    -10   3  55  4 002d 24.7     -L&#166;&#166;&#166;&#166;&#166;&#166;&#166; Packet type 13 (0x0D)
+</I>&gt;<i> &#166;&#166;&#166;&#166;&#166;&#166;&#166;&#166;&#166;&#166;&#166;&#166;&#166;&#166;&#166;&#166;&#166;&#166;-
+</I>&gt;<i>    -11   0   0  0 0000  0.0
+</I>&gt;<i> --&#166;&#166;&#166;&#166;&#166;&#166;&#166;&#166;&#166;&#166;&#166;&#166;&#166;&#166;&#166;&#166;&#166;&#166;&#166;&#166;&#166;&#166;&#166;&#166;&#166;&#166;&#166;&#166;&#166;&#166;&#166;&#166;&#166;&#166;&#166;&#166;&#166;&#166;&#166;&#166;&#166;&#166;&#166;&#166;&#166;&#166;&#166;&#166;&#172;
+</I>&gt;<i>    L&#166;&#166;&#166; Packet Type 4 (0x04) &#166;&#166;&#166;--DGPS source: 1 (SBAS)
+</I>&gt;<i> Corrections: 12   -
+</I>&gt;<i>                                  L&#166;&#166;&#166;&#166;&#166;&#166;&#166; Packet type 27 (0x1B)
+</I>&gt;<i> &#166;&#166;&#166;&#166;&#166;&#166;&#166;&#166;&#166;&#166;&#166;&#166;&#166;&#166;&#166;&#166;&#166;&#166;-q
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i> Thanks in advance
+</I>&gt;<i>
+</I>&gt;<i> Ladislav Sladecek
+</I>&gt;<i> _______________________________________________
+</I>&gt;<i> Gpsd-users mailing list
+</I>&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">Gpsd-users at lists.berlios.de</A>
+</I>&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">https://lists.berlios.de/mailman/listinfo/gpsd-users</A>
+</I>&gt;<i>
+</I>
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="004353.html">[Gpsd-users] gps problem - hardware or setup?
+</A></li>
+	<LI>Next message: <A HREF="004355.html">[Gpsd-users] Question about http string for gpsd.
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#4354">[ date ]</a>
+              <a href="thread.html#4354">[ thread ]</a>
+              <a href="subject.html#4354">[ subject ]</a>
+              <a href="author.html#4354">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

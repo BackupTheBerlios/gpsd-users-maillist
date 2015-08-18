@@ -1,0 +1,101 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] GPSD and Parrot bluetooth GPS in-car device
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2007-March/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20GPSD%20and%20Parrot%20bluetooth%20GPS%20in-car%20device&In-Reply-To=%3C91981b3e0703301618o207af75bq36773411e5c6f460%40mail.gmail.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="002531.html">
+   <LINK REL="Next"  HREF="002532.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] GPSD and Parrot bluetooth GPS in-car device</H1>
+    <B>Chris Kuethe</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20GPSD%20and%20Parrot%20bluetooth%20GPS%20in-car%20device&In-Reply-To=%3C91981b3e0703301618o207af75bq36773411e5c6f460%40mail.gmail.com%3E"
+       TITLE="[Gpsd-users] GPSD and Parrot bluetooth GPS in-car device">chris.kuethe at gmail.com
+       </A><BR>
+    <I>Sat Mar 31 01:18:19 CEST 2007</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="002531.html">[Gpsd-users] GPSD and Parrot bluetooth GPS in-car device
+</A></li>
+        <LI>Next message: <A HREF="002532.html">[Gpsd-users] GoPASS GPT-821 bluetooth, antaris4
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2533">[ date ]</a>
+              <a href="thread.html#2533">[ thread ]</a>
+              <a href="subject.html#2533">[ subject ]</a>
+              <a href="author.html#2533">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>On 3/30/07, Andy &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">andy at thebmwz3.co.uk</A>&gt; wrote:
+
+Nice email . ;)
+
+&gt;<i> Hi All,
+</I>&gt;<i> I've been running GPSD for some time now, flawlessly! Using a cheap
+</I>&gt;<i> bluetooth GPS receiver.
+</I>&gt;<i> Recently I got a new carphone kit that also has bluetooth GPS built-in,
+</I>&gt;<i> so I'm trying to get my GPSD to talk to it.
+</I>
+BMW bluetooth car kit?
+
+&gt;<i> The bluetooth pairing, etc is all sorted, so GPSD does see the device,
+</I>&gt;<i> but I suspect there is something odd in the NMEA data that is throwing
+</I>&gt;<i> GPSD off. I'm definately no expert in this, so can somebody who has clue
+</I>&gt;<i> take a look and see if they can spot where its going wrong?
+</I>&gt;<i> ...
+</I>&gt;<i> If I connect to the gps unit using bluetooth from my PDA and start up
+</I>&gt;<i> TomTom, set it to the pseudo-serial device it works fine and gets
+</I>&gt;<i> satellite lock, etc, so it appears to be working, perhaps a translation
+</I>&gt;<i> issue with GPSD?? (I have no clue!)
+</I>
+First off, what version of gpsd are you running? There have been
+significant changes in the NMEA parser in the last few months that may
+help/explain the issue. See if you can replicate the problem with
+gpsd-2.35dev from SVN. There's a snapshot up at
+<A HREF="http://pyxis.cns.ualberta.ca/~ckuethe/gpsd-2.35dev.tar.gz">http://pyxis.cns.ualberta.ca/~ckuethe/gpsd-2.35dev.tar.gz</A> if you don't
+want to check out from SVN.
+
+If 2.35dev doesn't work, can you go drive around for 15 minutes or
+more and log some data? I ask for longer logs because it can sometimes
+help to spot bugs. Basically, wait until TomTom says you have a fix,
+then use your preferred nmea logging method to record from the raw
+device (&quot;cat /dev/rfcomm1 &gt; nmea.txt&quot;  seems to be a popular way to do
+this.) Then mail me the log.
+
+CK
+
+-- 
+GDB has a 'break' feature; why doesn't it have 'fix' too?
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="002531.html">[Gpsd-users] GPSD and Parrot bluetooth GPS in-car device
+</A></li>
+	<LI>Next message: <A HREF="002532.html">[Gpsd-users] GoPASS GPT-821 bluetooth, antaris4
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2533">[ date ]</a>
+              <a href="thread.html#2533">[ thread ]</a>
+              <a href="subject.html#2533">[ subject ]</a>
+              <a href="author.html#2533">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

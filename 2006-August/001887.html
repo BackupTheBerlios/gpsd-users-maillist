@@ -1,0 +1,108 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] Fwd:  NTP Problems
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2006-August/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Fwd%3A%20%20NTP%20Problems&In-Reply-To=%3CPine.LNX.4.64.0608280950410.21500%40catbert.rellim.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="001886.html">
+   <LINK REL="Next"  HREF="001888.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] Fwd:  NTP Problems</H1>
+    <B>Gary E. Miller</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Fwd%3A%20%20NTP%20Problems&In-Reply-To=%3CPine.LNX.4.64.0608280950410.21500%40catbert.rellim.com%3E"
+       TITLE="[Gpsd-users] Fwd:  NTP Problems">gem at rellim.com
+       </A><BR>
+    <I>Mon Aug 28 19:05:59 CEST 2006</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="001886.html">[Gpsd-users] Fwd:  NTP Problems
+</A></li>
+        <LI>Next message: <A HREF="001888.html">[Gpsd-users] Fwd: NTP Problems
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1887">[ date ]</a>
+              <a href="thread.html#1887">[ thread ]</a>
+              <a href="subject.html#1887">[ subject ]</a>
+              <a href="author.html#1887">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>-----BEGIN PGP SIGNED MESSAGE-----
+Hash: SHA1
+
+Yo Karl!
+
+
+On Mon, 28 Aug 2006, Karl von Muller wrote:
+
+&gt;<i> I'm guessing the above clk_noreply means there may be an error either with
+</I>&gt;<i> GPSD or the shared memory itself.
+</I>
+Somehow ntpd is not seeing anything from gpsd.  Hard to say where things
+are getting lost.
+
+&gt;<i> Anyway I can debug GPSD more to see if its writing to the shared mem?
+</I>
+You can do this to see what shared memory is in use:
+
+# cat /proc/sysvipc/shm
+       key      shmid perms       size  cpid  lpid nattch   uid   gid  cuid  cgid      atime      dtime      ctime
+1314148400          0   644         80  1696  1702      2     0     0     0     0 1156354403          0 1156354402
+1314148401      32769   644         80  1696  1702      2     0     0     0     0 1156354403          0 1156354402
+1314148402      65538   644         80  1696  1696      1     0     0     0     0 1156354402          0 1156354402
+1314148403      98307   644         80  1696  1696      1     0     0     0     0 1156354402          0 1156354402
+
+Which ever starts first (ntpd or gpsd) will create the shared memory.  The
+second process to start the attached to that shared memory.
+
+In my case gpsd was started first and you can see it above as pid 1696.
+My ntpd started second and is pid 1702.  cpid is the creator pid and the
+lpid is the last pid to access it&gt;
+
+
+RGDS
+GARY
+- ---------------------------------------------------------------------------
+Gary E. Miller Rellim 20340 Empire Blvd, Suite E-3, Bend, OR 97701
+	<A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">gem at rellim.com</A>  Tel:+1(541)382-8588
+
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v1.4.3 (GNU/Linux)
+
+iD8DBQFE8yJ68KZibdeR3qURAjDUAKDg1p7greCmRMRB9m2TAK7NuNL3TQCgllhe
+oRoOTDzYZvH+7ByDy+WY13Q=
+=ixU2
+-----END PGP SIGNATURE-----
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="001886.html">[Gpsd-users] Fwd:  NTP Problems
+</A></li>
+	<LI>Next message: <A HREF="001888.html">[Gpsd-users] Fwd: NTP Problems
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1887">[ date ]</a>
+              <a href="thread.html#1887">[ thread ]</a>
+              <a href="subject.html#1887">[ subject ]</a>
+              <a href="author.html#1887">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

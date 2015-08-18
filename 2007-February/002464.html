@@ -1,0 +1,149 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] deluo gps ntp time offset and strangeness
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2007-February/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20deluo%20gps%20ntp%20time%20offset%20and%20strangeness&In-Reply-To=%3C000301c751c9%24e9971ee0%242118a8c0%40womby%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="002463.html">
+   <LINK REL="Next"  HREF="002471.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] deluo gps ntp time offset and strangeness</H1>
+    <B>Kerry Hoath</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20deluo%20gps%20ntp%20time%20offset%20and%20strangeness&In-Reply-To=%3C000301c751c9%24e9971ee0%242118a8c0%40womby%3E"
+       TITLE="[Gpsd-users] deluo gps ntp time offset and strangeness">kerry at gotss.net
+       </A><BR>
+    <I>Fri Feb 16 13:56:43 CET 2007</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="002463.html">[Gpsd-users] gpsd install failure
+</A></li>
+        <LI>Next message: <A HREF="002471.html">[Gpsd-users] deluo gps ntp time offset and strangeness
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2464">[ date ]</a>
+              <a href="thread.html#2464">[ thread ]</a>
+              <a href="subject.html#2464">[ subject ]</a>
+              <a href="author.html#2464">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Ok please forgive a relative newby as far as gps and gpsd is concerned. I 
+hope I include all necessary information below.
+I am running a deluo universal gps off a serial port.
+Operating system is Debian Sarge 3.1 gpsd compiled from sources and Python 
+2.3.
+
+GPs identifies as:
+
+gpsctl: /dev/gps identified as SiRF binary GSW3.2.2_3.1.00.12-SDK003P1.01a 
+at 38400
+
+I admit to switching it into SiRf Binary; afterall the device is cheap, I 
+have a screwdriver and don't mind resetting the unit.
+
+This is one of the little square gps units on a cable; see 
+<A HREF="http://www.deluoelectronics.com/">http://www.deluoelectronics.com/</A> and seems to contain the Sirf3 chipset.
+I have configured ntpd to take time from gpsd 2.34-1 and the peer billboard 
+looks as follows:
+
+
+=SHM(0)          127.0.0.1        0   16  377 0.00000 14.001217 0.01593
+=SHM(1)          127.0.0.1        0   16    0 0.00000  0.000000 0.00000
+=LOCAL(0)        127.0.0.1       13   64  377 0.00000  0.000000 0.03049
+*my1.doubleukay. 203.161.xxx.xx   2  128  377 0.26994 -0.002388 0.09489
+=merkur.baulogis 203.161.xxx.xx   2  128  377 0.40228  0.078595 0.08839
+
+Now currently the time offset is 14 seconds, however I have seen the 
+difference be as large as 80 seconds.
+At night I seem to get 6 satelites and a reasonable fix however in the 
+daytime the fix can fail completely or drop to 1 or 2 satelites.
+the unit sits on a window cill in our block of units; so perhaps the view of 
+the sky plays a part but I am wondering why I would see time errors
+as large as 80 seconds?
+I'm happy with 5 seconds either way worst case sanario but 80 seems a bit 
+wrong.
+
+Running gpsprof -f cycle yields:
+
+gpsprof: looking for fix...first fix in 0.86sec, gathering 
+samples......(93.68 sec) done.
+Traceback (most recent call last):
+  File &quot;/usr/bin/gpsprof&quot;, line 462, in ?
+    sys.stdout.write(plotframe(await,formatter,speed,threshold,title))
+  File &quot;/usr/bin/gpsprof&quot;, line 433, in plotframe
+    command = plotter.plot(title, session)
+  File &quot;/usr/bin/gpsprof&quot;, line 378, in plot
+    sendcycle = min(*cycles.values())
+TypeError: iteration over non-sequence
+
+I don't know Python but it seems as if gpsprof gets values that it does not 
+like which are out of sequence.
+
+I read in the gpsd manpage that running in a binary protocol at reasonable 
+baudrate would improve accuracy or could do so.
+
+The unit seems to return reasonable possition information when I query it 
+with the p command, and as previously stated q shows fixes between 3 and 6 
+satelites.
+
+Is there anything I could try to potentially improve accuracy to below 5 
+seconds or to stop the unit from loosing fix? The gps time source appears to 
+occationally become unavailable which causes the server to lock onto another 
+time source and given the time differences stay locked onto that source.
+Am I expecting too much from a cheap SiRf3 unit? Should I go out and buy a 
+Garman or similar?
+I also have a couple of other gps units; wondering if it is worth trying one 
+of these.
+I have a Globalsat BT338 and a Deluo bluetooth datalogger gps which I 
+believe is based on the evermore chipset.
+I also have a Sedio 2010 unit which seems incredibly capable at holding a 
+fix even inside our 2-story concrete unit block.
+
+Perhaps I should try one of these?
+
+the reason for so many gps units is that my wife and I are blind and use gps 
+for navigation. We run a program called loadstone-gps 
+<A HREF="http://www.loadstone-gps.com/">http://www.loadstone-gps.com/</A> for navigation and finding bus stops.
+
+I am happy to buy another gps unit for a time source but am trying not to 
+use a bluetooth unit if possible since I don't really want the 2.4 ghz radio 
+noise in the unit block and a cable seems more reliable potentially.
+
+Any help or insight would be greatly apreciated. Happy to provide any debug 
+dumps or similar information including switching gps to NMEA or similar.
+
+
+Regards, Kerry.
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="002463.html">[Gpsd-users] gpsd install failure
+</A></li>
+	<LI>Next message: <A HREF="002471.html">[Gpsd-users] deluo gps ntp time offset and strangeness
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2464">[ date ]</a>
+              <a href="thread.html#2464">[ thread ]</a>
+              <a href="subject.html#2464">[ subject ]</a>
+              <a href="author.html#2464">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

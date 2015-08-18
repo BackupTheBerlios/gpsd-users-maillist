@@ -1,0 +1,100 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] I'm back from vacation, and the status of the 'J' patch
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2006-August/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20I%27m%20back%20from%20vacation%2C%20and%20the%20status%20of%20the%20%27J%27%20patch&In-Reply-To=%3C200608302051.k7UKpsoO014164%40snark.thyrsus.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="001892.html">
+   
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] I'm back from vacation, and the status of the 'J' patch</H1>
+    <B>Eric S. Raymond</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20I%27m%20back%20from%20vacation%2C%20and%20the%20status%20of%20the%20%27J%27%20patch&In-Reply-To=%3C200608302051.k7UKpsoO014164%40snark.thyrsus.com%3E"
+       TITLE="[Gpsd-users] I'm back from vacation, and the status of the 'J' patch">esr at thyrsus.com
+       </A><BR>
+    <I>Wed Aug 30 22:51:54 CEST 2006</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="001892.html">[Gpsd-users] Problems with a Haicom HI-305N
+</A></li>
+        
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1905">[ date ]</a>
+              <a href="thread.html#1905">[ thread ]</a>
+              <a href="subject.html#1905">[ subject ]</a>
+              <a href="author.html#1905">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>My month of August got pretty thoroughly consumed by sword camp, 
+LinuxWorld, the World Science Fiction Convention, and meeting with the
+Linspire folks to plan a solution to the Linux multimedia problem.
+
+I'm back now, and have checked with my colleagues on the super-duper
+hush-hush lawsuit project.  I have to go back to work on that one next
+Tuesday.  That gives me six days to do concentrated work on gpsd.
+
+My goal for those six days is to get 2.34 shipped.  The only release
+blocker, at this point, is the 'J' patch.  I'm not satisfied with 
+either my original patch or Robbin Darroch's attempt.  
+
+I'm working on a third version that drastically simplifies the data
+management in gpsd.  Basically, the libgpsd_core.c code will no longer do
+fix buffering at all, just report parsed data from GPS packets.  The new
+fix-buffering/merge logic will be much simpler, live entirely in gpsd.c,
+and merge packets sent up from the the libgpsd_core.c into a per-user
+buffer.  
+
+As a side effect, the amount of intermediate storage used by gpsd (and
+thus its in-memory footprint) will drop significantly.  I'll be
+removing the wired-policy option because it will no longer cut
+footprint or cycles enough to bother; the new patch will capture
+essaentially all of those gains.
+
+The new patch seems to give good results for a live GPS.
+
+That was the good news.  The bad news is that the new J patch fails the
+regression tests.  The problem is not with basic nav data, it's that
+the patched version generates different error estimates and I'm not
+yet sure why.
+
+It may be that the old estimates were just wrong, that refactoring the
+code unmasked a hidden bug related to the way fix data had been being
+managed.  Or it may be that I have introduced a bug in the new code.
+I'm not sure yet, and won't commit the patch until I am sure.
+-- 
+		&lt;a href=&quot;<A HREF="http://www.catb.org/~esr/">http://www.catb.org/~esr/</A>&quot;&gt;Eric S. Raymond&lt;/a&gt;
+
+Every election is a sort of advance auction sale of stolen goods. 
+	-- H.L. Mencken 
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="001892.html">[Gpsd-users] Problems with a Haicom HI-305N
+</A></li>
+	
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1905">[ date ]</a>
+              <a href="thread.html#1905">[ thread ]</a>
+              <a href="subject.html#1905">[ subject ]</a>
+              <a href="author.html#1905">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

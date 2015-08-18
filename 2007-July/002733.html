@@ -1,0 +1,103 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] gpsd on a fedora system - problem
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2007-July/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20gpsd%20on%20a%20fedora%20system%20-%20problem&In-Reply-To=%3CPine.LNX.4.64.0706301802310.746%40birdbird.example.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   
+   <LINK REL="Next"  HREF="002734.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] gpsd on a fedora system - problem</H1>
+    <B>Matt Roberds</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20gpsd%20on%20a%20fedora%20system%20-%20problem&In-Reply-To=%3CPine.LNX.4.64.0706301802310.746%40birdbird.example.com%3E"
+       TITLE="[Gpsd-users] gpsd on a fedora system - problem">mattroberds at cox.net
+       </A><BR>
+    <I>Sun Jul  1 01:11:25 CEST 2007</I>
+    <P><UL>
+        
+        <LI>Next message: <A HREF="002734.html">[Gpsd-users] gpsd on a fedora system - problem
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2733">[ date ]</a>
+              <a href="thread.html#2733">[ thread ]</a>
+              <a href="subject.html#2733">[ subject ]</a>
+              <a href="author.html#2733">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>On Sat, 30 Jun 2007, James Buckle wrote:
+&gt;<i> I'm trying to use a serially linked etrex - i was wondering if the gpsd
+</I>&gt;<i> has to be launched by an auto-detect system, but &quot;locate gpsd&quot; yields
+</I>&gt;<i> nothing either.
+</I>
+I don't know about Fedora in particular, but in general, you might try
+looking at the &quot;usual suspects&quot;, i.e.
+
+ls /usr/bin/gpsd
+ls /usr/local/bin/gpsd
+
+or even
+
+find /usr -name &quot;gpsd&quot;
+
+to see if you actually did get the gpsd executable installed.  If Fedora
+has an &quot;/opt&quot; directory you might also look under there:
+
+find /opt -name &quot;gpsd&quot;
+
+Finally, you can get desperate...
+
+find / -name &quot;gpsd&quot;
+
+If you don't have any gpsd on your system at all, you might check the
+package description again.  Sometimes things like this get split into
+&quot;server&quot; and &quot;client&quot; packages (or even &quot;server&quot;, &quot;client&quot; and &quot;utils&quot;)
+and you have to install all of them to get everything.  If you still
+can't find it, then you probably need to talk to the Fedora package
+maintainer for gpsd.
+
+If you do have gpsd, you should be able to start it manually if you know
+which serial port your GPS is plugged into.  If gpsd is in /usr/bin and
+you're using /dev/ttyS0 for the serial port, something like
+
+/usr/bin/gpsd /dev/ttyS0
+
+should start gpsd, and then the local clients, at least, should be able
+to find it.  Once that works, you can put it in /etc/init.d or /etc/rc.d
+or equal to get it loaded at system startup, or possibly integrate it
+with whatever hotplug system you have.
+
+Matt Roberds
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	
+	<LI>Next message: <A HREF="002734.html">[Gpsd-users] gpsd on a fedora system - problem
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2733">[ date ]</a>
+              <a href="thread.html#2733">[ thread ]</a>
+              <a href="subject.html#2733">[ subject ]</a>
+              <a href="author.html#2733">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

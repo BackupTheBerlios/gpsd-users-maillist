@@ -1,0 +1,161 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] More on problems with PPS and gpsd for Jim tatz
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2007-October/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20More%20on%20problems%20with%20PPS%20and%20gpsd%20for%20Jim%20tatz&In-Reply-To=%3C200710091641.58472.mick.durkin%40saunalahti.fi%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="002929.html">
+   <LINK REL="Next"  HREF="002935.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] More on problems with PPS and gpsd for Jim tatz</H1>
+    <B>Mick Durkin</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20More%20on%20problems%20with%20PPS%20and%20gpsd%20for%20Jim%20tatz&In-Reply-To=%3C200710091641.58472.mick.durkin%40saunalahti.fi%3E"
+       TITLE="[Gpsd-users] More on problems with PPS and gpsd for Jim tatz">mick.durkin at saunalahti.fi
+       </A><BR>
+    <I>Tue Oct  9 15:41:58 CEST 2007</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="002929.html">[Gpsd-users] Problems with PPS and gpsd
+</A></li>
+        <LI>Next message: <A HREF="002935.html">[Gpsd-users] More on problems with PPS and gpsd for Jim tatz
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2934">[ date ]</a>
+              <a href="thread.html#2934">[ thread ]</a>
+              <a href="subject.html#2934">[ subject ]</a>
+              <a href="author.html#2934">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Jim,
+
+OK, your first debug output showed:-
+
+gpsd: pps-detect (DCD) on /dev/ttyS0 changed to 1
+gpsd: ntpshm_pps: clock: 1191862458 @ 1191862458.004656, precision -7
+gpsd: Raw SiRF packet type 0x12 length 2: 1201
+gpsd: OTS 0x12: send indicator = 1
+gpsd: pps-detect (DCD) on /dev/ttyS0 changed to 0
+gpsd: PPS pulse rejected too short. cycle: 1001922, duration: 101387
+
+So you were getting good lock. You don't actually get any debug output 
+advising that the PPS pulse is good length, it simply calls ntpshm_pps() 
+which does the magic. However, you did get a message from ntpshm_pps saying 
+it liked your 1pps data.
+
+If you REALLY wanted to see the timing data, you could add a line like this:-
+
+gpsd_report(LOG_RAW, &quot;PPS pulse OK. cycle: %d,
+    duration: %d\n&quot;, cycle, duration);
+
+Put it in to libgpsd_core.c just after the line like this:-
+
+/* looks like PPS pulse */
+
+You would then get output similar to this:-
+
+gpsd: PPS pulse OK. cycle: 1001922, duration: 899387
+
+Doing so would not add much exciting data but WOULD introduce more delay in 
+the delivery of the timing data. Only really useful as an educational aide I 
+would suggest!
+
+=====================================
+
+Your later debug output showed:-
+
+gpsd: pps-detect (DCD) on /dev/ttyS0 changed to 1
+gpsd: ntpshm_pps: lost PPS lock
+gpsd: Raw SiRF packet type 0x12 length 2: 1201
+gpsd: OTS 0x12: send indicator = 1
+gpsd: pps-detect (DCD) on /dev/ttyS0 changed to 0
+gpsd: PPS pulse rejected too short. cycle: 989942, duration: 90058
+
+So, you were seeing the same kind of short cycle at the end of the 1pps pulse 
+proper in the &quot;changed to 0&quot; message.
+
+The wanted edge at the start of the 1pps is the &quot;changed to 1&quot; message.
+
+This means you are actually getting a +5v leading edge to mark the 1pps event 
+which is held for about 100 milliseconds and followed by about 900 
+milliseconds of 0v (assuming +5 TTL levels). This is pretty much as you might 
+expect and just about what I get from my Oncore UT+ look-alike before it goes 
+through the RS232 inverter.
+
+This nominally good signal is then being rejected by the checks inside 
+ntpshm_pps() which does a sanity check on the time data associated with the 
+pulse.
+
+The ntpshm_pps() code checks that the time message being sent is within a 
+certain range of the PC's internal time. The PC time is what ntpd actually 
+controls (see case 1 below).
+
+If your gps device is generating time that is too far away from the PC 
+internal time, the code will not offer the information to ntpd. I have seen 
+this happen when my computer's local time was too far out.
+
+Letting ntpd see an external timeserver over the net for a reasonable time 
+brought me nearer to the correct time and then the 1pps was accepted.
+
+If you see any debug messages generated which start &quot;gpsd: ntpshm_pps:&quot; then 
+you have seen a reasonable 1pps pulse and have sent time info in the general 
+direction of the ntpd daemon.
+
+There are three possible debug outputs from the ntpshm_pps() code:-
+
+1) &quot;ntpshm_pps: not in locking range: &lt;some value&gt;&quot;
+This means that the difference between the gps timestamp and the system time 
+at which it was received is more than 100 miliseconds. This is defined as too 
+far to allow the clock to be &quot;pulled&quot;.
+
+2) &quot;ntpshm_pps: lost PPS lock&quot;
+This means that the 1pps timestamp is too far away from an exact 1 second 
+boundary; i.e. it is out of lock.
+
+3) &quot;ntpshm_pps: clock: &lt;some value&gt; @ &lt;some non-integer value&gt;, precision n&quot;
+This means you have a good lock and the data will be handed over to the ntpd 
+daemon via the shared memory block.
+
+By the way, Chris Kuethe pointed out that some inverters can have propagation 
+delays of 10's of microseconds so I checked the datasheet for the MAX233 I 
+use, as that was something I hadn't given thought to do before.
+
+In this case, the delay on the TTL-RS232 conversion is stated as max 3.5 
+microseconds and typical 1.5 microseconds for the both the rising and falling 
+transitions, so it seems to be a reasonable device.
+
+BR
+
+Mick
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="002929.html">[Gpsd-users] Problems with PPS and gpsd
+</A></li>
+	<LI>Next message: <A HREF="002935.html">[Gpsd-users] More on problems with PPS and gpsd for Jim tatz
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2934">[ date ]</a>
+              <a href="thread.html#2934">[ thread ]</a>
+              <a href="subject.html#2934">[ subject ]</a>
+              <a href="author.html#2934">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

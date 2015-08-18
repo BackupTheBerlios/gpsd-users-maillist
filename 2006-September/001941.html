@@ -1,0 +1,141 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users]  Fwd: NTP Problems
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2006-September/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20%20Fwd%3A%20NTP%20Problems&In-Reply-To=%3C1157640314.4207.14.camel%40oyster.stnhbr.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="001942.html">
+   <LINK REL="Next"  HREF="001934.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users]  Fwd: NTP Problems</H1>
+    <B>Tim Cwik</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20%20Fwd%3A%20NTP%20Problems&In-Reply-To=%3C1157640314.4207.14.camel%40oyster.stnhbr.com%3E"
+       TITLE="[Gpsd-users]  Fwd: NTP Problems">tcwik at stnhbr.com
+       </A><BR>
+    <I>Thu Sep  7 16:45:14 CEST 2006</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="001942.html">[Gpsd-users] Moxa NPort 5210 serial port over LAN emulation
+</A></li>
+        <LI>Next message: <A HREF="001934.html">[Gpsd-users]  Fwd: NTP Problems
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1941">[ date ]</a>
+              <a href="thread.html#1941">[ thread ]</a>
+              <a href="subject.html#1941">[ subject ]</a>
+              <a href="author.html#1941">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi all,
+
+I seem to be having an ntpd sync problem with the latest svn version of
+gpsd.
+
+(octopus pts0) # cat /proc/sysvipc/shm
+       key      shmid perms       size  cpid  lpid nattch   uid   gid
+cuid  cgid     atime      dtime      ctime
+(octopus pts0) # /usr/sbin/gpsd -n /dev/ttyS0
+(octopus pts0) # cat /proc/sysvipc/shm
+       key      shmid perms       size  cpid  lpid nattch   uid   gid
+cuid  cgid      atime      dtime      ctime
+1314148400     655360   644         80 14064 14064      1     0     0
+0     0 1157639550          0 1157639550
+1314148401     688129   644         80 14064 14064      1     0     0
+0     0 1157639550          0 1157639550
+1314148402     720898   644         80 14064 14064      1     0     0
+0     0 1157639550          0 1157639550
+1314148403     753667   644         80 14064 14064      1     0     0
+0     0 1157639550          0 1157639550
+
+(octopus pts0) # /usr/sbin/ntpd  -p /var/run/ntpd.pid -d -d -d &amp;
+[1] 14118
+ntpd <A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">4.2.0a at 1.1196-r</A> Fri May 12 09:51:35 EDT 2006 (1)
+addto_syslog: ntpd <A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">4.2.0a at 1.1196-r</A> Fri May 12 09:51:35 EDT 2006 (1)
+addto_syslog: set_process_priority: Leave priority alone: priority_done
+is &lt;2&gt;
+addto_syslog: precision = 1.000 usec
+create_sockets(123)
+address_okay: listen Virtual: 1, IF name: lo, Up Flag: 1
+address_okay: listen Virtual: 1, IF name: eth0, Up Flag: 1
+
+.....
+peer_clear: at 0 assoc ID 23804 refid INIT
+newpeer: 127.0.0.1-&gt;127.127.28.0 mode 3 vers 4 poll 4 4 flags 0x21 0x1
+ttl 0 key 00000000
+getnetnum given 127.127.28.0, got 127.127.28.0
+getnetnum given 127.127.28.1, got 127.127.28.1
+key_expire: at 0
+peer_clear: at 0 assoc ID 23805 refid INIT
+newpeer: 127.0.0.1-&gt;127.127.28.1 mode 3 vers 4 poll 4 4 flags 0xa1 0x1
+ttl 0 key 00000000
+getnetnum given 127.127.28.1, got 127.127.28.1
+.....
+refclock_transmit: at 1 127.127.28.0
+refclock_receive: at 1 127.127.28.0
+peer SHM(0) event 'event_reach' (0x84) status 'unreach, conf, 1 event,
+event_reach' (0x8014)
+refclock_sample: n 1 offset -0.004471 disp 0.000000 jitter 0.000001
+clock_filter: popcorn 0.004471 0.000015
+poll_update: at 1 127.127.28.0 flags 0021 poll 4 burst 0 last 1 next 19
+auth_agekeys: at 1 keys 1 expired 0
+timer: refresh ts 0
+addto_syslog: select(): nfound=-1, error: Interrupted system call
+refclock_transmit: at 2 127.127.28.1
+clock SHM(1) event 'clk_noreply' (0x01)
+poll_update: at 2 127.127.28.1 flags 00a1 poll 4 burst 0 last 2 next 19
+addto_syslog: select(): nfound=-1, error: Interrupted system call
+
+
+the clk_noreply message repeats indefinitely.
+
+the etc/ntp.conf contains:
+
+# gps and gps pps
+server 127.127.28.0 minpoll 4 maxpoll 4
+fudge 127.127.28.0 time1 -0.290 refid GPS
+
+server 127.127.28.1 minpoll 4 maxpoll 4 prefer
+fudge 127.127.28.1 refid GPS1
+
+
+I was able to use gpsd to sync ntpd in the past, but I am not sure the
+last working version, but it was pre 2.33. 2.33 did not work due to the
+mismatch satellites count issue.
+
+Any thoughts on what I am doing wrong or where to look next.
+Thanks
+Tim
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="001942.html">[Gpsd-users] Moxa NPort 5210 serial port over LAN emulation
+</A></li>
+	<LI>Next message: <A HREF="001934.html">[Gpsd-users]  Fwd: NTP Problems
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1941">[ date ]</a>
+              <a href="thread.html#1941">[ thread ]</a>
+              <a href="subject.html#1941">[ subject ]</a>
+              <a href="author.html#1941">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

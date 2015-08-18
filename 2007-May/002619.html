@@ -1,0 +1,116 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] Unknown Sentences $IIMWV and $IIVWR
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2007-May/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Unknown%20Sentences%20%24IIMWV%20and%20%24IIVWR&In-Reply-To=%3C91981b3e0705072126l1bcfeae1le2dcf5ee7f174148%40mail.gmail.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="002606.html">
+   <LINK REL="Next"  HREF="002620.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] Unknown Sentences $IIMWV and $IIVWR</H1>
+    <B>Chris Kuethe</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Unknown%20Sentences%20%24IIMWV%20and%20%24IIVWR&In-Reply-To=%3C91981b3e0705072126l1bcfeae1le2dcf5ee7f174148%40mail.gmail.com%3E"
+       TITLE="[Gpsd-users] Unknown Sentences $IIMWV and $IIVWR">chris.kuethe at gmail.com
+       </A><BR>
+    <I>Tue May  8 06:26:56 CEST 2007</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="002606.html">[Gpsd-users] Unknown Sentences $IIMWV and $IIVWR
+</A></li>
+        <LI>Next message: <A HREF="002620.html">[Gpsd-users] Unknown Sentences $IIMWV and $IIVWR
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2619">[ date ]</a>
+              <a href="thread.html#2619">[ thread ]</a>
+              <a href="subject.html#2619">[ subject ]</a>
+              <a href="author.html#2619">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>On 5/6/07, Matt Roberds &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">mattroberds at cox.net</A>&gt; wrote:
+&gt;<i> The &quot;correct&quot; way is to add parsing for the MWV and VWR sentences to
+</I>&gt;<i> gpsd, and then either add a gpsd protocol command or add fields to an
+</I>&gt;<i> existing command (probably 'o') so your code can get the new information
+</I>&gt;<i> about wind speed and direction.  There is a little discussion about this
+</I>&gt;<i> at <A HREF="http://gpsd.berlios.de/hacking.html#designahead">http://gpsd.berlios.de/hacking.html#designahead</A> .  This is a little
+</I>&gt;<i> more complicated to code, but more importantly requires some gpsd
+</I>&gt;<i> implementation decisions to be made.  That's not a bad thing in and of
+</I>&gt;<i> itself, but the process is not totally under your control... you have to
+</I>&gt;<i> get a bunch of hackers to agree on something.  :)
+</I>
+Getting agreement from me will be difficult. I don't see a clean way
+of extending the O message to handle these quantities. Our attempt at
+mapping the truenorth compass into our standard PVT format is ugly to
+say the least.
+
+I'd argue that {wind,water} direction, velocity, temperature, pressure
+have no place in a navigation solution. They are utterly irrelevant to
+the position of the navigation set (or the phase center of its
+antenna). They are, relevant in the larger context of describing the
+environment when the plane crashed or the ship sank, but I consider
+mixing enviromental measurements and navigation solutions to be
+pollution.
+
+*If* gpsd is to begin forwarding arbitrary NMEA messages, or parsing
+them, I think that would best be handled by a protocol v4 message. I
+say &quot;If&quot; because I'm unconvinced that we want to get into the business
+of parsing non-gps data. If we did go that way, it would be good to
+have a copy of the NMEA spec.
+
+Finally, I'm worried about the stability of the state machine; It's
+somewhat frightening how much noise looks like a valid protocol
+message, at least for a few characters. I've seen instances where a
+bunch of noise was mistake for NMEA because it happened to have $GP in
+it...
+
+&gt;<i> In either case, there is one thing you can do that will help: log some
+</I>&gt;<i> $IIMWV and $IIVWR messages for test purposes.  Probably the simplest way
+</I>&gt;<i> to do this is to hook up minicom (or equal) as was previously discussed,
+</I>&gt;<i> tell it to log to a file, and let it rip for a while.  Preferably, while
+</I>&gt;<i> the logging is happening, you would also sail around, or drive around,
+</I>&gt;<i> or twirl the weather vane and anemometer cups yourself to provide some
+</I>&gt;<i> variation in the data.
+</I>
+You'll want a static, known file, and a moving file. There may be
+things that show up when moving that don't show up at rest.
+
+For a quick hack, have a look at how I added support for !AI___
+passthrough. I'm not convinced I made the right decision, but it's
+fairly simple.
+
+CK
+
+-- 
+GDB has a 'break' feature; why doesn't it have 'fix' too?
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="002606.html">[Gpsd-users] Unknown Sentences $IIMWV and $IIVWR
+</A></li>
+	<LI>Next message: <A HREF="002620.html">[Gpsd-users] Unknown Sentences $IIMWV and $IIVWR
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2619">[ date ]</a>
+              <a href="thread.html#2619">[ thread ]</a>
+              <a href="subject.html#2619">[ subject ]</a>
+              <a href="author.html#2619">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

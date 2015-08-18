@@ -1,0 +1,130 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] ntpd and gpsd 2.90
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2010-February/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20ntpd%20and%20gpsd%202.90&In-Reply-To=%3C39560a5537ec03b8c689d791fb39149d.squirrel%40mail.seiner.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="004259.html">
+   <LINK REL="Next"  HREF="004258.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] ntpd and gpsd 2.90</H1>
+    <B>Yan Seiner</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20ntpd%20and%20gpsd%202.90&In-Reply-To=%3C39560a5537ec03b8c689d791fb39149d.squirrel%40mail.seiner.com%3E"
+       TITLE="[Gpsd-users] ntpd and gpsd 2.90">yan at seiner.com
+       </A><BR>
+    <I>Fri Feb 26 00:59:58 CET 2010</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="004259.html">[Gpsd-users] ntpd and gpsd 2.90
+</A></li>
+        <LI>Next message: <A HREF="004258.html">[Gpsd-users] GlobalSat ND100
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#4261">[ date ]</a>
+              <a href="thread.html#4261">[ thread ]</a>
+              <a href="subject.html#4261">[ subject ]</a>
+              <a href="author.html#4261">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>
+On Thu, February 25, 2010 11:48 pm, Gary E. Miller wrote:
+&gt;<i> -----BEGIN PGP SIGNED MESSAGE-----
+</I>&gt;<i> Hash: SHA1
+</I>&gt;<i>
+</I>&gt;<i> Yo Yan!
+</I>&gt;<i>
+</I>&gt;<i> On Thu, 25 Feb 2010, Yan Seiner wrote:
+</I>&gt;<i>
+</I>&gt;&gt;<i> I'm struggling to get ntpd and gpsd 2.90 to play nice.
+</I>&gt;<i>
+</I>&gt;<i> It happens.
+</I>&gt;<i>
+</I>&gt;&gt;<i> The API to gpsd
+</I>&gt;&gt;<i> has changed, and I can't figure out how to get ntpd to talk to it.
+</I>&gt;<i>
+</I>&gt;<i> The API from gpsd to ntpd has NOT changed in 2.90.  2.90dev tweaked a
+</I>&gt;<i> bit to allow on-root gpsd to talk to root ntpd, but is not the issue here.
+</I>&gt;<i>
+</I>&gt;&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">root at OpenWrt</A>:~# ntpq -p
+</I>&gt;&gt;<i>      remote           refid      st t when poll reach   delay   offset
+</I>&gt;&gt;<i> jitter
+</I>&gt;&gt;<i> ==============================================================================
+</I>&gt;&gt;<i>  SHM(0)          .PPS.            0 l    -   16    0    0.000    0.000
+</I>&gt;&gt;<i> 0.000
+</I>&gt;&gt;<i>  SHM(1)          .PPS.            0 l    -   16    0    0.000    0.000
+</I>&gt;<i>
+</I>&gt;<i> Ah, that looks wrong.  The SHM(0) PPS should be GPS and the SHM(1) should
+</I>&gt;<i> be GPS1. The rewfid is how the client and server of the shm find each
+</I>&gt;<i> other.
+</I>&gt;<i>
+</I>&gt;&gt;<i> the right stuff seems to be in /proc
+</I>&gt;<i>
+</I>&gt;<i> Nope, wrong key there too.
+</I>&gt;<i>
+</I>&gt;&gt;<i> My ntp.conf file:
+</I>&gt;<i>
+</I>&gt;<i> Ah, the core problem.
+</I>&gt;<i>
+</I>&gt;&gt;<i> # SMA PPS
+</I>&gt;&gt;<i> server 127.127.28.0 minpoll 4
+</I>&gt;&gt;<i> fudge 127.127.28.0 refid PPS flag3 1
+</I>&gt;<i>                            ^^^
+</I>&gt;<i>
+</I>&gt;<i> PPS -&gt; GPS
+</I>&gt;<i>
+</I>&gt;&gt;<i> server 127.127.28.1 minpoll 4 prefer
+</I>&gt;&gt;<i> fudge 127.127.28.1 refid PPS flag3 1
+</I>&gt;<i>                            ^^^
+</I>&gt;<i>
+</I>&gt;<i> PPS-&gt; GPS1
+</I>&gt;<i>
+</I>&gt;<i> refid's must be unique and match between ntpd and the client (in this
+</I>&gt;<i> case gpsd).  gpsd has fixed them to GPS and GPS1 (when run as root).
+</I>
+HAH!  Thanks!  I'll test this sometime soon (I'll be packing for a
+backpacking trip tonite and I'll be sitting on top of a mountain in your
+neck of the woods this weekend so it may not be until next week.)
+
+If that works, I'll file a bug report against OpenWRT as it's their config
+file that's broken.
+
+--Yan
+
+-- 
+If you have eight hours to chop down a tree
+spend six sharpening your axe.
+--Abraham Lincoln
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="004259.html">[Gpsd-users] ntpd and gpsd 2.90
+</A></li>
+	<LI>Next message: <A HREF="004258.html">[Gpsd-users] GlobalSat ND100
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#4261">[ date ]</a>
+              <a href="thread.html#4261">[ thread ]</a>
+              <a href="subject.html#4261">[ subject ]</a>
+              <a href="author.html#4261">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

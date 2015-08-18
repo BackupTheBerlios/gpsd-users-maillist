@@ -1,0 +1,108 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] [Gpsd-dev] Gpsd startup/hotplug system - new proposal
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2011-June/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20%5BGpsd-dev%5D%20Gpsd%20startup/hotplug%20system%20-%20new%0A%20proposal&In-Reply-To=%3C20110630013427.GA19788%40thyrsus.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="005371.html">
+   <LINK REL="Next"  HREF="005376.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] [Gpsd-dev] Gpsd startup/hotplug system - new proposal</H1>
+    <B>Eric Raymond</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20%5BGpsd-dev%5D%20Gpsd%20startup/hotplug%20system%20-%20new%0A%20proposal&In-Reply-To=%3C20110630013427.GA19788%40thyrsus.com%3E"
+       TITLE="[Gpsd-users] [Gpsd-dev] Gpsd startup/hotplug system - new proposal">esr at thyrsus.com
+       </A><BR>
+    <I>Thu Jun 30 03:34:27 CEST 2011</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="005371.html">[Gpsd-users] [Gpsd-dev] Gpsd startup/hotplug system - new	proposal
+</A></li>
+        <LI>Next message: <A HREF="005376.html">[Gpsd-users] [Gpsd-dev] Gpsd startup/hotplug system - new	proposal
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#5372">[ date ]</a>
+              <a href="thread.html#5372">[ thread ]</a>
+              <a href="subject.html#5372">[ subject ]</a>
+              <a href="author.html#5372">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Ed W &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">lists at wildgooses.com</A>&gt;:
+&gt;<i> I think your implicit assumption is that there are only (4) binary
+</I>&gt;<i> packagers in the whole world and everyone else is using their packages?
+</I>
+Mostly, yes. For a python=no switch to have a lot of utility, there
+have to be a lot of people who are (a) installing from source, (b)
+therefore have Python on their source machines, but (b) for some
+reason don't want to install the Python support.  
+
+Sorry, I just don't believe that's a large set.  And you haven't
+helped your case any by talking about target machines as though you're
+cross-compiling; thatt's a completely different set of issues.  
+
+Yes, I get that you want to binary-package for systems without Python,
+but python=no would be just no help at all with that.  In what unverse is
+it difficult to do
+
+   scons install
+   &lt;build package&gt;
+   scons uninstall
+
+?
+
+&gt;<i>  If that were so then arguably we wouldn't even need a &quot;make install&quot;
+</I>&gt;<i> script..?!
+</I>
+Don't be silly.  'make install' is required for people who *aren't* packagers.
+ 
+&gt;<i> I think the point is that there are lots of folks who occasionally
+</I>&gt;<i> install from source and aren't experts on the packages in question.  I
+</I>&gt;<i> run a lot of packages from source and the ones where I need spend no
+</I>&gt;<i> more than two mins reading the &quot;./configure --help&quot; output are by far
+</I>&gt;<i> the most satisfying to work with.  I get that you aren't using
+</I>&gt;<i> autotools, but I hope you will have it as a goal to give casual source
+</I>&gt;<i> users a good experience where possible?
+</I>
+I ask again:  Where is the not-good experience in
+
+   scons install
+   &lt;build package&gt;
+   scons uninstall
+
+You've got Python on your build machine, by hypothesis, so what is so terrible
+about installing the Python support and uninstalling it after your package 
+build?  Has it got cooties or something?
+-- 
+		&lt;a href=&quot;<A HREF="http://www.catb.org/~esr/">http://www.catb.org/~esr/</A>&quot;&gt;Eric S. Raymond&lt;/a&gt;
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="005371.html">[Gpsd-users] [Gpsd-dev] Gpsd startup/hotplug system - new	proposal
+</A></li>
+	<LI>Next message: <A HREF="005376.html">[Gpsd-users] [Gpsd-dev] Gpsd startup/hotplug system - new	proposal
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#5372">[ date ]</a>
+              <a href="thread.html#5372">[ thread ]</a>
+              <a href="subject.html#5372">[ subject ]</a>
+              <a href="author.html#5372">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

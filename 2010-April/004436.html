@@ -1,0 +1,125 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] Garmin GPS 18 LVC on Debian lenny?
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2010-April/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Garmin%20GPS%2018%20LVC%20on%20Debian%20lenny%3F&In-Reply-To=%3Cp2rbd1f1cc91004261849ye09eda58y27361e674be41dc8%40mail.gmail.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="004434.html">
+   <LINK REL="Next"  HREF="004427.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] Garmin GPS 18 LVC on Debian lenny?</H1>
+    <B>Jon Schlueter</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Garmin%20GPS%2018%20LVC%20on%20Debian%20lenny%3F&In-Reply-To=%3Cp2rbd1f1cc91004261849ye09eda58y27361e674be41dc8%40mail.gmail.com%3E"
+       TITLE="[Gpsd-users] Garmin GPS 18 LVC on Debian lenny?">jon.schlueter at gmail.com
+       </A><BR>
+    <I>Tue Apr 27 03:49:15 CEST 2010</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="004434.html">[Gpsd-users] Garmin GPS 18 LVC on Debian lenny?
+</A></li>
+        <LI>Next message: <A HREF="004427.html">[Gpsd-users] Udev, gpsd and Ubuntu 9.10
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#4436">[ date ]</a>
+              <a href="thread.html#4436">[ thread ]</a>
+              <a href="subject.html#4436">[ subject ]</a>
+              <a href="author.html#4436">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>yes I got the Garmin 18 LVC running tonight with latest git
+development build and gpsd has recognized the pps signal just fine...
+
+Stock ubuntu 9.10 system - Linux quark 2.6.31-19-generic #56-Ubuntu
+SMP Thu Jan 28 01:26:53 UTC 2010 i686 GNU/Linux
+and
+
+$ uname -a
+Linux nog 2.6.26-2-486 #1 Tue Mar 9 17:10:34 UTC 2010 i686 GNU/Linux
+<A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">jonschl at nog</A>:~$ lsb_release -a
+No LSB modules are available.
+Distributor ID: Debian
+Description:    Debian GNU/Linux 5.0.4 (lenny)
+Release:        5.0.4
+Codename:       lenny
+
+What issues were you seeing and what can I help to diagnose?
+
+Jon
+
+
+On Mon, Apr 26, 2010 at 5:14 PM, Jon Schlueter &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">jon.schlueter at gmail.com</A>&gt; wrote:
+&gt;<i> I actually have my 18 LVC setting at home and have been meaning to get
+</I>&gt;<i> it back up and running.
+</I>&gt;<i>
+</I>&gt;<i> I had it working on a laptop but when I plugged it in last week to my
+</I>&gt;<i> ubuntu 9.10 box it didn't seem to come up but I'm not sure if it's
+</I>&gt;<i> hardware/GPS or computer or software issues so. &#160;I'll pull the laptop
+</I>&gt;<i> back out tonight and see if there was an issue with my hardware or
+</I>&gt;<i> gpsd/kernel issues.
+</I>&gt;<i>
+</I>&gt;<i> from what I remember the 18 LVC didn't need kernel patching to get it
+</I>&gt;<i> to run but I will check tonight or tomorrow evening.
+</I>&gt;<i>
+</I>&gt;<i> Jon
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i> On Mon, Apr 26, 2010 at 3:11 PM, Eric Raymond &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">esr at thyrsus.com</A>&gt; wrote:
+</I>&gt;&gt;<i> Jaap Winius &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">jwinius at umrk.nl</A>&gt;:
+</I>&gt;&gt;&gt;<i> Hi all,
+</I>&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;<i> For a few years now I've been synchronizing my ntpd to a Garmin GPS
+</I>&gt;&gt;&gt;<i> 18 LVC and running gpsd to create a skyview web page. I started
+</I>&gt;&gt;&gt;<i> doing this on a Debian etch system with gpsd v2.36, which required a
+</I>&gt;&gt;&gt;<i> patch (by John Arthur, Sat Jan 12 06:09:54 CET 2008) to work.
+</I>&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;<i> For gpsd to work after the upgrade to Debian lenny, I had to keep
+</I>&gt;&gt;&gt;<i> running v2.36, because there is no similar patch that I know of for
+</I>&gt;&gt;&gt;<i> the subsequent versions. Unfortunately, this apparently fragile
+</I>&gt;&gt;&gt;<i> configuration finally broke after a Debian update I had been
+</I>&gt;&gt;&gt;<i> postponing for a while: ntpd is still synchronized to the Garmin,
+</I>&gt;&gt;&gt;<i> but gpsd can no longer obtain any information for the skyview. I
+</I>&gt;&gt;&gt;<i> tried a backport version -- v2.39 -- but it made no difference.
+</I>&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;<i> Any suggestions towards a solution would be appreciated.
+</I>&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;<i> Cheers,
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> I've put Jon Schlueter on the copy list. &#160;He has a Garmin 18 running
+</I>&gt;&gt;<i> on one of our test machines; maybe he can help you.
+</I>&gt;&gt;<i> --
+</I>&gt;&gt;<i> &#160; &#160; &#160; &#160; &#160; &#160; &#160; &#160;&lt;a href=&quot;<A HREF="http://www.catb.org/~esr/">http://www.catb.org/~esr/</A>&quot;&gt;Eric S. Raymond&lt;/a&gt;
+</I>&gt;&gt;<i>
+</I>&gt;<i>
+</I>
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="004434.html">[Gpsd-users] Garmin GPS 18 LVC on Debian lenny?
+</A></li>
+	<LI>Next message: <A HREF="004427.html">[Gpsd-users] Udev, gpsd and Ubuntu 9.10
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#4436">[ date ]</a>
+              <a href="thread.html#4436">[ thread ]</a>
+              <a href="subject.html#4436">[ subject ]</a>
+              <a href="author.html#4436">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

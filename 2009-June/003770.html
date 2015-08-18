@@ -1,0 +1,131 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] Bug in (and patch for) Trimble TSIP driver
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2009-June/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Bug%20in%20%28and%20patch%20for%29%20Trimble%20TSIP%20driver&In-Reply-To=%3C20090604201857.Q7YYA.129176.imail%40eastrmwml09%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="003769.html">
+   <LINK REL="Next"  HREF="003771.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] Bug in (and patch for) Trimble TSIP driver</H1>
+    <B>mattroberds at cox.net</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Bug%20in%20%28and%20patch%20for%29%20Trimble%20TSIP%20driver&In-Reply-To=%3C20090604201857.Q7YYA.129176.imail%40eastrmwml09%3E"
+       TITLE="[Gpsd-users] Bug in (and patch for) Trimble TSIP driver">mattroberds at cox.net
+       </A><BR>
+    <I>Fri Jun  5 02:18:57 CEST 2009</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="003769.html">[Gpsd-users] How to make a donation to the gpsd project
+</A></li>
+        <LI>Next message: <A HREF="003771.html">[Gpsd-users] Bug in gpsctl.c
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3770">[ date ]</a>
+              <a href="thread.html#3770">[ thread ]</a>
+              <a href="subject.html#3770">[ subject ]</a>
+              <a href="author.html#3770">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hello all!
+
+Quick version: I think I found two bugs in driver_tsip.c; patch is below.
+
+Long version:
+
+I am trying to use gpsctl with a Trimble &quot;Resolution T&quot;, a GPS module
+optimized for timing applications.  I have a dev kit that gives me the
+module with a USB-to-serial converter.  I have looked at the output in
+Minicom and verified that it is sending TSIP binary packets.
+
+The gpsctl shipped in 2.39 can't detect that this is a Trimble; 'gpsctl
+-f /dev/ttyUSB0' gives 'gpsctl: packet recognition timed out'.  Turning
+up the debug level shows that it gets as far as deciding it's TSIP,
+switching to 8O1 (which is what TSIP wants), and then listening for some
+packets; the last thing it tries before dying is sending a packet:
+
+---
+gpsctl: Not a Garmin packet
+gpsctl: TSIP pkt_id = 0x8f, packetlen= 21
+gpsctl: Packet type 4 accepted 21 = 108fab00000008040000000c080000160807cf1003
+gpsctl: Packet discard of 21, chars remaining is 1 = 10
+gpsctl: Sent TSIP packet id 0x1f: 
+[pauses a few seconds here]
+gpsctl: packet recognition timed out.
+---
+
+I looked in driver_tsip.c and found what I think is bug #1: in
+tsip_write(), ep is first set with reference to the buffer that is about
+to be sent, but then a length is calculated using ep and the buffer that
+was passed in by the caller.  This resulted in the call to gpsd_write()
+asking for more than 1 million bytes to be written.  I changed the
+length computation and gpsctl works better; with the same invocation it
+comes back with '/dev/ttyUSB0 identified as a Trimble TSIP at 9600'.
+
+I then tried to use gpsctl for what I really wanted, which was to send
+the TSIP packet that flipped the output to NMEA mode.  But gpsctl
+reported that sending the command packet failed.  Poking at it some more,
+I found that tsip_write() compares the return value of gpsd_write() with
+a length len that was passed in by the caller - but len has been
+*modified* before this comparison is made!  I changed it to compare
+against the same length value that was passed to gpsd_write() and it
+worked better; gpsctl could successfully flip the GPS to NMEA mode.
+
+Here is a patch that fixes both of these bugs.  It is in diff -u and I
+ran the regression tests and splint against it.  The driver_tsip.c
+shipped with 2.39 is identical to the latest svn version, so the patch
+should apply to either.
+
+----cut here----
+--- driver_tsip.c.orig	2009-06-04 16:13:30.000000000 -0500
++++ driver_tsip.c	2009-06-04 18:31:14.000000000 -0500
+@@ -40,9 +40,9 @@
+     /*@ +nullderef @*/
+     *ep++ = '\x10';
+     *ep++ = '\x03';
+-    session-&gt;msgbuflen = (size_t)(ep - (char*)buf); 
++    session-&gt;msgbuflen = (size_t)(ep - session-&gt;msgbuf); 
+     /*@ -charint @*/
+-    if (gpsd_write(session,session-&gt;msgbuf,session-&gt;msgbuflen) != (ssize_t)len)
++    if (gpsd_write(session,session-&gt;msgbuf,session-&gt;msgbuflen) != (ssize_t)session-&gt;msgbuflen)
+ 	return -1;
+ 
+     return 0;
+----cut here----
+
+I hope this helps!
+
+Matt Roberds
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="003769.html">[Gpsd-users] How to make a donation to the gpsd project
+</A></li>
+	<LI>Next message: <A HREF="003771.html">[Gpsd-users] Bug in gpsctl.c
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3770">[ date ]</a>
+              <a href="thread.html#3770">[ thread ]</a>
+              <a href="subject.html#3770">[ subject ]</a>
+              <a href="author.html#3770">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

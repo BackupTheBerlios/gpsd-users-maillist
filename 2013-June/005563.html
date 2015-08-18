@@ -1,0 +1,115 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] pps coming in, not received by ntpd
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2013-June/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20pps%20coming%20in%2C%20not%20received%20by%20ntpd&In-Reply-To=%3C20130629175716.GM18765%40belle.intranet.vanheusden.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   
+   
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] pps coming in, not received by ntpd</H1>
+    <B>folkert</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20pps%20coming%20in%2C%20not%20received%20by%20ntpd&In-Reply-To=%3C20130629175716.GM18765%40belle.intranet.vanheusden.com%3E"
+       TITLE="[Gpsd-users] pps coming in, not received by ntpd">folkert at vanheusden.com
+       </A><BR>
+    <I>Sat Jun 29 19:57:16 CEST 2013</I>
+    <P><UL>
+        
+        
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#5563">[ date ]</a>
+              <a href="thread.html#5563">[ thread ]</a>
+              <a href="subject.html#5563">[ subject ]</a>
+              <a href="author.html#5563">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi,
+
+Something odd is happening.
+I've connected a garmin 18 lvc to a pc.
+The system has a kernel with pps support and i verified it comes in:
+
+<A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">root at hoei</A>:/home/folkert# cat /sys/devices/virtual/pps/pps0/{assert,clear}
+1372528130.997131540#54
+1372528131.097120120#54
+
+I'm running gpsd and it says the gps has a fix and it also has all
+appropriate devices open:
+
+gpsd      27762           nobody    7u      CHR               4,65 0t0       1144 /dev/ttyS1
+gpsd      27762           nobody    9r      CHR              251,0 0t0      82440 /dev/pps0
+
+gps is started with '-n'
+
+ntpd is configurated to listen to the shared memory segments:
+
+server 127.127.28.0 minpoll 4
+fudge  127.127.28.0 refid NMEA
+server 127.127.28.1 minpoll 4 prefer
+fudge  127.127.28.1 refid PPS
+
+Both nptd and gpsd look at the first 2 segments:
+
+------ Shared Memory Segments --------
+key        shmid      owner      perms      bytes      nattch     status      
+0x4e545030 0          root       600        96         2                       
+0x4e545031 32769      root       600        96         2                       
+0x4e545032 65538      root       666        96         1                       
+0x4e545033 98307      root       666        96         1                       
+0x47505344 131076     root       666        8240       1                       
+
+The PPS seems to be seen by gpsd:
+<A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">root at hoei</A>:/home/folkert# strace -fp 27872 2&gt;&amp;1 | grep ioctl
+...
+[pid 27873] ioctl(9, PPS_FETCH, 0x7f1e63cc9d00) = 0
+
+and the NMEA sentences are processed correctly:
+
+x127.127.28.0    .NMEA.           0 l   10   16  377    0.000  -275.55 4.421
+
+but the pps isn't:
+
+ 127.127.28.1    .PPS.            0 l    -   16    0    0.000    0.000 0.000
+
+Anyone any idea?
+
+
+Folkert van Heusden
+
+-- 
+Curious about the inner workings of your car? Then check O2OO: it'll
+tell you all that there is to know about your car's engine!
+<A HREF="http://www.vanheusden.com/O2OO/">http://www.vanheusden.com/O2OO/</A>
+----------------------------------------------------------------------
+Phone: +31-6-41278122, PGP-key: 1F28D8AE, www.vanheusden.com
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	
+	
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#5563">[ date ]</a>
+              <a href="thread.html#5563">[ thread ]</a>
+              <a href="subject.html#5563">[ subject ]</a>
+              <a href="author.html#5563">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

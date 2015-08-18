@@ -1,0 +1,137 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] gpsd and Opensuse 11.3
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2010-August/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20gpsd%20and%20Opensuse%2011.3&In-Reply-To=%3C4C6E7BE2.508%40web.de%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="004639.html">
+   <LINK REL="Next"  HREF="004640.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] gpsd and Opensuse 11.3</H1>
+    <B>Sascha Eichenauer</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20gpsd%20and%20Opensuse%2011.3&In-Reply-To=%3C4C6E7BE2.508%40web.de%3E"
+       TITLE="[Gpsd-users] gpsd and Opensuse 11.3">grabenrandstoerung at web.de
+       </A><BR>
+    <I>Fri Aug 20 14:58:10 CEST 2010</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="004639.html">[Gpsd-users] gpsd and Opensuse 11.3
+</A></li>
+        <LI>Next message: <A HREF="004640.html">[Gpsd-users] gpsd and Opensuse 11.3
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#4638">[ date ]</a>
+              <a href="thread.html#4638">[ thread ]</a>
+              <a href="subject.html#4638">[ subject ]</a>
+              <a href="author.html#4638">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE> Am 19.08.2010 22:31, schrieb Volker Wambach:
+&gt;<i> Hello,
+</I>&gt;<i>
+</I>&gt;<i> last weekend i mad the update, sorry new install, from opensuse 11.2 to 11.3
+</I>&gt;<i>
+</I>&gt;<i> On OS 11.2 i had no problems with gpsd an my GPS-logger Wintec G-Rays 2.
+</I>&gt;<i> gpsctl says: ... identified as Generic NMEA at 57600
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i> On OS 11.3 i had with same hardware problems
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i> gpsctl
+</I>&gt;<i> gpsctl: /dev/ttyUSB0 identified as  at -1
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i> dmesg seems to be OK
+</I>&gt;<i> --------------------
+</I>&gt;<i>  6599.457043] usb 6-1: new full speed USB device using uhci_hcd and
+</I>&gt;<i> address 10
+</I>&gt;<i> [ 6599.607374] usb 6-1: New USB device found, idVendor=10c4, idProduct=ea60
+</I>&gt;<i> [ 6599.607383] usb 6-1: New USB device strings: Mfr=1, Product=2,
+</I>&gt;<i> SerialNumber=3
+</I>&gt;<i> [ 6599.607390] usb 6-1: Product: CP2102 USB to UART Bridge Controller
+</I>&gt;<i> [ 6599.607396] usb 6-1: Manufacturer: Silicon Labs
+</I>&gt;<i>
+</I>&gt;<i> [ 6599.607400] usb 6-1: SerialNumber: 0001
+</I>&gt;<i> [ 6599.612474] cp210x 6-1:1.0: cp210x converter detected
+</I>&gt;<i> [ 6599.715070] usb 6-1: reset full speed USB device using uhci_hcd and
+</I>&gt;<i> address 10
+</I>&gt;<i> [ 6599.848611] usb 6-1: cp210x converter now attached to ttyUSB0
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i> lsmod also
+</I>&gt;<i> ----------
+</I>&gt;<i> lsmod | grep usb
+</I>&gt;<i> usbserial              34513  1 cp210x
+</I>&gt;<i> btusb                  15667  2
+</I>&gt;<i> bluetooth              96350  9 rfcomm,sco,bnep,l2cap,btusb
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i> an stty also   (on OS 11.2 where are some lines more)
+</I>&gt;<i> ------------
+</I>&gt;<i> stty &lt; /dev/ttyUSB0
+</I>&gt;<i> speed 57600 baud; line = 0;
+</I>&gt;<i> eof = ^A; min = 1; time = 0;
+</I>&gt;<i> -brkint -icrnl -imaxbel
+</I>&gt;<i> -opost -onlcr
+</I>&gt;<i> -icanon -echo -echoe
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i> any ideas???
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i> Best whishes from germany
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i> 	Volker
+</I>&gt;<i> _______________________________________________
+</I>&gt;<i> Gpsd-users mailing list
+</I>&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">Gpsd-users at lists.berlios.de</A>
+</I>&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">https://lists.berlios.de/mailman/listinfo/gpsd-users</A>
+</I>&gt;<i>
+</I>Hi Volker,
+
+what does gpsctl say, when you run it as root? Should it work, then I
+recommend you write a udev rule for users to have access to the device.
+I created a file called &quot;10-local.rules&quot; in  &quot;/etc/udev/rules.d/&quot;. Into
+that file I wrote a single line: KERNEL==&quot;ttyUSB0&quot; MODE=&quot;0666&quot;. Now it
+works. You might have to modify ttyUSB0 to something else.
+
+regards und sch&#246;nes Wochenende
+sascha
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="004639.html">[Gpsd-users] gpsd and Opensuse 11.3
+</A></li>
+	<LI>Next message: <A HREF="004640.html">[Gpsd-users] gpsd and Opensuse 11.3
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#4638">[ date ]</a>
+              <a href="thread.html#4638">[ thread ]</a>
+              <a href="subject.html#4638">[ subject ]</a>
+              <a href="author.html#4638">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

@@ -1,0 +1,96 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] Bearing vs. Heading
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2011-September/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Bearing%20vs.%20Heading&In-Reply-To=%3C4E738C72.3010002%40mheuer.de%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="005479.html">
+   <LINK REL="Next"  HREF="005481.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] Bearing vs. Heading</H1>
+    <B>Matthias Heuer</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Bearing%20vs.%20Heading&In-Reply-To=%3C4E738C72.3010002%40mheuer.de%3E"
+       TITLE="[Gpsd-users] Bearing vs. Heading">postfach at mheuer.de
+       </A><BR>
+    <I>Fri Sep 16 19:50:42 CEST 2011</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="005479.html">[Gpsd-users] Bearing vs. Heading
+</A></li>
+        <LI>Next message: <A HREF="005481.html">[Gpsd-users] Suppressing unwanted output from gpsdecode
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#5480">[ date ]</a>
+              <a href="thread.html#5480">[ thread ]</a>
+              <a href="subject.html#5480">[ subject ]</a>
+              <a href="author.html#5480">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Am 16.09.2011 16:49, schrieb steve:
+&gt;<i> Hello all,
+</I>&gt;<i>
+</I>&gt;<i> New to gpsd here.  I am liking what I am finding after writing my own parser a couple of years ago.  It worked, but this is nicer by far.
+</I>&gt;<i>
+</I>&gt;<i> Q.  I need to know the bearing from a ship's nav system(Garmin).   I see track data, but am I right that track and bearing are different?   If my ship is drifting, then in general its bow is not pointing toward my heading/track.  I need to know where the bow is pointing to insert this data into mysql for display of my ship on google earth.   I am using/modifying gps.py. Suggestions?
+</I>
+
+
+Steve you are using three terms bearing, track an heading. Let me point 
+out the meaning.
+
+track is a set of point where you've been in the past.
+Garmin also uses track as an synonym for Corse over Ground
+Bearing is the angle from your position to the selected waypoint.
+
+Heading is the angle from the ship heading to the north pole.
+
+Let me say it simple. You can drive down the road from A to B having the 
+same track, the same course over ground driving one foreward and the 
+second time driving from A to B using the reverse gear. You will have 
+two very different headings (and reactions from the bystander).
+
+A GPS will not see the difference between both tests.
+
+There are GPSs [1] how can &quot;see&quot; a heading. They have two (or more) 
+aerial. This allows to compare two very alike but not equal positions. 
+This difference gives the heading.
+
+Does that help?
+
+[1] &lt;<A HREF="http://www.kongsberg-simrad.de/pdf/kompass_hs50_eng.pdf">http://www.kongsberg-simrad.de/pdf/kompass_hs50_eng.pdf</A>&gt;
+
+
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="005479.html">[Gpsd-users] Bearing vs. Heading
+</A></li>
+	<LI>Next message: <A HREF="005481.html">[Gpsd-users] Suppressing unwanted output from gpsdecode
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#5480">[ date ]</a>
+              <a href="thread.html#5480">[ thread ]</a>
+              <a href="subject.html#5480">[ subject ]</a>
+              <a href="author.html#5480">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

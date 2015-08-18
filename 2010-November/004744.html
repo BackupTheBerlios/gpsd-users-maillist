@@ -1,0 +1,101 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] ntrip (rtcm 2.3) support for generic nmea devices
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2010-November/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20ntrip%20%28rtcm%202.3%29%20support%20for%20generic%20nmea%20devices&In-Reply-To=%3CAANLkTin7bXOpknQschhbsjVaRQHV%2B_o8dc%2B3_vdh3jER%40mail.gmail.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="004742.html">
+   <LINK REL="Next"  HREF="004745.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] ntrip (rtcm 2.3) support for generic nmea devices</H1>
+    <B>Michael Lippautz</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20ntrip%20%28rtcm%202.3%29%20support%20for%20generic%20nmea%20devices&In-Reply-To=%3CAANLkTin7bXOpknQschhbsjVaRQHV%2B_o8dc%2B3_vdh3jER%40mail.gmail.com%3E"
+       TITLE="[Gpsd-users] ntrip (rtcm 2.3) support for generic nmea devices">michael.lippautz at gmail.com
+       </A><BR>
+    <I>Wed Nov 10 16:49:26 CET 2010</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="004742.html">[Gpsd-users] GPSD with UBLOX-G5010-SA
+</A></li>
+        <LI>Next message: <A HREF="004745.html">[Gpsd-users] libgpsmm not re-entrant?
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#4744">[ date ]</a>
+              <a href="thread.html#4744">[ thread ]</a>
+              <a href="subject.html#4744">[ subject ]</a>
+              <a href="author.html#4744">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hej,
+
+I've a generic nmea device (ublox lea5h) and access to a ntrip server
+running a rtcm 2.3 stream.
+
+Is it possible to use these together, since I get the follow log (snippet):
+
+...
+gpsd: GSV: Satellite data OK (4 of 4).
+gpsd: DOPS computed/reported: X=7.415262/nan, Y=3.859499/nan,
+H=8.359536/nan, V=18.470264/nan, P=20.273937/nan, T=7.631043/nan,
+G=21.662533/nan
+gpsd: modeling errors: mode=3, masks={ONLINE|DOP|SATELLITE|PACKET}
+gpsd: packet from /dev/ttyACM0 with {ONLINE|DOP|SATELLITE|PACKET}
+gpsd: &lt;= GPS: $GPGLL,4749.41031,N,01302.31982,E,154729.00,A,A*6D\x0d\x0a
+gpsd: GPGLL: registers fractional time 154729.00
+gpsd: GLL: hhmmss=154729.00 lat=47.82 lon=13.04 mode=2 status=1
+mask={TIME|LATLON|STATUS|MODE}
+gpsd: GPGLL time (nearest sec) is 1289404049.000000 = 2010-11-10T15:4729
+gpsd: GPGLL reporting cycle started on 154729.00.
+gpsd: GPGLL ends a reporting cycle.
+gpsd: modeling errors: mode=3,
+masks={ONLINE|TIME|LATLON|STATUS|PACKET|REPORT}
+gpsd: packet from /dev/ttyACM0 with
+{ONLINE|TIME|LATLON|STATUS|PACKET|REPORT}
+gpsd: GPS on /dev/ttyACM0 is offline (0.002075 sec since data)
+gpsd: =&gt; GPS:
+59764240466978685d5b4040607f687a7541495e735640776062774965414d4e697b6d7275497045456c42714e45497671534a484941445548764e667d725a6f6552746954534a6e477d5f66497d7f5c6978645d5c4140607f7d78756b586f4b6678484b5f48566b7e5363565b5f4f6a757d50647751755e47497d7660516442587f6857
+FAILED
+gpsd: &lt;= DGPS: 132 bytes of RTCM relayed.
+gpsd: ISGPS parity failure, lost lock
+gpsd: modeling errors: mode=0, masks={ONLINE|RTCM2|PACKET}
+gpsd: packet from <A HREF="ntrip://Mittlboeck:MaMi1203">ntrip://Mittlboeck:MaMi1203</A> with {ONLINE|RTCM2|PACKET}
+gpsd: modeling errors: mode=0, masks={ONLINE|RTCM2|PACKET}
+...
+
+Seems like generic nmea and rtcm 2.3 do not work together?
+
+Regards,
+Michael
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="004742.html">[Gpsd-users] GPSD with UBLOX-G5010-SA
+</A></li>
+	<LI>Next message: <A HREF="004745.html">[Gpsd-users] libgpsmm not re-entrant?
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#4744">[ date ]</a>
+              <a href="thread.html#4744">[ thread ]</a>
+              <a href="subject.html#4744">[ subject ]</a>
+              <a href="author.html#4744">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

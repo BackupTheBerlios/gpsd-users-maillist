@@ -1,0 +1,94 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] Garmin GPS almost never sends new   position data
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2006-September/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Garmin%20GPS%20almost%20never%20sends%20new%20%20%20position%20data&In-Reply-To=%3Cef6nq4%24ihd%241%40sea.gmane.org%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="001981.html">
+   <LINK REL="Next"  HREF="001986.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] Garmin GPS almost never sends new   position data</H1>
+    <B>Eivind Tagseth</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Garmin%20GPS%20almost%20never%20sends%20new%20%20%20position%20data&In-Reply-To=%3Cef6nq4%24ihd%241%40sea.gmane.org%3E"
+       TITLE="[Gpsd-users] Garmin GPS almost never sends new   position data">eivindt-gmane at multinet.no
+       </A><BR>
+    <I>Sun Sep 24 21:54:45 CEST 2006</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="001981.html">[Gpsd-users] [PATCH] Re: Garmin GPS almost never sends new	position data
+</A></li>
+        <LI>Next message: <A HREF="001986.html">[Gpsd-users] [PATCH] Re: Garmin GPS almost never sends new position data
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1982">[ date ]</a>
+              <a href="thread.html#1982">[ thread ]</a>
+              <a href="subject.html#1982">[ subject ]</a>
+              <a href="author.html#1982">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Dave Hylands wrote:
+&gt;<i> 
+</I>&gt;&gt;<i> As I couldn't find anything in the tty layer that could guarantee that
+</I>&gt;&gt;<i> any two packets passed from the usb layer to the tty layer wouldn't just
+</I>&gt;&gt;<i> be concatenated into one (unless the client is fast enough reading), I
+</I>&gt;&gt;<i> went for a different approach.
+</I>&gt;<i> 
+</I>&gt;<i> So, I figured I'd ask for some clarification. When the packets are
+</I>&gt;<i> being being passed from the usb layer to the tty layer, is it the
+</I>&gt;<i> driver that's messing up and dropping data?
+</I>&gt;<i> 
+</I>&gt;<i> Or is it the case that gpsd is getting more data than its expecting?
+</I>&gt;<i> If its the latter, then this is clearly a bug in gpsd, and could even
+</I>&gt;<i> happen on normal serial lines without USB if the gpsd process was
+</I>&gt;<i> being held back in an otherwise busy system.
+</I>
+It's the case of gpsd getting more data than it's expecting.  I'm not 
+quite sure who's fault it is.  It's not in the general gpsd serial 
+driver, only in the garmin protocol implementation, which will only 
+ever(?) have a serial USB device as it's data source.  But it's my 
+impression that the tty layer may concatenate several packets (as sent 
+by the garmin_gps kernel driver) into one, outside of our control, so it 
+cannot be trusted.  That certainly seems to be the case on my computer. 
+  If we were to access the usb device directly (bypassing garmin_gps), 
+then the currenct approach would probably work fine.
+
+Or, I may be misreading everything here, I find it a bit strange that 
+there are only 2 reports of this problem...
+
+
+
+Eivind
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="001981.html">[Gpsd-users] [PATCH] Re: Garmin GPS almost never sends new	position data
+</A></li>
+	<LI>Next message: <A HREF="001986.html">[Gpsd-users] [PATCH] Re: Garmin GPS almost never sends new position data
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1982">[ date ]</a>
+              <a href="thread.html#1982">[ thread ]</a>
+              <a href="subject.html#1982">[ subject ]</a>
+              <a href="author.html#1982">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

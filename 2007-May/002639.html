@@ -1,0 +1,114 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] how to crosscompile gpsd for avr32
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2007-May/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20how%20to%20crosscompile%20gpsd%20for%20avr32&In-Reply-To=%3CPine.LNX.4.64.0705111225410.8451%40birdbird.example.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="002637.html">
+   <LINK REL="Next"  HREF="002640.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] how to crosscompile gpsd for avr32</H1>
+    <B>Matt Roberds</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20how%20to%20crosscompile%20gpsd%20for%20avr32&In-Reply-To=%3CPine.LNX.4.64.0705111225410.8451%40birdbird.example.com%3E"
+       TITLE="[Gpsd-users] how to crosscompile gpsd for avr32">mattroberds at cox.net
+       </A><BR>
+    <I>Fri May 11 20:10:33 CEST 2007</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="002637.html">[Gpsd-users] Python and version 2.34
+</A></li>
+        <LI>Next message: <A HREF="002640.html">[Gpsd-users] how to crosscompile gpsd for avr32
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2639">[ date ]</a>
+              <a href="thread.html#2639">[ thread ]</a>
+              <a href="subject.html#2639">[ subject ]</a>
+              <a href="author.html#2639">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>On Thu, 10 May 2007, Randy wrote:
+&gt;<i> My only serial port on the NGW100 (avr32) is also the console port.
+</I>
+Uh-oh.  If the Linux kernel automatically opens it as a console at
+boot time, I don't think gpsd will be able to use it.
+
+If you can convince the kernel not to open the console port at boot
+time, you might be able to plug your GPS into that port, and then telnet
+or SSH in over one of the Ethernet ports.
+
+Finally, if this
+<A HREF="http://www.atmel.com/dyn/products/tools_card.asp?tool_id=4102">http://www.atmel.com/dyn/products/tools_card.asp?tool_id=4102</A>
+is the critter you're dealing with, it looks like the avr32 chip on it
+has got three serial ports, but only one of them (USART1) is brought out
+to a DB-9 connector.  The other two (USART0 and USART2) go to the J5 and
+J6 expansion headers.  If the supplied driver knows how to talk to
+USART0 and USART2, you could get more serial ports.  You'd have to
+connect a MAX232 (or equal) chip and a DB-9 connector to the pins on J5
+and J6
+
+&gt;<i> Is there any other way to get gps info coming in to verify that gpsd
+</I>&gt;<i> is processing properly?
+</I>
+The gpsfake script supplied with gpsd is designed to do precisely this.
+You give it a text file full of NMEA sentences or binary packets from
+your GPS (which maybe you captured on your desktop PC or whatever), and
+it launches an instance of gpsd and feeds the file into gpsd.  gpsd
+thinks it's talking to a real GPS on the serial port.
+
+I kinda sorta remember that you don't have Python on your board, though,
+and gpsfake is a Python script.  You could build Python on the desktop
+and install it on the board.  :)
+
+You might be able to do the same thing that gpsfake does &quot;manually&quot;.
+gpsfake uses a psuedo-terminal to make gpsd think it's talking to a
+real serial port.  A psuedo-terminal is basically two entries in /dev
+that are magically connected to one another; stuff written into one
+comes out of the other, and vice versa.  man 7 pty on your friendly
+local Linux system to learn more.  You would need to write an
+application in an available language on your board that prints out NMEA
+sentences or binary packets on the standard output, say my-gps-fake.
+Then you'd do something approximately like...
+
+$ gpsd /dev/ttyp0
+$ ./my-gps-fake &gt;/dev/ptyp0
+$ telnet localhost 2947
+
+There are probably some niceties of setting up the psuedo-terminal that
+your application might have to do.  Take a look at gpsfake.py to see the
+whole story.
+
+Matt Roberds
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="002637.html">[Gpsd-users] Python and version 2.34
+</A></li>
+	<LI>Next message: <A HREF="002640.html">[Gpsd-users] how to crosscompile gpsd for avr32
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2639">[ date ]</a>
+              <a href="thread.html#2639">[ thread ]</a>
+              <a href="subject.html#2639">[ subject ]</a>
+              <a href="author.html#2639">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

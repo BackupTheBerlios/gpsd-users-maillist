@@ -1,0 +1,198 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] configure.ac patch to warn about X libs (was: Re: building gpsd on Ubuntu)
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2007-March/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20configure.ac%20patch%20to%20warn%20about%20X%20libs%20%28was%3A%20Re%3A%0A%20building%20gpsd%20on%20Ubuntu%29&In-Reply-To=%3CPine.LNX.4.64.0703252302350.14311%40birdbird.example.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="002511.html">
+   <LINK REL="Next"  HREF="002517.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] configure.ac patch to warn about X libs (was: Re: building gpsd on Ubuntu)</H1>
+    <B>Matt Roberds</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20configure.ac%20patch%20to%20warn%20about%20X%20libs%20%28was%3A%20Re%3A%0A%20building%20gpsd%20on%20Ubuntu%29&In-Reply-To=%3CPine.LNX.4.64.0703252302350.14311%40birdbird.example.com%3E"
+       TITLE="[Gpsd-users] configure.ac patch to warn about X libs (was: Re: building gpsd on Ubuntu)">mattroberds at cox.net
+       </A><BR>
+    <I>Mon Mar 26 06:18:37 CEST 2007</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="002511.html">[Gpsd-users] please test this patch to serial.c
+</A></li>
+        <LI>Next message: <A HREF="002517.html">[Gpsd-users] configure.ac patch to warn about X libs (was: Re:	building gpsd on Ubuntu)
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2508">[ date ]</a>
+              <a href="thread.html#2508">[ thread ]</a>
+              <a href="subject.html#2508">[ subject ]</a>
+              <a href="author.html#2508">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>On Thu, 18 Jan 2007, Chris Kuethe wrote:
+&gt;<i> On 1/18/07, Andreas Volz &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">lists at brachttal.net</A>&gt; wrote:
+</I>&gt;&gt;<i> make doesn't build xgps on Ubuntu. No error messages. It's simply not
+</I>&gt;&gt;<i> build. I didn't yet look into the makefiles why this happens.
+</I>&gt;<i>
+</I>&gt;<i> again, check the configure log - it's quite possible that you may be
+</I>&gt;<i> missing a -devel package.
+</I>
+I had the same problem a couple of months ago when trying to compile a
+recent gpsd (2.3x) on a laptop running Debian stable (&quot;Sarge&quot;).  I had
+installed a minimal system and was missing several -devel packages.  The
+little summary that prints out at the end of gpsd's configure said
+&quot;Enable X11 support: yes&quot; but it wouldn't build xgps .  I finally paid
+lots of attention to the individual tests for -lXfoo libraries and saw
+that some of them were failing; I chased all the -devel packages and
+got it to build.
+
+It's been rattling around in my head to somehow improve the configure
+script to at least say &quot;if the previous test failed, you won't get xgps&quot;
+in these cases.  The recent note that you're thinking of a release
+spurred me to action.  I added some messages of the form &quot;WARNING:
+libXfoo problem - xgps won't be built&quot; to the configure script.  Perhaps
+it should say something more general like &quot;X support won't be built&quot;
+rather than mentioning xgps directly, but that is easy to fix.  If you
+have explicitly disabled X support by a command-line option to
+configure, it shouldn't complain.
+
+I have included a context diff against 2.34's configure.ac below.  I
+installed autoconf and used it to create configure from configure.ac ;
+autoconf didn't barf and the configure script seems to run OK.  I have
+also included a sample of what the configure output looks like I run it
+on another machine that doesn't have all of the -devel packages for X.
+
+Matt Roberds
+
+--- diff - cut here - cut here - cut here ---
+*** configure.ac.orig	2007-03-25 20:07:03.000000000 -0500
+--- configure.ac	2007-03-25 22:50:50.309972552 -0500
+***************
+*** 109,115 ****
+--- 109,122 ----
+   if test x&quot;$with_x&quot; != xno &amp;&amp; test x&quot;$have_x&quot; != xdisabled
+   then
+   AC_CHECK_HEADERS(X11/xpm.h xpm.h)
++ if test x&quot;$ac_cv_header_X11_xpm_h&quot; = &quot;xno&quot; &amp;&amp;
++    test x&quot;$ac_cv_header_xpm_h&quot; = &quot;xno&quot;; then
++   AC_MSG_WARN([xpm.h problem - xgps won't be built.])
++ fi
+   AC_PATH_XTRA
++ if test x&quot;$ac_cv_have_x&quot; = &quot;xno&quot;; then
++   AC_MSG_WARN([X problem - xgps won't be built.])
++ fi
+   LIBS=&quot;$LIBS $X_EXTRA_LIBS&quot;
+   CFLAGS=&quot;$CFLAGS $X_CFLAGS&quot;
+   CPPFLAGS=&quot;$CPPFLAGS $X_CFLAGS&quot;
+***************
+*** 122,138 ****
+--- 129,160 ----
+   AC_CHECK_LIB(Xt, XtToolkitInitialize, XT_LIBS=&quot;-lXt&quot;,,
+   	${X_PRE_LIBS} ${X11_LIBS})
+   AC_SUBST(XT_LIBS)
++ if test x&quot;$ac_cv_lib_Xt_XtToolkitInitialize&quot; = &quot;xno&quot;; then
++   AC_MSG_WARN([libXt problem - xgps won't be built.])
++ fi
+   AC_CHECK_HEADER([X11/Xaw/Label.h],, motif_includes=&quot;no&quot;)
++ if test x&quot;$ac_cv_header_X11_Xaw_Label_h&quot; = &quot;xno&quot;; then
++   AC_MSG_WARN([libXaw problem - xgps won't be built.])
++ fi
+   AC_CHECK_LIB(Xaw, XawInitializeWidgetSet, XAW_LIBS=&quot;-lXaw&quot;,,
+   	${X_PRE_LIBS} ${X11_LIBS})
+   AC_SUBST(XAW_LIBS)
++ if test x&quot;$ac_cv_lib_Xaw_XawInitializeWidgetSet&quot; = &quot;xno&quot;; then
++   AC_MSG_WARN([libXaw problem - xgps won't be built.])
++ fi
+   AC_CHECK_LIB(Xext, XShapeQueryVersion, XEXT_LIBS=&quot;-lXext&quot;,,
+   	${X_PRE_LIBS} ${X11_LIBS})
+   AC_SUBST(XEXT_LIBS)
++ if test x&quot;$ac_cv_lib_Xext_XShapeQueryVersion&quot; = &quot;xno&quot;; then
++   AC_MSG_WARN([libXext problem - xgps won't be built.])
++ fi
+   AC_CHECK_LIB(Xpm, XpmCreatePixmapFromXpmImage,
+   	XPM_LIBS=&quot;-lXpm&quot;
+   	AC_DEFINE([HAVE_XPM],1,[Xpm available]),,${X_PRE_LIBS} ${X11_LIBS})
+   AC_SUBST(XPM_LIBS)
++ if test x&quot;$ac_cv_lib_Xpm_XpmCreatePixmapFromXpmImage&quot; = &quot;xno&quot;; then
++   AC_MSG_WARN([libXpm problem - xgps won't be built.])
++ fi
+
+   dnl Check for Motif widget libraries
+   XM_LIBS=&quot;&quot;
+***************
+*** 157,162 ****
+--- 179,185 ----
+   else
+   dnl X11 disabled
+   AM_CONDITIONAL([HAVE_MOTIF], [test &quot;motif&quot; = &quot;no&quot;])
++ AC_MSG_WARN([general X problem - xgps won't be built.])
+   fi
+   dnl End of X11 checks
+
+--- diff - cut here - cut here - cut here ---
+
+
+--- sample run - cut here - cut here - cut here ---
+[...]
+checking for rint in -lm... yes
+checking for open in -lc... yes
+checking for main in -lpthread... yes
+checking X11/xpm.h usability... no
+checking X11/xpm.h presence... no
+checking for X11/xpm.h... no
+checking xpm.h usability... no
+checking xpm.h presence... no
+checking for xpm.h... no
+configure: WARNING: xpm.h problem - xgps won't be built.
+checking for X... libraries /usr/X11R6/lib, headers /usr/X11R6/include
+checking for gethostbyname... yes
+checking for connect... yes
+checking for remove... yes
+checking for shmat... yes
+checking for IceConnectionNumber in -lICE... no
+checking for XtToolkitInitialize in -lXt... no
+configure: WARNING: libXt problem - xgps won't be built.
+checking X11/Xaw/Label.h usability... no
+checking X11/Xaw/Label.h presence... no
+checking for X11/Xaw/Label.h... no
+configure: WARNING: libXaw problem - xgps won't be built.
+checking for XawInitializeWidgetSet in -lXaw... no
+configure: WARNING: libXaw problem - xgps won't be built.
+checking for XShapeQueryVersion in -lXext... yes
+checking for XpmCreatePixmapFromXpmImage in -lXpm... no
+configure: WARNING: libXpm problem - xgps won't be built.
+checking for NMEA support... yes
+checking for SiRF support... yes
+checking for Trimble TSIP support... yes
+[...]
+--- sample run - cut here - cut here - cut here ---
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="002511.html">[Gpsd-users] please test this patch to serial.c
+</A></li>
+	<LI>Next message: <A HREF="002517.html">[Gpsd-users] configure.ac patch to warn about X libs (was: Re:	building gpsd on Ubuntu)
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2508">[ date ]</a>
+              <a href="thread.html#2508">[ thread ]</a>
+              <a href="subject.html#2508">[ subject ]</a>
+              <a href="author.html#2508">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

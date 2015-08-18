@@ -1,0 +1,101 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] [Gpsd-dev] The state of RTCM2 and RTCM3
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2011-March/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20%5BGpsd-dev%5D%20The%20state%20of%20RTCM2%20and%20RTCM3&In-Reply-To=%3C4D806AE5.1060401%40googlemail.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="005141.html">
+   <LINK REL="Next"  HREF="005147.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] [Gpsd-dev] The state of RTCM2 and RTCM3</H1>
+    <B>Andre Naujoks</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20%5BGpsd-dev%5D%20The%20state%20of%20RTCM2%20and%20RTCM3&In-Reply-To=%3C4D806AE5.1060401%40googlemail.com%3E"
+       TITLE="[Gpsd-users] [Gpsd-dev] The state of RTCM2 and RTCM3">nautsch2 at googlemail.com
+       </A><BR>
+    <I>Wed Mar 16 08:46:45 CET 2011</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="005141.html">[Gpsd-users] [Gpsd-dev] The state of RTCM2 and RTCM3
+</A></li>
+        <LI>Next message: <A HREF="005147.html">[Gpsd-users] [Gpsd-dev] The state of RTCM2 and RTCM3
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#5146">[ date ]</a>
+              <a href="thread.html#5146">[ thread ]</a>
+              <a href="subject.html#5146">[ subject ]</a>
+              <a href="author.html#5146">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Am 15.03.2011 17:54, schrieb Eric Raymond:
+&gt;<i> Andre Naujoks &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">nautsch2 at googlemail.com</A>&gt;:
+</I>&gt;&gt;<i> This (attachement) is what the tool spat out. I hope it helps. I have
+</I>&gt;&gt;<i> not really an idea what RINEX looks like and this could very well be
+</I>&gt;&gt;<i> just another dump of that.
+</I>&gt;<i> 
+</I>&gt;<i> It took a lot of work, and I was puzzled for a while by the fact that
+</I>&gt;<i> the report boundaries of the ASCII dump didn't quite match the packet
+</I>&gt;<i> bounaries of the binary RTCM data it was made from, but I have managed
+</I>&gt;<i> to check our JSON against that dump.
+</I>&gt;<i> 
+</I>&gt;<i> Rather to my surprise it appears our RTCM2 driver is *exactly*
+</I>&gt;<i> correct, at least for types 1, 3, 9, 14, 16, and 31.  Because of the
+</I>&gt;<i> way the driver is structured, this gives me certainty about the
+</I>&gt;<i> null-message type 6 and pretty high confidence in the decoding of
+</I>&gt;<i> remaining types 5, 7, and 13.  Of course it would be better if we had
+</I>&gt;<i> test loads for those, too.
+</I>
+I am very glad to hear that.
+
+&gt;<i> 
+</I>&gt;<i> This is quite surprising because, other than one very ancient dump
+</I>&gt;<i> file of a handful of type 9 sentences put together by John Sager for
+</I>&gt;<i> DGPSIP well before this project existed, we never really had a test
+</I>&gt;<i> for this case before. The RTCM2 packet analyzer is full of
+</I>&gt;<i> complicated, fragile bit-twidding, and the ISGPS bit-sync layer
+</I>&gt;<i> underneath it is worse.  By all odds, it *shouldn't* have been
+</I>&gt;<i> correct.
+</I>
+Well, rtcm2 is full of fragile and complicated bit-twiddling ;-)
+
+&gt;<i> 
+</I>&gt;<i> Nevertheless, the dump seems to establish that we somehow managed to
+</I>&gt;<i> get it right on the first try five years ago and it hasn't bit-rotted
+</I>&gt;<i> since.  The more I think about this the more utterly astonishing it
+</I>&gt;<i> seems.  Yay for regression testing.
+</I>&gt;<i> 
+</I>&gt;<i> Now we need the same sort of test pair for RTCM3.
+</I>
+... I can give the same tool a try with the rtcm3 tests in the git repo!?
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="005141.html">[Gpsd-users] [Gpsd-dev] The state of RTCM2 and RTCM3
+</A></li>
+	<LI>Next message: <A HREF="005147.html">[Gpsd-users] [Gpsd-dev] The state of RTCM2 and RTCM3
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#5146">[ date ]</a>
+              <a href="thread.html#5146">[ thread ]</a>
+              <a href="subject.html#5146">[ subject ]</a>
+              <a href="author.html#5146">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

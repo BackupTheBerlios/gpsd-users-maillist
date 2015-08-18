@@ -1,0 +1,249 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] Garmin GPS-25 PPS detect
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2007-August/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Garmin%20GPS-25%20PPS%20detect&In-Reply-To=%3C3BF93070B3D1B047BA7ABF612958950D018FBCD7%40hcex.hartwellcorp.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="002842.html">
+   <LINK REL="Next"  HREF="002844.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] Garmin GPS-25 PPS detect</H1>
+    <B>Michael St. Laurent</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Garmin%20GPS-25%20PPS%20detect&In-Reply-To=%3C3BF93070B3D1B047BA7ABF612958950D018FBCD7%40hcex.hartwellcorp.com%3E"
+       TITLE="[Gpsd-users] Garmin GPS-25 PPS detect">mikes at hartwellcorp.com
+       </A><BR>
+    <I>Fri Aug 31 00:29:38 CEST 2007</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="002842.html">[Gpsd-users] gps_data_t ?
+</A></li>
+        <LI>Next message: <A HREF="002844.html">[Gpsd-users] Garmin GPS-25 PPS detect
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2843">[ date ]</a>
+              <a href="thread.html#2843">[ thread ]</a>
+              <a href="subject.html#2843">[ subject ]</a>
+              <a href="author.html#2843">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>I'm not sure why this PPS signal is not being detected.  It looks to me
+as if it's just shy of 200 msec:
+
+[<A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">root at hcnas</A> bin]# gpsd -n -N -D5 /dev/ttyS0
+gpsd: launching (Version 2.34)
+gpsd: listening on port gpsd
+gpsd: shmat(0,0,0) succeeded
+gpsd: shmat(0,0,0) succeeded
+gpsd: shmat(0,0,0) succeeded
+gpsd: shmat(0,0,0) succeeded
+gpsd: running with effective group ID 0
+gpsd: running with effective user ID 0
+gpsd: opening GPS data source at '/dev/ttyS0'
+gpsd: speed 4800, 8N1
+gpsd: garmin_gps not active.
+gpsd: no probe matched...
+gpsd: gpsd_activate(1): opened GPS (4)
+gpsd: pps-detect (DCD) on /dev/ttyS0 changed to 1
+gpsd: PPS pulse rejected. No fix.
+gpsd: pps-detect (DCD) on /dev/ttyS0 changed to 0
+gpsd: PPS pulse rejected. No fix.
+gpsd: packet sniff finds type -1
+gpsd: packet sniff finds type -1
+gpsd: packet sniff finds type -1
+gpsd: packet sniff finds type -1
+gpsd: packet sniff finds type -1
+gpsd: packet sniff finds type -1
+gpsd: packet sniff finds type -1
+gpsd: packet sniff finds type -1
+gpsd: packet sniff finds type 1
+gpsd: switch_driver(Generic NMEA) called...
+gpsd: selecting Generic NMEA driver...
+gpsd: =&gt; GPS: $PSRF100,0,4800,8,1,0*0F\x0d
+
+gpsd: &lt;= GPS:
+$GPRMC,221713,A,3351.7860,N,11749.5204,W,000.0,000.0,300807,013.6,E*6C
+gpsd: pps-detect (DCD) on /dev/ttyS0 changed to 1
+gpsd: PPS pulse rejected. No fix.
+gpsd: pps-detect (DCD) on /dev/ttyS0 changed to 0
+gpsd: PPS pulse rejected. No fix.
+gpsd: =&gt; GPS: $PGRMCE*0E\x0d
+
+gpsd: &lt;= GPS:
+$GPRMC,221714,A,3351.7860,N,11749.5205,W,000.0,000.0,300807,013.6,E*6A
+gpsd: pps-detect (DCD) on /dev/ttyS0 changed to 1
+gpsd: PPS pulse rejected. No fix.
+gpsd: pps-detect (DCD) on /dev/ttyS0 changed to 0
+gpsd: PPS pulse rejected. No fix.
+gpsd: =&gt; GPS: $PFEC,GPint*58\x0d
+
+gpsd: &lt;= GPS:
+$GPRMC,221715,A,3351.7860,N,11749.5205,W,000.0,000.0,300807,013.6,E*6B
+gpsd: pps-detect (DCD) on /dev/ttyS0 changed to 1
+gpsd: PPS pulse rejected. No fix.
+gpsd: pps-detect (DCD) on /dev/ttyS0 changed to 0
+gpsd: PPS pulse rejected. No fix.
+gpsd: =&gt; GPS: 1002128e7f0101000101010001000000000000131003
+gpsd: &lt;= GPS:
+$GPRMC,221716,A,3351.7859,N,11749.5205,W,000.0,000.0,300807,013.6,E*62
+gpsd: pps-detect (DCD) on /dev/ttyS0 changed to 1
+gpsd: PPS pulse rejected too short. cycle: 999968, duration: 799976
+gpsd: pps-detect (DCD) on /dev/ttyS0 changed to 0
+gpsd: PPS pulse rejected too short. cycle: 999966, duration: 199990
+gpsd: &lt;= GPS:
+$GPRMC,221717,A,3351.7859,N,11749.5205,W,000.0,000.0,300807,013.6,E*63
+gpsd: pps-detect (DCD) on /dev/ttyS0 changed to 1
+gpsd: PPS pulse rejected too short. cycle: 999970, duration: 799980
+gpsd: pps-detect (DCD) on /dev/ttyS0 changed to 0
+gpsd: PPS pulse rejected too short. cycle: 999972, duration: 199992
+gpsd: &lt;= GPS:
+$GPRMC,221718,A,3351.7859,N,11749.5205,W,000.0,000.0,300807,013.6,E*6C
+gpsd: pps-detect (DCD) on /dev/ttyS0 changed to 1
+gpsd: PPS pulse rejected too short. cycle: 999966, duration: 799974
+gpsd: pps-detect (DCD) on /dev/ttyS0 changed to 0
+gpsd: PPS pulse rejected too short. cycle: 999969, duration: 199995
+gpsd: &lt;= GPS:
+$GPRMC,221719,A,3351.7859,N,11749.5205,W,000.0,000.0,300807,013.6,E*6D
+gpsd: pps-detect (DCD) on /dev/ttyS0 changed to 1
+gpsd: PPS pulse rejected too short. cycle: 999961, duration: 799966
+gpsd: pps-detect (DCD) on /dev/ttyS0 changed to 0
+gpsd: PPS pulse rejected too short. cycle: 999959, duration: 199993
+gpsd: &lt;= GPS:
+$GPRMC,221720,A,3351.7859,N,11749.5205,W,000.0,000.0,300807,013.6,E*67
+gpsd: pps-detect (DCD) on /dev/ttyS0 changed to 1
+gpsd: PPS pulse rejected too short. cycle: 999967, duration: 799974
+gpsd: pps-detect (DCD) on /dev/ttyS0 changed to 0
+gpsd: PPS pulse rejected too short. cycle: 999968, duration: 199994
+gpsd: &lt;= GPS:
+$GPRMC,221721,A,3351.7859,N,11749.5205,W,000.0,000.0,300807,013.6,E*66
+gpsd: pps-detect (DCD) on /dev/ttyS0 changed to 1
+gpsd: PPS pulse rejected too short. cycle: 999967, duration: 799973
+gpsd: pps-detect (DCD) on /dev/ttyS0 changed to 0
+gpsd: PPS pulse rejected too short. cycle: 999965, duration: 199992
+gpsd: &lt;= GPS:
+$GPRMC,221722,A,3351.7859,N,11749.5205,W,000.0,000.0,300807,013.6,E*65
+gpsd: pps-detect (DCD) on /dev/ttyS0 changed to 1
+gpsd: PPS pulse rejected too short. cycle: 999967, duration: 799975
+gpsd: pps-detect (DCD) on /dev/ttyS0 changed to 0
+gpsd: PPS pulse rejected too short. cycle: 999967, duration: 199992
+gpsd: &lt;= GPS:
+$GPRMC,221723,A,3351.7859,N,11749.5205,W,000.0,000.0,300807,013.6,E*64
+gpsd: pps-detect (DCD) on /dev/ttyS0 changed to 1
+gpsd: PPS pulse rejected too short. cycle: 999968, duration: 799976
+gpsd: pps-detect (DCD) on /dev/ttyS0 changed to 0
+gpsd: PPS pulse rejected too short. cycle: 999968, duration: 199992
+gpsd: &lt;= GPS:
+$GPRMC,221724,A,3351.7858,N,11749.5205,W,000.0,000.0,300807,013.6,E*62
+gpsd: pps-detect (DCD) on /dev/ttyS0 changed to 1
+gpsd: PPS pulse rejected too short. cycle: 999967, duration: 799975
+gpsd: pps-detect (DCD) on /dev/ttyS0 changed to 0
+gpsd: PPS pulse rejected too short. cycle: 999968, duration: 199993
+gpsd: &lt;= GPS:
+$GPRMC,221725,A,3351.7858,N,11749.5206,W,000.0,000.0,300807,013.6,E*60
+gpsd: pps-detect (DCD) on /dev/ttyS0 changed to 1
+gpsd: PPS pulse rejected too short. cycle: 999968, duration: 799975
+gpsd: pps-detect (DCD) on /dev/ttyS0 changed to 0
+gpsd: PPS pulse rejected too short. cycle: 999967, duration: 199992
+gpsd: &lt;= GPS:
+$GPRMC,221726,A,3351.7858,N,11749.5206,W,000.0,000.0,300807,013.6,E*63
+gpsd: pps-detect (DCD) on /dev/ttyS0 changed to 1
+gpsd: PPS pulse rejected too short. cycle: 999967, duration: 799975
+gpsd: pps-detect (DCD) on /dev/ttyS0 changed to 0
+gpsd: PPS pulse rejected too short. cycle: 999968, duration: 199993
+gpsd: &lt;= GPS:
+$GPRMC,221727,A,3351.7858,N,11749.5206,W,000.0,000.0,300807,013.6,E*62
+gpsd: pps-detect (DCD) on /dev/ttyS0 changed to 1
+gpsd: PPS pulse rejected too short. cycle: 999965, duration: 799972
+gpsd: pps-detect (DCD) on /dev/ttyS0 changed to 0
+gpsd: PPS pulse rejected too short. cycle: 999969, duration: 199997
+gpsd: &lt;= GPS:
+$GPRMC,221728,A,3351.7858,N,11749.5206,W,000.0,000.0,300807,013.6,E*6D
+gpsd: pps-detect (DCD) on /dev/ttyS0 changed to 1
+gpsd: PPS pulse rejected too short. cycle: 999971, duration: 799974
+gpsd: pps-detect (DCD) on /dev/ttyS0 changed to 0
+gpsd: PPS pulse rejected too short. cycle: 999966, duration: 199992
+gpsd: &lt;= GPS:
+$GPRMC,221729,A,3351.7858,N,11749.5206,W,000.0,000.0,300807,013.6,E*6C
+gpsd: pps-detect (DCD) on /dev/ttyS0 changed to 1
+gpsd: PPS pulse rejected too short. cycle: 999965, duration: 799973
+gpsd: pps-detect (DCD) on /dev/ttyS0 changed to 0
+gpsd: PPS pulse rejected too short. cycle: 999966, duration: 199993
+gpsd: &lt;= GPS:
+$GPRMC,221730,A,3351.7858,N,11749.5206,W,000.0,000.0,300807,013.6,E*64
+gpsd: pps-detect (DCD) on /dev/ttyS0 changed to 1
+gpsd: PPS pulse rejected too short. cycle: 999968, duration: 799975
+gpsd: pps-detect (DCD) on /dev/ttyS0 changed to 0
+gpsd: PPS pulse rejected too short. cycle: 999966, duration: 199991
+gpsd: &lt;= GPS:
+$GPRMC,221731,A,3351.7858,N,11749.5206,W,000.0,000.0,300807,013.6,E*65
+gpsd: pps-detect (DCD) on /dev/ttyS0 changed to 1
+gpsd: PPS pulse rejected too short. cycle: 999966, duration: 799975
+gpsd: pps-detect (DCD) on /dev/ttyS0 changed to 0
+gpsd: PPS pulse rejected too short. cycle: 999968, duration: 199993
+gpsd: &lt;= GPS:
+$GPRMC,221732,A,3351.7858,N,11749.5206,W,000.0,000.0,300807,013.6,E*66
+gpsd: pps-detect (DCD) on /dev/ttyS0 changed to 1
+gpsd: PPS pulse rejected too short. cycle: 999968, duration: 799975
+gpsd: pps-detect (DCD) on /dev/ttyS0 changed to 0
+gpsd: PPS pulse rejected too short. cycle: 999967, duration: 199992
+gpsd: &lt;= GPS:
+$GPRMC,221733,A,3351.7857,N,11749.5207,W,000.0,000.0,300807,013.6,E*69
+gpsd: pps-detect (DCD) on /dev/ttyS0 changed to 1
+gpsd: PPS pulse rejected too short. cycle: 999967, duration: 799975
+gpsd: pps-detect (DCD) on /dev/ttyS0 changed to 0
+gpsd: PPS pulse rejected too short. cycle: 999972, duration: 199997
+gpsd: &lt;= GPS:
+$GPRMC,221734,A,3351.7860,N,11749.5205,W,000.0,000.0,300807,013.6,E*68
+gpsd: pps-detect (DCD) on /dev/ttyS0 changed to 1
+gpsd: PPS pulse rejected too short. cycle: 999968, duration: 799971
+gpsd: pps-detect (DCD) on /dev/ttyS0 changed to 0
+gpsd: PPS pulse rejected too short. cycle: 999963, duration: 199992
+gpsd: &lt;= GPS:
+$GPRMC,221735,A,3351.7860,N,11749.5205,W,000.0,000.0,300807,013.6,E*69
+gpsd: pps-detect (DCD) on /dev/ttyS0 changed to 1
+gpsd: PPS pulse rejected too short. cycle: 999965, duration: 799973
+gpsd: pps-detect (DCD) on /dev/ttyS0 changed to 0
+gpsd: PPS pulse rejected too short. cycle: 999967, duration: 199994
+gpsd: &lt;= GPS:
+$GPRMC,221736,A,3351.7859,N,11749.5205,W,000.0,000.0,300807,013.6,E*60
+gpsd: pps-detect (DCD) on /dev/ttyS0 changed to 1
+gpsd: PPS pulse rejected too short. cycle: 999967, duration: 799973
+gpsd: pps-detect (DCD) on /dev/ttyS0 changed to 0
+gpsd: PPS pulse rejected too short. cycle: 999965, duration: 199992
+gpsd: &lt;= GPS:
+$GPRMC,221737,A,3351.7859,N,11749.5206,W,000.0,000.0,300807,013.6,E*62
+gpsd: closing GPS=/dev/ttyS0 (4)
+gpsd: Received terminating signal 2. Exiting...
+[<A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">root at hcnas</A> bin]#
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="002842.html">[Gpsd-users] gps_data_t ?
+</A></li>
+	<LI>Next message: <A HREF="002844.html">[Gpsd-users] Garmin GPS-25 PPS detect
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2843">[ date ]</a>
+              <a href="thread.html#2843">[ thread ]</a>
+              <a href="subject.html#2843">[ subject ]</a>
+              <a href="author.html#2843">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

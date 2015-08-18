@@ -1,0 +1,100 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] Garmin GPS 60 - Mac OS X
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2009-February/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Garmin%20GPS%2060%20-%20Mac%20OS%20X&In-Reply-To=%3C42ba3eb6b4de0c4eed6f6ec594ed0a47%40s3.nexpaserver.de%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="003593.html">
+   <LINK REL="Next"  HREF="003595.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] Garmin GPS 60 - Mac OS X</H1>
+    <B>skyout at wired-security.net</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Garmin%20GPS%2060%20-%20Mac%20OS%20X&In-Reply-To=%3C42ba3eb6b4de0c4eed6f6ec594ed0a47%40s3.nexpaserver.de%3E"
+       TITLE="[Gpsd-users] Garmin GPS 60 - Mac OS X">skyout at wired-security.net
+       </A><BR>
+    <I>Thu Feb 12 01:17:03 CET 2009</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="003593.html">[Gpsd-users] Garmin GPS 60 - Mac OS X
+</A></li>
+        <LI>Next message: <A HREF="003595.html">[Gpsd-users] Garmin GPS 60 - Mac OS X
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3594">[ date ]</a>
+              <a href="thread.html#3594">[ thread ]</a>
+              <a href="subject.html#3594">[ subject ]</a>
+              <a href="author.html#3594">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>
+&gt;&gt;<i> &gt; You should be able to just cat the NMEA from the serial port.
+</I>&gt;&gt;<i> &gt; 	cat /dev/cu.PL2303
+</I>&gt;&gt;<i> &gt; or mayber
+</I>&gt;&gt;<i> &gt; 	cat /dev/tty.PL2303
+</I>&gt;&gt;<i> &gt;
+</I>&gt;&gt;<i> &gt; Until you can do that no need to start up gpsd.  When you can do that
+</I>&gt;&gt;<i> &gt; then gpsd should just work.  Things  to check include baud rate,
+</I>&gt;&gt;<i> &gt; parity, etc.
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> I tried with cat utility on both devices, no reaction... no data...
+</I>&gt;<i> 
+</I>&gt;<i> Then your problem is the PL2303 driver or the configuration on that port.
+</I>
+Well, yeah :) That was what I guessed, too. Now the question is, what to
+do.
+
+The workaround to use Prolific driver did not work. The PL2303 was the only
+one I could get running, at least it made a BEEP and I could see on the GPS
+Device a symbol saying &quot;USB connected&quot;.
+
+So, what I know so far is only:
+
+- No other driver instead of PL2303 seems to work.
+- I have to change idVendor and idProduct to match my device.
+- No data comes through, the driver has a bug.
+
+And now? I am stuck to be honest.
+
+Nice greets,
+Marcell 'SkyOut' Dietl
+
+PS: Interestingly the bug in this select() function and the return value
+being 0
+is known, so I maybe hoped someone has a patch for the PL2303 driver or
+something.
+I think it is nothing big to fix there, but reading the whole code will be
+hard
+and I am not sure I will find the bug at all.
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="003593.html">[Gpsd-users] Garmin GPS 60 - Mac OS X
+</A></li>
+	<LI>Next message: <A HREF="003595.html">[Gpsd-users] Garmin GPS 60 - Mac OS X
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3594">[ date ]</a>
+              <a href="thread.html#3594">[ thread ]</a>
+              <a href="subject.html#3594">[ subject ]</a>
+              <a href="author.html#3594">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

@@ -1,0 +1,223 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] Trying to get working Magellan GPS 315 with pl2303 usb serial adapter
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2005-December/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Trying%20to%20get%20working%20Magellan%20GPS%20315%20with%20pl2303%20usb%20serial%20adapter&In-Reply-To=%3C7b9ca310512020845q236fa188y16428eae346639d6%40mail.gmail.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="001152.html">
+   <LINK REL="Next"  HREF="001148.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] Trying to get working Magellan GPS 315 with pl2303 usb serial adapter</H1>
+    <B>Michael Ellis</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Trying%20to%20get%20working%20Magellan%20GPS%20315%20with%20pl2303%20usb%20serial%20adapter&In-Reply-To=%3C7b9ca310512020845q236fa188y16428eae346639d6%40mail.gmail.com%3E"
+       TITLE="[Gpsd-users] Trying to get working Magellan GPS 315 with pl2303 usb serial adapter">mellis at ellisandgrant.com
+       </A><BR>
+    <I>Fri Dec  2 17:45:02 CET 2005</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="001152.html">Off-topic: accuracy in conversion from meters/sec to knots (was	Re: [Gpsd-users] Trimble Lassen iQ Speed &amp; Mode Wrong)
+</A></li>
+        <LI>Next message: <A HREF="001148.html">[Gpsd-users] Trying to get working Magellan GPS 315 with pl2303 usb serial adapter
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1147">[ date ]</a>
+              <a href="thread.html#1147">[ thread ]</a>
+              <a href="subject.html#1147">[ subject ]</a>
+              <a href="author.html#1147">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Apologies for the long post.  Here's a summary of my problem:
+
+I'm trying to make gpsd (2.29) work reliably and automatically with
+Earthmate USB gps units on IBM X31's running Slackware 10.1 with kernel
+2.6.11.  I posted a message last month describing my attempts to use udev
+actions.  No one responded and I have since abandoned the udev actions and
+scripts and installed the gpsd.hotplug and gpsd.usermap.
+
+The gpsd.hotplug script does not work, as written, under Slackware 10.1.  I
+believe this is because usb ttys are hotmapped under /dev/tts/USBn, where n
+is 0, 1, 2 ...
+
+I altered gpsd.hotplug accordingly
+
+73c73,74
+&lt;             tty = &quot;/dev/&quot; + subnodes[0]
+---
+&gt;<i>             ## tty = &quot;/dev/&quot; + subnodes[0]
+</I>&gt;<i>             tty = &quot;/dev/tts/&quot; + subnodes[0][3:]
+</I>
+and the logs seem to indicate events are happening more or less as I would
+expect.
+
+The problem is that gpsd no longer responds to commands sent over a telnet
+connection.  Yet I can cat /dev/tts/USBn  and see valid NMEA output
+containing correct information.  Furthermore, if I kill gpsd and restart it,
+specifying  the device name specified on the command line, a telnet
+connection works fine.
+
+The remainder of this post documents the above, starting from a reboot with
+the gps disconnected and then plugged in after the boot is completed.
+
+Any help greatly appreciated.
+
+Thanks,
+Mike Ellis
+
+1. Following a reboot and then plugging in the gps, the new information in
+dmesg is:
+
+usb 2-1: new full speed USB device using uhci_hcd and address 2
+usbhid: probe of 2-1:1.0 failed with error -5
+drivers/usb/serial/usb-serial.c: USB Serial support registered for DeLorme
+Earthmate USB
+drivers/usb/serial/usb-serial.c: USB Serial support registered for HID-&gt;COM
+RS232 Adapter
+cypress 2-1:1.0: DeLorme Earthmate USB converter detected
+usb 2-1: DeLorme Earthmate USB converter now attached to ttyUSB0
+usbcore: registered new driver cypress
+drivers/usb/serial/cypress_m8.c: Cypress USB to Serial Driver v1.06
+
+2. The corresponding new information at the tail of /var/log/messages is:
+
+Dec  2 10:41:55 xlrn1003 kernel: usb 2-1: new full speed USB device using
+uhci_hcd and address 2
+Dec  2 10:41:56 xlrn1003 kernel: drivers/usb/serial/usb-serial.c: USB Serial
+support registered for DeLorme Earthmate USB
+Dec  2 10:41:56 xlrn1003 kernel: drivers/usb/serial/usb-serial.c: USB Serial
+support registered for HID-&gt;COM RS232 Adapter
+Dec  2 10:41:56 xlrn1003 kernel: cypress 2-1:1.0: DeLorme Earthmate USB
+converter detected
+Dec  2 10:41:56 xlrn1003 kernel: usb 2-1: DeLorme Earthmate USB converter
+now attached to ttyUSB0
+Dec  2 10:41:56 xlrn1003 kernel: usbcore: registered new driver cypress
+Dec  2 10:41:56 xlrn1003 kernel: drivers/usb/serial/cypress_m8.c: Cypress
+USB to Serial Driver v1.06
+Dec  2 10:41:56 xlrn1003 udev[8406]: configured rule in
+'/etc/udev/rules.d/udev.rules' at line 95 applied, 'ttyUSB0' becomes
+'tts/USB%n'
+Dec  2 10:41:56 xlrn1003 udev[8406]: creating device node '/dev/tts/USB0'
+Dec  2 10:41:57 xlrn1003 gpsd.hotplug: ACTION=add
+DEVPATH=/devices/pci0000:00/0000:00:1d.0/usb2/2-1/2-1:1.0
+Dec  2 10:41:57 xlrn1003 gpsd.hotplug: waiting for /dev/tts/USB0
+Dec  2 10:41:57 xlrn1003 gpsd.hotplug: /dev/tts/USB0 has gone active
+Dec  2 10:41:57 xlrn1003 gpsd.hotplug: gpsd_control(action=add,
+arg=/dev/tts/USB0)
+Dec  2 10:41:57 xlrn1003 gpsd.hotplug: socket /var/run/gpsd.sock creation
+failure: (111, 'Connection refused')
+Dec  2 10:41:57 xlrn1003 gpsd.hotplug: launching gpsd -n -F
+/var/run/gpsd.sock
+Dec  2 10:41:57 xlrn1003 gpsd.hotplug:
+REMOVER=/var/run/usb/%sys%devices%pci0000:00%0000:00:1d.0%usb2%2-1%2-1:1.0
+Dec  2 10:41:57 xlrn1003 gpsd.hotplug: gpsd.hotplug: exception
+exceptions.IOError yields [Errno 2] No such file or directory:
+'/var/run/usb/%sys%devices%pci0000:00%0000:00:1d.0%usb2%2-1%2-1:1.0'
+Dec  2 10:41:57 xlrn1003 gpsd.hotplug: ACTION=add
+DEVPATH=/devices/pci0000:00/0000:00:1d.0/usb2/2-1/2-1:1.0
+Dec  2 10:41:57 xlrn1003 gpsd.hotplug: waiting for /dev/tts/USB0
+Dec  2 10:41:57 xlrn1003 gpsd.hotplug: /dev/tts/USB0 has gone active
+Dec  2 10:41:57 xlrn1003 gpsd.hotplug: gpsd_control(action=add,
+arg=/dev/tts/USB0)
+Dec  2 10:41:57 xlrn1003 gpsd.hotplug: reached a running gpsd
+
+3. Verifying that gpsd is actually alive.
+
+bash-3.00$ ps ax | grep gpsd
+ 8408 ?        S&lt;s    0:00 gpsd -n -F /var/run/gpsd.sock
+ 8423 ?        S&lt;     0:00 /usr/bin/python /etc/hotplug/usb/gpsd.hotplug
+
+4.  Telnet connects, but typing command codes gets no response whatsoever:
+
+bash-3.00$ telnet localhost 2947
+Trying 127.0.0.1...
+Connected to localhost.
+Escape character is '^]'.
+xp
+w
+o
+y
+
+^]
+telnet&gt; quit
+Connection closed.
+
+5.  The gps unit and the tty device seem to be just fine:
+
+cat /dev/tts/USB0
+MC,155535.583,A,3544.6187,N,08233.9429,W,0.00,301.24,021205,,*1F
+$GPGGA,155536.583,3544.6187,N,08233.9426,W,2,06,1.7,633.2,M,-32.3,M,3.2
+,0000*4B
+$GPGSA,A,3,11,03,27,13,23,19,,,,,,,3.3,1.7,2.9*32
+$GPGSV,3,1,09,19,74,088,36,27,55,318,34,13,46,222,38,03,40,049,40*73
+$GPGSV,3,2,09,08,25,312,00,23,24,187,45,11,19,159,38,28,14,268,00*7B
+$GPGSV,3,3,09,16,06,072,00*44
+$GPRMC,155536.583,A,3544.6187,N,08233.9426,W,0.00,301.24,021205,,*13
+$GPGGA,155537.583,3544.6185,N,08233.9422,W,2,06,1.7,632.0,M,-32.3,M,4.2
+,0000*48
+$GPGSA,A,3,11,03,27,13,23,19,,,,,,,3.3,1.7,2.9*32
+$GPGSV,3,1,09,19,74,088,36,27,55,318,35,13,46,222,37,03,40,049,40*7D
+$GPGSV,3,2,09,08,25,312,00,23,24,187,45,11,19,159,37,28,14,268,00*74
+$GPGSV,3,3,09,16,06,072,00*44
+$GPRMC,155537.583,A,3544.6185,N,08233.9422,W,0.00,301.24,021205,,*14
+$GPGGA,155538.583,3544.6183,N,08233.9422,W,2,06,1.7,630.2,M,-32.3,M,1.2
+,0000*44
+$GPGSA,A,3,11,03,27,13,23,19,,,,,,,3.3,1.7,2.9*32
+$GPGSV,3,1,09,19,74,088,36,27,55,318,34,13,46,222,38,03,40,049,40*73
+$GPGSV,3,2,09,08,25,312,00,23,24,187,45,11,19,159,36,28,14,268,00*75
+
+6.  Kill gpsd and restart with device specified on command line:
+
+sudo killall gpsd
+sudo /usr/sbin/gpsd -n /dev/tts/USB0
+
+7. Telnet commands now work perfectly.
+
+telnet localhost 2947
+Trying 127.0.0.1...
+Connected to localhost.
+Escape character is '^]'.
+xp
+GPSD,X=1133539081.944448,P=35.743643 -82.565646
+xpamse
+GPSD,X=1133539092.216715,P=35.743576 -82.565664,A=689.016,M=3,S=1,E=0.00
+12.80 nan
+o
+GPSD,O=MID4 1133539093.50 0.005 35.743611 -82.565701  675.11 12.80        ?
+330.8920    0.033  0.174 137.0113 25.60        ?
+y
+GPSD,Y=MID41 ? 9:19 73 82 32 1:27 57 318 38 1:13 45 220 40 1:3 39 48 35 1:8
+26 312 0 0:23 23 186 43 1:11 20 159 41 1:28 15 268 0 0:16 5 72 0 0:
+-------------- next part --------------
+An HTML attachment was scrubbed...
+URL: &lt;<A HREF="https://lists.berlios.de/pipermail/gpsd-users/attachments/20051202/bf850c2b/attachment.html">https://lists.berlios.de/pipermail/gpsd-users/attachments/20051202/bf850c2b/attachment.html</A>&gt;
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="001152.html">Off-topic: accuracy in conversion from meters/sec to knots (was	Re: [Gpsd-users] Trimble Lassen iQ Speed &amp; Mode Wrong)
+</A></li>
+	<LI>Next message: <A HREF="001148.html">[Gpsd-users] Trying to get working Magellan GPS 315 with pl2303 usb serial adapter
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1147">[ date ]</a>
+              <a href="thread.html#1147">[ thread ]</a>
+              <a href="subject.html#1147">[ subject ]</a>
+              <a href="author.html#1147">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

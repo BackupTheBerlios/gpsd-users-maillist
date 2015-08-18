@@ -1,0 +1,116 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] reading reports with python blocked
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2011-January/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20reading%20reports%20with%20python%20blocked&In-Reply-To=%3C4D3F0078.10205%40chaschperli.ch%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="004959.html">
+   <LINK REL="Next"  HREF="004955.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] reading reports with python blocked</H1>
+    <B>Thomas Mueller</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20reading%20reports%20with%20python%20blocked&In-Reply-To=%3C4D3F0078.10205%40chaschperli.ch%3E"
+       TITLE="[Gpsd-users] reading reports with python blocked">thomas at chaschperli.ch
+       </A><BR>
+    <I>Tue Jan 25 17:55:20 CET 2011</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="004959.html">[Gpsd-users] Mapping NMEA Sentence name to tag
+</A></li>
+        <LI>Next message: <A HREF="004955.html">[Gpsd-users] reading reports with python blocked
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#4953">[ date ]</a>
+              <a href="thread.html#4953">[ thread ]</a>
+              <a href="subject.html#4953">[ subject ]</a>
+              <a href="author.html#4953">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>hi
+
+trying to use gpsd with python (2.6.5) with Ubuntu 10.04. and had
+problems. So i upgraded to a 2.95 package from launchpad. But i
+  could not get it working.
+
+At the moment i just want to print longitude and latitude on stdin.
+
+I found the &quot;Re: gpsd and python: running&quot; thread from nov 18. Running
+this script (see below) has the same problem as mine. it blocks forever
+after 3 reports:
+
+# ./test
+&lt;dictwrapper: {'release': '2.95', 'proto_major': 3, 'rev': '2011-01-10T13:24:23', 'class': 'VERSION', 'proto_minor': 3}&gt;
+&lt;dictwrapper: {'class': 'DEVICES', 'devices': [{'parity': 'N', 'activated': 1295971122.3599999, 'driver': 'uBlox UBX binary', 'subtype': ' LEA-5H-0', 'bps': 9600, 'flags': 1, 'stopbits': 1, 'path': '/dev/gps0', 'native': 0, 'class': 'DEVICE', 'mincycle': 0.25, 'cycle': 1.0}]}&gt;
+&lt;dictwrapper: {'enable': True, 'scaled': True, 'raw': 0, 'json': True, 'nmea': False, 'timing': False, 'class': 'WATCH'}&gt;
+
+
+last lines of output with strace:
+recv(3, &quot;{\&quot;class\&quot;:\&quot;DEVICES\&quot;,\&quot;devices\&quot;:[{\&quot;class\&quot;:\&quot;DEVICE\&quot;,\&quot;path\&quot;:\&quot;/dev/gps0\&quot;,\&quot;activated\&quot;:1295972171.02,\&quot;flags\&quot;:1,\&quot;driver\&quot;:\&quot;uBlox UBX binary\&quot;,\&quot;subtype\&quot;:\&quot; LEA-5H-0\&quot;,\&quot;native\&quot;:0,\&quot;bps\&quot;:9600,\&quot;parity\&quot;:\&quot;N\&quot;,\&quot;stopbits\&quot;:1,\&quot;cycle\&quot;:1.00,\&quot;mincycle\&quot;:0.25}]}\r\n{\&quot;class\&quot;:\&quot;WATCH\&quot;,\&quot;enable\&quot;:true,\&quot;json\&quot;:true,\&quot;nmea\&quot;:false,\&quot;raw\&quot;:0,\&quot;scaled\&quot;:true,\&quot;timing\&quot;:false}\r\n&quot;, 4096, 0) = 329
+gettimeofday({1295972171, 20084}, NULL) = 0
+gettimeofday({1295972171, 24163}, NULL) = 0
+recv(3,
+
+
+Gpsd is running and works - tested with  &quot;gpsmon localhost:2947&quot;.
+
+
+Any hints? Any examples how to print reliable longitude/latitude on stdin with python?
+
+- Thomas
+
+
+script:
+
+from gps import *
+(host, port, device) = (&quot;localhost&quot;, &quot;2947&quot;, None)
+debug=0
+try:
+     daemon = gps(host=host,
+             port=port,
+             mode=WATCH_ENABLE|WATCH_JSON|WATCH_SCALED,
+             verbose=debug)
+     while (True):
+         # Do stuff
+         if daemon.poll() == -1:
+             print &quot;daemon error&quot;
+         if daemon.valid&amp;  PACKET_SET:
+             report = daemon.data
+             # if (0==1):
+             print report
+except socket.error:
+     print &quot;GPSD not running&quot;
+
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="004959.html">[Gpsd-users] Mapping NMEA Sentence name to tag
+</A></li>
+	<LI>Next message: <A HREF="004955.html">[Gpsd-users] reading reports with python blocked
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#4953">[ date ]</a>
+              <a href="thread.html#4953">[ thread ]</a>
+              <a href="subject.html#4953">[ subject ]</a>
+              <a href="author.html#4953">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

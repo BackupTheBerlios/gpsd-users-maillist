@@ -1,0 +1,96 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] serial connection problems, gpsd compile failed
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2004-December/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20serial%20connection%20problems%2C%20gpsd%20compile%20failed&In-Reply-To=%3C20041213124302.3a55e84e.hamish_nospam%40yahoo.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="000162.html">
+   <LINK REL="Next"  HREF="000164.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] serial connection problems, gpsd compile failed</H1>
+    <B>Hamish</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20serial%20connection%20problems%2C%20gpsd%20compile%20failed&In-Reply-To=%3C20041213124302.3a55e84e.hamish_nospam%40yahoo.com%3E"
+       TITLE="[Gpsd-users] serial connection problems, gpsd compile failed">hamish_nospam at yahoo.com
+       </A><BR>
+    <I>Mon Dec 13 00:43:02 CET 2004</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="000162.html">[Gpsd-users] serial connection problems, gpsd compile failed
+</A></li>
+        <LI>Next message: <A HREF="000164.html">[Gpsd-users] serial connection problems, gpsd compile failed
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#163">[ date ]</a>
+              <a href="thread.html#163">[ thread ]</a>
+              <a href="subject.html#163">[ subject ]</a>
+              <a href="author.html#163">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>&gt;<i> The power part of the dual cable works. When that's plugged in I see the
+</I>&gt;<i> battery icon change. But I'm not yet getting intelligible serial input
+</I>&gt;<i> from the Geko. No matter what protocol is chosen, the most I get is
+</I>&gt;<i> binary junk.
+</I>&gt;<i> 
+</I>&gt;<i> I suppose none of that is really on topic here, but having downloaded
+</I>&gt;<i> the full archive I see this isn't a busy list, so I hope it will be
+</I>&gt;<i> tolerated. :) Guidance, if any, will be appreciated. For gpsd I guess I
+</I>&gt;<i> need NMEA, but that protocol seems to produce no output at all with the
+</I>&gt;<i> Geko on the ThinkPad's /dev/tts/0, with the command from INSTALL:
+</I>&gt;<i>     stty -F /dev/tts/0 ispeed 4800 &amp;&amp; cat &lt;/dev/tts/0
+</I>
+
+try debugging NMEA with GtkTerm or minicom. comm settings at GPS end?
+
+
+&gt;<i> Now, to get on topic: I have attempted the gpsd compile on Slackware
+</I>&gt;<i> 10.0, a desktop machine, and again on the aforementioned ThinkPad. Both
+</I>&gt;<i> failed at the same point:
+</I>&gt;<i> [...]
+</I>&gt;<i> creating libgps.la
+</I>..
+&gt;<i> gps.c: In function `get_pixel':
+</I>&gt;<i> gps.c:72: warning: implicit declaration of function `fprintf'
+</I>&gt;<i> gps.c:72: error: `stderr' undeclared (first use in this function)
+</I>&gt;<i> gps.c:72: error: (Each undeclared identifier is reported only once
+</I>
+please add the line 
+#include &lt;stdio.h&gt;
+
+to the top of gps.c. I think this is already fixed for the next version.
+
+
+
+Hamish
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="000162.html">[Gpsd-users] serial connection problems, gpsd compile failed
+</A></li>
+	<LI>Next message: <A HREF="000164.html">[Gpsd-users] serial connection problems, gpsd compile failed
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#163">[ date ]</a>
+              <a href="thread.html#163">[ thread ]</a>
+              <a href="subject.html#163">[ subject ]</a>
+              <a href="author.html#163">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

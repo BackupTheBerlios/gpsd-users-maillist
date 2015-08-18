@@ -1,0 +1,115 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] gpsd on windows
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2007-September/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20gpsd%20on%20windows&In-Reply-To=%3C46DD286D.4AAF.00BD.0%40cavs.msstate.edu%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="002860.html">
+   <LINK REL="Next"  HREF="002864.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] gpsd on windows</H1>
+    <B>Marshall Crocker</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20gpsd%20on%20windows&In-Reply-To=%3C46DD286D.4AAF.00BD.0%40cavs.msstate.edu%3E"
+       TITLE="[Gpsd-users] gpsd on windows">crocker at cavs.msstate.edu
+       </A><BR>
+    <I>Tue Sep  4 16:42:05 CEST 2007</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="002860.html">[Gpsd-users] gpsd on windows
+</A></li>
+        <LI>Next message: <A HREF="002864.html">[Gpsd-users] gpsd on windows
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2863">[ date ]</a>
+              <a href="thread.html#2863">[ thread ]</a>
+              <a href="subject.html#2863">[ subject ]</a>
+              <a href="author.html#2863">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>&gt;<i> I had build gpsd using cygwin, but when I tried to run it it just 
+</I>&gt;<i> stopped without any warning or error message. You seem to be more 
+</I>&gt;<i> successful with this approach :-) I'll try your patch shortly.
+</I>
+Once I got gpsd to compile, it has worked without a hitch.  One thing to remember, when you start gpsd from cygwin you have to start just as in linux such as gpsd /dev/ttyS0.  When you do that, gpsd will go into the background and you can kill it from windows task manager or from a cygwin terminal.  Of course, you can start it with -N and -D to get debug output and to keep it from going into the background.
+
+&gt;<i>Unfortunately a cygwin solution get's probably in the way of a hassle 
+</I>&gt;<i>free installation procedure for a common Windows user. Having cygwin as 
+</I>&gt;<i>a requirement on a user machine is not such a good idea (although the 
+</I>&gt;<i>cygwin installation is not that complicated, but it adds another step). 
+</I>&gt;<i>On the other hand, let gpsd work as a service and install a &quot;standalone&quot; 
+</I>&gt;<i>cygwin1.dll somewhere in system32 cries for dll version conflicts. Or do 
+</I>&gt;<i>I miss something here?
+</I>
+The best way to do this is to install gpsd.exe and cygwin1.dll into your program installation directory or a subdirectory and have your application start gpsd.exe with the correct parameters.  This will be transparent to the user and will not conflict with an existing cygwin installation as long as you don't have the cygwin1.dll anywhere in the path. Of course the installer could also check for an existing cygwin installation and decide which dll to use.
+
+Of course it would be best to have a single windows gpsd package that a user could download and install as a service or normal application so that any application would be able to use a single gpsd install instead of having to use their own.  
+
+&gt;<i>So I would really like to have a native (without any mingw or cygwin) 
+</I>&gt;<i>Windows port of gpsd using Visual Studio C++ 2005 Express Edition (free 
+</I>&gt;<i>as in beer). Having a native Win32 port - at least for libgps - is 
+</I>&gt;<i>probably a must for wider adoption of other gps related open / free 
+</I>&gt;<i>software on windows (I'm not really interested in closed source gps 
+</I>&gt;<i>software myself).
+</I>
+Mingw is native.  It just packages a windows version of gcc and header files that allows you to compile native windows programs.  From the mingw web page
+&quot;A collection of freely available and freely distributable Windows specific header files and import libraries combined with GNU toolsets that allow one to produce native Windows programs that do not rely on any 3rd-party C runtime DLLs.&quot;
+
+I'm not 100% certain but I think anything that can compile under mingw can compile under VS.  I haven't tried this but now that I think about it I'd like to see what will happen if I try to compile my app under VS.  I think that mingw may have a few header files that VS doesn't but I'm no expert to make that judgement.  I just know any app compiled on mingw can run on a vanilla win32 system.
+
+&gt;<i>1) termios is not available on Win32 - I need to rewrite serial.c almost 
+</I>&gt;<i>completely (and have a look for serial I/O spreaded throughout the rest 
+</I>&gt;<i>of the gpsd code, like tcflush())
+</I>
+&gt;<i>2) select() doesn't work with none socket fd's (like the serial I/O 
+</I>&gt;<i>fd's) on Win32 - I need to rewrite the select() call in gpsd.c, and use 
+</I>&gt;<i>WaitForMultipleObjects() instead
+</I>
+
+When I began porting my app to windows I found out that termios is not available on win32 and so I knew porting gpsd to native win32 was going to be quite a chore.  Best of luck to you :).
+
+
+&gt;<i>My long term goal for a native Win32 port would be to encapsulate this 
+</I>&gt;<i>stuff into platform specific files (candidates are gpsd.c and serial.c 
+</I>&gt;<i>(maybe netlib.c), as they will be pretty different on Linux/Unix and 
+</I>&gt;<i>Win32) and have the rest of the gpsd code as equal as ever possible.
+</I>
+You might want to take a look at the Pidgin source (used to be GAIM).  When I started doing my port I was interested in how apps such as Pidgin managed to run on multiple platforms.  Pidgin basically has it's own library for functions that work different for different platforms.  For example, instead of calling write() which of course doesn't work on sockets in win32, it uses a function called wpurple_write().  This function has two definitions, one for win32 and one for linux/unix.  The win32 version checks if the handle is a socket and executes send() if it is and the normal write if it isn't.  I would suggest something similar.
+
+When it comes down to it, if you do manage to port gpsd to windows, someone is going to have to maintain this port. I don't know how willing the gpsd developers would be to take on this responsibility so it may be a more effective use of your efforts to put together a windows gpsd cygwin package and direct users to download and install it whenever they install gpsdrive.  I would love to see a native windows version of gpsd but cygwin gets the job done and licensing isn't an issue between the two. 
+
+Marshall
+
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="002860.html">[Gpsd-users] gpsd on windows
+</A></li>
+	<LI>Next message: <A HREF="002864.html">[Gpsd-users] gpsd on windows
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2863">[ date ]</a>
+              <a href="thread.html#2863">[ thread ]</a>
+              <a href="subject.html#2863">[ subject ]</a>
+              <a href="author.html#2863">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

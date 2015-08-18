@@ -1,0 +1,81 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] Updated pre-3.0 task list
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2011-April/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Updated%20pre-3.0%20task%20list&In-Reply-To=%3C20110410133253.GB29445%40thyrsus.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="005198.html">
+   <LINK REL="Next"  HREF="005204.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] Updated pre-3.0 task list</H1>
+    <B>Eric Raymond</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Updated%20pre-3.0%20task%20list&In-Reply-To=%3C20110410133253.GB29445%40thyrsus.com%3E"
+       TITLE="[Gpsd-users] Updated pre-3.0 task list">esr at thyrsus.com
+       </A><BR>
+    <I>Sun Apr 10 15:32:53 CEST 2011</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="005198.html">[Gpsd-users] Updated pre-3.0 task list
+</A></li>
+        <LI>Next message: <A HREF="005204.html">[Gpsd-users] ARGO-16BS
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#5199">[ date ]</a>
+              <a href="thread.html#5199">[ thread ]</a>
+              <a href="subject.html#5199">[ subject ]</a>
+              <a href="author.html#5199">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Jon Schlueter &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">jon.schlueter at gmail.com</A>&gt;:
+&gt;<i> Bug: on nog.yazug.com barrier breaks the system the use of
+</I>&gt;<i> 
+</I>&gt;<i> asm volatile(&quot;mfence&quot;);
+</I>&gt;<i> 
+</I>&gt;<i>  is not supported and generates an illegal instruction Not sure where
+</I>&gt;<i> to go from here....
+</I>&gt;<i> 
+</I>&gt;<i> as noted in another email chain the following compile and run but
+</I>&gt;<i> don't know if they run correctly
+</I>&gt;<i> 
+</I>&gt;<i>  __sync_syncronize()
+</I>&gt;<i> asm volatile(&quot;lock orl $0,0(%esp)&quot;);
+</I>
+You'll need to tweak the memory barrier code to emit one of these on i686 arch,
+I guess. The good news is that it may not actually matter which you do on Intel
+processors that old; for backwards-compatibility reasons, they don't do
+aggressive reordeing anyway.
+-- 
+		&lt;a href=&quot;<A HREF="http://www.catb.org/~esr/">http://www.catb.org/~esr/</A>&quot;&gt;Eric S. Raymond&lt;/a&gt;
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="005198.html">[Gpsd-users] Updated pre-3.0 task list
+</A></li>
+	<LI>Next message: <A HREF="005204.html">[Gpsd-users] ARGO-16BS
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#5199">[ date ]</a>
+              <a href="thread.html#5199">[ thread ]</a>
+              <a href="subject.html#5199">[ subject ]</a>
+              <a href="author.html#5199">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

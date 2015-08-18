@@ -1,0 +1,126 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] -j option in gpxlogger
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2009-October/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20-j%20option%20in%20gpxlogger&In-Reply-To=%3Calpine.DEB.2.00.0910231350520.28945%40V18301.vims.edu%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="004016.html">
+   <LINK REL="Next"  HREF="004020.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] -j option in gpxlogger</H1>
+    <B>David R. Forrest</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20-j%20option%20in%20gpxlogger&In-Reply-To=%3Calpine.DEB.2.00.0910231350520.28945%40V18301.vims.edu%3E"
+       TITLE="[Gpsd-users] -j option in gpxlogger">drf5n at maplepark.com
+       </A><BR>
+    <I>Fri Oct 23 20:21:40 CEST 2009</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="004016.html">[Gpsd-users] Problem with PPS on FreeBSD
+</A></li>
+        <LI>Next message: <A HREF="004020.html">[Gpsd-users] uclibc 0.9.29 + libgps
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#4019">[ date ]</a>
+              <a href="thread.html#4019">[ thread ]</a>
+              <a href="subject.html#4019">[ subject ]</a>
+              <a href="author.html#4019">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi,
+
+I'm trying to use gpxlogger (-V: SVN ID: $Id: gpxlogger.c 5326 2009-03-02 
+23:24:03Z esr $ ) on a debian box with an old no-name mouse GPS 
+(<A HREF="http://www.geeks.com/details.asp?invtid=MS-GM-03&amp;cat=CON">http://www.geeks.com/details.asp?invtid=MS-GM-03&amp;cat=CON</A>) and the 
+'jitter' apparently breaks things up into several tracks per 
+second--rotating between tracks for a 3d fix, 2d fix, and 3d fixes with 
+corrupted time-stamp.  (sample fragment below)
+
+I've tried the -j flag, but its usage seems odd as compared to the other 
+clients in that it requires an argument:
+
+gpxlogger -j
+gpxlogger: option requires an argument -- 'j'
+Usage: gpxlogger [-V] [-h] [-i timeout] [-j casoc] 
+[server[:port:[device]]]
+         defaults to 'gpxlogger -i 5 -j 0 127.0.0.1:2947'
+
+doing a 'gpxlogger -j=1' or 'gpxlogger -j 1' seems to not fault, but I 
+still get similarly jittery track logs.
+
+Is my GPS particularly jittery, or is there some other -j parameter value 
+I should try?
+
+Dave
+-- 
+  David Forrest P.E., Ph.D.                       (804)684-7900w
+  <A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">drf at vims.edu</A>                                    (804)413-2882c
+  <A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">drf5n at maplepark.com</A>                             (804)642-0662h
+                                    <A HREF="http://maplepark.com/~drf5n/">http://maplepark.com/~drf5n/</A>
+
+###  sample fragment with 3 tracks in 1 second ###
+  &lt;trk&gt;
+   &lt;trkseg&gt;
+    &lt;trkpt lat=&quot;37.247307&quot; lon=&quot;-76.501325&quot;&gt;
+     &lt;ele&gt;224.900000&lt;/ele&gt;
+     &lt;time&gt;2009-10-23T17:51:43Z&lt;/time&gt;
+     &lt;fix&gt;3d&lt;/fix&gt;
+    &lt;/trkpt&gt;
+   &lt;/trkseg&gt;
+  &lt;/trk&gt;
+  &lt;trk&gt;
+   &lt;trkseg&gt;
+    &lt;trkpt lat=&quot;nan&quot; lon=&quot;nan&quot;&gt;
+     &lt;ele&gt;nan&lt;/ele&gt;
+     &lt;time&gt;-219246529-25297425-129T08:29:52Z&lt;/time&gt;
+     &lt;fix&gt;3d&lt;/fix&gt;
+    &lt;/trkpt&gt;
+   &lt;/trkseg&gt;
+  &lt;/trk&gt;
+  &lt;trk&gt;
+   &lt;trkseg&gt;
+    &lt;trkpt lat=&quot;37.247307&quot; lon=&quot;-76.501325&quot;&gt;
+     &lt;ele&gt;nan&lt;/ele&gt;
+     &lt;time&gt;2009-10-23T17:51:43Z&lt;/time&gt;
+     &lt;fix&gt;2d&lt;/fix&gt;
+    &lt;/trkpt&gt;
+    &lt;trkpt lat=&quot;37.247308&quot; lon=&quot;-76.501322&quot;&gt;
+     &lt;ele&gt;224.500000&lt;/ele&gt;
+     &lt;time&gt;2009-10-23T17:51:44Z&lt;/time&gt;
+     &lt;fix&gt;3d&lt;/fix&gt;
+    &lt;/trkpt&gt;
+   &lt;/trkseg&gt;
+  &lt;/trk&gt;
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="004016.html">[Gpsd-users] Problem with PPS on FreeBSD
+</A></li>
+	<LI>Next message: <A HREF="004020.html">[Gpsd-users] uclibc 0.9.29 + libgps
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#4019">[ date ]</a>
+              <a href="thread.html#4019">[ thread ]</a>
+              <a href="subject.html#4019">[ subject ]</a>
+              <a href="author.html#4019">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

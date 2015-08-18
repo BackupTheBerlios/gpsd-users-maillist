@@ -1,0 +1,77 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] gpsd 2.28, SV6 (TSIP) report
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2005-July/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20gpsd%202.28%2C%20SV6%20%28TSIP%29%20report&In-Reply-To=%3C20050723044625.GB31365%40thyrsus.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="000861.html">
+   <LINK REL="Next"  HREF="000867.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] gpsd 2.28, SV6 (TSIP) report</H1>
+    <B>Eric S. Raymond</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20gpsd%202.28%2C%20SV6%20%28TSIP%29%20report&In-Reply-To=%3C20050723044625.GB31365%40thyrsus.com%3E"
+       TITLE="[Gpsd-users] gpsd 2.28, SV6 (TSIP) report">esr at thyrsus.com
+       </A><BR>
+    <I>Sat Jul 23 06:46:25 CEST 2005</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="000861.html">[Gpsd-users] gpsd 2.28, SV6 (TSIP) report
+</A></li>
+        <LI>Next message: <A HREF="000867.html">[Gpsd-users] logger for gpsd
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#863">[ date ]</a>
+              <a href="thread.html#863">[ thread ]</a>
+              <a href="subject.html#863">[ subject ]</a>
+              <a href="author.html#863">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>gnu not unix &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">gnu at wraith.sf.ca.us</A>&gt;:
+&gt;<i> Hi Folks--here's a report when using Trimble SV6 in TSIP mode
+</I>&gt;<i> with the gpsd. I have this GPS running with ntp happily, btw.
+</I>&gt;<i> Is gpsd really spitting NMEA to the tsip device? 
+</I>
+Yes, GPSD sends several different probe strings to anything it opens.
+That doesn't look like your problem, however.  It looks to me like your
+gpsd is core dumping while dealing with an RTCM correction.
+
+As a workaround, build the Subversion head version.  The methos for passing
+RTCM connections was removed from the TSIP driver; that may prevent your
+core dump.
+
+Can you get a stack trace with gdb?
+-- 
+		&lt;a href=&quot;<A HREF="http://www.catb.org/~esr/">http://www.catb.org/~esr/</A>&quot;&gt;Eric S. Raymond&lt;/a&gt;
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="000861.html">[Gpsd-users] gpsd 2.28, SV6 (TSIP) report
+</A></li>
+	<LI>Next message: <A HREF="000867.html">[Gpsd-users] logger for gpsd
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#863">[ date ]</a>
+              <a href="thread.html#863">[ thread ]</a>
+              <a href="subject.html#863">[ subject ]</a>
+              <a href="author.html#863">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

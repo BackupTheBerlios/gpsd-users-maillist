@@ -1,0 +1,92 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] Problem detecting broken connection between libgps and	gpsd
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2010-January/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Problem%20detecting%20broken%20connection%20between%20libgps%20and%0A%09gpsd&In-Reply-To=%3C20100107142512.4abd4658%40dragon.localdomain%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   
+   <LINK REL="Next"  HREF="004149.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] Problem detecting broken connection between libgps and	gpsd</H1>
+    <B>Charles Curley</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Problem%20detecting%20broken%20connection%20between%20libgps%20and%0A%09gpsd&In-Reply-To=%3C20100107142512.4abd4658%40dragon.localdomain%3E"
+       TITLE="[Gpsd-users] Problem detecting broken connection between libgps and	gpsd">charlescurley at charlescurley.com
+       </A><BR>
+    <I>Thu Jan  7 22:25:12 CET 2010</I>
+    <P><UL>
+        
+        <LI>Next message: <A HREF="004149.html">[Gpsd-users] gpsd 2.90 has wrong API_VERSION info
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#4148">[ date ]</a>
+              <a href="thread.html#4148">[ thread ]</a>
+              <a href="subject.html#4148">[ subject ]</a>
+              <a href="author.html#4148">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Using the latest and greatest in Subversion, (GPSD version: 2.91dev
+Rev: svn6914, API 3.1), I see that a C library client does not detect
+when the server has shut down (e.g.: &quot;killall gpsd&quot;). The client sits
+there and reads the same fix time from gpsdata (gpadata-&gt;fix.time).
+
+I see this in a C GTK+ client I am writing and also in cgps. I have
+run my client in gdb, but not cgps.
+
+xgps (python) correctly detects a broken socket immediately.
+
+My C code is:
+
+--------------------------------------------------
+    if (gps_waiting (gpsdata)) {
+        if (gps_poll (gpsdata) != 0) {
+            /* no gps */
+            (void) fprintf (stderr, &quot;No contact with the GPS server.\n&quot;);
+            resynch (NULL, 0, NULL);
+        }
+    }
+--------------------------------------------------
+
+resynch () re-establishes a conection, and works when called from a
+menu entry.
+
+-- 
+
+Charles Curley                  /&quot;\    ASCII Ribbon Campaign
+Looking for fine software       \ /    Respect for open standards
+and/or writing?                  X     No HTML/RTF in email
+<A HREF="http://www.charlescurley.com">http://www.charlescurley.com</A>    / \    No M$ Word docs in email
+
+Key fingerprint = CE5C 6645 A45A 64E4 94C0  809C FFF6 4C48 4ECD DFDB
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	
+	<LI>Next message: <A HREF="004149.html">[Gpsd-users] gpsd 2.90 has wrong API_VERSION info
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#4148">[ date ]</a>
+              <a href="thread.html#4148">[ thread ]</a>
+              <a href="subject.html#4148">[ subject ]</a>
+              <a href="author.html#4148">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

@@ -1,0 +1,127 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] how to crosscompile gpsd for avr32
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2007-May/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20how%20to%20crosscompile%20gpsd%20for%20avr32&In-Reply-To=%3CPine.LNX.4.64.0705082344480.4202%40birdbird.example.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="002626.html">
+   <LINK REL="Next"  HREF="002629.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] how to crosscompile gpsd for avr32</H1>
+    <B>Matt Roberds</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20how%20to%20crosscompile%20gpsd%20for%20avr32&In-Reply-To=%3CPine.LNX.4.64.0705082344480.4202%40birdbird.example.com%3E"
+       TITLE="[Gpsd-users] how to crosscompile gpsd for avr32">mattroberds at cox.net
+       </A><BR>
+    <I>Wed May  9 07:08:24 CEST 2007</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="002626.html">[Gpsd-users] PL2303 driver for 2.4 kernels?
+</A></li>
+        <LI>Next message: <A HREF="002629.html">[Gpsd-users] how to crosscompile gpsd for avr32
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2628">[ date ]</a>
+              <a href="thread.html#2628">[ thread ]</a>
+              <a href="subject.html#2628">[ subject ]</a>
+              <a href="author.html#2628">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>On Tue, 8 May 2007, Randy wrote:
+&gt;<i> 1)During the make process I get: ldconfig: command not found.
+</I>&gt;<i> This seems to be not included in my toolset for some reason. The
+</I>&gt;<i> make appears to complete ok though.
+</I>
+ldconfig looks for shared libraries in some &quot;standard&quot; directories
+(like /lib and /usr/lib) plus some user-specified directories (like
+maybe /usr/local/lib).  It sets up the symbolic links to the latest
+version of the library, and also stores some information in a cache
+file (usually /etc/ld.so.cache ).  When you run a program, the loader
+(ld.so) uses the symbolic links and cache created by ldconfig to load
+the correct libraries for the program you're trying to run.  ld.so
+doesn't have to spend time digging through all of the library
+directories; it basically says &quot;I need libfoo.so.3 so I'll look it up
+in the cache - OK, the cache says it lives in /usr/lib - I'll open
+/usr/lib/libfoo.so.3 (which is really a symbolic link to
+/usr/lib/libfoo.so.3.1.4 but I don't know that) - OK, this looks like
+a shared library, I'll get what I need out of it.&quot;
+
+The upshot of all of the above is that it only really makes sense to run
+ldconfig on the target system.  Running the x86 ldconfig on your desktop
+machine would update the information for the x86 loader, but wouldn't do
+anything for the avr loader.  If you have an ldconfig for avr at all,
+it'll most likely only be on your target system.  (The other way to do
+this would be to have an avr emulator and a copy of your target
+environment on your desktop machine.  That way the avr ldconfig could
+run under emulation and set up everything it needs to.  You'd then need
+to copy the *entire* environment from your desktop to the embedded
+system to get things to run.)
+
+&gt;<i> 2) when i take the resulting gpsd executable to my avr32 system and
+</I>&gt;<i>    attempt to run it, i get &quot;can't load library 'libstdc++.so.6'.
+</I>
+Running ldconfig on the target system *might* fix this.  Or, perhaps C++
+support wasn't selected when you installed Linux onto the embedded system -
+you might have to spend some more quality time with the install disks.
+
+&gt;<i> since there is no such lib already on the target system,
+</I>
+You might try 'find / -name &quot;libstdc++*&quot;' on the target system just to
+make sure.
+
+&gt;<i> i found a lib like this on the avr32-linux compiler directory and ftp'd
+</I>&gt;<i> it to the avr32 and made a symbolic like with the desired name
+</I>
+Making the symlink is part of it, but ldconfig does some additional
+magic as well.
+
+&gt;<i> and now the loader says '/lib/libstdc++.so.6' is not an ELF file
+</I>
+You could try 'file /lib/libstdc++.so.6' on the target system to see
+what kind of file it is (if you've got the 'file' command on the
+target system).  Even if not, the 'file' command on your desktop system
+should tell you: 'file /path/to/avr-compiler/lib/libstdc++.so.6'.
+
+&gt;<i> is there a way to tell the configure script for gpsd to completely
+</I>&gt;<i> link the gpsd exe to all shared libs so it wont need any shared libs
+</I>&gt;<i> at run time?
+</I>
+This is usually called &quot;static linking&quot;.  You might try adding
+'--disable-shared --enable static' to your configure command line to
+see if that does what you want.  One way you can tell is that the
+resulting executables will be much larger than what you have now.
+
+Matt Roberds
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="002626.html">[Gpsd-users] PL2303 driver for 2.4 kernels?
+</A></li>
+	<LI>Next message: <A HREF="002629.html">[Gpsd-users] how to crosscompile gpsd for avr32
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2628">[ date ]</a>
+              <a href="thread.html#2628">[ thread ]</a>
+              <a href="subject.html#2628">[ subject ]</a>
+              <a href="author.html#2628">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

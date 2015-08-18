@@ -1,0 +1,96 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] Java Client
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2010-July/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Java%20Client&In-Reply-To=%3C4C52A7C2.80106%40gmail.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="004613.html">
+   <LINK REL="Next"  HREF="004616.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] Java Client</H1>
+    <B>Arigead</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Java%20Client&In-Reply-To=%3C4C52A7C2.80106%40gmail.com%3E"
+       TITLE="[Gpsd-users] Java Client">captain.deadly at gmail.com
+       </A><BR>
+    <I>Fri Jul 30 12:21:54 CEST 2010</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="004613.html">[Gpsd-users] Problems accessing gpsd data via client lib
+</A></li>
+        <LI>Next message: <A HREF="004616.html">[Gpsd-users] Java Client
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#4615">[ date ]</a>
+              <a href="thread.html#4615">[ thread ]</a>
+              <a href="subject.html#4615">[ subject ]</a>
+              <a href="author.html#4615">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hello all,
+    I've been attempting to create a Java client to read data from gpsd
+for a research project that I'm working on. It's all written in Java so
+I have to use this for my client to pass the location info on into the
+system.
+
+As a starting point I had a look at a Java Client I found with a search
+[1] and modified that a bit. I also had a look at the documentation [2]
+and [3]. I'm using gpsd version 2.92 on an Ubuntu 10.4 machine.
+
+My client basically polls the gpsd tcp port every 20 seconds which may
+well be incorrect? Anyhow I find that my client is reading back the line:
+
+$GPRMC,005142,V,18000.0000,N,00000.0000,W,0.0000,0.000,010407,,*11
+
+with the &quot;V&quot; meaning that it's not a good fix and the co-ords given
+wrong. My problem is that at the same time as I'm reading this line from
+the gpsd port the xgps client has a good fix. Why is the xgps client
+getting a fix and I'm not.
+
+I then changed my code so that every 20 seconds when I was reading the
+tcp port I first write out the &quot;?TPV;&quot; command then read back. This does
+give em a fix when xgpsd doesn't have a fix. It's still tagged with the
+&quot;V&quot; to suggest it's not a good fix but it does have my co-ords or what
+I'd expect.
+
+I've obviously missed something on the client writing side of things. I
+assume that TPV is the way to go as opposed to simply polling the port.
+Any pointers to fill the gaps in my knowledge would be gratefully received.
+
+
+[1] <A HREF="../2005-January/000216.html">http://lists.berlios.de/pipermail/gpsd-users/2005-January/000216.html</A>
+[2] <A HREF="http://gpsd.berlios.de/NMEA.txt">http://gpsd.berlios.de/NMEA.txt</A>
+[3] <A HREF="http://gpsd.berlios.de/gpsd.html">http://gpsd.berlios.de/gpsd.html</A>
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="004613.html">[Gpsd-users] Problems accessing gpsd data via client lib
+</A></li>
+	<LI>Next message: <A HREF="004616.html">[Gpsd-users] Java Client
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#4615">[ date ]</a>
+              <a href="thread.html#4615">[ thread ]</a>
+              <a href="subject.html#4615">[ subject ]</a>
+              <a href="author.html#4615">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

@@ -1,0 +1,101 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] Question on GPSD interface.
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2008-December/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Question%20on%20GPSD%20interface.&In-Reply-To=%3C91981b3e0812012226u2293b0di35ad6434b422c9c4%40mail.gmail.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="003480.html">
+   <LINK REL="Next"  HREF="003482.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] Question on GPSD interface.</H1>
+    <B>Chris Kuethe</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Question%20on%20GPSD%20interface.&In-Reply-To=%3C91981b3e0812012226u2293b0di35ad6434b422c9c4%40mail.gmail.com%3E"
+       TITLE="[Gpsd-users] Question on GPSD interface.">chris.kuethe at gmail.com
+       </A><BR>
+    <I>Tue Dec  2 07:26:18 CET 2008</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="003480.html">[Gpsd-users] gpsd interaction with cron?
+</A></li>
+        <LI>Next message: <A HREF="003482.html">[Gpsd-users] Question on GPSD interface.
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3481">[ date ]</a>
+              <a href="thread.html#3481">[ thread ]</a>
+              <a href="subject.html#3481">[ subject ]</a>
+              <a href="author.html#3481">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>On Thu, Nov 27, 2008 at 3:07 AM, PRANEET KUMAR.A &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">apkumar_be at yahoo.co.in</A>&gt; wrote:
+&gt;<i> Hello Team,
+</I>&gt;<i>
+</I>&gt;<i> I'm new to GPSD and need some basic information to get myself started. Can you please answer the following questions?
+</I>&gt;<i>  &#183;  For establishing connection, what does GPSD expects from lower layers (some host s/w)  if it is configured to read data directly from a socket port? Will it act as a server which keeps listening to a socket port waiting for lower layers to connect to it or is it the other way around?
+</I>
+the protocol is documented in the manpage. (<A HREF="http://gpsd.berlios.de/gpsd.html">http://gpsd.berlios.de/gpsd.html</A>)
+
+gpsd listens on a tcp port (default 2947) and relays data to connected sockets.
+
+&gt;<i> &#183;  How does GPSD intimate/communicate the/with lower layers (some host s/w) to provide it with NMEA data? I need this information for initialising my host s/w and feeding the data to the socket when GPSD comes and waits on it.
+</I>
+it doesn't initiate communication with software. it waits for software
+to connect. if your software needs to communicate with gpsd, you will
+have to attempt to connect, and handle connection failure.
+
+&gt;<i> &#183; When and how would GPSD starts execution? Does this execute when some client application starts and request for location data or does it start at system start-up and run in background?
+</I>
+It starts up however you start it up. Some people start it at boot
+time, some people run it by hand, some applications look for gpsd and
+try to start it...
+
+&gt;<i> Please provide me with GPSD's basic flow and its interface information.
+</I><A HREF="http://gpsd.berlios.de/hacking.html#architecture">http://gpsd.berlios.de/hacking.html#architecture</A>
+
+&gt;<i> Thanks &amp; Regards,
+</I>&gt;<i> Praneet Kumar A.
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i>      Add more friends to your messenger and enjoy! Go to <A HREF="http://messenger.yahoo.com/invite/">http://messenger.yahoo.com/invite/</A>
+</I>&gt;<i> _______________________________________________
+</I>&gt;<i> Gpsd-users mailing list
+</I>&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">Gpsd-users at lists.berlios.de</A>
+</I>&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">https://lists.berlios.de/mailman/listinfo/gpsd-users</A>
+</I>&gt;<i>
+</I>
+
+
+-- 
+GDB has a 'break' feature; why doesn't it have 'fix' too?
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="003480.html">[Gpsd-users] gpsd interaction with cron?
+</A></li>
+	<LI>Next message: <A HREF="003482.html">[Gpsd-users] Question on GPSD interface.
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3481">[ date ]</a>
+              <a href="thread.html#3481">[ thread ]</a>
+              <a href="subject.html#3481">[ subject ]</a>
+              <a href="author.html#3481">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

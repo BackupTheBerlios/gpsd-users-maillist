@@ -1,0 +1,101 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] gpspipe question
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2009-November/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20gpspipe%20question&In-Reply-To=%3C56378e320911260408m32326520ta95c5516d68dfb3d%40mail.gmail.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="004088.html">
+   <LINK REL="Next"  HREF="004089.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] gpspipe question</H1>
+    <B>Richard Horton</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20gpspipe%20question&In-Reply-To=%3C56378e320911260408m32326520ta95c5516d68dfb3d%40mail.gmail.com%3E"
+       TITLE="[Gpsd-users] gpspipe question">arimus.uk at googlemail.com
+       </A><BR>
+    <I>Thu Nov 26 13:08:20 CET 2009</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="004088.html">[Gpsd-users] bluetooth blues
+</A></li>
+        <LI>Next message: <A HREF="004089.html">[Gpsd-users] Fw:  bluetooth blues
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#4087">[ date ]</a>
+              <a href="thread.html#4087">[ thread ]</a>
+              <a href="subject.html#4087">[ subject ]</a>
+              <a href="author.html#4087">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi,
+
+Quick question:
+
+I've got the following setup:
+
+Box a: running gpsfake using prerecorded nmea log files, xgps shows
+expected results on this box.
+
+Box b: This box is a custom distribution and doesn't run python so
+can't run gpsfake locally, using gpspipe to take the output from box a
+using -r -s .
+
+I'm having problems on box b to get gpsd to pick up the data from gpspipe.
+
+Box b:
+gpsd running using /dev/gps
+(/dev/gps created using mknod -m 666 /dev/gps c 4 64)
+gpspipe -r -s /dev/gps 192.168.0.1:2947 (box a's ip address).
+
+The gpspipe command is showing the expected nmea sentances from box a,
+however running a second gpspipe or cgps on box b's gpsd does not show
+any output...
+
+gpspipe -r 127.0.0.1:2947  just gives the initial gpsd message and no
+futher data.
+
+
+Any ideas?
+
+(Or do I need to setup /dev/gps_in and /dev/gps_out and link them some
+how to get a gpsd to listen to the gpspipe data?)
+
+
+-- 
+Richard Horton
+Users are like a virus: Each causing a thousand tiny crises until the
+host finally dies.
+<A HREF="http://www.solstans.co.uk">http://www.solstans.co.uk</A> - Solstans Japanese Bobtails and Norwegian Forest Cats
+<A HREF="http://www.pbase.com/arimus">http://www.pbase.com/arimus</A> - My online photogallery
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="004088.html">[Gpsd-users] bluetooth blues
+</A></li>
+	<LI>Next message: <A HREF="004089.html">[Gpsd-users] Fw:  bluetooth blues
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#4087">[ date ]</a>
+              <a href="thread.html#4087">[ thread ]</a>
+              <a href="subject.html#4087">[ subject ]</a>
+              <a href="author.html#4087">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

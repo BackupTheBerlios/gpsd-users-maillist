@@ -1,0 +1,114 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] Re: [Gpsd-dev] The state of gpsd
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2006-March/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Re%3A%20%5BGpsd-dev%5D%20The%20state%20of%20gpsd&In-Reply-To=%3C91981b3e0603090839m397f391dj6ef7ca08a73bf7e4%40mail.gmail.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="001386.html">
+   <LINK REL="Next"  HREF="001390.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] Re: [Gpsd-dev] The state of gpsd</H1>
+    <B>Chris Kuethe</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Re%3A%20%5BGpsd-dev%5D%20The%20state%20of%20gpsd&In-Reply-To=%3C91981b3e0603090839m397f391dj6ef7ca08a73bf7e4%40mail.gmail.com%3E"
+       TITLE="[Gpsd-users] Re: [Gpsd-dev] The state of gpsd">chris.kuethe at gmail.com
+       </A><BR>
+    <I>Thu Mar  9 17:39:37 CET 2006</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="001386.html">[Gpsd-users] The state of gpsd
+</A></li>
+        <LI>Next message: <A HREF="001390.html">[Gpsd-users] Re: [Gpsd-dev] The state of gpsd
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1388">[ date ]</a>
+              <a href="thread.html#1388">[ thread ]</a>
+              <a href="subject.html#1388">[ subject ]</a>
+              <a href="author.html#1388">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>On 3/9/06, Eric S. Raymond &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">esr at snark.thyrsus.com</A>&gt; wrote:
+&gt;<i> I'd take a patch that implemented a compile-time option to lock gpsd
+</I>&gt;<i> to a fixed baud rate, avoiding autobauding.  Again, this would further
+</I>&gt;<i> slim down the daemon for embedded deployments.  I'm much more
+</I>&gt;<i> reluctant to implement a runtime option to fix baud rate, for reasons
+</I>&gt;<i> already hashed over at length on the dev list.
+</I>
+Sounds like a plan. I'll look into that shortly, though if someone
+beats me to it...
+
+&gt;<i> Increasingly, the focus of work on this project seems to be shifting
+</I>&gt;<i> away from the daemon core.  One direction is clients. The work on C,
+</I>&gt;<i> Python, and now Perl client libraries has borne the expected fruit; we
+</I>&gt;<i> now have a rather large assortment of clients, and new ones have
+</I>&gt;<i> become quite easy to write.
+</I>
+And this is a good thing. The daemon works, and now people are
+learning use it for stuff.
+
+&gt;<i> A third direction is open-source support for flashing GPS firmware.
+</I>&gt;<i> Chris Kuethe wrote a pre-alpha SiRF flash utility, and I re-factored
+</I>&gt;<i> it into GPS-type-independent and SiRF-specific pieces glued together
+</I>&gt;<i> by a driver architecture rather like gpsd's.  As far as I know, this
+</I>&gt;<i> code has not been tested.
+</I>&gt;<i>
+</I>&gt;<i> * Question for Chris Kuethe: Chris, are you listening?  What's our next
+</I>&gt;<i> step?
+</I>
+Well, I need few things:
+ * permission from SiRF to redistribute their firmware blobs (which I
+don't have yet). i have very detailed information regarding the
+behaviour of the SiRF receivers during programming, so cooking up an
+accurate &quot;test bot&quot; shouldn't be a problem. Firmware distribution is
+still a problem.
+ * a stash of sacrificial hardware to test on. For the benefit of
+everyone else, the reason why the gpsflash manpage has all those dire
+warnings about turning your receiver into a brick is because I wreck
+two of them while mucking about with new firmwares. It's a tricky
+thing.
+ * documentation for other receiver types. I don't recall seeing
+information for other receivers on how to flash the firmware (not that
+it doesn't exist). I sold my garmin, so I can't exactly reverse
+engineer their protocol. If other people feel like reverse engineering
+some protocol or hounding vendor tech support for documentation before
+i get around to it, great. Those feeling really brave are encouraged
+to have a look at gpsflash and produce the appropriate routines for
+non-sirf hardware.
+
+CK
+
+
+--
+GDB has a 'break' feature; why doesn't it have 'fix' too?
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="001386.html">[Gpsd-users] The state of gpsd
+</A></li>
+	<LI>Next message: <A HREF="001390.html">[Gpsd-users] Re: [Gpsd-dev] The state of gpsd
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1388">[ date ]</a>
+              <a href="thread.html#1388">[ thread ]</a>
+              <a href="subject.html#1388">[ subject ]</a>
+              <a href="author.html#1388">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

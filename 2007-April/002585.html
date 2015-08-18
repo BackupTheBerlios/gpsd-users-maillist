@@ -1,0 +1,110 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] how to crosscompile gpsd for avr32
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2007-April/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20how%20to%20crosscompile%20gpsd%20for%20avr32&In-Reply-To=%3CPine.LNX.4.64.0704272027040.6833%40birdbird.example.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="002584.html">
+   <LINK REL="Next"  HREF="002587.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] how to crosscompile gpsd for avr32</H1>
+    <B>Matt Roberds</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20how%20to%20crosscompile%20gpsd%20for%20avr32&In-Reply-To=%3CPine.LNX.4.64.0704272027040.6833%40birdbird.example.com%3E"
+       TITLE="[Gpsd-users] how to crosscompile gpsd for avr32">mattroberds at cox.net
+       </A><BR>
+    <I>Sat Apr 28 04:04:37 CEST 2007</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="002584.html">[Gpsd-users] how to crosscompile gpsd for avr32
+</A></li>
+        <LI>Next message: <A HREF="002587.html">[Gpsd-users] how to crosscompile gpsd for avr32
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2585">[ date ]</a>
+              <a href="thread.html#2585">[ thread ]</a>
+              <a href="subject.html#2585">[ subject ]</a>
+              <a href="author.html#2585">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>On Fri, 27 Apr 2007, Randy wrote:
+&gt;<i> Can anyone point me to some docs on what needs to be configured in
+</I>&gt;<i> the scripts to allow a crosscompile of gpsd using the avr32 toolchain?
+</I>
+The Autoconf documentation at
+<A HREF="http://www.gnu.org/software/autoconf/manual/html_node/index.html">http://www.gnu.org/software/autoconf/manual/html_node/index.html</A> may be
+helpful, specifically chapter 15:
+<A HREF="http://www.gnu.org/software/autoconf/manual/html_node/Running-configure-Scripts.html#Running-configure-Scripts">http://www.gnu.org/software/autoconf/manual/html_node/Running-configure-Scripts.html#Running-configure-Scripts</A>
+
+Some general steps...
+
+The first thing you have to be able to do is to make &quot;Hello, world&quot;
+work.  In other words, you need to be able to write a simple program to
+print &quot;Hello, world&quot; on the screen, or blink an LED, or buzz the buzzer,
+or whatever your embedded system has.  Then you need to be able to
+compile that program with the avr32 compiler on your desktop machine,
+get the executable over to the embedded system, and run it on the
+embedded system.  This proves that your toolchain is basically working,
+and also lets you figure out if the avr32 compiler needs any special
+flags or other command-line options to work.
+
+Then, you can move on to persuading gpsd (or whatever other package you
+want to use) to build with the avr32 compiler instead of the desktop
+machine's native gcc.  If you run 'configure --help' in the stock gpsd
+distribution, you will see a lot of options for tuning the build process.
+--build and --host are probably a good place to start.  Near the end of
+the help document, there are some variables you can set regarding the
+compiler and linker.  You can set them as environment variables, or
+give them to configure on the command line.
+
+For instance, say you figured out you had to tell the avr compiler
+'--nifty-option-3' on the command line to get &quot;Hello, world&quot; working.
+Also, your avr stuff is in /usr/avr/lib, and the avr compiler is called
+avrcc.  Your configure command may end up looking something like this...
+
+./configure --build=avr --host=avr CC=avrcc CFLAGS='--nifty-option-3' LDFLAGS='-L/usr/avr/lib'
+
+You may want to use some of the with/without and enable/disable flags
+to control what gets built.  For instance, on a small embedded system,
+you might want --disable-python and --without-x .  This should prevent
+the build (or attempted build) of things you aren't going to use anyway.
+If you know that you will always use the same type of GPS receiver, you
+could use the --disable flags for the other types of receivers to get
+a smaller library/executable.
+
+I hope this helps!
+
+Matt Roberds
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="002584.html">[Gpsd-users] how to crosscompile gpsd for avr32
+</A></li>
+	<LI>Next message: <A HREF="002587.html">[Gpsd-users] how to crosscompile gpsd for avr32
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2585">[ date ]</a>
+              <a href="thread.html#2585">[ thread ]</a>
+              <a href="subject.html#2585">[ subject ]</a>
+              <a href="author.html#2585">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

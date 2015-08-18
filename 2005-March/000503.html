@@ -1,0 +1,112 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] Gpsd on a Zaurus SL-C3000
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2005-March/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Gpsd%20on%20a%20Zaurus%20SL-C3000&In-Reply-To=%3CPine.LNX.4.62.0503311038130.8214%40catbert.rellim.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="000509.html">
+   <LINK REL="Next"  HREF="000479.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] Gpsd on a Zaurus SL-C3000</H1>
+    <B>Gary E. Miller</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Gpsd%20on%20a%20Zaurus%20SL-C3000&In-Reply-To=%3CPine.LNX.4.62.0503311038130.8214%40catbert.rellim.com%3E"
+       TITLE="[Gpsd-users] Gpsd on a Zaurus SL-C3000">gem at rellim.com
+       </A><BR>
+    <I>Thu Mar 31 20:43:04 CEST 2005</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="000509.html">[Gpsd-users] Gpsd on a Zaurus SL-C3000
+</A></li>
+        <LI>Next message: <A HREF="000479.html">[Gpsd-users] Gpsd on a Zaurus SL-C3000
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#503">[ date ]</a>
+              <a href="thread.html#503">[ thread ]</a>
+              <a href="subject.html#503">[ subject ]</a>
+              <a href="author.html#503">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>-----BEGIN PGP SIGNED MESSAGE-----
+Hash: SHA1
+
+Yo Russell!
+
+On Thu, 31 Mar 2005, Russell Nelson wrote:
+
+&gt;<i> Gary E. Miller writes:
+</I>&gt;<i>  &gt; &gt; You're making an assumption that won't survive exposure to an ARM.
+</I>&gt;<i>  &gt;
+</I>&gt;<i>  &gt; I am open to learning.  Can you cite some doc to PROVE your contention?
+</I>&gt;<i>
+</I>&gt;<i> A struct of this form:
+</I>&gt;<i>
+</I>&gt;<i> struct foo { uint16 a; uchar b; uint16 c; };
+</I>&gt;<i>
+</I>&gt;<i> when compiled for the ARM processor, will require 6 bytes.  That's
+</I>&gt;<i> probably not what the creator of the struct intended.
+</I>
+Which is why the garmin code has a pragma pack to alert the compiler
+and the programmer to the exact intentions of the code.
+
+&gt;<i> It's not what
+</I>&gt;<i> the naive reader of the code would guess.
+</I>
+I guess you are right.  My code is not for the naive reader.  Prior
+understanding of pragmas, structures and device drivers is required.
+
+&gt;<i> will overwrite whatever follows bar in memory.  In other words, you
+</I>&gt;<i> have a buffer overflow just waiting to happen.
+</I>
+Which is why the BUFFER is much bigger than the STRUCTURE.  When dealing
+with whatever comes down the serial I/O the device driver must be
+triple carefull about the BUFFER overrun.
+
+Once the BUFFER is properly filled the STRUCTURE can be easily applied.
+
+RGDS
+GARY
+- ---------------------------------------------------------------------------
+Gary E. Miller Rellim 20340 Empire Blvd, Suite E-3, Bend, OR 97701
+	<A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">gem at rellim.com</A>  Tel:+1(541)382-8588 Fax: +1(541)382-8676
+
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v1.2.3 (GNU/Linux)
+
+iD8DBQFCTES78KZibdeR3qURAknEAKCeOnmvOCo5OlWG1Qc4+I54IT6wJACgzl2Q
+oxOj3oCTFUH5TzIb5UEO7tE=
+=6c/O
+-----END PGP SIGNATURE-----
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="000509.html">[Gpsd-users] Gpsd on a Zaurus SL-C3000
+</A></li>
+	<LI>Next message: <A HREF="000479.html">[Gpsd-users] Gpsd on a Zaurus SL-C3000
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#503">[ date ]</a>
+              <a href="thread.html#503">[ thread ]</a>
+              <a href="subject.html#503">[ subject ]</a>
+              <a href="author.html#503">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

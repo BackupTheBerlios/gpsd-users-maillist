@@ -1,0 +1,129 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] State of the GPSD project
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2005-May/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20State%20of%20the%20GPSD%20project&In-Reply-To=%3C200505180115.j4I1Flx3017970%40snark.thyrsus.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="000641.html">
+   <LINK REL="Next"  HREF="000643.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] State of the GPSD project</H1>
+    <B>Eric S. Raymond</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20State%20of%20the%20GPSD%20project&In-Reply-To=%3C200505180115.j4I1Flx3017970%40snark.thyrsus.com%3E"
+       TITLE="[Gpsd-users] State of the GPSD project">esr at snark.thyrsus.com
+       </A><BR>
+    <I>Wed May 18 03:15:47 CEST 2005</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="000641.html">[Gpsd-users] gpsd and RTCM
+</A></li>
+        <LI>Next message: <A HREF="000643.html">[Gpsd-users] autogen.sh errors
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#642">[ date ]</a>
+              <a href="thread.html#642">[ thread ]</a>
+              <a href="subject.html#642">[ subject ]</a>
+              <a href="author.html#642">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>As usual, shipping 2.24 triggered a flurry of patches and contributions.
+Rob Janssen sent in some good Zodiac fixes.  Tobias Hebel bugged me
+about unclear language on the gpsd man page, stimulating a rewrite of
+a couple of sections.  The revised pages are already up on the website.
+
+Tobias also nudged me for a feature that Rob Janssen had previously
+suggested and I'd been considering myself -- the ability to specify
+multiple devices to be probed at startup with gpsd command arguments.
+That is now implemented, tested, and documented.  The -f switch is now
+a no-op kept solely for backward compatibility; the man page warns
+tthat it may be removed in a future version.
+
+Current bugs and unexplained phenomena:
+
+Remco, using a SiRF chip at level 231, is still seeing a 10-second
+offset in his reported GPS times.  Rob Janssen and I, with the same
+hardware, aren't seeing this.
+
+Wallace E. Owen &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">owen at titan.com</A>&gt; and Rainer Scholz &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">ras at sigos.de</A>&gt;,
+who may or may not be different people :-), have reported that after
+gpsd has been running for a long time (5 hours in Rainer's original
+report) something clobbers the device name and zeros it out.  Rainer
+seems to have established that this is due to some change introduced
+between 2.21 and 2.22; I've sent him a diff which we're going to try
+to whittle down until we can figure out what.
+
+Roeland Th. Jansen &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">roeland at linux-it.nl</A>&gt; was reporting no data from
+a BU-303.  I have a BU-303 and it's working fine.  I don't know if
+he has checked out SVN head recently.
+
+Rob Janssen (I think) is reporting that control socket creation
+isn't working for him.
+
+The NTP interface:
+
+There's a messy question about how NTP shared-memory segments should
+be associated with GPSes.  At the moment, the code allocates just
+one and all devices report through it.  It would be better for each
+device to have its own segment, so they look like separate time
+sources to NTP and it can apply its heuristics for weeding out
+the less consistent ones.  
+
+The trouble with this is that:
+
+1) The default build of NTP only supports 4 segments.  Thus, if we
+allocate them per GPS device, we're not unlikely to run out of them.
+
+2) We may actually want *two* segments per device, one for message time
+and one for PPS time.
+
+3) We can't grab new segments after privileges are dropped.
+
+I think we're going to be stuck with grabbing pointers to all four
+segments just in case gpsd wants them, and then having control-socket
+commands to bind NTP unit numbers to devices.
+
+Thread-callback support:
+
+I'm still looking at Alfredo's patch.  I haven't merged it because
+I don't understand it yet.
+-- 
+		&lt;a href=&quot;<A HREF="http://www.catb.org/~esr/">http://www.catb.org/~esr/</A>&quot;&gt;Eric S. Raymond&lt;/a&gt;
+
+Government: If you refuse to pay unjust taxes, your property will be
+confiscated. If you attempt to defend your property, you will be arrested.
+If you resist arrest, you will be clubbed. If you defend yourself against
+clubbing, you will be shot dead. These procedures are known as the Rule of
+Law.	-- Edward Abbey
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="000641.html">[Gpsd-users] gpsd and RTCM
+</A></li>
+	<LI>Next message: <A HREF="000643.html">[Gpsd-users] autogen.sh errors
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#642">[ date ]</a>
+              <a href="thread.html#642">[ thread ]</a>
+              <a href="subject.html#642">[ subject ]</a>
+              <a href="author.html#642">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

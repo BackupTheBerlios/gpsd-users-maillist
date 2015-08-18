@@ -1,0 +1,109 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] gpsd 2.20, BT, rfcomm and suspend/resume on a PDA
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2006-May/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20gpsd%202.20%2C%20BT%2C%20rfcomm%20and%20suspend/resume%20on%20a%20PDA&In-Reply-To=%3C20060517165023.GC25164%40thyrsus.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="001537.html">
+   <LINK REL="Next"  HREF="001586.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] gpsd 2.20, BT, rfcomm and suspend/resume on a PDA</H1>
+    <B>Eric S. Raymond</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20gpsd%202.20%2C%20BT%2C%20rfcomm%20and%20suspend/resume%20on%20a%20PDA&In-Reply-To=%3C20060517165023.GC25164%40thyrsus.com%3E"
+       TITLE="[Gpsd-users] gpsd 2.20, BT, rfcomm and suspend/resume on a PDA">esr at thyrsus.com
+       </A><BR>
+    <I>Wed May 17 18:50:23 CEST 2006</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="001537.html">[Gpsd-users] gpsd 2.20, BT, rfcomm and suspend/resume on a PDA
+</A></li>
+        <LI>Next message: <A HREF="001586.html">[Gpsd-users] gpsd 2.20, BT, rfcomm and suspend/resume on a PDA
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1582">[ date ]</a>
+              <a href="thread.html#1582">[ thread ]</a>
+              <a href="subject.html#1582">[ subject ]</a>
+              <a href="author.html#1582">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Whoops!  I see you have done what I requested in my last mail!
+
+joshua &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">joshua at willowisp.net</A>&gt;:
+&gt;<i> Hi All,
+</I>&gt;<i> I am running a pre-release version of familiar 0.8.4 (rc1) on an
+</I>&gt;<i> iPaq h2200 interfacing to a Holux GPSlim236 BT GPS via gpsd2.20.  I
+</I>&gt;<i> connect using the rfcomm layer and primarily use roadmap as an
+</I>&gt;<i> application (full details here:
+</I>&gt;<i> <A HREF="http://www.handhelds.org/moin/moin.cgi/HpIpaqH2200gps">http://www.handhelds.org/moin/moin.cgi/HpIpaqH2200gps</A>) I have had to
+</I>&gt;<i> implement a somewhat heavy-handed fix for suspend/resume and I just
+</I>&gt;<i> wanted to see if this is a reasonable approach or if anyone has a
+</I>&gt;<i> better idea of where to deal with the issue.
+</I>
+I'm not certain, but I think your &quot;heavy-handed&quot; fix may be the best
+spproach.
+
+&gt;<i> Fundamentally gpsd works great - I start up the app, it makes a call
+</I>&gt;<i> to gpsd, gpsd binds to /dev/rfcomm0 and rfcomm handles the BT
+</I>&gt;<i> connection to the GPS (at least, this is my layman's understanding of
+</I>&gt;<i> it)
+</I>
+That sounds right.
+
+&gt;<i> The problem arises when I suspend the ipaq (for example when I stop
+</I>&gt;<i> for groceries) - when I resume the ipaq, the program hangs with a
+</I>&gt;<i> GPSD,R=1 and does not update position.  It is quite easy to fix: I
+</I>&gt;<i> can either restart the program (which then makes a request of gpsd
+</I>&gt;<i> and....) or I can restart gpsd, and it reports out position fine.
+</I>
+Got it...
+
+&gt;<i> I have added a script to the suspend/resume apmd scripts to kill
+</I>&gt;<i> gpsd on suspend and start it on resume.
+</I>&gt;<i> 
+</I>&gt;<i> Is there a better way to do this?  Is this fixed in a newer version?
+</I>&gt;<i> I think it is most likely related to the first FAQ cited below.
+</I>
+It seems to me to be more likely related to the second one (e.g. the
+Bluetooth-stack problem).  By hypothesis, your gpsd has already bound
+a device when you suspend it.
+
+You might want to try having just one script that SIGHUPs gpsd on
+resume.
+
+Either way, I'd take a patch that added that script to the distribution.
+Are you using an RPM-based distro?
+-- 
+		&lt;a href=&quot;<A HREF="http://www.catb.org/~esr/">http://www.catb.org/~esr/</A>&quot;&gt;Eric S. Raymond&lt;/a&gt;
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="001537.html">[Gpsd-users] gpsd 2.20, BT, rfcomm and suspend/resume on a PDA
+</A></li>
+	<LI>Next message: <A HREF="001586.html">[Gpsd-users] gpsd 2.20, BT, rfcomm and suspend/resume on a PDA
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1582">[ date ]</a>
+              <a href="thread.html#1582">[ thread ]</a>
+              <a href="subject.html#1582">[ subject ]</a>
+              <a href="author.html#1582">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

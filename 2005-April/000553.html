@@ -1,0 +1,86 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] gpsd seg-fault condition found on Mac OS X, with GlobalSat BT-318 Bluetooth GPS
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2005-April/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20gpsd%20seg-fault%20condition%20found%20on%20Mac%20OS%20X%2C%20with%20GlobalSat%20BT-318%20Bluetooth%20GPS&In-Reply-To=%3C06f19560e4f76b0791faa5fb3215756d%40nicholasfamilycentral.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="000551.html">
+   <LINK REL="Next"  HREF="000557.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] gpsd seg-fault condition found on Mac OS X, with GlobalSat BT-318 Bluetooth GPS</H1>
+    <B>Frank Nicholas</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20gpsd%20seg-fault%20condition%20found%20on%20Mac%20OS%20X%2C%20with%20GlobalSat%20BT-318%20Bluetooth%20GPS&In-Reply-To=%3C06f19560e4f76b0791faa5fb3215756d%40nicholasfamilycentral.com%3E"
+       TITLE="[Gpsd-users] gpsd seg-fault condition found on Mac OS X, with GlobalSat BT-318 Bluetooth GPS">frank at nicholasfamilycentral.com
+       </A><BR>
+    <I>Sat Apr  9 02:31:44 CEST 2005</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="000551.html">[Gpsd-users] Re: [Gpsd-dev] New GPS report, gpsd 2.20, Mac OS X 10.3.8, GlobalSat BT-318 Bluetooth GPS, specs &amp; gpsd status
+</A></li>
+        <LI>Next message: <A HREF="000557.html">[Gpsd-users] Re: [Gpsd-dev] gpsd seg-fault condition found on Mac OS X, with GlobalSat BT-318 Bluetooth GPS
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#553">[ date ]</a>
+              <a href="thread.html#553">[ thread ]</a>
+              <a href="subject.html#553">[ subject ]</a>
+              <a href="author.html#553">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>I believe I've found the condition that's causing the seg-faults on my 
+setup.
+
+When the GPS gets &quot;really confused&quot;, by trying to change modes, it puts 
+out a seemingly random number (witnessed 1-6) of 0xFF's, followed by a 
+0x80.  When the GPS is in this condition, is when I get the seg-faults 
+with gpsd.  When it's in this state, NOTHING will get good information 
+from it.  Not the Leadtek Palm Pilot utility, SiRFDemo.exe, the 
+GlobalSat supplied utility......
+
+It appears that failed attempts to change the GPS mode from NMEA to 
+SiRF, or from SiRF to NMEA, causes this condition.  It is resolved by 
+removing the battery for a few minutes, and the GPS is then back in 
+NMEA mode at 4800 baud.
+
+SiRFDemo.exe, a windows utility from SiRF, will successfully change the 
+GPS from NMEA to SiRF.  Sometimes when trying to change back to NMEA, 
+the GPS gets into the &quot;really confused&quot; mode....  The manufacturer 
+provides not documentation/method/software to change the mode of the 
+GPS.....
+
+Can someone supply some code, or a method to capture the raw data, when 
+the GPS is &quot;really confused&quot;?  I'd be glad to send the data for testing 
+with gpsd.
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="000551.html">[Gpsd-users] Re: [Gpsd-dev] New GPS report, gpsd 2.20, Mac OS X 10.3.8, GlobalSat BT-318 Bluetooth GPS, specs &amp; gpsd status
+</A></li>
+	<LI>Next message: <A HREF="000557.html">[Gpsd-users] Re: [Gpsd-dev] gpsd seg-fault condition found on Mac OS X, with GlobalSat BT-318 Bluetooth GPS
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#553">[ date ]</a>
+              <a href="thread.html#553">[ thread ]</a>
+              <a href="subject.html#553">[ subject ]</a>
+              <a href="author.html#553">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

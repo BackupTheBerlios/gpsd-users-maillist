@@ -1,0 +1,111 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] libgps/gpsd interaction
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2010-November/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20libgps/gpsd%20interaction&In-Reply-To=%3C307871.35120.qm%40web53002.mail.re2.yahoo.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="004740.html">
+   <LINK REL="Next"  HREF="004743.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] libgps/gpsd interaction</H1>
+    <B>Danforth Dyad</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20libgps/gpsd%20interaction&In-Reply-To=%3C307871.35120.qm%40web53002.mail.re2.yahoo.com%3E"
+       TITLE="[Gpsd-users] libgps/gpsd interaction">bdbcat at yahoo.com
+       </A><BR>
+    <I>Wed Nov 10 04:16:07 CET 2010</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="004740.html">[Gpsd-users] Garmin 18x USB / UTS coordinates.
+</A></li>
+        <LI>Next message: <A HREF="004743.html">[Gpsd-users] libgps/gpsd interaction
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#4741">[ date ]</a>
+              <a href="thread.html#4741">[ thread ]</a>
+              <a href="subject.html#4741">[ subject ]</a>
+              <a href="author.html#4741">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hello...
+
+New to the list here.&#160; I am the lead developer of OpenCPN.
+
+We are having some problems with the libgps API.
+Couple of simple questions:
+
+1.&#160; If I use the libgps 2.94 API, how can I detect that the gpsd daemon is alive?
+A simple test is constructed:
+
+a.&#160; Start gpsd.
+b.&#160; Start my application, and all runs normally.
+c.&#160; #killall gpsd
+d.&#160; My application continues to read from libgps API, and is told that 
+&#160;&#160;&#160;&#160; i.&#160; gps_data-&gt;online &gt; 0, implying that the GPS is online, and
+&#160;&#160;&#160;&#160; ii.&#160; gps_waiting() returns true, forever.
+e.&#160; So, my application hangs in a loop.
+
+My code snippet looks like this:
+
+
+On a one second timer loop:
+
+void ontimer(void)
+{
+&#160;&#160;&#160;&#160; while(m_fn_gps_waiting(m_gps_data))
+&#160;&#160;&#160;&#160;&#160; {
+&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160; m_fn_gps_poll(m_gps_data);
+
+&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160; if((m_gps_data-&gt;set &amp; ONLINE_SET) &amp;&amp; (m_gps_data-&gt;online &gt; 0))
+&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160; {
+&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160; if((m_gps_data-&gt;set &amp; STATUS_SET) &amp;&amp; (m_gps_data-&gt;status &gt; 0)) 
+&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160; {
+&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160; ...Process the fix upstream...
+&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160; }
+&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160; }
+&#160;&#160;&#160;&#160;&#160; }
+}
+
+What am I doing wrong?
+
+Note that the same situation obtains when I simply disconnect the GPS receiver without killing gpsd.
+
+Puzzled
+Dave
+
+
+
+
+
+      
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="004740.html">[Gpsd-users] Garmin 18x USB / UTS coordinates.
+</A></li>
+	<LI>Next message: <A HREF="004743.html">[Gpsd-users] libgps/gpsd interaction
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#4741">[ date ]</a>
+              <a href="thread.html#4741">[ thread ]</a>
+              <a href="subject.html#4741">[ subject ]</a>
+              <a href="author.html#4741">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

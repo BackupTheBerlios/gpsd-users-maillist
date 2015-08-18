@@ -1,0 +1,138 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] Should gpsd still release the gps when nobody is	listening?
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2004-October/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Should%20gpsd%20still%20release%20the%20gps%20when%20nobody%20is%0A%09listening%3F&In-Reply-To=%3C1098246000.6255.33.camel%40q.sr.unh.edu%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="000113.html">
+   <LINK REL="Next"  HREF="000115.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] Should gpsd still release the gps when nobody is	listening?</H1>
+    <B>Robert E. Anderson</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Should%20gpsd%20still%20release%20the%20gps%20when%20nobody%20is%0A%09listening%3F&In-Reply-To=%3C1098246000.6255.33.camel%40q.sr.unh.edu%3E"
+       TITLE="[Gpsd-users] Should gpsd still release the gps when nobody is	listening?">rea at q.sr.unh.edu
+       </A><BR>
+    <I>Wed Oct 20 06:20:00 CEST 2004</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="000113.html">[Gpsd-users] Should gpsd still release the gps when nobody is listening?
+</A></li>
+        <LI>Next message: <A HREF="000115.html">[Gpsd-users] Should gpsd still release the gps when nobody is listening?
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#114">[ date ]</a>
+              <a href="thread.html#114">[ thread ]</a>
+              <a href="subject.html#114">[ subject ]</a>
+              <a href="author.html#114">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Well the bad news is that when I finally got around to testing the GPSD
+2.2 code, the CF GPS still shows activity after closing all sessions to
+GPSD.
+
+I tried to undo the patch you sent against the 2.2 code but it failed. 
+When I went through by hand I noticed you had done most of it.  I just
+wanted to confirm that you did want me to back out of the patch included
+below, and not apply it?
+
+On Sat, 2004-10-16 at 09:16, Eric S. Raymond wrote:
+&gt;<i> Robert E. Anderson &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">rea at q.sr.unh.edu</A>&gt;:
+</I>&gt;<i> &gt; When I run gpsd with &quot;-D 3&quot; and telnet into my device I see the client
+</I>&gt;<i> &gt; connect.  My CompactFlash gps is not being polled yet.  I then issue a
+</I>&gt;<i> &gt; &quot;D&quot; command and hit return.  The CF gps is now brought online and I see
+</I>&gt;<i> &gt; output from my &quot;-D 3&quot; window.  The return value in the telnet window is
+</I>&gt;<i> &gt; the expected &quot;D=?&quot;.  I then break out of my telnet window (using ^] and
+</I>&gt;<i> &gt; q).  I see in the &quot;-D 3&quot; windows that the client has vanished and the
+</I>&gt;<i> &gt; GPS is closed.  However my CF gps is still being accessed.  Its lights
+</I>&gt;<i> &gt; indicate that it still has a connection.  
+</I>&gt;<i> &gt; 
+</I>&gt;<i> &gt; That was not the case in the past.  Did something change in how the
+</I>&gt;<i> &gt; serial port is closed or disconnected?  In older versions I'm fairly
+</I>&gt;<i> &gt; sure that the card didn't stay active when the gpsd closed the port. 
+</I>&gt;<i> &gt; Even in this version when I kill gpsd the CF gps card shuts down.
+</I>&gt;<i> 
+</I>&gt;<i> Aaarrghh.  Yes, there is a difference.  In an effort to get rid of a global,
+</I>&gt;<i> I simplified the close code so that it no longer pulls the line speed to zero
+</I>&gt;<i> on close.  Somebody here said that setting HUPCL was just as good, but I'm 
+</I>&gt;<i> gathering from your report this was incorrect.
+</I>&gt;<i> 
+</I>&gt;<i> Try applying this patch *reversed* (e.g. with -R) and see if it solves the
+</I>&gt;<i> problem. If so, tell me so I can revert this change in the masters.
+</I>&gt;<i> 
+</I>&gt;<i> Index: serial.c
+</I>&gt;<i> ===================================================================
+</I>&gt;<i> --- serial.c	(revision 1016)
+</I>&gt;<i> +++ serial.c	(revision 1017)
+</I>&gt;<i> @@ -12,8 +12,7 @@
+</I>&gt;<i>  
+</I>&gt;<i>  #include &quot;gpsd.h&quot;
+</I>&gt;<i>  
+</I>&gt;<i> -/* FIXME: ttyset_old can be global, but ttyset  */
+</I>&gt;<i> -static struct termios ttyset, ttyset_old;
+</I>&gt;<i> +static struct termios ttyset_old;
+</I>&gt;<i>  
+</I>&gt;<i>  static int set_baud(long baud)
+</I>&gt;<i>  {
+</I>&gt;<i> @@ -36,6 +35,7 @@
+</I>&gt;<i>  int gpsd_open(char *device_name, int device_speed, int stopbits)
+</I>&gt;<i>  {
+</I>&gt;<i>      int ttyfd;
+</I>&gt;<i> +    struct termios ttyset;
+</I>&gt;<i>  
+</I>&gt;<i>      gpsd_report(1, &quot;opening GPS data source at %s\n&quot;, device_name);
+</I>&gt;<i>      if ((ttyfd = open(device_name, O_RDWR | O_NONBLOCK)) &lt; 0)
+</I>&gt;<i> @@ -62,13 +62,10 @@
+</I>&gt;<i>  }
+</I>&gt;<i>  
+</I>&gt;<i>  void gpsd_close(int ttyfd)
+</I>&gt;<i> -/* restore original terminal settings, but make sure DTR goes down */
+</I>&gt;<i>  {
+</I>&gt;<i>      if (ttyfd != -1) {
+</I>&gt;<i>  	if (isatty(ttyfd)) {
+</I>&gt;<i> -	    cfsetispeed(&amp;ttyset, (speed_t)B0);
+</I>&gt;<i> -	    cfsetospeed(&amp;ttyset, (speed_t)B0);
+</I>&gt;<i> -            tcsetattr(ttyfd, TCSANOW, &amp;ttyset);
+</I>&gt;<i> +	    /* restore original settings, but make sure DTR goes down */
+</I>&gt;<i>  	    ttyset_old.c_cflag |= HUPCL;
+</I>&gt;<i>  	    tcsetattr(ttyfd,TCSANOW,&amp;ttyset_old);
+</I>&gt;<i>  	}
+</I>-- 
+--------------------------------------------------------------
+ Robert E. Anderson  		 	email: <A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">rea at sr.unh.edu</A>
+ Systems Programmer			phone: (603) 862-3489
+ UNH Research Computing Center		  fax: (603) 862-1761
+--------------------------------------------------------------
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="000113.html">[Gpsd-users] Should gpsd still release the gps when nobody is listening?
+</A></li>
+	<LI>Next message: <A HREF="000115.html">[Gpsd-users] Should gpsd still release the gps when nobody is listening?
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#114">[ date ]</a>
+              <a href="thread.html#114">[ thread ]</a>
+              <a href="subject.html#114">[ subject ]</a>
+              <a href="author.html#114">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

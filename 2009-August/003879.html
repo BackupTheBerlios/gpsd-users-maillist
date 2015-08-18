@@ -1,0 +1,123 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] New GPSD protocol is ready for beta use
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2009-August/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20New%20GPSD%20protocol%20is%20ready%20for%20beta%20use&In-Reply-To=%3C20090827035032.6D8F928E065%40thyrsus.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="003877.html">
+   <LINK REL="Next"  HREF="003885.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] New GPSD protocol is ready for beta use</H1>
+    <B>Eric S. Raymond</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20New%20GPSD%20protocol%20is%20ready%20for%20beta%20use&In-Reply-To=%3C20090827035032.6D8F928E065%40thyrsus.com%3E"
+       TITLE="[Gpsd-users] New GPSD protocol is ready for beta use">esr at thyrsus.com
+       </A><BR>
+    <I>Thu Aug 27 05:50:32 CEST 2009</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="003877.html">[Gpsd-users] gps_query issue
+</A></li>
+        <LI>Next message: <A HREF="003885.html">[Gpsd-users] New GPSD protocol is ready for beta use
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3879">[ date ]</a>
+              <a href="thread.html#3879">[ thread ]</a>
+              <a href="subject.html#3879">[ subject ]</a>
+              <a href="author.html#3879">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>After two months of hard (but very rewarding) work, the new JSON-based
+GPSD command protocol is in a stable and apparently working state.  It is
+ready for experimentation and beta-testing.
+
+I am very pleased to be able to report that despite the extended
+capabilities of the new protocol, the new client-side API is actually
+*simpler* than the old, no longer requiring you to stuff bits of
+the wire protocol into gps_query() argument strings.
+
+I've written a transition document that explains the changes and
+gives tips for client developers here:
+
+      <A HREF="http://gpsd.berlios.de/protocol-transition.html">http://gpsd.berlios.de/protocol-transition.html</A>
+
+The GPS reports in the new protocol are fully supported by libgps, and
+most of the test clients in the distribution (xgps, xgpsspeed,
+gpxlogger, lcdgps) actually use them now.  (Actually, libgps will
+recognize either protocol.)
+
+Known issues:
+
+* The ?DEVICE invocations corresponding to old B, C, and N still need
+  testing on live devices.
+
+* The Python and C++ client libraries presently speak only old protocol.
+
+* gpsmon's client mode still relies on old protocol (that's my problem)
+
+* cgps.c still relies on old protocol (that's Jeff Francis's problem).
+
+* While gpsd will ship AIS JSON when attached to a transceiver, the C
+  client library doen't unpack the JSON into the C structs defined in
+  gps.h as yet. This should be a relatively simple coding job, maybe two
+  man-days of work counting time to build the unit tests.
+
+* RTCM2 is still dumped in the idiosyncratic Sager protocol rather
+  than JSON.  I've written a JSON-RTCM2 dumper but have no parser
+  yet; that should be even easier than the AIS job.
+
+* RTCM3 support is nonexistent due to a lack of suitable test loads.
+  (We have binary RTCM3; what we need it a *pair* of files, one that
+  is binary RTCM3 and the other that is the identical content dumped
+  in some sort of readable textual format.)
+
+Known pre-2.40 issues unrelated to new protocol:
+
+* We've had a report that trunk gpsd eats the processor in some
+  situations, apparently due to spinning in a repeating open-close 
+  loop on some devices.  I've never seen this; the person who
+  reported the bug mentined it on #gpsd but has since gone silent.
+
+* The tendency of SiRF chips to lag real-time by 15 seconds or so
+  under some (unexplained) circumstances is still...unexplained. Or,
+  rather, we have several different possible explanations and have
+  not been able to verify any of them.
+-- 
+		&lt;a href=&quot;<A HREF="http://www.catb.org/~esr/">http://www.catb.org/~esr/</A>&quot;&gt;Eric S. Raymond&lt;/a&gt;
+
+You need only reflect that one of the best ways to get yourself a
+reputation as a dangerous citizen these days is to go about repeating
+the very phrases which our founding fathers used in the great struggle
+for independence.	-- Attributed to Charles Austin Beard (1874-1948)
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="003877.html">[Gpsd-users] gps_query issue
+</A></li>
+	<LI>Next message: <A HREF="003885.html">[Gpsd-users] New GPSD protocol is ready for beta use
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3879">[ date ]</a>
+              <a href="thread.html#3879">[ thread ]</a>
+              <a href="subject.html#3879">[ subject ]</a>
+              <a href="author.html#3879">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

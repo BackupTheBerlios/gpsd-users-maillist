@@ -1,0 +1,130 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] gpsd-2.34, globalsat BC-337 and usb
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2007-December/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20gpsd-2.34%2C%20globalsat%20BC-337%20and%20usb&In-Reply-To=%3CPine.LNX.4.64.0712211511310.3673%40birdbird.example.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="003034.html">
+   <LINK REL="Next"  HREF="003036.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] gpsd-2.34, globalsat BC-337 and usb</H1>
+    <B>Matt Roberds</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20gpsd-2.34%2C%20globalsat%20BC-337%20and%20usb&In-Reply-To=%3CPine.LNX.4.64.0712211511310.3673%40birdbird.example.com%3E"
+       TITLE="[Gpsd-users] gpsd-2.34, globalsat BC-337 and usb">mattroberds at cox.net
+       </A><BR>
+    <I>Fri Dec 21 22:30:09 CET 2007</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="003034.html">[Gpsd-users] gpsd-2.34, globalsat BC-337 and usb
+</A></li>
+        <LI>Next message: <A HREF="003036.html">[Gpsd-users] gpsd-2.34, globalsat BC-337 and usb
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3035">[ date ]</a>
+              <a href="thread.html#3035">[ thread ]</a>
+              <a href="subject.html#3035">[ subject ]</a>
+              <a href="author.html#3035">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>On Fri, 21 Dec 2007, Dennis Veatch wrote:
+&gt;<i>Subject: [Gpsd-users] gpsd-2.34, globalsat BC-337 and usb
+</I>
+The Globalsat receiver appears to be a CompactFlash card; is this
+correct?
+
+&gt;<i> After realizing I needed kernel module serial_cs, got gpsd to work
+</I>&gt;<i> on my T60 laptop using the pcmcia slot and gpsd worked fine.
+</I>
+Sounds reasonable.  One of the modes of many CompactFlash (CF) cards
+is a &quot;PCMCIA&quot; mode; the commonly available adapters (that look like a
+PCMCIA card with a notch out of the end) that let you put a CF card
+   in a PCMCIA slot are just two connectors and some wires - there is no
+active circuitry in the adapter.  The PCMCIA interfacing is handled
+inside the CF card.
+
+&gt;<i> So now I am trying to get gpsd to see this device as a USB device on a
+</I>&gt;<i> different machine using a SanDisk 12-in-1 reader.
+</I>
+Trying to do this through a card reader may be the problem.  I am not an
+expert, but I'm pretty sure that CF cards can present different interfaces
+to the outside world depending on how they are accessed.  One of them is
+PCMCIA, as above, and another is IDE, like a hard drive.
+
+The PCMCIA bus is (to a rough approximation, I think) an ISA or PCI bus
+with a funny-shaped connector.  What this means is that you can plug the
+same kinds of things into a PCMCIA slot as you would plug into an ISA or
+PCI slot and have them work.  In your case, the CF card starts &quot;speaking&quot;
+PCMCIA, and the CPU &quot;sees&quot; it as a normal expansion card.  The details
+get passed along to the Linux kernel, which says &quot;Serial port!  I know
+about those.&quot; and creates the /dev/ttySomething device.
+
+IDE is... well, IDE.  It is optimized for transferring data between two
+devices (normally a hard drive and the motherboard), but doesn't have as
+much in the way of interrupts, addressing, etc.  CF cards also support
+this mode; in this case the CF card is basically a slow-ish hard drive
+with a funny connector.  When you plug the CF GPS into the card reader,
+the CF GPS is either doing a) nothing or b) &quot;speaking&quot; IDE, and the CPU
+&quot;sees&quot; it as a normal hard drive or flash card (like you would use in a
+digital camera).  This gets passed along to the Linux kernel, which says
+&quot;Hard disk!  I know about those.&quot; and creates something like /dev/hda or
+/dev/sdb .
+
+One way to tell if this is happening is to look at the kernel messages
+with the dmesg command.  You might say dmesg first, before doing
+anything, so you know what messages were already there (dmesg output is
+typically not timestamped).  Then, plug the GPS card in, wait a few
+seconds, and say dmesg again.  If you see messages along the lines of
+&quot;attached SCSI disk sdb&quot;, then the kernel is seeing the GPS as a flash
+card instead of as a serial device.
+
+If you don't see anything in dmesg - or something like an &quot;unknown
+device&quot; error - then the chances are fair that the CF GPS is simply
+refusing to speak IDE.  The card reader knows that *something* has been
+plugged in, but the GPS is just sulking in the corner.
+
+What you *probably* need is a USB-to-PCMCIA adapter.  These do exist,
+but are not as common or as cheap (maybe US$70) as USB memory card
+readers.  Places that sell the newer wireless-Internet-over-cell-phone
+PCMCIA cards tend to stock them.  I have little experience with these,
+but reading Web sites gives me the impression that they vary somewhat in
+quality and device support; if you buy one, you might see if you can try
+it at a local store first, or look for an online vendor with a decent
+return/exchange policy.
+
+I hope this helps!
+
+Matt Roberds
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="003034.html">[Gpsd-users] gpsd-2.34, globalsat BC-337 and usb
+</A></li>
+	<LI>Next message: <A HREF="003036.html">[Gpsd-users] gpsd-2.34, globalsat BC-337 and usb
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3035">[ date ]</a>
+              <a href="thread.html#3035">[ thread ]</a>
+              <a href="subject.html#3035">[ subject ]</a>
+              <a href="author.html#3035">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

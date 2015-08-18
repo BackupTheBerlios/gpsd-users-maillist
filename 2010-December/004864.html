@@ -1,0 +1,199 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] Cannot get Garmin 18x LVC NMEA to work right with ntp
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2010-December/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Cannot%20get%20Garmin%2018x%20LVC%20NMEA%20to%20work%20right%20with%0A%20ntp&In-Reply-To=%3C4D1E40C5.9050906%40funsoft.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="004862.html">
+   <LINK REL="Next"  HREF="004865.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] Cannot get Garmin 18x LVC NMEA to work right with ntp</H1>
+    <B>Gary Eheman</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Cannot%20get%20Garmin%2018x%20LVC%20NMEA%20to%20work%20right%20with%0A%20ntp&In-Reply-To=%3C4D1E40C5.9050906%40funsoft.com%3E"
+       TITLE="[Gpsd-users] Cannot get Garmin 18x LVC NMEA to work right with ntp">eheman at funsoft.com
+       </A><BR>
+    <I>Fri Dec 31 21:44:53 CET 2010</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="004862.html">[Gpsd-users] Cannot get Garmin 18x LVC NMEA to work right with ntp
+</A></li>
+        <LI>Next message: <A HREF="004865.html">[Gpsd-users] Cannot get Garmin 18x LVC NMEA to work right with ntp
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#4864">[ date ]</a>
+              <a href="thread.html#4864">[ thread ]</a>
+              <a href="subject.html#4864">[ subject ]</a>
+              <a href="author.html#4864">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Gary:
+Yay!  I think we have success now.
+
+I was just experimenting right before you posted suggesting to try a fudge time1 of
+0.450 with 0.420 after I reread the man page for gpsd again (where 0.420 is a
+suggested starting point). I could see it swinging close to being acceptable. After
+switching the time1 fudge value to 0.450 and restarting ntpd, here is what I now get:
+
+# ntpdc -p
+     remote           local      st poll reach  delay   offset    disp
+=======================================================================
+=SHM(0)          127.0.0.1        0   16  377 0.00000  0.003227 0.01524
+*SHM(1)          127.0.0.1        0   16  377 0.00000 -0.000358 0.01538
+=navobs1.gatech. 192.168.249.138  1   64  377 0.04120 -0.008724 0.06200
+=LOCAL(0)        127.0.0.1       10   64  377 0.00000  0.000000 0.03064
+=ntp2.twc.weathe 192.168.249.138  1   64  377 0.02399  0.002115 0.06944
+=time-a.nist.gov 192.168.249.138  1   64  277 0.04358  0.001177 0.07565
+=ns4.usg.edu     192.168.249.138  2   64  377 0.04233 -0.010230 0.06647
+
+# ntpq -p
+     remote           refid      st t when poll reach   delay   offset  jitter
+==============================================================================
+ LOCAL(0)        .LOCL.          10 l   12   64  377    0.000    0.000   0.001
+xSHM(0)          .NMEA.           0 l    9   16  377    0.000  -18.374  32.308
+*SHM(1)          .PPS.            0 l    8   16  377    0.000   -0.351   0.030
+-navobs1.gatech. .GPS.            1 u   18   64  377   41.207   -8.724   0.664
+-ns4.usg.edu     168.24.81.244    2 u   18   64  377   42.340  -10.230   0.711
++time-a.nist.gov .ACTS.           1 u   15   64  277   43.592    1.177   0.830
++ntp2.twc.weathe .CDMA.           1 u    2   64  377   24.061    0.330   0.864
+
+# ntpq
+ntpq&gt; assoc
+
+ind assID status  conf reach auth condition  last_event cnt
+===========================================================
+  1 55559  9014   yes   yes  none    reject   reachable  1
+  2 55560  9125   yes   yes  none falsetick  clock expt  2
+  3 55561  9625   yes   yes  none  sys.peer  clock expt  2
+  4 55562  9314   yes   yes  none   outlyer   reachable  1
+  5 55563  9314   yes   yes  none   outlyer   reachable  1
+  6 55564  9414   yes   yes  none  candidat   reachable  1
+  7 55565  9414   yes   yes  none  candidat   reachable  1
+ntpq&gt;
+
+But waiting about 20 or 30 secs and rechecking:
+ntpq&gt; peers
+     remote           refid      st t when poll reach   delay   offset  jitter
+==============================================================================
+ LOCAL(0)        .LOCL.          10 l    2   64  377    0.000    0.000   0.001
++SHM(0)          .NMEA.           0 l   13   16  377    0.000  -10.004  32.967
+*SHM(1)          .PPS.            0 l   14   16  377    0.000   -0.332   0.029
++navobs1.gatech. .GPS.            1 u    5   64  377   41.207   -8.724   0.318
+-ns4.usg.edu     168.24.81.244    2 u    5   64  377   42.340  -10.230   0.339
+-time-a.nist.gov .ACTS.           1 u    4   64  177   43.831    2.424   1.295
+-ntp2.twc.weathe .CDMA.           1 u   55   64  377   24.061    0.330   0.864
+ntpq&gt; quit
+
+# ntpdc -p
+     remote           local      st poll reach  delay   offset    disp
+=======================================================================
+=SHM(0)          127.0.0.1        0   16  377 0.00000  0.005606 0.01535
+*SHM(1)          127.0.0.1        0   16  377 0.00000 -0.000326 0.01492
+=navobs1.gatech. 192.168.249.138  1   64  377 0.04120 -0.008724 0.06068
+=LOCAL(0)        127.0.0.1       10   64  377 0.00000  0.000000 0.03030
+=ntp2.twc.weathe 192.168.249.138  1   64  377 0.02405  0.000330 0.06364
+=time-a.nist.gov 192.168.249.138  1   64  177 0.04382  0.002424 0.06717
+=ns4.usg.edu     192.168.249.138  2   64  377 0.04233 -0.010230 0.06363
+#
+
+So, as you indicated, it is swinging around quite a bit into and out of acceptance.
+But at least it now sometimes appears to be acceptable, and that's real progress for
+me since I was not getting there in all that I was trying.
+
+Thanks also for pointing to the newer 18x tech spec pdf, and for confirming my cable
+length should not be problematic.
+
+
+On 12/31/2010 03:15 PM, Gary E. Miller wrote:
+&gt;<i> -----BEGIN PGP SIGNED MESSAGE-----
+</I>&gt;<i> Hash: SHA1
+</I>&gt;<i> 
+</I>&gt;<i> Yo Gary!
+</I>&gt;<i> 
+</I>&gt;<i> On Fri, 31 Dec 2010, Gary Eheman wrote:
+</I>&gt;<i> 
+</I>&gt;&gt;<i> In my reading of the GPS 18 Technical Specifications (Rev. D) pdf from Garmin
+</I>&gt;<i> 
+</I>&gt;<i> Best to read the doc for your unit (18x, not 18):
+</I>&gt;<i> 	<A HREF="http://www8.garmin.com/manuals/GPS18x_TechnicalSpecifications.pdf">http://www8.garmin.com/manuals/GPS18x_TechnicalSpecifications.pdf</A>
+</I>&gt;<i> 
+</I>&gt;&gt;<i> So 19200 baud appears to be the max for my model.
+</I>&gt;<i> 
+</I>&gt;<i> Confirmed.
+</I>&gt;<i> 
+</I>&gt;&gt;<i> # gpsctl -f -s 19200 /dev/ttyS1
+</I>&gt;&gt;<i> gpsctl: /dev/ttyS1 identified as a Generic NMEA at 4800.
+</I>&gt;&gt;<i> gpsctl: Generic NMEA devices have no speed switch.
+</I>&gt;&gt;<i> #
+</I>&gt;<i> 
+</I>&gt;<i> Uh, oh.  gpsctl got broken, again.
+</I>&gt;<i> 
+</I>&gt;&gt;<i> # gpsd -nND 7 /dev/ttyS1 2&gt;&amp;1 | egrep 'PPS|NTP'
+</I>&gt;&gt;<i> and then started ntp.  Trace can be viewed at:
+</I>&gt;&gt;<i> <A HREF="http://pastebin.com/0Mf8vc8P">http://pastebin.com/0Mf8vc8P</A>
+</I>&gt;<i> 
+</I>&gt;<i> That looks good.  You just need to adjust your time1 (fudge):
+</I>&gt;<i> 
+</I>&gt;<i> gpsd: NTPD ntpshm_put: Clock: 1293812417.000000 @ 1293812417.417598, fudge: 0.000
+</I>&gt;<i>                                                             ^^^^^^^
+</I>&gt;<i> 
+</I>&gt;<i> That shows your NMEA time is coming in about 400-500mS after the tick. So
+</I>&gt;<i> set your time1 to about 0.450.
+</I>&gt;<i> 
+</I>&gt;<i> When you get that, send us the output of:
+</I>&gt;<i> 	 ntpdc -p
+</I>&gt;<i> 
+</I>&gt;<i> NMEA time will be swinging about horribly, so it will only be used as a
+</I>&gt;<i> last resort by ntpd.
+</I>&gt;<i> 
+</I>&gt;&gt;<i> In case it makes a difference, I should disclose that when making my DE9
+</I>&gt;&gt;<i>  cable
+</I>&gt;&gt;<i> connector, I inserted a 25 foot cat-3 cable as an extension.
+</I>&gt;<i> 
+</I>&gt;<i> I do that all the time, works great.
+</I>&gt;<i> 
+</I>&gt;<i> 
+</I>&gt;<i> RGDS
+</I>&gt;<i> GARY
+</I>&gt;<i> - ---------------------------------------------------------------------------
+</I>&gt;<i> Gary E. Miller Rellim 109 NW Wilmington Ave., Suite E, Bend, OR 97701
+</I>&gt;<i> 	<A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">gem at rellim.com</A>  Tel:+1(541)382-8588
+</I>&gt;<i> 
+</I>
+
+-- 
+Gary Eheman
+Fundamental Software, Inc.
+<A HREF="http://www.funsoft.com">http://www.funsoft.com</A>
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="004862.html">[Gpsd-users] Cannot get Garmin 18x LVC NMEA to work right with ntp
+</A></li>
+	<LI>Next message: <A HREF="004865.html">[Gpsd-users] Cannot get Garmin 18x LVC NMEA to work right with ntp
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#4864">[ date ]</a>
+              <a href="thread.html#4864">[ thread ]</a>
+              <a href="subject.html#4864">[ subject ]</a>
+              <a href="author.html#4864">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

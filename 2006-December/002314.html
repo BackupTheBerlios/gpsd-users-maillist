@@ -1,0 +1,117 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] Private-use fields vs. GPSD-NG queries
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2006-December/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Private-use%20fields%20vs.%20GPSD-NG%20queries&In-Reply-To=%3C457936A5.1000903%40nippur.net%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="002312.html">
+   <LINK REL="Next"  HREF="002320.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] Private-use fields vs. GPSD-NG queries</H1>
+    <B>Diego Berge</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Private-use%20fields%20vs.%20GPSD-NG%20queries&In-Reply-To=%3C457936A5.1000903%40nippur.net%3E"
+       TITLE="[Gpsd-users] Private-use fields vs. GPSD-NG queries">gpsd at nippur.net
+       </A><BR>
+    <I>Fri Dec  8 10:55:49 CET 2006</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="002312.html">[Gpsd-users] Private-use fields vs. GPSD-NG queries
+</A></li>
+        <LI>Next message: <A HREF="002320.html">[Gpsd-users] Private-use fields vs. GPSD-NG queries
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2314">[ date ]</a>
+              <a href="thread.html#2314">[ thread ]</a>
+              <a href="subject.html#2314">[ subject ]</a>
+              <a href="author.html#2314">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Evening gents,
+
+Eric S. Raymond wrote:
+
+&gt;&gt;<i> However, one of the ways we may end up extending O is by adding
+</I>&gt;&gt;<i> optional private-use fields to the end of the report.  These would be
+</I>&gt;&gt;<i> used for numeric metadata that is closely coupled to a PVT report --
+</I>&gt;&gt;<i> for example, water depth or temperature.
+</I>
+   I do tend to agree with Chris that tacking more data at the end of
+the PVT report somehow does not seem a particularly attractive idea.
+
+   One way to approach this would be to define what a PVT report should
+be.  I propose that it should be a message giving you the geographical
+position (lat., lon., height) of the GPS antenna, its velocity (as a
+cartesian or polar vector), and time (UTC), along with the relevant
+precision figures for all of these (DOPs, RMS, TFOM, ...)
+
+   As it happens, the above is exactly what the O message gives now.
+Thus, adding extra sensor data to it would no longer make it a strict
+PVT report.
+
+   OTOH, the new protocol could supply a mechanism for clients to define
+exactly which data they want in a report (be it one-off or streamed),
+and we could go from there.  A client could say, for example:
+
+EXAMPLE=timestamp latitude longitude height course speed depth
+water_temp hrms vrms course_err speed_err depth_err water_temp_err
+
+to define a message named &quot;EXAMPLE&quot; which would return the requested
+bits of information (along with their error estimates).  Some mechanism
+could then be provided to specify when and how this information should
+be returned, e.g., one could say:
+
+EXAMPLE:onchange
+EXAMPLE:1Hz
+EXAMPLE
+
+to send the message when the information changes, every one second, or
+just once, respectively.
+
+   A number of pre-programmed messages could be defined so as to
+simplify client-side programming.
+
+   And also, perhaps a mechanism would be needed to inform clients of
+what information is there available at a particular time, which would
+depend on the capabilities of whichever instrument(s) is/are attached to
+gpsd at that time.
+
+   I am sure there is some obvious fundamental flaw in the approach I've
+just described, but you chaps are in a better position than me to tell
+what the disadvantages are. I'll leave you to it for now.
+
+Regards,
+Diego Berge.
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="002312.html">[Gpsd-users] Private-use fields vs. GPSD-NG queries
+</A></li>
+	<LI>Next message: <A HREF="002320.html">[Gpsd-users] Private-use fields vs. GPSD-NG queries
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2314">[ date ]</a>
+              <a href="thread.html#2314">[ thread ]</a>
+              <a href="subject.html#2314">[ subject ]</a>
+              <a href="author.html#2314">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

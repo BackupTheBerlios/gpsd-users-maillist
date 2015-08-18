@@ -1,0 +1,92 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] gpsd tangogps over internet
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2010-December/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20gpsd%20tangogps%20over%20internet&In-Reply-To=%3CAANLkTi%3DnxE54ucJCGpjuVkfW0-WCQS_B_5bT9K4DRT3x%40mail.gmail.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="004791.html">
+   <LINK REL="Next"  HREF="004793.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] gpsd tangogps over internet</H1>
+    <B>Jon Schlueter</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20gpsd%20tangogps%20over%20internet&In-Reply-To=%3CAANLkTi%3DnxE54ucJCGpjuVkfW0-WCQS_B_5bT9K4DRT3x%40mail.gmail.com%3E"
+       TITLE="[Gpsd-users] gpsd tangogps over internet">jon.schlueter at gmail.com
+       </A><BR>
+    <I>Mon Dec  6 20:37:16 CET 2010</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="004791.html">[Gpsd-users] gpsd tangogps over internet
+</A></li>
+        <LI>Next message: <A HREF="004793.html">[Gpsd-users] gpsd vs. gpscat
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#4792">[ date ]</a>
+              <a href="thread.html#4792">[ thread ]</a>
+              <a href="subject.html#4792">[ subject ]</a>
+              <a href="author.html#4792">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>On Mon, Dec 6, 2010 at 12:18 PM,  &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">pkoegel at azxws.com</A>&gt; wrote:
+&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i> I can't get nc and gpsd with tangogps working.
+</I>&gt;<i> Purpose:
+</I>&gt;<i> I wanna display garmin/gpsd date (realtime)over the internet on a remote tangogps.
+</I>&gt;<i> gpsd and tangogps works perfect on every of my computers.
+</I>&gt;<i> I just can't get it over the internet using nc.
+</I>&gt;<i>
+</I>&gt;<i> current using:
+</I>&gt;<i> modprobe garmin_gps
+</I>&gt;<i> sudo mount -t usbfs none /proc/bus/usb/
+</I>&gt;<i> sudo gpsd -nND4 /dev/ttyUSB0
+</I>&gt;<i>
+</I>&gt;<i> /usr/bin/xgps
+</I>&gt;<i> or
+</I>&gt;<i> /usr/bin/cgps
+</I>&gt;<i> tangogps
+</I>&gt;<i>
+</I>&gt;<i> Any help and ideas?
+</I>
+GPSD by default listens only on the loopback device the -G flag would
+allow you to access it on another computer
+
+see man gpsd -G for more details
+
+then change your launch command to
+
+sudo gpsd -GnND4 /dev/ttyUSB0
+
+Jon
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="004791.html">[Gpsd-users] gpsd tangogps over internet
+</A></li>
+	<LI>Next message: <A HREF="004793.html">[Gpsd-users] gpsd vs. gpscat
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#4792">[ date ]</a>
+              <a href="thread.html#4792">[ thread ]</a>
+              <a href="subject.html#4792">[ subject ]</a>
+              <a href="author.html#4792">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

@@ -1,0 +1,92 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] 2.16 and GPS 18
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2005-March/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%202.16%20and%20GPS%2018&In-Reply-To=%3C20050314010154.GA2331%40thyrsus.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="000346.html">
+   <LINK REL="Next"  HREF="000349.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] 2.16 and GPS 18</H1>
+    <B>Eric S. Raymond</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%202.16%20and%20GPS%2018&In-Reply-To=%3C20050314010154.GA2331%40thyrsus.com%3E"
+       TITLE="[Gpsd-users] 2.16 and GPS 18">esr at thyrsus.com
+       </A><BR>
+    <I>Mon Mar 14 02:01:54 CET 2005</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="000346.html">[Gpsd-users] 2.16 and GPS 18
+</A></li>
+        <LI>Next message: <A HREF="000349.html">[Gpsd-users] 2.16 and GPS 18
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#348">[ date ]</a>
+              <a href="thread.html#348">[ thread ]</a>
+              <a href="subject.html#348">[ subject ]</a>
+              <a href="author.html#348">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Gary E. Miller &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">gem at rellim.com</A>&gt;:
+&gt;<i> By packet engine I assume you mean the port 2947 interface and not the
+</I>&gt;<i> serial.c interface?  Then go for it.  If it affects what I am doing would
+</I>&gt;<i> rather face it now.
+</I>
+No, it's connected to the serial.c interface all right, but the Garmin driver
+doesn't use it.
+ 
+&gt;<i> Think I have found the Garmin problem, but not coded the patch.  For some
+</I>&gt;<i> reason O_NONDELAY was being set when the tty was open()ed, but now
+</I>&gt;<i> is set AFTER the garmin_probe().  I would rather not have two garmin
+</I>&gt;<i> GetPacket() routines.  Either O_NONDELAY should be always set before
+</I>&gt;<i> calling garmin_* or never set before calling.  Yoyr choice, pick one and
+</I>&gt;<i> I'll code around it.
+</I>
+The current state of things, after the big disconnect/reconnect patch
+I just committed, is that I don't set O_NDELAY at all.  Instead, the
+packet-engine reads only take place when an ioctl(fd, FIONREAD, ...)
+has just checked that there is input waiting.
+
+So I think we're in the &quot;never-set-before-calling&quot; case now.
+
+By the way...if I were to change the driver interface so the handle_input
+method splits two, so there are separate get_packet() and analyze_packet()
+methods, it looks like that would only require a trivial change to the
+Garmin code.  Am I correct in this?
+
+(The reason I might do this is that it would make the support for 
+latency profiling cleaner.)
+-- 
+		&lt;a href=&quot;<A HREF="http://www.catb.org/~esr/">http://www.catb.org/~esr/</A>&quot;&gt;Eric S. Raymond&lt;/a&gt;
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="000346.html">[Gpsd-users] 2.16 and GPS 18
+</A></li>
+	<LI>Next message: <A HREF="000349.html">[Gpsd-users] 2.16 and GPS 18
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#348">[ date ]</a>
+              <a href="thread.html#348">[ thread ]</a>
+              <a href="subject.html#348">[ subject ]</a>
+              <a href="author.html#348">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

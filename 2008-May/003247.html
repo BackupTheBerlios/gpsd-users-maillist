@@ -1,0 +1,141 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] Success!  Garmin USB18 T.S.  Suse-10.3
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2008-May/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Success%21%20%20Garmin%20USB18%20T.S.%20%20Suse-10.3&In-Reply-To=%3C483B1C93.5050102%40trixtar.org%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="003244.html">
+   <LINK REL="Next"  HREF="003253.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] Success!  Garmin USB18 T.S.  Suse-10.3</H1>
+    <B>gpsdosm at trixtar.org</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Success%21%20%20Garmin%20USB18%20T.S.%20%20Suse-10.3&In-Reply-To=%3C483B1C93.5050102%40trixtar.org%3E"
+       TITLE="[Gpsd-users] Success!  Garmin USB18 T.S.  Suse-10.3">gpsdosm at trixtar.org
+       </A><BR>
+    <I>Mon May 26 22:24:51 CEST 2008</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="003244.html">[Gpsd-users] Garmin USB18 T.S.  Suse-10.3
+</A></li>
+        <LI>Next message: <A HREF="003253.html">[Gpsd-users]  Garmin 17HVS
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3247">[ date ]</a>
+              <a href="thread.html#3247">[ thread ]</a>
+              <a href="subject.html#3247">[ subject ]</a>
+              <a href="author.html#3247">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Great Gary wrote:
+&gt;<i> 
+</I>&gt;<i> Yo gpsdos!
+</I>&gt;<i> 
+</I>&gt;<i> On Sat, 24 May 2008, <A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">gpsdosm at trixtar.org</A> wrote:
+</I>&gt;<i> 
+</I>&gt;&gt;&gt;<i> gpsd uses /proc/bus/usb/devices to verify if the kernel driver is
+</I>&gt;&gt;&gt;<i> installed.  Some distros have stopped providing /proc/bus/usb and
+</I>&gt;&gt;&gt;<i> that is causing problems for gpsd detecting if the garmin kernel
+</I>&gt;&gt;&gt;<i> driver is installed.
+</I>
+&gt;&gt;<i> /proc/bus/usb is empty  BTW
+</I>&gt;<i> 
+</I>&gt;<i> Then that is the show stopper right there.  If you can mount /proc/bus/usb
+</I>&gt;<i> then you should be fine.  Long term we must find another way to determine
+</I>&gt;<i> if the garmin_gps driver is loaded.
+</I>
+Thanks for the help, looks like the unit is working and that's the 
+major load off my mind. The laptop don't connect to the net on account 
+of no drivers for the SMC-N wifi buscard, the desktop can't read sats 
+indoors, so it's been a lot of shuffling in and out but ..at long last 
+I got data out of it!
+
+I hope you don't mind my replying (depersonalized) to the list and 
+copying to the gsdrive list (and alt.os.linux.suse later) in case some 
+poor soul is googling for this workaround. I've been at it for two 
+weeks now on and off, including XP related resources that still hadn't 
+netted any results. Your lead did 10 minutes ago.
+
+
+# mount /proc/bus/usb
+
+I don't understand this proc business and it's over my head but it 
+worked, don't know what other method could have worked under suse, 
+obviously intervention was required that shouldn't be required. When I 
+installed gpsd and the little clients all dependancies were satisfied. 
+Whatever.
+
+
+# killall gpsd
+# killall gpsd
+gpsd: no process killed
+
+
+# gpsd -N -D 6 /dev/ttyUSB0
+   lotsa stuff coming down..
+
+# killall gpsd
+# killall gpsd
+gpsd: no process killed
+
+# gpsd /dev/ttyUSB0
+
+# gpspipe -r
+   lotsa stuff
+
+# gpsdrive
+Can't connect to local MySQL server through socket 
+'/var/lib/mysql/mysql.sock' (2)
+Creating main window
+way.txt: No such file or directory
+Read 503 POI-Types from /usr/share/map-icons/icons.xml
+map_koord.txt reloaded
+way.txt: No such file or directory
+way.txt: No such file or directory
+way.txt: No such file or directory
+
+BUT..
+gps time = good, status = 3d fix  Pos=bang on.
+
+Now I can get on with learning to decode raw data for myself and 
+recording some tracks for OSM :-)
+
+Bless You.
+
+
+
+
+
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="003244.html">[Gpsd-users] Garmin USB18 T.S.  Suse-10.3
+</A></li>
+	<LI>Next message: <A HREF="003253.html">[Gpsd-users]  Garmin 17HVS
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3247">[ date ]</a>
+              <a href="thread.html#3247">[ thread ]</a>
+              <a href="subject.html#3247">[ subject ]</a>
+              <a href="author.html#3247">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

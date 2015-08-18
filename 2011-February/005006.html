@@ -1,0 +1,122 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] how can I feed (test) data into RoadMap ?
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2011-February/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20how%20can%20I%20feed%20%28test%29%20data%20into%20RoadMap%20%3F&In-Reply-To=%3C20110203115534.GA22350%40thyrsus.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="005003.html">
+   <LINK REL="Next"  HREF="005007.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] how can I feed (test) data into RoadMap ?</H1>
+    <B>Eric Raymond</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20how%20can%20I%20feed%20%28test%29%20data%20into%20RoadMap%20%3F&In-Reply-To=%3C20110203115534.GA22350%40thyrsus.com%3E"
+       TITLE="[Gpsd-users] how can I feed (test) data into RoadMap ?">esr at thyrsus.com
+       </A><BR>
+    <I>Thu Feb  3 12:55:34 CET 2011</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="005003.html">[Gpsd-users] how can I feed (test) data into RoadMap ?
+</A></li>
+        <LI>Next message: <A HREF="005007.html">[Gpsd-users] how can I feed (test) data into RoadMap ?
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#5006">[ date ]</a>
+              <a href="thread.html#5006">[ thread ]</a>
+              <a href="subject.html#5006">[ subject ]</a>
+              <a href="author.html#5006">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Danny Backx &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">danny.backx at scarlet.be</A>&gt;:
+&gt;<i> On di, 2011-02-01 at 16:25 -0500, Eric Raymond wrote:
+</I>&gt;<i> &gt; Danny Backx &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">danny.backx at scarlet.be</A>&gt;:
+</I>&gt;<i> &gt; &gt; Is there a simple way for me to feed some test data into RoadMap as if
+</I>&gt;<i> &gt; &gt; it came from gpsd ? There's a &quot;gpsfake&quot; but I don't know which file to
+</I>&gt;<i> &gt; &gt; feed it.
+</I>&gt;<i> &gt; 
+</I>&gt;<i> &gt; Any of the logfiles in test/daemon.
+</I>&gt;<i> 
+</I>&gt;<i> Thanks.
+</I>&gt;<i> 
+</I>&gt;<i> I have a problem with porting RoadMap to the current code in git. With
+</I>&gt;<i> the old library (2.95), RoadMap works. With the new one, the gps_data_t
+</I>&gt;<i> structure never appears to indicate that satellites are visible so my
+</I>&gt;<i> code bails out at
+</I>&gt;<i> 
+</I>&gt;<i>    if (gpsdp-&gt;satellites_visible == 0)
+</I>&gt;<i>       return 0; // No data
+</I>
+You're correct, that's a bug.  The JSON parser on the client side was getting 
+the data to compute this but not actually summing it up.  I have pushed a
+fix to the repo.  Good catch - nobody tried that particular guard before,
+usually clients fate fix reporting on the mode value.
+ 
+&gt;<i> I read libgps.3 and I think there's an error (probably not related
+</I>&gt;<i> though) : 
+</I>&gt;<i>        gps_open() returns NULL on errors and is re-entrant. 
+</I>&gt;<i> I think this is wrong, my code only works if I interpret 0 as success
+</I>&gt;<i> and &lt;0 as failure.
+</I>
+Correct, that's a documentation bug which I have fixed.
+
+&gt;<i> My code now looks like :
+</I>&gt;<i> #if GPSD_API_MAJOR_VERSION == 5
+</I>&gt;<i> struct gps_data_t       gpsd_e, *gpsdp = &amp;gpsd_e;
+</I>&gt;<i> #else
+</I>&gt;<i> struct gps_data_t       *gpsdp = NULL;
+</I>&gt;<i> #endif
+</I>&gt;<i> 
+</I>&gt;<i> RoadMapSocket roadmap_gpsd3_connect (const char *name) {
+</I>&gt;<i> #if defined(ROADMAP_USES_LIBGPS) &amp;&amp; defined(GPSD_API_MAJOR_VERSION)
+</I>&gt;<i> #if GPSD_API_MAJOR_VERSION == 5
+</I>&gt;<i>    if (gps_open(name, &quot;2947&quot;, gpsdp) &lt; 0)
+</I>&gt;<i>       return ROADMAP_INVALID_SOCKET;
+</I>&gt;<i> #else
+</I>&gt;<i>    gpsdp = gps_open(name, &quot;2947&quot;);
+</I>&gt;<i>    if (gpsdp == NULL)
+</I>&gt;<i>       return ROADMAP_INVALID_SOCKET;
+</I>&gt;<i> #endif
+</I>&gt;<i>    gps_stream(gpsdp, WATCH_NMEA, NULL);
+</I>&gt;<i>    return (RoadMapSocket)gpsdp-&gt;gps_fd;
+</I>&gt;<i> #else
+</I>&gt;<i>    return ROADMAP_INVALID_SOCKET;
+</I>&gt;<i> #endif
+</I>&gt;<i> }
+</I>&gt;<i> 
+</I>&gt;<i> Any clue on what could be wrong ?
+</I>
+I don't know what your current diagnostic is.  What is now failing?
+-- 
+		&lt;a href=&quot;<A HREF="http://www.catb.org/~esr/">http://www.catb.org/~esr/</A>&quot;&gt;Eric S. Raymond&lt;/a&gt;
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="005003.html">[Gpsd-users] how can I feed (test) data into RoadMap ?
+</A></li>
+	<LI>Next message: <A HREF="005007.html">[Gpsd-users] how can I feed (test) data into RoadMap ?
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#5006">[ date ]</a>
+              <a href="thread.html#5006">[ thread ]</a>
+              <a href="subject.html#5006">[ subject ]</a>
+              <a href="author.html#5006">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

@@ -1,0 +1,99 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] Re: [Gpsd-dev] SiRF Speed indication appears to be broken
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2005-March/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Re%3A%20%5BGpsd-dev%5D%20SiRF%20Speed%20indication%20appears%20to%20be%20broken&In-Reply-To=%3CPine.BSO.4.61.0503241101030.19675%40pyxis.cns.ualberta.ca%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="000417.html">
+   <LINK REL="Next"  HREF="000419.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] Re: [Gpsd-dev] SiRF Speed indication appears to be broken</H1>
+    <B>Chris Kuethe</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Re%3A%20%5BGpsd-dev%5D%20SiRF%20Speed%20indication%20appears%20to%20be%20broken&In-Reply-To=%3CPine.BSO.4.61.0503241101030.19675%40pyxis.cns.ualberta.ca%3E"
+       TITLE="[Gpsd-users] Re: [Gpsd-dev] SiRF Speed indication appears to be broken">ckuethe at ualberta.ca
+       </A><BR>
+    <I>Thu Mar 24 19:06:27 CET 2005</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="000417.html">[Gpsd-users] Re: [Gpsd-dev] SiRF Speed indication appears to be broken
+</A></li>
+        <LI>Next message: <A HREF="000419.html">[Gpsd-users] Re: [Gpsd-dev] SiRF Speed indication appears to be broken
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#418">[ date ]</a>
+              <a href="thread.html#418">[ thread ]</a>
+              <a href="subject.html#418">[ subject ]</a>
+              <a href="author.html#418">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>On Thu, 24 Mar 2005, Eric S. Raymond wrote:
+
+&gt;<i> Chris Kuethe &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">ckuethe at ualberta.ca</A>&gt;:
+</I>&gt;&gt;<i> Check the version string: I think an &quot;ES&quot; designation indicates that you
+</I>&gt;&gt;<i> have
+</I>&gt;&gt;<i> an Enhanced Sensitivity (XTrac) build. We might be able to play games with
+</I>&gt;&gt;<i> test mode, running tests that are only supported on XTrac.
+</I>&gt;<i>
+</I>&gt;<i> I suspect XTrac mode is behind Gene Imes's reports of crazy speeds.  I have
+</I>&gt;<i> ES firmware and I'm seeing a less extreme version of the same phenomenon.
+</I>
+XTrac does evil things [ ;) ] with the integrators to keep signal lock in
+the face of poor signals. If there is bad multipath and we're locked on to
+the incorrect signal it's not too hard to imagine all kinds of errors.
+
+&gt;<i> I'm thinking the Static Navigation control message (ID 143) might solve
+</I>&gt;<i> this.  I'm not sure wther the static navigation bit is identical to the
+</I>&gt;<i> XTrac bit, though.
+</I>
+Kick the bit and see what happens.
+
+I think static navigation just adds some hysteresis to velocity computation.
+Vc &lt; k -&gt; Vr=0.
+Vc &gt; k' -&gt; Vr = Vc
+
+Where Vc is computed velocity, Vr is the reported velocity and k/k' are
+some kind of control knobs (we might be able to set those).
+
+CK
+
+
+-- 
+Chris Kuethe, GCIA: Secure Systems Specialist - U of A CNS
+       office: 157 General Services Bldg.    +1.780.492.8135
+               chris.kuethe@[pyxis.cns.]ualberta.ca
+
+      GDB has a 'break' feature; why doesn't it have 'fix' too?
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="000417.html">[Gpsd-users] Re: [Gpsd-dev] SiRF Speed indication appears to be broken
+</A></li>
+	<LI>Next message: <A HREF="000419.html">[Gpsd-users] Re: [Gpsd-dev] SiRF Speed indication appears to be broken
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#418">[ date ]</a>
+              <a href="thread.html#418">[ thread ]</a>
+              <a href="subject.html#418">[ subject ]</a>
+              <a href="author.html#418">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

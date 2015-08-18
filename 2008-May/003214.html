@@ -1,0 +1,120 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] Locosys uPod / u-blox chip NMEA: unknown sentence
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2008-May/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Locosys%20uPod%20/%20u-blox%20chip%20NMEA%3A%20unknown%20sentence&In-Reply-To=%3C371b60070805020447t1a570cdgfb9791f506a165c0%40mail.gmail.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   
+   <LINK REL="Next"  HREF="003215.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] Locosys uPod / u-blox chip NMEA: unknown sentence</H1>
+    <B>Gergely Imreh</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Locosys%20uPod%20/%20u-blox%20chip%20NMEA%3A%20unknown%20sentence&In-Reply-To=%3C371b60070805020447t1a570cdgfb9791f506a165c0%40mail.gmail.com%3E"
+       TITLE="[Gpsd-users] Locosys uPod / u-blox chip NMEA: unknown sentence">imrehg at gmail.com
+       </A><BR>
+    <I>Fri May  2 13:47:01 CEST 2008</I>
+    <P><UL>
+        
+        <LI>Next message: <A HREF="003215.html">[Gpsd-users] Locosys uPod / u-blox chip NMEA: unknown sentence
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3214">[ date ]</a>
+              <a href="thread.html#3214">[ thread ]</a>
+              <a href="subject.html#3214">[ subject ]</a>
+              <a href="author.html#3214">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi,
+
+  I just got an GPS USB dongle (Locosys uPod, using Atmel ANTARIS 4
+chip), and been excited to try it with gpsd. It uses NMEA 2.3, and
+most of the thins works well, except for a few messages at the
+startup. Here's the log using gpsd:
+
+# Name: Locosys uPod (GPS USB dongle)
+# Chipset: Atmel ANTARIS4 ATR0635
+# Cycle-time: 1-second
+# Submitted-by: &quot;Gergely Imreh&quot;
+# Date: 2 May 2008
+#
+# mode NMEA 0183 ver2.3
+# Startup lines from `echo rw | nc localhost 2947`
+# when running gpsd 2.38svn4691 on localhost:2947
+# First response from gpsd of &quot;GPSD,R=1,W=1&quot; omitted
+# After these lines, stationary mode - works, not shown
+$GPTXT,01,01,02,u-blox ag - www.u-blox.com*50
+$GPTXT,01,01,02,ANTARIS ATR062x HW 80040001*26
+$GPTXT,01,01,02,ROM CORE       5.00    Jan 09 2006 12:00:00*76
+$GPTXT,01,01,02,LIC 1EBF-BD07-E83D-6BE1-0F7A*50
+$GPTXT,01,01,02,ANTSUPERV=AC SD OD PDoS *0A
+$GPTXT,01,01,02,ANTSTATUS=SHORT*6D
+$GPTXT,01,01,01,PGRM inv format*34
+$GPTXT,01,01,01,PFEC inv format*2C
+$GPTXT,01,01,01,PFST inv format*2D
+$GPTXT,01,01,01,PFEC inv format*2C
+$GPTXT,01,01,01,PASH inv format*36
+
+Then all the $GPTXT lines throw and &quot;unknown sentence&quot; error.
+Also, when first starting gpsd, there's a single line of error:
+
+gpsd: launching (Version 2.38dev)
+gpsd: listening on port 2947
+gpsd: running with effective group ID 0
+gpsd: running with effective user ID 0
+gpsd: opening GPS data source at '/dev/ttyACM0'
+gpsd: speed 9600, 8N1
+gpsd: garmin_gps not active.
+gpsd: gpsd_activate(0): opened GPS (5)
+gpsd: ntpd_link_activate: 0
+gpsd: unknown sentence: &quot;$GPTXT,01,01,01,PASH inv format*36\x0d\x0a&quot;
+gpsd: closing GPS=/dev/ttyACM0 (5)
+
+When just checking `cat /dev/ttyACM0`, the &quot;inv format&quot; messages don't
+appear, just the first six lines of GPTXT.
+
+I have seen, that there might been some messages on this mailing list
+about this, just from years before, so I thought it is worth trying it
+again.
+
+And the Antaris protocol specs seem to be online here:
+<A HREF="http://www.u-blox.com/customersupport/gps.g3/ANTARIS_Protocol_Specification(GPS.G3-X-03002">http://www.u-blox.com/customersupport/gps.g3/ANTARIS_Protocol_Specification(GPS.G3-X-03002</A>).chm
+
+(I'm also glad, that they seem to have a certain amount of Linux
+support, mentioning gpsd:
+<A HREF="http://www.u-blox.com/customersupport/gps.g3/ANTARIS_Protocol_Specification(GPS.G3-X-03002">http://www.u-blox.com/customersupport/gps.g3/ANTARIS_Protocol_Specification(GPS.G3-X-03002</A>).chm)
+
+Cheers,
+         Greg
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	
+	<LI>Next message: <A HREF="003215.html">[Gpsd-users] Locosys uPod / u-blox chip NMEA: unknown sentence
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3214">[ date ]</a>
+              <a href="thread.html#3214">[ thread ]</a>
+              <a href="subject.html#3214">[ subject ]</a>
+              <a href="author.html#3214">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

@@ -1,0 +1,115 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] Bidirectional 'raw' communication using libgpsd
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2010-December/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Bidirectional%20%27raw%27%20communication%20using%20libgpsd&In-Reply-To=%3CAANLkTimnf9vO2awUbZm6e%3DHh%3D9BDgyyroO%2BBDKyN4oZ8%40mail.gmail.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="004785.html">
+   <LINK REL="Next"  HREF="004788.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] Bidirectional 'raw' communication using libgpsd</H1>
+    <B>Mario De Weerd</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Bidirectional%20%27raw%27%20communication%20using%20libgpsd&In-Reply-To=%3CAANLkTimnf9vO2awUbZm6e%3DHh%3D9BDgyyroO%2BBDKyN4oZ8%40mail.gmail.com%3E"
+       TITLE="[Gpsd-users] Bidirectional 'raw' communication using libgpsd">m.deweerd at ieee.org
+       </A><BR>
+    <I>Mon Dec  6 02:39:29 CET 2010</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="004785.html">[Gpsd-users] Bidirectional 'raw' communication using libgpsd
+</A></li>
+        <LI>Next message: <A HREF="004788.html">[Gpsd-users] Bidirectional 'raw' communication using libgpsd
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#4787">[ date ]</a>
+              <a href="thread.html#4787">[ thread ]</a>
+              <a href="subject.html#4787">[ subject ]</a>
+              <a href="author.html#4787">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi
+
+I overlooked the commands for the control port several times expecting them
+to be in a table as for the other commands.
+
+So now I worked out (by looking in the source code) that a few basic
+commands are available on the control port.
+
+A pity that this control port is a unix domain socket and not a TCP socket.
+ I do not think that security will be hurt a lot if it were a TCP socket
+listening on 127.0.0.1 only (accepting from the localhost only, and not
+listening on the public IP address).
+
+With 'socat' I was able to create a bridge from a TCP port to the unix
+domain socket and do some interactive testing.
+
+It looks like I need to connect both to the 'gpsd port' and the 'gpsd unix
+socket'.  The first to get the raw data (using a ?WATCH=...;) and the second
+to send data.
+
+While I got watching to work (enable=true, raw=1), I did not measure a real
+success as far as sending a command is concerned.
+
+After connecting to the Unix socket @/var/run/gps.sock , I got 'OK'
+responses, but no reaction from the device.
+I requested a cold start using:
+!/dev/ttyS0=$PMTK103*30
+and I also tried the hex equivalent using '&amp;'.
+I got an 'OK' each time, but the device did not 'cold start'.
+
+Before resorting to a serial protocol observer, an example could help.
+
+Further, I observed that while I was connected to the unix domain socket,
+that the watch channel stopped spitting out NMEA data.  Does this mean that
+it is required to connect, send data, disconnect and then watch?
+
+Kind regards
+
+Mario
+
+
+On 5 December 2010 18:51, Eric Raymond &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">esr at thyrsus.com</A>&gt; wrote:
+
+&gt;<i> Mario De Weerd &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">m.deweerd at ieee.org</A>&gt;:
+</I>&gt;<i> &gt; As security is a concern, gpsd could be listening on the localhost only
+</I>&gt;<i> and
+</I>&gt;<i> &gt; allow more specific transactions there rather than oblige the use of the
+</I>&gt;<i> &gt; library.
+</I>&gt;<i>
+</I>&gt;<i> Yes, that's the way it works.  Look for the documentation on the local
+</I>&gt;<i> control port and its commands.
+</I>&gt;<i> --
+</I>&gt;<i>                 &lt;a href=&quot;<A HREF="http://www.catb.org/~esr/">http://www.catb.org/~esr/</A>&quot;&gt;Eric S. Raymond&lt;/a&gt;
+</I>&gt;<i>
+</I>
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="004785.html">[Gpsd-users] Bidirectional 'raw' communication using libgpsd
+</A></li>
+	<LI>Next message: <A HREF="004788.html">[Gpsd-users] Bidirectional 'raw' communication using libgpsd
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#4787">[ date ]</a>
+              <a href="thread.html#4787">[ thread ]</a>
+              <a href="subject.html#4787">[ subject ]</a>
+              <a href="author.html#4787">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

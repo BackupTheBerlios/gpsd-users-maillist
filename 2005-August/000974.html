@@ -1,0 +1,139 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] Re: [Gpsd-users] State of GPSD
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2005-August/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20%3D%3FISO-8859-1%3FQ%3FRe%3A_%5BGpsd-users%5D_State_of_GPSD%3F%3D&In-Reply-To=%3C24633.1123459532%40www44.gmx.net%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="000973.html">
+   <LINK REL="Next"  HREF="000975.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] Re: [Gpsd-users] State of GPSD</H1>
+    <B>Belgabor</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20%3D%3FISO-8859-1%3FQ%3FRe%3A_%5BGpsd-users%5D_State_of_GPSD%3F%3D&In-Reply-To=%3C24633.1123459532%40www44.gmx.net%3E"
+       TITLE="[Gpsd-users] Re: [Gpsd-users] State of GPSD">belgabor at gmx.de
+       </A><BR>
+    <I>Mon Aug  8 02:05:32 CEST 2005</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="000973.html">[Gpsd-users] State of GPSD
+</A></li>
+        <LI>Next message: <A HREF="000975.html">[Gpsd-users] State of GPSD
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#974">[ date ]</a>
+              <a href="thread.html#974">[ thread ]</a>
+              <a href="subject.html#974">[ subject ]</a>
+              <a href="author.html#974">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi Gary,
+
+sorry it took me a while to answer, but I initially overread you asking me
+to test it ^^;
+Now I did and I'm happy to tell that the problem is gone =)
+
+On another note, I'm still pretty new to GPS, so forgive me the question(s)
+=)
+I'm trying to decipher what all this pps fuzz is about. What exactly is pps?
+The info I found on the net is somehow confusing. Is this using the
+encrypted military signal (is this now free for civil use?)? Or is this
+'just' using the info on the L2 channel to increase accuracy? How does this
+relate to the time accuracy? Is there really that much to gain over a normal
+GPS with a multi-sat fix?
+
+Cheers
+Tobias
+
+&gt;<i> --- Urspr&#252;ngliche Nachricht ---
+</I>&gt;<i> Von: &quot;Gary E. Miller&quot; &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">gem at rellim.com</A>&gt;
+</I>&gt;<i> An: maillist &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">maillist at boilerbots.com</A>&gt;
+</I>&gt;<i> Kopie: <A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">gpsd-users at lists.berlios.de</A>, Belgabor &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">belgabor at gmx.de</A>&gt;
+</I>&gt;<i> Betreff: Re: [Gpsd-users] State of GPSD
+</I>&gt;<i> Datum: Sat, 6 Aug 2005 18:22:26 -0700 (PDT)
+</I>&gt;<i> 
+</I>&gt;<i> -----BEGIN PGP SIGNED MESSAGE-----
+</I>&gt;<i> Hash: SHA1
+</I>&gt;<i> 
+</I>&gt;<i> Yo Curt!
+</I>&gt;<i> 
+</I>&gt;<i> On Sat, 6 Aug 2005, maillist wrote:
+</I>&gt;<i> 
+</I>&gt;<i> &gt; Hmm, I might see a problem in packet.c. I don't have time to think it
+</I>&gt;<i> through
+</I>&gt;<i> &gt; but I am suspicious of line 589. This is an area I was working with Eric
+</I>&gt;<i> on a
+</I>&gt;<i> &gt; bug.
+</I>&gt;<i> 
+</I>&gt;<i> I was just sitting down to spend a bit of time on this problem, and
+</I>&gt;<i> there is your patch in my inbox.  After some quick testing I can say
+</I>&gt;<i> that first pass this is just what I need!  I'll bet it fixes Belgabor's
+</I>&gt;<i> bluetooth problem too.
+</I>&gt;<i> 
+</I>&gt;<i> Belgabor: can you try this?
+</I>&gt;<i> 
+</I>&gt;<i> Curt: do you think this is ready to be applied to SVN?  Especially if
+</I>&gt;<i> it works for Belgabor too?
+</I>&gt;<i> 
+</I>&gt;<i> Everyone else: any objections to this in SVN?
+</I>&gt;<i> 
+</I>&gt;<i> I would prefer not to have to wait on Eric for this, but would like some
+</I>&gt;<i> consensus that this is a good idea since I am not familiar with this
+</I>&gt;<i> chunck of code.
+</I>&gt;<i> 
+</I>&gt;<i> One strange side effect.  My NMEA timesamp was 1.07 Sec after the true
+</I>&gt;<i> PPS pulse. Now it is about 0.120 Sec.  So I am guessing the pipeline was
+</I>&gt;<i> getting stalled somewhere?
+</I>&gt;<i> 
+</I>&gt;<i> RGDS
+</I>&gt;<i> GARY
+</I>&gt;<i> -
+</I>&gt;<i>
+</I>---------------------------------------------------------------------------
+&gt;<i> Gary E. Miller Rellim 20340 Empire Blvd, Suite E-3, Bend, OR 97701
+</I>&gt;<i> 	<A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">gem at rellim.com</A>  Tel:+1(541)382-8588 Fax: +1(541)382-8676
+</I>&gt;<i> 
+</I>&gt;<i> -----BEGIN PGP SIGNATURE-----
+</I>&gt;<i> Version: GnuPG v1.4.1 (GNU/Linux)
+</I>&gt;<i> 
+</I>&gt;<i> iD8DBQFC9WJV8KZibdeR3qURAlocAKDKEdhO9Nb7/qboU2WvN7Z9Yy7OXgCfYYd6
+</I>&gt;<i> GnpwhrkFtZ+0a+fAzRz0s9w=
+</I>&gt;<i> =61ol
+</I>&gt;<i> -----END PGP SIGNATURE-----
+</I>&gt;<i> 
+</I>
+-- 
+5 GB Mailbox, 50 FreeSMS <A HREF="http://www.gmx.net/de/go/promail">http://www.gmx.net/de/go/promail</A>
++++ GMX - die erste Adresse f&#252;r Mail, Message, More +++
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="000973.html">[Gpsd-users] State of GPSD
+</A></li>
+	<LI>Next message: <A HREF="000975.html">[Gpsd-users] State of GPSD
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#974">[ date ]</a>
+              <a href="thread.html#974">[ thread ]</a>
+              <a href="subject.html#974">[ subject ]</a>
+              <a href="author.html#974">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

@@ -1,0 +1,95 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] Preparing for 2.20 -- take 2
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2005-March/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Preparing%20for%202.20%20--%20take%202&In-Reply-To=%3C20050330213145.M22489%40bandos.homelinux.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="000476.html">
+   <LINK REL="Next"  HREF="000472.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] Preparing for 2.20 -- take 2</H1>
+    <B>Jose Bernardo Silva</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Preparing%20for%202.20%20--%20take%202&In-Reply-To=%3C20050330213145.M22489%40bandos.homelinux.com%3E"
+       TITLE="[Gpsd-users] Preparing for 2.20 -- take 2">jbs at bandos.homelinux.com
+       </A><BR>
+    <I>Wed Mar 30 23:41:11 CEST 2005</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="000476.html">[Gpsd-users] Preparing for 2.20 -- take 2
+</A></li>
+        <LI>Next message: <A HREF="000472.html">[Gpsd-dev] Re: [Gpsd-users] Preparing for 2.20 -- take 2
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#469">[ date ]</a>
+              <a href="thread.html#469">[ thread ]</a>
+              <a href="subject.html#469">[ subject ]</a>
+              <a href="author.html#469">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>On Wed, 30 Mar 2005 16:02:00 -0500, Eric S. Raymond wrote
+
+&gt;<i> Does anyone else have any other urgent bugs?
+</I>&gt;<i> -- 
+</I>
+Well, I wanted to test with 2.19 but I've been unable to built it using
+openembedded (it tries to link with the system ncurses lib, instead of the
+staging one). Since all previous versions built successfully, I'll have to
+check what changed in the configure.in scripts, probably the problem is there.
+But in the included log is what I get with my Fortuna Pocket Xtrack cf card
+gps in st mode and a &quot;hacked&quot; qpegps (I tried replacing the commands &quot;B&quot; and
+&quot;H&quot;, which qpegps used to load it's heading and bearing values, with &quot;T&quot; and
+&quot;U&quot; to check if that was the problem) after acquiring a fix. The problem seems
+to be that D isn't returning a date in the format expected by qpegps, and so
+it doesn0t even use the other values. Also, it expects X to return 0 or 1, not
+a float. Or is the man file for gpsd now completely obsolete, and X has
+changed meaning, no longer signifying that gps is online/offline?
+
+Sorry for the long rant, I haven't had much time to do further testing.
+
+
+-- 
+Jose Bernardo B R Silva             | Source Mage GNU/Linux Section Guru
+<A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">jbernardo at sourcemage.org</A>            | <A HREF="http://www.sourcemage.org">http://www.sourcemage.org</A>
+<A HREF="http://counter.li.org">http://counter.li.org</A> #245602
+<A HREF="http://cosmos.oninetspeed.pt/jose.bernardo">http://cosmos.oninetspeed.pt/jose.bernardo</A>
+<A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">jbs at bandos.homelinux.com</A>
+
+-------------- next part --------------
+A non-text attachment was scrubbed...
+Name: gps.log
+Type: application/octet-stream
+Size: 10611 bytes
+Desc: not available
+URL: &lt;<A HREF="https://lists.berlios.de/pipermail/gpsd-users/attachments/20050330/5cf455c0/attachment.obj">https://lists.berlios.de/pipermail/gpsd-users/attachments/20050330/5cf455c0/attachment.obj</A>&gt;
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="000476.html">[Gpsd-users] Preparing for 2.20 -- take 2
+</A></li>
+	<LI>Next message: <A HREF="000472.html">[Gpsd-dev] Re: [Gpsd-users] Preparing for 2.20 -- take 2
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#469">[ date ]</a>
+              <a href="thread.html#469">[ thread ]</a>
+              <a href="subject.html#469">[ subject ]</a>
+              <a href="author.html#469">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

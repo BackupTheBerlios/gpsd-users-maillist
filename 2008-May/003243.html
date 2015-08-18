@@ -1,0 +1,246 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] Garmin USB18 T.S.  Suse-10.3
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2008-May/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Garmin%20USB18%20T.S.%20%20Suse-10.3&In-Reply-To=%3C4838B881.8060104%40trixtar.org%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="003239.html">
+   <LINK REL="Next"  HREF="003244.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] Garmin USB18 T.S.  Suse-10.3</H1>
+    <B>gpsdosm at trixtar.org</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Garmin%20USB18%20T.S.%20%20Suse-10.3&In-Reply-To=%3C4838B881.8060104%40trixtar.org%3E"
+       TITLE="[Gpsd-users] Garmin USB18 T.S.  Suse-10.3">gpsdosm at trixtar.org
+       </A><BR>
+    <I>Sun May 25 02:53:21 CEST 2008</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="003239.html">[Gpsd-users] latency differences between chipsets?
+</A></li>
+        <LI>Next message: <A HREF="003244.html">[Gpsd-users] Garmin USB18 T.S.  Suse-10.3
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3243">[ date ]</a>
+              <a href="thread.html#3243">[ thread ]</a>
+              <a href="subject.html#3243">[ subject ]</a>
+              <a href="author.html#3243">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hello everyone,
+
+Just signed up to this group, I'm having difficulty getting 
+a Garmin-USB18 gps receiver going [Toshita-A70 &amp; Suse-10.3].
+It's my first gps ever.
+
+I have the customary desktop battlegroup as well as this
+laptop, tried things on both, discussed some issues on the 
+gpsdrive list but up to this point my problems are perhaps 
+more gpsd than gpsdrive.
+
+I just finished a session on the laptop, outside, clear view 
+of the sky above and even more so to the south. I took the 
+time to paste out whatever I could so as to ask a question 
+that might be easier to answer. I'm not all that familiar 
+with linux, mostly just try whatever I can find on the net.
+The Suse installation is quite up to date. The TOR daemon is 
+started up on boot (in case it would be significant).
+
+Any help would be appreciated, it looks like I haven't yet 
+gotten to the point where the receiver itself would be in 
+question.
+
+TIA
+
+
+
+
+
+# tail -f /var/log/messages
+
+Then on plugging-in the unit...
+
+Note botom lines..
+
+gpsd: /lib/udev/gpsd.sh: line 44: /dev/tcp/localhost/2947: 
+Address family not supported by protocol
+gpsd: Can't open /proc/bus/usb/devices
+
+This is one thing I was NOT getting on the desktop, but I 
+can't take it outside. The seemingly better desktop readout 
+is pasted-in following that section.
+
+
+su: (to root) on /dev/pts/1
+kernel: usb 1-3: new full speed USB device using ohci_hcd 
+and address 4
+kernel: usb 1-3: new device found, idVendor=091e, idProduct=0003
+kernel: usb 1-3: new device strings: Mfr=0, Product=0, 
+SerialNumber=0
+kernel: usb 1-3: configuration #1 chosen from 1 choice
+kernel: usbcore: registered new interface driver usbserial
+kernel: drivers/usb/serial/usb-serial.c: USB Serial support 
+registered for generic
+kernel: usbcore: registered new interface driver 
+usbserial_generic
+kernel: drivers/usb/serial/usb-serial.c: USB Serial Driver core
+kernel: drivers/usb/serial/usb-serial.c: USB Serial support 
+registered for Garmin GPS usb/tty
+kernel: garmin_gps 1-3:1.0: Garmin GPS usb/tty converter 
+detected
+kernel: usb 1-3: Garmin GPS usb/tty converter now attached 
+to ttyUSB0
+kernel: usbcore: registered new interface driver garmin_gps
+kernel: drivers/usb/serial/garmin_gps.c: garmin gps driver v0.28
+gpsd: Action 'add' Launch GPSD to /dev/ttyUSB0 with -F 
+/var/run/gpsd.socket
+gpsd: /lib/udev/gpsd.sh: socket: Address family not 
+supported by protocol
+gpsd: /lib/udev/gpsd.sh: line 44: /dev/tcp/localhost/2947: 
+Address family not supported by protocol
+gpsd[6452]: gpsd: Can't open /proc/bus/usb/devices
+
+
+
+
+
+
+# gpsd -N -D 6 /dev/ttyUSB0
+gpsd: launching (Version 2.37)
+gpsd: Can't bind to port gpsd
+gpsd: Maybe gpsd is already running!
+gpsd: command socket create failed, netlib error -1
+
+
+
+# killall gpsd
+
+# killall gpsd
+   gpsd: no process killed
+
+# gpsd -N -D 6 /dev/ttyUSB0
+gpsd: launching (Version 2.37)
+gpsd: listening on port gpsd
+gpsd: shmat(0,0,0) succeeded
+gpsd: shmat(0,0,0) succeeded
+gpsd: shmat(0,0,0) succeeded
+gpsd: shmat(0,0,0) succeeded
+gpsd: successfully connected to the DBUS system bus
+gpsd: running with effective group ID 0
+gpsd: running with effective user ID 0
+gpsd: opening GPS data source at '/dev/ttyUSB0'
+gpsd: speed 9600, 8N1
+gpsd: =&gt; GPS: $PASHQ,RID*28\x0d
+gpsd: Navcom: command dump: 0299661c0800040200001203
+gpsd: =&gt; GPS: 0299661c0800040200001203
+gpsd: Navcom: sent command 0x1c (Test Support Block)
+gpsd: Navcom: command 0x1c mode = 02, length = 0
+gpsd: Navcom: command dump: 029966200e000001ae02000071000000f203
+gpsd: =&gt; GPS: 029966200e000001ae02000071000000f203
+
+gpsd: Navcom: sent command 0x20 (Data Request) - data block 
+id = ae at rate 00
+gpsd: Navcom: command dump: 029966200e00000186020a0071000000d003
+gpsd: =&gt; GPS: 029966200e00000186020a0071000000d003
+gpsd: Navcom: sent command 0x20 (Data Request) - data block 
+id = 86 at rate 0a
+gpsd: Can't open /proc/bus/usb/devices
+gpsd: no probe matched...
+gpsd: gpsd_activate(0): opened GPS (6)
+
+
+------------------------------------------------------
+Desktop was:
+
+gpsd: Navcom: sent command 0x20 (Data Request) - data block
+id = 86 at rate 0a
+gpsd: tnt_packet_sniff begins
+gpsd: =&gt; GPS: @X?*67
+gpsd: sleep(1)
+gpsd: =&gt; GPS: @X?*67
+gpsd: sleep(1)
+....
+----------------------------------------------------------
+
+
+# gpspipe -r
+GPSD,R=1
+
+# gpspipe -r
+GPSD,R=1
+
+# cgps
+   shows output with no values and
+   GPS Type: ?
+   &amp; &quot;GPSD,R=1&quot;
+   (what is capitalized GPSD? is this an exit on error
+   message?)
+
+
+# gpsman
+  Settings: GPS receiver &gt; Protocol &gt; Garmin USB
+  (can't save it, defaults to Protocol &gt;  Garmin)
+
+  &quot;Checking connections, 1packets&quot;
+
+
+# gpsdrive
+  Can't connect to local MySQL server through socket 
+'/var/lib/mysql/mysql.sock' (2)
+
+  [note: mysql IS installed, do I have to start it?]
+
+  Creating main window
+  way.txt: No such file or directory
+  Read 503 POI-Types from /usr/share/map-icons/icons.xml
+  map_koord.txt reloaded
+  way.txt: No such file or directory
+  way.txt: No such file or directory
+
+
+# xgpsspeed
+   Starts up ok, and shows gauge, no speed naturally, but
+   also says in terminal:
+
+   XIO:  fatal IO error 11 (Resource temporarily unavailable)
+   on X server &quot;:0.0&quot;
+   after 13490 requests (13490 known processed)
+   with 0 events remaining.
+
+
+====================================================
+
+
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="003239.html">[Gpsd-users] latency differences between chipsets?
+</A></li>
+	<LI>Next message: <A HREF="003244.html">[Gpsd-users] Garmin USB18 T.S.  Suse-10.3
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3243">[ date ]</a>
+              <a href="thread.html#3243">[ thread ]</a>
+              <a href="subject.html#3243">[ subject ]</a>
+              <a href="author.html#3243">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

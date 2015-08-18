@@ -1,0 +1,106 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] Issue with 'D' command
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2007-July/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Issue%20with%20%27D%27%20command&In-Reply-To=%3C4.3.2.7.2.20070726224147.03fa3f08%40postoffice.creativesilicon.com.au%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="002794.html">
+   <LINK REL="Next"  HREF="002796.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] Issue with 'D' command</H1>
+    <B>Dave C</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Issue%20with%20%27D%27%20command&In-Reply-To=%3C4.3.2.7.2.20070726224147.03fa3f08%40postoffice.creativesilicon.com.au%3E"
+       TITLE="[Gpsd-users] Issue with 'D' command">gpsd at creativesilicon.com.au
+       </A><BR>
+    <I>Thu Jul 26 14:53:11 CEST 2007</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="002794.html">[Gpsd-users] Issue with 'D' command
+</A></li>
+        <LI>Next message: <A HREF="002796.html">[Gpsd-users] Issue with 'D' command
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2795">[ date ]</a>
+              <a href="thread.html#2795">[ thread ]</a>
+              <a href="subject.html#2795">[ subject ]</a>
+              <a href="author.html#2795">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi Chris,
+
+A quick update.
+
+I'm mid-way through the binary diff that you requested.
+
+Rev 3407 has the bug.
+Rev 3370 doesn't.
+
+Just tried R3388 &amp; R3389, but neither will give me a date fix. Don't know 
+why. Will try to narrow things down further
+
+Host PC: PIII 1GHz with Gentoo 2007.0
+GPS: Garmin 18LVC running in NMEA mode (had trouble with early revisions 
+when running garmin serial)
+
+Test procedure:
+
+Checkout desired SVN revision into clean directory
+cd into revision directory
+run autogen.sh &amp; make
+start the freshly compiled gpsd using
+	./gpsd -nN -D3 /dev/ttyS1
+change consoles
+start telnet
+send 'do' command until gpsd has locked and is giving sane data
+send 'do' command and exit telnet as quickly as possible. Take note of 
+timestamp (1)
+wait approx 2 minutes
+start telnet
+send 'do' command
+note timestamp (2)
+immediately send 'do' again
+note timestamp (3)
+exit telnet
+
+If the error is present, timestamp (1) &amp; timestamp (2) are almost identical 
+(depends on how quickly you exited telnet) and Timestamp (3) should be 
+approx 2 minutes (or the duration between telnet exit &amp; restart) later than 
+timestamp (1) &amp; (2).
+
+It's late here and I'm off to bed. Will keep going tomorrow.
+
+ciao, Dave
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="002794.html">[Gpsd-users] Issue with 'D' command
+</A></li>
+	<LI>Next message: <A HREF="002796.html">[Gpsd-users] Issue with 'D' command
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2795">[ date ]</a>
+              <a href="thread.html#2795">[ thread ]</a>
+              <a href="subject.html#2795">[ subject ]</a>
+              <a href="author.html#2795">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

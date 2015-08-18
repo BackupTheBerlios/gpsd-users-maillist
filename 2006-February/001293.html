@@ -1,0 +1,163 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] Compiling gpsd-2.30
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2006-February/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Compiling%20gpsd-2.30&In-Reply-To=%3C1140084872.3726.12.camel%40localhost.localdomain%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="001292.html">
+   <LINK REL="Next"  HREF="001294.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] Compiling gpsd-2.30</H1>
+    <B>Rajinder paul</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Compiling%20gpsd-2.30&In-Reply-To=%3C1140084872.3726.12.camel%40localhost.localdomain%3E"
+       TITLE="[Gpsd-users] Compiling gpsd-2.30">paul.rajinder at netsity.com
+       </A><BR>
+    <I>Thu Feb 16 11:14:32 CET 2006</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="001292.html">[Gpsd-users] VIP watches - LOW price!
+</A></li>
+        <LI>Next message: <A HREF="001294.html">[Gpsd-users] Compiling gpsd-2.30
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1293">[ date ]</a>
+              <a href="thread.html#1293">[ thread ]</a>
+              <a href="subject.html#1293">[ subject ]</a>
+              <a href="author.html#1293">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi All
+
+I am cross-compiling gpsd-2.30 for mips on linux 9.0.
+But it is giving following errors. curses.h file is present in
+/usr/include. 
+
+the configure statement is
+
+CC=mipsel-linux-gcc CXX=mipsel-linux-g++ ./configure --host=mipsel-linux
+
+
+
+sirfmon.c:26:20: curses.h: No such file or directory
+
+sirfmon.c:100: error: parse error before '*' token
+sirfmon.c:100: warning: type defaults to `int' in declaration of
+`mid2win'
+sirfmon.c:100: warning: type defaults to `int' in declaration of
+`mid4win'
+sirfmon.c:100: warning: type defaults to `int' in declaration of
+`mid6win'
+sirfmon.c:100: warning: type defaults to `int' in declaration of
+`mid7win'
+sirfmon.c:100: warning: type defaults to `int' in declaration of
+`mid9win'
+sirfmon.c:100: warning: type defaults to `int' in declaration of
+`mid13win'
+sirfmon.c:100: warning: data definition has no type or storage class
+sirfmon.c:101: error: parse error before '*' token
+sirfmon.c:101: warning: type defaults to `int' in declaration of
+`mid19win'
+sirfmon.c:101: warning: type defaults to `int' in declaration of
+`mid27win'
+sirfmon.c:101: warning: type defaults to `int' in declaration of
+`cmdwin'
+sirfmon.c:101: warning: type defaults to `int' in declaration of
+`debugwin'
+sirfmon.c:101: warning: data definition has no type or storage class
+sirfmon.c: In function `decode_time':
+sirfmon.c:171: warning: implicit declaration of function `wmove'
+sirfmon.c:172: warning: implicit declaration of function `wprintw'
+sirfmon.c: In function `decode_ecef':
+sirfmon.c:211: warning: implicit declaration of function `mvwaddch'
+sirfmon.c:211: error: `ACS_DEGREE' undeclared (first use in this
+function)
+sirfmon.c:211: error: (Each undeclared identifier is reported only once
+sirfmon.c:211: error: for each function it appears in.)
+sirfmon.c: In function `decode_sirf':
+sirfmon.c:318: warning: implicit declaration of function `mvwprintw'
+sirfmon.c: In function `refresh_rightpanel1':
+sirfmon.c:878: warning: implicit declaration of function `touchwin'
+sirfmon.c:883: warning: implicit declaration of function `wrefresh'
+sirfmon.c: In function `main':
+sirfmon.c:990: warning: implicit declaration of function `initscr'
+sirfmon.c:991: warning: implicit declaration of function `cbreak'
+sirfmon.c:992: warning: implicit declaration of function `noecho'
+sirfmon.c:993: warning: implicit declaration of function `intrflush'
+sirfmon.c:993: error: `stdscr' undeclared (first use in this function)
+sirfmon.c:993: error: `FALSE' undeclared (first use in this function)
+sirfmon.c:994: warning: implicit declaration of function `keypad'
+sirfmon.c:997: warning: implicit declaration of function `newwin'
+sirfmon.c:997: warning: assignment makes pointer from integer without a
+cast
+sirfmon.c:998: warning: assignment makes pointer from integer without a
+cast
+sirfmon.c:999: warning: assignment makes pointer from integer without a
+cast
+sirfmon.c:1000: warning: assignment makes pointer from integer without a
+cast
+sirfmon.c:1001: warning: assignment makes pointer from integer without a
+cast
+sirfmon.c:1002: warning: assignment makes pointer from integer without a
+cast
+sirfmon.c:1003: warning: assignment makes pointer from integer without a
+cast
+sirfmon.c:1004: warning: assignment makes pointer from integer without a
+cast
+sirfmon.c:1005: warning: assignment makes pointer from integer without a
+cast
+sirfmon.c:1006: warning: assignment makes pointer from integer without a
+cast
+sirfmon.c:1007: warning: implicit declaration of function `scrollok'
+sirfmon.c:1008: warning: implicit declaration of function `wsetscrreg'
+sirfmon.c:1008: error: `LINES' undeclared (first use in this function)
+sirfmon.c:1012: warning: implicit declaration of function `wborder'
+sirfmon.c:1013: warning: implicit declaration of function `wattrset'
+sirfmon.c:1013: error: `A_BOLD' undeclared (first use in this function)
+sirfmon.c:1033: error: `A_NORMAL' undeclared (first use in this
+function)
+sirfmon.c:1138: warning: implicit declaration of function `wclrtoeol'
+sirfmon.c:1139: warning: implicit declaration of function `refresh'
+sirfmon.c:1160: warning: implicit declaration of function `echo'
+sirfmon.c:1162: warning: implicit declaration of function `wgetnstr'
+sirfmon.c:1322: warning: implicit declaration of function `endwin'
+make[1]: *** [sirfmon.o] Error 1
+
+
+Regards
+
+Rajinder Paul
+
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="001292.html">[Gpsd-users] VIP watches - LOW price!
+</A></li>
+	<LI>Next message: <A HREF="001294.html">[Gpsd-users] Compiling gpsd-2.30
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1293">[ date ]</a>
+              <a href="thread.html#1293">[ thread ]</a>
+              <a href="subject.html#1293">[ subject ]</a>
+              <a href="author.html#1293">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

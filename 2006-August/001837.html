@@ -1,0 +1,136 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] Some problems? too many satellites?
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2006-August/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Some%20problems%3F%20too%20many%20satellites%3F&In-Reply-To=%3Cc32efac40608092127p7e6cafacm78ce2018cb0bc582%40mail.gmail.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="001836.html">
+   <LINK REL="Next"  HREF="001838.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] Some problems? too many satellites?</H1>
+    <B>Dave Hylands</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Some%20problems%3F%20too%20many%20satellites%3F&In-Reply-To=%3Cc32efac40608092127p7e6cafacm78ce2018cb0bc582%40mail.gmail.com%3E"
+       TITLE="[Gpsd-users] Some problems? too many satellites?">dhylands at gmail.com
+       </A><BR>
+    <I>Thu Aug 10 06:27:39 CEST 2006</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="001836.html">[Gpsd-users] Some problems? too many satellites?
+</A></li>
+        <LI>Next message: <A HREF="001838.html">[Gpsd-users] Some problems? too many satellites?
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1837">[ date ]</a>
+              <a href="thread.html#1837">[ thread ]</a>
+              <a href="subject.html#1837">[ subject ]</a>
+              <a href="author.html#1837">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi Gary,
+
+&gt;<i> Yo Dave!
+</I>&gt;<i>
+</I>&gt;<i> Try this.  In drivers.c around line 115 (in the current CVS) you
+</I>&gt;<i> will see this:
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i> static struct gps_type_t nmea = {
+</I>&gt;<i>    .typename       = &quot;Generic NMEA&quot;,   /* full name of type */
+</I>&gt;<i>    .trigger        = NULL,             /* it's the default */
+</I>&gt;<i>    .channels       = 12,               /* consumer-grade GPS */
+</I>&gt;<i>                      ^^
+</I>&gt;<i>
+</I>&gt;<i> Change the 12 to a 14, recompile and test.  An ugly hack but it worked
+</I>&gt;<i> for me when I played back your NMEA fragment.
+</I>
+I will give that a try. I put a much larger snippet (about 1/2 Mb) on
+my web site:
+<A HREF="http://www.DaveHylands.com/Misc/gps/nmea.log">http://www.DaveHylands.com/Misc/gps/nmea.log</A>
+
+This started from poweroff thru satellite acquiistion, and then I
+moved the antenna out of the window, under some tinfoil, and finally
+unplugged the antenna and shorted the antenna connector with a 100 ohm
+resistor.
+
+My output from:
+./gpsd -n -N -D2 nmea.log  &gt; /tmp/gpsd-12.log 2&gt;&amp;1
+
+So I tried changing the .channels from 12 to 14 and 16 and ran it on
+my gumstix (ARM XScale).
+
+# ./gpsd -n -N -D2 nmea.log
+gpsd: launching (Version 2.33)
+gpsd: listening on port 2947
+gpsd: running with effective group ID 0
+gpsd: running with effective user ID 0
+gpsd: opening GPS data source at 'gps.log'
+gpsd: gpsd_activate: opened GPS (5)
+gpsd: =&gt; GPS: $PFEC,GPint,GSA01,DTM00,ZDA01,RMC01,GLL00,VTG00,GSV05*3B\x0d
+
+gpsd: =&gt; GPS: @NC10151010\x0d
+
+gpsd: =&gt; GPS: $PMOTG,ZDA,1*2F\x0d
+
+gpsd: =&gt; GPS: $PGRMCE*0E\x0d
+
+gpsd: =&gt; GPS: $PSRF105,1*3E\x0d
+
+gpsd: &lt;= GPS: $GPRMC,,V,,,,,,,,,,N*53
+gpsd: &lt;= GPS: $GPVTG,,,,,,,,,N*30
+gpsd: &lt;= GPS: $GPGGA,,,,,,0,00,99.99,,,,,,*48
+gpsd: &lt;= GPS: $GPGSA,A,1,,,,,,,,,,,,,99.99,99.99,99.99*30
+Segmentation fault
+
+I did the same thing on my Fedora FC5 machine and it ran fine, producing
+<A HREF="http://www.davehylands.com/Misc/gps/gpsd-14.log">http://www.davehylands.com/Misc/gps/gpsd-14.log</A>
+
+So I'll need to dig into the ARM version a bit more and figure out why
+it's segfaulting.
+
+&gt;<i> Looks like we have seen similar from SiRF devices but not generic NMEA.
+</I>&gt;<i> Do you know what chip set is in your GPS?
+</I>
+Here's the web site on the GPS module:
+<A HREF="http://www.u-blox.com/products/lea_4h.html">http://www.u-blox.com/products/lea_4h.html</A>
+
+&gt;<i> Is it a SiRF variant?  The
+</I>&gt;<i> GPGSV ships not only the 12 sats in view but the PRN of the two WAAS
+</I>&gt;<i> sats being tracked.
+</I>
+-- 
+Dave Hylands
+Vancouver, BC, Canada
+<A HREF="http://www.DaveHylands.com/">http://www.DaveHylands.com/</A>
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="001836.html">[Gpsd-users] Some problems? too many satellites?
+</A></li>
+	<LI>Next message: <A HREF="001838.html">[Gpsd-users] Some problems? too many satellites?
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1837">[ date ]</a>
+              <a href="thread.html#1837">[ thread ]</a>
+              <a href="subject.html#1837">[ subject ]</a>
+              <a href="author.html#1837">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

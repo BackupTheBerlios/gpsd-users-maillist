@@ -1,0 +1,106 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] TackTick Wireless Interface. Anyone tried this?
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2007-April/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20TackTick%20Wireless%20Interface.%20Anyone%20tried%20this%3F&In-Reply-To=%3CPine.LNX.4.64.0704291630090.10539%40birdbird.example.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="002592.html">
+   <LINK REL="Next"  HREF="002591.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] TackTick Wireless Interface. Anyone tried this?</H1>
+    <B>Matt Roberds</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20TackTick%20Wireless%20Interface.%20Anyone%20tried%20this%3F&In-Reply-To=%3CPine.LNX.4.64.0704291630090.10539%40birdbird.example.com%3E"
+       TITLE="[Gpsd-users] TackTick Wireless Interface. Anyone tried this?">mattroberds at cox.net
+       </A><BR>
+    <I>Sun Apr 29 23:39:59 CEST 2007</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="002592.html">[Gpsd-users] TackTick Wireless Interface. Anyone tried this?
+</A></li>
+        <LI>Next message: <A HREF="002591.html">[Gpsd-users] TackTick Wireless Interface. Anyone tried this?
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2590">[ date ]</a>
+              <a href="thread.html#2590">[ thread ]</a>
+              <a href="subject.html#2590">[ subject ]</a>
+              <a href="author.html#2590">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>On Sun, 29 Apr 2007, Mark Easton wrote:
+&gt;<i> I can easily talk directly to the Garmin GPS17, but as soon as I connect
+</I>&gt;<i> it through the TackTick wireless interface (connected to my USB port) it
+</I>&gt;<i> does not work - or more to the point the wireless interface is not
+</I>&gt;<i> working.
+</I>
+Assuming you are on a Linux-ish system:
+
+Often, devices like this contain a USB-to-serial chip.  There are
+several of these chips and it's possible that you don't have the drivers
+for the chip in the TackTick.  When you plug the TackTick into your USB
+port, the kernel is probably giving some messages about what it's
+finding.  You can usually use the 'dmesg' command to see the most recent
+kernel messages.
+
+For instance, when I plug in my Navman GPS with its own USB-to-serial
+converter, I see this in the dmesg output:
+
+---
+usb 2-1: new low speed USB device using ohci_hcd and address 3
+usb 2-1: config 1 interface 0 altsetting 0 has an invalid endpoint with address 0x0, skipping
+usb 2-1: configuration #1 chosen from 1 choice
+navman 2-1:1.0: navman converter detected
+usb 2-1: navman converter now attached to ttyUSB0
+---
+
+No matter what, you'll probably see the first two or three lines - the
+ones that start with &quot;usb 2-1&quot; in the example - as the USB subsystem
+recognizes that you plugged *something* in.  If you get nothing at all,
+either your kernel has been told to be very quiet about what messages
+it sends, or there is a more fundamental problem with the USB subsystem.
+
+If you don't have the right driver for your serial chip, you'll probably
+never get the last couple of lines, which indicate that the specific
+serial chip was recognized and assigned an entry in /dev - in this case,
+/dev/ttyUSB0 .
+
+Even if you don't have the right driver, you might be able to plug in
+the TackTick and use the 'lsusb' command to get a hint as to what kind
+of serial chip it contains.  Then you need to consult the documentation
+for your distribution (Debian, Fedora, etc) and/or your kernel to figure
+out how to get that driver added.
+
+Matt Roberds
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="002592.html">[Gpsd-users] TackTick Wireless Interface. Anyone tried this?
+</A></li>
+	<LI>Next message: <A HREF="002591.html">[Gpsd-users] TackTick Wireless Interface. Anyone tried this?
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2590">[ date ]</a>
+              <a href="thread.html#2590">[ thread ]</a>
+              <a href="subject.html#2590">[ subject ]</a>
+              <a href="author.html#2590">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

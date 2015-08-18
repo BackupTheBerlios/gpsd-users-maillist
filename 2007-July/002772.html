@@ -1,0 +1,107 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] Issue with 'D' command
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2007-July/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Issue%20with%20%27D%27%20command&In-Reply-To=%3C4.3.2.7.2.20070723204439.02afaee8%40postoffice.creativesilicon.com.au%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="002771.html">
+   <LINK REL="Next"  HREF="002773.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] Issue with 'D' command</H1>
+    <B>Dave C</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Issue%20with%20%27D%27%20command&In-Reply-To=%3C4.3.2.7.2.20070723204439.02afaee8%40postoffice.creativesilicon.com.au%3E"
+       TITLE="[Gpsd-users] Issue with 'D' command">gpsd at creativesilicon.com.au
+       </A><BR>
+    <I>Mon Jul 23 13:05:01 CEST 2007</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="002771.html">[Gpsd-users] GPSD in Raw Mode and 'o' Mode
+</A></li>
+        <LI>Next message: <A HREF="002773.html">[Gpsd-users] Issue with 'D' command
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2772">[ date ]</a>
+              <a href="thread.html#2772">[ thread ]</a>
+              <a href="subject.html#2772">[ subject ]</a>
+              <a href="author.html#2772">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi All,
+
+I've run into a troublesome issue with gpsd and was wondering if anyone can 
+explain what's happening (and the recommended steps to work around).
+
+Background:
+
+I have gpsd (v2.35b from SVN) running in the background on an embedded 
+controller (PXA255 Gumstix) with a Garmin 18LVC GPS attached to ttyS3.
+
+I have started gpsd with the -n option as I am using gpsd to supply ntpd 
+with time sync info. This works OK, and holds the local clock to UTC +/- 1 
+sec as I'm not using PPS. This is acceptable for my use at the moment.
+
+I also have an Expect script that connects to gpsd every 10 minutes to take 
+a position snapshot that is logged. This also works to my satisfaction.
+
+The Problem:
+As the Gumstix I'm using doesn't have a battery backed Real Time Clock, I 
+cannot rely on the local clock to timestamp my GPS position data. Even 
+though ntpd is running, a power cycle will reset the internal RTC to epoch 
+(1 Jan 1970 or thereabouts), and 'ntpd -q -g' will take a while to pull in. 
+So I thought that I would pull the date/time out of gpsd at the same time 
+as I get the position data.
+
+However, I notice that the date/time issued up by gpsd is exactly the 
+date/time of the PREVIOUS position data. My logic is as follows:
+
+connect to gpsd (telnet 127.0.0.1 2947)
+Send D until response != GPSD,D=?
+save GPS date
+Send P until response != GPSD,P=?
+save GPS position
+
+If I telnet into gpsd and issue a D command manually, the first valid 
+response is the time of the previous 'P' command. The second valid response 
+is the correct time.
+
+Can anyone enlighten me to what's happening here? It was my understanding 
+that gpsd (if started with -n) should keep updating it's internal 
+structures even if no client was connected. If this is a feature with 'D', 
+is it also a feature with 'P'? Can't tell you if this is the case yet as 
+the gear hasn't left my bench for a trial deployment.....
+
+Thanks, Dave
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="002771.html">[Gpsd-users] GPSD in Raw Mode and 'o' Mode
+</A></li>
+	<LI>Next message: <A HREF="002773.html">[Gpsd-users] Issue with 'D' command
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2772">[ date ]</a>
+              <a href="thread.html#2772">[ thread ]</a>
+              <a href="subject.html#2772">[ subject ]</a>
+              <a href="author.html#2772">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

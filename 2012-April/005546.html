@@ -1,0 +1,100 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] Availability of 1PPS for Laptop users
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2012-April/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Availability%20of%201PPS%20for%20Laptop%20users&In-Reply-To=%3CCAMbSiYDgMdU3M8qbx%2B3%3Dhnn3%3DDTW3ZvJmdQWocOGwJZZz4VGTg%40mail.gmail.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="005545.html">
+   <LINK REL="Next"  HREF="005547.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] Availability of 1PPS for Laptop users</H1>
+    <B>Dave Hart</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Availability%20of%201PPS%20for%20Laptop%20users&In-Reply-To=%3CCAMbSiYDgMdU3M8qbx%2B3%3Dhnn3%3DDTW3ZvJmdQWocOGwJZZz4VGTg%40mail.gmail.com%3E"
+       TITLE="[Gpsd-users] Availability of 1PPS for Laptop users">hart at ntp.org
+       </A><BR>
+    <I>Tue Apr 17 10:28:49 CEST 2012</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="005545.html">[Gpsd-users] Availability of 1PPS for Laptop users
+</A></li>
+        <LI>Next message: <A HREF="005547.html">[Gpsd-users] Availability of 1PPS for Laptop users
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#5546">[ date ]</a>
+              <a href="thread.html#5546">[ thread ]</a>
+              <a href="subject.html#5546">[ subject ]</a>
+              <a href="author.html#5546">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>On Tue, Apr 17, 2012 at 07:48, Mihail Popa &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">mihail.popa.upb at gmail.com</A>&gt; wrote:
+&gt;<i> Hi experts,
+</I>&gt;<i>
+</I>&gt;<i> I have to transition from my old desktop computer (with RS232 port) to a
+</I>&gt;<i> laptop computer (with no RS232 port)
+</I>&gt;<i> The GPS receiver I own connects using RS232 and provides good 1PPS signal
+</I>&gt;<i> (I&#8217;ve been using it already on my desktop computer&#8230;)
+</I>&gt;<i>
+</I>&gt;<i> As far as I know RS232 to USB Adapters do not propagate the 1PPS signal,
+</I>&gt;<i> therefore I need to find another way to provide RS232 connectivity to my
+</I>&gt;<i> new laptop.
+</I>
+Assuming the PPS signal is on the typical input (CD a.k.a. DCD carrier
+detect) others' experience suggests some USB-serial chip/driver
+combinations do relay the PPS properly:
+
+<A HREF="http://www.satsignal.eu/ntp/NTP-on-Windows-serial-port.html#usb">http://www.satsignal.eu/ntp/NTP-on-Windows-serial-port.html#usb</A>
+
+The add-on expresscard serial port will give better performance (both
+lower latency and lower jitter) compared to connecting via a USB to
+serial adapter.  It will also likely enable PPSAPI support, though
+that's not needed if you're using gpsd, which can watch for the CD
+input change using traditional serial I/O interfaces.
+
+At present, there are no known USB-connected GPSes which carry through
+the PPS signal, though electronically they are essentially the same as
+a 232-connected GPS plus a USB to serial adapter, the PPS signal isn't
+wired into the serial/USB chip.  Eric Raymond, Dave Taht, and others
+working on bufferbloat are trying to change that by enlightening USB
+GPS suppliers regarding the utility and near-zero incremental cost.
+
+Cheers,
+Dave Hart
+
+P.S.  The mailing list you sent to is no longer the correct list,
+which I've cc'd.  After many years of hosting gpsd development,
+berlios.de announced last fall their services were going away as soon
+as the end of last year.  Please sign up to the new list and post
+there going forward.
+</PRE>
+
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="005545.html">[Gpsd-users] Availability of 1PPS for Laptop users
+</A></li>
+	<LI>Next message: <A HREF="005547.html">[Gpsd-users] Availability of 1PPS for Laptop users
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#5546">[ date ]</a>
+              <a href="thread.html#5546">[ thread ]</a>
+              <a href="subject.html#5546">[ subject ]</a>
+              <a href="author.html#5546">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

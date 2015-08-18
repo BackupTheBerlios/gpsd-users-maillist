@@ -1,0 +1,140 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] [PATCH] Re: Garmin GPS almost never sends new	position data
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2006-September/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20%5BPATCH%5D%20Re%3A%20Garmin%20GPS%20almost%20never%20sends%20new%0A%09position%20data&In-Reply-To=%3Cef70c8%249ro%241%40sea.gmane.org%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="001992.html">
+   <LINK REL="Next"  HREF="001998.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] [PATCH] Re: Garmin GPS almost never sends new	position data</H1>
+    <B>Eivind Tagseth</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20%5BPATCH%5D%20Re%3A%20Garmin%20GPS%20almost%20never%20sends%20new%0A%09position%20data&In-Reply-To=%3Cef70c8%249ro%241%40sea.gmane.org%3E"
+       TITLE="[Gpsd-users] [PATCH] Re: Garmin GPS almost never sends new	position data">eivindt-gmane at multinet.no
+       </A><BR>
+    <I>Mon Sep 25 00:20:56 CEST 2006</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="001992.html">[Gpsd-users] [PATCH] Re: Garmin GPS almost never sends new position data
+</A></li>
+        <LI>Next message: <A HREF="001998.html">[Gpsd-users] [PATCH] Re: Garmin GPS almost never sends new position data
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1995">[ date ]</a>
+              <a href="thread.html#1995">[ thread ]</a>
+              <a href="subject.html#1995">[ subject ]</a>
+              <a href="author.html#1995">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Gary E. Miller wrote:
+
+&gt;<i> Mike's problem is not remotely in the least bit like yours.  Your
+</I>&gt;<i> packets are clearly corrupted.  He is getting good packets.  The packets
+</I>&gt;<i> that Mike is getting are just not documented, so we need to reverse
+</I>&gt;<i> engineer a bit.
+</I>
+Are you sure about this?  His GPS identifies as the same GPS as mine, 
+and his symptoms are very similar to mine, just a bit worse.  I think 
+his problems could be explained the same way as mine.
+
+&gt;&gt;&gt;&gt;<i> 	o at the start of GetPacket, initialize the buffer with the left
+</I>&gt;&gt;&gt;&gt;<i> 	  over bytes from the last run, and only read more bytes if
+</I>&gt;&gt;&gt;&gt;<i> 	  necessary
+</I>&gt;&gt;&gt;<i> This to me is really scary.  The size of the buffer returned is supposed to
+</I>&gt;&gt;&gt;<i> match the size of the packet.  Anything else is madness.
+</I>&gt;&gt;<i> I don't know about madness.  Since I'm using /dev/ttyUSB0 as my device,
+</I>&gt;&gt;<i> and that device goes through the tty layer, I'm not so sure that this is
+</I>&gt;&gt;<i> madness.
+</I>&gt;<i> 
+</I>&gt;<i> Trying to guess which parts in a read buffer are the real ones and which
+</I>&gt;<i> are not is madness.  Certainly NOT the way Garmin or the Garmin kernel
+</I>&gt;<i> driver meant it.  If the kernel driver is returning bytes that are not
+</I>&gt;<i> part of the packet then the kernel driver is broken.
+</I>
+Well, all parts of the read buffer are _real_ parts, they are just 
+concatenated into one.  &quot;Madness&quot; is stretching it a bit I think.
+The kernel driver is pushing the data up into the tty layer just fine, 
+and just as the garmin protocol directs.  But they are concatenated into 
+one part within the tty layer iff the user space program isn't reading 
+the data fast enough.
+
+&gt;&gt;<i> I cannot find anything preventing the tty layer to concatenate
+</I>&gt;&gt;<i> several packets that it receives from garmin_gps into one read buffer.
+</I>&gt;<i> 
+</I>&gt;<i> Except that the documenetation and implementation of the protocol
+</I>&gt;<i> specifically require concatentation not to happen.  It is the not
+</I>&gt;<i> 64-byte packets that denote the end of the packet since the packets
+</I>&gt;<i> themselves have no framing bytes.
+</I>
+Yes, but you're confusing which parts of the kernel do what here:
+
+gpsd --&gt; tty layer --&gt; tty line discipline --&gt; garmin_gps --&gt; usb device
+
+Garmin can only document and implement what's going on between 
+garmin_gps and usb device.  But what happens in &quot;tty layer&quot; and &quot;tty 
+line discipline&quot; is standard linux tty behaviour and is obviously not 
+going to change it's behaviour because of a piece of Garmin documentation.
+
+Just to repeat, I think garmin_gps is doing it's job just as it should, 
+but the way the tty layer works means that you cannot expect to read the 
+raw USB packets from gpsd.
+
+&gt;&gt;<i> Once this happens, the tty layer cannot know that it should return only
+</I>&gt;&gt;<i> parts of that buffer to userspace.
+</I>&gt;<i> 
+</I>&gt;<i> And it never should.  The garin kernel drivers is supposed to return
+</I>&gt;<i> EXACTLY what the garmin GPS sent, which is &lt;=64 byte chunks.
+</I>
+Yes, and it does -- _to_the_tty_layer_.  And gpsd read via the tty 
+layer.  And the tty layer doesn't preserve the original packets, but 
+concatenates them as it sees fit.
+
+&gt;<i> Mike's packets do not have receive errors. his decode just fine.  There
+</I>&gt;<i> is no point him trying this.  Mike's problem is that his unit sends the
+</I>&gt;<i> packet with the satellites, but not the packet with the PVT.  Garmins
+</I>&gt;<i> are funny that way and a lot is just not docuented.
+</I>
+Actually, that was my exact symptoms before changing gpsd!
+
+I could read the satellite data just fine, but I was reading the start 
+of the PVT data at the same time.  Therefore, when reading the PVT data 
+I was already several bytes into the PVT data, and decoding the packet 
+was impossible.
+
+
+
+Eivind
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="001992.html">[Gpsd-users] [PATCH] Re: Garmin GPS almost never sends new position data
+</A></li>
+	<LI>Next message: <A HREF="001998.html">[Gpsd-users] [PATCH] Re: Garmin GPS almost never sends new position data
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1995">[ date ]</a>
+              <a href="thread.html#1995">[ thread ]</a>
+              <a href="subject.html#1995">[ subject ]</a>
+              <a href="author.html#1995">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

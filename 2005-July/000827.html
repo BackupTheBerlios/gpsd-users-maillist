@@ -1,0 +1,115 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] Debian gpsd packages
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2005-July/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Debian%20gpsd%20packages&In-Reply-To=%3C1120830997.9582.134.camel%40mtack.xs4all.nl%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="000822.html">
+   <LINK REL="Next"  HREF="000835.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] Debian gpsd packages</H1>
+    <B>Aart Koelewijn</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Debian%20gpsd%20packages&In-Reply-To=%3C1120830997.9582.134.camel%40mtack.xs4all.nl%3E"
+       TITLE="[Gpsd-users] Debian gpsd packages">aart at mtack.xs4all.nl
+       </A><BR>
+    <I>Fri Jul  8 15:56:37 CEST 2005</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="000822.html">[Gpsd-users] Debian gpsd packages
+</A></li>
+        <LI>Next message: <A HREF="000835.html">[Gpsd-users] Debian gpsd packages
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#827">[ date ]</a>
+              <a href="thread.html#827">[ thread ]</a>
+              <a href="subject.html#827">[ subject ]</a>
+              <a href="author.html#827">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Op vr, 08-07-2005 te 00:37 +0200, schreef Tilman Koschnick:
+&gt;<i> Hi,
+</I>&gt;<i> 
+</I>&gt;<i> Debian packages for gpsd 2.28 are available from
+</I>&gt;<i> &lt;<A HREF="http://www.subnetz.org/debian/pool/main/g/gpsd/">http://www.subnetz.org/debian/pool/main/g/gpsd/</A>&gt;.
+</I>&gt;<i> 
+</I>&gt;<i> Cheers, Til
+</I>
+I just installed gpsd 2.28 on my (mostly) Debian Sarge laptop. It seemed
+to work Ok, but when I shut-down the laptop and later wanted to restart
+it (with the gps attached through a PL-2303 serial-USB converter) the
+start-up hangs with the last messages:
+
+pl2303: already loaded
+gpsd.hotplug: loaded successfully
+
+and then nothing happened anymore
+
+After I did [Ctrl]c I got this:
+
+Traceback (most recent call last):
+ File &quot;/etc/hotplug/usb/gpsd.hotplug&quot;, line 94, in ?
+  hotplug(os.getenv(&quot;ACTION&quot;), os.getenv(&quot;DEVPATH&quot;))
+ File &quot;/etc/hotplug/usb/gpsd.hotplug&quot;, line 80, in hotplug
+  gpsd_control(action, tty)
+ File &quot;/etc/hotplug/usb/gpsd.hotplug&quot;, line 50, in gpsd_control
+  connect.recv(12)
+KeyboardInterrupt
+  gpsd.hotplug: loaded succesfully
+
+After an other [Ctrl]c the startup procedure was continued.
+
+Second problem:
+
+After startup gpsd will not work. I first will have to do a &quot;killall
+gpsd&quot; Then:
+# stty -F /dev/ttyUSB0 ispeed 4800 &amp;&amp; cat &lt; &lt;/dev/ttyUSB0
+stty: /dev/ttyUSB0: unable to perform all requested operations
+# stty -F /dev/ttyUSB0 ispeed 4800 &amp;&amp; cat &lt; &lt;/dev/ttyUSB0
+
+and now it starts to work
+# /etc/init.d/gpsd start
+Starting GPS daemon: gpsd - failed  (?????????)
+
+But now xgps works and reports the satellites in view (no fix at the
+moment, too few satellites)
+
+The gps is an old Garmin GPS II in NMEA mode (Garmin mode does not seem
+to work, I suppose the Garmin mode in this old gps differs from the
+present Garmin mode)
+
+Aart
+
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="000822.html">[Gpsd-users] Debian gpsd packages
+</A></li>
+	<LI>Next message: <A HREF="000835.html">[Gpsd-users] Debian gpsd packages
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#827">[ date ]</a>
+              <a href="thread.html#827">[ thread ]</a>
+              <a href="subject.html#827">[ subject ]</a>
+              <a href="author.html#827">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

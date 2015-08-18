@@ -1,0 +1,144 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] MR-350 pps?
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2009-November/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20MR-350%20pps%3F&In-Reply-To=%3Calpine.DEB.1.10.0911100751250.3464%40org-pc51.fy.chalmers.se%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="004036.html">
+   <LINK REL="Next"  HREF="004038.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] MR-350 pps?</H1>
+    <B>H&#229;kan Johansson</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20MR-350%20pps%3F&In-Reply-To=%3Calpine.DEB.1.10.0911100751250.3464%40org-pc51.fy.chalmers.se%3E"
+       TITLE="[Gpsd-users] MR-350 pps?">f96hajo at chalmers.se
+       </A><BR>
+    <I>Tue Nov 10 08:07:57 CET 2009</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="004036.html">[Gpsd-users] MR-350 pps?
+</A></li>
+        <LI>Next message: <A HREF="004038.html">[Gpsd-users] MR-350 pps?
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#4037">[ date ]</a>
+              <a href="thread.html#4037">[ thread ]</a>
+              <a href="subject.html#4037">[ subject ]</a>
+              <a href="author.html#4037">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>
+Hi Gary,
+
+&gt;&gt;<i> Is it a MR-350 or MR-350P?  Am asking as I've found a nearby supplier, but
+</I>&gt;&gt;<i> I've mostly found pin-out schemes for MR-350 without PPS connected.
+</I>&gt;<i>
+</I>&gt;<i> The box clearly is marked MR-350P and the included documentation is for
+</I>&gt;<i> an MR-350P.  Still, it could be mismarked.  ALready tried  2 different
+</I>&gt;<i> units.
+</I>&gt;<i>
+</I>&gt;<i> I see no MR-350  on the usglobalsat web page, only the MR-350P.  Do
+</I>&gt;<i> you have a link to that product?  Maybe discontinued?o
+</I>
+The globalsat webpage, but there is no pin-out at all:
+
+<A HREF="http://www.globalsat.com.tw/eng/product_detail_00000045.htm">http://www.globalsat.com.tw/eng/product_detail_00000045.htm</A>
+
+Pin-out (sans pps) I find at almost any online store selling them, e.g.
+
+<A HREF="http://www.mobilegpsonline.com/mgpsstore/index.php?main_page=product_info&amp;products_id=4">http://www.mobilegpsonline.com/mgpsstore/index.php?main_page=product_info&amp;products_id=4</A>
+
+The MR-350P I only saw at the usglobalsat page, with pps marked.   Then I 
+got really confused, as a local chain here had MR-350 with pps:
+
+<A HREF="http://www.kjell.com/?item=31048">http://www.kjell.com/?item=31048</A>
+
+(with pps at bottom of page, actually without in the linked pdf manual)
+
+&gt;<i>
+</I>&gt;<i> Here they only list the BR-355 and the MR-350P as their two serial
+</I>&gt;<i> products.  Only the MR-350P has PPS.
+</I>&gt;<i>
+</I>&gt;&gt;<i> The conversion cable needed, that is 3.3V TTL &lt;-&gt; RS232 ?
+</I>&gt;<i>
+</I>&gt;<i> Not needed in my case. I have several mobos where the serial input is
+</I>&gt;<i> set for TTL levels.
+</I>
+Sounds very convenient.  I ought to check this.
+
+&gt;<i> I put an oscilloscope on the PPS pin and it is
+</I>&gt;<i> very much solid at 0V.  Not even a 100mV spike.  So level conversion is
+</I>&gt;<i> not my issue.
+</I>
+I got an globalsat EM-406A some months ago, which explicitly should have 
+pps output.
+
+<A HREF="http://www.globalsat.com.tw/eng/product_detail_00000055.htm">http://www.globalsat.com.tw/eng/product_detail_00000055.htm</A>
+
+However, I never got or saw any signal on the pps pin (checked with 
+scope).  Except for that it works (which does not make me happier).
+
+I've found one message stating that the PPS signal from a MR-350 only is 1 
+us wide:
+
+<A HREF="http://www.mail-archive.com/time-nuts@febo.com/msg22674.html">http://www.mail-archive.com/time-nuts@febo.com/msg22674.html</A>
+
+I do not remember if I was that thorough with the scope...
+
+&gt;&gt;<i> Did you get the pps to work?
+</I>&gt;<i>
+</I>&gt;<i> Not yet.  The PPS pin is still stuck at zero.  Having trouble compiling
+</I>&gt;<i> since the current svn fails if you can not build the man pages.
+</I>
+Perhaps 'make -k' helps, to ignore the build problems.
+
+Cheers,
+H&#229;kan
+
+
+&gt;<i>
+</I>&gt;<i> RGDS
+</I>&gt;<i> GARY
+</I>&gt;<i> - ---------------------------------------------------------------------------
+</I>&gt;<i> Gary E. Miller Rellim 109 NW Wilmington Ave., Suite E, Bend, OR 97701
+</I>&gt;<i> 	<A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">gem at rellim.com</A>  Tel:+1(541)382-8588
+</I>&gt;<i>
+</I>&gt;<i> -----BEGIN PGP SIGNATURE-----
+</I>&gt;<i> Version: GnuPG v1.4.3 (GNU/Linux)
+</I>&gt;<i>
+</I>&gt;<i> iD8DBQFK+Jw7BmnRqz71OvMRAkEnAJ9BCaj35qUzGm2WXmSM61lixOH2fQCdEL1u
+</I>&gt;<i> fruSO+MbcUh9ahPmIeTKzoA=
+</I>&gt;<i> =wBkM
+</I>&gt;<i> -----END PGP SIGNATURE-----
+</I>&gt;<i>
+</I></PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="004036.html">[Gpsd-users] MR-350 pps?
+</A></li>
+	<LI>Next message: <A HREF="004038.html">[Gpsd-users] MR-350 pps?
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#4037">[ date ]</a>
+              <a href="thread.html#4037">[ thread ]</a>
+              <a href="subject.html#4037">[ subject ]</a>
+              <a href="author.html#4037">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

@@ -1,0 +1,88 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] Issue with 'D' command
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2007-July/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Issue%20with%20%27D%27%20command&In-Reply-To=%3C4.3.2.7.2.20070724181748.0399a530%40postoffice.creativesilicon.com.au%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="002777.html">
+   <LINK REL="Next"  HREF="002783.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] Issue with 'D' command</H1>
+    <B>Dave C</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Issue%20with%20%27D%27%20command&In-Reply-To=%3C4.3.2.7.2.20070724181748.0399a530%40postoffice.creativesilicon.com.au%3E"
+       TITLE="[Gpsd-users] Issue with 'D' command">gpsd at creativesilicon.com.au
+       </A><BR>
+    <I>Tue Jul 24 10:25:34 CEST 2007</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="002777.html">[Gpsd-users] Issue with 'D' command
+</A></li>
+        <LI>Next message: <A HREF="002783.html">[Gpsd-users] Issue with 'D' command
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2779">[ date ]</a>
+              <a href="thread.html#2779">[ thread ]</a>
+              <a href="subject.html#2779">[ subject ]</a>
+              <a href="author.html#2779">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi Chris,
+
+&gt;<i>That makes sense. Until you ask gpsd for some data, i don't think it
+</I>&gt;<i>fills in all the state. we do that because you could have multiple
+</I>&gt;<i>devices, and you may want to use this, that or the other device.
+</I>
+You're right - that does make sense.
+
+Maybe this is the same reason that the D command is returning old 
+information the first time it is polled?
+
+However, I thought that using the -n option on the command line kept gpsd 
+connected to the GPS at all times? Although, it could be that again, gpsd 
+isn't sure which device the particular client instance is interested in.
+
+Would it not be better to present a D=? response the first time a client 
+queries the time, rather than present (potentially) stale information?
+
+I will try and see if this is also happening with the 'P' command. If it 
+is, it could be a major problem in my application as I'm only waking up 
+every 10 -30 minutes to get a fix, If the first fix is potentially old, 
+then my spatial dataset will be out.
+
+Thanks again for looking into this.
+
+ciao, Dave
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="002777.html">[Gpsd-users] Issue with 'D' command
+</A></li>
+	<LI>Next message: <A HREF="002783.html">[Gpsd-users] Issue with 'D' command
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2779">[ date ]</a>
+              <a href="thread.html#2779">[ thread ]</a>
+              <a href="subject.html#2779">[ subject ]</a>
+              <a href="author.html#2779">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

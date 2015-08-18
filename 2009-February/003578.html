@@ -1,0 +1,102 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] Simple simple client
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2009-February/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Simple%20simple%20client&In-Reply-To=%3C411636.60656.qm%40web110012.mail.gq1.yahoo.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="003577.html">
+   <LINK REL="Next"  HREF="003579.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] Simple simple client</H1>
+    <B>Hamish</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Simple%20simple%20client&In-Reply-To=%3C411636.60656.qm%40web110012.mail.gq1.yahoo.com%3E"
+       TITLE="[Gpsd-users] Simple simple client">hamish_b at yahoo.com
+       </A><BR>
+    <I>Thu Feb  5 00:03:22 CET 2009</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="003577.html">[Gpsd-users] Simple simple client
+</A></li>
+        <LI>Next message: <A HREF="003579.html">[Gpsd-users] Simple simple client
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3578">[ date ]</a>
+              <a href="thread.html#3578">[ thread ]</a>
+              <a href="subject.html#3578">[ subject ]</a>
+              <a href="author.html#3578">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Peter wrote:
+&gt;<i> Ideally the position would be in New Zealand Map Grid ( does it do
+</I>&gt;<i> conversions in built, or is this the job of the clients?)
+</I>
+DIY
+ 
+&gt;<i> Does the perl lib do conversions? Any readmes on manual
+</I>&gt;<i> conversion?
+</I>
+for reprojection+datum shift use the cs2cs program from PROJ.4. (or code
+something in C using PROJ.4's libproj directly)  see <A HREF="http://proj.osgeo.org">http://proj.osgeo.org</A>
+
+For good conversions to NZMG you will definitely want to use the NTv2
+distortion grid for the datum transform to NZGD49 (+nadgrids=filename).
+You can download the grid (.gsb) file from the PROJ ftp site or directly
+from LINZ.
+
+
+it would look something like:
+
+IN_PROJ=&quot;+proj=longlat +datum=WGS84&quot;
+
+OUT_PROJ=&quot;+proj=nzmg +lat_0=-41.0000000000 +lon_0=173.0000000000 +x_0=2510000.0000000000 +y_0=6023150.0000000000 +a=6378388 +rf=297 +no_defs +nadgrids=/path/to/nzgd2kgrid0005.gsb +to_meter=1.0&quot;
+
+(alternatively expand NZMG terms from +init:epsg=27200)
+
+OUTFMT=&quot;-f %.8f&quot;
+cat &quot;$infile&quot; | cs2cs $OUTFMT $IN_PROJ +to $OUT_PROJ &gt; &quot;$outfile&quot;
+
+
+the grid file is only good on or near land (it's based on trig stations),
+if working in the ocean near shoreuse the 7-term +towgs84 datum parameters instead.
+
+
+Hamish
+(Dunedin)
+
+
+
+      
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="003577.html">[Gpsd-users] Simple simple client
+</A></li>
+	<LI>Next message: <A HREF="003579.html">[Gpsd-users] Simple simple client
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3578">[ date ]</a>
+              <a href="thread.html#3578">[ thread ]</a>
+              <a href="subject.html#3578">[ subject ]</a>
+              <a href="author.html#3578">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

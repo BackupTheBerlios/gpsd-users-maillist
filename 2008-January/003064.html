@@ -1,0 +1,815 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] Furuno Electric GPS and NTP time
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2008-January/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Furuno%20Electric%20GPS%20and%20NTP%20time&In-Reply-To=%3C3BF93070B3D1B047BA7ABF612958950D02CF5DB2%40hcex.hartwellcorp.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="003063.html">
+   <LINK REL="Next"  HREF="003067.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] Furuno Electric GPS and NTP time</H1>
+    <B>Michael St. Laurent</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Furuno%20Electric%20GPS%20and%20NTP%20time&In-Reply-To=%3C3BF93070B3D1B047BA7ABF612958950D02CF5DB2%40hcex.hartwellcorp.com%3E"
+       TITLE="[Gpsd-users] Furuno Electric GPS and NTP time">mikes at hartwellcorp.com
+       </A><BR>
+    <I>Thu Jan  3 18:28:29 CET 2008</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="003063.html">[Gpsd-users] Emergency 2.36 has been shipped
+</A></li>
+        <LI>Next message: <A HREF="003067.html">[Gpsd-users] C++ wrapper missing (libgpsmm.cpp) in 2.36?
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3064">[ date ]</a>
+              <a href="thread.html#3064">[ thread ]</a>
+              <a href="subject.html#3064">[ subject ]</a>
+              <a href="author.html#3064">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hello again,
+
+I'm trying out version 2.36 with the Furuno Electric unit I've got.  The
+new code seems to detect the GPS correctly and switches to the driver
+for it but only reports NMEA time to NTP for one or two cycles then
+seems to stop.  The PPS time does not appear to be reported at all.
+
+ntpq&gt; pe
+     remote           refid      st t when poll reach   delay   offset
+jitter
+========================================================================
+======
+ SHM(0)          .NMEA.           1 l  630   16    0    0.000   -3.294
+0.722
+ SHM(1)          .PPS.            0 l    -   16    0    0.000    0.000
+0.001
++tick.exit.com   .GPS.            1 u   45   64  377   67.981    8.663
+83.365
++clock1.redhat.c .CDMA.           1 u   44   64  377   83.396    1.266
+8.387
++clock3.redhat.c .CDMA.           1 u   42   64  317   42.374    5.407
+10.710
+ time-a.timefreq .INIT.          16 u    -   64    0    0.000    0.000
+0.000
+*time.nist.gov   .ACTS.           1 u   32   64  377   57.561   12.893
+11.928
+ntpq&gt;
+
+Here is some logfile data:
+
+Jan  2 13:14:20 hcnas gpsd[13796]: gpsd: launching (Version 2.36) 
+Jan  2 13:14:20 hcnas gpsd[13796]: gpsd: listening on port gpsd 
+Jan  2 13:14:20 hcnas gpsd[13796]: gpsd: shmat(0,0,0) succeeded 
+Jan  2 13:14:20 hcnas last message repeated 3 times
+Jan  2 13:14:20 hcnas gpsd[13796]: gpsd: changing to group 14 
+Jan  2 13:14:20 hcnas gpsd[13796]: gpsd: running with effective group ID
+14 
+Jan  2 13:14:20 hcnas gpsd[13796]: gpsd: running with effective user ID
+99 
+Jan  2 13:14:20 hcnas gpsd[13796]: gpsd: opening GPS data source at
+'/dev/ttyS0' 
+Jan  2 13:14:20 hcnas gpsd[13796]: gpsd: speed 4800, 8N1 
+Jan  2 13:14:21 hcnas gpsd[13796]: gpsd: =&gt; GPS: $PASHQ,RID*28\x0d  
+Jan  2 13:14:21 hcnas gpsd[13796]: gpsd: Navcom: command dump:
+0299661c0800040200001203 
+Jan  2 13:14:21 hcnas gpsd[13796]: gpsd: =&gt; GPS:
+0299661c0800040200001203 
+Jan  2 13:14:21 hcnas gpsd[13796]: gpsd: Navcom: sent command 0x1c (Test
+Support Block) 
+Jan  2 13:14:21 hcnas gpsd[13796]: gpsd: Navcom: command 0x1c mode = 02,
+length = 0 
+Jan  2 13:14:21 hcnas gpsd[13796]: gpsd: Navcom: command dump:
+029966200e000001ae02000071000000f203 
+Jan  2 13:14:21 hcnas gpsd[13796]: gpsd: =&gt; GPS:
+029966200e000001ae02000071000000f203 
+Jan  2 13:14:21 hcnas gpsd[13796]: gpsd: Navcom: sent command 0x20 (Data
+Request) - data block id = ae at rate 00 
+Jan  2 13:14:21 hcnas gpsd[13796]: gpsd: Navcom: command dump:
+029966200e00000186020a0071000000d003 
+Jan  2 13:14:21 hcnas gpsd[13796]: gpsd: =&gt; GPS:
+029966200e00000186020a0071000000d003 
+Jan  2 13:14:21 hcnas gpsd[13796]: gpsd: Navcom: sent command 0x20 (Data
+Request) - data block id = 86 at rate 0a 
+Jan  2 13:14:21 hcnas gpsd[13796]: gpsd: garmin_gps not active. 
+Jan  2 13:14:21 hcnas gpsd[13796]: gpsd: no probe matched... 
+Jan  2 13:14:21 hcnas gpsd[13796]: gpsd: gpsd_activate(1): opened GPS
+(5) 
+Jan  2 13:14:22 hcnas gpsd[13796]: gpsd: packet sniff finds type -1 
+Jan  2 13:14:22 hcnas last message repeated 8 times
+Jan  2 13:14:22 hcnas gpsd[13796]: gpsd: packet sniff finds type 1 
+Jan  2 13:14:22 hcnas gpsd[13796]: gpsd: switch_driver(Generic NMEA)
+called... 
+Jan  2 13:14:22 hcnas gpsd[13796]: gpsd: selecting Generic NMEA
+driver... 
+Jan  2 13:14:22 hcnas gpsd[13796]: gpsd: =&gt; GPS:
+$PSRF100,0,4800,8,1,0*0F\x0d  
+Jan  2 13:14:22 hcnas gpsd[13796]: gpsd: &lt;= GPS:
+$GPGGA,211422,3351.7903,N,11749.5220,W,1,11,01.32,000081.4,M,-032.3,M,,*
+72
+ 
+Jan  2 13:14:22 hcnas gpsd[13796]: gpsd: can't use GGA time until after
+ZDA or RMC has supplied a year. 
+Jan  2 13:14:22 hcnas gpsd[13796]: gpsd: GPGGA sets status 1 and mode 3
+(changed) 
+Jan  2 13:14:22 hcnas gpsd[13796]: gpsd: =&gt; GPS: $PGRMCE*0E\x0d  
+Jan  2 13:14:22 hcnas gpsd[13796]: gpsd: &lt;= GPS:
+$GPZDA,211423,02,01,2008,+00,00*6D
+ 
+Jan  2 13:14:22 hcnas gpsd[13796]: gpsd: =&gt; GPS: $PFEC,GPint*58\x0d  
+Jan  2 13:14:22 hcnas gpsd[13796]: gpsd: &lt;= GPS:
+$GPGLL,3351.7903,N,11749.5220,W,211422,A,A*55
+ 
+Jan  2 13:14:22 hcnas gpsd[13796]: gpsd: can't use GGL time until after
+ZDA or RMC has supplied a year. 
+Jan  2 13:14:22 hcnas gpsd[13796]: gpsd: GPGLL sets status 1 
+Jan  2 13:14:22 hcnas gpsd[13796]: gpsd: pps-detect (DCD) on /dev/ttyS0
+changed to 0 
+Jan  2 13:14:22 hcnas gpsd[13796]: gpsd: PPS pulse rejected. No fix. 
+Jan  2 13:14:22 hcnas gpsd[13796]: gpsd: =&gt; GPS:
+1002128e7f0101000101010001000000000000131003 
+Jan  2 13:14:22 hcnas gpsd[13796]: gpsd: &lt;= GPS:
+$GPVTG,194.7,T,181.5,M,000.0,N,0000.0,K,A*15
+ 
+Jan  2 13:14:22 hcnas gpsd[13796]: gpsd: =&gt; GPS: $PFST*11\x0d  
+Jan  2 13:14:22 hcnas gpsd[13796]: gpsd: &lt;= GPS:
+$GPRMC,211422,A,3351.7903,N,11749.5220,W,000.0,194.7,020108,013.2,E,A*09
+ 
+Jan  2 13:14:22 hcnas gpsd[13796]: gpsd: GPRMC starts a reporting cycle.
+
+Jan  2 13:14:22 hcnas gpsd[13796]: gpsd: GPRMC sets mode 2 
+Jan  2 13:14:22 hcnas gpsd[13796]: gpsd: pps-detect (DCD) on /dev/ttyS0
+changed to 1 
+Jan  2 13:14:22 hcnas gpsd[13796]: gpsd: PPS pulse rejected. No fix. 
+Jan  2 13:14:23 hcnas gpsd[13796]: gpsd: =&gt; GPS: $PFEC,GPsrq*5B\x0d  
+Jan  2 13:14:23 hcnas gpsd[13796]: gpsd: &lt;= GPS:
+$GPGGA,211423,3351.7902,N,11749.5220,W,1,11,01.32,000081.4,M,-032.3,M,,*
+72
+ 
+Jan  2 13:14:23 hcnas gpsd[13796]: gpsd: GPGGA starts a reporting cycle.
+
+Jan  2 13:14:23 hcnas gpsd[13796]: gpsd: GPGGA sets status 1 and mode 3
+(changed) 
+Jan  2 13:14:23 hcnas gpsd[13796]: gpsd: =&gt; GPS: $PASHQ,RID*28\x0d  
+Jan  2 13:14:23 hcnas gpsd[13796]: gpsd: &lt;= GPS:
+$GPZDA,211424,02,01,2008,+00,00*6A
+ 
+Jan  2 13:14:23 hcnas gpsd[13796]: gpsd: &lt;= GPS:
+$GPGLL,3351.7902,N,11749.5220,W,211423,A,A*55
+ 
+Jan  2 13:14:23 hcnas gpsd[13796]: gpsd: GPGLL sets status 1 
+Jan  2 13:14:23 hcnas gpsd[13796]: gpsd: &lt;= GPS:
+$GPVTG,194.7,T,181.5,M,000.0,N,0000.0,K,A*15
+ 
+Jan  2 13:14:23 hcnas gpsd[13796]: gpsd: pps-detect (DCD) on /dev/ttyS0
+changed to 0 
+Jan  2 13:14:23 hcnas gpsd[13796]: gpsd: PPS pulse rejected too short.
+cycle: 999983, duration: 499985 
+Jan  2 13:14:23 hcnas gpsd[13796]: gpsd: &lt;= GPS:
+$GPRMC,211423,A,3351.7902,N,11749.5220,W,000.0,194.7,020108,013.2,E,A*09
+ 
+Jan  2 13:14:23 hcnas gpsd[13796]: gpsd: GPRMC sets mode 2 
+Jan  2 13:14:23 hcnas gpsd[13796]: gpsd: pps-detect (DCD) on /dev/ttyS0
+changed to 1 
+Jan  2 13:14:23 hcnas gpsd[13796]: gpsd: PPS pulse rejected too short.
+cycle: 999987, duration: 500002 
+Jan  2 13:14:24 hcnas gpsd[13796]: gpsd: &lt;= GPS:
+$GPGGA,211424,3351.7902,N,11749.5220,W,1,11,01.32,000081.4,M,-032.3,M,,*
+75
+ 
+Jan  2 13:14:24 hcnas gpsd[13796]: gpsd: GPGGA starts a reporting cycle.
+
+Jan  2 13:14:24 hcnas gpsd[13796]: gpsd: GPGGA sets status 1 and mode 3
+(changed) 
+Jan  2 13:14:24 hcnas gpsd[13796]: gpsd: &lt;= GPS:
+$GPZDA,211425,02,01,2008,+00,00*6B
+ 
+Jan  2 13:14:24 hcnas gpsd[13796]: gpsd: &lt;= GPS:
+$GPGLL,3351.7902,N,11749.5220,W,211424,A,A*52
+ 
+Jan  2 13:14:24 hcnas gpsd[13796]: gpsd: GPGLL sets status 1 
+Jan  2 13:14:24 hcnas gpsd[13796]: gpsd: pps-detect (DCD) on /dev/ttyS0
+changed to 0 
+Jan  2 13:14:24 hcnas gpsd[13796]: gpsd: PPS pulse rejected too short.
+cycle: 999990, duration: 499988 
+Jan  2 13:14:24 hcnas gpsd[13796]: gpsd: &lt;= GPS:
+$GPGSA,A,3,02,05,06,10,12,15,18,21,24,30,31,,01.32,00.82,01.04*37
+ 
+Jan  2 13:14:24 hcnas gpsd[13796]: gpsd: GPGSA sets mode 3 
+Jan  2 13:14:24 hcnas gpsd[13796]: gpsd: &lt;= GPS:
+$GPGSV,3,1,12,02,16,058,40,05,47,198,45,06,56,325,47,07,45,316,00*73
+ 
+Jan  2 13:14:24 hcnas gpsd[13796]: gpsd: Partial satellite data (1 of
+3). 
+Jan  2 13:14:24 hcnas gpsd[13796]: gpsd: &lt;= GPS:
+$GPGSV,3,2,12,10,52,063,45,12,39,178,42,15,08,142,35,18,09,202,41*70
+ 
+Jan  2 13:14:24 hcnas gpsd[13796]: gpsd: Partial satellite data (2 of
+3). 
+Jan  2 13:14:24 hcnas gpsd[13796]: gpsd: &lt;= GPS:
+$GPGSV,3,3,12,21,33,262,44,24,65,301,48,26,06,134,00,29,66,061,45*7D
+ 
+Jan  2 13:14:24 hcnas gpsd[13796]: gpsd: Satellite data OK (3 of 3). 
+Jan  2 13:14:24 hcnas gpsd[13796]: gpsd: pps-detect (DCD) on /dev/ttyS0
+changed to 1 
+Jan  2 13:14:24 hcnas gpsd[13796]: gpsd: PPS pulse rejected too short.
+cycle: 1000034, duration: 500046 
+Jan  2 13:14:25 hcnas gpsd[13796]: gpsd: &lt;= GPS:
+$GPVTG,194.6,T,181.4,M,000.0,N,0000.0,K,A*15
+ 
+Jan  2 13:14:25 hcnas gpsd[13796]: gpsd: &lt;= GPS:
+$GPGGA,211425,3351.7902,N,11749.5220,W,1,11,01.32,000081.5,M,-032.3,M,,*
+75
+ 
+Jan  2 13:14:25 hcnas gpsd[13796]: gpsd: GPGGA starts a reporting cycle.
+
+Jan  2 13:14:25 hcnas gpsd[13796]: gpsd: GPGGA sets status 1 and mode 3
+(changed) 
+Jan  2 13:14:25 hcnas gpsd[13796]: gpsd: &lt;= GPS:
+$GPZDA,211426,02,01,2008,+00,00*68
+ 
+Jan  2 13:14:25 hcnas gpsd[13796]: gpsd: &lt;= GPS:
+$GPGLL,3351.7902,N,11749.5220,W,211425,A,A*53
+ 
+Jan  2 13:14:25 hcnas gpsd[13796]: gpsd: GPGLL sets status 1 
+Jan  2 13:14:25 hcnas gpsd[13796]: gpsd: &lt;= GPS:
+$GPVTG,194.6,T,181.4,M,000.0,N,0000.0,K,A*15
+ 
+Jan  2 13:14:25 hcnas gpsd[13796]: gpsd: pps-detect (DCD) on /dev/ttyS0
+changed to 0 
+Jan  2 13:14:25 hcnas gpsd[13796]: gpsd: PPS pulse rejected too short.
+cycle: 1000098, duration: 500052 
+Jan  2 13:14:25 hcnas gpsd[13796]: gpsd: &lt;= GPS:
+$GPRMC,211425,A,3351.7902,N,11749.5220,W,000.0,194.6,020108,013.2,E,A*0E
+ 
+Jan  2 13:14:25 hcnas gpsd[13796]: gpsd: GPRMC sets mode 2 
+Jan  2 13:14:25 hcnas gpsd[13796]: gpsd: &lt;= GPS:
+$PFEC,GPssd,C10,D10,G001,H000081.5,M05,S01,T+0000,U00000000,V060,W2,X2*1
+7
+ 
+Jan  2 13:14:25 hcnas gpsd[13796]: gpsd: found $PFEC,GPssd. 
+Jan  2 13:14:25 hcnas gpsd[13796]: gpsd: switch_driver(Furuno Electric
+GH-79L4) called... 
+Jan  2 13:14:25 hcnas gpsd[13796]: gpsd: selecting Furuno Electric
+GH-79L4 driver... 
+Jan  2 13:14:25 hcnas gpsd[13796]: gpsd: PPS trailing edge will be
+ignored
+Jan  2 13:14:25 hcnas gpsd[13796]: gpsd: pps-detect (DCD) on /dev/ttyS0
+changed to 1 
+Jan  2 13:14:25 hcnas gpsd[13796]: gpsd: PPS pulse rejected too short.
+cycle: -1021878871, duration: -1021878871 
+Jan  2 13:14:25 hcnas gpsd[13796]: gpsd: ntpshm_pps: clock: 1199308466 @
+1199308465.986985, precision -6 
+Jan  2 13:14:25 hcnas gpsd[13796]: gpsd: pps-detect (DCD) on /dev/ttyS0
+changed to 1 
+Jan  2 13:14:25 hcnas gpsd[13796]: gpsd: PPS pulse rejected too short.
+cycle: 1000088, duration: 500036 
+Jan  2 13:14:25 hcnas gpsd[13796]: gpsd: ntpshm_pps: clock: 1199308466 @
+1199308465.987130, precision -6 
+Jan  2 13:14:26 hcnas gpsd[13796]: gpsd: &lt;= GPS:
+$GPGGA,211426,3351.7902,N,11749.5220,W,1,11,01.32,000081.5,M,-032.3,M,,*
+76
+ 
+Jan  2 13:14:26 hcnas gpsd[13796]: gpsd: GPGGA starts a reporting cycle.
+
+Jan  2 13:14:26 hcnas gpsd[13796]: gpsd: GPGGA sets status 1 and mode 3
+(changed) 
+Jan  2 13:14:26 hcnas gpsd[13796]: gpsd: &lt;= GPS:
+$GPZDA,211427,02,01,2008,+00,00*69
+ 
+Jan  2 13:14:26 hcnas gpsd[13796]: gpsd: &lt;= GPS:
+$GPGLL,3351.7902,N,11749.5220,W,211426,A,A*50
+ 
+Jan  2 13:14:26 hcnas gpsd[13796]: gpsd: GPGLL sets status 1 
+Jan  2 13:14:26 hcnas gpsd[13796]: gpsd: &lt;= GPS:
+$GPVTG,194.6,T,181.4,M,000.0,N,0000.0,K,A*15
+ 
+Jan  2 13:14:26 hcnas gpsd[13796]: gpsd: pps-detect (DCD) on /dev/ttyS0
+changed to 0 
+Jan  2 13:14:26 hcnas gpsd[13796]: gpsd: PPS pulse rejected too short.
+cycle: 999879, duration: 499843 
+Jan  2 13:14:26 hcnas gpsd[13796]: gpsd: pps-detect (DCD) on /dev/ttyS0
+changed to 0 
+Jan  2 13:14:26 hcnas gpsd[13796]: gpsd: PPS pulse rejected too short.
+cycle: -1021378810, duration: 500061 
+Jan  2 13:14:26 hcnas gpsd[13796]: gpsd: &lt;= GPS:
+$GPRMC,211426,A,3351.7902,N,11749.5220,W,000.0,194.6,020108,013.2,E,A*0D
+ 
+Jan  2 13:14:26 hcnas gpsd[13796]: gpsd: GPRMC sets mode 2 
+Jan  2 13:14:26 hcnas gpsd[13796]: gpsd: pps-detect (DCD) on /dev/ttyS0
+changed to 1 
+Jan  2 13:14:26 hcnas gpsd[13796]: gpsd: PPS pulse rejected too short.
+cycle: 999990, duration: 499929 
+Jan  2 13:14:26 hcnas gpsd[13796]: gpsd: ntpshm_pps: clock: 1199308467 @
+1199308466.986975, precision -6 
+Jan  2 13:14:26 hcnas gpsd[13796]: gpsd: pps-detect (DCD) on /dev/ttyS0
+changed to 1 
+Jan  2 13:14:26 hcnas gpsd[13796]: gpsd: PPS pulse rejected too short.
+cycle: 999958, duration: 500115 
+Jan  2 13:14:26 hcnas gpsd[13796]: gpsd: ntpshm_pps: clock: 1199308467 @
+1199308466.987088, precision -6 
+Jan  2 13:14:27 hcnas gpsd[13796]: gpsd: &lt;= GPS:
+$GPGGA,211427,3351.7902,N,11749.5220,W,1,11,01.32,000081.5,M,-032.3,M,,*
+77
+ 
+Jan  2 13:14:27 hcnas gpsd[13796]: gpsd: GPGGA starts a reporting cycle.
+
+Jan  2 13:14:27 hcnas gpsd[13796]: gpsd: GPGGA sets status 1 and mode 3
+(changed) 
+Jan  2 13:14:27 hcnas gpsd[13796]: gpsd: &lt;= GPS:
+$GPZDA,211428,02,01,2008,+00,00*66
+ 
+Jan  2 13:14:27 hcnas gpsd[13796]: gpsd: &lt;= GPS:
+$GPGLL,3351.7902,N,11749.5220,W,211427,A,A*51
+ 
+Jan  2 13:14:27 hcnas gpsd[13796]: gpsd: GPGLL sets status 1 
+Jan  2 13:14:27 hcnas gpsd[13796]: gpsd: &lt;= GPS:
+$GPVTG,194.6,T,181.4,M,000.0,N,0000.0,K,A*15
+ 
+Jan  2 13:14:27 hcnas gpsd[13796]: gpsd: pps-detect (DCD) on /dev/ttyS0
+changed to 0 
+Jan  2 13:14:27 hcnas gpsd[13796]: gpsd: PPS pulse rejected too short.
+cycle: 999990, duration: 499875 
+Jan  2 13:14:27 hcnas gpsd[13796]: gpsd: pps-detect (DCD) on /dev/ttyS0
+changed to 0 
+Jan  2 13:14:27 hcnas gpsd[13796]: gpsd: PPS pulse rejected too short.
+cycle: 999990, duration: 500061 
+Jan  2 13:14:27 hcnas gpsd[13796]: gpsd: &lt;= GPS:
+$GPRMC,211427,A,3351.7902,N,11749.5220,W,000.0,194.6,020108,013.2,E,A*0C
+ 
+Jan  2 13:14:27 hcnas gpsd[13796]: gpsd: GPRMC sets mode 2 
+Jan  2 13:14:27 hcnas gpsd[13796]: gpsd: pps-detect (DCD) on /dev/ttyS0
+changed to 1 
+Jan  2 13:14:27 hcnas gpsd[13796]: gpsd: PPS pulse rejected too short.
+cycle: 999989, duration: 499928 
+Jan  2 13:14:27 hcnas gpsd[13796]: gpsd: ntpshm_pps: clock: 1199308468 @
+1199308467.986964, precision -6 
+Jan  2 13:14:27 hcnas gpsd[13796]: gpsd: pps-detect (DCD) on /dev/ttyS0
+changed to 1 
+Jan  2 13:14:27 hcnas gpsd[13796]: gpsd: PPS pulse rejected too short.
+cycle: 999986, duration: 500111 
+Jan  2 13:14:27 hcnas gpsd[13796]: gpsd: ntpshm_pps: clock: 1199308468 @
+1199308467.987074, precision -6 
+Jan  2 13:14:28 hcnas gpsd[13796]: gpsd: &lt;= GPS:
+$GPGGA,211428,3351.7902,N,11749.5220,W,1,11,01.32,000081.6,M,-032.3,M,,*
+7B
+ 
+Jan  2 13:14:28 hcnas gpsd[13796]: gpsd: GPGGA starts a reporting cycle.
+
+Jan  2 13:14:28 hcnas gpsd[13796]: gpsd: GPGGA sets status 1 and mode 3
+(changed) 
+Jan  2 13:14:28 hcnas gpsd[13796]: gpsd: &lt;= GPS:
+$GPZDA,211429,02,01,2008,+00,00*67
+ 
+Jan  2 13:14:28 hcnas gpsd[13796]: gpsd: &lt;= GPS:
+$GPGLL,3351.7902,N,11749.5220,W,211428,A,A*5E
+ 
+Jan  2 13:14:28 hcnas gpsd[13796]: gpsd: GPGLL sets status 1 
+Jan  2 13:14:28 hcnas gpsd[13796]: gpsd: &lt;= GPS:
+$GPVTG,194.6,T,181.4,M,000.0,N,0000.0,K,A*15
+ 
+Jan  2 13:14:28 hcnas gpsd[13796]: gpsd: pps-detect (DCD) on /dev/ttyS0
+changed to 0 
+Jan  2 13:14:28 hcnas gpsd[13796]: gpsd: PPS pulse rejected too short.
+cycle: 999995, duration: 499884 
+Jan  2 13:14:28 hcnas gpsd[13796]: gpsd: pps-detect (DCD) on /dev/ttyS0
+changed to 0 
+Jan  2 13:14:28 hcnas gpsd[13796]: gpsd: PPS pulse rejected too short.
+cycle: 999998, duration: 500070 
+Jan  2 13:14:28 hcnas gpsd[13796]: gpsd: &lt;= GPS:
+$GPRMC,211428,A,3351.7902,N,11749.5220,W,000.0,194.6,020108,013.2,E,A*03
+ 
+Jan  2 13:14:28 hcnas gpsd[13796]: gpsd: GPRMC sets mode 2 
+Jan  2 13:14:28 hcnas gpsd[13796]: gpsd: pps-detect (DCD) on /dev/ttyS0
+changed to 1 
+Jan  2 13:14:28 hcnas gpsd[13796]: gpsd: PPS pulse rejected too short.
+cycle: 999989, duration: 499919 
+Jan  2 13:14:28 hcnas gpsd[13796]: gpsd: ntpshm_pps: clock: 1199308469 @
+1199308468.986953, precision -6 
+Jan  2 13:14:28 hcnas gpsd[13796]: gpsd: pps-detect (DCD) on /dev/ttyS0
+changed to 1 
+Jan  2 13:14:28 hcnas gpsd[13796]: gpsd: PPS pulse rejected too short.
+cycle: 999991, duration: 500107 
+Jan  2 13:14:28 hcnas gpsd[13796]: gpsd: ntpshm_pps: clock: 1199308469 @
+1199308468.987065, precision -6 
+Jan  2 13:14:29 hcnas gpsd[13796]: gpsd: &lt;= GPS:
+$GPGGA,211429,3351.7902,N,11749.5220,W,1,11,01.32,000081.6,M,-032.3,M,,*
+7A
+ 
+Jan  2 13:14:29 hcnas gpsd[13796]: gpsd: GPGGA starts a reporting cycle.
+
+Jan  2 13:14:29 hcnas gpsd[13796]: gpsd: GPGGA sets status 1 and mode 3
+(changed) 
+Jan  2 13:14:29 hcnas gpsd[13796]: gpsd: &lt;= GPS:
+$GPZDA,211430,02,01,2008,+00,00*6F
+ 
+Jan  2 13:14:29 hcnas gpsd[13796]: gpsd: &lt;= GPS:
+$GPGLL,3351.7902,N,11749.5220,W,211429,A,A*5F
+ 
+Jan  2 13:14:29 hcnas gpsd[13796]: gpsd: GPGLL sets status 1 
+Jan  2 13:14:29 hcnas gpsd[13796]: gpsd: pps-detect (DCD) on /dev/ttyS0
+changed to 0 
+Jan  2 13:14:29 hcnas gpsd[13796]: gpsd: PPS pulse rejected too short.
+cycle: 999997, duration: 499890 
+Jan  2 13:14:29 hcnas gpsd[13796]: gpsd: pps-detect (DCD) on /dev/ttyS0
+changed to 0 
+Jan  2 13:14:29 hcnas gpsd[13796]: gpsd: PPS pulse rejected too short.
+cycle: 999996, duration: 500077 
+Jan  2 13:14:29 hcnas gpsd[13796]: gpsd: &lt;= GPS:
+$GPGSA,A,3,02,05,06,10,12,15,18,21,24,30,31,,01.32,00.82,01.04*37
+ 
+Jan  2 13:14:29 hcnas gpsd[13796]: gpsd: GPGSA sets mode 3 
+Jan  2 13:14:29 hcnas gpsd[13796]: gpsd: &lt;= GPS:
+$GPGSV,3,1,12,02,16,058,40,05,47,198,45,06,56,325,47,07,45,316,00*73
+ 
+Jan  2 13:14:29 hcnas gpsd[13796]: gpsd: Partial satellite data (1 of
+3). 
+Jan  2 13:14:29 hcnas gpsd[13796]: gpsd: &lt;= GPS:
+$GPGSV,3,2,12,10,52,063,45,12,39,178,43,15,08,142,34,18,09,202,41*70
+ 
+Jan  2 13:14:29 hcnas gpsd[13796]: gpsd: Partial satellite data (2 of
+3). 
+Jan  2 13:14:29 hcnas gpsd[13796]: gpsd: &lt;= GPS:
+$GPGSV,3,3,12,21,33,262,45,24,65,301,48,26,06,134,00,29,66,061,45*7C
+ 
+Jan  2 13:14:29 hcnas gpsd[13796]: gpsd: Satellite data OK (3 of 3). 
+Jan  2 13:14:29 hcnas gpsd[13796]: gpsd: pps-detect (DCD) on /dev/ttyS0
+changed to 1 
+Jan  2 13:14:29 hcnas gpsd[13796]: gpsd: PPS pulse rejected too short.
+cycle: 1000045, duration: 499968 
+Jan  2 13:14:29 hcnas gpsd[13796]: gpsd: ntpshm_pps: clock: 1199308470 @
+1199308469.986998, precision -6 
+Jan  2 13:14:29 hcnas gpsd[13796]: gpsd: pps-detect (DCD) on /dev/ttyS0
+changed to 1 
+Jan  2 13:14:29 hcnas gpsd[13796]: gpsd: PPS pulse rejected too short.
+cycle: 1000043, duration: 500153 
+Jan  2 13:14:29 hcnas gpsd[13796]: gpsd: ntpshm_pps: clock: 1199308470 @
+1199308469.987108, precision -6 
+Jan  2 13:14:30 hcnas gpsd[13796]: gpsd: &lt;= GPS:
+$GPVTG,194.7,T,181.5,M,000.0,N,0000.0,K,A*15
+ 
+Jan  2 13:14:30 hcnas gpsd[13796]: gpsd: &lt;= GPS:
+$GPGGA,211430,3351.7902,N,11749.5220,W,1,11,01.32,000081.6,M,-032.3,M,,*
+72
+ 
+Jan  2 13:14:30 hcnas gpsd[13796]: gpsd: GPGGA starts a reporting cycle.
+
+Jan  2 13:14:30 hcnas gpsd[13796]: gpsd: GPGGA sets status 1 and mode 3
+(changed) 
+Jan  2 13:14:30 hcnas gpsd[13796]: gpsd: &lt;= GPS:
+$GPZDA,211431,02,01,2008,+00,00*6E
+ 
+Jan  2 13:14:30 hcnas gpsd[13796]: gpsd: &lt;= GPS:
+$GPGLL,3351.7902,N,11749.5220,W,211430,A,A*57
+ 
+Jan  2 13:14:30 hcnas gpsd[13796]: gpsd: GPGLL sets status 1 
+Jan  2 13:14:30 hcnas gpsd[13796]: gpsd: &lt;= GPS:
+$GPVTG,194.6,T,181.4,M,000.0,N,0000.0,K,A*15
+ 
+Jan  2 13:14:30 hcnas gpsd[13796]: gpsd: pps-detect (DCD) on /dev/ttyS0
+changed to 0 
+Jan  2 13:14:30 hcnas gpsd[13796]: gpsd: PPS pulse rejected too short.
+cycle: 1000073, duration: 499920 
+Jan  2 13:14:30 hcnas gpsd[13796]: gpsd: pps-detect (DCD) on /dev/ttyS0
+changed to 0 
+Jan  2 13:14:30 hcnas gpsd[13796]: gpsd: PPS pulse rejected too short.
+cycle: 1000069, duration: 500101 
+Jan  2 13:14:30 hcnas gpsd[13796]: gpsd: &lt;= GPS:
+$GPRMC,211430,A,3351.7902,N,11749.5220,W,000.0,194.6,020108,013.2,E,A*0A
+ 
+Jan  2 13:14:30 hcnas gpsd[13796]: gpsd: GPRMC sets mode 2 
+Jan  2 13:14:30 hcnas gpsd[13796]: gpsd: pps-detect (DCD) on /dev/ttyS0
+changed to 1 
+Jan  2 13:14:30 hcnas gpsd[13796]: gpsd: PPS pulse rejected too short.
+cycle: 999931, duration: 499830 
+Jan  2 13:14:30 hcnas gpsd[13796]: gpsd: ntpshm_pps: clock: 1199308471 @
+1199308470.986929, precision -6 
+Jan  2 13:14:30 hcnas gpsd[13796]: gpsd: pps-detect (DCD) on /dev/ttyS0
+changed to 1 
+Jan  2 13:14:30 hcnas gpsd[13796]: gpsd: PPS pulse rejected too short.
+cycle: 999932, duration: 500012 
+Jan  2 13:14:30 hcnas gpsd[13796]: gpsd: ntpshm_pps: clock: 1199308471 @
+1199308470.987040, precision -6 
+Jan  2 13:14:31 hcnas gpsd[13796]: gpsd: &lt;= GPS:
+$GPGGA,211431,3351.7901,N,11749.5219,W,1,11,01.32,000081.7,M,-032.3,M,,*
+7B
+ 
+Jan  2 13:14:31 hcnas gpsd[13796]: gpsd: GPGGA starts a reporting cycle.
+
+Jan  2 13:14:31 hcnas gpsd[13796]: gpsd: GPGGA sets status 1 and mode 3
+(changed) 
+Jan  2 13:14:31 hcnas gpsd[13796]: gpsd: &lt;= GPS:
+$GPZDA,211432,02,01,2008,+00,00*6D
+ 
+Jan  2 13:14:31 hcnas gpsd[13796]: gpsd: &lt;= GPS:
+$GPGLL,3351.7901,N,11749.5219,W,211431,A,A*5F
+ 
+Jan  2 13:14:31 hcnas gpsd[13796]: gpsd: GPGLL sets status 1 
+Jan  2 13:14:31 hcnas gpsd[13796]: gpsd: &lt;= GPS:
+$GPVTG,194.8,T,181.6,M,000.0,N,0000.0,K,A*19
+ 
+Jan  2 13:14:31 hcnas gpsd[13796]: gpsd: pps-detect (DCD) on /dev/ttyS0
+changed to 0 
+Jan  2 13:14:31 hcnas gpsd[13796]: gpsd: PPS pulse rejected too short.
+cycle: 999917, duration: 499905 
+Jan  2 13:14:31 hcnas gpsd[13796]: gpsd: pps-detect (DCD) on /dev/ttyS0
+changed to 0 
+Jan  2 13:14:31 hcnas gpsd[13796]: gpsd: PPS pulse rejected too short.
+cycle: 999918, duration: 500088 
+Jan  2 13:14:31 hcnas gpsd[13796]: gpsd: &lt;= GPS:
+$GPRMC,211431,A,3351.7901,N,11749.5219,W,000.0,194.8,020108,013.2,E,A*0C
+ 
+Jan  2 13:14:31 hcnas gpsd[13796]: gpsd: GPRMC sets mode 2 
+Jan  2 13:14:31 hcnas gpsd[13796]: gpsd: pps-detect (DCD) on /dev/ttyS0
+changed to 1 
+Jan  2 13:14:31 hcnas gpsd[13796]: gpsd: PPS pulse rejected too short.
+cycle: 999883, duration: 499978 
+Jan  2 13:14:31 hcnas gpsd[13796]: gpsd: ntpshm_pps: clock: 1199308472 @
+1199308471.986923, precision -6 
+Jan  2 13:14:31 hcnas gpsd[13796]: gpsd: pps-detect (DCD) on /dev/ttyS0
+changed to 1 
+Jan  2 13:14:31 hcnas gpsd[13796]: gpsd: PPS pulse rejected too short.
+cycle: 999997, duration: 499909 
+Jan  2 13:14:31 hcnas gpsd[13796]: gpsd: ntpshm_pps: clock: 1199308472 @
+1199308471.986926, precision -6 
+Jan  2 13:14:32 hcnas gpsd[13796]: gpsd: &lt;= GPS:
+$GPGGA,211432,3351.7901,N,11749.5219,W,1,11,01.32,000081.7,M,-032.3,M,,*
+78
+ 
+Jan  2 13:14:32 hcnas gpsd[13796]: gpsd: GPGGA starts a reporting cycle.
+
+Jan  2 13:14:32 hcnas gpsd[13796]: gpsd: GPGGA sets status 1 and mode 3
+(changed) 
+Jan  2 13:14:32 hcnas gpsd[13796]: gpsd: &lt;= GPS:
+$GPZDA,211433,02,01,2008,+00,00*6C
+ 
+Jan  2 13:14:32 hcnas gpsd[13796]: gpsd: &lt;= GPS:
+$GPGLL,3351.7901,N,11749.5219,W,211432,A,A*5C
+ 
+Jan  2 13:14:32 hcnas gpsd[13796]: gpsd: GPGLL sets status 1 
+Jan  2 13:14:32 hcnas gpsd[13796]: gpsd: &lt;= GPS:
+$GPVTG,194.8,T,181.6,M,000.0,N,0000.0,K,A*19
+ 
+Jan  2 13:14:32 hcnas gpsd[13796]: gpsd: pps-detect (DCD) on /dev/ttyS0
+changed to 0 
+Jan  2 13:14:32 hcnas gpsd[13796]: gpsd: PPS pulse rejected too short.
+cycle: 999982, duration: 500004 
+Jan  2 13:14:32 hcnas gpsd[13796]: gpsd: pps-detect (DCD) on /dev/ttyS0
+changed to 0 
+Jan  2 13:14:32 hcnas gpsd[13796]: gpsd: PPS pulse rejected too short.
+cycle: 999941, duration: 500032 
+Jan  2 13:14:32 hcnas gpsd[13796]: gpsd: &lt;= GPS:
+$GPRMC,211432,A,3351.7901,N,11749.5219,W,000.0,194.8,020108,013.2,E,A*0F
+ 
+Jan  2 13:14:32 hcnas gpsd[13796]: gpsd: GPRMC sets mode 2 
+Jan  2 13:14:32 hcnas gpsd[13796]: gpsd: pps-detect (DCD) on /dev/ttyS0
+changed to 1 
+Jan  2 13:14:32 hcnas gpsd[13796]: gpsd: PPS pulse rejected too short.
+cycle: 999999, duration: 499995 
+Jan  2 13:14:32 hcnas gpsd[13796]: gpsd: ntpshm_pps: clock: 1199308473 @
+1199308472.986922, precision -6 
+Jan  2 13:14:32 hcnas gpsd[13796]: gpsd: pps-detect (DCD) on /dev/ttyS0
+changed to 1 
+Jan  2 13:14:32 hcnas gpsd[13796]: gpsd: PPS pulse rejected too short.
+cycle: 1000009, duration: 499977 
+Jan  2 13:14:32 hcnas gpsd[13796]: gpsd: ntpshm_pps: clock: 1199308473 @
+1199308472.986935, precision -6 
+Jan  2 13:14:33 hcnas gpsd[13796]: gpsd: &lt;= GPS:
+$GPGGA,211433,3351.7901,N,11749.5219,W,1,11,01.32,000081.7,M,-032.3,M,,*
+79
+ 
+Jan  2 13:14:33 hcnas gpsd[13796]: gpsd: GPGGA starts a reporting cycle.
+
+Jan  2 13:14:33 hcnas gpsd[13796]: gpsd: GPGGA sets status 1 and mode 3
+(changed) 
+Jan  2 13:14:33 hcnas gpsd[13796]: gpsd: &lt;= GPS:
+$GPZDA,211434,02,01,2008,+00,00*6B
+ 
+Jan  2 13:14:33 hcnas gpsd[13796]: gpsd: &lt;= GPS:
+$GPGLL,3351.7901,N,11749.5219,W,211433,A,A*5D
+ 
+Jan  2 13:14:33 hcnas gpsd[13796]: gpsd: GPGLL sets status 1 
+Jan  2 13:14:33 hcnas gpsd[13796]: gpsd: &lt;= GPS:
+$GPVTG,194.8,T,181.6,M,000.0,N,0000.0,K,A*19
+ 
+Jan  2 13:14:33 hcnas gpsd[13796]: gpsd: pps-detect (DCD) on /dev/ttyS0
+changed to 0 
+Jan  2 13:14:33 hcnas gpsd[13796]: gpsd: PPS pulse rejected too short.
+cycle: 999995, duration: 500000 
+Jan  2 13:14:33 hcnas gpsd[13796]: gpsd: pps-detect (DCD) on /dev/ttyS0
+changed to 0 
+Jan  2 13:14:33 hcnas gpsd[13796]: gpsd: PPS pulse rejected too short.
+cycle: 999994, duration: 500017 
+Jan  2 13:14:33 hcnas gpsd[13796]: gpsd: &lt;= GPS:
+$GPRMC,211433,A,3351.7901,N,11749.5219,W,000.0,194.8,020108,013.2,E,A*0E
+ 
+Jan  2 13:14:33 hcnas gpsd[13796]: gpsd: GPRMC sets mode 2 
+Jan  2 13:14:33 hcnas gpsd[13796]: gpsd: pps-detect (DCD) on /dev/ttyS0
+changed to 1 
+Jan  2 13:14:33 hcnas gpsd[13796]: gpsd: PPS pulse rejected too short.
+cycle: 999978, duration: 499978 
+Jan  2 13:14:33 hcnas gpsd[13796]: gpsd: ntpshm_pps: clock: 1199308474 @
+1199308473.986900, precision -6 
+Jan  2 13:14:33 hcnas gpsd[13796]: gpsd: pps-detect (DCD) on /dev/ttyS0
+changed to 1 
+Jan  2 13:14:33 hcnas gpsd[13796]: gpsd: PPS pulse rejected too short.
+cycle: 999975, duration: 499958 
+Jan  2 13:14:33 hcnas gpsd[13796]: gpsd: ntpshm_pps: clock: 1199308474 @
+1199308473.986910, precision -6 
+Jan  2 13:14:34 hcnas gpsd[13796]: gpsd: &lt;= GPS:
+$GPGGA,211434,3351.7901,N,11749.5219,W,1,11,01.32,000081.7,M,-032.3,M,,*
+7E
+ 
+Jan  2 13:14:34 hcnas gpsd[13796]: gpsd: GPGGA starts a reporting cycle.
+
+Jan  2 13:14:34 hcnas gpsd[13796]: gpsd: GPGGA sets status 1 and mode 3
+(changed) 
+Jan  2 13:14:34 hcnas gpsd[13796]: gpsd: &lt;= GPS:
+$GPZDA,211435,02,01,2008,+00,00*6A
+ 
+Jan  2 13:14:34 hcnas gpsd[13796]: gpsd: &lt;= GPS:
+$GPGLL,3351.7901,N,11749.5219,W,211434,A,A*5A
+ 
+Jan  2 13:14:34 hcnas gpsd[13796]: gpsd: GPGLL sets status 1 
+Jan  2 13:14:34 hcnas gpsd[13796]: gpsd: pps-detect (DCD) on /dev/ttyS0
+changed to 0 
+Jan  2 13:14:34 hcnas gpsd[13796]: gpsd: PPS pulse rejected too short.
+cycle: 1000012, duration: 500034 
+Jan  2 13:14:34 hcnas gpsd[13796]: gpsd: pps-detect (DCD) on /dev/ttyS0
+changed to 0 
+Jan  2 13:14:34 hcnas gpsd[13796]: gpsd: PPS pulse rejected too short.
+cycle: 1000005, duration: 500047 
+Jan  2 13:14:34 hcnas gpsd[13796]: gpsd: &lt;= GPS:
+$GPGSA,A,3,02,05,06,10,12,15,18,21,24,30,31,,01.32,00.82,01.04*37
+ 
+Jan  2 13:14:34 hcnas gpsd[13796]: gpsd: GPGSA sets mode 3 
+Jan  2 13:14:34 hcnas gpsd[13796]: gpsd: &lt;= GPS:
+$GPGSV,3,1,12,02,16,058,40,05,47,198,46,06,56,325,47,07,45,316,00*70
+ 
+Jan  2 13:14:34 hcnas gpsd[13796]: gpsd: Partial satellite data (1 of
+3). 
+Jan  2 13:14:34 hcnas gpsd[13796]: gpsd: &lt;= GPS:
+$GPGSV,3,2,12,10,52,063,44,12,39,178,43,15,08,142,34,18,09,202,41*71
+ 
+Jan  2 13:14:34 hcnas gpsd[13796]: gpsd: Partial satellite data (2 of
+3). 
+Jan  2 13:14:34 hcnas gpsd[13796]: gpsd: &lt;= GPS:
+$GPGSV,3,3,12,21,33,262,44,24,65,301,48,26,06,134,00,29,66,061,45*7D
+ 
+Jan  2 13:14:34 hcnas gpsd[13796]: gpsd: Satellite data OK (3 of 3). 
+Jan  2 13:14:34 hcnas gpsd[13796]: gpsd: pps-detect (DCD) on /dev/ttyS0
+changed to 1 
+Jan  2 13:14:34 hcnas gpsd[13796]: gpsd: PPS pulse rejected too short.
+cycle: 1000008, duration: 499974 
+Jan  2 13:14:34 hcnas gpsd[13796]: gpsd: pps-detect (DCD) on /dev/ttyS0
+changed to 1 
+Jan  2 13:14:34 hcnas gpsd[13796]: gpsd: PPS pulse rejected too short.
+cycle: 1000026, duration: 499979 
+Jan  2 13:14:34 hcnas gpsd[13796]: gpsd: ntpshm_pps: clock: 1199308475 @
+1199308474.986936, precision -6 
+Jan  2 13:14:34 hcnas gpsd[13796]: gpsd: ntpshm_pps: clock: 1199308475 @
+1199308474.986908, precision -6 
+Jan  2 13:14:35 hcnas gpsd[13796]: gpsd: &lt;= GPS:
+$GPVTG,194.7,T,181.5,M,000.0,N,0000.0,K,A*15
+ 
+Jan  2 13:14:35 hcnas gpsd[13796]: gpsd: &lt;= GPS:
+$GPGGA,211435,3351.7901,N,11749.5219,W,1,11,01.32,000081.7,M,-032.3,M,,*
+7F
+ 
+Jan  2 13:14:35 hcnas gpsd[13796]: gpsd: GPGGA starts a reporting cycle.
+
+Jan  2 13:14:35 hcnas gpsd[13796]: gpsd: GPGGA sets status 1 and mode 3
+(changed) 
+Jan  2 13:14:35 hcnas gpsd[13796]: gpsd: &lt;= GPS:
+$GPZDA,211436,02,01,2008,+00,00*69
+ 
+Jan  2 13:14:35 hcnas gpsd[13796]: gpsd: &lt;= GPS:
+$GPGLL,3351.7901,N,11749.5219,W,211435,A,A*5B
+ 
+Jan  2 13:14:35 hcnas gpsd[13796]: gpsd: GPGLL sets status 1 
+Jan  2 13:14:35 hcnas gpsd[13796]: gpsd: pps-detect (DCD) on /dev/ttyS0
+changed to 0 
+Jan  2 13:14:35 hcnas gpsd[13796]: gpsd: PPS pulse rejected too short.
+cycle: 999962, duration: 499988 
+Jan  2 13:14:35 hcnas gpsd[13796]: gpsd: pps-detect (DCD) on /dev/ttyS0
+changed to 0 
+Jan  2 13:14:35 hcnas gpsd[13796]: gpsd: PPS pulse rejected too short.
+cycle: 999956, duration: 499977 
+Jan  2 13:14:35 hcnas gpsd[13796]: gpsd: &lt;= GPS:
+$GPVTG,194.8,T,181.6,M,000.0,N,0000.1,K,A*18
+ 
+Jan  2 13:14:35 hcnas gpsd[13796]: gpsd: &lt;= GPS:
+$GPRMC,211435,A,3351.7901,N,11749.5219,W,000.0,194.8,020108,013.2,E,A*08
+ 
+Jan  2 13:14:35 hcnas gpsd[13796]: gpsd: GPRMC sets mode 2 
+Jan  2 13:14:35 hcnas gpsd[13796]: gpsd: pps-detect (DCD) on /dev/ttyS0
+changed to 1 
+Jan  2 13:14:35 hcnas gpsd[13796]: gpsd: PPS pulse rejected too short.
+cycle: 999970, duration: 499982 
+Jan  2 13:14:35 hcnas gpsd[13796]: gpsd: ntpshm_pps: clock: 1199308476 @
+1199308475.986878, precision -6 
+Jan  2 13:14:35 hcnas gpsd[13796]: gpsd: pps-detect (DCD) on /dev/ttyS0
+changed to 1 
+Jan  2 13:14:35 hcnas gpsd[13796]: gpsd: PPS pulse rejected too short.
+cycle: 999951, duration: 499974 
+Jan  2 13:14:35 hcnas gpsd[13796]: gpsd: ntpshm_pps: clock: 1199308476 @
+1199308475.986887, precision -6 
+Jan  2 13:14:36 hcnas gpsd[13796]: gpsd: &lt;= GPS:
+$GPGGA,211436,3351.7901,N,11749.5218,W,1,11,01.32,000081.7,M,-032.3,M,,*
+7D
+ 
+Jan  2 13:14:36 hcnas gpsd[13796]: gpsd: GPGGA starts a reporting cycle.
+
+Jan  2 13:14:36 hcnas gpsd[13796]: gpsd: GPGGA sets status 1 and mode 3
+(changed) 
+Jan  2 13:14:36 hcnas gpsd[13796]: gpsd: &lt;= GPS:
+$GPZDA,211437,02,01,2008,+00,00*68
+ 
+Jan  2 13:14:36 hcnas gpsd[13796]: gpsd: &lt;= GPS:
+$GPGLL,3351.7901,N,11749.5218,W,211436,A,A*59
+ 
+Jan  2 13:14:36 hcnas gpsd[13796]: gpsd: GPGLL sets status 1 
+Jan  2 13:14:36 hcnas gpsd[13796]: gpsd: &lt;= GPS:
+$GPVTG,194.8,T,181.6,M,000.0,N,0000.0,K,A*19
+ 
+Jan  2 13:14:36 hcnas gpsd[13796]: gpsd: pps-detect (DCD) on /dev/ttyS0
+changed to 0 
+Jan  2 13:14:36 hcnas gpsd[13796]: gpsd: PPS pulse rejected too short.
+cycle: 999991, duration: 500009 
+Jan  2 13:14:36 hcnas gpsd[13796]: gpsd: pps-detect (DCD) on /dev/ttyS0
+changed to 0 
+Jan  2 13:14:36 hcnas gpsd[13796]: gpsd: PPS pulse rejected too short.
+cycle: 999997, duration: 500023 
+Jan  2 13:14:36 hcnas gpsd[13796]: gpsd: &lt;= GPS:
+$GPRMC,211436,A,3351.7901,N,11749.5218,W,000.0,194.8,020108,013.2,E,A*0A
+ 
+Jan  2 13:14:36 hcnas gpsd[13796]: gpsd: GPRMC sets mode 2 
+Jan  2 13:14:36 hcnas gpsd[13796]: gpsd: pps-detect (DCD) on /dev/ttyS0
+changed to 1 
+Jan  2 13:14:36 hcnas gpsd[13796]: gpsd: PPS pulse rejected too short.
+cycle: 999997, duration: 499988 
+Jan  2 13:14:36 hcnas gpsd[13796]: gpsd: ntpshm_pps: clock: 1199308477 @
+1199308476.986875, precision -6 
+Jan  2 13:14:36 hcnas gpsd[13796]: gpsd: pps-detect (DCD) on /dev/ttyS0
+changed to 1 
+Jan  2 13:14:36 hcnas gpsd[13796]: gpsd: PPS pulse rejected too short.
+cycle: 999999, duration: 499976 
+Jan  2 13:14:36 hcnas gpsd[13796]: gpsd: ntpshm_pps: clock: 1199308477 @
+1199308476.986886, precision -6 
+Jan  2 13:14:37 hcnas gpsd[13796]: gpsd: &lt;= GPS:
+$GPGGA,211437,3351.7901,N,11749.5218,W,1,11,01.32,000081.7,M,-032.3,M,,*
+7C
+ 
+Jan  2 13:14:37 hcnas gpsd[13796]: gpsd: GPGGA starts a reporting cycle.
+
+Jan  2 13:14:37 hcnas gpsd[13796]: gpsd: GPGGA sets status 1 and mode 3
+(changed) 
+Jan  2 13:14:37 hcnas gpsd[13796]: gpsd: &lt;= GPS:
+$GPZDA,211438,02,01,2008,+00,00*67
+ 
+Jan  2 13:14:37 hcnas gpsd[13796]: gpsd: &lt;= GPS:
+$GPGLL,3351.7901,N,11749.5218,W,211437,A,A*58
+ 
+Jan  2 13:14:37 hcnas gpsd[13796]: gpsd: GPGLL sets status 1 
+Jan  2 13:14:37 hcnas gpsd[13796]: gpsd: &lt;= GPS:
+$GPVTG,194.8,T,181.6,M,000.0,N,0000.0,K,A*19
+ 
+Jan  2 13:14:37 hcnas gpsd[13796]: gpsd: pps-detect (DCD) on /dev/ttyS0
+changed to 0 
+Jan  2 13:14:37 hcnas gpsd[13796]: gpsd: PPS pulse rejected too short.
+cycle: 999991, duration: 500003 
+Jan  2 13:14:37 hcnas gpsd[13796]: gpsd: pps-detect (DCD) on /dev/ttyS0
+changed to 0 
+Jan  2 13:14:37 hcnas gpsd[13796]: gpsd: PPS pulse rejected too short.
+cycle: 999998, duration: 500022 
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="003063.html">[Gpsd-users] Emergency 2.36 has been shipped
+</A></li>
+	<LI>Next message: <A HREF="003067.html">[Gpsd-users] C++ wrapper missing (libgpsmm.cpp) in 2.36?
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3064">[ date ]</a>
+              <a href="thread.html#3064">[ thread ]</a>
+              <a href="subject.html#3064">[ subject ]</a>
+              <a href="author.html#3064">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

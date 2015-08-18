@@ -1,0 +1,169 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] Ubuntu 10.10 Udev package problems
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2010-December/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Ubuntu%2010.10%20Udev%20package%20problems&In-Reply-To=%3C20101228194516.1951fd7e%40dragon%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="004840.html">
+   <LINK REL="Next"  HREF="004842.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] Ubuntu 10.10 Udev package problems</H1>
+    <B>Charles Curley</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Ubuntu%2010.10%20Udev%20package%20problems&In-Reply-To=%3C20101228194516.1951fd7e%40dragon%3E"
+       TITLE="[Gpsd-users] Ubuntu 10.10 Udev package problems">charlescurley at charlescurley.com
+       </A><BR>
+    <I>Wed Dec 29 03:45:16 CET 2010</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="004840.html">[Gpsd-users] Ubuntu 10.10 Udev package problems
+</A></li>
+        <LI>Next message: <A HREF="004842.html">[Gpsd-users] Ubuntu 10.10 Udev package problems
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#4841">[ date ]</a>
+              <a href="thread.html#4841">[ thread ]</a>
+              <a href="subject.html#4841">[ subject ]</a>
+              <a href="author.html#4841">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>On Tue, 28 Dec 2010 20:15:01 -0500
+Eric Raymond &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">esr at thyrsus.com</A>&gt; wrote:
+
+&gt;<i> Hmm.  I just checked the same functionality under 10.04 and it worked.
+</I>&gt;<i> 
+</I>&gt;<i> To help you out, I've added to the Hacking Guide a very detailed
+</I>&gt;<i> diagnostic procedure for checking udev operation from the bottom up.
+</I>&gt;<i> Please pull git head, build, and try it.  
+</I>&gt;<i> 
+</I>&gt;<i> Let me know what step you get stuck at and perhaps we can improve
+</I>&gt;<i> the diagnostics. 
+</I>
+OK.
+
+I suggest you use a numbered list here so it is easier to communicate
+which paragraph one is discussing.
+
+I got down to the udev paragraph. I killed the daemon and removed the
+socket. I then plugged in the receiver, and got:
+
+Dec 28 19:08:57 dragon kernel: [168215.304044] usb 3-1: new full speed USB device using uhci_hcd and address 6
+Dec 28 19:08:57 dragon kernel: [168215.525141] pl2303 3-1:1.0: pl2303 converter detected
+Dec 28 19:08:57 dragon kernel: [168215.537267] usb 3-1: pl2303 converter now attached to ttyUSB0
+Dec 28 19:08:57 dragon gpsd.hotplug: gpsd_control(action=add, arg=/dev/ttyUSB0)
+Dec 28 19:08:57 dragon gpsd.hotplug: socket /var/run/gpsd.sock doesn't exist
+Dec 28 19:08:57 dragon gpsd.hotplug: launching gpsd  -F /var/run/gpsd.sock
+
+gpsd launched. But lsof indicates that gpsd never acquired the device:
+
+<A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">root at dragon</A>:/lib/udev# lsof | grep ttyU
+lsof: WARNING: can't stat() fuse.gvfs-fuse-daemon file system /home/ccurley/.gvfs
+      Output information may be incomplete.
+<A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">root at dragon</A>:/lib/udev# 
+
+So I see what you expected me to see, but still don't have a working
+system. the socket is there, and my client picks it up immediately. The
+client does not report a gps receiver, which it normally would.
+
+I checked for permissions. The device file is as follows:
+
+crw-rw---- 1 root dialout 188, 0 2010-12-28 19:08 /dev/ttyUSB0
+
+I had previously added user nobody to the dialout group, so it looks
+like so:
+
+dialout:x:20:ccurley,nobody
+
+Unless I'm forgetting something about Unix permissions, that should
+allow gpsd running as nobody to open the device.
+
+I did the &quot;make udev-test&quot; as root and got lots of stuff, some of which
+indicated that the test code found gpsd and gpsd found the receiver.
+
+I then ran it as my regular user. That was denied permission to create a
+socket. I'm reluctant to allow anyone to write to /var/run (even
+knowing I can turn off the permission immediately), so I stopped there.
+
+I also did the following:
+
+* Plug in the receiver.
+
+* Kill the daemon and rm the socket.
+
+* As root, &quot;cd /lib/udev &amp;&amp; ./gpsd.hotplug add /dev/ttyUSB0&quot;
+
+That runs just fine, and gpsd acquires the device file:
+
+<A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">root at dragon</A>:/lib/udev# lsof | grep ttyU
+lsof: WARNING: can't stat() fuse.gvfs-fuse-daemon file system /home/ccurley/.gvfs
+      Output information may be incomplete.
+gpsd      20895     nobody    7u      CHR      188,0      0t0     851138 /dev/ttyUSB0
+<A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">root at dragon</A>:/lib/udev# 
+
+
+I smell a permissions rat, but don't see what it is.
+
+If nothing else, this gives you some more goodies to add to your debug
+arsenal.
+
+Last but not least, a few typos:
+
+support for USB receivers. Accordongly, here's
+                           ^^^^^^^^^^^
+                           Accordingly
+
+
+mini-DIN connector. If there os no such joint
+                             ^^
+                             is
+
+The leatt likely failure is for the USB
+    ^^^^^
+    least
+
+messages go on your system an use udevadm(8)
+                           ^^^
+                           and
+
+
+
+-- 
+
+Charles Curley                  /&quot;\    ASCII Ribbon Campaign
+Looking for fine software       \ /    Respect for open standards
+and/or writing?                  X     No HTML/RTF in email
+<A HREF="http://www.charlescurley.com">http://www.charlescurley.com</A>    / \    No M$ Word docs in email
+
+Key fingerprint = CE5C 6645 A45A 64E4 94C0  809C FFF6 4C48 4ECD DFDB
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="004840.html">[Gpsd-users] Ubuntu 10.10 Udev package problems
+</A></li>
+	<LI>Next message: <A HREF="004842.html">[Gpsd-users] Ubuntu 10.10 Udev package problems
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#4841">[ date ]</a>
+              <a href="thread.html#4841">[ thread ]</a>
+              <a href="subject.html#4841">[ subject ]</a>
+              <a href="author.html#4841">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

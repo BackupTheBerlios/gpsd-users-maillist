@@ -1,0 +1,122 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] First request is unknown, but subsequently works
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2005-July/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20First%20request%20is%20unknown%2C%20but%20subsequently%20works&In-Reply-To=%3C42D5A48F.8000401%40afoyi.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="000838.html">
+   <LINK REL="Next"  HREF="000845.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] First request is unknown, but subsequently works</H1>
+    <B>Darryl Ross</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20First%20request%20is%20unknown%2C%20but%20subsequently%20works&In-Reply-To=%3C42D5A48F.8000401%40afoyi.com%3E"
+       TITLE="[Gpsd-users] First request is unknown, but subsequently works">bofh at afoyi.com
+       </A><BR>
+    <I>Thu Jul 14 01:32:31 CEST 2005</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="000838.html">[Gpsd-users] First request is unknown, but subsequently works
+</A></li>
+        <LI>Next message: <A HREF="000845.html">[Gpsd-users] First request is unknown, but subsequently works
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#839">[ date ]</a>
+              <a href="thread.html#839">[ thread ]</a>
+              <a href="subject.html#839">[ subject ]</a>
+              <a href="author.html#839">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>-----BEGIN PGP SIGNED MESSAGE-----
+Hash: SHA1
+
+Eric S. Raymond wrote:
+&gt;<i> Alastair Battrick &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">al at battrick.org</A>&gt;:
+</I>&gt;<i> 
+</I>&gt;&gt;<i>I have a problem with gpsd and my gps unit. I am using gpsd 2.28 
+</I>&gt;&gt;<i>installed via rpm on a RH Fedora 4 box. The USB GPS unit is apparenly 
+</I>&gt;&gt;<i>based on an Evermore chip, this one:
+</I>&gt;&gt;<i><A HREF="http://www.mapfactor.com/products/gps/mpfc22usb.html">http://www.mapfactor.com/products/gps/mpfc22usb.html</A>
+</I>&gt;<i> 
+</I>&gt;<i> 
+</I>&gt;<i> Evermore chip in NMEA mode.  We're working on Evermore binary support now.
+</I>&gt;<i> 
+</I>&gt;<i> 
+</I>&gt;&gt;<i>The problem I am having: When I connect to the daemon via telnet, the 
+</I>&gt;&gt;<i>first 'P' or 'O' always gives a &quot;GPSD,P=?&quot; response, but subsequent 
+</I>&gt;&gt;<i>requests work fine. If I quit from telnet and then reconnect, the first 
+</I>&gt;&gt;<i>request is again met with an unknown response, but further requests work 
+</I>&gt;&gt;<i>fine. The time left between any of these requests does not seem to matter
+</I>&gt;<i> 
+</I>&gt;<i> 
+</I>&gt;<i> (Eric stares at the code and thinks for a while...)
+</I>&gt;<i> 
+</I>&gt;<i> Hm.  Thank you, you've just turned up a minor bug in the architecture,
+</I>&gt;<i> To understand what's going on, you need to know that gpsd does not
+</I>&gt;<i> immediately assign you a GPS from its pool of known devices when you
+</I>&gt;<i> connect your client.  Rather, it waits until you issue a command that
+</I>&gt;<i> requires GPS information.
+</I>&gt;<i> 
+</I>&gt;<i> The reason for this goes back to when I added multi-device support in 2.21, 
+</I>&gt;<i> I realized then that what the client might want to do is list available
+</I>&gt;<i> GPSes (with K) and choose one (with F).  There is also at least one other
+</I>&gt;<i> command, L, that doesn't require a GPS.  And in general, waiting until 
+</I>&gt;<i> a GPS is really needed to wake one up is a good idea -- saves power,
+</I>&gt;<i> which can be important because GPS-equipped computers are more than
+</I>&gt;<i> likely running off a battery.
+</I>
+However, if you know you only have one device and battery power isn't a
+problem (like mine), you can always start gpsd with the '-n' switch.
+
+&gt;<i> I'm divided in my mind whether to fix this bug or document it.  I suppose
+</I>&gt;<i> I could make the device-binding logic do an immediate poll of the
+</I>&gt;<i> device it binds.  That would complicate the code some.  Not sure
+</I>&gt;<i> it's worth it.
+</I>
+I'm not sure it needs to be fixed, as you said, watcher mode is probably
+better as then you only need 1 command to get all the information the
+gps can supply instead of having to send 8 different commands. Might be
+worth documenting though :)
+
+Regards
+Darryl
+
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v1.4.1 (GNU/Linux)
+
+iD8DBQFC1aSP/XQ6DbmPjokRAmpAAJ9jcYcHTAU6e0NaU5uDZcySNAIY9ACbBs3A
+9kTKi9Qli1iok0jwEdOa3rw=
+=mzFz
+-----END PGP SIGNATURE-----
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="000838.html">[Gpsd-users] First request is unknown, but subsequently works
+</A></li>
+	<LI>Next message: <A HREF="000845.html">[Gpsd-users] First request is unknown, but subsequently works
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#839">[ date ]</a>
+              <a href="thread.html#839">[ thread ]</a>
+              <a href="subject.html#839">[ subject ]</a>
+              <a href="author.html#839">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

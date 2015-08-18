@@ -1,0 +1,105 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] Using GPSD to set Date in Unix
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2010-February/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Using%20GPSD%20to%20set%20Date%20in%20Unix&In-Reply-To=%3C4B743006.9090004%40its.uni-saarland.de%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="004214.html">
+   <LINK REL="Next"  HREF="004221.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] Using GPSD to set Date in Unix</H1>
+    <B>Nico Maas</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Using%20GPSD%20to%20set%20Date%20in%20Unix&In-Reply-To=%3C4B743006.9090004%40its.uni-saarland.de%3E"
+       TITLE="[Gpsd-users] Using GPSD to set Date in Unix">n.maas at its.uni-saarland.de
+       </A><BR>
+    <I>Thu Feb 11 17:27:50 CET 2010</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="004214.html">[Gpsd-users] Firefox
+</A></li>
+        <LI>Next message: <A HREF="004221.html">[Gpsd-users] Using GPSD to set Date in Unix
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#4220">[ date ]</a>
+              <a href="thread.html#4220">[ thread ]</a>
+              <a href="subject.html#4220">[ subject ]</a>
+              <a href="author.html#4220">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi there,
+
+I wanted to use gpsd 2.37 on my OpenWRT 8.09 RC2 enabled Router to fetch 
+the current Date and Time without using ntpd or something similar.
+For that reason I looked up the web and found an nice script which 
+really does the job quite good if executed by hand:
+
+ i=0; while (i=$(($i+1)) &amp;&amp; [ &quot;$i&quot; -lt 5 ]); do
+        sleep 5
+        date=$(echo 'd' | nc localhost 2947)
+        year=$(echo $date | sed 's/.*D=\([0-9]*\)-.*/\1/')
+        [ &quot;$year&quot; -gt 2004 ] &amp;&amp; break
+done; echo &quot;slept $i times while waiting gps lock..&quot;
+
+echo &quot;Setting date $date&quot;
+date -s $(echo $date | sed 's/GPSD,D=\([0-9]*\)\(.*\):.*/\2\1/' | sed 
+'s/[^0-9]//g') 
+
+The Problem is that gpsd never reports the correct date by this method: 
+date=$(echo 'd' | nc localhost 2947).
+It just returns &quot;GPSD,D=?&quot;.
+If I do an quick &quot;nc localhost 2947&quot; and enter there and press Enter, 
+another GPSD,D=? will follow. But should i enter this key another time, 
+I get the correct time. If I just fire up an imense amount of 
+date=$(echo 'd' | nc localhost 2947) - nothing will happen. But doing it 
+by hand, everything is working fine.
+
+Could someone patch me up and tell me how to correctly get the date 
+information from gpsd by using this script?
+
+Thank you very much,
+
+
+Nico Maas
+
+-- 
+
+Universit&#228;t des Saarlandes
+IT-Servicezentrum
+Campus - Geb. E1 2
+66123 Saarbr&#252;cken, Postfach 15 11 50
+Tel :(0681) 302-68666 / Fax :(0681) 302-xxxx
+E-Mail: <A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">n.maas at its.uni-saarland.de</A>
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="004214.html">[Gpsd-users] Firefox
+</A></li>
+	<LI>Next message: <A HREF="004221.html">[Gpsd-users] Using GPSD to set Date in Unix
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#4220">[ date ]</a>
+              <a href="thread.html#4220">[ thread ]</a>
+              <a href="subject.html#4220">[ subject ]</a>
+              <a href="author.html#4220">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

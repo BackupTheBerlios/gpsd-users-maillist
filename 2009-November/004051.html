@@ -1,0 +1,102 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] Ntp Problems
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2009-November/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Ntp%20Problems&In-Reply-To=%3Calpine.LNX.1.10.0911130824490.29598%40catbert.rellim.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="004050.html">
+   <LINK REL="Next"  HREF="004052.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] Ntp Problems</H1>
+    <B>Gary E. Miller</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Ntp%20Problems&In-Reply-To=%3Calpine.LNX.1.10.0911130824490.29598%40catbert.rellim.com%3E"
+       TITLE="[Gpsd-users] Ntp Problems">gem at rellim.com
+       </A><BR>
+    <I>Fri Nov 13 17:32:04 CET 2009</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="004050.html">[Gpsd-users] Ntp Problems
+</A></li>
+        <LI>Next message: <A HREF="004052.html">[Gpsd-users] Ntp Problems
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#4051">[ date ]</a>
+              <a href="thread.html#4051">[ thread ]</a>
+              <a href="subject.html#4051">[ subject ]</a>
+              <a href="author.html#4051">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>-----BEGIN PGP SIGNED MESSAGE-----
+Hash: SHA1
+
+Yo Don!
+
+On Fri, 13 Nov 2009, Don Weeks wrote:
+
+&gt;<i> So, on shared memory, should the shm look like this:
+</I>
+Nope.  Your prior guess looks right.  For some reason they are not
+working off the same segments.  Here is how mine look:
+
+
+cat /proc/sysvipc/shm
+       key      shmid perms       size  cpid  lpid nattch   uid   gid  cuid  cgid      atime      dtime      ctime
+1314148400          0   644                    96 25020 27168      2     0     0     0     0 1258098492 1258098489 1257543244
+1314148401      32769   644                    96 25020 27168      2     0     0     0     0 1258098492 1258098489 1257543244
+1314148402      65538   644                    96 25020 27168      1     0     0     0     0 1258098492 1258098489 1257543244
+1314148403      98307   644                    96 25020 27168      1     0     0     0     0 1258098492 1258098489 1257543244
+&gt;<i>
+</I>  PID USER      PR  NI  VIRT  RES  SHR S %CPU %MEM    TIME+  COMMAND
+25654 root      RT   0 19008 1356  956 S    0  0.0   0:00.23 ntpd
+27168 root      10 -10 29756 2880 1476 S    0  0.0   0:11.91 gpsd
+
+For the shm thing to work you should start ntpd as root and then gpsd.
+If you start gpsd as root then it can nice() itself.
+
+RGDS
+GARY
+- ---------------------------------------------------------------------------
+Gary E. Miller Rellim 109 NW Wilmington Ave., Suite E, Bend, OR 97701
+	<A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">gem at rellim.com</A>  Tel:+1(541)382-8588
+
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v1.4.3 (GNU/Linux)
+
+iD8DBQFK/YoIBmnRqz71OvMRAnXGAKC4IUHKNYSvi/qB9qeV2H08dpK7FQCgjsDl
+MrwjVJ7RrajWAHv27sDznkA=
+=zHwj
+-----END PGP SIGNATURE-----
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="004050.html">[Gpsd-users] Ntp Problems
+</A></li>
+	<LI>Next message: <A HREF="004052.html">[Gpsd-users] Ntp Problems
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#4051">[ date ]</a>
+              <a href="thread.html#4051">[ thread ]</a>
+              <a href="subject.html#4051">[ subject ]</a>
+              <a href="author.html#4051">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

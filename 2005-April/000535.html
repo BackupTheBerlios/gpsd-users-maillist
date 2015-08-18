@@ -1,0 +1,117 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] Security hole in GPSD, now fixed
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2005-April/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Security%20hole%20in%20GPSD%2C%20now%20fixed&In-Reply-To=%3C200504030646.j336kL80018121%40snark.thyrsus.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="000533.html">
+   <LINK REL="Next"  HREF="000536.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] Security hole in GPSD, now fixed</H1>
+    <B>Eric S. Raymond</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Security%20hole%20in%20GPSD%2C%20now%20fixed&In-Reply-To=%3C200504030646.j336kL80018121%40snark.thyrsus.com%3E"
+       TITLE="[Gpsd-users] Security hole in GPSD, now fixed">esr at snark.thyrsus.com
+       </A><BR>
+    <I>Sun Apr  3 08:46:21 CEST 2005</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="000533.html">[Gpsd-users] RFC 4041 and gpsd
+</A></li>
+        <LI>Next message: <A HREF="000536.html">[Gpsd-users] Gpsd on a Zaurus SL-C3000
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#535">[ date ]</a>
+              <a href="thread.html#535">[ thread ]</a>
+              <a href="subject.html#535">[ subject ]</a>
+              <a href="author.html#535">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>I apologize for being missing for two days.  There was good reason.
+
+Some of you may recall my friend Rob Landley making a guest
+appearance on this list to argue against doing the multidevice feature.
+He eventually came around to the conclusion that it wasn't a bad idea.
+However, during our subsequent discussion of the right way to design
+it, Rob pointed out two significant security problems with the F
+command.
+
+1) A malicious client with non-root access on the host could use F to
+point gpsd at a spoof GPS that is actually a pty feeding bogus
+location data.
+
+2) A malicious client could use repeated probes of a target tty or
+other device to cause data loss to other users.  This is a potential
+remote exploit! Not too bad if the bytes he steals are your mouse, it
+would just get jumpy and jerky -- but suppose they're from your disk
+drive and sections drop out of a file you are retrieving for edit?
+
+Note that potential bugs are not consequences of multi-device support,
+but are implied by the ability to specify any path target for an F
+command.
+
+The conclusion was inescapable.  Switching among and probing devices
+that gpsd already knows about can be an unprivileged operation, but 
+editing gpsd's device list must be privileged.  Hotplug scripts 
+should be able to do it, but ordinary clients should not.
+
+I considered and rejected adding an autentication mechanism (can you
+say &quot;can of big wriggly worms&quot;?).  Instead, I implemented a separate
+control channel for the daemon, only locally accessible, only
+recognizing &quot;add device&quot; and &quot;remove device&quot; commands. The hotplug
+scripts have been appropriately modified.
+
+The channel is a Unix-domain socket owned by root, so it has
+file-system protection bits.  An intruder would need root permissions
+to get at it, in which case you'd have much bigger problems than a
+spoofed GPS.
+
+As a side effect of this work, multi-device support is now almost
+complete.  You can list the devices attached to a GPS with 'K' and
+switch among them with 'F'.  
+
+The only logic missing is that having a GPS yanked from under you by a
+hotplug event should probably cause the daemon to hand you off to
+another GPS if one is available.  I have not written that yet.
+
+The code is in SVN head now, please test.
+-- 
+		&lt;a href=&quot;<A HREF="http://www.catb.org/~esr/">http://www.catb.org/~esr/</A>&quot;&gt;Eric S. Raymond&lt;/a&gt;
+
+[W]hat country can preserve its liberties, if its rulers are not
+warned from time to time that [the] people preserve the spirit of
+resistance?  Let them take arms...The tree of liberty must be
+refreshed from time to time, with the blood of patriots and tyrants.
+	-- Thomas Jefferson, letter to Col. William S. Smith, 1787 
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="000533.html">[Gpsd-users] RFC 4041 and gpsd
+</A></li>
+	<LI>Next message: <A HREF="000536.html">[Gpsd-users] Gpsd on a Zaurus SL-C3000
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#535">[ date ]</a>
+              <a href="thread.html#535">[ thread ]</a>
+              <a href="subject.html#535">[ subject ]</a>
+              <a href="author.html#535">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

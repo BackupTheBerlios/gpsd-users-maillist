@@ -1,0 +1,128 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] Gpsd on a Zaurus SL-C3000
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2005-March/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Gpsd%20on%20a%20Zaurus%20SL-C3000&In-Reply-To=%3C200503290021.22622.john%40jsjf.demon.co.uk%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="000434.html">
+   <LINK REL="Next"  HREF="000443.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] Gpsd on a Zaurus SL-C3000</H1>
+    <B>John Foster</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Gpsd%20on%20a%20Zaurus%20SL-C3000&In-Reply-To=%3C200503290021.22622.john%40jsjf.demon.co.uk%3E"
+       TITLE="[Gpsd-users] Gpsd on a Zaurus SL-C3000">john at jsjf.demon.co.uk
+       </A><BR>
+    <I>Tue Mar 29 02:21:22 CEST 2005</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="000434.html">[Gpsd-users] Announcing release 2.19 of gpsd
+</A></li>
+        <LI>Next message: <A HREF="000443.html">[Gpsd-users] Gpsd on a Zaurus SL-C3000
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#442">[ date ]</a>
+              <a href="thread.html#442">[ thread ]</a>
+              <a href="subject.html#442">[ subject ]</a>
+              <a href="author.html#442">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi, from a new subscriber
+
+I'm playing with a new SL-C3000, and I bought it with a Billionton CF GPS 
+card. I've so far got as far as putting the zgcc compiler suite release 2.02 
+on the Zaurus, and I've built gpsd and got it (half) running. The other half 
+will come when I work out, or when anyone can tell me, what device to point 
+/dev/gsp at... But that question's probably better suited to a 3000 forum.
+
+However, I thought a post of my experience in building gpsd on that platform 
+might be of interest to someone, so here goes. I was compiling from the 2.19 
+source tarball.
+
+The first issue on the Z is that its /tmp and /home directories are in very 
+small partitions, and the build fills first one, then the other. To get 
+around the /tmp problem was painful, because /tmp is a read-only symlink to 
+/dev/shm/tmp. But the hard disc's partition 2 is large, and I found this 
+worked in order to create a new tmp:
+
+# Do this once
+su
+cd /hdd2
+cp -a tmp tmp2
+# Note: /hdd2/tmp does already exist, and seems to be used for
+# something, though it's not the same as /tmp. The cp -a
+# creates a new directory with the right attributes.
+
+# Do this after the above, and after every reboot
+# (because the reboot will restore the original /tmp)
+su
+rm -rf /hdd2/tmp2/*
+cp -a /tmp/* /hdd2/tmp2/
+mount -o bind /hdd2/tmp2 /dev/shm/tmp
+
+Disclaimer: My Z is running with its original Qtopia and ROM. Installation of 
+anything different may invalidate the above, and anyway I take no 
+responsibility if you use it and your Z becomes a brick... I certainly 
+haven't yet tested this over a long period.
+
+For the /home limitation, that one's easy. Just do the build in a directory on 
+/hdd2.
+
+Next issue: autogen isn't present on the C3000. I could have installed it, but 
+I found that
+
+./configure 2&gt;&amp;1 | tee configure.mylog
+make 2&gt;&amp;1 | tee make.mylog
+
+worked, except that:
+
+1. There were a number of compiler warnings &quot;cast increases required alignment 
+of target type&quot;. I ignored them, and am hoping they won't come back and bite 
+me. But are they routine? If not, maybe I should look further.
+
+2. The compiler gave an error in libgpsd_core.c, at line 320. This is a 
+declaration of intfixtime, and the compiler didn't like it because there were 
+a couple of statements above it. I moved the declaration to the start of the 
+block, leaving the initialisation part where it was.
+
+3. At line 20 of sirfmon.c is the line
+#include &lt;curses.h&gt;
+With zgcc, that needs to be
+#include &lt;ncurses/curses.h&gt;
+
+Hope that's helpful
+
+John
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="000434.html">[Gpsd-users] Announcing release 2.19 of gpsd
+</A></li>
+	<LI>Next message: <A HREF="000443.html">[Gpsd-users] Gpsd on a Zaurus SL-C3000
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#442">[ date ]</a>
+              <a href="thread.html#442">[ thread ]</a>
+              <a href="subject.html#442">[ subject ]</a>
+              <a href="author.html#442">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

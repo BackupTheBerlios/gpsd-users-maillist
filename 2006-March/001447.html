@@ -1,0 +1,117 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] Re: GPS data is a couple of miles off - wrong datum?
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2006-March/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Re%3A%20GPS%20data%20is%20a%20couple%20of%20miles%20off%20-%20wrong%20datum%3F&In-Reply-To=%3CPine.LNX.4.64.0603211517100.26860%40www.badcheese.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="001445.html">
+   <LINK REL="Next"  HREF="001451.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] Re: GPS data is a couple of miles off - wrong datum?</H1>
+    <B>Steve Webb</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Re%3A%20GPS%20data%20is%20a%20couple%20of%20miles%20off%20-%20wrong%20datum%3F&In-Reply-To=%3CPine.LNX.4.64.0603211517100.26860%40www.badcheese.com%3E"
+       TITLE="[Gpsd-users] Re: GPS data is a couple of miles off - wrong datum?">steve at badcheese.com
+       </A><BR>
+    <I>Tue Mar 21 23:20:03 CET 2006</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="001445.html">[Gpsd-users] GPS data is a couple of miles off - wrong datum?
+</A></li>
+        <LI>Next message: <A HREF="001451.html">[Gpsd-users] GPS data is a couple of miles off - wrong datum?
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1447">[ date ]</a>
+              <a href="thread.html#1447">[ thread ]</a>
+              <a href="subject.html#1447">[ subject ]</a>
+              <a href="author.html#1447">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Ok, I think I found my error.  The lat/lon coming from gpspipe is formed 
+like:
+
+10506.1479
+
+I'm dividing it by 10 to get 105.061479, but in fact, the actual number 
+means: 105 Deg, 06.1479 minutes.  I'll have to change things around and 
+see if ti works better.  :)
+
+- Steve
+
+On Tue, 21 Mar 2006, Steve Webb wrote:
+
+&gt;<i> Date: Tue, 21 Mar 2006 14:53:01 -0700 (MST)
+</I>&gt;<i> From: Steve Webb &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">steve at www.badcheese.com</A>&gt;
+</I>&gt;<i> To: <A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">gpsd-users at lists.berlios.de</A>
+</I>&gt;<i> Subject: GPS data is a couple of miles off - wrong datum?
+</I>&gt;<i> 
+</I>&gt;<i> Hey.
+</I>&gt;<i>
+</I>&gt;<i> I'm using a bu-353 with gpsd on fedora fc4 - everything works well, I'm 
+</I>&gt;<i> capturing using gpspipe and getting the raw nmea data, but my data's a few 
+</I>&gt;<i> miles off-whack.
+</I>&gt;<i>
+</I>&gt;<i> The data looks like:
+</I>&gt;<i>
+</I>&gt;<i> $GPRMC,150006.000,A,4009.7280,N,10506.1479,W,19.91,359.49,160306,,*2A
+</I>&gt;<i>
+</I>&gt;<i> What my map looks like:
+</I>&gt;<i>
+</I>&gt;<i> <A HREF="http://badcheese.com/~steve/maps/">http://badcheese.com/~steve/maps/</A>
+</I>&gt;<i>
+</I>&gt;<i> So, I'm assuming that the nmea lat/lon is just multiplied by 10, right? When 
+</I>&gt;<i> I plot it out, I'm getting this: (my google maps page that's shifted several 
+</I>&gt;<i> miles South-East of the actual roads (see the highway in the upper-left 
+</I>&gt;<i> corner - that's where the track should be displayed).
+</I>&gt;<i>
+</I>&gt;<i> Do I need to change the datum or something, or what?  How do I convert what 
+</I>&gt;<i> gpspipe is giving me to what google maps wants?
+</I>&gt;<i>
+</I>&gt;<i> Also, are there any perl tools to &quot;smooth&quot; the GPS data out?  gpsd pumps out 
+</I>&gt;<i> a new datapoint every second, but google maps barfs with &gt; 1500 datapoints, 
+</I>&gt;<i> so I'll need to &quot;smooth&quot; the data out and remove the data that's not needed 
+</I>&gt;<i> (aka lines along a route where I don't turn or change velocity very much), so 
+</I>&gt;<i> google maps doesn't freak out.
+</I>&gt;<i>
+</I>&gt;<i> - Steve
+</I>&gt;<i>
+</I>&gt;<i> --
+</I>&gt;<i> EMAIL: (h) <A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">steve at badcheese.com</A>  WEB: <A HREF="http://badcheese.com/~steve">http://badcheese.com/~steve</A>
+</I>&gt;<i>
+</I>&gt;<i>
+</I>
+--
+EMAIL: (h) <A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">steve at badcheese.com</A>  WEB: <A HREF="http://badcheese.com/~steve">http://badcheese.com/~steve</A>
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="001445.html">[Gpsd-users] GPS data is a couple of miles off - wrong datum?
+</A></li>
+	<LI>Next message: <A HREF="001451.html">[Gpsd-users] GPS data is a couple of miles off - wrong datum?
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1447">[ date ]</a>
+              <a href="thread.html#1447">[ thread ]</a>
+              <a href="subject.html#1447">[ subject ]</a>
+              <a href="author.html#1447">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

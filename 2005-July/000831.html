@@ -1,0 +1,1061 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] gpsd, kismet, gpsdrive
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2005-July/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20gpsd%2C%20kismet%2C%20gpsdrive&In-Reply-To=%3C1120944847.9582.205.camel%40mtack.xs4all.nl%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="000830.html">
+   <LINK REL="Next"  HREF="000832.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] gpsd, kismet, gpsdrive</H1>
+    <B>Aart Koelewijn</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20gpsd%2C%20kismet%2C%20gpsdrive&In-Reply-To=%3C1120944847.9582.205.camel%40mtack.xs4all.nl%3E"
+       TITLE="[Gpsd-users] gpsd, kismet, gpsdrive">aart at mtack.xs4all.nl
+       </A><BR>
+    <I>Sat Jul  9 23:34:07 CEST 2005</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="000830.html">[Gpsd-users] gpsd, kismet, gpsdrive
+</A></li>
+        <LI>Next message: <A HREF="000832.html">[Gpsd-users] gpsd, kismet, gpsdrive
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#831">[ date ]</a>
+              <a href="thread.html#831">[ thread ]</a>
+              <a href="subject.html#831">[ subject ]</a>
+              <a href="author.html#831">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Op za, 09-07-2005 te 11:25 -0700, schreef Gary E. Miller:
+&gt;<i> -----BEGIN PGP SIGNED MESSAGE-----
+</I>&gt;<i> Hash: SHA1
+</I>&gt;<i> 
+</I>&gt;<i> Yo Aart!
+</I>&gt;<i> 
+</I>&gt;<i> On Sat, 9 Jul 2005, Aart Koelewijn wrote:
+</I>&gt;<i> 
+</I>&gt;<i> &gt; BTW, if I stop gpsd, then set the Garmin to Garmin mode, start gpsd
+</I>&gt;<i> &gt; again and then start xgps, xgps will report: no data arriving. After
+</I>&gt;<i> &gt; putting the Garmin in NMEA mode xgps will report the right position
+</I>&gt;<i> &gt; again.
+</I>&gt;<i> 
+</I>&gt;<i> Dunno about your other problem, but I can comment on the Garmin mode.
+</I>&gt;<i> There is no support in GPSD for garmin mode over RS-232.  To use
+</I>&gt;<i> garmin mode you must have the kernel garmin driver installed and it
+</I>&gt;<i> must be talking to a garmin GPS with native USB.
+</I>&gt;<i> 
+</I>&gt;<i> So, in your case, you need to stick with NMEA mode.
+</I>&gt;<i> 
+</I>&gt;<i> Try starting up gpsd in debug mode like this:
+</I>&gt;<i> 	gpsd -nN -D 5
+</I>&gt;<i> 
+</I>&gt;<i> Tell us what you see.
+</I>&gt;<i> 
+</I>&gt;<i> 
+</I>&gt;<i> RGDS
+</I>&gt;<i> GARY
+</I>
+Hey Gary,
+
+attached are 3 debug files. Here is how I did it:
+connected the gps (Garmin GPS II)
+# killall gpsd
+# gpsd -nN -D 5 -f /dev/ttyUSB0 -P /var/run/gpsd.pid
+-F /var/run/gpsd.sock 2&amp;&gt;/tmp/gpsd-debug-1.txt
+# [Ctrl]c
+# stty -F /dev/ttyUSB0 ispeed 4800 &amp;&amp; cat &lt;/dev/ttyUSB0
+stty: /dev/ttyUSB0: unable to perform all requested operations
+# stty -F /dev/ttyUSB0 ispeed 4800 &amp;&amp; cat &lt;/dev/ttyUSB0
+
+now I got output
+
+# [Ctrl]c
+# gpsd -nN ...etc... gpsd-debug-2.txt
+# [Ctrl]c
+
+During this time I had poor gps-coverage, so I got no position (I do
+this indoors and sometimes have to wait a long time before I get good
+gps-coverage)
+
+While I was editing the gpsd-debug files (cutting out a lot of repeated
+sentences) I got good gps-coverage, so I did another
+# gpsd -nN ..etc... gpsd-debug-3.txt
+while this was running I started xgps and got a good position.
+
+So, this is the reason for 3 files.
+
+Hope you can do something with it.
+
+Aart
+-------------- next part --------------
+gpsd: control socket opened at /var/run/gpsd.sock
+gpsd: launching (Version 2.28)
+gpsd: listening on port gpsd
+gpsd: successfully connected to the DBUS system bus
+gpsd: running with effective group ID 0
+gpsd: running with effective user ID 0
+gpsd: opening GPS data source at '/dev/ttyUSB0'
+gpsd: garmin_gps not active.
+gpsd: no probe matched...
+gpsd: speed 9600, 8N1
+gpsd: gpsd_activate: opened GPS (6)
+gpsd: opening GPS data source at '2'
+gpsd: device open failed: No such file or directory
+gpsd: GPS device 2 nonexistent or can't be read
+gpsd: closing GPS=2 (-1)
+gpsd: opening GPS data source at '2'
+gpsd: device open failed: No such file or directory
+gpsd: closing GPS=2 (-1)
+.............................
+more of the same
+.............................
+gpsd: opening GPS data source at '2'
+gpsd: device open failed: No such file or directory
+gpsd: closing GPS=2 (-1)
+gpsd: opening GPS data source at '2'
+gpsd: device open failed: No such file or directory
+gpsd: speed 4800, 8N1
+gpsd: closing GPS=2 (-1)
+gpsd: opening GPS data source at '2'
+gpsd: device open failed: No such file or directory
+gpsd: closing GPS=2 (-1)
+................................
+more of the same
+................................
+gpsd: opening GPS data source at '2'
+gpsd: device open failed: No such file or directory
+gpsd: closing GPS=2 (-1)
+gpsd: Selecting Generic NMEA driver...
+gpsd: =&gt; GPS: $PFEC,GPint,GSA01,DTM00,ZDA01,RMC01,GLL00,VTG00,GSV05*3B
+
+gpsd: =&gt; GPS: $PMOTG,ZDA,1*2F
+
+gpsd: =&gt; GPS: $PGRM0,GSA,1*5C
+
+gpsd: =&gt; GPS: $PSRF105,1*3E
+
+gpsd: &lt;= GPS: $PGRME,,M,,M,,M*00
+gpsd: closing GPS=2 (-1)
+gpsd: opening GPS data source at '2'
+gpsd: device open failed: No such file or directory
+gpsd: closing GPS=2 (-1)
+...................................
+more of the same
+...................................
+gpsd: opening GPS data source at '2'
+gpsd: device open failed: No such file or directory
+gpsd: closing GPS=2 (-1)
+gpsd: opening GPS data source at '2'
+gpsd: device open failed: No such file or directory
+gpsd: &lt;= GPS: $GPGLL,,,,,193116,*5D
+gpsd: closing GPS=2 (-1)
+gpsd: opening GPS data source at '2'
+gpsd: device open failed: No such file or directory
+gpsd: closing GPS=2 (-1)
+.....................................
+more of the same
+.....................................
+gpsd: opening GPS data source at '2'
+gpsd: device open failed: No such file or directory
+gpsd: closing GPS=2 (-1)
+gpsd: opening GPS data source at '2'
+gpsd: device open failed: No such file or directory
+gpsd: &lt;= GPS: $PGRMZ,,,*7E
+gpsd: unknown sentence: &quot;$PGRMZ,,,*7E
+&quot;
+gpsd: closing GPS=2 (-1)
+gpsd: opening GPS data source at '2'
+gpsd: device open failed: No such file or directory
+gpsd: closing GPS=2 (-1)
+.....................................
+more of the same
+.....................................
+gpsd: opening GPS data source at '2'
+gpsd: device open failed: No such file or directory
+gpsd: closing GPS=2 (-1)
+gpsd: opening GPS data source at '2'
+gpsd: device open failed: No such file or directory
+gpsd: &lt;= GPS: $PGRMM,WGS 84*06
+gpsd: unknown sentence: &quot;$PGRMM,WGS 84*06
+&quot;
+gpsd: closing GPS=2 (-1)
+gpsd: opening GPS data source at '2'
+gpsd: device open failed: No such file or directory
+gpsd: closing GPS=2 (-1)
+.......................................
+more of the same
+.......................................
+gpsd: opening GPS data source at '2'
+gpsd: device open failed: No such file or directory
+gpsd: &lt;= GPS: $GPBOD,,T,,M,,*47
+gpsd: unknown sentence: &quot;$GPBOD,,T,,M,,*47
+&quot;
+gpsd: closing GPS=2 (-1)
+gpsd: opening GPS data source at '2'
+gpsd: device open failed: No such file or directory
+gpsd: closing GPS=2 (-1)
+.....................................
+more of the same
+.....................................
+gpsd: opening GPS data source at '2'
+gpsd: device open failed: No such file or directory
+gpsd: &lt;= GPS: $GPRTE,1,1,c,0*07
+gpsd: unknown sentence: &quot;$GPRTE,1,1,c,0*07
+&quot;
+gpsd: closing GPS=2 (-1)
+gpsd: opening GPS data source at '2'
+gpsd: device open failed: No such file or directory
+gpsd: closing GPS=2 (-1)
+.....................................
+more of the same
+.....................................
+gpsd: opening GPS data source at '2'
+gpsd: device open failed: No such file or directory
+gpsd: &lt;= GPS: $GPRMC,193117,V,,,,,,,090705,,*36
+gpsd: unknown sentence: &quot;$GPRMC,193117,V,,,,,,,090705,,*36
+&quot;
+gpsd: closing GPS=2 (-1)
+gpsd: opening GPS data source at '2'
+gpsd: device open failed: No such file or directory
+gpsd: closing GPS=2 (-1)
+.......................................
+more of the same
+.......................................
+gpsd: opening GPS data source at '2'
+gpsd: device open failed: No such file or directory
+gpsd: closing GPS=2 (-1)
+gpsd: opening GPS data source at '2'
+gpsd: device open failed: No such file or directory
+gpsd: &lt;= GPS: $GPRMB,V,,,,,,,,,,,,V*66
+gpsd: unknown sentence: &quot;$GPRMB,V,,,,,,,,,,,,V*66
+&quot;
+gpsd: closing GPS=2 (-1)
+gpsd: opening GPS data source at '2'
+gpsd: device open failed: No such file or directory
+gpsd: closing GPS=2 (-1)
+...........................................
+more of the same
+...........................................
+gpsd: opening GPS data source at '2'
+gpsd: device open failed: No such file or directory
+gpsd: closing GPS=2 (-1)
+gpsd: opening GPS data source at '2'
+gpsd: device open failed: No such file or directory
+gpsd: &lt;= GPS: $GPGGA,193117,,,,,0,00,,,M,,M,,*6A
+gpsd: GPGGA sets status 0
+gpsd: closing GPS=2 (-1)
+..........................................
+more of the same
+..........................................
+gpsd: opening GPS data source at '2'
+gpsd: device open failed: No such file or directory
+gpsd: closing GPS=2 (-1)
+gpsd: opening GPS data source at '2'
+gpsd: device open failed: No such file or directory
+gpsd: &lt;= GPS: $GPGSA,A,1,,,,,,,,,,,,,,,*1E
+gpsd: GPGSA sets mode 1
+gpsd: closing GPS=2 (-1)
+gpsd: opening GPS data source at '2'
+gpsd: device open failed: No such file or directory
+gpsd: closing GPS=2 (-1)
+........................................
+more of the same
+........................................
+gpsd: opening GPS data source at '2'
+gpsd: device open failed: No such file or directory
+gpsd: closing GPS=2 (-1)
+gpsd: opening GPS data source at '2'
+gpsd: device open failed: No such file or directory
+gpsd: &lt;= GPS: $GPGSV,2,1,08,01,15,324,00,02,12,117,00,04,19,072,00,05,89,288,44*7B
+gpsd: Partial satellite data (1 of 2).
+gpsd: closing GPS=2 (-1)
+gpsd: opening GPS data source at '2'
+gpsd: device open failed: No such file or directory
+gpsd: closing GPS=2 (-1)
+............................................
+more of the same
+............................................
+gpsd: opening GPS data source at '2'
+gpsd: device open failed: No such file or directory
+gpsd: closing GPS=2 (-1)
+gpsd: opening GPS data source at '2'
+gpsd: device open failed: No such file or directory
+gpsd: &lt;= GPS: $GPGSV,2,2,08,09,52,132,47,14,40,293,32,24,11,030,00,30,47,256,38*7B
+gpsd: Satellite data OK.
+gpsd: closing GPS=2 (-1)
+gpsd: opening GPS data source at '2'
+gpsd: device open failed: No such file or directory
+gpsd: closing GPS=2 (-1)
+...............................................
+more of the same
+...............................................
+gpsd: opening GPS data source at '2'
+gpsd: device open failed: No such file or directory
+gpsd: closing GPS=2 (-1)
+gpsd: opening GPS data source at '2'
+gpsd: device open failed: No such file or directory
+gpsd: &lt;= GPS: $PGRME,,M,,M,,M*00
+gpsd: closing GPS=2 (-1)
+gpsd: opening GPS data source at '2'
+gpsd: device open failed: No such file or directory
+gpsd: closing GPS=2 (-1)
+.........................................
+more of the same
+.........................................
+gpsd: opening GPS data source at '2'
+gpsd: device open failed: No such file or directory
+gpsd: closing GPS=2 (-1)
+gpsd: opening GPS data source at '2'
+gpsd: device open failed: No such file or directory
+gpsd: &lt;= GPS: $GPGLL,,,,,193118,*53
+gpsd: closing GPS=2 (-1)
+gpsd: opening GPS data source at '2'
+gpsd: device open failed: No such file or directory
+gpsd: closing GPS=2 (-1)
+......................................
+more of the same
+......................................
+gpsd: opening GPS data source at '2'
+gpsd: device open failed: No such file or directory
+gpsd: closing GPS=2 (-1)
+gpsd: opening GPS data source at '2'
+gpsd: device open failed: No such file or directory
+gpsd: &lt;= GPS: $PGRMZ,,,*7E
+gpsd: unknown sentence: &quot;$PGRMZ,,,*7E
+&quot;
+gpsd: closing GPS=2 (-1)
+gpsd: opening GPS data source at '2'
+gpsd: device open failed: No such file or directory
+gpsd: closing GPS=2 (-1)
+.........................................
+more of the same
+........................................
+gpsd: opening GPS data source at '2'
+gpsd: device open failed: No such file or directory
+gpsd: closing GPS=2 (-1)
+gpsd: opening GPS data source at '2'
+gpsd: device open failed: No such file or directory
+gpsd: &lt;= GPS: $PGRMM,WGS 84*06
+gpsd: unknown sentence: &quot;$PGRMM,WGS 84*06
+&quot;
+gpsd: closing GPS=2 (-1)
+gpsd: opening GPS data source at '2'
+gpsd: device open failed: No such file or directory
+gpsd: closing GPS=2 (-1)
+........................................
+more
+........................................
+gpsd: opening GPS data source at '2'
+gpsd: device open failed: No such file or directory
+gpsd: closing GPS=2 (-1)
+gpsd: opening GPS data source at '2'
+gpsd: device open failed: No such file or directory
+gpsd: &lt;= GPS: $GPBOD,,T,,M,,*47
+gpsd: unknown sentence: &quot;$GPBOD,,T,,M,,*47
+&quot;
+gpsd: closing GPS=2 (-1)
+gpsd: opening GPS data source at '2'
+gpsd: device open failed: No such file or directory
+gpsd: closing GPS=2 (-1)
+............................................
+more
+............................................
+gpsd: opening GPS data source at '2'
+gpsd: device open failed: No such file or directory
+gpsd: closing GPS=2 (-1)
+gpsd: opening GPS data source at '2'
+gpsd: device open failed: No such file or directory
+gpsd: &lt;= GPS: $GPRTE,1,1,c,0*07
+gpsd: unknown sentence: &quot;$GPRTE,1,1,c,0*07
+&quot;
+gpsd: closing GPS=2 (-1)
+gpsd: opening GPS data source at '2'
+gpsd: device open failed: No such file or directory
+gpsd: closing GPS=2 (-1)
+............................................
+more
+............................................
+gpsd: opening GPS data source at '2'
+gpsd: device open failed: No such file or directory
+gpsd: closing GPS=2 (-1)
+gpsd: opening GPS data source at '2'
+gpsd: device open failed: No such file or directory
+gpsd: &lt;= GPS: $GPRMC,193119,V,,,,,,,090705,,*38
+gpsd: unknown sentence: &quot;$GPRMC,193119,V,,,,,,,090705,,*38
+&quot;
+gpsd: closing GPS=2 (-1)
+gpsd: opening GPS data source at '2'
+gpsd: device open failed: No such file or directory
+gpsd: closing GPS=2 (-1)
+.............................................
+more
+.............................................
+gpsd: opening GPS data source at '2'
+gpsd: device open failed: No such file or directory
+gpsd: closing GPS=2 (-1)
+gpsd: opening GPS data source at '2'
+gpsd: device open failed: No such file or directory
+gpsd: &lt;= GPS: $GPRMB,V,,,,,,,,,,,,V*66
+gpsd: unknown sentence: &quot;$GPRMB,V,,,,,,,,,,,,V*66
+&quot;
+gpsd: closing GPS=2 (-1)
+gpsd: opening GPS data source at '2'
+gpsd: device open failed: No such file or directory
+gpsd: closing GPS=2 (-1)
+.....................................................
+more
+......................................................
+gpsd: opening GPS data source at '2'
+gpsd: device open failed: No such file or directory
+gpsd: closing GPS=2 (-1)
+gpsd: opening GPS data source at '2'
+gpsd: device open failed: No such file or directory
+gpsd: &lt;= GPS: $GPGGA,193119,,,,,0,00,,,M,,M,,*64
+gpsd: GPGGA sets status 0
+gpsd: closing GPS=2 (-1)
+gpsd: opening GPS data source at '2'
+gpsd: device open failed: No such file or directory
+gpsd: closing GPS=2 (-1)
+........................................................
+more
+.......................................................
+gpsd: opening GPS data source at '2'
+gpsd: device open failed: No such file or directory
+gpsd: closing GPS=2 (-1)
+gpsd: opening GPS data source at '2'
+gpsd: device open failed: No such file or directory
+gpsd: &lt;= GPS: $GPGSA,A,1,,,,,,,,,,,,,,,*1E
+gpsd: GPGSA sets mode 1
+gpsd: closing GPS=2 (-1)
+gpsd: opening GPS data source at '2'
+gpsd: device open failed: No such file or directory
+gpsd: closing GPS=2 (-1)
+......................................................
+more
+......................................................
+gpsd: opening GPS data source at '2'
+gpsd: device open failed: No such file or directory
+gpsd: closing GPS=2 (-1)
+gpsd: opening GPS data source at '2'
+gpsd: device open failed: No such file or directory
+gpsd: &lt;= GPS: $GPGSV,2,1,08,01,15,324,00,02,12,117,00,04,19,072,00,05,89,288,44*7B
+gpsd: Partial satellite data (1 of 2).
+gpsd: closing GPS=2 (-1)
+gpsd: opening GPS data source at '2'
+gpsd: device open failed: No such file or directory
+gpsd: closing GPS=2 (-1)
+........................................................
+more
+........................................................
+gpsd: opening GPS data source at '2'
+gpsd: device open failed: No such file or directory
+gpsd: closing GPS=2 (-1)
+gpsd: opening GPS data source at '2'
+gpsd: device open failed: No such file or directory
+gpsd: &lt;= GPS: $GPGSV,2,2,08,09,52,132,47,14,40,293,32,24,11,030,00,30,47,256,38*7B
+gpsd: Satellite data OK.
+gpsd: closing GPS=2 (-1)
+gpsd: opening GPS data source at '2'
+gpsd: device open failed: No such file or directory
+gpsd: closing GPS=2 (-1)
+..............................................
+more
+.............................................
+gpsd: opening GPS data source at '2'
+gpsd: device open failed: No such file or directory
+gpsd: closing GPS=2 (-1)
+gpsd: opening GPS data source at '2'
+gpsd: device open failed: No such file or directory
+gpsd: &lt;= GPS: $PGRME,,M,,M,,M*00
+gpsd: closing GPS=2 (-1)
+gpsd: opening GPS data source at '2'
+gpsd: device open failed: No such file or directory
+gpsd: closing GPS=2 (-1)
+.............................................
+more
+.............................................
+gpsd: opening GPS data source at '2'
+gpsd: device open failed: No such file or directory
+gpsd: closing GPS=2 (-1)
+gpsd: opening GPS data source at '2'
+gpsd: device open failed: No such file or directory
+gpsd: &lt;= GPS: $GPGLL,,,,,193120,*58
+gpsd: closing GPS=2 (-1)
+gpsd: opening GPS data source at '2'
+gpsd: device open failed: No such file or directory
+gpsd: closing GPS=2 (-1)
+.............................................
+more
+.............................................
+gpsd: opening GPS data source at '2'
+gpsd: device open failed: No such file or directory
+gpsd: closing GPS=2 (-1)
+gpsd: opening GPS data source at '2'
+gpsd: device open failed: No such file or directory
+gpsd: &lt;= GPS: $PGRMZ,,,*7E
+gpsd: unknown sentence: &quot;$PGRMZ,,,*7E
+&quot;
+gpsd: closing GPS=2 (-1)
+gpsd: opening GPS data source at '2'
+gpsd: device open failed: No such file or directory
+gpsd: closing GPS=2 (-1)
+...............................................
+more
+...............................................
+gpsd: opening GPS data source at '2'
+gpsd: device open failed: No such file or directory
+gpsd: closing GPS=2 (-1)
+gpsd: opening GPS data source at '2'
+gpsd: device open failed: No such file or directory
+gpsd: &lt;= GPS: $PGRMM,WGS 84*06
+gpsd: unknown sentence: &quot;$PGRMM,WGS 84*06
+&quot;
+gpsd: closing GPS=2 (-1)
+gpsd: opening GPS data source at '2'
+gpsd: device open failed: No such file or directory
+gpsd: closing GPS=2 (-1)
+..............................................
+more
+...............................................
+gpsd: opening GPS data source at '2'
+gpsd: device open failed: No such file or directory
+gpsd: closing GPS=2 (-1)
+gpsd: opening GPS data source at '2'
+gpsd: device open failed: No such file or directory
+gpsd: &lt;= GPS: $GPBOD,,T,,M,,*47
+gpsd: unknown sentence: &quot;$GPBOD,,T,,M,,*47
+&quot;
+gpsd: closing GPS=2 (-1)
+gpsd: opening GPS data source at '2'
+gpsd: device open failed: No such file or directory
+gpsd: closing GPS=2 (-1)
+..............................................
+more
+..............................................
+gpsd: opening GPS data source at '2'
+gpsd: device open failed: No such file or directory
+gpsd: closing GPS=2 (-1)
+gpsd: opening GPS data source at '2'
+gpsd: device open failed: No such file or directory
+gpsd: &lt;= GPS: $GPRTE,1,1,c,0*07
+gpsd: unknown sentence: &quot;$GPRTE,1,1,c,0*07
+&quot;
+gpsd: closing GPS=2 (-1)
+gpsd: opening GPS data source at '2'
+gpsd: device open failed: No such file or directory
+gpsd: closing GPS=2 (-1)
+..........................................
+more
+..........................................
+gpsd: opening GPS data source at '2'
+gpsd: device open failed: No such file or directory
+gpsd: closing GPS=2 (-1)
+gpsd: opening GPS data source at '2'
+gpsd: device open failed: No such file or directory
+gpsd: &lt;= GPS: $GPRMC,193121,V,,,,,,,090705,,*33
+gpsd: unknown sentence: &quot;$GPRMC,193121,V,,,,,,,090705,,*33
+&quot;
+gpsd: closing GPS=2 (-1)
+gpsd: opening GPS data source at '2'
+gpsd: device open failed: No such file or directory
+gpsd: closing GPS=2 (-1)
+.............................................
+more
+.............................................
+gpsd: opening GPS data source at '2'
+gpsd: device open failed: No such file or directory
+gpsd: closing GPS=2 (-1)
+gpsd: opening GPS data source at '2'
+gpsd: device open failed: No such file or directory
+gpsd: &lt;= GPS: $GPRMB,V,,,,,,,,,,,,V*66
+gpsd: unknown sentence: &quot;$GPRMB,V,,,,,,,,,,,,V*66
+&quot;
+gpsd: closing GPS=2 (-1)
+gpsd: opening GPS data source at '2'
+gpsd: device open failed: No such file or directory
+gpsd: closing GPS=2 (-1)
+gpsd: opening GPS data source at '2'
+gpsd: device open failed: No such file or directory
+gpsd: closing GPS=2 (-1)
+gpsd: opening GPS data source at '2'
+gpsd: device open failed: No such file or directory
+gpsd: closing GPS=2 (-1)
+gpsd: opening GPS data source at '2'
+gpsd: device open failed: No such file or directory
+gpsd: closing GPS=2 (-1)
+gpsd: opening GPS data source at '2'
+gpsd: device open failed: No such file or directory
+gpsd: closing GPS=2 (-1)
+gpsd: opening GPS data source at '2'
+gpsd: device open failed: No such file or directory
+gpsd: &lt;= GPS: $GPRTE,1,1,c,0*07
+gpsd: unknown sentence: &quot;$GPRTE,1,1,c,0*07
+&quot;
+gpsd: closing GPS=2 (-1)
+gpsd: opening GPS data source at '2'
+gpsd: device open failed: No such file or directory
+gpsd: closing GPS=/dev/ttyUSB0 (6)
+gpsd: closing GPS=2 (-1)
+gpsd: Received terminating signal 2. Exiting...
+-------------- next part --------------
+gpsd: control socket opened at /var/run/gpsd.sock
+gpsd: launching (Version 2.28)
+gpsd: listening on port gpsd
+gpsd: successfully connected to the DBUS system bus
+gpsd: running with effective group ID 0
+gpsd: running with effective user ID 0
+gpsd: opening GPS data source at '/dev/ttyUSB0'
+gpsd: garmin_gps not active.
+gpsd: no probe matched...
+gpsd: speed 4800, 8N1
+gpsd: gpsd_activate: opened GPS (6)
+gpsd: opening GPS data source at '2'
+gpsd: device open failed: No such file or directory
+gpsd: GPS device 2 nonexistent or can't be read
+gpsd: closing GPS=2 (-1)
+gpsd: opening GPS data source at '2'
+gpsd: device open failed: No such file or directory
+gpsd: packet sniff finds type 0
+gpsd: Selecting Generic NMEA driver...
+gpsd: =&gt; GPS: $PFEC,GPint,GSA01,DTM00,ZDA01,RMC01,GLL00,VTG00,GSV05*3B
+
+gpsd: =&gt; GPS: $PMOTG,ZDA,1*2F
+
+gpsd: =&gt; GPS: $PGRM0,GSA,1*5C
+
+gpsd: =&gt; GPS: $PSRF105,1*3E
+
+gpsd: &lt;= GPS: $GPGLL,,,,,193356,*5B
+gpsd: closing GPS=2 (-1)
+gpsd: opening GPS data source at '2'
+gpsd: device open failed: No such file or directory
+gpsd: &lt;= GPS: $GPRMC,193357,V,,,,,,,090705,,*30
+gpsd: unknown sentence: &quot;$GPRMC,193357,V,,,,,,,090705,,*30
+&quot;
+gpsd: closing GPS=2 (-1)
+gpsd: opening GPS data source at '2'
+gpsd: device open failed: No such file or directory
+gpsd: closing GPS=2 (-1)
+...........................
+more
+...........................
+gpsd: opening GPS data source at '2'
+gpsd: device open failed: No such file or directory
+gpsd: closing GPS=2 (-1)
+gpsd: opening GPS data source at '2'
+gpsd: device open failed: No such file or directory
+gpsd: &lt;= GPS: $GPRMB,V,,,,,,,,,,,,V*66
+gpsd: unknown sentence: &quot;$GPRMB,V,,,,,,,,,,,,V*66
+&quot;
+gpsd: closing GPS=2 (-1)
+gpsd: opening GPS data source at '2'
+gpsd: device open failed: No such file or directory
+gpsd: closing GPS=2 (-1)
+..............................
+more
+..............................
+gpsd: opening GPS data source at '2'
+gpsd: device open failed: No such file or directory
+gpsd: closing GPS=2 (-1)
+gpsd: opening GPS data source at '2'
+gpsd: device open failed: No such file or directory
+gpsd: &lt;= GPS: $GPGGA,193409,,,,,0,00,,,M,,M,,*60
+gpsd: GPGGA sets status 0
+gpsd: closing GPS=2 (-1)
+gpsd: opening GPS data source at '2'
+gpsd: device open failed: No such file or directory
+gpsd: closing GPS=2 (-1)
+...............................
+more
+...............................
+gpsd: opening GPS data source at '2'
+gpsd: device open failed: No such file or directory
+gpsd: closing GPS=2 (-1)
+gpsd: opening GPS data source at '2'
+gpsd: device open failed: No such file or directory
+gpsd: &lt;= GPS: $GPGSA,A,1,,,,,,,,,,,,,,,*1E
+gpsd: GPGSA sets mode 1
+gpsd: closing GPS=2 (-1)
+gpsd: opening GPS data source at '2'
+gpsd: device open failed: No such file or directory
+gpsd: closing GPS=2 (-1)
+...............................
+more
+...............................
+gpsd: opening GPS data source at '2'
+gpsd: device open failed: No such file or directory
+gpsd: closing GPS=2 (-1)
+gpsd: opening GPS data source at '2'
+gpsd: device open failed: No such file or directory
+gpsd: &lt;= GPS: $GPGSV,2,1,08,01,16,324,00,02,13,116,00,04,19,071,00,05,89,358,44*77
+gpsd: Partial satellite data (1 of 2).
+gpsd: closing GPS=2 (-1)
+gpsd: opening GPS data source at '2'
+gpsd: device open failed: No such file or directory
+gpsd: closing GPS=2 (-1)
+...............................
+more
+..............................
+gpsd: opening GPS data source at '2'
+gpsd: device open failed: No such file or directory
+gpsd: closing GPS=2 (-1)
+gpsd: opening GPS data source at '2'
+gpsd: device open failed: No such file or directory
+gpsd: &lt;= GPS: $GPGSV,2,2,08,09,50,133,48,14,41,291,32,24,11,029,00,30,47,257,40*72
+gpsd: Satellite data OK.
+gpsd: closing GPS=2 (-1)
+gpsd: opening GPS data source at '2'
+gpsd: device open failed: No such file or directory
+gpsd: closing GPS=2 (-1)
+..............................
+more
+..............................
+gpsd: closing GPS=2 (-1)
+gpsd: opening GPS data source at '2'
+gpsd: device open failed: No such file or directory
+gpsd: closing GPS=2 (-1)
+gpsd: opening GPS data source at '2'
+gpsd: device open failed: No such file or directory
+gpsd: &lt;= GPS: $GPGLL,,,,,193410,*5E
+gpsd: closing GPS=2 (-1)
+gpsd: opening GPS data source at '2'
+gpsd: device open failed: No such file or directory
+gpsd: closing GPS=2 (-1)
+...............................
+more
+................................
+gpsd: opening GPS data source at '2'
+gpsd: device open failed: No such file or directory
+gpsd: closing GPS=2 (-1)
+gpsd: opening GPS data source at '2'
+gpsd: device open failed: No such file or directory
+gpsd: &lt;= GPS: $PGRMZ,,,*7E
+gpsd: unknown sentence: &quot;$PGRMZ,,,*7E
+&quot;
+gpsd: closing GPS=2 (-1)
+gpsd: opening GPS data source at '2'
+gpsd: device open failed: No such file or directory
+gpsd: closing GPS=2 (-1)
+...........................
+more
+...........................
+gpsd: opening GPS data source at '2'
+gpsd: device open failed: No such file or directory
+gpsd: closing GPS=2 (-1)
+gpsd: opening GPS data source at '2'
+gpsd: device open failed: No such file or directory
+gpsd: &lt;= GPS: $PGRMM,WGS 84*06
+gpsd: unknown sentence: &quot;$PGRMM,WGS 84*06
+&quot;
+gpsd: closing GPS=2 (-1)
+gpsd: opening GPS data source at '2'
+gpsd: device open failed: No such file or directory
+gpsd: closing GPS=2 (-1)
+gpsd: opening GPS data source at '2'
+gpsd: device open failed: No such file or directory
+gpsd: closing GPS=2 (-1)
+gpsd: opening GPS data source at '2'
+gpsd: device open failed: No such file or directory
+gpsd: &lt;= GPS: $GPRTE,1,1,c,0*07
+gpsd: unknown sentence: &quot;$GPRTE,1,1,c,0*07
+&quot;
+gpsd: closing GPS=2 (-1)
+gpsd: opening GPS data source at '2'
+gpsd: device open failed: No such file or directory
+gpsd: closing GPS=/dev/ttyUSB0 (6)
+gpsd: closing GPS=2 (-1)
+gpsd: Received terminating signal 2. Exiting...
+-------------- next part --------------
+gpsd: control socket opened at /var/run/gpsd.sock
+gpsd: launching (Version 2.28)
+gpsd: listening on port gpsd
+gpsd: successfully connected to the DBUS system bus
+gpsd: running with effective group ID 0
+gpsd: running with effective user ID 0
+gpsd: opening GPS data source at '/dev/ttyUSB0'
+gpsd: garmin_gps not active.
+gpsd: no probe matched...
+gpsd: speed 4800, 8N1
+gpsd: gpsd_activate: opened GPS (6)
+gpsd: opening GPS data source at '2'
+gpsd: device open failed: No such file or directory
+gpsd: GPS device 2 nonexistent or can't be read
+gpsd: closing GPS=2 (-1)
+gpsd: opening GPS data source at '2'
+gpsd: device open failed: No such file or directory
+gpsd: packet sniff finds type 0
+gpsd: Selecting Generic NMEA driver...
+gpsd: =&gt; GPS: $PFEC,GPint,GSA01,DTM00,ZDA01,RMC01,GLL00,VTG00,GSV05*3B
+
+gpsd: =&gt; GPS: $PMOTG,ZDA,1*2F
+
+gpsd: =&gt; GPS: $PGRM0,GSA,1*5C
+
+gpsd: =&gt; GPS: $PSRF105,1*3E
+
+gpsd: &lt;= GPS: $GPRMB,A,,,,,,,,,,,,V*71
+gpsd: unknown sentence: &quot;$GPRMB,A,,,,,,,,,,,,V*71
+&quot;
+gpsd: closing GPS=2 (-1)
+gpsd: opening GPS data source at '2'
+gpsd: device open failed: No such file or directory
+gpsd: &lt;= GPS: $GPGSA,A,3,01,02,,05,06,,,,,,,,2.4,1.3,2.0*34
+gpsd: GPGSA sets mode 3
+gpsd: closing GPS=2 (-1)
+gpsd: opening GPS data source at '2'
+gpsd: device open failed: No such file or directory
+gpsd: closing GPS=2 (-1)
+......................
+more
+.....................
+gpsd: opening GPS data source at '2'
+gpsd: device open failed: No such file or directory
+gpsd: closing GPS=2 (-1)
+gpsd: opening GPS data source at '2'
+gpsd: device open failed: No such file or directory
+gpsd: &lt;= GPS: $GPRMB,A,,,,,,,,,,,,V*71
+gpsd: unknown sentence: &quot;$GPRMB,A,,,,,,,,,,,,V*71
+&quot;
+gpsd: closing GPS=2 (-1)
+gpsd: opening GPS data source at '2'
+gpsd: device open failed: No such file or directory
+gpsd: closing GPS=2 (-1)
+.............................
+more
+.............................
+gpsd: opening GPS data source at '2'
+gpsd: device open failed: No such file or directory
+gpsd: closing GPS=2 (-1)
+gpsd: opening GPS data source at '2'
+gpsd: device open failed: No such file or directory
+gpsd: &lt;= GPS: $GPGGA,195612,5211.011,N,00559.852,E,1,04,1.3,24.8,M,46.7,M,,*76
+gpsd: GPGGA sets status 1
+gpsd: can't use GGA/GGL time until after ZDA or RMC has supplied a year.
+gpsd: closing GPS=2 (-1)
+gpsd: opening GPS data source at '2'
+gpsd: device open failed: No such file or directory
+gpsd: closing GPS=2 (-1)
+.............................
+more
+........................
+gpsd: opening GPS data source at '2'
+gpsd: device open failed: No such file or directory
+gpsd: closing GPS=2 (-1)
+gpsd: opening GPS data source at '2'
+gpsd: device open failed: No such file or directory
+gpsd: &lt;= GPS: $GPGSA,A,3,01,02,,05,06,,,,,,,,2.4,1.3,2.0*34
+gpsd: GPGSA sets mode 3
+gpsd: closing GPS=2 (-1)
+gpsd: opening GPS data source at '2'
+gpsd: device open failed: No such file or directory
+gpsd: closing GPS=2 (-1)
+..........................
+more
+...........................
+gpsd: opening GPS data source at '2'
+gpsd: device open failed: No such file or directory
+gpsd: closing GPS=2 (-1)
+gpsd: opening GPS data source at '2'
+gpsd: device open failed: No such file or directory
+gpsd: &lt;= GPS: $GPGSV,2,1,08,01,22,318,40,02,20,109,41,04,21,061,00,05,79,074,44*78
+gpsd: Partial satellite data (1 of 2).
+gpsd: closing GPS=2 (-1)
+gpsd: opening GPS data source at '2'
+gpsd: device open failed: No such file or directory
+gpsd: closing GPS=2 (-1)
+...............................
+more
+................................
+gpsd: opening GPS data source at '2'
+gpsd: device open failed: No such file or directory
+gpsd: closing GPS=2 (-1)
+gpsd: opening GPS data source at '2'
+gpsd: device open failed: No such file or directory
+gpsd: &lt;= GPS: $GPGSV,2,2,08,06,20,204,41,09,40,137,00,14,42,278,00,30,58,263,00*79
+gpsd: Satellite data OK.
+gpsd: closing GPS=2 (-1)
+gpsd: opening GPS data source at '2'
+gpsd: device open failed: No such file or directory
+gpsd: closing GPS=2 (-1)
+.............................
+more
+..............................
+gpsd: opening GPS data source at '2'
+gpsd: device open failed: No such file or directory
+gpsd: closing GPS=2 (-1)
+gpsd: opening GPS data source at '2'
+gpsd: device open failed: No such file or directory
+gpsd: &lt;= GPS: $PGRME,13.8,M,21.2,M,25.3,M*11
+gpsd: LOS matrix is singular, can't calculate DOPs.
+gpsd: closing GPS=2 (-1)
+gpsd: opening GPS data source at '2'
+gpsd: device open failed: No such file or directory
+gpsd: closing GPS=2 (-1)
+...........................
+more
+...........................
+gpsd: opening GPS data source at '2'
+gpsd: device open failed: No such file or directory
+gpsd: closing GPS=2 (-1)
+gpsd: opening GPS data source at '2'
+gpsd: device open failed: No such file or directory
+gpsd: &lt;= GPS: $GPGLL,5211.011,N,00559.852,E,195613,A*22
+gpsd: GPGLL sets status 1
+gpsd: closing GPS=2 (-1)
+gpsd: opening GPS data source at '2'
+gpsd: device open failed: No such file or directory
+gpsd: closing GPS=2 (-1)
+..............................
+more
+..............................
+gpsd: opening GPS data source at '2'
+gpsd: device open failed: No such file or directory
+gpsd: closing GPS=2 (-1)
+gpsd: opening GPS data source at '2'
+gpsd: device open failed: No such file or directory
+gpsd: &lt;= GPS: $PGRMZ,81,f,3*22
+gpsd: unknown sentence: &quot;$PGRMZ,81,f,3*22
+&quot;
+gpsd: closing GPS=2 (-1)
+gpsd: opening GPS data source at '2'
+gpsd: device open failed: No such file or directory
+gpsd: closing GPS=2 (-1)
+............................
+more
+............................
+gpsd: opening GPS data source at '2'
+gpsd: device open failed: No such file or directory
+gpsd: closing GPS=2 (-1)
+gpsd: opening GPS data source at '2'
+gpsd: device open failed: No such file or directory
+gpsd: &lt;= GPS: $PGRMM,WGS 84*06
+gpsd: unknown sentence: &quot;$PGRMM,WGS 84*06
+&quot;
+gpsd: closing GPS=2 (-1)
+gpsd: opening GPS data source at '2'
+gpsd: device open failed: No such file or directory
+gpsd: closing GPS=2 (-1)
+.......................
+more
+.........................
+gpsd: opening GPS data source at '2'
+gpsd: device open failed: No such file or directory
+gpsd: closing GPS=2 (-1)
+gpsd: opening GPS data source at '2'
+gpsd: device open failed: No such file or directory
+gpsd: &lt;= GPS: $GPBOD,,T,,M,,*47
+gpsd: unknown sentence: &quot;$GPBOD,,T,,M,,*47
+&quot;
+gpsd: closing GPS=2 (-1)
+gpsd: opening GPS data source at '2'
+gpsd: device open failed: No such file or directory
+gpsd: closing GPS=2 (-1)
+........................
+more
+........................
+gpsd: opening GPS data source at '2'
+gpsd: device open failed: No such file or directory
+gpsd: closing GPS=2 (-1)
+gpsd: opening GPS data source at '2'
+gpsd: device open failed: No such file or directory
+gpsd: &lt;= GPS: $GPRTE,1,1,c,0*07
+gpsd: unknown sentence: &quot;$GPRTE,1,1,c,0*07
+&quot;
+gpsd: closing GPS=2 (-1)
+gpsd: opening GPS data source at '2'
+gpsd: device open failed: No such file or directory
+gpsd: closing GPS=2 (-1)
+...............................
+more
+...............................
+gpsd: opening GPS data source at '2'
+gpsd: device open failed: No such file or directory
+gpsd: closing GPS=2 (-1)
+gpsd: opening GPS data source at '2'
+gpsd: device open failed: No such file or directory
+gpsd: &lt;= GPS: $GPRMC,195614,A,5211.010,N,00559.852,E,000.0,360.0,090705,001.7,W*62
+gpsd: closing GPS=2 (-1)
+gpsd: opening GPS data source at '2'
+gpsd: device open failed: No such file or directory
+gpsd: closing GPS=2 (-1)
+..............................
+more
+..............................
+gpsd: opening GPS data source at '2'
+gpsd: device open failed: No such file or directory
+gpsd: closing GPS=2 (-1)
+gpsd: opening GPS data source at '2'
+gpsd: device open failed: No such file or directory
+gpsd: &lt;= GPS: $GPRMB,A,,,,,,,,,,,,V*71
+gpsd: unknown sentence: &quot;$GPRMB,A,,,,,,,,,,,,V*71
+&quot;
+gpsd: closing GPS=2 (-1)
+gpsd: opening GPS data source at '2'
+gpsd: device open failed: No such file or directory
+gpsd: closing GPS=2 (-1)
+.................................
+more
+.................................
+gpsd: opening GPS data source at '2'
+gpsd: device open failed: No such file or directory
+gpsd: closing GPS=2 (-1)
+gpsd: opening GPS data source at '2'
+gpsd: device open failed: No such file or directory
+gpsd: &lt;= GPS: $GPGGA,195614,5211.010,N,00559.853,E,1,04,1.3,24.4,M,46.7,M,,*7C
+gpsd: GPGGA sets status 1
+gpsd: closing GPS=2 (-1)
+gpsd: opening GPS data source at '2'
+gpsd: device open failed: No such file or directory
+gpsd: closing GPS=2 (-1)
+gpsd: opening GPS data source at '2'
+gpsd: device open failed: No such file or directory
+gpsd: closing GPS=2 (-1)
+gpsd: opening GPS data source at '2'
+gpsd: device open failed: No such file or directory
+gpsd: &lt;= GPS: $PGRMZ,82,f,3*21
+gpsd: unknown sentence: &quot;$PGRMZ,82,f,3*21
+&quot;
+gpsd: closing GPS=2 (-1)
+gpsd: opening GPS data source at '2'
+gpsd: device open failed: No such file or directory
+gpsd: closing GPS=2 (-1)
+gpsd: opening GPS data source at '2'
+gpsd: device open failed: No such file or directory
+gpsd: closing GPS=2 (-1)
+gpsd: opening GPS data source at '2'
+gpsd: device open failed: No such file or directory
+gpsd: closing GPS=/dev/ttyUSB0 (6)
+gpsd: closing GPS=2 (-1)
+gpsd: Received terminating signal 2. Exiting...
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="000830.html">[Gpsd-users] gpsd, kismet, gpsdrive
+</A></li>
+	<LI>Next message: <A HREF="000832.html">[Gpsd-users] gpsd, kismet, gpsdrive
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#831">[ date ]</a>
+              <a href="thread.html#831">[ thread ]</a>
+              <a href="subject.html#831">[ subject ]</a>
+              <a href="author.html#831">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

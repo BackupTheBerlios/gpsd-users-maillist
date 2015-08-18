@@ -1,0 +1,101 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] How do I set the baud rate with gpsd?
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2007-September/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20How%20do%20I%20set%20the%20baud%20rate%20with%20gpsd%3F&In-Reply-To=%3C46E0F4B9.2030409%40gmail.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="002886.html">
+   <LINK REL="Next"  HREF="002888.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] How do I set the baud rate with gpsd?</H1>
+    <B>Xamindar</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20How%20do%20I%20set%20the%20baud%20rate%20with%20gpsd%3F&In-Reply-To=%3C46E0F4B9.2030409%40gmail.com%3E"
+       TITLE="[Gpsd-users] How do I set the baud rate with gpsd?">junkxamindar at gmail.com
+       </A><BR>
+    <I>Fri Sep  7 08:50:33 CEST 2007</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="002886.html">[Gpsd-users] Fw: European GIS Code Sprint
+</A></li>
+        <LI>Next message: <A HREF="002888.html">[Gpsd-users] How do I set the baud rate with gpsd?
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2887">[ date ]</a>
+              <a href="thread.html#2887">[ thread ]</a>
+              <a href="subject.html#2887">[ subject ]</a>
+              <a href="author.html#2887">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Massimo Burcheri wrote:
+&gt;<i> On Donnerstag 06 September 2007, you wrote:
+</I>&gt;&gt;<i> Well, sometimes when I plug it in it comes up as /dev/ttyS0 in dmesg but
+</I>&gt;&gt;<i> other times it comes up as /dev/ttyS1.  Very strange.  I wish it would
+</I>&gt;&gt;<i> pick one and stay there.  This will make it very hard to have gpsd start
+</I>&gt;&gt;<i> up on boot with the correct device.
+</I>&gt;<i> 
+</I>&gt;<i> Weird, I don't think udev is switching ttyS? around...
+</I>&gt;<i> Maybe ckuethe can help you more, either on the list or in the chan. He's one 
+</I>&gt;<i> of the active developers, beside ESR.
+</I>&gt;<i> 
+</I>&gt;<i> Massimo
+</I>&gt;<i> 
+</I>
+I did some more experimenting and this is what I have figured out.
+If I run the command &quot;cardctl status&quot;, among the things it reports is 
+[req attn].  This is absent when doing the same on the zaurus.  What 
+does this mean?  I haven't been successful with google.
+
+Using &quot;cardctl config&quot; I find that it has a shared irq (also find out by 
+dmesg) of 11 but on the zaurus it has an exclusive irq of 136.  Could 
+this shared irq cause it to not function?  I went into the kernel config 
+and found an option to allow sharing irq.  How can it get an exclusive one?
+
+Here is a strange one:  When I insert the card on the zaurus dmesg 
+reports ttyS03 but I tell gpsd to connect to /dev/ttyS3.  What does the 
+0 mean and why can't I connect to ttyS03 (it doesn't work)?  The zaurus 
+is ALWAYS ttyS03/ttyS3 but on the laptop it changes between ttyS0 and 
+ttyS1.  I am totally confused on this one and I don't understand enough 
+about the dev structure of linux to figure it out.
+
+I also booted up ubuntu live cd  and the gentoo live cd and tried cating 
+the device that dmesg shows and still no result.  So, at this point I 
+think it is either a hardware issue with this laptop or I need some 
+special config for this card when it is inserted (something that the 
+zaurus must have built in).
+
+Thanks for the help guys.  I'm going to try posting this in the gentoo 
+forums and see if anyone knows there.  I'll also try to talk to ckuethe 
+if I catch him in the irc channel.
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="002886.html">[Gpsd-users] Fw: European GIS Code Sprint
+</A></li>
+	<LI>Next message: <A HREF="002888.html">[Gpsd-users] How do I set the baud rate with gpsd?
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2887">[ date ]</a>
+              <a href="thread.html#2887">[ thread ]</a>
+              <a href="subject.html#2887">[ subject ]</a>
+              <a href="author.html#2887">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

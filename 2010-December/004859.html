@@ -1,0 +1,105 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] Cannot get Garmin 18x LVC NMEA to work right with ntp
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2010-December/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Cannot%20get%20Garmin%2018x%20LVC%20NMEA%20to%20work%20right%20with%0A%20ntp&In-Reply-To=%3Calpine.LNX.1.00.1012302320350.21114%40catbert.rellim.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="004858.html">
+   <LINK REL="Next"  HREF="004860.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] Cannot get Garmin 18x LVC NMEA to work right with ntp</H1>
+    <B>Gary E. Miller</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Cannot%20get%20Garmin%2018x%20LVC%20NMEA%20to%20work%20right%20with%0A%20ntp&In-Reply-To=%3Calpine.LNX.1.00.1012302320350.21114%40catbert.rellim.com%3E"
+       TITLE="[Gpsd-users] Cannot get Garmin 18x LVC NMEA to work right with ntp">gem at rellim.com
+       </A><BR>
+    <I>Fri Dec 31 08:24:36 CET 2010</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="004858.html">[Gpsd-users] Cannot get Garmin 18x LVC NMEA to work right with ntp
+</A></li>
+        <LI>Next message: <A HREF="004860.html">[Gpsd-users] Cannot get Garmin 18x LVC NMEA to work right with ntp
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#4859">[ date ]</a>
+              <a href="thread.html#4859">[ thread ]</a>
+              <a href="subject.html#4859">[ subject ]</a>
+              <a href="author.html#4859">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>-----BEGIN PGP SIGNED MESSAGE-----
+Hash: SHA1
+
+Yo Gary!
+
+On Thu, 30 Dec 2010, Gary Eheman wrote:
+
+&gt;<i> Ok.  See pastebin: <A HREF="http://pastebin.com/SwLUeA10">http://pastebin.com/SwLUeA10</A>
+</I>&gt;<i> for the trace you requested.
+</I>
+Whoops, I should have said -D 7 to get the NTP logs.
+
+&gt;<i> I'm pretty sure that the gps is only sending the data at 4800 baud and not
+</I>&gt;<i>  38400,
+</I>
+Then that is your problem.  No need for the logs.
+
+&gt;<i> unless gpsd is sending an instruction to the gps to specify 38400
+</I>
+Nope.
+
+&gt;<i> I thought everything I read
+</I>&gt;<i> during research said 4800 was ok and desired?
+</I>
+Nope, exactly the opposite.  The serial latency is what is throwing your
+time measurements off.  ntpd detects the sloppy data and rejects it.
+
+You need to use gpsctl (or some other tool) to set the 18x to a much
+higher speed.
+
+RGDS
+GARY
+- ---------------------------------------------------------------------------
+Gary E. Miller Rellim 109 NW Wilmington Ave., Suite E, Bend, OR 97701
+	<A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">gem at rellim.com</A>  Tel:+1(541)382-8588
+
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v1.4.3 (GNU/Linux)
+
+iD8DBQFNHYU3BmnRqz71OvMRAr5mAKDbtQ+8B/h00a+9vwoO3xvuy+PHLACfZN50
+G4b4iiN13mc0rilaL+tBIb0=
+=Cnzl
+-----END PGP SIGNATURE-----
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="004858.html">[Gpsd-users] Cannot get Garmin 18x LVC NMEA to work right with ntp
+</A></li>
+	<LI>Next message: <A HREF="004860.html">[Gpsd-users] Cannot get Garmin 18x LVC NMEA to work right with ntp
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#4859">[ date ]</a>
+              <a href="thread.html#4859">[ thread ]</a>
+              <a href="subject.html#4859">[ subject ]</a>
+              <a href="author.html#4859">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

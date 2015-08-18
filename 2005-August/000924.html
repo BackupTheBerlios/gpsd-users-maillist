@@ -1,0 +1,86 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] gpsd-2.28 and dbus still broken?
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2005-August/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20gpsd-2.28%20and%20dbus%20still%20broken%3F&In-Reply-To=%3C20050801031517.GA14012%40thyrsus.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="000923.html">
+   <LINK REL="Next"  HREF="000925.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] gpsd-2.28 and dbus still broken?</H1>
+    <B>Eric S. Raymond</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20gpsd-2.28%20and%20dbus%20still%20broken%3F&In-Reply-To=%3C20050801031517.GA14012%40thyrsus.com%3E"
+       TITLE="[Gpsd-users] gpsd-2.28 and dbus still broken?">esr at thyrsus.com
+       </A><BR>
+    <I>Mon Aug  1 05:15:17 CEST 2005</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="000923.html">[Gpsd-users] gpsd-2.28 and dbus still broken?
+</A></li>
+        <LI>Next message: <A HREF="000925.html">[Gpsd-users] /var/run/gpsd.sock creation failure: (111, 'Connection refused')
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#924">[ date ]</a>
+              <a href="thread.html#924">[ thread ]</a>
+              <a href="subject.html#924">[ subject ]</a>
+              <a href="author.html#924">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Steve Arnold &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">sarnold at arnolds.dhs.org</A>&gt;:
+&gt;<i> Howdy:
+</I>&gt;<i> 
+</I>&gt;<i> In building 2.28 with dbus support, I now get this error:
+</I>&gt;<i> 
+</I>&gt;<i>  i686-pc-linux-gnu-g++ -DHAVE_CONFIG_H -I. -I. -I.
+</I>&gt;<i> -I/usr/include/dbus-1.0 -I/usr/lib/dbus-1.0/include -march=i686
+</I>&gt;<i> -mtune=athlon-xp -O2 -pipe -MT libgpsmm.lo -MD -MP -MF
+</I>&gt;<i> .deps/libgpsmm.Tpo -c libgpsmm.cpp  -fPIC -DPIC -o .libs/libgpsmm.o
+</I>&gt;<i> i686-pc-linux-gnu-g++ -DHAVE_CONFIG_H -I. -I. -I.
+</I>&gt;<i> -I/usr/include/dbus-1.0 -I/usr/lib/dbus-1.0/include -march=i686
+</I>&gt;<i> -mtune=athlon-xp -O2 -pipe -MT libgpsmm.lo -MD -MP -MF
+</I>&gt;<i> .deps/libgpsmm.Tpo -c libgpsmm.cpp  -fPIC -DPIC -o libgpsmm.o
+</I>&gt;<i> &gt;/dev/null 2&gt;&amp;1
+</I>&gt;<i> gpsd.c: In function `main':
+</I>&gt;<i> gpsd.c:1272: error: incompatible type for argument 1 of
+</I>&gt;<i> `send_dbus_fix' make[1]: *** [gpsd.o] Error 1
+</I>&gt;<i> 
+</I>&gt;<i> I'm using dbus-0.23.4-r1, which is the newest I have.
+</I>
+The dbus version shouldn't matter.  It's compaining that a 
+(gps_device_t *) variable channel dis the wrong type to pass a function
+that supposedly takes a (gps_device_t *) as an argument.  Weird.
+-- 
+		&lt;a href=&quot;<A HREF="http://www.catb.org/~esr/">http://www.catb.org/~esr/</A>&quot;&gt;Eric S. Raymond&lt;/a&gt;
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="000923.html">[Gpsd-users] gpsd-2.28 and dbus still broken?
+</A></li>
+	<LI>Next message: <A HREF="000925.html">[Gpsd-users] /var/run/gpsd.sock creation failure: (111, 'Connection refused')
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#924">[ date ]</a>
+              <a href="thread.html#924">[ thread ]</a>
+              <a href="subject.html#924">[ subject ]</a>
+              <a href="author.html#924">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

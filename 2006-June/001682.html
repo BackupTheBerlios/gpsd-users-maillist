@@ -1,0 +1,86 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] Re: Setup gpsd to use pcmcia card
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2006-June/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Re%3A%20Setup%20gpsd%20to%20use%20pcmcia%20card&In-Reply-To=%3C200606112155.40064.sahlgre%40iit.edu%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="001681.html">
+   <LINK REL="Next"  HREF="001683.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] Re: Setup gpsd to use pcmcia card</H1>
+    <B>Greg Sahli</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Re%3A%20Setup%20gpsd%20to%20use%20pcmcia%20card&In-Reply-To=%3C200606112155.40064.sahlgre%40iit.edu%3E"
+       TITLE="[Gpsd-users] Re: Setup gpsd to use pcmcia card">sahlgre at iit.edu
+       </A><BR>
+    <I>Mon Jun 12 04:55:39 CEST 2006</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="001681.html">[Gpsd-users] Setup gpsd to use pcmcia card
+</A></li>
+        <LI>Next message: <A HREF="001683.html">[Gpsd-users] Re: Setup gpsd to use pcmcia card
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1682">[ date ]</a>
+              <a href="thread.html#1682">[ thread ]</a>
+              <a href="subject.html#1682">[ subject ]</a>
+              <a href="author.html#1682">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Here's some info from logs:
+
+dmesg:
+cs: memory probe 0xa0000000-0xa0ffffff: clean.
+ttyS4: detected caps 00000700 should be 00000100
+ttyS4 at I/O 0x400 (irq = 3) is a 16C950/954
+
+syslog:
+Jun 11 21:14:15 outrigger cardmgr[1948]: socket 0: GPS BC-307
+Jun 11 21:14:15 outrigger kernel: ttyS4: detected caps 00000700 should be 
+00000100
+Jun 11 21:14:15 outrigger kernel: ttyS4 at I/O 0x400 (irq = 3) is a 16C950/954
+Jun 11 21:17:58 outrigger hald[3149]: Timed out waiting for hotplug event 
+1008.
+Rebasing to 1009
+Jun 11 21:23:05 outrigger init: cannot execute &quot;/sbin/mgetty&quot;
+Jun 11 21:23:05 outrigger last message repeated 2 times
+Jun 11 21:23:05 outrigger init: Id &quot;S&quot; respawning too fast: disabled for 5 
+minutes
+
+I also have no idea if my gpsd startup is right!
+
+[<A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">greg at outrigger</A> log]$ ps aux | grep gpsd
+greg      6998  0.0  0.0   1836   708 ?        Ss   21:44   0:00 gpsd 
+-f /dev/ttyS4
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="001681.html">[Gpsd-users] Setup gpsd to use pcmcia card
+</A></li>
+	<LI>Next message: <A HREF="001683.html">[Gpsd-users] Re: Setup gpsd to use pcmcia card
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1682">[ date ]</a>
+              <a href="thread.html#1682">[ thread ]</a>
+              <a href="subject.html#1682">[ subject ]</a>
+              <a href="author.html#1682">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

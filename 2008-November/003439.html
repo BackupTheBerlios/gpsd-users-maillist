@@ -1,0 +1,136 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] GPSd blocks device?
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2008-November/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20GPSd%20blocks%20device%3F&In-Reply-To=%3C49129DCE.8090202%40keynote-sigos.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="003437.html">
+   <LINK REL="Next"  HREF="003440.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] GPSd blocks device?</H1>
+    <B>Jens Oberender</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20GPSd%20blocks%20device%3F&In-Reply-To=%3C49129DCE.8090202%40keynote-sigos.com%3E"
+       TITLE="[Gpsd-users] GPSd blocks device?">jens.oberender at keynote-sigos.com
+       </A><BR>
+    <I>Thu Nov  6 08:33:34 CET 2008</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="003437.html">[Gpsd-users] GPSd blocks device?
+</A></li>
+        <LI>Next message: <A HREF="003440.html">[Gpsd-users] GPSd blocks device?
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3439">[ date ]</a>
+              <a href="thread.html#3439">[ thread ]</a>
+              <a href="subject.html#3439">[ subject ]</a>
+              <a href="author.html#3439">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Got a break again!
+I started gpsd with -D 7 and the device hurried and blocked again this
+morning.
+Attached is the part of the log, where it happened.
+It doesn't look promising, just no new data. :-(
+
+Ciao,
+	Jens
+-- 
+Keynote SIGOS GmbH
+ - TESTING IS OUR COMPETENCE -
+Klingenhofstrasse 50d
+D-90411 Nuernberg
+Fon +49 911 95168-0
+www.keynote-sigos.com
+
+HRB 9323 Nuernberg
+Gerichtsstand: Nuernberg
+Geschaeftsfuehrer: Adil Kaya, Martin Loehlein, Umang Gupta, Andrew Hamer
+
+
+Chris Kuethe wrote:
+&gt;<i> On Mon, Nov 3, 2008 at 8:40 AM, Jens Oberender
+</I>&gt;<i> &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">jens.oberender at keynote-sigos.com</A>&gt; wrote:
+</I>&gt;&gt;<i> Hi
+</I>&gt;&gt;<i>
+</I>&gt;&gt;&gt;<i> could be a whole lot of things. turn up the debug level, send it all
+</I>&gt;&gt;&gt;<i> to a file and wait 2 days... i don't think it's a gpsd bug, since i
+</I>&gt;&gt;&gt;<i> have both ublox and non-ublox receivers that have been connected to
+</I>&gt;&gt;&gt;<i> gpsd instances for more than a month. but without more data, it's hard
+</I>&gt;&gt;&gt;<i> to know what to look at next.
+</I>&gt;&gt;<i> I run with debug level 5, is that enough?
+</I>&gt;<i> 
+</I>&gt;<i> I'm thinking level 6 or 7 - need to see what's being read from the
+</I>&gt;<i> device. this will be extremely verbose; you don't want to send it to
+</I>&gt;<i> syslog
+</I>&gt;<i> 
+</I>&gt;<i> gpsd -D 6 -n -N /dev/gps 2&gt;&amp;1 &gt; gpsd.out
+</I>&gt;<i> 
+</I>&gt;&gt;<i> Here a snippet from the syslog, after 09:14:04 gpsd doesn't print more
+</I>&gt;&gt;<i> messages then direct answers to client requests:
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> Oct 31 09:14:03 mlu2 gpsd[1666]: gpsd: UBX: len 26
+</I>&gt;&gt;<i> Oct 31 09:14:03 mlu2 gpsd[1666]: gpsd: UBX_NAV_DOP
+</I>&gt;&gt;<i> Oct 31 09:14:03 mlu2 gpsd[1666]: gpsd: &lt;= GPS:
+</I>&gt;&gt;<i> $GPGSA,A,0,05,09,12,14,15,22,30,30,30,30,124,124,-343597384,1073920081,171798692,1073521623,-1030792151,1073228021,-1374389535,1073144135,1074135040,-343597384,1077065809,08,05,09,12,14,15,22,30,120,,,,,,,,,,,,,,,,,,,2.3,1.8,1.5*3E\x0d\x0a$PGRME,0.00,M,0.00,M,9.02,M*15
+</I>&gt;&gt;<i> Oct 31 09:14:03 mlu2 gpsd[1666]: gpsd: transfer mask on 0x0104: 7c01
+</I>&gt;&gt;<i> Oct 31 09:14:03 mlu2 gpsd[1666]: gpsd: UBX: len 24
+</I>&gt;&gt;<i> Oct 31 09:14:03 mlu2 gpsd[1666]: gpsd: UBX_NAV_TIMEGPS
+</I>&gt;&gt;<i> Oct 31 09:14:03 mlu2 gpsd[1666]: gpsd: transfer mask on 0x0120: 03
+</I>&gt;&gt;<i> Oct 31 09:14:04 mlu2 gpsd[1666]: gpsd: UBX: len 60
+</I>&gt;&gt;<i> Oct 31 09:14:04 mlu2 gpsd[1666]: gpsd: UBX_NAV_SOL
+</I>&gt;&gt;<i> Oct 31 09:14:04 mlu2 gpsd[1666]: gpsd: ntpshm_put: Clock: 1225440845 @
+</I>&gt;&gt;<i> 1225440844.428072
+</I>&gt;&gt;<i> Oct 31 09:14:04 mlu2 gpsd[1666]: gpsd: &lt;= GPS:
+</I>&gt;&gt;<i> $GPGGA,081405,4928.5423,N,01106.6681,E,1,07,1.79,329.38,M,47.293,M,,*42\x0d\x0a$GPRMC,081405,A,4928.5423,N,01106.6681,E,0.1034,230.448,311008,,*29\x0d\x0a$GPGSA,A,3,05,09,12,14,15,22,30,30,30,30,124,124,-343597384,1073920081,171798692,1073521623,-1030792151,1073228021,-1374389535,1073144135,1074135040,-343597384,1077065809,08,05,09,12,14,15,22,30,120,,,,,,,,,,,,,,,,,,,2.3,1.8,1.5*3D\x0d\x0a$PGRME,3.02,M,0.00,M,9.02,M*14
+</I>&gt;&gt;<i> Oct 31 09:14:04 mlu2 gpsd[1666]: gpsd: transfer mask on 0x0106: 101013fb
+</I>&gt;&gt;<i> Oct 31 09:14:04 mlu2 gpsd[1666]: gpsd: client(0): channel 5 already active.
+</I>&gt;&gt;<i> Oct 31 09:14:04 mlu2 gpsd[1666]: gpsd: GPS has a fix (status=1, mode=3).
+</I>&gt;&gt;<i> Oct 31 09:14:04 mlu2 gpsd[1666]: gpsd: =&gt; client(0): GPSD,O=0x0106
+</I>&gt;&gt;<i> 1225440845.000 0.005 49.475704 11.111135 329.38 14.32 12.08 230.4481 0.053
+</I>&gt;&gt;<i> 0.042 ? 28.64 ? 3
+</I>&gt;&gt;<i> Oct 31 09:14:29 mlu2 pppd[31065]: pppd 2.4.3 started by root, uid 0
+</I>&gt;&gt;<i> Oct 31 09:14:29 mlu2 pppd[31065]: using channel 1577
+</I>&gt;&gt;<i> Oct 31 09:14:29 mlu2 pppd[31065]: Using interface ppp0
+</I>&gt;&gt;<i> Oct 31 09:14:29 mlu2 pppd[31065]: Connect: ppp0 &lt;--&gt; /dev/ttyUSB7
+</I>&gt;&gt;<i> Oct 31 09:14:29 mlu2 pppd[31065]: sent [LCP ConfReq id=0x1 &lt;asyncmap 0x0&gt;
+</I>&gt;&gt;<i> &lt;magic 0xaec770de&gt; &lt;pcomp&gt; &lt;accomp&gt;]
+</I>&gt;&gt;<i> _______________________________________________
+</I>&gt;&gt;<i> Gpsd-users mailing list
+</I>&gt;&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">Gpsd-users at lists.berlios.de</A>
+</I>&gt;&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">https://lists.berlios.de/mailman/listinfo/gpsd-users</A>
+</I>&gt;&gt;<i>
+</I>&gt;<i> 
+</I>&gt;<i> 
+</I>&gt;<i> 
+</I></PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="003437.html">[Gpsd-users] GPSd blocks device?
+</A></li>
+	<LI>Next message: <A HREF="003440.html">[Gpsd-users] GPSd blocks device?
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3439">[ date ]</a>
+              <a href="thread.html#3439">[ thread ]</a>
+              <a href="subject.html#3439">[ subject ]</a>
+              <a href="author.html#3439">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

@@ -1,0 +1,90 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] [Gpsd-dev]   Gpsd configuration files
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2011-May/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20%5BGpsd-dev%5D%20%20%20Gpsd%20configuration%20files&In-Reply-To=%3C20110531172556.GA21035%40thyrsus.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="005267.html">
+   <LINK REL="Next"  HREF="005270.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] [Gpsd-dev]   Gpsd configuration files</H1>
+    <B>Eric Raymond</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20%5BGpsd-dev%5D%20%20%20Gpsd%20configuration%20files&In-Reply-To=%3C20110531172556.GA21035%40thyrsus.com%3E"
+       TITLE="[Gpsd-users] [Gpsd-dev]   Gpsd configuration files">esr at thyrsus.com
+       </A><BR>
+    <I>Tue May 31 19:25:56 CEST 2011</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="005267.html">[Gpsd-users] [Gpsd-dev] Gpsd configuration files
+</A></li>
+        <LI>Next message: <A HREF="005270.html">[Gpsd-users] [Gpsd-dev]   Gpsd configuration files
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#5268">[ date ]</a>
+              <a href="thread.html#5268">[ thread ]</a>
+              <a href="subject.html#5268">[ subject ]</a>
+              <a href="author.html#5268">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Sebastian Arcus &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">shop at open-t.co.uk</A>&gt;:
+&gt;<i> Well, I'm all happy with that philosophy. Then why does it take four
+</I>&gt;<i> different configuration/script files and a Unix socket (which means
+</I>&gt;<i> you need RW access to the file system when you start gpsd) in order
+</I>&gt;<i> to hot plug gps devices?
+</I>
+Because it's not gpsd's job to know about the hotplug system.  Among other
+problems, that would introduce some portability issues; BSD doesn't have
+hotplug in the same way.
+
+&gt;<i>                You need:
+</I>&gt;<i> /etc/default/gpsd
+</I>&gt;<i> /etc/udev/rules.d/gpsd.rules
+</I>&gt;<i> /lib/udev/gpsd.hotplug
+</I>&gt;<i> /lib/udev/gpsd.hotplug.wrapper
+</I>
+Yes, we do.  That's pretty normal for a program that is launched by
+the hotplug system.  It is by no means a kind of complexity unique to gpsd.
+
+&gt;<i> I was suggesting an approach which would have used one single
+</I>&gt;<i> /etc/gpsd.conf instead of the four above.
+</I>
+Bad, *bad* idea.  It would involve our C code with the details of the
+Linux /sys interface, which is (a) complex, (b) poorly documented, and
+(c) a moving target.  The hotplug scripts loosen the coupling somewhat,
+reducing total maintainance burden and preventing our core code from
+getting destabilized every time /sys changes.
+-- 
+		&lt;a href=&quot;<A HREF="http://www.catb.org/~esr/">http://www.catb.org/~esr/</A>&quot;&gt;Eric S. Raymond&lt;/a&gt;
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="005267.html">[Gpsd-users] [Gpsd-dev] Gpsd configuration files
+</A></li>
+	<LI>Next message: <A HREF="005270.html">[Gpsd-users] [Gpsd-dev]   Gpsd configuration files
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#5268">[ date ]</a>
+              <a href="thread.html#5268">[ thread ]</a>
+              <a href="subject.html#5268">[ subject ]</a>
+              <a href="author.html#5268">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

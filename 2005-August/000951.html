@@ -1,0 +1,120 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] State of GPSD
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2005-August/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20State%20of%20GPSD&In-Reply-To=%3C200508041241.j74CfaIE019843%40snark.thyrsus.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="000947.html">
+   <LINK REL="Next"  HREF="000952.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] State of GPSD</H1>
+    <B>Eric S. Raymond</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20State%20of%20GPSD&In-Reply-To=%3C200508041241.j74CfaIE019843%40snark.thyrsus.com%3E"
+       TITLE="[Gpsd-users] State of GPSD">esr at snark.thyrsus.com
+       </A><BR>
+    <I>Thu Aug  4 14:41:36 CEST 2005</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="000947.html">[Gpsd-users] Re: [Gpsd-dev] Re: RTCM-104 support is in place.
+</A></li>
+        <LI>Next message: <A HREF="000952.html">[Gpsd-users] State of GPSD
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#951">[ date ]</a>
+              <a href="thread.html#951">[ thread ]</a>
+              <a href="subject.html#951">[ subject ]</a>
+              <a href="author.html#951">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>I wanted to release 2.29 Tuesday night, but we've had a flurry of problems
+and bug reports that need to be dealt with first.
+
+1. Under unknown circumstances gpsd becomes severly laggy
+
+Andreas Schneider &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">mail at cynapses.org</A>&gt;:
+&gt;<i>Not only the speed is 10 seconds to late, the postion too. I have updated my
+</I>&gt;<i>system clock with ntpdate and compared with the time gpsd reports. The
+</I>&gt;<i>difference is 9-12 sec.
+</I>
+I have not been able to reproduce this. However, I have seen something 
+happen on my laptop that could be related.  When I profile on my laptop the
+lag between the fix time and when it is delkivered increases slightly every
+cycle, as though the daemon can't keep up with the incoming data.  I don't
+see this on my desktop machine.
+
+2. The GPS-18 LVC sends GSV parts in random order and sometimes
+duplicates them.  As Gary points out, we can get stuff like this:
+
+$GPGSV,3,1,11,02,07,307,00,03,13,114,00,04,09,267,00,08,09,249,00*7F
+$GPGSV,3,3,11,24,02,229,00,27,42,260,42,51,00,000,00*41
+$GPGSV,3,2,11,13,66,320,49,16,42,059,43,20,28,178,00,23,72,090,50*72
+$GPGSV,3,2,11,13,66,320,49,16,42,059,43,20,28,178,00,23,72,090,50*72
+
+The problem is that after the 3rd sentence, there is a count of 11 sats.
+When processGSV sees the duplicated sentence it counts past 12, errors
+out and clears the data.  This causes xgps to show the sats winking on
+and off over many seconds.
+
+The DARPA Grand Challenge guy (Curt, I've never seen his last name) 
+is working on a patch that may fix this.  I don't consider it severe
+and a fix can wait until after 2.29.
+
+3. Spontaneous closes
+
+Chris Kuethe and Andreas Schneider are reporting an occasional problem
+with gpsd spontaneously closing its GPS device. We've managed to show
+that it's not happening because all client sessions attached to the
+device are shut down.  I have no idea what is going on here.
+
+4. gpsprof -f space is still busted.
+
+Gary Miller has promised to fix it.
+
+5. Trouble with packet_names.h
+
+Several people have reported that it isn't betting automatically rebuilt
+when absent.  That always happens here, but other people with the same
+or newer versions in their make/automake versions report that they have
+to type 'make packet_names.h' to get it.
+
+Alas, I'm basically completely stumped on 1, 3, and 5 because I can't
+reproduce them here.
+-- 
+		&lt;a href=&quot;<A HREF="http://www.catb.org/~esr/">http://www.catb.org/~esr/</A>&quot;&gt;Eric S. Raymond&lt;/a&gt;
+
+The Constitution is not neutral. It was designed to take the
+government off the backs of the people.
+	-- Justice William O. Douglas 
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="000947.html">[Gpsd-users] Re: [Gpsd-dev] Re: RTCM-104 support is in place.
+</A></li>
+	<LI>Next message: <A HREF="000952.html">[Gpsd-users] State of GPSD
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#951">[ date ]</a>
+              <a href="thread.html#951">[ thread ]</a>
+              <a href="subject.html#951">[ subject ]</a>
+              <a href="author.html#951">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

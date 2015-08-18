@@ -1,0 +1,103 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] Design issue -- date computations
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2005-March/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Design%20issue%20--%20date%20computations&In-Reply-To=%3CPine.LNX.4.62.0503251039310.30042%40catbert.rellim.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="000429.html">
+   <LINK REL="Next"  HREF="000431.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] Design issue -- date computations</H1>
+    <B>Gary E. Miller</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Design%20issue%20--%20date%20computations&In-Reply-To=%3CPine.LNX.4.62.0503251039310.30042%40catbert.rellim.com%3E"
+       TITLE="[Gpsd-users] Design issue -- date computations">gem at rellim.com
+       </A><BR>
+    <I>Fri Mar 25 19:42:08 CET 2005</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="000429.html">[Gpsd-users] Design issue -- date computations
+</A></li>
+        <LI>Next message: <A HREF="000431.html">[Gpsd-users] Experience using IBM/RFMD chipsets?
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#430">[ date ]</a>
+              <a href="thread.html#430">[ thread ]</a>
+              <a href="subject.html#430">[ subject ]</a>
+              <a href="author.html#430">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>-----BEGIN PGP SIGNED MESSAGE-----
+Hash: SHA1
+
+Yo Eric!
+
+It seems to me that chanceing the output of bad data is not good.  For
+this one GPS it is a certainty.
+
+It seems to me if gpsd does not know something it should not guess.  Given
+how badly peoples system clocks are set using that is little more than a
+guess.
+
+It also breaks any &quot;replay&quot; of saved NMEA.  Glider pilots, and others,
+save the NMEA as proof of a fligt profile.  Then paly it back, at a
+later date.
+
+I would propose this:
+        If we see a GPRMC, then save that date for the next GGA.
+
+	If we have no saved date for GGA, then we skip the date part.
+
+RGDS
+GARY
+- ---------------------------------------------------------------------------
+Gary E. Miller Rellim 20340 Empire Blvd, Suite E-3, Bend, OR 97701
+	<A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">gem at rellim.com</A>  Tel:+1(541)382-8588 Fax: +1(541)382-8676
+
+On Fri, 25 Mar 2005, Eric S. Raymond wrote:
+
+&gt;<i> &gt; The vulnerability is after the arrival of GPGGA and before the arrival of
+</I>&gt;<i> &gt; GPRMC.
+</I>&gt;<i> &gt; In this period the date memorized is the fake date.
+</I>&gt;<i> &gt; My receiver send always GPRMC and then GPGGA therefore I have always the
+</I>&gt;<i> &gt; fake date with XGPS.
+</I>-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v1.2.3 (GNU/Linux)
+
+iD8DBQFCRFuE8KZibdeR3qURApKIAJwP4jHU1u6/03jIwbESEgiLzLJEaQCfad6D
+XBS6Xikkghgv1NogmZ6e40I=
+=orid
+-----END PGP SIGNATURE-----
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="000429.html">[Gpsd-users] Design issue -- date computations
+</A></li>
+	<LI>Next message: <A HREF="000431.html">[Gpsd-users] Experience using IBM/RFMD chipsets?
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#430">[ date ]</a>
+              <a href="thread.html#430">[ thread ]</a>
+              <a href="subject.html#430">[ subject ]</a>
+              <a href="author.html#430">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

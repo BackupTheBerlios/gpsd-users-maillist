@@ -1,0 +1,113 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] DOP and dependencies
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2004-September/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20DOP%20and%20dependencies&In-Reply-To=%3Cp0611040bbd5af9387a4d%40%5B210.10.214.28%5D%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="000024.html">
+   <LINK REL="Next"  HREF="000025.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] DOP and dependencies</H1>
+    <B>Robin L Darroch</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20DOP%20and%20dependencies&In-Reply-To=%3Cp0611040bbd5af9387a4d%40%5B210.10.214.28%5D%3E"
+       TITLE="[Gpsd-users] DOP and dependencies">robin at spade-men.com
+       </A><BR>
+    <I>Wed Sep  1 06:09:53 CEST 2004</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="000024.html">[Gpsd-users] results of Y polling, consider supporting Heading and Bearing
+</A></li>
+        <LI>Next message: <A HREF="000025.html">[Gpsd-users] DOP and dependencies
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#23">[ date ]</a>
+              <a href="thread.html#23">[ thread ]</a>
+              <a href="subject.html#23">[ subject ]</a>
+              <a href="author.html#23">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>&gt;<i>I do not think that is correct; what you have described is what PGRME is
+</I>&gt;<i>giving. The PGRME values are much more realistic than the GSA numbers.
+</I>&gt;<i>&lt;2-3m is the realm of DGPS and not what is to be expected from an off
+</I>&gt;<i>the shelf handheld unit.
+</I>&gt;<i>
+</I>&gt;<i>And remember precision != accuracy.
+</I>&gt;<i>
+</I>&gt;<i>nmeafaq.txt:
+</I>&gt;<i>   $PGRME,15.0,M,45.0,M,25.0,M*22
+</I>&gt;<i>     15.0,M       Estimated horizontal position error in metres (HPE)
+</I>&gt;<i>     45.0,M       Estimated vertical error (VPE) in metres
+</I>&gt;<i>     25.0,M       Overall spherical equivalent position error
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i>GSA:
+</I>&gt;<i>...,PDOP,HDOP,VDOP,*checksum
+</I>&gt;<i>
+</I>&gt;<i>   PDOP (dilution of precision), H=Hoziz, V=vertical
+</I>&gt;<i>
+</I>&gt;<i>  &quot;DOP is an indication of the effect of satellite geometry on
+</I>&gt;<i>       the accuracy of the fix.&quot;
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i>I think the word &quot;indication&quot; is of importance here.
+</I>&gt;<i>Also, I would not assume the NMEA.txt is 100% gospel.
+</I>&gt;<i>
+</I>
+As I understand it, DOP is unit-less, and can only be compared 
+meaningfully to other DOP figures.  A DOP of 4 indicates twice the 
+likelihood of a given position error compared with a DOP of 2.  The 
+DOP is calculated from the expected errors due to current geometry of 
+the satellites used to obtain the fix.  The estimated position errors 
+should show a strong correlation with DOP, but be completely 
+different in value as they are measured in distance units (i.e. 
+metres), and they are trying to tell you &quot;you're very probably within 
+x metres of this point&quot; rather than &quot;I'm about twice as sure of my 
+position as I was a couple of  minutes ago&quot;.
+
+On a completely different subject, having spent a while scouring the 
+net for information on how to get rid of the configure &amp; make errors 
+I was getting trying to build the latest gpsd, can I suggest that you 
+include a link to LessTif (<A HREF="http://www.lesstif.org/">http://www.lesstif.org/</A>) in either the 
+INSTALL or README file?
+
+Cheers,
+Robin
+-- 
+
+------------------------------------------------------------
+Robin L. Darroch - <A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">robin at spade-men.com</A> - <A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">robin at darroch.id.au</A>
+       <A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">robin_darroch at nyca.org.au</A>   -   +61 421 503 966
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="000024.html">[Gpsd-users] results of Y polling, consider supporting Heading and Bearing
+</A></li>
+	<LI>Next message: <A HREF="000025.html">[Gpsd-users] DOP and dependencies
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#23">[ date ]</a>
+              <a href="thread.html#23">[ thread ]</a>
+              <a href="subject.html#23">[ subject ]</a>
+              <a href="author.html#23">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

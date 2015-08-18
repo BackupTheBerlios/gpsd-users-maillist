@@ -1,0 +1,107 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] [Gpsd-dev] Gpsd startup/hotplug system -	new	proposal
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2011-June/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20%5BGpsd-dev%5D%20Gpsd%20startup/hotplug%20system%20-%0A%09new%09proposal&In-Reply-To=%3C4E0B1345.6090003%40wildgooses.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="005355.html">
+   <LINK REL="Next"  HREF="005358.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] [Gpsd-dev] Gpsd startup/hotplug system -	new	proposal</H1>
+    <B>Ed W</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20%5BGpsd-dev%5D%20Gpsd%20startup/hotplug%20system%20-%0A%09new%09proposal&In-Reply-To=%3C4E0B1345.6090003%40wildgooses.com%3E"
+       TITLE="[Gpsd-users] [Gpsd-dev] Gpsd startup/hotplug system -	new	proposal">lists at wildgooses.com
+       </A><BR>
+    <I>Wed Jun 29 13:57:57 CEST 2011</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="005355.html">[Gpsd-users] [Gpsd-dev] Gpsd startup/hotplug system - new	proposal
+</A></li>
+        <LI>Next message: <A HREF="005358.html">[Gpsd-users] [Gpsd-dev] Gpsd startup/hotplug system - new proposal
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#5356">[ date ]</a>
+              <a href="thread.html#5356">[ thread ]</a>
+              <a href="subject.html#5356">[ subject ]</a>
+              <a href="author.html#5356">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>On 24/06/2011 16:33, Eric Raymond wrote:
+&gt;<i> What I don't see here is any justification for the position that a binary
+</I>&gt;<i> is especially &quot;nice&quot; relative to a bash or Python script.  In general, I
+</I>&gt;<i> try to write as much in scripting languages and as little in C as possible,
+</I>&gt;<i> because of the difference in downstream maintainance costs.
+</I>&gt;<i> 
+</I>&gt;<i> What would the advantage of a C binary be over folding the bash
+</I>&gt;<i> wrapper into the Python and renaming the whole thing gpsdctl?
+</I>&gt;<i> 
+</I>&gt;<i> (Yes, I have seen Ed W's discussion of this issue and will reply to it.)
+</I>
+Super proposal.
+
+Just my 2p, but I'm trying to build a very compact distribution for my
+needs.  At the moment I have zero need for python on that distribution,
+*other* than if gpsd pulls it in.
+
+Now a quick scan of my chroot compile environment shows python2.6
+consuming approx 36MB of disk (excluding headers, ie just lib).  Note
+this may be slightly high because it includes some dependent modules
+which can perhaps be stripped. However, my main distribution is
+currently around 10MB after squashfs, so adding Python will
+substantially add to the install size...
+
+I don't know if dd-wrt, tomato or any of these other popular router
+distros currently ship python, but just a quick estimate it seems like a
+lot of storage to give up if they don't otherwise have a use for python?
+
+Note, I wholeheartedly agree that scripting languages are great for
+development.  I have large applications written entirely in perl for
+exactly that reason.  I would go so far to say that I see no obvious
+reason that the entirety of gpsd couldn't be written entirely in python?
+
+However, gpsd is a potentially useful piece of software for all kinds of
+purposes from mobile phones, small routers and other mobile devices - as
+a class these devices tend to be storage and processor constrained and
+it's a definite benefit to minimise dependencies where possible...  As
+such I would personally be extremely grateful if you would make python a
+completely optional piece of gpsd at runtime (compile time dependency is
+completely fine).  ...Actually it would be great if the ./configure
+script would re-acquire it's --disable-python option to avoid shipping
+any python deps..?
+
+Thanks for your consideration..
+
+Ed W
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="005355.html">[Gpsd-users] [Gpsd-dev] Gpsd startup/hotplug system - new	proposal
+</A></li>
+	<LI>Next message: <A HREF="005358.html">[Gpsd-users] [Gpsd-dev] Gpsd startup/hotplug system - new proposal
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#5356">[ date ]</a>
+              <a href="thread.html#5356">[ thread ]</a>
+              <a href="subject.html#5356">[ subject ]</a>
+              <a href="author.html#5356">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

@@ -1,0 +1,135 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] Fwd: NTP Problems
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2006-August/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Fwd%3A%20NTP%20Problems&In-Reply-To=%3CPine.LNX.4.64.0608281824270.21687%40catbert.rellim.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="001890.html">
+   <LINK REL="Next"  HREF="001893.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] Fwd: NTP Problems</H1>
+    <B>Gary E. Miller</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Fwd%3A%20NTP%20Problems&In-Reply-To=%3CPine.LNX.4.64.0608281824270.21687%40catbert.rellim.com%3E"
+       TITLE="[Gpsd-users] Fwd: NTP Problems">gem at rellim.com
+       </A><BR>
+    <I>Tue Aug 29 03:32:18 CEST 2006</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="001890.html">[Gpsd-users] Fwd: NTP Problems
+</A></li>
+        <LI>Next message: <A HREF="001893.html">[Gpsd-users] Fwd: NTP Problems
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1891">[ date ]</a>
+              <a href="thread.html#1891">[ thread ]</a>
+              <a href="subject.html#1891">[ subject ]</a>
+              <a href="author.html#1891">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>-----BEGIN PGP SIGNED MESSAGE-----
+Hash: SHA1
+
+Yo Karl!
+
+On Tue, 29 Aug 2006, Karl von Muller wrote:
+
+&gt;<i> &gt; Do the shared memory segments get created when you start ntpd?  Both gpsd
+</I>&gt;<i> &gt; and ntp will create the shared memory segment if it does not exist yet.
+</I>&gt;<i>
+</I>&gt;<i> It appears they do.
+</I>
+Then that narrows things down to gpsd.
+
+&gt;<i> I believe i have compiled it in, as long as all as i need is --enable-pps \
+</I>&gt;<i>        --enable-ntpshm \
+</I>
+Just to double check I just downloaded the current SVN and compiled with
+This way:
+
+autogen.sh --enable-pps &amp;&amp; configure &amp;&amp; make &amp;&amp; make install
+
+So nothing special there.
+
+Here is the config report showing the two NTP options on:
+
+==========================================
+gpsd 2.34
+- ------------------------------------------
+NMEA                    : yes
+FV-18                   : yes
+SiRF                    : yes
+Trimble TSIP            : yes
+Tripmate                : yes
+Earthmate               : yes
+iTrax                   : yes
+iTalk                   : no
+Garmin                  : yes
+True North              : no
+Evermore                : yes
+RTCM104 support         : yes
+NTRIP support           : yes
+NTP SHM                 : yes
+NTP PPS                 : yes
+Fixed port speed        : no
+Wired buffer policy     : yes
+Enable shared libraries : yes
+Enable DBUS support     : no
+Limited max client fd   : no
+Limited max devices     : no
+- ------------------------------------------
+
+Then I start gpsd this way:
+
+gpsd -n /dev/ttyS1
+
+The '-n' is important, otherwise the gpsd waits for a cgps/xgps connection
+to wake up the gps.
+
+
+RGDS
+GARY
+- ---------------------------------------------------------------------------
+Gary E. Miller Rellim 20340 Empire Blvd, Suite E-3, Bend, OR 97701
+	<A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">gem at rellim.com</A>  Tel:+1(541)382-8588
+
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v1.4.3 (GNU/Linux)
+
+iD8DBQFE85kl8KZibdeR3qURAlEsAKCQRIKPW6awkeeoOsFnb1Q8xvCPcACfbEgH
+QsHrgIG0ivNX33YVJ/dQG3Y=
+=QLvO
+-----END PGP SIGNATURE-----
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="001890.html">[Gpsd-users] Fwd: NTP Problems
+</A></li>
+	<LI>Next message: <A HREF="001893.html">[Gpsd-users] Fwd: NTP Problems
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1891">[ date ]</a>
+              <a href="thread.html#1891">[ thread ]</a>
+              <a href="subject.html#1891">[ subject ]</a>
+              <a href="author.html#1891">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

@@ -1,0 +1,138 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] Sirf Binary, Gpsmon and other things
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2009-December/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Sirf%20Binary%2C%20Gpsmon%20and%20other%20things&In-Reply-To=%3C4B1CB3EC.3030508%40pl.net%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="004108.html">
+   <LINK REL="Next"  HREF="004110.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] Sirf Binary, Gpsmon and other things</H1>
+    <B>Peter</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Sirf%20Binary%2C%20Gpsmon%20and%20other%20things&In-Reply-To=%3C4B1CB3EC.3030508%40pl.net%3E"
+       TITLE="[Gpsd-users] Sirf Binary, Gpsmon and other things">webwiz at pl.net
+       </A><BR>
+    <I>Mon Dec  7 08:51:08 CET 2009</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="004108.html">[Gpsd-users] Sirf Binary, Gpsmon and other things
+</A></li>
+        <LI>Next message: <A HREF="004110.html">[Gpsd-users] Sirf Binary, Gpsmon and other things
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#4109">[ date ]</a>
+              <a href="thread.html#4109">[ thread ]</a>
+              <a href="subject.html#4109">[ subject ]</a>
+              <a href="author.html#4109">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Thanks for this Gary.
+
+Appears to be a common enough complaint for this model. After a good deal more searching i found on the globalsat forum a solution. <A HREF="http://www.usglobalsat.com/forum/index.php?topic=911.0">http://www.usglobalsat.com/forum/index.php?topic=911.0</A>
+
+Stop gpsd, start it with
+
+gpsd -NnD4 /dev/gps0
+
+then in another terminal
+
+nc localhost 2947
+n0
+
+at this point it still reports N=1 (ie binary)
+
+however remove the device and its now in nmea mode. Led functions again etc.
+
+This method did work for me im glad to say, whereas the proprietary tools that are stated as being capable of changing the mode in these devices both failed. (sirfdemo and sirftech). Its apparently something to do with the the fact that the globalsat devices dont like having both protocol and baud rate changed at the same time, which these tools do. Sirf binary runs at 57600 whereas nmea at 9600.
+
+The other advice from globalsat was to unplug the device for 72 hours. This also did not work for me as it had been unpluged for about 2 weeks, and started in binary first pop.
+
+I think the moral of the story is that for the globalsat devices beware letting gpsd or any of its clients put them into sirf binary, as they can be hard to get out again, and the vast majority of gps softwares dont recognise sirf binary, so nmea is it.
+
+Im going to reread the man page and try to get clear about the ns and Ns. ... and bs.
+
+Peter
+
+
+
+
+
+
+
+Gary E. Miller wrote:
+&gt;<i> -----BEGIN PGP SIGNED MESSAGE-----
+</I>&gt;<i> Hash: SHA1
+</I>&gt;<i>
+</I>&gt;<i> Yo Peter!
+</I>&gt;<i>
+</I>&gt;<i> On Mon, 7 Dec 2009, Peter wrote:
+</I>&gt;<i>
+</I>&gt;&gt;<i> I have a bu 353 usb reciever which in combination with gpsd has been a
+</I>&gt;&gt;<i> a life long source of grief.
+</I>&gt;<i>
+</I>&gt;<i> You should be able to get good results with that.
+</I>&gt;<i>
+</I>&gt;&gt;<i> Running the lenny version of gpsd 2.37 i think it is.
+</I>&gt;<i>
+</I>&gt;<i> There is your problem.  2.90 is current and fixes a lot of bugs.
+</I>&gt;<i>
+</I>&gt;&gt;<i> Something, im fairly sure its the perl gpsd client, keeps putting the de
+</I>&gt;<i> &lt;  vice into sirf binary mode,
+</I>&gt;<i>
+</I>&gt;<i> Yep, that is intentional.  gpsd puts the units back into a sane state.
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;&gt;<i> and the following does not now change it back. It used to.
+</I>&gt;<i>
+</I>&gt;<i> There has been much thrashing in the gpsd code to change GPS modes.  2.90
+</I>&gt;<i> will work much better for you.
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i> RGDS
+</I>&gt;<i> GARY
+</I>&gt;<i> - ---------------------------------------------------------------------------
+</I>&gt;<i> Gary E. Miller Rellim 109 NW Wilmington Ave., Suite E, Bend, OR 97701
+</I>&gt;<i> 	<A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">gem at rellim.com</A>  Tel:+1(541)382-8588
+</I>&gt;<i>
+</I>&gt;<i> -----BEGIN PGP SIGNATURE-----
+</I>&gt;<i> Version: GnuPG v1.4.3 (GNU/Linux)
+</I>&gt;<i>
+</I>&gt;<i> iD8DBQFLHA+NBmnRqz71OvMRAukUAJ9UsROG2hdDeLMDccx/o5Ivv3EwvwCgl7yT
+</I>&gt;<i> ABxU6RWsyCfv1D+hrL1rN+g=
+</I>&gt;<i> =Iza1
+</I>&gt;<i> -----END PGP SIGNATURE-----
+</I>&gt;<i>
+</I>
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="004108.html">[Gpsd-users] Sirf Binary, Gpsmon and other things
+</A></li>
+	<LI>Next message: <A HREF="004110.html">[Gpsd-users] Sirf Binary, Gpsmon and other things
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#4109">[ date ]</a>
+              <a href="thread.html#4109">[ thread ]</a>
+              <a href="subject.html#4109">[ subject ]</a>
+              <a href="author.html#4109">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

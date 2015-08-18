@@ -1,0 +1,96 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] Results of Coverity scan on gpsd
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2007-May/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Results%20of%20Coverity%20scan%20on%20gpsd&In-Reply-To=%3C20070531093207.E06E83C0DFF%40snark.thyrsus.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="002677.html">
+   
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] Results of Coverity scan on gpsd</H1>
+    <B>Eric S. Raymond</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Results%20of%20Coverity%20scan%20on%20gpsd&In-Reply-To=%3C20070531093207.E06E83C0DFF%40snark.thyrsus.com%3E"
+       TITLE="[Gpsd-users] Results of Coverity scan on gpsd">esr at thyrsus.com
+       </A><BR>
+    <I>Thu May 31 11:32:07 CEST 2007</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="002677.html">[Gpsd-users] log
+</A></li>
+        
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2678">[ date ]</a>
+              <a href="thread.html#2678">[ thread ]</a>
+              <a href="subject.html#2678">[ subject ]</a>
+              <a href="author.html#2678">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>In late March I was able to add gpsd to the list of projects checked by
+by the Coverity defect scanner.   This is a serious static-analysis tool
+that is notoriously good at spotting buffer overruns and similar
+problems.  It has been used on the Linux kernel to good effect.
+
+I have just spent an hour or so looking at our defect report and
+applying appropriate fixes.
+
+I am very pleased to be able to report that for 22,793 LOC, the 
+Coverity scanner printed exactly four (4) problem warnings.  Of
+these, 
+
+* One was an obvious false positive readily preventable with
+  an assert() describing a precondition. (Now fixed.)
+
+* One is a subtle false positive that I'm going to have to learn 
+  Coverity annotations to suppress.
+
+* Two are genuine but very minor bugs. One is in rtcm.c and one in
+  libgps.c -- neither is in the daemon code. (Both now fixed.) 
+  It is rather unlikely either bug has ever been evoked.
+
+That's an actual defect rate of less than 1 in 11,000 lines, which
+is almost ridiculously low for a project of this size and complexity
+and qualifies the code as not merely bulletproof but armor-plated
+like an Iowa-class battleship.
+
+I think all contributors to this project should feel extremely proud
+of this result.  
+
+I also think we owe some thanks to the splint project, which built the
+first static analyzer I ran on this code.
+-- 
+		&lt;a href=&quot;<A HREF="http://www.catb.org/~esr/">http://www.catb.org/~esr/</A>&quot;&gt;Eric S. Raymond&lt;/a&gt;
+
+When your hammer is C++, everything begins to look like a thumb.
+                -- Steve Hoflich on compl.lang.c++
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="002677.html">[Gpsd-users] log
+</A></li>
+	
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2678">[ date ]</a>
+              <a href="thread.html#2678">[ thread ]</a>
+              <a href="subject.html#2678">[ subject ]</a>
+              <a href="author.html#2678">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

@@ -1,0 +1,155 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] The state of gpsd
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2006-March/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20The%20state%20of%20gpsd&In-Reply-To=%3C200603090959.k299xapU029604%40snark.thyrsus.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="001385.html">
+   <LINK REL="Next"  HREF="001388.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] The state of gpsd</H1>
+    <B>Eric S. Raymond</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20The%20state%20of%20gpsd&In-Reply-To=%3C200603090959.k299xapU029604%40snark.thyrsus.com%3E"
+       TITLE="[Gpsd-users] The state of gpsd">esr at snark.thyrsus.com
+       </A><BR>
+    <I>Thu Mar  9 10:59:36 CET 2006</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="001385.html">[Gpsd-users] gpsd: can't run with neither control socket nor devices
+</A></li>
+        <LI>Next message: <A HREF="001388.html">[Gpsd-users] Re: [Gpsd-dev] The state of gpsd
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1386">[ date ]</a>
+              <a href="thread.html#1386">[ thread ]</a>
+              <a href="subject.html#1386">[ subject ]</a>
+              <a href="author.html#1386">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>gpsd 2.32 is about to ship, incorporating some minor fixes.  There
+are still a few known problems with non-SiRF, non-NMEA devices.
+But, overall, gpsd has been pretty stable since the 2.30 release
+in September 2005.
+
+This is a report on the state of gpsd as I see it, with some
+questions about future direction for users and co-developers. 
+
+I consider the architectural work on gpsd itself to be pretty much
+done.  The ripples from the big refactoring I did in late 2004 have
+died down, and it seems to have paid off handsomely; the new driver
+framework is solid enough to support several binary drivers as well as
+NMEA dialects.
+
+The autodetection logic for GPS and baud rate also seems to have
+worked out well for about 80% of cases, at least since we figured out
+how to avoid long startup delays by not changing the initial port
+speed unless all the packet-type detectors fail.
+
+I'm aware there are still a few problems in this area, like Axiom
+Sandpiper chips getting mistaken for FV18s.  This is why I've paid
+a lot of attention to making gpsd buildable with arbitrary subsets
+of its drivers disabled; it appears to me that these funny edge cases
+mainly come up in embedded deployments and the right solution is to
+strip the colliding driver type(s) out of the gpsd build.
+
+I'd take a patch that implemented a compile-time option to lock gpsd
+to a fixed baud rate, avoiding autobauding.  Again, this would further
+slim down the daemon for embedded deployments.  I'm much more
+reluctant to implement a runtime option to fix baud rate, for reasons
+already hashed over at length on the dev list.
+
+The test and profiling tools seem to be in good shape.  They've been
+stable since the last rewrite of gpsfake.py made it capable of running
+test sessions simulatring multiple GPSes feeding a gpsd instance.
+
+I believe multiple-GPS operation is working, but I've only tested it
+in artificial situations rather than a real field deployment.  I've
+had one report of problems near the F command, but it was
+unreproducible, and others with similar use cases reported correct
+operation.
+
+* Question for users: Can anyone using gpsd with multiple GPSes for 
+production verify that it works?  Are there any known problems?
+
+The PPS-handling code has been disabled for a while because it
+seemed to be triggering some sort of bug in pthreads.  I consider
+this the most important to-do item.
+
+* Question for Rob Janssen: have you made any progress towards
+understanding and working around this problem?
+
+Increasingly, the focus of work on this project seems to be shifting
+away from the daemon core.  One direction is clients. The work on C,
+Python, and now Perl client libraries has borne the expected fruit; we
+now have a rather large assortment of clients, and new ones have
+become quite easy to write.
+
+Another direction is DGPSPIP and RTCM-104 support.  Wolfgang Rupprecht 
+and I did the heavy lifting on that last year, but the results need
+to be polished a bit and tested in real-world deployment.  
+
+* Question for Wolfgang Rupprecht: Wolfgang, if you're listening, where
+are those decoder-hardening patches?  And can I get you to put proper
+inversion logic in the encoder?
+
+The packet-getter can detect incoming RTCM-104.  Ultimately where I
+want to be with this is to be able to hand gpsd any mix of GPS and
+RTCM-104 sources and have it do the right thing, allowing clients
+to subscribe to either corrected GPS data or DGPS reports. 
+
+* Question for users: Do we have anybody on the user list with a
+requirement to work directly with or monitor DGPS correction data?
+How important are the RTCM-104 features, anyway?
+
+A third direction is open-source support for flashing GPS firmware.
+Chris Kuethe wrote a pre-alpha SiRF flash utility, and I re-factored
+it into GPS-type-independent and SiRF-specific pieces glued together
+by a driver architecture rather like gpsd's.  As far as I know, this
+code has not been tested.  
+
+* Question for Chris Kuethe: Chris, are you listening?  What's our next
+step?
+
+Finally, I continue to be impressed by the amount and depth of
+expertise that has collected around this project.  We've been gifted
+with intelligent, active users and an extremely capable dev team. It's
+an honor and a pleasure to be working with you all.
+-- 
+		&lt;a href=&quot;<A HREF="http://www.catb.org/~esr/">http://www.catb.org/~esr/</A>&quot;&gt;Eric S. Raymond&lt;/a&gt;
+
+It is error alone which needs the support of government. 
+Truth can stand by itself. 
+	--Thomas Jefferson
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="001385.html">[Gpsd-users] gpsd: can't run with neither control socket nor devices
+</A></li>
+	<LI>Next message: <A HREF="001388.html">[Gpsd-users] Re: [Gpsd-dev] The state of gpsd
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1386">[ date ]</a>
+              <a href="thread.html#1386">[ thread ]</a>
+              <a href="subject.html#1386">[ subject ]</a>
+              <a href="author.html#1386">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

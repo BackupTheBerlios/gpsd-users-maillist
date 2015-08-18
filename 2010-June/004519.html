@@ -1,0 +1,242 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] cross compiling
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2010-June/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20cross%20compiling&In-Reply-To=%3C0A5FE2F1C1F58D4B9A821C362DA7C5E303FC5004%40roswell.ticom-geo.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   
+   <LINK REL="Next"  HREF="004520.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] cross compiling</H1>
+    <B>Roderick Medina</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20cross%20compiling&In-Reply-To=%3C0A5FE2F1C1F58D4B9A821C362DA7C5E303FC5004%40roswell.ticom-geo.com%3E"
+       TITLE="[Gpsd-users] cross compiling">rmedina at ticom-geo.com
+       </A><BR>
+    <I>Wed Jun  2 17:58:56 CEST 2010</I>
+    <P><UL>
+        
+        <LI>Next message: <A HREF="004520.html">[Gpsd-users] Using TCP data sources
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#4519">[ date ]</a>
+              <a href="thread.html#4519">[ thread ]</a>
+              <a href="subject.html#4519">[ subject ]</a>
+              <a href="author.html#4519">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hello all,
+
+I thought I had succeeded and was just having to clean up some minor issues but I think the issue is worse than I thought. If any of you have any suggestions it would be much appreciated.
+
+The basic situation is as follows:
+
+I am trying to cross-compile for a type of powerpc embedded system which was set up by a third party. I have gcc build tools for this system but the problem is that the libs included with the build tools are seemingly different from the libs that are standard on the system. I tried to use LDFLAGS and a few other things to tell the build process to use the libs that exist on the system (I have a copy of those in a separate directory) instead of the libs in the build tools directories but it does not seem to help.
+
+After moving the &quot;make install&quot; generated binaries of gpsd to the powerpc, I get an error upon running that is as follows:
+
+./gpsd: relocation error: ./gpsd: symbol __floatsidf, version GLIBC_2.3.2 not defined in file libc.so.6 with link time reference
+
+I tried to statically link the libs from the build tools using the &quot;-static&quot; flag in LDFLAGS but it does not seem to be doing that because running object dump on gpsd shows this:
+
+Dynamic Section:
+&gt;<i>   NEEDED      libc.so.6
+</I>&gt;<i>   NEEDED      libnsl.so.1
+</I>&gt;<i>   NEEDED      libm.so.6
+</I>&gt;<i>   NEEDED      libpthread.so.0
+</I>
+These are the libs I was trying to link statically but have been unsuccessful.
+
+Any ideas would be much appreciated.
+
+Regards,
+
+
+Roderick
+
+
+
+-----Original Message-----
+From: Jon Schlueter [mailto:<A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">jon.schlueter at gmail.com</A>] 
+Sent: Wednesday, May 12, 2010 11:47 AM
+To: Roderick Medina
+Subject: Re: [Gpsd-users] cross compiling
+
+I would agree with Roderick
+
+the actual binary may be in a local directory .libs? created by
+libtool ... if you copy that it should work but I would have to dig
+through the makefile to figure out which actual file it was pointing
+at
+
+the &quot;make install&quot; could be done with a local copy with configuration
+for your host system to see how it works.
+
+Jon
+
+
+On Wed, May 12, 2010 at 12:02 PM, Roderick Medina &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">rmedina at ticom-geo.com</A>&gt; wrote:
+&gt;<i> Is &quot;make install&quot; applicable if I am cross-compiling? I tried copying my gpsd directory to the embedded device after stripping out the source files and it has the following complaints:
+</I>&gt;<i>
+</I>&gt;<i> # ./gpsd
+</I>&gt;<i> cd: 1: can't cd to /home/rmedina/projects/gpsd/svn/GPSD/trunk
+</I>&gt;<i> eval: 1: powerpc-405-linux-gnu-gcc: not found
+</I>&gt;<i>
+</I>&gt;<i> It seems it not only has hard links in it for paths but it also seems to want the compiler again. What is going on here?
+</I>&gt;<i>
+</I>&gt;<i> Also it seems make install tried to install &quot;libgps.la&quot;, &quot; ibgps.so.19.0.0&quot;, &quot; libgpsd.la &quot;,and &quot;libgpsd.so.0.0.0&quot;. Are these the files I want to copy in addition to the executable? I'm sorry if these are rudimentary questions but I'm not finding documentation that addresses this.
+</I>&gt;<i>
+</I>&gt;<i> Thanks,
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i> Roderick
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i> -----Original Message-----
+</I>&gt;<i> From: Jon Schlueter [mailto:<A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">jon.schlueter at gmail.com</A>]
+</I>&gt;<i> Sent: Tuesday, May 11, 2010 6:26 PM
+</I>&gt;<i> To: Roderick Medina
+</I>&gt;<i> Cc: David Severt; Don Weeks; <A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">Gpsd-users at lists.berlios.de</A>
+</I>&gt;<i> Subject: Re: [Gpsd-users] cross compiling
+</I>&gt;<i>
+</I>&gt;<i> you would need gpsd executable and any of the other support tools that
+</I>&gt;<i> would get installed when you ran make install
+</I>&gt;<i>
+</I>&gt;<i> the support tools are more for debugging/extra support if you were
+</I>&gt;<i> only running it on your other system to connect a device up and access
+</I>&gt;<i> it gpsd would be about it.
+</I>&gt;<i>
+</I>&gt;<i> Jon
+</I>&gt;<i>
+</I>&gt;<i> On Tue, May 11, 2010 at 5:25 PM, Roderick Medina &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">rmedina at ticom-geo.com</A>&gt; wrote:
+</I>&gt;&gt;<i> Thanks all. It ended up being the &quot;--host&quot; option (and putting the
+</I>&gt;&gt;<i> location of the cross compiler in my PATH) that allowed me to properly
+</I>&gt;&gt;<i> compile for the remote device.
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> Now I am trying to move the compiled code over in order to test it but I
+</I>&gt;&gt;<i> am running into a disk space constraint on the embedded system. What
+</I>&gt;&gt;<i> subset of files are actually necessary in order to run GPSD? I imagine I
+</I>&gt;&gt;<i> wouldn't need to drag over the source files but what is the basic set of
+</I>&gt;&gt;<i> files needed in order to run GPSD? I tried running the following:
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> ./autogen.sh --host powerpc-405-linux-gnu
+</I>&gt;&gt;<i> ./make
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> Is there be a clean way to get the basic required files to run GPSD? Is
+</I>&gt;&gt;<i> it necessary to run &quot;make install&quot;?
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> Thanks,
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> Roderick
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> -----Original Message-----
+</I>&gt;&gt;<i> From: David Severt [mailto:<A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">severtd at softdevsys.com</A>]
+</I>&gt;&gt;<i> Sent: Tuesday, May 11, 2010 12:46 PM
+</I>&gt;&gt;<i> To: Don Weeks
+</I>&gt;&gt;<i> Cc: Roderick Medina; <A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">Gpsd-users at lists.berlios.de</A>
+</I>&gt;&gt;<i> Subject: Re: [Gpsd-users] cross compiling
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> I cross-compile gpsd for OMAP. &#160;I use the &quot;--host&quot; option to specify the
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> cross-compile toolchain when I run configure. &#160;The configure script will
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> attempt to use a compiler called {host name}-gcc, etc... &#160;I also did a
+</I>&gt;&gt;<i> kludge where I use set C_INCLUDE_PATH, CPATH and LIBRARY_PATH to the
+</I>&gt;&gt;<i> appropriate toolchain directories before I run configure and make. &#160;This
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> was because the compiles were grabbing stuff from the build machine's
+</I>&gt;&gt;<i> tools rather than the cross-compile toolchain, which gave me errors when
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> the OMAP compiler tried to compile some x86 code from an include file.
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> David Severt
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> Don Weeks wrote:
+</I>&gt;&gt;&gt;<i> Is there any possibility of building a compile system out of your
+</I>&gt;&gt;<i> target?
+</I>&gt;&gt;&gt;<i> This is what we resorted too for our Cavium (MIPS) boards.
+</I>&gt;&gt;&gt;<i> &#160; &#160; &#160; &#160; &#160; Don
+</I>&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;<i> On Mon, May 10, 2010 at 11:36 AM, Roderick Medina
+</I>&gt;&gt;<i> &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">rmedina at ticom-geo.com</A>&gt;wrote:
+</I>&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;<i> Hello,
+</I>&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;<i> I am a fairly new user and am having trouble figuring out where/what
+</I>&gt;&gt;<i> to
+</I>&gt;&gt;&gt;&gt;<i> edit in order to get GPSD to use a different gcc executable for
+</I>&gt;&gt;<i> cross
+</I>&gt;&gt;&gt;&gt;<i> compile purposes. I am trying to compile gpsd for a powerpc linux
+</I>&gt;&gt;&gt;&gt;<i> device. I have found references to build_alias and cross compilation
+</I>&gt;&gt;<i> in
+</I>&gt;&gt;&gt;&gt;<i> general but I can't find something that does not appear to be
+</I>&gt;&gt;&gt;&gt;<i> auto-generated by something else. How do I do this cleanly versus
+</I>&gt;&gt;&gt;&gt;<i> editing one of the auto-generated files?
+</I>&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;<i> Thanks,
+</I>&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;<i> Roderick
+</I>&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;<i> _______________________________________________
+</I>&gt;&gt;&gt;&gt;<i> Gpsd-users mailing list
+</I>&gt;&gt;&gt;&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">Gpsd-users at lists.berlios.de</A>
+</I>&gt;&gt;&gt;&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">https://lists.berlios.de/mailman/listinfo/gpsd-users</A>
+</I>&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;<i> _______________________________________________
+</I>&gt;&gt;&gt;<i> Gpsd-users mailing list
+</I>&gt;&gt;&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">Gpsd-users at lists.berlios.de</A>
+</I>&gt;&gt;&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">https://lists.berlios.de/mailman/listinfo/gpsd-users</A>
+</I>&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;<i>
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> _______________________________________________
+</I>&gt;&gt;<i> Gpsd-users mailing list
+</I>&gt;&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">Gpsd-users at lists.berlios.de</A>
+</I>&gt;&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">https://lists.berlios.de/mailman/listinfo/gpsd-users</A>
+</I>&gt;&gt;<i>
+</I>&gt;<i>
+</I>
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	
+	<LI>Next message: <A HREF="004520.html">[Gpsd-users] Using TCP data sources
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#4519">[ date ]</a>
+              <a href="thread.html#4519">[ thread ]</a>
+              <a href="subject.html#4519">[ subject ]</a>
+              <a href="author.html#4519">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

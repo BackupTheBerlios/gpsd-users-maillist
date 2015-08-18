@@ -1,0 +1,104 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] patches to gps.h and libgps.c
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2004-October/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20patches%20to%20gps.h%20and%20libgps.c&In-Reply-To=%3C1097461057.32504.7.camel%40q.sr.unh.edu%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="000094.html">
+   <LINK REL="Next"  HREF="000087.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] patches to gps.h and libgps.c</H1>
+    <B>Robert E. Anderson</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20patches%20to%20gps.h%20and%20libgps.c&In-Reply-To=%3C1097461057.32504.7.camel%40q.sr.unh.edu%3E"
+       TITLE="[Gpsd-users] patches to gps.h and libgps.c">rea at q.sr.unh.edu
+       </A><BR>
+    <I>Mon Oct 11 04:17:37 CEST 2004</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="000094.html">[Gpsd-users] gpsd with royaltek onyx (nmea 3.0) on debian woody
+</A></li>
+        <LI>Next message: <A HREF="000087.html">[Gpsd-users] track information
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#86">[ date ]</a>
+              <a href="thread.html#86">[ thread ]</a>
+              <a href="subject.html#86">[ subject ]</a>
+              <a href="author.html#86">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>I starting some simple waypoint collection routines from scratch using
+gpsd library stubs.  I've found the following two problems that seemed
+easily fixed.
+
+Both of these are against version 2.1 sources.
+
+
+--- gps.h.orig	2004-10-10 17:01:20.983453696 -0400
++++ gps.h	2004-10-10 17:29:43.985558024 -0400
+@@ -1,4 +1,6 @@
+ /* gps.h -- interface of the libgps library */
++#ifndef gps_h
++#  define gps_h 1
+ 
+ #include &lt;sys/types.h&gt;
+ #include &lt;time.h&gt;
+@@ -116,3 +118,5 @@
+ #define DEFAULT_GPSD_PORT	&quot;2947&quot;	/* IANA assignment */
+ 
+ /* gps.h ends here */
++
++#endif /* ifndef gps_h */
+
+
+
+--- libgps.c.orig	2004-10-09 21:25:14.000000000 -0400
++++ libgps.c	2004-10-09 21:25:31.000000000 -0400
+@@ -32,6 +32,7 @@
+     INIT(gpsdata-&gt;latlon_stamp, now);
+     INIT(gpsdata-&gt;altitude_stamp, now);
+     INIT(gpsdata-&gt;track_stamp, now);
++    INIT(gpsdata-&gt;speed_stamp, now);
+     INIT(gpsdata-&gt;status_stamp, now);
+     INIT(gpsdata-&gt;mode_stamp, now);
+     INIT(gpsdata-&gt;fix_quality_stamp, now);
+
+-- 
+--------------------------------------------------------------
+ Robert E. Anderson  		 	email: <A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">rea at sr.unh.edu</A>
+ Systems Programmer			phone: (603) 862-3489
+ UNH Research Computing Center		  fax: (603) 862-1761
+--------------------------------------------------------------
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="000094.html">[Gpsd-users] gpsd with royaltek onyx (nmea 3.0) on debian woody
+</A></li>
+	<LI>Next message: <A HREF="000087.html">[Gpsd-users] track information
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#86">[ date ]</a>
+              <a href="thread.html#86">[ thread ]</a>
+              <a href="subject.html#86">[ subject ]</a>
+              <a href="author.html#86">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

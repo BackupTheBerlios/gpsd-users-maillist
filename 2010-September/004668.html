@@ -1,0 +1,94 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] gps_logger
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2010-September/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20gps_logger&In-Reply-To=%3C20100913094018.GA6750%40fyodor%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="004667.html">
+   <LINK REL="Next"  HREF="004669.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] gps_logger</H1>
+    <B>Carlos Rivera</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20gps_logger&In-Reply-To=%3C20100913094018.GA6750%40fyodor%3E"
+       TITLE="[Gpsd-users] gps_logger">crivera at envitel.com
+       </A><BR>
+    <I>Mon Sep 13 11:40:18 CEST 2010</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="004667.html">[Gpsd-users] Single (or occasional) fixes - am I	missing	something?
+</A></li>
+        <LI>Next message: <A HREF="004669.html">[Gpsd-users] Java Client
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#4668">[ date ]</a>
+              <a href="thread.html#4668">[ thread ]</a>
+              <a href="subject.html#4668">[ subject ]</a>
+              <a href="author.html#4668">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hello, 
+    I needed an application to log gps data so that it can be retrieved
+later to determine the trajectory of the machine. Since I could
+not find anything appropiate I wrote a small tool in python to do the job. 
+I have posted it at: <A HREF="http://superkaos.org/gps_logger/">http://superkaos.org/gps_logger/</A>
+It has the following features:
+
+    * It uses GNU autotools.
+
+    * By default It runs as a daemon. It contains an upstart script
+      that gets installed in ${sysconfdir}/init  (i.e. typically
+      /etc/init).
+
+    * The logs are stored at ${localstatedir}/log/gps (i.e. 
+      typically /var/log/gps).
+
+    * Old logs are deleted after a certain amount of time controlled
+      by a variable in the code.
+
+    * The data is indexed by utc timestamp.
+
+    * There is also a small library called gps_logger_query.py to access
+      the logs and it has a function to connect to gpsd directly and 
+      stream the data back to the caller, the idea is to use this library 
+      to access the stuff via http, both logs and real time data, but 
+      that's not done yet.
+
+Anyway, I just wanted to let you know that the code is freely
+available for anyone who might be interested.
+
+cheers,
+
+Carlos.
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="004667.html">[Gpsd-users] Single (or occasional) fixes - am I	missing	something?
+</A></li>
+	<LI>Next message: <A HREF="004669.html">[Gpsd-users] Java Client
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#4668">[ date ]</a>
+              <a href="thread.html#4668">[ thread ]</a>
+              <a href="subject.html#4668">[ subject ]</a>
+              <a href="author.html#4668">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

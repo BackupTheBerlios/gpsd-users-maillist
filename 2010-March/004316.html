@@ -1,0 +1,143 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] Loosing USB GPS on sleep/wakeup cycle.
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2010-March/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Loosing%20USB%20GPS%20on%20sleep/wakeup%20cycle.&In-Reply-To=%3C20100327135536.GA9022%40thyrsus.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="004315.html">
+   <LINK REL="Next"  HREF="004326.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] Loosing USB GPS on sleep/wakeup cycle.</H1>
+    <B>Eric Raymond</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Loosing%20USB%20GPS%20on%20sleep/wakeup%20cycle.&In-Reply-To=%3C20100327135536.GA9022%40thyrsus.com%3E"
+       TITLE="[Gpsd-users] Loosing USB GPS on sleep/wakeup cycle.">esr at thyrsus.com
+       </A><BR>
+    <I>Sat Mar 27 14:55:36 CET 2010</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="004315.html">[Gpsd-users] Waiting data is the same as already read before
+</A></li>
+        <LI>Next message: <A HREF="004326.html">[Gpsd-users] ntpd accuracy of pcmcia gps cards
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#4316">[ date ]</a>
+              <a href="thread.html#4316">[ thread ]</a>
+              <a href="subject.html#4316">[ subject ]</a>
+              <a href="author.html#4316">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Fulup Ar Foll &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">fulup-gpsd at yopmail.com</A>&gt;:
+&gt;<i> When doing sleep/wake up cycle gpsd/openvpn will loose any USB attached
+</I>&gt;<i> GPS. This problem is coming neither from &quot;gpsd&quot; neither from &quot;opencpn&quot;, it
+</I>&gt;<i> is directly related to how Linux handle usbserial devices name.
+</I>&gt;<i> 
+</I>&gt;<i> Our Problem: In default Linux configuration usbserial device name do not
+</I>&gt;<i> depend on &quot;where&quot; you plug the USB/serial adaptator, but on &quot;when&quot; you plug
+</I>&gt;<i> it (1st device gets /dev/ttyUSB0, 2nd /dev/ttyUSB1, ...) Unfortunately even
+</I>&gt;<i> if your GPS/serial-adaptor is unique, after a sleep/wakeup cycle Linux will
+</I>&gt;<i> find /dev/ttyUSB0 busy, and will take next available device name ( ex:
+</I>&gt;<i> /dev/ttyUSB1) .
+</I>&gt;<i> 
+</I>&gt;<i> Linux logic: While Linux algorithm does not make us happy, it is
+</I>&gt;<i> nevertheless logical. Because opencpn/gpsd are not aware of the
+</I>&gt;<i> sleep/wakeup cycle, they keep their device open (ex: /dev/ttyUSB0), but in
+</I>&gt;<i> order to save energy Linux cut down any hot pluggable devices at sleep
+</I>&gt;<i> time, and recreated them later at wakeup time. Unfortunately when Linux try
+</I>&gt;<i> to recreate /dev/ttyUSB0 it find it busy (hoops !! opencpn/gpsd still use
+</I>&gt;<i> it), as a result it takes next available slot (probably /dev/ttyUSB1). This
+</I>&gt;<i> device name change will obviously prevent opencpn/gpsd to restart, this
+</I>&gt;<i> because they are configured with static device name, and are very unhappy
+</I>&gt;<i> when device name change dynamically .
+</I>&gt;<i> 
+</I>&gt;<i> Fulup solution: Because opencpn/gpsd operate with fix device name, the only
+</I>&gt;<i> working option is to provide a fake static name (ex: /dev/gps-usb). This
+</I>&gt;<i> fake name should be a symbolic link on the dynamic device name. This imply
+</I>&gt;<i> to automatically change the link, each time we plug/unplug the GPS or
+</I>&gt;<i> sleep/wakeup our laptop.
+</I>&gt;<i> As hot pluggable devices are handle by udev, we have to add a custom rule
+</I>&gt;<i> into udev to make sure that each time our GPS/serial-adapter is hot-plug
+</I>&gt;<i> then udev recreates our fake device name. In order to do so
+</I>&gt;<i> 
+</I>&gt;<i> The solution is neither simple, neither complex but require super user
+</I>&gt;<i> acces to your laptop .
+</I>&gt;<i> 
+</I>&gt;<i>     * download
+</I>&gt;<i> <A HREF="http://www.fridu.org/images/opencpn/70-persistent-usb-gps.rules">http://www.fridu.org/images/opencpn/70-persistent-usb-gps.rules</A>
+</I>&gt;<i>     * update it with your USB device vendor/product ID
+</I>&gt;<i>     * choose a fix or path dependant name
+</I>&gt;<i>     * restart udev (/etc/init.d/udev reload)
+</I>&gt;<i>     * plug/unplug your GPS/serial-adapter
+</I>&gt;<i>     * check your config works &quot;ls /dev/gps*&quot;
+</I>&gt;<i>     * update gpsd/opencpn with your choosen device name
+</I>&gt;<i>     * restart opencpn/gpsd
+</I>&gt;<i> 
+</I>&gt;<i> Modern Laptop don't have any more physical RS232 and most of us use
+</I>&gt;<i> usb/serial converters. While default Linux strategy is fine for a desktop,
+</I>&gt;<i> it is not suitable for a boat where in order to save energy you want to
+</I>&gt;<i> sleep/wake functionally.
+</I>&gt;<i> 
+</I>&gt;<i> I double check with wireshark (my prfered network sniffer) it works like a
+</I>&gt;<i> charme with opencpn connected though gpsd. As my GPS (very cheap SIRF-III)
+</I>&gt;<i> does not support NMEA, I was not able to test this with a direct /dev/xxx
+</I>&gt;<i> access from opencpn.
+</I>
+I have tried to write a description of this problem that is not specific
+to opencpn, for the FAQ.  Is this correct?
+
+&lt;h1 id='sleep'&gt;Why does my GPS get lost when I sleep/wake my laptop?&lt;/h1&gt;
+
+&lt;p&gt;This is not a GPSD problem, but a result of the way Linux handles
+USB serial devices.  In a default Linux configuration, USB serial
+device name do not depend on which physical port you plug the
+USB/serial adaptor, but on what order you plug devices in: 1st device
+gets /dev/ttyUSB0, 2nd gets /dev/ttyUSB1, etc....
+
+&lt;p&gt;This collides with what happens during a suspend/resume. If you
+suspensd while &lt;tt&gt;gpsd&lt;/tt&gt; has a device active, it will hold the
+device open while your laptop is asleep - but, meanwhile, the suspend
+logic is shutting down hotpluggable devices to be recreated at
+resume time. On resume, Linux will see that the old device is open
+&lt;em&gt;and recreate one with a different name&lt;/em&gt;, leaving &lt;tt&gt;gpsd&lt;/tt&gt;
+kooking at a bad file descriptor.&lt;/p&gt;
+
+&lt;p&gt;There is a solution to this problem: create a stable gps-usb device
+that is actually a symlink which gets modified by hotplug events, and
+give &lt;tt&gt;gpsd&lt;/tt&gt; that device when you invoke it.  You'll need &lt;a
+href=&quot;70-persistent-usb-gps.rules&quot;&gt;these replacement udev rules&lt;/a&gt;,
+and the experience required to patch them so the vendor ID in the last
+one matches your GPS hardware (look in your lsusb output).
+-- 
+		&lt;a href=&quot;<A HREF="http://www.catb.org/~esr/">http://www.catb.org/~esr/</A>&quot;&gt;Eric S. Raymond&lt;/a&gt;
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="004315.html">[Gpsd-users] Waiting data is the same as already read before
+</A></li>
+	<LI>Next message: <A HREF="004326.html">[Gpsd-users] ntpd accuracy of pcmcia gps cards
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#4316">[ date ]</a>
+              <a href="thread.html#4316">[ thread ]</a>
+              <a href="subject.html#4316">[ subject ]</a>
+              <a href="author.html#4316">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

@@ -1,0 +1,207 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] Fw:  bluetooth blues
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2009-November/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Fw%3A%20%20bluetooth%20blues&In-Reply-To=%3C20091126114340.0e5f8060%40dragon.localdomain%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="004087.html">
+   <LINK REL="Next"  HREF="004090.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] Fw:  bluetooth blues</H1>
+    <B>Charles Curley</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Fw%3A%20%20bluetooth%20blues&In-Reply-To=%3C20091126114340.0e5f8060%40dragon.localdomain%3E"
+       TITLE="[Gpsd-users] Fw:  bluetooth blues">charlescurley at charlescurley.com
+       </A><BR>
+    <I>Thu Nov 26 19:43:40 CET 2009</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="004087.html">[Gpsd-users] gpspipe question
+</A></li>
+        <LI>Next message: <A HREF="004090.html">[Gpsd-users] bluetooth blues
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#4089">[ date ]</a>
+              <a href="thread.html#4089">[ thread ]</a>
+              <a href="subject.html#4089">[ subject ]</a>
+              <a href="author.html#4089">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Forwarded because Jos neglected to copy the list.
+
+Begin forwarded message:
+
+Date: Thu, 26 Nov 2009 17:06:55 +0100
+From: Jos Meijer &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">josessex at gmail.com</A>&gt;
+To: Charles Curley &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">charlescurley at charlescurley.com</A>&gt;
+Subject: Re: [Gpsd-users] bluetooth blues
+
+
+Charles Curley wrote:
+
+To make a short story long:
+
+it was indeed init.d I meant, and the device should not be defined
+there but in etc/devices/gpsd
+(As I am, like you, using Ubuntu 9.10)
+I did change etc/default/gpsd with dkgp (sudo)  and boldly corrected a 
+type error I made later with the text editor of MC.
+Yet, after some re-initializing, stopping and re-starting of gpsd I 
+suddently had a response in telnet,
+xgps shows sats and positions and (main goal) GPSDrive finally moves me 
+from near Russia to Dunkerque (fr).
+
+Any of you developer-guys reading along with this:
+I would love to shape this happy end into a complete story for ubuntu 
+users but how and where should I post it?
+&gt;&gt;<i> hello,
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> in my struggle to get rid of Bill Gates I tried to get my GPS
+</I>&gt;&gt;<i> working. I neatly followed the instructions about installing a
+</I>&gt;&gt;<i> bluetooth gps and it went well untill I got to the part about adding
+</I>&gt;&gt;<i> gps_device to gpsd in init_d.
+</I>&gt;&gt;<i>     
+</I>&gt;<i>
+</I>&gt;<i> Did you mean /etc/init.d?
+</I>&gt;<i>
+</I>&gt;<i>   
+</I>&gt;&gt;<i> The howto assumes there is already a #GPS_DEV=&quot;/dev/ttyS3&quot; or so to
+</I>&gt;&gt;<i> be found which can be uncommented and altered to the correct
+</I>&gt;&gt;<i> GPS_DEV=&quot;/dev/rfcomm0&quot; .
+</I>&gt;&gt;<i>     
+</I>&gt;<i>
+</I>&gt;<i> I take it you mean this document: <A HREF="http://gpsd.berlios.de/bt.html">http://gpsd.berlios.de/bt.html</A>
+</I>&gt;<i>
+</I>&gt;<i>   
+</I>&gt;&gt;<i> My gpsd in init_d has no such entry, so I put it where I thought it
+</I>&gt;&gt;<i> would be at the right place, but I should confess that that is in my
+</I>&gt;&gt;<i> case merely guessing.
+</I>&gt;&gt;<i>     
+</I>&gt;<i>
+</I>&gt;<i> You may not need to modify anything, as gpsd will try several likely
+</I>&gt;<i> suspects. In case you do:
+</I>&gt;<i>
+</I>&gt;<i> I guess you are using either Debian or Ubuntu, partly because your
+</I>&gt;<i> script looks a lot like mine on Ubuntu 9.10. In that case, you want to
+</I>&gt;<i> modify /etc/default/gpsd, not /etc/init.d/gpsd. And the way to do that
+</I>&gt;<i> is with the command line tool `dpkg-reconfigure gpsd'. You should do
+</I>&gt;<i> that as root, so either log in as root however you usually do it (a
+</I>&gt;<i> typical Debian route) or prefix that with `sudo' (the Ubuntu route).
+</I>&gt;<i>
+</I>&gt;<i> The Debian/Ubuntu script doesn't use GPS_DEV, it uses DEVICES to
+</I>&gt;<i> specify the device. I suspect the howto is based on a different Linux
+</I>&gt;<i> distribution.
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i>   
+</I>&gt;&gt;<i> Anyway, as I go on with the procedure and start telnet, it reports
+</I>&gt;&gt;<i> nothing and after a while it says &quot;connection closed by foreign
+</I>&gt;&gt;<i> host&quot;. 
+</I>&gt;<i>
+</I>&gt;<i> Right, a timeout is normal. Once you get a connection, use the &quot;r&quot;
+</I>&gt;<i> command to see gps data. Using a gps receiver which is running but has
+</I>&gt;<i> no fix, I see:
+</I>&gt;<i>
+</I>&gt;<i> --------------------------------------------------
+</I>&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">ccurley at dragon</A>:~$ telnet freeman 2947
+</I>&gt;<i> Trying 192.168.1.31...
+</I>&gt;<i> Connected to freeman.localdomain.
+</I>&gt;<i> Escape character is '^]'.
+</I>&gt;<i> r
+</I>&gt;<i> GPSD,R=1
+</I>&gt;<i> $GPRMC,143646,V,18000.0000,N,00000.0000,W,0.0000,0.000,261109,,*1E
+</I>&gt;<i> $GPGSA,A,1,,,,,,,,,,,,,,,,*32
+</I>&gt;<i> $GPRMC,143647,V,18000.0000,N,00000.0000,W,0.0000,0.000,261109,,*1F
+</I>&gt;<i> $GPGSA,A,1,,,,,,,,,,,,,,,,*32
+</I>&gt;<i> $GPRMC,143648,V,18000.0000,N,00000.0000,W,0.0000,0.000,261109,,*10
+</I>&gt;<i> $GPGSA,A,1,,,,,,,,,,,,,,,,*32
+</I>&gt;<i> r
+</I>&gt;<i> GPSD,R=0
+</I>&gt;<i> ^]
+</I>&gt;<i>
+</I>&gt;<i> telnet&gt; quit
+</I>&gt;<i> Connection closed.
+</I>&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">ccurley at dragon</A>:~$ 
+</I>&gt;<i> --------------------------------------------------
+</I>&gt;<i>
+</I>&gt;<i> I provided the two &quot;r&quot; lines. Also, you will probably want to use
+</I>&gt;<i> &quot;telnet localhost 2947&quot; rather than what I typed.
+</I>&gt;<i>
+</I>&gt;<i>   
+</I>&gt;&gt;<i> Anyone has any clue how I should go on?    kind regards  Jos Meijer
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> init_d/gpsd looks like:
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> #!/bin/sh
+</I>&gt;&gt;<i> #
+</I>&gt;&gt;<i> #    Authors: Tilman Koschnick &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">til at subnetz.org</A>&gt;
+</I>&gt;&gt;<i> #                Bernd Zeimetz &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">bzed at debian.org</A>&gt;
+</I>&gt;&gt;<i> #
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i>     
+</I>&gt;<i>
+</I>&gt;<i> ...
+</I>&gt;<i>
+</I>&gt;<i>   
+</I>&gt;&gt;<i> # include gpsd defaults
+</I>&gt;&gt;<i> if [ -f /etc/default/gpsd ] ; then
+</I>&gt;&gt;<i>     . /etc/default/gpsd
+</I>&gt;&gt;<i>     
+</I>&gt;<i>
+</I>&gt;<i> This is where /etc/init.d/gpsd reads in its parameters
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i>   
+</I>&gt;&gt;<i> else
+</I>&gt;&gt;<i>     log_failure_msg &quot;gpsd: error: Cannot find /etc/default/gpsd.&quot;
+</I>&gt;&gt;<i>     exit 1
+</I>&gt;&gt;<i> fi
+</I>&gt;&gt;<i>     
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i>   
+</I>
+
+
+-- 
+
+Charles Curley                  /&quot;\    ASCII Ribbon Campaign
+Looking for fine software       \ /    Respect for open standards
+and/or writing?                  X     No HTML/RTF in email
+<A HREF="http://www.charlescurley.com">http://www.charlescurley.com</A>    / \    No M$ Word docs in email
+
+Key fingerprint = CE5C 6645 A45A 64E4 94C0  809C FFF6 4C48 4ECD DFDB
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="004087.html">[Gpsd-users] gpspipe question
+</A></li>
+	<LI>Next message: <A HREF="004090.html">[Gpsd-users] bluetooth blues
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#4089">[ date ]</a>
+              <a href="thread.html#4089">[ thread ]</a>
+              <a href="subject.html#4089">[ subject ]</a>
+              <a href="author.html#4089">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

@@ -1,0 +1,95 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] ZX4125 module and 1PPS
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2010-March/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20ZX4125%20module%20and%201PPS&In-Reply-To=%3CD0136956FE684741AC35D651CFE05508%40asus%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="004279.html">
+   <LINK REL="Next"  HREF="004282.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] ZX4125 module and 1PPS</H1>
+    <B>Greger Gimseus</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20ZX4125%20module%20and%201PPS&In-Reply-To=%3CD0136956FE684741AC35D651CFE05508%40asus%3E"
+       TITLE="[Gpsd-users] ZX4125 module and 1PPS">greger at rfelektronik.se
+       </A><BR>
+    <I>Fri Mar 19 13:46:06 CET 2010</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="004279.html">[Gpsd-users] Incompatibility between gpsd and Fedora 12
+</A></li>
+        <LI>Next message: <A HREF="004282.html">[Gpsd-users] ZX4125 module and 1PPS
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#4280">[ date ]</a>
+              <a href="thread.html#4280">[ thread ]</a>
+              <a href="subject.html#4280">[ subject ]</a>
+              <a href="author.html#4280">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>I have gpsd/ntpd working nicely so it's not a software question actually.
+However that is with a Sirf-3 usb-device lacking 1PPS...
+
+Then I remembered, a few years back I got this  ZX4125, 16-channel, self-contained GPS receiver module as a hardware sample
+though I cannot for my life remember from which company...
+It's got Nemerix chipset, RS232(TTL) output, 1PPS, and built-on patch antenna, all on a 1&quot; x 1&quot; x 0.34&quot; (25 x 25 x 8mm) area.
+I hooked it up to a MAX232 but it never really spoke to the computer properly, then I just forgot about the board.
+I'm sure I just missed something and that the module is fine... say the module is fine and I get it working:
+
+1) Does it truely support 1PPS necessary to get it to work?
+2) How much does the baudrate affect the result?
+3) Anything else I would need to think of when interfacing it to the rs232 port?
+4) Anything else I would need to think of - at all? :)
+
+Cheers!
+//Greg.
+
+
+<A HREF="http://rfelektronik.se/manuals/Datasheets/ZX4125Manual.pdf">http://rfelektronik.se/manuals/Datasheets/ZX4125Manual.pdf</A>
+
+2.1.8 Serial Port 
+Electrical interface one full duplex serial communication, TTL interface 
+Protocol message NMEA-0183, version 3.0 optional. 
+Default NMEA GGA, GSA, GSV, RMC and VTC. 9600 baud rate, 
+8 bits data, 1 start, 1 stop, no parity. 
+(GSA &amp; GSV is 3sec output 1msg, option baud rate: 4800,19200, 38400) 
+
+2.1.9 Time-1PPS Pulse (optional) 
+Level TTL 
+Pulse duration 100ms 
+Time reference at the pulse positive edge 
+Measurements Aligned to GPS second, +-1 microsecond 
+
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="004279.html">[Gpsd-users] Incompatibility between gpsd and Fedora 12
+</A></li>
+	<LI>Next message: <A HREF="004282.html">[Gpsd-users] ZX4125 module and 1PPS
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#4280">[ date ]</a>
+              <a href="thread.html#4280">[ thread ]</a>
+              <a href="subject.html#4280">[ subject ]</a>
+              <a href="author.html#4280">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

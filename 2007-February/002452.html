@@ -1,0 +1,138 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] Serial Earthmate
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2007-February/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Serial%20Earthmate&In-Reply-To=%3C91981b3e0702011850n3a117979p380136f78c71769a%40mail.gmail.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="002451.html">
+   <LINK REL="Next"  HREF="002453.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] Serial Earthmate</H1>
+    <B>Chris Kuethe</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Serial%20Earthmate&In-Reply-To=%3C91981b3e0702011850n3a117979p380136f78c71769a%40mail.gmail.com%3E"
+       TITLE="[Gpsd-users] Serial Earthmate">chris.kuethe at gmail.com
+       </A><BR>
+    <I>Fri Feb  2 03:50:37 CET 2007</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="002451.html">[Gpsd-users] Serial Earthmate
+</A></li>
+        <LI>Next message: <A HREF="002453.html">[Gpsd-users] 2.34
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2452">[ date ]</a>
+              <a href="thread.html#2452">[ thread ]</a>
+              <a href="subject.html#2452">[ subject ]</a>
+              <a href="author.html#2452">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>send me the output of &quot;gpsd -n -N -D8 /dev/cuaa0&quot;  .... it'll be
+really really noisy, but i want to see the state machine output.
+
+CK
+
+On 2/1/07, Tuc at T-B-O-H.NET &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">ml at t-b-o-h.net</A>&gt; wrote:
+&gt;<i> Anything I can do to help with debugging? I'd think just X-over wiring
+</I>&gt;<i> to another computer typing &quot;EARTHA&quot; and hitting &lt;ENTER&gt; would be a
+</I>&gt;<i> start. It sorta looks like it did get the EARTHA back, but maybe it
+</I>&gt;<i> dropped DTR or something to make it start the EARTHA again? If I
+</I>&gt;<i> was a C/C++ programmer I'd offer to look into it myself, but I'm more
+</I>&gt;<i> Unix Adminish... Perl, awk, sed, etc.
+</I>&gt;<i>
+</I>&gt;<i>                 Thanks, Tuc
+</I>&gt;<i>
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; Presumably the &quot;EARTHA&quot; detection got broken, gpsd needs to echo EARTHA
+</I>&gt;<i> &gt; back and them decode the rockwell binary protocol, but my Earthmate died
+</I>&gt;<i> &gt; years ago
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt;   On Thu, 1 Feb 2007, Tuc at T-B-O-H.NET wrote:
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; &gt; Hi,
+</I>&gt;<i> &gt; &gt;
+</I>&gt;<i> &gt; &gt;     Anyone still using these? I'm not getting mine to work
+</I>&gt;<i> &gt; &gt; with gpsd. I start gpsd and telnet :
+</I>&gt;<i> &gt; &gt;
+</I>&gt;<i> &gt; &gt; himinbjorg# gpsd /dev/cuaa0
+</I>&gt;<i> &gt; &gt; himinbjorg# telnet localhost 2947
+</I>&gt;<i> &gt; &gt; Trying ::1...
+</I>&gt;<i> &gt; &gt; telnet: connect to address ::1: Connection refused
+</I>&gt;<i> &gt; &gt; Trying 127.0.0.1...
+</I>&gt;<i> &gt; &gt; Connected to localhost.tucs-beachin-obx-house.com.
+</I>&gt;<i> &gt; &gt; Escape character is '^]'.
+</I>&gt;<i> &gt; &gt; f
+</I>&gt;<i> &gt; &gt; GPSD,F=?
+</I>&gt;<i> &gt; &gt;
+</I>&gt;<i> &gt; &gt;        Not sure why it didn't get the port, but I set it and check again:
+</I>&gt;<i> &gt; &gt;
+</I>&gt;<i> &gt; &gt; f=/dev/cuaa0
+</I>&gt;<i> &gt; &gt; GPSD,F=/dev/cuaa0
+</I>&gt;<i> &gt; &gt; f
+</I>&gt;<i> &gt; &gt; GPSD,F=/dev/cuaa0
+</I>&gt;<i> &gt; &gt;
+</I>&gt;<i> &gt; &gt;        Ok, now I put into &quot;wr&quot;
+</I>&gt;<i> &gt; &gt;
+</I>&gt;<i> &gt; &gt; wr
+</I>&gt;<i> &gt; &gt; GPSD,X=1170217284.016473
+</I>&gt;<i> &gt; &gt; GPSD,W=1,R=1
+</I>&gt;<i> &gt; &gt; $GPRMC,235948,V,4045.8399,N,07430.0682,W,0.0000,0.000,280697,,*29
+</I>&gt;<i> &gt; &gt; GPSD,O=?
+</I>&gt;<i> &gt; &gt; GPSD,Y=?
+</I>&gt;<i> &gt; &gt; EARTHAEARTHAEARTHAEARTHAEARTHAEARTHAEARTHAEARTHAEARTHAEARTHAEARTHAEARTHAEARTHAEA
+</I>&gt;<i> &gt; &gt; RTHAEARTHAEARTHA
+</I>&gt;<i> &gt; &gt;
+</I>&gt;<i> &gt; &gt;        and it just keeps with the &quot;EARTHA&quot;. Shouldn't it be doing something
+</I>&gt;<i> &gt; &gt; else, more of the $ type lines?
+</I>&gt;<i> &gt; &gt;
+</I>&gt;<i> &gt; &gt;                        Thanks, Tuc
+</I>&gt;<i> &gt; &gt;
+</I>&gt;<i> &gt; &gt;
+</I>&gt;<i> &gt; &gt; _______________________________________________
+</I>&gt;<i> &gt; &gt; Gpsd-users mailing list
+</I>&gt;<i> &gt; &gt; <A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">Gpsd-users at lists.berlios.de</A>
+</I>&gt;<i> &gt; &gt; <A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">https://lists.berlios.de/mailman/listinfo/gpsd-users</A>
+</I>&gt;<i> &gt; &gt;
+</I>&gt;<i> &gt;
+</I>&gt;<i>
+</I>&gt;<i> _______________________________________________
+</I>&gt;<i> Gpsd-users mailing list
+</I>&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">Gpsd-users at lists.berlios.de</A>
+</I>&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">https://lists.berlios.de/mailman/listinfo/gpsd-users</A>
+</I>&gt;<i>
+</I>
+
+-- 
+GDB has a 'break' feature; why doesn't it have 'fix' too?
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="002451.html">[Gpsd-users] Serial Earthmate
+</A></li>
+	<LI>Next message: <A HREF="002453.html">[Gpsd-users] 2.34
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2452">[ date ]</a>
+              <a href="thread.html#2452">[ thread ]</a>
+              <a href="subject.html#2452">[ subject ]</a>
+              <a href="author.html#2452">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

@@ -1,0 +1,216 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] gpsd runs at 9600 baud only
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2005-October/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20gpsd%20runs%20at%209600%20baud%20only&In-Reply-To=%3C436146C7.4060508%40them.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="001085.html">
+   <LINK REL="Next"  HREF="001087.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] gpsd runs at 9600 baud only</H1>
+    <B>David I S Mandala</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20gpsd%20runs%20at%209600%20baud%20only&In-Reply-To=%3C436146C7.4060508%40them.com%3E"
+       TITLE="[Gpsd-users] gpsd runs at 9600 baud only">davidm at them.com
+       </A><BR>
+    <I>Thu Oct 27 23:29:43 CEST 2005</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="001085.html">[Gpsd-users] gpsd runs at 9600 baud only
+</A></li>
+        <LI>Next message: <A HREF="001087.html">[Gpsd-users] gpsd runs at 9600 baud only
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1086">[ date ]</a>
+              <a href="thread.html#1086">[ thread ]</a>
+              <a href="subject.html#1086">[ subject ]</a>
+              <a href="author.html#1086">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Gary,
+
+It's been my experience that zero-config is a dream and I've never seen 
+it work in the real world 100%. Certainly the current gpsd fails to auto 
+config the serial speed correctly and detection of gps type for some 
+gps's. Given that I prefer a smaller simpler binary that drops the auto 
+config stuff in favor of a simpler binary that can be told what to do 
+correctly the first time.
+
+As I recall the UNIX way was is simpler binarys that work as opposed to 
+complex binarys that work most of the time and fail sometimes. I can go 
+with use stty to set the port if all of the auto-detection serial stuff 
+was removed, then the binary is simpler, smaller and more reliable.
+
+Cheers,
+
+David
+
+Gary E. Miller wrote:
+&gt;<i> -----BEGIN PGP SIGNED MESSAGE-----
+</I>&gt;<i> Hash: SHA1
+</I>&gt;<i> 
+</I>&gt;<i> Yo David!
+</I>&gt;<i> 
+</I>&gt;<i> I thought the autobaud had all been handled.  Guess not.  Eric is the
+</I>&gt;<i> guy that really wants zero-config so I hope he figures it out.  Since
+</I>&gt;<i> he has a &quot;failing&quot; unit I expect that he will.
+</I>&gt;<i> 
+</I>&gt;<i> I prefer the &quot;unix way&quot;, if there is a standard way to do it then why
+</I>&gt;<i> add an option to another tool?  I just use &quot;stty 19200 raw &lt;/dev/ttyS0&quot;
+</I>&gt;<i> and then gpsd will fir up quickly for me.
+</I>&gt;<i> 
+</I>&gt;<i> RGDS
+</I>&gt;<i> GARY
+</I>&gt;<i> - ---------------------------------------------------------------------------
+</I>&gt;<i> Gary E. Miller Rellim 20340 Empire Blvd, Suite E-3, Bend, OR 97701
+</I>&gt;<i> 	<A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">gem at rellim.com</A>  Tel:+1(541)382-8588 Fax: +1(541)382-8676
+</I>&gt;<i> 
+</I>&gt;<i> On Thu, 27 Oct 2005, David I S Mandala wrote:
+</I>&gt;<i> 
+</I>&gt;&gt;<i>No, it actually will not depending upon which gps you have hooked up. I've
+</I>&gt;&gt;<i>found that the only way to get gpsd to work correctly is to use /bin/stty -F
+</I>&gt;&gt;<i>port 4800 before invoking gpsd.
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i>It would be much better if the command line option still existed but alas that
+</I>&gt;&gt;<i>is gone. Eric now has one of these gps's that cause this issue, but there is
+</I>&gt;&gt;<i>more then once kind of gps that exhibit this problem.
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i>Cheers,
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i>David
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i>Gary E. Miller wrote:
+</I>&gt;&gt;&gt;<i>-----BEGIN PGP SIGNED MESSAGE-----
+</I>&gt;&gt;&gt;<i>Hash: SHA1
+</I>&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;<i>Yo Richard!
+</I>&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;<i>gpsd will autobaud to the correct speed, it just takes a while.  You should
+</I>&gt;&gt;&gt;<i>see this process happening with the dbugging ouput you are using.
+</I>&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;<i>I think gpsd tries the current port speed first, so use stty to set it
+</I>&gt;&gt;&gt;<i>correctly to speed up start up:
+</I>&gt;&gt;&gt;<i>	stty 4800 raw &lt; /dev/ttyUSB0
+</I>&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;<i>I note one issue, since you are trying to force the tty to use, you
+</I>&gt;&gt;&gt;<i>should try this command line instead:
+</I>&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;<i>	 gpsd -NnD 2 -p /dev/ttyUSB0
+</I>&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;<i>RGDS
+</I>&gt;&gt;&gt;<i>GARY
+</I>&gt;&gt;&gt;<i>-
+</I>&gt;&gt;&gt;<i>---------------------------------------------------------------------------
+</I>&gt;&gt;&gt;<i>Gary E. Miller Rellim 20340 Empire Blvd, Suite E-3, Bend, OR 97701
+</I>&gt;&gt;&gt;<i>	<A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">gem at rellim.com</A>  Tel:+1(541)382-8588 Fax: +1(541)382-8676
+</I>&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;<i>On Thu, 27 Oct 2005, Richard Pickett wrote:
+</I>&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;<i>Date: Thu, 27 Oct 2005 10:28:43 -0500
+</I>&gt;&gt;&gt;&gt;<i>From: Richard Pickett &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">Richard.Pickett at csrtechnologies.com</A>&gt;
+</I>&gt;&gt;&gt;&gt;<i>To: <A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">gpsd-users at lists.berlios.de</A>
+</I>&gt;&gt;&gt;&gt;<i>Subject: [Gpsd-users] gpsd runs at 9600 baud only
+</I>&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;<i>gpsd 2.30
+</I>&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;<i>I do:
+</I>&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;<i>gpsd -NnD 2 /dev/ttyUSB0
+</I>&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;<i>and it automatically runs at 9600, but the garmin unit I have runs at
+</I>&gt;&gt;&gt;&gt;<i>4800.
+</I>&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;<i>When I fire up kismet_server it says it connects to the gpsd, but it
+</I>&gt;&gt;&gt;&gt;<i>never gets coordinates, and I suspect this is the reason why.
+</I>&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;<i>I know my unit works because I've used gpsdrive and setup gpsd from in
+</I>&gt;&gt;&gt;&gt;<i>there to run at 4800 and it all works fine.
+</I>&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;<i>So how can I tell gpsd to run at 4800? There used to be the old switch
+</I>&gt;&gt;&gt;&gt;<i>&quot;-s&quot; aybe it was a different gpsd), but that seems to be gone from this
+</I>&gt;&gt;&gt;&gt;<i>version.
+</I>&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;<i>Thanks for your help!
+</I>&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;<i>&lt;<A HREF="http://www.csrtechnologies.com/">http://www.csrtechnologies.com/</A>&gt; CSR Technologies .com Logo
+</I>&gt;&gt;&gt;&gt;<i>&lt;<A HREF="http://www.csrtechnologies.com/">http://www.csrtechnologies.com/</A>&gt;
+</I>&gt;&gt;&gt;&gt;<i>&lt;<A HREF="http://www.csrtechnologies.com/">http://www.csrtechnologies.com/</A>&gt;  &lt;<A HREF="http://www.csrtechnologies.com/">http://www.csrtechnologies.com/</A>&gt;
+</I>&gt;&gt;&gt;&gt;<i>Richard W. Pickett, Jr.
+</I>&gt;&gt;&gt;&gt;<i>President, CSR Technologies .com, Inc.
+</I>&gt;&gt;&gt;&gt;<i>&lt;mailto:<A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">Richard.Pickett at CSRTechnologies.com</A>&gt;
+</I>&gt;&gt;&gt;&gt;<i><A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">Richard.Pickett at CSRTechnologies.com</A>
+</I>&gt;&gt;&gt;&gt;<i>Office - (270) 746-0324
+</I>&gt;&gt;&gt;&gt;<i>Cell    - (270) 303-9154
+</I>&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;<i>-----BEGIN PGP SIGNATURE-----
+</I>&gt;&gt;&gt;<i>Version: GnuPG v1.4.1 (GNU/Linux)
+</I>&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;<i>iD8DBQFDYSf18KZibdeR3qURAs86AKCcjAsMVAoslqmnF0wtpBcv/mpuCgCgq+ge
+</I>&gt;&gt;&gt;<i>na7xvnYlyi4q3/4saCk68Ck=
+</I>&gt;&gt;&gt;<i>=jWSh
+</I>&gt;&gt;&gt;<i>-----END PGP SIGNATURE-----
+</I>&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;<i>_______________________________________________
+</I>&gt;&gt;&gt;<i>Gpsd-users mailing list
+</I>&gt;&gt;&gt;<i><A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">Gpsd-users at lists.berlios.de</A>
+</I>&gt;&gt;&gt;<i><A HREF="http://lists.berlios.de/mailman/listinfo/gpsd-users">http://lists.berlios.de/mailman/listinfo/gpsd-users</A>
+</I>&gt;&gt;<i>--
+</I>&gt;&gt;<i>David Mandala &lt;davidm at them dot com&gt;
+</I>&gt;&gt;<i>www.them.com/~davidm Public Key id: 45B2D952
+</I>&gt;&gt;<i>Murphy TX, 75094 214.774-2569 H 972.693.4007 C
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i>
+</I>&gt;<i> -----BEGIN PGP SIGNATURE-----
+</I>&gt;<i> Version: GnuPG v1.4.1 (GNU/Linux)
+</I>&gt;<i> 
+</I>&gt;<i> iD8DBQFDYULa8KZibdeR3qURAoXpAKCWbFLp7FtltsCtwWZXpkvsU/ijXwCffaIU
+</I>&gt;<i> V44LTUO1Q2TxuUNX28vPIS0=
+</I>&gt;<i> =gEQI
+</I>&gt;<i> -----END PGP SIGNATURE-----
+</I>&gt;<i> 
+</I>&gt;<i> _______________________________________________
+</I>&gt;<i> Gpsd-users mailing list
+</I>&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">Gpsd-users at lists.berlios.de</A>
+</I>&gt;<i> <A HREF="http://lists.berlios.de/mailman/listinfo/gpsd-users">http://lists.berlios.de/mailman/listinfo/gpsd-users</A>
+</I>
+-- 
+David Mandala &lt;davidm at them dot com&gt;
+www.them.com/~davidm Public Key id: 45B2D952
+Murphy TX, 75094 214.774-2569 H 972.693.4007 C
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="001085.html">[Gpsd-users] gpsd runs at 9600 baud only
+</A></li>
+	<LI>Next message: <A HREF="001087.html">[Gpsd-users] gpsd runs at 9600 baud only
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1086">[ date ]</a>
+              <a href="thread.html#1086">[ thread ]</a>
+              <a href="subject.html#1086">[ subject ]</a>
+              <a href="author.html#1086">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

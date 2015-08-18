@@ -1,0 +1,168 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] ntpd and gpsd 2.90
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2010-February/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20ntpd%20and%20gpsd%202.90&In-Reply-To=%3C4B86972F.4030909%40seiner.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="004253.html">
+   <LINK REL="Next"  HREF="004259.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] ntpd and gpsd 2.90</H1>
+    <B>Yan Seiner</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20ntpd%20and%20gpsd%202.90&In-Reply-To=%3C4B86972F.4030909%40seiner.com%3E"
+       TITLE="[Gpsd-users] ntpd and gpsd 2.90">yan at seiner.com
+       </A><BR>
+    <I>Thu Feb 25 16:28:47 CET 2010</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="004253.html">[Gpsd-users] [Fwd: Re: Shared memory not accessible by NTPD] (fwd)
+</A></li>
+        <LI>Next message: <A HREF="004259.html">[Gpsd-users] ntpd and gpsd 2.90
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#4257">[ date ]</a>
+              <a href="thread.html#4257">[ thread ]</a>
+              <a href="subject.html#4257">[ subject ]</a>
+              <a href="author.html#4257">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>I'm struggling to get ntpd and gpsd 2.90 to play nice.  The API to gpsd 
+has changed, and I can't figure out how to get ntpd to talk to it.
+
+First off, it ignores SHM:
+
+<A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">root at OpenWrt</A>:~# ntpq -p
+     remote           refid      st t when poll reach   delay   offset  
+jitter
+==============================================================================
+ SHM(0)          .PPS.            0 l    -   16    0    0.000    0.000   
+0.000
+ SHM(1)          .PPS.            0 l    -   16    0    0.000    0.000   
+0.000
+-www1.bitvector. 69.25.96.13      2 u   39   64  377   34.146  -34.492   
+3.800
++jabber.sotelips 64.113.32.5      2 u   52   64  377   66.316  -22.810   
+3.725
+*216.45.57.38    209.81.9.7       2 u    2   64  377   42.711  -25.004   
+5.612
++198.186.191.229 199.165.76.11    2 u    9   64  377   37.765  -19.509   
+4.653
+
+the right stuff seems to be in /proc
+
+<A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">root at OpenWrt</A>:/proc# cat /proc/sysvipc/shm
+       key      shmid perms       size  cpid  lpid nattch   uid   gid  
+cuid  cgid      atime      dtime      ctime
+1095648583          0   644      16384   165   165      1     0     
+0     0     0  946684812          0  946684812
+1314148400      32769   644         80   975  2840      2     0     
+0     0     0  946686533 1267081506  946684839
+1314148401      65538   644         80   975  2840      2     0     
+0     0     0  946686533 1267081506  946684839
+1314148402      98307   644         80   975  2836      1     0     
+0     0     0  946686533  946686533  946684839
+1314148403     131076   644         80   975  2836      1     0     
+0     0     0  946686533  946686533  946684839
+
+Here's a snippet from ntpd -D1
+
+event at 0 SHM(0) 8011 81 mobilize assoc 24633
+newpeer: 127.0.0.1-&gt;127.127.28.0 mode 3 vers 4 poll 4 4 flags 0x9 0x1 
+ttl 0 key 00000000
+peer_clear: at 0 next 6 associd 24634 refid INIT
+event at 0 SHM(1) 8011 81 mobilize assoc 24634
+newpeer: 127.0.0.1-&gt;127.127.28.1 mode 3 vers 4 poll 4 4 flags 0x29 0x1 
+ttl 0 key 00000000
+event at 0 0.0.0.0 c016 06 restart
+event at 0 0.0.0.0 c012 02 freq_set kernel 0.000 PPM
+event at 0 0.0.0.0 c011 01 freq_not_set
+event at 1 SHM(0) 802b 8b clock_event clk_no_reply
+event at 1 SHM(1) 802b 8b clock_event clk_no_reply
+
+
+My ntp.conf file:
+
+<A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">root at OpenWrt</A>:/proc# cat /etc/ntp.conf
+# use a random selection of 8 public stratum 2 servers
+# see <A HREF="http://twiki.ntp.org/bin/view/Servers/NTPPoolServers">http://twiki.ntp.org/bin/view/Servers/NTPPoolServers</A>
+
+#restrict default nomodify notrap noquery
+#restrict default noquery
+
+
+restrict 127.0.0.1
+
+driftfile  /tmp/ntp.drift
+
+server 0.openwrt.pool.ntp.org iburst
+server 1.openwrt.pool.ntp.org iburst
+server 2.openwrt.pool.ntp.org iburst
+server 3.openwrt.pool.ntp.org iburst
+
+
+# GPS(NMEA)+PPS
+#server 127.127.20.0 minpoll 4
+#fudge 127.127.20.0 flag3 1 flag2 0
+
+# SMA PPS
+server 127.127.28.0 minpoll 4
+fudge 127.127.28.0 refid PPS flag3 1
+
+server 127.127.28.1 minpoll 4 prefer
+fudge 127.127.28.1 refid PPS flag3 1
+
+#server 192.168.1.253
+
+Lastly, if I enable NMEA in ntp.conf it is ignored.
+
+I'm somewhat out of my depth here so I'm providing as much as I can.  
+Please let me know if I can run some tests or provide any additional 
+information.
+
+
+
+-- 
+
+   o__
+   ,&gt;/'_         o__
+   (_)\(_)       ,&gt;/'_          o__
+A day may come  (_)\(_)         ,&gt;/'_      o__
+when the courage of men fails, (_)\(_)     ,&gt;/'_ 
+when we forsake our friends and break all (_)\(_)
+bonds of fellowship, but it is not this day.
+It is not this day!
+This day we ride!
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="004253.html">[Gpsd-users] [Fwd: Re: Shared memory not accessible by NTPD] (fwd)
+</A></li>
+	<LI>Next message: <A HREF="004259.html">[Gpsd-users] ntpd and gpsd 2.90
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#4257">[ date ]</a>
+              <a href="thread.html#4257">[ thread ]</a>
+              <a href="subject.html#4257">[ subject ]</a>
+              <a href="author.html#4257">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

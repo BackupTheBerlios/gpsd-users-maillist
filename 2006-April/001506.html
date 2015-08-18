@@ -1,0 +1,103 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] cgps reports OFFLINE: Why?
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2006-April/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20cgps%20reports%20OFFLINE%3A%20Why%3F&In-Reply-To=%3C635498b70604100416s34ab3acfq1a352ef0ae5d946a%40mail.gmail.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="001505.html">
+   <LINK REL="Next"  HREF="001507.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] cgps reports OFFLINE: Why?</H1>
+    <B>Calum</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20cgps%20reports%20OFFLINE%3A%20Why%3F&In-Reply-To=%3C635498b70604100416s34ab3acfq1a352ef0ae5d946a%40mail.gmail.com%3E"
+       TITLE="[Gpsd-users] cgps reports OFFLINE: Why?">caluml at gmail.com
+       </A><BR>
+    <I>Mon Apr 10 13:16:25 CEST 2006</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="001505.html">[Gpsd-users] Mail System Error - Returned Mail
+</A></li>
+        <LI>Next message: <A HREF="001507.html">[Gpsd-users] cgps reports OFFLINE: Why?
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1506">[ date ]</a>
+              <a href="thread.html#1506">[ thread ]</a>
+              <a href="subject.html#1506">[ subject ]</a>
+              <a href="author.html#1506">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hello,
+
+I recently bought a GPS device, and consequently installed gpsd for
+the first time. (cgps/xgps/gpspipe etc).
+
+It all works very well.
+
+I wanted to be able to log all my data whilest driving, and so I
+created a separate runlevel on my laptop that only did the following:
+
+/etc/init.d/gpsd start
+
+echo w | nc localhost 2947 | grep &quot;GPSD,O=&quot; | /usr/bin/tee -a /root/gps.total |
+/usr/sbin/cronolog -p &quot;15 minutes&quot; &quot;/root/%Y-%m-%d-%H-%M.gps&quot; &amp;
+
+cgps
+
+
+This works well enough for my uses - cgps allows me to check that gpsd
+has a lock ( 2 or 3D), and it does log all the data I want.
+
+
+However, sometimes cgps displays &quot;OFFLINE&quot;, and complains about &quot;no
+input data&quot; to the console. Everything seems to stop logging, and
+doesn't come back.
+
+I have checked the cabling, and it all seems securely plugged in.
+
+I can't really find any explanation of this - whether it's a gpsd
+thing, or a GPS device thing?
+If it's my GPS unit ( a cheap one:
+<A HREF="http://www.discountgpsdirect.co.uk/globalsat-br304-serial-rs232-receiver-p-64.html">http://www.discountgpsdirect.co.uk/globalsat-br304-serial-rs232-receiver-p-64.html</A>
+), how can I stop this? Is it possible to make gpsd re-start the GPS
+device when it detects this?
+It's quite awkward to reboot a laptop on a motorway :)
+
+Also, just to make it tricky, sometimes I can go for as long as the
+battery on my laptop lasts ( 2 - 2.5 hours) without any instances of
+this problem - and sometimes it happens 30 seconds after booting it
+up.
+
+Calum
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="001505.html">[Gpsd-users] Mail System Error - Returned Mail
+</A></li>
+	<LI>Next message: <A HREF="001507.html">[Gpsd-users] cgps reports OFFLINE: Why?
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1506">[ date ]</a>
+              <a href="thread.html#1506">[ thread ]</a>
+              <a href="subject.html#1506">[ subject ]</a>
+              <a href="author.html#1506">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

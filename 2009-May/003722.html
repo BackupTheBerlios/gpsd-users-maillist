@@ -1,0 +1,87 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users]  How to use GPSFeed+ with GPSD
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2009-May/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20%20How%20to%20use%20GPSFeed%2B%20with%20GPSD&In-Reply-To=%3C23419423.post%40talk.nabble.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   
+   <LINK REL="Next"  HREF="003723.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users]  How to use GPSFeed+ with GPSD</H1>
+    <B>Robert Easton</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20%20How%20to%20use%20GPSFeed%2B%20with%20GPSD&In-Reply-To=%3C23419423.post%40talk.nabble.com%3E"
+       TITLE="[Gpsd-users]  How to use GPSFeed+ with GPSD">mark63 at azurebell.co.nz
+       </A><BR>
+    <I>Thu May  7 05:02:51 CEST 2009</I>
+    <P><UL>
+        
+        <LI>Next message: <A HREF="003723.html">[Gpsd-users] How to use GPSFeed+ with GPSD
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3722">[ date ]</a>
+              <a href="thread.html#3722">[ thread ]</a>
+              <a href="subject.html#3722">[ subject ]</a>
+              <a href="author.html#3722">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>
+I want to run gpsd without a gps unit, to test my app. So I need some sort of
+nmea simulator. I see that gpsfeed+ provides this functionality. How can I
+get gpsfeed+ to feed into gpsd on a linux computer? I saw a post about using
+fifos by Chris ...
+
+gpsd can read from a fifo.
+
+pc1% gpsfeed+ | nc -l 2947
+
+pc2% mkfifo /tmp/gps
+pc2% gpsd -n /tmp/gps
+pc2% nc pc1 2947 &gt; /tmp/gps
+
+I know nothing about fifos. When I tried this I had two problems. 
+
+1. gpsfeed keeps putting up a gui, so I cant get it to pipe (I think)
+2. the last command (nc pc1 ...) times out because it cant get a connection
+
+Anyway, the main point is to get some nmea feed into gpsd on a linux
+computer. What is the best/easiest way to proceed?
+
+TIA
+Mark
+-- 
+View this message in context: <A HREF="http://www.nabble.com/How-to-use-GPSFeed%2B-with-GPSD-tp23419423p23419423.html">http://www.nabble.com/How-to-use-GPSFeed%2B-with-GPSD-tp23419423p23419423.html</A>
+Sent from the GPSd - Users mailing list archive at Nabble.com.
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	
+	<LI>Next message: <A HREF="003723.html">[Gpsd-users] How to use GPSFeed+ with GPSD
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3722">[ date ]</a>
+              <a href="thread.html#3722">[ thread ]</a>
+              <a href="subject.html#3722">[ subject ]</a>
+              <a href="author.html#3722">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

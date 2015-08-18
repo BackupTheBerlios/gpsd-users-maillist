@@ -1,0 +1,101 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] sirfmon becomes gpsmon
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2009-February/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20sirfmon%20becomes%20gpsmon&In-Reply-To=%3C20090218060407.AACFD830225%40snark.thyrsus.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="003616.html">
+   <LINK REL="Next"  HREF="003618.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] sirfmon becomes gpsmon</H1>
+    <B>Eric S. Raymond</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20sirfmon%20becomes%20gpsmon&In-Reply-To=%3C20090218060407.AACFD830225%40snark.thyrsus.com%3E"
+       TITLE="[Gpsd-users] sirfmon becomes gpsmon">esr at snark.thyrsus.com
+       </A><BR>
+    <I>Wed Feb 18 07:04:07 CET 2009</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="003616.html">[Gpsd-users] gpsd pps broken post 2.33
+</A></li>
+        <LI>Next message: <A HREF="003618.html">[Gpsd-users] sirfmon becomes gpsmon
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3617">[ date ]</a>
+              <a href="thread.html#3617">[ thread ]</a>
+              <a href="subject.html#3617">[ subject ]</a>
+              <a href="author.html#3617">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>A few weeks ago I tossed a couple of (undocumented) tools out of the
+gpsd codebase and issued a ukase against duplicative device-dependent
+code.  Gary Miller objected that if were serious about this, sirfmon 
+would have to be junked in favor of a more device-independent program
+performing similar functions through the common driver level that gpsd
+uses.  
+
+This was a completely reasonable objection; in fact, such a rewrite
+had been on my to-do list for a while.  I worked on it intensively 
+over the President's Day weekend and can report success.
+
+What was 'sirfmon' is now 'gpsmon' -- a general real-time packet
+monitor that autodetects GPS type using the same code gpsd does.  It
+uses a driver-table architecture similar to gpsd's; presently there
+are driver tables for generic NMEA and SirF devices.  
+
+There's a set of generic commands that go through driver methods -
+change speed, set binary or NMEA mode (where applicable), packetize and
+send specified payload to device. Each driver may also define its own
+device-specific keystroke commands; for example, the SiRF has one for
+toggling static-navigation mode.
+
+I'm making noise abnout this on the list to alert our driver
+naintainers.  Writing a gpsmon driver for a device that already has
+a gpsd driver is dead easy, see the Generic NMEA driver in gpsmon.c
+as an example.  Time to start on yours!
+
+Remenber, gpsmon is a diagnostic rool, not a navigation client.  You
+gpsmon driver should focus on displaying things (like per-sentence status
+flags) that gpsd reports abstract away. 
+
+Note: in the procvess I've also extended e driver interface, adding a
+control_send() method that turns a specified payjoad into a
+well-formed packet.
+-- 
+		&lt;a href=&quot;<A HREF="http://www.catb.org/~esr/">http://www.catb.org/~esr/</A>&quot;&gt;Eric S. Raymond&lt;/a&gt;
+
+Nearly all men can stand adversity, but if you want to test a man's character,
+give him power.
+	-- Abraham Lincoln
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="003616.html">[Gpsd-users] gpsd pps broken post 2.33
+</A></li>
+	<LI>Next message: <A HREF="003618.html">[Gpsd-users] sirfmon becomes gpsmon
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3617">[ date ]</a>
+              <a href="thread.html#3617">[ thread ]</a>
+              <a href="subject.html#3617">[ subject ]</a>
+              <a href="author.html#3617">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

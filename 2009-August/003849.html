@@ -1,0 +1,100 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] how to read AIS and GPS data on same port
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2009-August/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20how%20to%20read%20AIS%20and%20GPS%20data%20on%20same%20port&In-Reply-To=%3C1249713698.22904.14.camel%40jvcomp.jvlab.nl%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="003847.html">
+   <LINK REL="Next"  HREF="003838.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] how to read AIS and GPS data on same port</H1>
+    <B>Jan Veninga</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20how%20to%20read%20AIS%20and%20GPS%20data%20on%20same%20port&In-Reply-To=%3C1249713698.22904.14.camel%40jvcomp.jvlab.nl%3E"
+       TITLE="[Gpsd-users] how to read AIS and GPS data on same port">veninga at familiemail.nl
+       </A><BR>
+    <I>Sat Aug  8 08:41:38 CEST 2009</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="003847.html">[Gpsd-users] how to read AIS and GPS data on same port
+</A></li>
+        <LI>Next message: <A HREF="003838.html">[Gpsd-users] patch to fix some json output in aivdm driver
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3849">[ date ]</a>
+              <a href="thread.html#3849">[ thread ]</a>
+              <a href="subject.html#3849">[ subject ]</a>
+              <a href="author.html#3849">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>On Fri, 2009-08-07 at 20:37 -0400, Eric S. Raymond wrote:
+&gt;<i> &gt; Here is an example of the data I am trying to catch:
+</I>&gt;<i> &gt; 
+</I>&gt;<i> &gt; $GPGBS,082939.00,2.4,1.5,3.9,,,,*40
+</I>&gt;<i> &gt; $GPRMC,082940.00,A,5241.99839,N,00517.56228,E,0.003,,020809,,,A*7F
+</I>&gt;<i> &gt; !AIVDO,1,1,,,B3aC3LP00063aS7RNpt03wl5sP06,0*39
+</I>&gt;<i> &gt; $GPGBS,082940.00,2.4,1.5,3.9,,,,*4E
+</I>&gt;<i> &gt; !AIVDM,1,1,,A,402E3:0000HttPGEahN7pi700`H9,0*09
+</I>&gt;<i> 
+</I>&gt;<i> Aaarrrggh.
+</I>&gt;<i> 
+</I>&gt;<i> Now I understand why this doesn't work.
+</I>&gt;<i> 
+</I>&gt;<i> The gpsd daemon is designed to be hooked up to live sensors.  Wired deep
+</I>&gt;<i> into its architecture is the assumption that any given sensor connection has
+</I>&gt;<i> only one class of data it will emit during its lifetime (e.g. from first 
+</I>&gt;<i> packet lock to decvice close).
+</I>&gt;<i> 
+</I>&gt;<i> Is this assumption invalid?  Are there devices (or device configurations)
+</I>&gt;<i> that really intermix both AIS and GPS sentences?
+</I>&gt;<i> 
+</I>
+Yes that assumption is invalid. The very nature of an NMEA network is
+that multiple datasources live on the same cable.
+
+In my case it is even 1 physical device. Every AIS transmitter I know of
+has a GPS receiver to &quot;know&quot; where it is and to send this position to
+other vessels. I think this data stream is always send via NMEA
+intermixed with the AIS data. 
+
+&gt;<i> If so, I can fix this.  But it will take some serious work.
+</I>
+That would be very nice.
+I have a 5000 lines captured output suitable for gpsfake, if you need it I can send it to you.
+
+-- 
+
+Jan Veninga
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="003847.html">[Gpsd-users] how to read AIS and GPS data on same port
+</A></li>
+	<LI>Next message: <A HREF="003838.html">[Gpsd-users] patch to fix some json output in aivdm driver
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3849">[ date ]</a>
+              <a href="thread.html#3849">[ thread ]</a>
+              <a href="subject.html#3849">[ subject ]</a>
+              <a href="author.html#3849">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

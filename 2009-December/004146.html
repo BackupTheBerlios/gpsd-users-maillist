@@ -1,0 +1,120 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] Garmin eTrex Vista HCx / gpsd issues
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2009-December/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Garmin%20eTrex%20Vista%20HCx%20/%20gpsd%20issues&In-Reply-To=%3Calpine.LNX.1.10.0912301757090.16407%40catbert.rellim.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="004145.html">
+   <LINK REL="Next"  HREF="004147.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] Garmin eTrex Vista HCx / gpsd issues</H1>
+    <B>Gary E. Miller</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Garmin%20eTrex%20Vista%20HCx%20/%20gpsd%20issues&In-Reply-To=%3Calpine.LNX.1.10.0912301757090.16407%40catbert.rellim.com%3E"
+       TITLE="[Gpsd-users] Garmin eTrex Vista HCx / gpsd issues">gem at rellim.com
+       </A><BR>
+    <I>Thu Dec 31 03:02:15 CET 2009</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="004145.html">[Gpsd-users] Garmin eTrex Vista HCx / gpsd issues
+</A></li>
+        <LI>Next message: <A HREF="004147.html">[Gpsd-users] Garmin eTrex Vista HCx / gpsd issues
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#4146">[ date ]</a>
+              <a href="thread.html#4146">[ thread ]</a>
+              <a href="subject.html#4146">[ subject ]</a>
+              <a href="author.html#4146">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>-----BEGIN PGP SIGNED MESSAGE-----
+Hash: SHA1
+
+Yo Mikael!
+
+On Thu, 31 Dec 2009, Mikael Wikstr&#246;m wrote:
+
+&gt;<i> with gpsd 2.39 I keep getting
+</I>
+2.90 is prolly your best bet.
+
+&gt;<i> gpsd: GPS is confused about whether it has a fix (status=0, mode=0).
+</I>
+Looks fine to me.  I see you several  sats in view:
+
+gpsd:   Sat   9, snr:  1500, elev: 69, Azmth: 271, Stat: 7
+gpsd:   Sat  12, snr:  3800, elev: 25, Azmth: 233, Stat: 17
+gpsd:   Sat  15, snr:  2600, elev: 32, Azmth: 185, Stat: 7
+gpsd:   Sat  17, snr:  2200, elev: 47, Azmth: 100, Stat: 7
+gpsd:   Sat  18, snr:  2700, elev: 17, Azmth: 266, Stat: 7
+gpsd:   Sat  26, snr:  1900, elev: 30, Azmth: 310, Stat: 4
+gpsd:   Sat  27, snr:  1500, elev: 78, Azmth: 251, Stat: 7
+gpsd:   Sat  28, snr:  2200, elev: 23, Azmth:  65, Stat: 7
+gpsd:   Sat  11, snr:  -100, elev: 12, Azmth:  29, Stat: 4
+gpsd:   Sat  14, snr:  -100, elev:  8, Azmth: 325, Stat: 4
+gpsd:   Sat  22, snr:  -100, elev: 21, Azmth: 303, Stat: 4
+gpsd:   Sat 255, snr:     0, elev:  0, Azmth:   0, Stat: 0
+gpsd: SAT_DATA: visible=11 used=11 mask={SATELLITE|USED}
+
+And you have good  PVT data:
+
+gpsd: Geoid Separation (MSL-WGS84): from garmin 26.359396, calculated 26.359374
+gpsd: Alt: 30.505, Epe: 37.630, Eph: 20.243, Epv: 36.244, Fix: 5, Gps_tow: 351849.000000, Lat: 59.362, Lon: 17.896, LonVel: -0.009, LatVel: 0.050, AltVel: 0.003, MslHgt: -26.359, Leap: 15, GarminDays: 7301
+
+
+So no problems there.
+
+So I'm am unsure what your problem is.  Is your issue that the
+status field flickers about twice a second?  If so that is normal, that
+is what the garmin is reporting and gpsd ios just passing on the info.
+
+
+&gt;<i> I hope there will be a new stable release of gpsd soon.
+</I>
+2.90 is recent and stable.  That is youe best bet if the current SVN is
+not working for you.
+
+RGDS
+GARY
+- ---------------------------------------------------------------------------
+Gary E. Miller Rellim 109 NW Wilmington Ave., Suite E, Bend, OR 97701
+	<A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">gem at rellim.com</A>  Tel:+1(541)382-8588
+
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v1.4.3 (GNU/Linux)
+
+iD8DBQFLPAYpBmnRqz71OvMRApIeAJ9eckN/E6oV0NAuPyyw1A1uVZ3m3ACg3065
+N9O8dVHfV2+W2QjZ3KCm/yM=
+=QjR/
+-----END PGP SIGNATURE-----
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="004145.html">[Gpsd-users] Garmin eTrex Vista HCx / gpsd issues
+</A></li>
+	<LI>Next message: <A HREF="004147.html">[Gpsd-users] Garmin eTrex Vista HCx / gpsd issues
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#4146">[ date ]</a>
+              <a href="thread.html#4146">[ thread ]</a>
+              <a href="subject.html#4146">[ subject ]</a>
+              <a href="author.html#4146">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

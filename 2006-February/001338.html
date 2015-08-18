@@ -1,0 +1,124 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] information updating
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2006-February/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20information%20updating&In-Reply-To=%3C7870791.1140619843741.JavaMail.root%40fepweb11%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="001348.html">
+   <LINK REL="Next"  HREF="001341.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] information updating</H1>
+    <B>andarius at charter.net</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20information%20updating&In-Reply-To=%3C7870791.1140619843741.JavaMail.root%40fepweb11%3E"
+       TITLE="[Gpsd-users] information updating">andarius at charter.net
+       </A><BR>
+    <I>Wed Feb 22 15:50:43 CET 2006</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="001348.html">[Gpsd-users] u-blox Antaris with strange NMEA &quot;dialect&quot;
+</A></li>
+        <LI>Next message: <A HREF="001341.html">[Gpsd-users] Re: [Gpsd-dev] Updated patch for gpsd.c in 2.31
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1338">[ date ]</a>
+              <a href="thread.html#1338">[ thread ]</a>
+              <a href="subject.html#1338">[ subject ]</a>
+              <a href="author.html#1338">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>On Thu, 16 Feb 2006 19:05:35 -0500
+&quot;Eric S. Raymond&quot; &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">esr at thyrsus.com</A>&gt; wrote:
+
+|<i>James Jones &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">andarius at charter.net</A>&gt;:
+</I>|&gt;<i> The problem is that during use I do not receive information updates
+</I>|&gt;<i> on the tsip port. I have tried using the NMEA port but I only get
+</I>|&gt;<i> position (lat/long) data. No time, no status, nothing but lat/long.
+</I>|&gt;<i> Yet the NMEA data does update. It is just the tsip data that does not.
+</I>|&gt;<i> 
+</I>|&gt;<i> To trouble shoot this I have run gpsd with the following command:
+</I>|&gt;<i> 
+</I>|&gt;<i>  gpsd -nN -D 5 /dev/ttyUSB0
+</I>|&gt;<i> 
+</I>|&gt;<i> and watched the stream. At the same time I open a terminal and poll
+</I>|&gt;<i> the simplest thing to check (for me at least) which is the time. I
+</I>|&gt;<i> have read part of Trimble's tsip reference manual and found the time
+</I>|&gt;<i> packet as 0x41. While this value in the debug info is constantly
+</I>|&gt;<i> incramented, polling gpsd via a &quot;telnet localhost 2947&quot; for &quot;D&quot; always
+</I>|&gt;<i> returns the time that gpsd was started. The other data, such as
+</I>|&gt;<i> position and so on also remain at the values that were given when gpsd
+</I>|&gt;<i> was started.
+</I>|&gt;<i> 
+</I>|&gt;<i> As I mentioned I have searched through alot of information. I have
+</I>|&gt;<i> read the archives (searched through actualy) ofthis list as well as
+</I>|&gt;<i> searched on google and a few others for varius keywords with no
+</I>|&gt;<i> results. Only a few stating tsip has/had an error with velocity/mode.
+</I>|&gt;<i> 
+</I>|&gt;<i> I can post a segment of the output from a &quot;-Dx&quot; or from a telnet
+</I>|&gt;<i> session if required. Just let me know what level you want.
+</I>|<i>
+</I>|<i>You need our TSIP driver maiuntainer, I think; that's Rob Janssen.
+</I>|<i>Rob, can you shed any light on this?
+</I>
+Thanks for the reply, I have managed to get some slightly better results after
+many attempts. 
+
+By varying the switches passed on the command line I managed to happen across it
+by accident. In an effort to make sure that it was not the apps or anything
+else I started gpsd simply with &quot;gpsd /dev/tts/USB0&quot; (my /dev/ttyUSB0 no longer
+comes around?) and commenced to check things out. Low and behold things were
+working. I do get the flashing data, explained in the faq, but it updates.
+
+I tried going back and using the various switches to see if something else had
+changed. With the inclusion of any switch listed above, i.e. the -nN -D 5, it
+fails to update. No mater which part I use, it fails to update. With -D 5 if I
+read correctly, it should provide output as it comes in. With the -nN it does.
+Without the -nN it does not. It drops to the background.
+
+As it is I can get the position updates and a good fix. It does not report
+satellites or their information at all. But at least the position is good as
+is velocity and heading.
+
+Again, thanks for the reply. I hope some one has some information that can help.
+
+James
+
+
+                /======================================\                    
+                |  James Jones   <A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">andarius at charter.net</A>  |
+                |     <A HREF="http://www.omicron-arena.com">http://www.omicron-arena.com</A>     |
+                | ------------------------------------ |
+                | Most who fail have yet to realy try! |
+                \======================================/
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="001348.html">[Gpsd-users] u-blox Antaris with strange NMEA &quot;dialect&quot;
+</A></li>
+	<LI>Next message: <A HREF="001341.html">[Gpsd-users] Re: [Gpsd-dev] Updated patch for gpsd.c in 2.31
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1338">[ date ]</a>
+              <a href="thread.html#1338">[ thread ]</a>
+              <a href="subject.html#1338">[ subject ]</a>
+              <a href="author.html#1338">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

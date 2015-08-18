@@ -1,0 +1,98 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] how to read AIS and GPS data on same port
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2009-August/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20how%20to%20read%20AIS%20and%20GPS%20data%20on%20same%20port&In-Reply-To=%3C20090808003751.GD13781%40thyrsus.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="003848.html">
+   <LINK REL="Next"  HREF="003846.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] how to read AIS and GPS data on same port</H1>
+    <B>Eric S. Raymond</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20how%20to%20read%20AIS%20and%20GPS%20data%20on%20same%20port&In-Reply-To=%3C20090808003751.GD13781%40thyrsus.com%3E"
+       TITLE="[Gpsd-users] how to read AIS and GPS data on same port">esr at thyrsus.com
+       </A><BR>
+    <I>Sat Aug  8 02:37:51 CEST 2009</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="003848.html">[Gpsd-users] how to read AIS and GPS data on same port
+</A></li>
+        <LI>Next message: <A HREF="003846.html">[Gpsd-users] how to read AIS and GPS data on same port
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3845">[ date ]</a>
+              <a href="thread.html#3845">[ thread ]</a>
+              <a href="subject.html#3845">[ subject ]</a>
+              <a href="author.html#3845">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Jan Veninga &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">veninga at familiemail.nl</A>&gt;:
+&gt;<i> I am trying to connect gpsd to an AIS transponder. When gpsd (via
+</I>&gt;<i> gpsfake) reads the first lines of data it decides whether it is a GPS or
+</I>&gt;<i> an AIS. If the first packet is a GPS packet than gpsd registers a GPS
+</I>&gt;<i> and when later a AIS packet arrives it switches to AIS. After that it
+</I>&gt;<i> stays on AIS. I was hoping to get both streams at the same time via:
+</I>&gt;<i> 
+</I>&gt;<i> ?WATCH={&quot;TPV&quot;:true,&quot;AIS&quot;:true}
+</I>&gt;<i> 
+</I>&gt;<i> But it seams that only one protocol can be used on a single port. Did I
+</I>&gt;<i> mis something? How can I watch both streams at the same time?
+</I>&gt;<i> 
+</I>&gt;<i> I am using the latest svn trunc
+</I>&gt;<i> 
+</I>&gt;<i> Here is an example of the data I am trying to catch:
+</I>&gt;<i> 
+</I>&gt;<i> $GPGBS,082939.00,2.4,1.5,3.9,,,,*40
+</I>&gt;<i> $GPRMC,082940.00,A,5241.99839,N,00517.56228,E,0.003,,020809,,,A*7F
+</I>&gt;<i> !AIVDO,1,1,,,B3aC3LP00063aS7RNpt03wl5sP06,0*39
+</I>&gt;<i> $GPGBS,082940.00,2.4,1.5,3.9,,,,*4E
+</I>&gt;<i> !AIVDM,1,1,,A,402E3:0000HttPGEahN7pi700`H9,0*09
+</I>
+Aaarrrggh.
+
+Now I understand why this doesn't work.
+
+The gpsd daemon is designed to be hooked up to live sensors.  Wired deep
+into its architecture is the assumption that any given sensor connection has
+only one class of data it will emit during its lifetime (e.g. from first 
+packet lock to decvice close).
+
+Is this assumption invalid?  Are there devices (or device configurations)
+that really intermix both AIS and GPS sentences?
+
+If so, I can fix this.  But it will take some serious work.
+-- 
+		&lt;a href=&quot;<A HREF="http://www.catb.org/~esr/">http://www.catb.org/~esr/</A>&quot;&gt;Eric S. Raymond&lt;/a&gt;
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="003848.html">[Gpsd-users] how to read AIS and GPS data on same port
+</A></li>
+	<LI>Next message: <A HREF="003846.html">[Gpsd-users] how to read AIS and GPS data on same port
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3845">[ date ]</a>
+              <a href="thread.html#3845">[ thread ]</a>
+              <a href="subject.html#3845">[ subject ]</a>
+              <a href="author.html#3845">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

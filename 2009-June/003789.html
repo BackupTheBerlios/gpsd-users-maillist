@@ -1,0 +1,140 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] problem with the haicom  hi-204s
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2009-June/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20problem%20with%20the%20haicom%20%20hi-204s&In-Reply-To=%3C2000360741-1246275007-cardhu_decombobulator_blackberry.rim.net-606736874-%40bxe1120.bisx.prod.on.blackberry%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="003788.html">
+   <LINK REL="Next"  HREF="003790.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] problem with the haicom  hi-204s</H1>
+    <B>Max Afonov</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20problem%20with%20the%20haicom%20%20hi-204s&In-Reply-To=%3C2000360741-1246275007-cardhu_decombobulator_blackberry.rim.net-606736874-%40bxe1120.bisx.prod.on.blackberry%3E"
+       TITLE="[Gpsd-users] problem with the haicom  hi-204s">max at bumnetworks.com
+       </A><BR>
+    <I>Mon Jun 29 13:28:06 CEST 2009</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="003788.html">[Gpsd-users] problem with the haicom  hi-204s
+</A></li>
+        <LI>Next message: <A HREF="003790.html">[Gpsd-users] problem with the haicom  hi-204s
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3789">[ date ]</a>
+              <a href="thread.html#3789">[ thread ]</a>
+              <a href="subject.html#3789">[ subject ]</a>
+              <a href="author.html#3789">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>It looks like you're not using the right device node. You should not create your own /tmp/gps. Instead, compare /dev before and after the modprobe. Ideally new device nodes (such as /dev/ttyUSB0) should have sprung up after the module was inserted. One of those nodes is your GPS.
+
+-----Original Message-----
+From: Marc Coevoet &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">sintsixtus at gmail.com</A>&gt;
+
+Date: Mon, 29 Jun 2009 12:02:35 
+To: &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">gpsd-users at lists.berlios.de</A>&gt;
+Subject: [Gpsd-users] problem with the haicom  hi-204s
+
+
+Hello,
+
+I connect it with a ps/2 to usb cable,
+
+I did
+
+mknode /tmp/gps  p
+
+modprobe pl2303
+
+# sudo gpsd -N -n -D 4 /tmp/gps
+gpsd: launching (Version 2.36)
+gpsd: listening on port gpsd
+gpsd: shmat(0,0,0) succeeded
+gpsd: shmat(0,0,0) succeeded
+gpsd: shmat(0,0,0) succeeded
+gpsd: shmat(0,0,0) succeeded
+gpsd: successfully connected to the DBUS system bus
+gpsd: running with effective group ID 0
+gpsd: running with effective user ID 0
+gpsd: opening read-only GPS data source at '/tmp/gps'
+gpsd: garmin_gps not active.
+gpsd: no probe matched...
+gpsd: gpsd_activate(1): opened GPS (5)
+gpsd: client 127.0.0.1 (0) connect on fd 6
+gpsd: checking client(0)
+gpsd: &lt;= client(0): w+x
+gpsd: client(0): assigning channel...
+gpsd: User requires 2, channel type is -1
+gpsd: client(0): channel 5 already active.
+gpsd: client(0): channel 5 already active.
+gpsd: =&gt; client(0): GPSD,W=1,X=1246268568.187791
+gpsd: checking client(0)
+gpsd: detaching 127.0.0.1 (sub0, fd 6) in detach_client
+gpsd: client 127.0.0.1 (0) connect on fd 6
+gpsd: checking client(0)
+gpsd: &lt;= client(0): w+x
+gpsd: client(0): assigning channel...
+gpsd: User requires 2, channel type is -1
+gpsd: client(0): channel 5 already active.
+gpsd: client(0): channel 5 already active.
+gpsd: =&gt; client(0): GPSD,W=1,X=1246268568.187791
+
+and now, it remains quiet for more than 10 minutes, it does not give me 
+the position...
+
+In the user manual, they talk about a led on the antenna that is 
+off/flashing/on.  Does the led work with gpsd??  Or is it a windows 
+driver thing??
+
+$lsusb
+Bus 003 Device 001: ID 0000:0000
+Bus 002 Device 001: ID 0000:0000
+Bus 001 Device 006: ID 04d9:1400 Holtek Semiconductor, Inc.    ---&gt; the 
+ps/2 to usb cable
+Bus 001 Device 004: ID 15ca:00c3
+Bus 001 Device 001: ID 0000:0000
+
+
+Marc
+
+-- 
+Shortwave transmissions in English, Francais, Nederlands, Deutsch, Suid-Afrikaans, Chinese, Dansk, Urdu, Cantonese, Greek, Spanish, Portuguese, ...
+<A HREF="http://users.fulladsl.be/spb13810/swlist/">http://users.fulladsl.be/spb13810/swlist/</A> <A HREF="http://radiolanguages.tk">http://radiolanguages.tk</A>  
+Stations list: <A HREF="http://users.fulladsl.be/spb13810/txlist/">http://users.fulladsl.be/spb13810/txlist/</A>
+
+_______________________________________________
+Gpsd-users mailing list
+<A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">Gpsd-users at lists.berlios.de</A>
+<A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">https://lists.berlios.de/mailman/listinfo/gpsd-users</A>
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="003788.html">[Gpsd-users] problem with the haicom  hi-204s
+</A></li>
+	<LI>Next message: <A HREF="003790.html">[Gpsd-users] problem with the haicom  hi-204s
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3789">[ date ]</a>
+              <a href="thread.html#3789">[ thread ]</a>
+              <a href="subject.html#3789">[ subject ]</a>
+              <a href="author.html#3789">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

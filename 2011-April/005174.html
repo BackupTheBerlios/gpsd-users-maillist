@@ -1,0 +1,140 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] Programming with libgps: I'm confused
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2011-April/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Programming%20with%20libgps%3A%20I%27m%20confused&In-Reply-To=%3C20110404075707.256d6344%40yendi%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="005172.html">
+   <LINK REL="Next"  HREF="005175.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] Programming with libgps: I'm confused</H1>
+    <B>Charles Curley</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Programming%20with%20libgps%3A%20I%27m%20confused&In-Reply-To=%3C20110404075707.256d6344%40yendi%3E"
+       TITLE="[Gpsd-users] Programming with libgps: I'm confused">charlescurley at charlescurley.com
+       </A><BR>
+    <I>Mon Apr  4 15:57:07 CEST 2011</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="005172.html">[Gpsd-users] Programming with libgps: I'm confused
+</A></li>
+        <LI>Next message: <A HREF="005175.html">[Gpsd-users] Programming with libgps: I'm confused
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#5174">[ date ]</a>
+              <a href="thread.html#5174">[ thread ]</a>
+              <a href="subject.html#5174">[ subject ]</a>
+              <a href="author.html#5174">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>On Mon, 4 Apr 2011 09:52:59 +0200
+Niccolo Rigacci &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">niccolo at rigacci.org</A>&gt; wrote:
+
+&gt;<i> Hi,
+</I>&gt;<i> 
+</I>&gt;<i> I'm trying to write some C code to read the position from a GPS 
+</I>&gt;<i> device, using libgps.
+</I>
+It might help if you told us which version of gpsd you were using.
+Clearly not the current one (2.96).
+
+&gt;<i> 
+</I>&gt;<i> The task is trivial: read a GPS position every 10 seconds and 
+</I>&gt;<i> store it somewhere.
+</I>&gt;<i> 
+</I>&gt;<i> I must admit that I'm a bit confused, so I ask for confirmation 
+</I>&gt;<i> on what I think is true:
+</I>&gt;<i> 
+</I>&gt;<i> 1) The function gps_poll() returns always some data, even after a 
+</I>&gt;<i> ?WATCH={&quot;enable&quot;:false}; was issued. In that case the last known 
+</I>&gt;<i> position is reported (when WATCH was enabled).
+</I>
+There is always some data in the buffer, which is not quite the same
+thing. The question is, is it valid data? And which data is it? A large
+chunk of the buffer is a union, and clearly two members of the union
+cannot both be valid. To answer that question, you must examine the
+&quot;set&quot; member of the buffer. E.g. on recent versions of gpsd:
+
+    if (gps_data.set &amp; TIME_SET) {
+        formatTime (gps_data.fix.time);
+    }
+
+You may need &quot;gps_data-&gt;...&quot;.
+
+&gt;<i> 
+</I>&gt;<i> 2) The function gps_poll() returns data at a rate which is not 
+</I>&gt;<i> related to the rate of NMEA strings coming from the GPS device. 
+</I>&gt;<i> E.g. if the GPS provides a NMEA string every second, I can still 
+</I>&gt;<i> gps_poll() several times per second, eventually getting the last
+</I>&gt;<i> known position.
+</I>&gt;<i> 
+</I>&gt;<i> 3) If the rate of gps_poll() is lower than the rate of arriving 
+</I>&gt;<i> NMEA strings, I get old (buffered?) data from gps_poll(). The 
+</I>&gt;<i> time shift will increase untill some buffer is filled? Then I 
+</I>&gt;<i> will get an error?.
+</I>&gt;<i> 
+</I>&gt;<i> This seems to demonstrate that gps_poll() is not the right 
+</I>&gt;<i> function to use to get a GPS position every 10 seconds.
+</I>
+I don't think you can simply run gps_poll every ten seconds. (I am
+recalling what is to me old information here.) Rather, call it at
+sub-second frequencies, 3 or 4 hertz if I recall correctly, and cherry
+pick the fixes you send to your collection.
+
+&gt;<i> 
+</I>&gt;<i> I found some code on the net where gps_query() function is used 
+</I>&gt;<i> instead, but that function seems deprecated, as per libgps(3).
+</I>&gt;<i> 
+</I>&gt;<i> I read also the gpxlogger.c example code, which uses 
+</I>&gt;<i> gps_set_raw_hook(), but from the man page I supposed that 
+</I>&gt;<i> gps_poll() was simpler and sufficient for my task.
+</I>
+
+Actually, setting the callback is simpler once you get it working.
+You will have to watch the time in order to get your .1 hertz samples.
+Even simpler is using the current version, which doesn't have the
+callback.
+
+
+
+
+-- 
+
+Charles Curley                  /&quot;\    ASCII Ribbon Campaign
+Looking for fine software       \ /    Respect for open standards
+and/or writing?                  X     No HTML/RTF in email
+<A HREF="http://www.charlescurley.com">http://www.charlescurley.com</A>    / \    No M$ Word docs in email
+
+Key fingerprint = CE5C 6645 A45A 64E4 94C0  809C FFF6 4C48 4ECD DFDB
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="005172.html">[Gpsd-users] Programming with libgps: I'm confused
+</A></li>
+	<LI>Next message: <A HREF="005175.html">[Gpsd-users] Programming with libgps: I'm confused
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#5174">[ date ]</a>
+              <a href="thread.html#5174">[ thread ]</a>
+              <a href="subject.html#5174">[ subject ]</a>
+              <a href="author.html#5174">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

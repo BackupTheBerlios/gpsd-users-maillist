@@ -1,0 +1,74 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] libgpsmm not re-entrant?
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2010-November/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20libgpsmm%20not%20re-entrant%3F&In-Reply-To=%3C4CDE529D.2090900%40socialsystems.ru%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="004747.html">
+   <LINK REL="Next"  HREF="004749.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] libgpsmm not re-entrant?</H1>
+    <B>Vlad Orlov</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20libgpsmm%20not%20re-entrant%3F&In-Reply-To=%3C4CDE529D.2090900%40socialsystems.ru%3E"
+       TITLE="[Gpsd-users] libgpsmm not re-entrant?">monsta at socialsystems.ru
+       </A><BR>
+    <I>Sat Nov 13 09:55:57 CET 2010</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="004747.html">[Gpsd-users] libgpsmm not re-entrant?
+</A></li>
+        <LI>Next message: <A HREF="004749.html">[Gpsd-users] gpsd and python
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#4748">[ date ]</a>
+              <a href="thread.html#4748">[ thread ]</a>
+              <a href="subject.html#4748">[ subject ]</a>
+              <a href="author.html#4748">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>David Favro wrote:
+
+&gt;<i> However, you've said that you are using the C interface and it's working
+</I>&gt;<i> well, why not stay with that?  I don't see why libgpsmm exists at all --
+</I>&gt;<i> it is such a thin wrapper over the C functions that there's really no
+</I>&gt;<i> difference other than an extra function-call on the stack and some
+</I>&gt;<i> wasted CPU cycles.
+</I>
+Agree with that. It doesn't use RAII - and makes funny bugs like closing an
+unopened context possible. It returns a non-const pointer to the whole bloated
+gps_data_t structure, or (even worse) NULL - and doesn't even try handling an
+EAGAIN properly. To put it mildly, it doesn't look much like C++.
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="004747.html">[Gpsd-users] libgpsmm not re-entrant?
+</A></li>
+	<LI>Next message: <A HREF="004749.html">[Gpsd-users] gpsd and python
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#4748">[ date ]</a>
+              <a href="thread.html#4748">[ thread ]</a>
+              <a href="subject.html#4748">[ subject ]</a>
+              <a href="author.html#4748">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

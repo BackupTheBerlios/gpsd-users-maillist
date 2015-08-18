@@ -1,0 +1,93 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] gps_data_t.online always changes
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2007-May/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20gps_data_t.online%20always%20changes&In-Reply-To=%3CPine.LNX.4.64.0705172105480.1728%40birdbird.example.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="002651.html">
+   <LINK REL="Next"  HREF="002652.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] gps_data_t.online always changes</H1>
+    <B>Matt Roberds</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20gps_data_t.online%20always%20changes&In-Reply-To=%3CPine.LNX.4.64.0705172105480.1728%40birdbird.example.com%3E"
+       TITLE="[Gpsd-users] gps_data_t.online always changes">mattroberds at cox.net
+       </A><BR>
+    <I>Fri May 18 04:20:50 CEST 2007</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="002651.html">[Gpsd-users] gps_data_t.online always changes
+</A></li>
+        <LI>Next message: <A HREF="002652.html">[Gpsd-users] gps_data_t.online always changes
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2648">[ date ]</a>
+              <a href="thread.html#2648">[ thread ]</a>
+              <a href="subject.html#2648">[ subject ]</a>
+              <a href="author.html#2648">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>On Thu, 17 May 2007, Marshall Crocker wrote:
+&gt;<i> I'm using the c++ interface for gpsd and I'm attempting to use
+</I>&gt;<i> gps_data_t.online to determine if the connected gps is actually
+</I>&gt;<i> sending data.  [...]  What I'm seeing is that online always changes
+</I>&gt;<i> even if I unplug the gps.
+</I>
+I don't _know_ the answer, but digging through libgps.c...
+
+In gps_unpack(), online gets set to -1 if the response from the daemon
+contains &quot;X=?&quot;, or the number if the reponse contains &quot;X=[number]&quot;.
+
+gps_unpack() is called by gps_poll().  Right before gps_poll() calls
+gps_unpack(), gps_poll() also updates online.  I'm not sure why
+gps_poll() updates online - possibly this is a bug?
+
+gps_query() calls gps_poll() , which updates online before calling
+gps_unpack() .
+
+I don't know if this will break other things, but if you've compiled
+gpsd from source or can do so, it might be interesting to change line
+526 of libgps.c (as shipped with gpsd-2.34) from
+
+     received = gpsdata-&gt;online = timestamp();
+
+to
+
+     received = timestamp();
+
+and recompile to see if that gives you the behavior you are looking for.
+
+Matt Roberds
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="002651.html">[Gpsd-users] gps_data_t.online always changes
+</A></li>
+	<LI>Next message: <A HREF="002652.html">[Gpsd-users] gps_data_t.online always changes
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2648">[ date ]</a>
+              <a href="thread.html#2648">[ thread ]</a>
+              <a href="subject.html#2648">[ subject ]</a>
+              <a href="author.html#2648">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

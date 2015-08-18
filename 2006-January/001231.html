@@ -1,0 +1,123 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] Delorme hyperformance GPS
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2006-January/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Delorme%20hyperformance%20GPS&In-Reply-To=%3C012020060157.15848.43D043A5000E5EAA00003DE82205886172CDCECE9F9B9D0A0D019D%40comcast.net%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="001235.html">
+   <LINK REL="Next"  HREF="001232.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] Delorme hyperformance GPS</H1>
+    <B>robertp112 at comcast.net</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Delorme%20hyperformance%20GPS&In-Reply-To=%3C012020060157.15848.43D043A5000E5EAA00003DE82205886172CDCECE9F9B9D0A0D019D%40comcast.net%3E"
+       TITLE="[Gpsd-users] Delorme hyperformance GPS">robertp112 at comcast.net
+       </A><BR>
+    <I>Fri Jan 20 02:57:58 CET 2006</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="001235.html">[Gpsd-users] ntp pps with garmin 18lvc
+</A></li>
+        <LI>Next message: <A HREF="001232.html">[Gpsd-users] Request Protocol Question
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1231">[ date ]</a>
+              <a href="thread.html#1231">[ thread ]</a>
+              <a href="subject.html#1231">[ subject ]</a>
+              <a href="author.html#1231">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>I have a Delorme hyperformance GPS, it connects to the computer via a rs232 (serial) connector and it uses batteries. every time I try and run it all I get is:
+
+$ gpsd -D 4 -N -n -p /dev/ttyS0
+gpsd: launching (Version 2.31)
+gpsd: listening on port gpsd
+gpsd: running with effective group ID 1000
+gpsd: running with effective user ID 1000
+gpsd: opening GPS data source at '/dev/ttyS0'
+gpsd: no probe matched...
+gpsd: speed 9600, 8N1
+gpsd: gpsd_activate: opened GPS (4)
+gpsd: flagging descriptor 4 in open_device
+gpsd: client connect on 5
+gpsd: checking client(5)
+gpsd: &lt;= client(5): R
+gpsd: client(5): assigning channel...
+gpsd: User requires 2, channel type is -1
+gpsd: client(5): channel 4 already active.
+gpsd: client(5) turned on raw mode
+gpsd: =&gt; client(5): GPSD,R=1
+gpsd: packet sniff finds type -1
+gpsd: packet sniff finds type -1
+gpsd: packet sniff finds type -1
+gpsd: packet sniff finds type -1
+gpsd: packet sniff finds type -1
+gpsd: packet sniff finds type -1
+gpsd: packet sniff finds type -1
+gpsd: packet sniff finds type -1
+gpsd: packet sniff finds type -1
+gpsd: packet sniff finds type 2
+gpsd: Selecting Zodiac binary driver...
+gpsd: &lt;= GPS: $GPRMC,235947,V,3945.2645,N,10449.8471,W,0.0000,0.000,280697,,*28
+gpsd: =&gt; client(5): $GPRMC,235947,V,3945.2645,N,10449.8471,W,0.0000,0.000,280697,,*28
+gpsd: zodiac_analyze packet type 0
+gpsd: =&gt; client(5): EARTHAgpsd: zodiac_analyze packet type 0
+gpsd: =&gt; client(5): EARTHAgpsd: zodiac_analyze packet type 0
+gpsd: =&gt; client(5): EARTHAgpsd: zodiac_analyze packet type 0
+gpsd: =&gt; client(5): EARTHAgpsd: zodiac_analyze packet type 0
+gpsd: =&gt; client(5): EARTHAgpsd: zodiac_analyze packet type 0
+gpsd: =&gt; client(5): EARTHAgpsd: zodiac_analyze packet type 0
+gpsd: =&gt; client(5): EARTHAgpsd: zodiac_analyze packet type 0
+gpsd: =&gt; client(5): EARTHAgpsd: zodiac_analyze packet type 0
+gpsd: =&gt; client(5): EARTHAgpsd: checking client(5)
+gpsd: detaching 5 in detach_client
+gpsd: zodiac_analyze packet type 0
+
+I've tried telnet'ing to gpsd and all it gives me is:
+
+$ telnet 127.0.0.1 2947
+Trying 127.0.0.1...
+Connected to 127.0.0.1.
+Escape character is '^]'.
+r
+GPSD,R=1
+EARTHAEARTHAEARTHAEARTHAEARTHAEARTHAEARTHAEARTHA
+
+I tried running &quot;stty -F /dev/ttyS0 ispeed 9600 &amp;&amp; cat &lt;/dev/ttyS0&quot; and it doesn't output anything.
+
+
+Does anyone have any suggestions?
+
+-Robert
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="001235.html">[Gpsd-users] ntp pps with garmin 18lvc
+</A></li>
+	<LI>Next message: <A HREF="001232.html">[Gpsd-users] Request Protocol Question
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1231">[ date ]</a>
+              <a href="thread.html#1231">[ thread ]</a>
+              <a href="subject.html#1231">[ subject ]</a>
+              <a href="author.html#1231">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

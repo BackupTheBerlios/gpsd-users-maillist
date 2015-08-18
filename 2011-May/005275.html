@@ -1,0 +1,117 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] [Gpsd-dev] Gpsd configuration files
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2011-May/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20%5BGpsd-dev%5D%20Gpsd%20configuration%20files&In-Reply-To=%3C4DE56448.4090401%40open-t.co.uk%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="005273.html">
+   <LINK REL="Next"  HREF="005274.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] [Gpsd-dev] Gpsd configuration files</H1>
+    <B>Sebastian Arcus</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20%5BGpsd-dev%5D%20Gpsd%20configuration%20files&In-Reply-To=%3C4DE56448.4090401%40open-t.co.uk%3E"
+       TITLE="[Gpsd-users] [Gpsd-dev] Gpsd configuration files">shop at open-t.co.uk
+       </A><BR>
+    <I>Tue May 31 23:57:28 CEST 2011</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="005273.html">[Gpsd-users] [Gpsd-dev] Gpsd configuration files
+</A></li>
+        <LI>Next message: <A HREF="005274.html">[Gpsd-users] [Gpsd-dev]   Gpsd configuration files
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#5275">[ date ]</a>
+              <a href="thread.html#5275">[ thread ]</a>
+              <a href="subject.html#5275">[ subject ]</a>
+              <a href="author.html#5275">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>
+
+On 31/05/11 22:29, Gerard Saraber wrote:
+&gt;<i> On Tue, May 31, 2011 at 4:13 PM, Sebastian Arcus&lt;<A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">shop at open-t.co.uk</A>&gt;  wrote:
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> On 31/05/11 18:25, Eric Raymond wrote:
+</I>&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;<i> Sebastian Arcus&lt;<A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">shop at open-t.co.uk</A>&gt;:
+</I>&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;<i> Well, I'm all happy with that philosophy. Then why does it take four
+</I>&gt;&gt;&gt;&gt;<i> different configuration/script files and a Unix socket (which means
+</I>&gt;&gt;&gt;&gt;<i> you need RW access to the file system when you start gpsd) in order
+</I>&gt;&gt;&gt;&gt;<i> to hot plug gps devices?
+</I>&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;<i> Because it's not gpsd's job to know about the hotplug system.  Among other
+</I>&gt;&gt;&gt;<i> problems, that would introduce some portability issues; BSD doesn't have
+</I>&gt;&gt;&gt;<i> hotplug in the same way.
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> OK - if you prefer some separation of tasks, why don't you at least simplify
+</I>&gt;&gt;<i> the interface between udev/hotplug system and gpsd. Why don't you modify the
+</I>&gt;&gt;<i> behaviour of the --add switch so that at least can cope with both
+</I>&gt;&gt;<i> situations:
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> a. If gpsd is not running, it will start it and add the device to it's pool
+</I>&gt;&gt;<i> of devices.
+</I>&gt;&gt;<i> b. If it can find a gpsd process already running, add the device to it's
+</I>&gt;&gt;<i> pool.
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> At the moment it is impossible to just have a simple udev rule such as
+</I>&gt;&gt;<i> &quot;RUN+=&quot;gpsd /ttyUSB0&quot; because it can't cope if there is already a daemon
+</I>&gt;&gt;<i> running. Thus you end up with scripts which check if the gpsd is already
+</I>&gt;&gt;<i> running, and pass commands through gpsdctl, or if it is not running, start
+</I>&gt;&gt;<i> it. What you are basically doing is keeping gpsd pure from a programming
+</I>&gt;&gt;<i> point of view, with as little options as possible - while dumping the mess
+</I>&gt;&gt;<i> of controlling it and starting it to system packagers and end users by
+</I>&gt;&gt;<i> providing an inappropriate interface.
+</I>&gt;&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i> My first thought after reading this would be to make gpsdctl smart
+</I>&gt;<i> enough to know to start the daemon if it's not already running..
+</I>
+That sounds like a good solution to me. It certainly would simplify the 
+interface a lot.
+
+&gt;<i>
+</I>&gt;<i> I agree with ESR though, the fact that the hotplug system requires a
+</I>&gt;<i> bunch of files is not gpsd's fault, imo the OS should deal with the
+</I>&gt;<i> hotplug events and pass them to gpsd to do the actual work.
+</I>
+I beg to differ. The fact that gpsd's design doesn't offer an interface 
+which is simple and robust enough and can't cope with the different 
+states gpsd might be in is most certainly gpsd's responsability. The OS 
+should be able to pass a single command to gpsd (or gpsctl) when a new 
+device is plugged in, not be forced to do lots of checking and then 
+select between gpsd and gpsctl.
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="005273.html">[Gpsd-users] [Gpsd-dev] Gpsd configuration files
+</A></li>
+	<LI>Next message: <A HREF="005274.html">[Gpsd-users] [Gpsd-dev]   Gpsd configuration files
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#5275">[ date ]</a>
+              <a href="thread.html#5275">[ thread ]</a>
+              <a href="subject.html#5275">[ subject ]</a>
+              <a href="author.html#5275">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

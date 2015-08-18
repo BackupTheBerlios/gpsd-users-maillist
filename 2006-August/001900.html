@@ -1,0 +1,430 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] Fwd: NTP Problems
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2006-August/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Fwd%3A%20NTP%20Problems&In-Reply-To=%3C20060829222813.GA2371%40space.mit.edu%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="001899.html">
+   <LINK REL="Next"  HREF="001901.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] Fwd: NTP Problems</H1>
+    <B>Geoffrey B. Crew</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Fwd%3A%20NTP%20Problems&In-Reply-To=%3C20060829222813.GA2371%40space.mit.edu%3E"
+       TITLE="[Gpsd-users] Fwd: NTP Problems">gbc at space.mit.edu
+       </A><BR>
+    <I>Wed Aug 30 00:28:13 CEST 2006</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="001899.html">[Gpsd-users] Fwd: NTP Problems
+</A></li>
+        <LI>Next message: <A HREF="001901.html">[Gpsd-users] Fwd: NTP Problems
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1900">[ date ]</a>
+              <a href="thread.html#1900">[ thread ]</a>
+              <a href="subject.html#1900">[ subject ]</a>
+              <a href="author.html#1900">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>&gt;<i> Had a quick look in the code...seems there's a call to gpsd_report if shmid
+</I>&gt;<i> = -1, which looks like it should output something if it i does fail.
+</I>&gt;<i> So i started up gpsd with -D 9 and didnt see any mention of shm failing...
+</I>&gt;<i> 
+</I>&gt;<i> Jan  1 11:08:44 gumstix user.notice gpsd[332]: gpsd: launching (Version 2.30
+</I>&gt;<i> )
+</I>&gt;<i> Jan  1 11:08:44 gumstix user.notice gpsd[332]: gpsd: listening on port 2947
+</I>&gt;<i> Jan  1 11:08:44 gumstix user.notice gpsd[332]: gpsd: changing to group 0
+</I>&gt;<i> Jan  1 11:08:44 gumstix user.notice gpsd[332]: gpsd: running with effective
+</I>&gt;<i> group ID 0
+</I>&gt;<i> Jan  1 11:08:44 gumstix user.notice gpsd[332]: gpsd: running with effective
+</I>&gt;<i> user ID 99
+</I>&gt;<i> Jan  1 11:08:44 gumstix user.notice gpsd[332]: gpsd: opening GPS data source
+</I>&gt;<i> at '/dev/ttyS0'
+</I>&gt;<i> Jan  1 11:08:44 gumstix user.notice gpsd[332]: gpsd: no probe matched...
+</I>&gt;<i> Jan  1 11:08:44 gumstix user.notice gpsd[332]: gpsd: speed 9600, 8N1
+</I>&gt;<i> Jan  1 11:08:44 gumstix user.notice gpsd[332]: gpsd: gpsd_activate: opened
+</I>&gt;<i> GPS (5)
+</I>&gt;<i> Jan  1 11:08:44 gumstix user.notice gpsd[332]: gpsd: flagging descriptor 5
+</I>&gt;<i> in open_device
+</I>&gt;<i> Jan  1 11:08:44 gumstix user.notice gpsd[332]: gpsd: select waits
+</I>&gt;<i> Jan  1 11:08:44 gumstix user.notice gpsd[332]: gpsd: polling 5
+</I>&gt;<i> Jan  1 11:08:44 gumstix user.notice gpsd[332]: gpsd: Read 72 chars to buffer
+</I>&gt;<i> offset 0 (total 72):
+</I>&gt;<i> e08600788600787886e086e086e698e086007886007886e698e086e086007878787866667860e680988060786000e618e6e6981e1e861878e078e6781e1878788606781e78788678
+</I>&gt;<i> Jan  1 11:08:44 gumstix user.notice gpsd[332]: gpsd: ISGPS word tag not
+</I>&gt;<i> correct, skipping
+</I>&gt;<i> Jan  1 11:08:44 gumstix user.notice gpsd[332]: gpsd: 00000000: character '.'
+</I>&gt;<i> [e0], new state: GROUND_STATE
+</I>&gt;<i> 
+</I>&gt;<i> seems weird to me. I'm thinking its possible that for some reason the struct
+</I>&gt;<i> isn't being intialised?
+</I>&gt;<i> I couldn't see it being called in a strace I ran either. Geoffrey, could you
+</I>&gt;<i> post a little more from either side of your strace please?
+</I>
+ strace -f gpsd -n -D 9 -F /var/run/gpsd.sock 2&gt;&amp;1 | tee strace.gpsd-D9.out
+
+is attached.  messages has:
+
+  Aug 29 18:19:57 geselda gpsd[18951]: gpsd: launching (Version 2.34)
+  Aug 29 18:19:58 geselda gpsd[18951]: gpsd: listening on port 2947
+  Aug 29 18:19:58 geselda gpsd[18951]: gpsd: changing to group 14
+  Aug 29 18:19:58 geselda gpsd[18951]: gpsd: running with effective group ID 14
+  Aug 29 18:19:58 geselda gpsd[18951]: gpsd: running with effective user ID 99
+  Aug 29 18:19:58 geselda gpsd[18951]: gpsd: select waits
+
+There does seem to be something different happening with group/user id's.
+Other than checking that getuid() is returning 0, I'm not sure what else
+to suggest.
+
+-- 
+
+		Geoff
+		<A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">gbc at space.mit.edu</A>
+-------------- next part --------------
+execve(&quot;/usr/sbin/gpsd&quot;, [&quot;gpsd&quot;, &quot;-n&quot;, &quot;-D&quot;, &quot;9&quot;, &quot;-F&quot;, &quot;/var/run/gpsd.sock&quot;], [/* 32 vars */]) = 0
+brk(0)                                  = 0x944f000
+old_mmap(NULL, 4096, PROT_READ|PROT_WRITE, MAP_PRIVATE|MAP_ANONYMOUS, -1, 0) = 0xb7f11000
+access(&quot;/etc/ld.so.preload&quot;, R_OK)      = -1 ENOENT (No such file or directory)
+open(&quot;/etc/ld.so.cache&quot;, O_RDONLY)      = 3
+fstat64(3, {st_mode=S_IFREG|0644, st_size=59835, ...}) = 0
+old_mmap(NULL, 59835, PROT_READ, MAP_PRIVATE, 3, 0) = 0xb7f02000
+close(3)                                = 0
+open(&quot;/lib/tls/i686/sse2/libgps.so.16&quot;, O_RDONLY) = -1 ENOENT (No such file or directory)
+open(&quot;/lib/tls/i686/libgps.so.16&quot;, O_RDONLY) = -1 ENOENT (No such file or directory)
+open(&quot;/lib/tls/sse2/libgps.so.16&quot;, O_RDONLY) = -1 ENOENT (No such file or directory)
+open(&quot;/lib/tls/libgps.so.16&quot;, O_RDONLY) = -1 ENOENT (No such file or directory)
+open(&quot;/lib/i686/sse2/libgps.so.16&quot;, O_RDONLY) = -1 ENOENT (No such file or directory)
+open(&quot;/lib/i686/libgps.so.16&quot;, O_RDONLY) = -1 ENOENT (No such file or directory)
+open(&quot;/lib/sse2/libgps.so.16&quot;, O_RDONLY) = -1 ENOENT (No such file or directory)
+open(&quot;/lib/libgps.so.16&quot;, O_RDONLY)     = -1 ENOENT (No such file or directory)
+open(&quot;/usr/lib/tls/i686/sse2/libgps.so.16&quot;, O_RDONLY) = -1 ENOENT (No such file or directory)
+open(&quot;/usr/lib/tls/i686/libgps.so.16&quot;, O_RDONLY) = -1 ENOENT (No such file or directory)
+open(&quot;/usr/lib/tls/sse2/libgps.so.16&quot;, O_RDONLY) = -1 ENOENT (No such file or directory)
+open(&quot;/usr/lib/tls/libgps.so.16&quot;, O_RDONLY) = -1 ENOENT (No such file or directory)
+open(&quot;/usr/lib/i686/sse2/libgps.so.16&quot;, O_RDONLY) = -1 ENOENT (No such file or directory)
+open(&quot;/usr/lib/i686/libgps.so.16&quot;, O_RDONLY) = -1 ENOENT (No such file or directory)
+open(&quot;/usr/lib/sse2/libgps.so.16&quot;, O_RDONLY) = -1 ENOENT (No such file or directory)
+open(&quot;/usr/lib/libgps.so.16&quot;, O_RDONLY) = 3
+read(3, &quot;\177ELF\1\1\1\0\0\0\0\0\0\0\0\0\3\0\3\0\1\0\0\0\0245\0&quot;..., 512) = 512
+fstat64(3, {st_mode=S_IFREG|0755, st_size=355447, ...}) = 0
+old_mmap(NULL, 118516, PROT_READ|PROT_EXEC, MAP_PRIVATE|MAP_DENYWRITE, 3, 0) = 0xa1a000
+old_mmap(0xa36000, 4096, PROT_READ|PROT_WRITE, MAP_PRIVATE|MAP_FIXED|MAP_DENYWRITE, 3, 0x1c000) = 0xa36000
+close(3)                                = 0
+open(&quot;/lib/libnsl.so.1&quot;, O_RDONLY)      = 3
+read(3, &quot;\177ELF\1\1\1\0\0\0\0\0\0\0\0\0\3\0\3\0\1\0\0\0000u\243&quot;..., 512) = 512
+fstat64(3, {st_mode=S_IFREG|0755, st_size=91700, ...}) = 0
+old_mmap(0x6a34000, 83936, PROT_READ|PROT_EXEC, MAP_PRIVATE|MAP_DENYWRITE, 3, 0) = 0x6a34000
+old_mmap(0x6a45000, 8192, PROT_READ|PROT_WRITE, MAP_PRIVATE|MAP_FIXED|MAP_DENYWRITE, 3, 0x10000) = 0x6a45000
+old_mmap(0x6a47000, 6112, PROT_READ|PROT_WRITE, MAP_PRIVATE|MAP_FIXED|MAP_ANONYMOUS, -1, 0) = 0x6a47000
+close(3)                                = 0
+open(&quot;/lib/libm.so.6&quot;, O_RDONLY)        = 3
+read(3, &quot;\177ELF\1\1\1\0\0\0\0\0\0\0\0\0\3\0\3\0\1\0\0\0\20\303&quot;..., 512) = 512
+fstat64(3, {st_mode=S_IFREG|0755, st_size=201032, ...}) = 0
+old_mmap(0x6b9000, 147616, PROT_READ|PROT_EXEC, MAP_PRIVATE|MAP_DENYWRITE, 3, 0) = 0x6b9000
+old_mmap(0x6dc000, 8192, PROT_READ|PROT_WRITE, MAP_PRIVATE|MAP_FIXED|MAP_DENYWRITE, 3, 0x22000) = 0x6dc000
+close(3)                                = 0
+open(&quot;/lib/libpthread.so.0&quot;, O_RDONLY)  = 3
+read(3, &quot;\177ELF\1\1\1\0\0\0\0\0\0\0\0\0\3\0\3\0\1\0\0\0\4X}\000&quot;..., 512) = 512
+fstat64(3, {st_mode=S_IFREG|0755, st_size=101680, ...}) = 0
+old_mmap(0x7d1000, 70084, PROT_READ|PROT_EXEC, MAP_PRIVATE|MAP_DENYWRITE, 3, 0) = 0x7d1000
+old_mmap(0x7df000, 8192, PROT_READ|PROT_WRITE, MAP_PRIVATE|MAP_FIXED|MAP_DENYWRITE, 3, 0xd000) = 0x7df000
+old_mmap(0x7e1000, 4548, PROT_READ|PROT_WRITE, MAP_PRIVATE|MAP_FIXED|MAP_ANONYMOUS, -1, 0) = 0x7e1000
+close(3)                                = 0
+open(&quot;/lib/libc.so.6&quot;, O_RDONLY)        = 3
+read(3, &quot;\177ELF\1\1\1\0\0\0\0\0\0\0\0\0\3\0\3\0\1\0\0\0\252.Z\000&quot;..., 512) = 512
+fstat64(3, {st_mode=S_IFREG|0755, st_size=1481808, ...}) = 0
+old_mmap(NULL, 4096, PROT_READ|PROT_WRITE, MAP_PRIVATE|MAP_ANONYMOUS, -1, 0) = 0xb7f01000
+old_mmap(0x58e000, 1215452, PROT_READ|PROT_EXEC, MAP_PRIVATE|MAP_DENYWRITE, 3, 0) = 0x58e000
+old_mmap(0x6b1000, 16384, PROT_READ|PROT_WRITE, MAP_PRIVATE|MAP_FIXED|MAP_DENYWRITE, 3, 0x122000) = 0x6b1000
+old_mmap(0x6b5000, 7132, PROT_READ|PROT_WRITE, MAP_PRIVATE|MAP_FIXED|MAP_ANONYMOUS, -1, 0) = 0x6b5000
+close(3)                                = 0
+open(&quot;/usr/lib/libstdc++.so.6&quot;, O_RDONLY) = 3
+read(3, &quot;\177ELF\1\1\1\0\0\0\0\0\0\0\0\0\3\0\3\0\1\0\0\0 \2507\000&quot;..., 512) = 512
+fstat64(3, {st_mode=S_IFREG|0755, st_size=892148, ...}) = 0
+old_mmap(0x33b000, 912984, PROT_READ|PROT_EXEC, MAP_PRIVATE|MAP_DENYWRITE, 3, 0) = 0x33b000
+old_mmap(0x410000, 20480, PROT_READ|PROT_WRITE, MAP_PRIVATE|MAP_FIXED|MAP_DENYWRITE, 3, 0xd5000) = 0x410000
+old_mmap(0x415000, 20056, PROT_READ|PROT_WRITE, MAP_PRIVATE|MAP_FIXED|MAP_ANONYMOUS, -1, 0) = 0x415000
+close(3)                                = 0
+open(&quot;/lib/libgcc_s.so.1&quot;, O_RDONLY)    = 3
+read(3, &quot;\177ELF\1\1\1\0\0\0\0\0\0\0\0\0\3\0\3\0\1\0\0\0\200F1\000&quot;..., 512) = 512
+fstat64(3, {st_mode=S_IFREG|0755, st_size=40112, ...}) = 0
+old_mmap(0x313000, 37576, PROT_READ|PROT_EXEC, MAP_PRIVATE|MAP_DENYWRITE, 3, 0) = 0x313000
+old_mmap(0x31c000, 4096, PROT_READ|PROT_WRITE, MAP_PRIVATE|MAP_FIXED|MAP_DENYWRITE, 3, 0x9000) = 0x31c000
+close(3)                                = 0
+old_mmap(NULL, 4096, PROT_READ|PROT_WRITE, MAP_PRIVATE|MAP_ANONYMOUS, -1, 0) = 0xb7f00000
+set_thread_area({entry_number:-1 -&gt; 6, base_addr:0xb7f00940, limit:1048575, seg_32bit:1, contents:0, read_exec_only:0, limit_in_pages:1, seg_not_present:0, useable:1}) = 0
+mprotect(0x6b1000, 8192, PROT_READ)     = 0
+mprotect(0x7df000, 4096, PROT_READ)     = 0
+mprotect(0x6dc000, 4096, PROT_READ)     = 0
+mprotect(0x6a45000, 4096, PROT_READ)    = 0
+mprotect(0x58a000, 4096, PROT_READ)     = 0
+munmap(0xb7f02000, 59835)               = 0
+set_tid_address(0xb7f00988)             = 18950
+rt_sigaction(SIGRTMIN, {0x7d5340, [], SA_SIGINFO}, NULL, 8) = 0
+rt_sigaction(SIGRT_1, {0x7d53a8, [], SA_RESTART|SA_SIGINFO}, NULL, 8) = 0
+rt_sigprocmask(SIG_UNBLOCK, [RTMIN RT_1], NULL, 8) = 0
+getrlimit(RLIMIT_STACK, {rlim_cur=10240*1024, rlim_max=RLIM_INFINITY}) = 0
+_sysctl({{CTL_KERN, KERN_VERSION}, 2, 0xbfc0fe80, 31, (nil), 0}) = 0
+unlink(&quot;/var/run/gpsd.sock&quot;)            = 0
+socket(PF_FILE, SOCK_STREAM, 0)         = 3
+bind(3, {sa_family=AF_FILE, path=&quot;/var/run/gpsd.sock&quot;}, 110) = 0
+listen(3, 5)                            = 0
+write(2, &quot;gpsd: control socket opened at /&quot;..., 50gpsd: control socket opened at /var/run/gpsd.sock
+) = 50
+clone(Process 18951 attached
+child_stack=0, flags=CLONE_CHILD_CLEARTID|CLONE_CHILD_SETTID|SIGCHLD, child_tidptr=0xb7f00988) = 18951
+[pid 18950] exit_group(0)               = ?
+Process 18950 detached
+setsid()                                = 18951
+chdir(&quot;/&quot;)                              = 0
+open(&quot;/dev/null&quot;, O_RDWR)               = 4
+dup2(4, 0)                              = 0
+dup2(4, 1)                              = 1
+dup2(4, 2)                              = 2
+close(4)                                = 0
+brk(0)                                  = 0x944f000
+brk(0x9470000)                          = 0x9470000
+time(NULL)                              = 1156889997
+open(&quot;/etc/localtime&quot;, O_RDONLY)        = 4
+fstat64(4, {st_mode=S_IFREG|0644, st_size=1267, ...}) = 0
+fstat64(4, {st_mode=S_IFREG|0644, st_size=1267, ...}) = 0
+mmap2(NULL, 4096, PROT_READ|PROT_WRITE, MAP_PRIVATE|MAP_ANONYMOUS, -1, 0) = 0xb7f10000
+read(4, &quot;TZif\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\4\0\0\0\4\0&quot;..., 4096) = 1267
+close(4)                                = 0
+munmap(0xb7f10000, 4096)                = 0
+stat64(&quot;/etc/localtime&quot;, {st_mode=S_IFREG|0644, st_size=1267, ...}) = 0
+stat64(&quot;/etc/localtime&quot;, {st_mode=S_IFREG|0644, st_size=1267, ...}) = 0
+stat64(&quot;/etc/localtime&quot;, {st_mode=S_IFREG|0644, st_size=1267, ...}) = 0
+socket(PF_FILE, SOCK_DGRAM, 0)          = 4
+fcntl64(4, F_SETFD, FD_CLOEXEC)         = 0
+connect(4, {sa_family=AF_FILE, path=&quot;/dev/log&quot;}, 16) = 0
+send(4, &quot;&lt;13&gt;Aug 29 18:19:57 gpsd[18951]:&quot;..., 64, MSG_NOSIGNAL) = 64
+open(&quot;/etc/nsswitch.conf&quot;, O_RDONLY)    = 5
+fstat64(5, {st_mode=S_IFREG|0644, st_size=1686, ...}) = 0
+mmap2(NULL, 4096, PROT_READ|PROT_WRITE, MAP_PRIVATE|MAP_ANONYMOUS, -1, 0) = 0xb7f10000
+read(5, &quot;#\n# /etc/nsswitch.conf\n#\n# An ex&quot;..., 4096) = 1686
+read(5, &quot;&quot;, 4096)                       = 0
+close(5)                                = 0
+munmap(0xb7f10000, 4096)                = 0
+open(&quot;/etc/ld.so.cache&quot;, O_RDONLY)      = 5
+fstat64(5, {st_mode=S_IFREG|0644, st_size=59835, ...}) = 0
+old_mmap(NULL, 59835, PROT_READ, MAP_PRIVATE, 5, 0) = 0xb7f02000
+close(5)                                = 0
+open(&quot;/lib/libnss_files.so.2&quot;, O_RDONLY) = 5
+read(5, &quot;\177ELF\1\1\1\0\0\0\0\0\0\0\0\0\3\0\3\0\1\0\0\0`\33\0\000&quot;..., 512) = 512
+fstat64(5, {st_mode=S_IFREG|0755, st_size=46640, ...}) = 0
+old_mmap(NULL, 41620, PROT_READ|PROT_EXEC, MAP_PRIVATE|MAP_DENYWRITE, 5, 0) = 0x111000
+old_mmap(0x11a000, 8192, PROT_READ|PROT_WRITE, MAP_PRIVATE|MAP_FIXED|MAP_DENYWRITE, 5, 0x8000) = 0x11a000
+close(5)                                = 0
+mprotect(0x11a000, 4096, PROT_READ)     = 0
+munmap(0xb7f02000, 59835)               = 0
+open(&quot;/etc/services&quot;, O_RDONLY)         = 5
+fcntl64(5, F_GETFD)                     = 0
+fcntl64(5, F_SETFD, FD_CLOEXEC)         = 0
+fstat64(5, {st_mode=S_IFREG|0644, st_size=20385, ...}) = 0
+mmap2(NULL, 4096, PROT_READ|PROT_WRITE, MAP_PRIVATE|MAP_ANONYMOUS, -1, 0) = 0xb7f10000
+read(5, &quot;# /etc/services:\n# $Id: services&quot;..., 4096) = 4096
+read(5, &quot;otocol\nntp\t\t123/tcp\nntp\t\t123/udp&quot;..., 4096) = 4096
+read(5, &quot;67/udp\nrsync\t\t873/tcp\t\t\t\t# rsync&quot;..., 4096) = 4096
+read(5, &quot;tmanager\ncvspserver\t2401/tcp\t\t\t#&quot;..., 4096) = 4096
+read(5, &quot;This port is registered as wnn6,&quot;..., 4096) = 4001
+read(5, &quot;&quot;, 4096)                       = 0
+close(5)                                = 0
+munmap(0xb7f10000, 4096)                = 0
+open(&quot;/etc/services&quot;, O_RDONLY)         = 5
+fcntl64(5, F_GETFD)                     = 0
+fcntl64(5, F_SETFD, FD_CLOEXEC)         = 0
+fstat64(5, {st_mode=S_IFREG|0644, st_size=20385, ...}) = 0
+mmap2(NULL, 4096, PROT_READ|PROT_WRITE, MAP_PRIVATE|MAP_ANONYMOUS, -1, 0) = 0xb7f10000
+read(5, &quot;# /etc/services:\n# $Id: services&quot;..., 4096) = 4096
+read(5, &quot;otocol\nntp\t\t123/tcp\nntp\t\t123/udp&quot;..., 4096) = 4096
+read(5, &quot;67/udp\nrsync\t\t873/tcp\t\t\t\t# rsync&quot;..., 4096) = 4096
+read(5, &quot;tmanager\ncvspserver\t2401/tcp\t\t\t#&quot;..., 4096) = 4096
+read(5, &quot;This port is registered as wnn6,&quot;..., 4096) = 4001
+read(5, &quot;&quot;, 4096)                       = 0
+close(5)                                = 0
+munmap(0xb7f10000, 4096)                = 0
+open(&quot;/etc/protocols&quot;, O_RDONLY)        = 5
+fcntl64(5, F_GETFD)                     = 0
+fcntl64(5, F_SETFD, FD_CLOEXEC)         = 0
+fstat64(5, {st_mode=S_IFREG|0644, st_size=5834, ...}) = 0
+mmap2(NULL, 4096, PROT_READ|PROT_WRITE, MAP_PRIVATE|MAP_ANONYMOUS, -1, 0) = 0xb7f10000
+read(5, &quot;# /etc/protocols:\n# $Id: protoco&quot;..., 4096) = 4096
+close(5)                                = 0
+munmap(0xb7f10000, 4096)                = 0
+socket(PF_INET, SOCK_STREAM, IPPROTO_TCP) = 5
+setsockopt(5, SOL_SOCKET, SO_REUSEADDR, [1], 4) = 0
+bind(5, {sa_family=AF_INET, sin_port=htons(2947), sin_addr=inet_addr(&quot;0.0.0.0&quot;)}, 16) = 0
+listen(5, 5)                            = 0
+time(NULL)                              = 1156889998
+stat64(&quot;/etc/localtime&quot;, {st_mode=S_IFREG|0644, st_size=1267, ...}) = 0
+stat64(&quot;/etc/localtime&quot;, {st_mode=S_IFREG|0644, st_size=1267, ...}) = 0
+stat64(&quot;/etc/localtime&quot;, {st_mode=S_IFREG|0644, st_size=1267, ...}) = 0
+send(4, &quot;&lt;13&gt;Aug 29 18:19:58 gpsd[18951]:&quot;..., 62, MSG_NOSIGNAL) = 62
+getuid32()                              = 0
+getpriority(PRIO_PROCESS, 0)            = 20
+setpriority(PRIO_PROCESS, 0, -10)       = 0
+getpriority(PRIO_PROCESS, 0)            = 30
+shmget(1314148400, 80, IPC_CREAT|0644)  = 2490383
+shmat(2490383, 0, 0)                    = 0xb7f10000
+shmget(1314148401, 80, IPC_CREAT|0644)  = 2523152
+shmat(2523152, 0, 0)                    = 0xb7f0f000
+shmget(1314148402, 80, IPC_CREAT|0644)  = 2555927
+shmat(2555927, 0, 0)                    = 0xb7f0e000
+shmget(1314148403, 80, IPC_CREAT|0644)  = 2588696
+shmat(2588696, 0, 0)                    = 0xb7f0d000
+getuid32()                              = 0
+stat64(&quot;/dev/ttyS0&quot;, {st_mode=S_IFCHR|0666, st_rdev=makedev(4, 64), ...}) = 0
+time(NULL)                              = 1156889998
+stat64(&quot;/etc/localtime&quot;, {st_mode=S_IFREG|0644, st_size=1267, ...}) = 0
+stat64(&quot;/etc/localtime&quot;, {st_mode=S_IFREG|0644, st_size=1267, ...}) = 0
+stat64(&quot;/etc/localtime&quot;, {st_mode=S_IFREG|0644, st_size=1267, ...}) = 0
+send(4, &quot;&lt;13&gt;Aug 29 18:19:58 gpsd[18951]:&quot;..., 60, MSG_NOSIGNAL) = 60
+setgid32(14)                            = 0
+socket(PF_FILE, SOCK_STREAM, 0)         = 6
+fcntl64(6, F_GETFL)                     = 0x2 (flags O_RDWR)
+fcntl64(6, F_SETFL, O_RDWR|O_NONBLOCK)  = 0
+connect(6, {sa_family=AF_FILE, path=&quot;/var/run/nscd/socket&quot;}, 110) = -1 ENOENT (No such file or directory)
+close(6)                                = 0
+socket(PF_FILE, SOCK_STREAM, 0)         = 6
+fcntl64(6, F_GETFL)                     = 0x2 (flags O_RDWR)
+fcntl64(6, F_SETFL, O_RDWR|O_NONBLOCK)  = 0
+connect(6, {sa_family=AF_FILE, path=&quot;/var/run/nscd/socket&quot;}, 110) = -1 ENOENT (No such file or directory)
+close(6)                                = 0
+open(&quot;/etc/passwd&quot;, O_RDONLY)           = 6
+fcntl64(6, F_GETFD)                     = 0
+fcntl64(6, F_SETFD, FD_CLOEXEC)         = 0
+fstat64(6, {st_mode=S_IFREG|0644, st_size=1628, ...}) = 0
+mmap2(NULL, 4096, PROT_READ|PROT_WRITE, MAP_PRIVATE|MAP_ANONYMOUS, -1, 0) = 0xb7f0c000
+read(6, &quot;root:x:0:0:root:/root:/bin/bash\n&quot;..., 4096) = 1628
+close(6)                                = 0
+munmap(0xb7f0c000, 4096)                = 0
+setuid32(99)                            = 0
+getegid32()                             = 14
+time(NULL)                              = 1156889998
+stat64(&quot;/etc/localtime&quot;, {st_mode=S_IFREG|0644, st_size=1267, ...}) = 0
+stat64(&quot;/etc/localtime&quot;, {st_mode=S_IFREG|0644, st_size=1267, ...}) = 0
+stat64(&quot;/etc/localtime&quot;, {st_mode=S_IFREG|0644, st_size=1267, ...}) = 0
+send(4, &quot;&lt;13&gt;Aug 29 18:19:58 gpsd[18951]:&quot;..., 74, MSG_NOSIGNAL) = 74
+geteuid32()                             = 99
+time(NULL)                              = 1156889998
+stat64(&quot;/etc/localtime&quot;, {st_mode=S_IFREG|0644, st_size=1267, ...}) = 0
+stat64(&quot;/etc/localtime&quot;, {st_mode=S_IFREG|0644, st_size=1267, ...}) = 0
+stat64(&quot;/etc/localtime&quot;, {st_mode=S_IFREG|0644, st_size=1267, ...}) = 0
+send(4, &quot;&lt;13&gt;Aug 29 18:19:58 gpsd[18951]:&quot;..., 73, MSG_NOSIGNAL) = 73
+rt_sigaction(SIGHUP, {0x80495f0, [HUP], SA_RESTART}, {SIG_DFL}, 8) = 0
+rt_sigaction(SIGINT, {0x80495f0, [INT], SA_RESTART}, {SIG_DFL}, 8) = 0
+rt_sigaction(SIGTERM, {0x80495f0, [TERM], SA_RESTART}, {SIG_DFL}, 8) = 0
+rt_sigaction(SIGQUIT, {0x80495f0, [QUIT], SA_RESTART}, {SIG_DFL}, 8) = 0
+rt_sigaction(SIGPIPE, {SIG_IGN}, {SIG_DFL}, 8) = 0
+time(NULL)                              = 1156889998
+time(NULL)                              = 1156889998
+stat64(&quot;/etc/localtime&quot;, {st_mode=S_IFREG|0644, st_size=1267, ...}) = 0
+stat64(&quot;/etc/localtime&quot;, {st_mode=S_IFREG|0644, st_size=1267, ...}) = 0
+stat64(&quot;/etc/localtime&quot;, {st_mode=S_IFREG|0644, st_size=1267, ...}) = 0
+send(4, &quot;&lt;13&gt;Aug 29 18:19:58 gpsd[18951]:&quot;..., 52, MSG_NOSIGNAL) = 52
+select(6, [3 5], NULL, NULL, {1, 0})    = 0 (Timeout)
+time(NULL)                              = 1156889999
+stat64(&quot;/etc/localtime&quot;, {st_mode=S_IFREG|0644, st_size=1267, ...}) = 0
+stat64(&quot;/etc/localtime&quot;, {st_mode=S_IFREG|0644, st_size=1267, ...}) = 0
+stat64(&quot;/etc/localtime&quot;, {st_mode=S_IFREG|0644, st_size=1267, ...}) = 0
+send(4, &quot;&lt;13&gt;Aug 29 18:19:59 gpsd[18951]:&quot;..., 52, MSG_NOSIGNAL) = 52
+select(6, [3 5], NULL, NULL, {1, 0})    = 0 (Timeout)
+time(NULL)                              = 1156890000
+stat64(&quot;/etc/localtime&quot;, {st_mode=S_IFREG|0644, st_size=1267, ...}) = 0
+stat64(&quot;/etc/localtime&quot;, {st_mode=S_IFREG|0644, st_size=1267, ...}) = 0
+stat64(&quot;/etc/localtime&quot;, {st_mode=S_IFREG|0644, st_size=1267, ...}) = 0
+send(4, &quot;&lt;13&gt;Aug 29 18:20:00 gpsd[18951]:&quot;..., 52, MSG_NOSIGNAL) = 52
+select(6, [3 5], NULL, NULL, {1, 0})    = 0 (Timeout)
+time(NULL)                              = 1156890001
+stat64(&quot;/etc/localtime&quot;, {st_mode=S_IFREG|0644, st_size=1267, ...}) = 0
+stat64(&quot;/etc/localtime&quot;, {st_mode=S_IFREG|0644, st_size=1267, ...}) = 0
+stat64(&quot;/etc/localtime&quot;, {st_mode=S_IFREG|0644, st_size=1267, ...}) = 0
+send(4, &quot;&lt;13&gt;Aug 29 18:20:01 gpsd[18951]:&quot;..., 52, MSG_NOSIGNAL) = 52
+select(6, [3 5], NULL, NULL, {1, 0})    = 0 (Timeout)
+time(NULL)                              = 1156890002
+stat64(&quot;/etc/localtime&quot;, {st_mode=S_IFREG|0644, st_size=1267, ...}) = 0
+stat64(&quot;/etc/localtime&quot;, {st_mode=S_IFREG|0644, st_size=1267, ...}) = 0
+stat64(&quot;/etc/localtime&quot;, {st_mode=S_IFREG|0644, st_size=1267, ...}) = 0
+send(4, &quot;&lt;13&gt;Aug 29 18:20:02 gpsd[18951]:&quot;..., 52, MSG_NOSIGNAL) = 52
+select(6, [3 5], NULL, NULL, {1, 0})    = 0 (Timeout)
+time(NULL)                              = 1156890003
+stat64(&quot;/etc/localtime&quot;, {st_mode=S_IFREG|0644, st_size=1267, ...}) = 0
+stat64(&quot;/etc/localtime&quot;, {st_mode=S_IFREG|0644, st_size=1267, ...}) = 0
+stat64(&quot;/etc/localtime&quot;, {st_mode=S_IFREG|0644, st_size=1267, ...}) = 0
+send(4, &quot;&lt;13&gt;Aug 29 18:20:03 gpsd[18951]:&quot;..., 52, MSG_NOSIGNAL) = 52
+select(6, [3 5], NULL, NULL, {1, 0})    = 0 (Timeout)
+time(NULL)                              = 1156890004
+stat64(&quot;/etc/localtime&quot;, {st_mode=S_IFREG|0644, st_size=1267, ...}) = 0
+stat64(&quot;/etc/localtime&quot;, {st_mode=S_IFREG|0644, st_size=1267, ...}) = 0
+stat64(&quot;/etc/localtime&quot;, {st_mode=S_IFREG|0644, st_size=1267, ...}) = 0
+send(4, &quot;&lt;13&gt;Aug 29 18:20:04 gpsd[18951]:&quot;..., 52, MSG_NOSIGNAL) = 52
+select(6, [3 5], NULL, NULL, {1, 0})    = 0 (Timeout)
+time(NULL)                              = 1156890005
+stat64(&quot;/etc/localtime&quot;, {st_mode=S_IFREG|0644, st_size=1267, ...}) = 0
+stat64(&quot;/etc/localtime&quot;, {st_mode=S_IFREG|0644, st_size=1267, ...}) = 0
+stat64(&quot;/etc/localtime&quot;, {st_mode=S_IFREG|0644, st_size=1267, ...}) = 0
+send(4, &quot;&lt;13&gt;Aug 29 18:20:05 gpsd[18951]:&quot;..., 52, MSG_NOSIGNAL) = 52
+select(6, [3 5], NULL, NULL, {1, 0})    = 0 (Timeout)
+time(NULL)                              = 1156890006
+stat64(&quot;/etc/localtime&quot;, {st_mode=S_IFREG|0644, st_size=1267, ...}) = 0
+stat64(&quot;/etc/localtime&quot;, {st_mode=S_IFREG|0644, st_size=1267, ...}) = 0
+stat64(&quot;/etc/localtime&quot;, {st_mode=S_IFREG|0644, st_size=1267, ...}) = 0
+send(4, &quot;&lt;13&gt;Aug 29 18:20:06 gpsd[18951]:&quot;..., 52, MSG_NOSIGNAL) = 52
+select(6, [3 5], NULL, NULL, {1, 0})    = 0 (Timeout)
+time(NULL)                              = 1156890007
+stat64(&quot;/etc/localtime&quot;, {st_mode=S_IFREG|0644, st_size=1267, ...}) = 0
+stat64(&quot;/etc/localtime&quot;, {st_mode=S_IFREG|0644, st_size=1267, ...}) = 0
+stat64(&quot;/etc/localtime&quot;, {st_mode=S_IFREG|0644, st_size=1267, ...}) = 0
+send(4, &quot;&lt;13&gt;Aug 29 18:20:07 gpsd[18951]:&quot;..., 52, MSG_NOSIGNAL) = 52
+select(6, [3 5], NULL, NULL, {1, 0})    = 0 (Timeout)
+time(NULL)                              = 1156890008
+stat64(&quot;/etc/localtime&quot;, {st_mode=S_IFREG|0644, st_size=1267, ...}) = 0
+stat64(&quot;/etc/localtime&quot;, {st_mode=S_IFREG|0644, st_size=1267, ...}) = 0
+stat64(&quot;/etc/localtime&quot;, {st_mode=S_IFREG|0644, st_size=1267, ...}) = 0
+send(4, &quot;&lt;13&gt;Aug 29 18:20:08 gpsd[18951]:&quot;..., 52, MSG_NOSIGNAL) = 52
+select(6, [3 5], NULL, NULL, {1, 0})    = 0 (Timeout)
+time(NULL)                              = 1156890009
+stat64(&quot;/etc/localtime&quot;, {st_mode=S_IFREG|0644, st_size=1267, ...}) = 0
+stat64(&quot;/etc/localtime&quot;, {st_mode=S_IFREG|0644, st_size=1267, ...}) = 0
+stat64(&quot;/etc/localtime&quot;, {st_mode=S_IFREG|0644, st_size=1267, ...}) = 0
+send(4, &quot;&lt;13&gt;Aug 29 18:20:09 gpsd[18951]:&quot;..., 52, MSG_NOSIGNAL) = 52
+select(6, [3 5], NULL, NULL, {1, 0})    = 0 (Timeout)
+time(NULL)                              = 1156890010
+stat64(&quot;/etc/localtime&quot;, {st_mode=S_IFREG|0644, st_size=1267, ...}) = 0
+stat64(&quot;/etc/localtime&quot;, {st_mode=S_IFREG|0644, st_size=1267, ...}) = 0
+stat64(&quot;/etc/localtime&quot;, {st_mode=S_IFREG|0644, st_size=1267, ...}) = 0
+send(4, &quot;&lt;13&gt;Aug 29 18:20:10 gpsd[18951]:&quot;..., 52, MSG_NOSIGNAL) = 52
+select(6, [3 5], NULL, NULL, {1, 0}
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="001899.html">[Gpsd-users] Fwd: NTP Problems
+</A></li>
+	<LI>Next message: <A HREF="001901.html">[Gpsd-users] Fwd: NTP Problems
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1900">[ date ]</a>
+              <a href="thread.html#1900">[ thread ]</a>
+              <a href="subject.html#1900">[ subject ]</a>
+              <a href="author.html#1900">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

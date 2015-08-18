@@ -1,0 +1,138 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] PHP client
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2009-April/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20PHP%20client&In-Reply-To=%3C830508.24301.qm%40web110011.mail.gq1.yahoo.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="003710.html">
+   <LINK REL="Next"  HREF="003712.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] PHP client</H1>
+    <B>hamish_b at yahoo.com</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20PHP%20client&In-Reply-To=%3C830508.24301.qm%40web110011.mail.gq1.yahoo.com%3E"
+       TITLE="[Gpsd-users] PHP client">hamish_b at yahoo.com
+       </A><BR>
+    <I>Wed Apr 15 07:33:22 CEST 2009</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="003710.html">[Gpsd-users] PHP client
+</A></li>
+        <LI>Next message: <A HREF="003712.html">[Gpsd-users] PHP client
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3711">[ date ]</a>
+              <a href="thread.html#3711">[ thread ]</a>
+              <a href="subject.html#3711">[ subject ]</a>
+              <a href="author.html#3711">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>
+Peter wrote:
+&gt;<i> In case its any use to anyone included below is the essence
+</I>&gt;<i> of the php client. It also includes my brief code to convert
+</I>&gt;<i> wgs84 to NZMG (fairly roughly). 
+</I>&gt;<i> 
+</I>&gt;<i> cs2cs returns three digits like so:
+</I>&gt;<i> 2473526.00 5758584.84 -6.61
+</I>&gt;<i> im not sure what the third field is, and the man page
+</I>&gt;<i> doesnt say.
+</I>
+it's the z/error parameter. your ellipsoids have different shapes, so the
+simple &quot;horizontal plane&quot; calc ends up with a 6 meter vertical deviation
+(likely there is some associated horizontal &quot;error&quot; too due to the bent
+plate).
+
+
+&gt;<i> //convert wgs84 to nzmg
+</I>&gt;<i> $result= exec(&quot;echo '$lon $lat' | cs2cs
+</I>&gt;<i>      +proj=latlong +datum=WGS84 +to +init=epsg:4272 +proj=nzmg&quot;);
+</I>
+for NZMG I suggest you use EPSG code 27200 directly. It expands to:
+
+# NZGD49 / New Zealand Map Grid
+&lt;27200&gt; +proj=nzmg +lat_0=-41 +lon_0=173 +x_0=2510000 +y_0=6023150
+  +ellps=intl +datum=nzgd49 +units=m +no_defs  &lt;&gt;
+
+
+so your code would look like:
+
+ $result= exec(&quot;echo '$lon $lat' | cs2cs +proj=longlat +datum=WGS84
+    +to +init=epsg:27200&quot;);
+
+
+better yet, use the LINZ NTv2 distortion grid* for the WGS84-&gt;NZGD49
+datum transform by adding &quot;+nadgrids=nzgd2kgrid0005.gsb&quot; to the map grid
+side of the cs2cs params. then you get:
+
+2473525.67      5758583.57 0.00
+
+which is only about a meter away, but for some parts of the country it
+can be as large as 4-5m away. Do not use the distortion grid far offshore,
+it's all based on trig stations. (or NZMG very far offshore for that
+matter; use NZTM instead)
+
+[*] depending on your install you may have to give the full path to the
+grid file. if you don't have the grid file you can download it from
+proj4's FTP site or from LINZ's website. It may be Freely used.
+
+
+# list the datum params used:
+$ proj -ld
+....
+      nzgd49 intl         towgs84=59.47,-5.04,187.44,0.47,-0.1,1.024,-4.5993
+                          New Zealand Geodetic Datum 1949
+
+so by default it uses the 7-term transform,
+
+$ echo &quot;172.54975299 -43.37929399&quot; | cs2cs +proj=latlong +datum=WGS84 \
+   +to +init=epsg:27200 +towgs84=59.47,-5.04,187.44,0.47,-0.1,1.024,-4.5993
+2473526.00      5758584.84 -6.61
+
+(same answer)
+
+which is alright. (the 3-term transform is more crappy)
+
+
+in summary, you seem to have cracked it, but if you use +nadgrids instead
+of +towgs84 default you'll get an even better result.
+
+
+Hamish
+
+
+
+      
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="003710.html">[Gpsd-users] PHP client
+</A></li>
+	<LI>Next message: <A HREF="003712.html">[Gpsd-users] PHP client
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3711">[ date ]</a>
+              <a href="thread.html#3711">[ thread ]</a>
+              <a href="subject.html#3711">[ subject ]</a>
+              <a href="author.html#3711">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

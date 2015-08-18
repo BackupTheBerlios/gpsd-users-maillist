@@ -1,0 +1,114 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] Mapping NMEA Sentence name to tag
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2011-January/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Mapping%20NMEA%20Sentence%20name%20to%20tag&In-Reply-To=%3C20110125154220.5e009ac0%40yendi%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="004963.html">
+   <LINK REL="Next"  HREF="004954.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] Mapping NMEA Sentence name to tag</H1>
+    <B>Charles Curley</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Mapping%20NMEA%20Sentence%20name%20to%20tag&In-Reply-To=%3C20110125154220.5e009ac0%40yendi%3E"
+       TITLE="[Gpsd-users] Mapping NMEA Sentence name to tag">charlescurley at charlescurley.com
+       </A><BR>
+    <I>Tue Jan 25 23:42:20 CET 2011</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="004963.html">[Gpsd-users] Mapping NMEA Sentence name to tag
+</A></li>
+        <LI>Next message: <A HREF="004954.html">[Gpsd-users] Mapping NMEA Sentence name to tag
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#4964">[ date ]</a>
+              <a href="thread.html#4964">[ thread ]</a>
+              <a href="subject.html#4964">[ subject ]</a>
+              <a href="author.html#4964">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>On Tue, 25 Jan 2011 21:44:25 +0000
+&quot;Tomalak Geret'kal&quot; &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">tom at kera.name</A>&gt; wrote:
+
+&gt;<i> On 25/01/2011 20:58, Bill Lee wrote:
+</I>&gt;<i> &gt; O.k., Tom, you're finally getting through to me! :-)
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; My situation is that I must run with the current gpsd. But I
+</I>&gt;<i> &gt; don't want the application to break when the Fedora folks
+</I>&gt;<i> &gt; decide to make a later version the standard.
+</I>&gt;<i> 
+</I>&gt;<i> Unfortunately, what Fedora ships has nothing to do with 
+</I>&gt;<i> gpsd; &quot;the current gpsd&quot; is 2.95. I'm sorry to hear that 
+</I>&gt;<i> Fedora's packages are so far behind!
+</I>
+Even Ubuntu, not noted for being bleeding edge, is up to 2.94.
+
+You could bugzilla it.
+
+&gt;<i> 
+</I>&gt;<i> &gt; Is there some way I can ask gpsd &quot;What form of interface can
+</I>&gt;<i> &gt; I expect from you?&quot;? I could then write the application to
+</I>&gt;<i> &gt; switch as appropriate. (If &quot;RTFM!&quot; is the answer, please say
+</I>&gt;<i> &gt; so!)
+</I>&gt;<i> 
+</I>&gt;<i> Interface as in.. what exactly? I believe it's still 
+</I>&gt;<i> possible -- albeit deprecated -- to ask current-gpsd to use 
+</I>&gt;<i> the old protocol.
+</I>
+Yes. Early on in the 2.9x series, NMEA was the default, and you had to
+ask for JSON. That will change to JSON as the default, if it hasn't
+already. So you should always request the protocol you want, either
+shortly after you get a connection, or when you want gpsd to wake up the
+receiver and start shipping packets. I use:
+
+
+inline void sendWatch (void) {
+    /* Tell libgps to keep shoveling data at us, and use JSON rather
+     * than gpsd's corrected NMEA. */
+    (void) gps_stream(&amp;our_gps_data, WATCH_ENABLE | WATCH_JSON, NULL);
+}
+
+To get NMEA, substitute WATCH_NMEA for WATCH_JSON. This and more is in
+gps.h.
+
+
+-- 
+
+Charles Curley                  /&quot;\    ASCII Ribbon Campaign
+Looking for fine software       \ /    Respect for open standards
+and/or writing?                  X     No HTML/RTF in email
+<A HREF="http://www.charlescurley.com">http://www.charlescurley.com</A>    / \    No M$ Word docs in email
+
+Key fingerprint = CE5C 6645 A45A 64E4 94C0  809C FFF6 4C48 4ECD DFDB
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="004963.html">[Gpsd-users] Mapping NMEA Sentence name to tag
+</A></li>
+	<LI>Next message: <A HREF="004954.html">[Gpsd-users] Mapping NMEA Sentence name to tag
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#4964">[ date ]</a>
+              <a href="thread.html#4964">[ thread ]</a>
+              <a href="subject.html#4964">[ subject ]</a>
+              <a href="author.html#4964">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

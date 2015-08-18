@@ -1,0 +1,119 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] Recommneded Unit
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2007-May/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Recommneded%20Unit&In-Reply-To=%3C91981b3e0705071243h4ae7f61td615fb7c9a3f8578%40mail.gmail.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="002607.html">
+   <LINK REL="Next"  HREF="002615.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] Recommneded Unit</H1>
+    <B>Chris Kuethe</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Recommneded%20Unit&In-Reply-To=%3C91981b3e0705071243h4ae7f61td615fb7c9a3f8578%40mail.gmail.com%3E"
+       TITLE="[Gpsd-users] Recommneded Unit">chris.kuethe at gmail.com
+       </A><BR>
+    <I>Mon May  7 21:43:46 CEST 2007</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="002607.html">[Gpsd-users] Recommneded Unit
+</A></li>
+        <LI>Next message: <A HREF="002615.html">[Gpsd-users] Recommneded Unit
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2609">[ date ]</a>
+              <a href="thread.html#2609">[ thread ]</a>
+              <a href="subject.html#2609">[ subject ]</a>
+              <a href="author.html#2609">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>On 5/7/07, Oliver Schinagl &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">oliver at schinagl.nl</A>&gt; wrote:
+&gt;<i> Hi,
+</I>&gt;<i>
+</I>&gt;<i> I was reading through your website, and found only a sheet with 'poor
+</I>&gt;<i> good and excellent' supported units. A lot of them where marked good,
+</I>&gt;<i> and just a few excellent. So my first question would be, what's the
+</I>&gt;<i> difference in good and excellent? And which would would be recommended
+</I>&gt;<i> by you guys?
+</I>
+I've stopped marking devices as &quot;excellent&quot; ... it's either &quot;good&quot; or not.
+
+Good (good enough) means that there are likely to be drivers, we can
+easily parse the protocol and get useful data to you.  Less than good
+means that we have to do stupid tricks to get the receiver into a
+useful state, or the data is often erroneous, there are build quality
+problems, non-portable kernel modules may be needed, ...
+
+&gt;<i> I'm looking into buying a cheap(ish) bluetooth/USB (no serial on my
+</I>&gt;<i> laptop) GPS unit and it must work in linux, as I don't have windows.
+</I>
+I'm not terribly fond of bluetooth.
+1) yet another device spraying in the 2.4GHz ISM band
+2) yet another device sucking batteries
+3) many bluetooth devices are buggy and don't respond well to serial
+speed changes
+4) bluetooth is still needlessly complicated.
+
+also, I don't run linux or have any bluetooth adapters. I haven't got
+around to hacking in usb support to my bluetooth-only GP-821.
+
+Your receiver have a prolific or ftdi controller - a silicon labs or
+USB ACM controller may be acceptable, though silicon laboratories
+don't release programming documentation, so open source drivers for
+this chipset may be buggy (works on my trimble and itrax though).
+
+You should be able to avoid needing crazy kernel modules (like those
+required for some magellan or garmin receivers)
+
+Your recevier should have a reasonably well documented chipset - SiRF,
+Trimble, ANTARIS, Garmin are pretty good. iTrax may also be acceptable
+- I've got a working useful iTalk decoder, but there are some gaps in
+their documentation.
+
+Depending on your usage, you may need a higher sensitivity receiver.
+SiRF3 does a pretty good job of locking on to a signal, at the cost of
+some accuracy. In a side-by-side of (sirf2, sirf3, itrax3, lassen-iq)
+test in an urban canyon, only the sirf3 and itrax3 got signal, but
+there was a lot more randomness in the sirf3 solutions. The logs from
+the itrax were also fairly noisy, but they were a lot closer to the
+path I walked.
+
+Find some candidate receivers, and then ask one of us (probably me)
+what I think.
+
+CK
+
+-- 
+GDB has a 'break' feature; why doesn't it have 'fix' too?
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="002607.html">[Gpsd-users] Recommneded Unit
+</A></li>
+	<LI>Next message: <A HREF="002615.html">[Gpsd-users] Recommneded Unit
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2609">[ date ]</a>
+              <a href="thread.html#2609">[ thread ]</a>
+              <a href="subject.html#2609">[ subject ]</a>
+              <a href="author.html#2609">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

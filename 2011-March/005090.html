@@ -1,0 +1,199 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] gpsd closes serial port then gets no more NMEA frames.
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2011-March/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20gpsd%20closes%20serial%20port%20then%20gets%20no%20more%20NMEA%20frames.&In-Reply-To=%3C4D73FBFD.8040609%40galmiche.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="005129.html">
+   <LINK REL="Next"  HREF="005091.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] gpsd closes serial port then gets no more NMEA frames.</H1>
+    <B>&quot;Herv&#233; GALMICHE (HG)&quot;</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20gpsd%20closes%20serial%20port%20then%20gets%20no%20more%20NMEA%20frames.&In-Reply-To=%3C4D73FBFD.8040609%40galmiche.com%3E"
+       TITLE="[Gpsd-users] gpsd closes serial port then gets no more NMEA frames.">info at galmiche.com
+       </A><BR>
+    <I>Sun Mar  6 22:26:21 CET 2011</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="005129.html">[Gpsd-users] gpsd: internal error - too many satellites
+</A></li>
+        <LI>Next message: <A HREF="005091.html">[Gpsd-users] gpsd closes serial port then gets no more NMEA frames.
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#5090">[ date ]</a>
+              <a href="thread.html#5090">[ thread ]</a>
+              <a href="subject.html#5090">[ subject ]</a>
+              <a href="author.html#5090">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>    Hi all users of gpsd,
+
+    I have an GPS USB Globalsat BU-353 linked to my server OpenSuse 11.3
+
+    I've check that!
+    The port is well selfcreated /dev/ttyUSB0 (and even forced 777 for
+    check later on if it was the problem)
+    ll /dev/ttyUSB0 retourne crw-rw---- 1 root dialout 188, 0 mars 6
+    12:2 /dev/ttyub0
+
+    I've done a stty -F /dev/ttyUSBO 4800
+
+    I get frames with  cat /dev/ttyUSB0 which are NMEA one's: (something
+    like 1 line per second or so)
+    ...
+    $GPGSA,A,3,23,13,32,11,24,20,,,,,,,6.1,4.1,4.5*37
+    $GPRMC,114407.000,A,4853.4178,N,00216.9304,E,0.29, 118.56,060311,,,A*67
+    $GPGGA,114408.000,4853.4178,N,00216.9304,E,1,06,4.
+    1,49.8,M,47.3,M,,0000*69
+    ...
+
+    I've compiled gpsd v2.95 and runned:
+    gpsd -b -nND6 /dev/ttyUSB0
+
+    I've also checked (with windows tool that the GPS was never been
+    requested to go to sleep mode)
+
+
+    _Problem:_ It seems , after a while, gpsd see the serial port with 0
+    byte sometime and then suddently closes it, then can not reopen to
+    get more bytes.
+    Sometime one or two NMEA frames are detected and the treatment is ok
+    but gpsd closes serial port after a while.
+    Then xgsp or cgps see one or two frame then no more.
+
+    So the probleme I do not understand is: how gpsd detects it is NMEA
+    and why it closes suddently the serial?
+
+    Same problem seems to occur without the -n flag. : gpsd -b -ND6
+    /dev/ttyUSB0
+
+
+    Here is a snapshoot of debug.
+
+    &quot;
+    gpsd -b -nND6 /dev/ttyUSB0
+
+    gpsd: launching (Version 2.95)
+    gpsd: opening IPv4 socket
+    gpsd: passivesock_af() -&gt; 3
+    gpsd: opening IPv6 socket
+    gpsd: passivesock_af() -&gt; 4
+    gpsd: listening on port gpsd
+    gpsd: NTPD shmat(1867796,0,0) succeeded, segment 0
+    gpsd: NTPD shmat(1900565,0,0) succeeded, segment 1
+    gpsd: NTPD shmat(1933334,0,0) succeeded, segment 2
+    gpsd: NTPD shmat(1966103,0,0) succeeded, segment 3
+    gpsd: running with effective group ID 0
+    gpsd: running with effective user ID 0
+    gpsd: opening read-only GPS data source type 3 and at '/dev/ttyUSB0'
+    gpsd: speed 4800, 8N1
+    gpsd: open(/dev/ttyUSB0) -&gt; 5 in gpsd_open()
+    gpsd: attempting USB device enumeration.
+    gpsd: 1d6b:0002 (bus 1, device 1)
+    gpsd: 1d6b:0002 (bus 2, device 1)
+    gpsd: 1d6b:0001 (bus 3, device 1)
+    gpsd: 1d6b:0001 (bus 4, device 1)
+    gpsd: 1d6b:0001 (bus 5, device 1)
+    gpsd: 1d6b:0001 (bus 6, device 1)
+    gpsd: 1d6b:0001 (bus 7, device 1)
+    gpsd: 1d6b:0001 (bus 8, device 1)
+    gpsd: 0bda:0151 (bus 1, device 2)
+    gpsd: 1058:0730 (bus 2, device 2)
+    gpsd: 0f25:bfe7 (bus 7, device 2)
+    gpsd: 1d6b:0003 (bus 9, device 1)
+    gpsd: 067b:2303 (bus 6, device 2)
+    gpsd: vendor/product match with 091e:0003 not found
+    gpsd: Probing TSIP
+    gpsd: speed 9600, 8O1
+    gpsd: speed 4800, 8N1
+    gpsd: no probe matched...
+    gpsd: gpsd_activate(): opened GPS (fd 5)
+    gpsd: select() {3 4 5} -&gt; { 5 } at 1299412438.735327 (errno 0)
+    gpsd: packet_get() fd 5 -&gt; 1 (0)
+    gpsd: ISGPS word tag not correct, skipping byte
+    gpsd: select() {3 4 5} -&gt; { 5 } at 1299412438.737323 (errno 0)
+    gpsd: packet_get() fd 5 -&gt; 1 (0)
+    gpsd: ISGPS word tag not correct, skipping byte
+    gpsd: select() {3 4 5} -&gt; { 5 } at 1299412438.740198 (errno 0)
+    gpsd: packet_get() fd 5 -&gt; 1 (0)
+    gpsd: ISGPS word tag not correct, skipping byte
+    gpsd: select() {3 4 5} -&gt; { 5 } at 1299412438.742322 (errno 0)
+    gpsd: packet_get() fd 5 -&gt; 1 (0)
+    gpsd: ISGPS lock never achieved
+    gpsd: select() {3 4 5} -&gt; { 5 } at 1299412438.744197 (errno 0)
+    gpsd: packet_get() fd 5 -&gt; 1 (0)
+    gpsd: ISGPS word tag not correct, skipping byte
+    gpsd: select() {3 4 5} -&gt; { 5 } at 1299412438.746321 (errno 0)
+    gpsd: packet_get() fd 5 -&gt; 1 (0)
+    gpsd: ISGPS word tag not correct, skipping byte
+    gpsd: select() {3 4 5} -&gt; { 5 } at 1299412438.749197 (errno 0)
+    gpsd: packet_get() fd 5 -&gt; 1 (0)
+    gpsd: ISGPS word tag not correct, skipping byte
+    gpsd: select() {3 4 5} -&gt; { 5 } at 1299412438.751321 (errno 0)
+    gpsd: packet_get() fd 5 -&gt; 1 (0)
+    gpsd: ISGPS word tag not correct, skipping byte
+    gpsd: select() {3 4 5} -&gt; { 5 } at 1299412438.753197 (errno 0)
+    gpsd: packet_get() fd 5 -&gt; 1 (0)
+    gpsd: ISGPS word tag not correct, skipping byte
+    gpsd: select() {3 4 5} -&gt; { 5 } at 1299412439.303211 (errno 0)
+    gpsd: packet_get() fd 5 -&gt; 0 (11)
+    gpsd: GPS on /dev/ttyUSB0 is offline (0.571551 sec since data)
+    gpsd: /dev/ttyUSB0 returned zero bytes
+    gpsd: /dev/ttyUSB0 will be repolled in 0.010000 seconds
+    gpsd: select() {3 4} -&gt; {} at 1299412440.303450 (errno 0)
+    gpsd: /dev/ttyUSB0 reawakened after zero-length read
+    gpsd: select() {3 4 5} -&gt; { 5 } at 1299412440.305325 (errno 0)
+    gpsd: packet_get() fd 5 -&gt; 0 (11)
+    gpsd: GPS on /dev/ttyUSB0 is offline (1299412440.305350 sec since data)
+    gpsd: /dev/ttyUSB0 returned zero bytes      BUT HERE MY BU-353 GPS
+    ALWAYS SENDS SOME FRAMES?
+    gpsd: closing GPS=/dev/ttyUSB0 (5)
+    gpsd: close(5) in gpsd_close(/dev/ttyUSB0)                HERE IS
+    THE PROBLEM IT SEEMS , AFTER NO MORE REOPENS.
+    gpsd: select() {3 4} -&gt; {} at 1299412441.315450 (errno 0)
+    gpsd: select() {3 4} -&gt; {} at 1299412442.316450 (errno 0)
+    gpsd: select() {3 4} -&gt; {} at 1299412443.317454 (errno 0)
+    gpsd: select() {3 4} -&gt; {} at 1299412444.318452 (errno 0)
+    gpsd: select() {3 4} -&gt; {} at 1299412445.319451 (errno 0)
+    ...and so on same sentence.
+    &quot;
+    Do you have please an idea to help me?
+    Is there something to do with serial port.
+
+
+    Many thanks for support.
+    Herv&#233;
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="005129.html">[Gpsd-users] gpsd: internal error - too many satellites
+</A></li>
+	<LI>Next message: <A HREF="005091.html">[Gpsd-users] gpsd closes serial port then gets no more NMEA frames.
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#5090">[ date ]</a>
+              <a href="thread.html#5090">[ thread ]</a>
+              <a href="subject.html#5090">[ subject ]</a>
+              <a href="author.html#5090">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

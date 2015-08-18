@@ -1,0 +1,115 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] Loosing USB GPS on sleep/wakeup cycle.
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2009-June/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Loosing%20USB%20GPS%20on%20sleep/wakeup%20cycle.&In-Reply-To=%3C3c64a2b4bd4d617a18826e4f4ffff5b7%40fridu.net%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="003784.html">
+   <LINK REL="Next"  HREF="003786.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] Loosing USB GPS on sleep/wakeup cycle.</H1>
+    <B>Fulup Ar Foll</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Loosing%20USB%20GPS%20on%20sleep/wakeup%20cycle.&In-Reply-To=%3C3c64a2b4bd4d617a18826e4f4ffff5b7%40fridu.net%3E"
+       TITLE="[Gpsd-users] Loosing USB GPS on sleep/wakeup cycle.">fulup-gpsd at yopmail.com
+       </A><BR>
+    <I>Fri Jun 26 09:12:17 CEST 2009</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="003784.html">[Gpsd-users] GPSD Hardware Donation - Thanks!
+</A></li>
+        <LI>Next message: <A HREF="003786.html">[Gpsd-users] Garmin StreetPilot C320
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3785">[ date ]</a>
+              <a href="thread.html#3785">[ thread ]</a>
+              <a href="subject.html#3785">[ subject ]</a>
+              <a href="author.html#3785">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>When doing sleep/wake up cycle gpsd/openvpn will loose any USB attached
+GPS. This problem is coming neither from &quot;gpsd&quot; neither from &quot;opencpn&quot;, it
+is directly related to how Linux handle usbserial devices name.
+
+Our Problem: In default Linux configuration usbserial device name do not
+depend on &quot;where&quot; you plug the USB/serial adaptator, but on &quot;when&quot; you plug
+it (1st device gets /dev/ttyUSB0, 2nd /dev/ttyUSB1, ...) Unfortunately even
+if your GPS/serial-adaptor is unique, after a sleep/wakeup cycle Linux will
+find /dev/ttyUSB0 busy, and will take next available device name ( ex:
+/dev/ttyUSB1) .
+
+Linux logic: While Linux algorithm does not make us happy, it is
+nevertheless logical. Because opencpn/gpsd are not aware of the
+sleep/wakeup cycle, they keep their device open (ex: /dev/ttyUSB0), but in
+order to save energy Linux cut down any hot pluggable devices at sleep
+time, and recreated them later at wakeup time. Unfortunately when Linux try
+to recreate /dev/ttyUSB0 it find it busy (hoops !! opencpn/gpsd still use
+it), as a result it takes next available slot (probably /dev/ttyUSB1). This
+device name change will obviously prevent opencpn/gpsd to restart, this
+because they are configured with static device name, and are very unhappy
+when device name change dynamically .
+
+Fulup solution: Because opencpn/gpsd operate with fix device name, the only
+working option is to provide a fake static name (ex: /dev/gps-usb). This
+fake name should be a symbolic link on the dynamic device name. This imply
+to automatically change the link, each time we plug/unplug the GPS or
+sleep/wakeup our laptop.
+As hot pluggable devices are handle by udev, we have to add a custom rule
+into udev to make sure that each time our GPS/serial-adapter is hot-plug
+then udev recreates our fake device name. In order to do so
+
+The solution is neither simple, neither complex but require super user
+acces to your laptop .
+
+    * download
+<A HREF="http://www.fridu.org/images/opencpn/70-persistent-usb-gps.rules">http://www.fridu.org/images/opencpn/70-persistent-usb-gps.rules</A>
+    * update it with your USB device vendor/product ID
+    * choose a fix or path dependant name
+    * restart udev (/etc/init.d/udev reload)
+    * plug/unplug your GPS/serial-adapter
+    * check your config works &quot;ls /dev/gps*&quot;
+    * update gpsd/opencpn with your choosen device name
+    * restart opencpn/gpsd
+
+Modern Laptop don't have any more physical RS232 and most of us use
+usb/serial converters. While default Linux strategy is fine for a desktop,
+it is not suitable for a boat where in order to save energy you want to
+sleep/wake functionally.
+
+I double check with wireshark (my prfered network sniffer) it works like a
+charme with opencpn connected though gpsd. As my GPS (very cheap SIRF-III)
+does not support NMEA, I was not able to test this with a direct /dev/xxx
+access from opencpn.
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="003784.html">[Gpsd-users] GPSD Hardware Donation - Thanks!
+</A></li>
+	<LI>Next message: <A HREF="003786.html">[Gpsd-users] Garmin StreetPilot C320
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3785">[ date ]</a>
+              <a href="thread.html#3785">[ thread ]</a>
+              <a href="subject.html#3785">[ subject ]</a>
+              <a href="author.html#3785">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

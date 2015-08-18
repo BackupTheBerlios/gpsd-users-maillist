@@ -1,0 +1,84 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] Bluetooth issues (was: Re: Preparing for 2.93 point release)
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2010-April/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Bluetooth%20issues%20%28was%3A%20Re%3A%20Preparing%20for%202.93%0A%20point%20release%29&In-Reply-To=%3C20100427194001.GA10624%40thyrsus.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="004439.html">
+   <LINK REL="Next"  HREF="004441.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] Bluetooth issues (was: Re: Preparing for 2.93 point release)</H1>
+    <B>Eric Raymond</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Bluetooth%20issues%20%28was%3A%20Re%3A%20Preparing%20for%202.93%0A%20point%20release%29&In-Reply-To=%3C20100427194001.GA10624%40thyrsus.com%3E"
+       TITLE="[Gpsd-users] Bluetooth issues (was: Re: Preparing for 2.93 point release)">esr at thyrsus.com
+       </A><BR>
+    <I>Tue Apr 27 21:40:01 CEST 2010</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="004439.html">[Gpsd-users] Bluetooth issues (was: Re: Preparing for 2.93	point release)
+</A></li>
+        <LI>Next message: <A HREF="004441.html">[Gpsd-users] Bluetooth issues (was: Re: Preparing for 2.93 point release)
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#4440">[ date ]</a>
+              <a href="thread.html#4440">[ thread ]</a>
+              <a href="subject.html#4440">[ subject ]</a>
+              <a href="author.html#4440">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Ji&#345;&#237; Techet &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">techet at gmail.com</A>&gt;:
+&gt;<i> No change I'm afraid - still the same problem. Please let me know if I
+</I>&gt;<i> should enable some tracing of gpsd or test some branch of gpsd with
+</I>&gt;<i> extra traces or if there is some other way to help you fixing the bug.
+</I>
+I'm stumped.
+
+You can enable extra tracing with the -D option.  Here are the levels:
+
+#define LOG_ERROR 	0	/* errors, display always */
+#define LOG_SHOUT	0	/* not an error but we should always see it */
+#define LOG_WARN	1	/* not errors but may indicate a problem */
+#define LOG_INF 	2	/* key informative messages */
+#define LOG_DATA	3	/* log data management messages */
+#define LOG_PROG	4	/* progress messages */
+#define LOG_IO  	5	/* IO to and from devices */
+#define LOG_SPIN	6	/* logging for catching spin bugs */
+#define LOG_RAW 	7	/* raw low-level I/O */
+
+All I can suggest is cranking it up to -D 5 and reading logs.  You'll
+get device-connect/disconnect logging at -D 2.
+-- 
+		&lt;a href=&quot;<A HREF="http://www.catb.org/~esr/">http://www.catb.org/~esr/</A>&quot;&gt;Eric S. Raymond&lt;/a&gt;
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="004439.html">[Gpsd-users] Bluetooth issues (was: Re: Preparing for 2.93	point release)
+</A></li>
+	<LI>Next message: <A HREF="004441.html">[Gpsd-users] Bluetooth issues (was: Re: Preparing for 2.93 point release)
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#4440">[ date ]</a>
+              <a href="thread.html#4440">[ thread ]</a>
+              <a href="subject.html#4440">[ subject ]</a>
+              <a href="author.html#4440">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

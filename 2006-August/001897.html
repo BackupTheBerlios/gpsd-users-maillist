@@ -1,0 +1,174 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] Fwd: NTP Problems
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2006-August/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Fwd%3A%20NTP%20Problems&In-Reply-To=%3C7e272c5c0608291509jcb05c72k5f73dcc48185f1d%40mail.gmail.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="001896.html">
+   <LINK REL="Next"  HREF="001898.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] Fwd: NTP Problems</H1>
+    <B>Karl von Muller</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Fwd%3A%20NTP%20Problems&In-Reply-To=%3C7e272c5c0608291509jcb05c72k5f73dcc48185f1d%40mail.gmail.com%3E"
+       TITLE="[Gpsd-users] Fwd: NTP Problems">vertigok at gmail.com
+       </A><BR>
+    <I>Wed Aug 30 00:09:35 CEST 2006</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="001896.html">[Gpsd-users] Fwd: NTP Problems
+</A></li>
+        <LI>Next message: <A HREF="001898.html">[Gpsd-users] Fwd: NTP Problems
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1897">[ date ]</a>
+              <a href="thread.html#1897">[ thread ]</a>
+              <a href="subject.html#1897">[ subject ]</a>
+              <a href="author.html#1897">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hey Geoffrey,
+
+On 8/30/06, Geoffrey B. Crew &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">gbc at space.mit.edu</A>&gt; wrote:
+&gt;<i>
+</I>&gt;<i> &gt; Are there any permissions before it's created?
+</I>&gt;<i>
+</I>&gt;<i> I'm not sure what you're asking, but root certainly should have
+</I>&gt;<i> permission to create these with whatever mode is |'d in with IPC_CREAT:
+</I>&gt;<i>
+</I>&gt;<i> &gt;  ntpshm.c (near line 53):
+</I>&gt;<i> &gt; &gt;      int shmid=shmget ((key_t)(NTPD_BASE+unit),
+</I>&gt;<i> &gt; &gt;                            sizeof (struct shmTime), IPC_CREAT|0644);
+</I>&gt;<i> &gt; &gt;
+</I>&gt;<i> &gt; &gt;to help avoid this problem in case it is started before NTP.
+</I>&gt;<i> &gt; &gt;
+</I>&gt;<i> &gt; &gt;If this is indeed your problem, you should be ok if you kill NTP, GPSD,
+</I>&gt;<i> &gt; &gt;and remove the share (ipcrm may work, or a reboot).  Then start up NTP
+</I>&gt;<i> &gt; &gt;and GPSD afterwards.
+</I>&gt;<i>
+</I>&gt;<i> Dueling permissions doesn't seem to be your problem.
+</I>&gt;<i>
+</I>&gt;<i> &gt; Have tried it this way, NTP creates the shared memory quite happily, but
+</I>&gt;<i> it
+</I>&gt;<i> &gt; seems GPSD doesnt write to it, nor create it if it doesnt exist...
+</I>&gt;<i>
+</I>&gt;<i> With NTP stopped, this is what the current gpsd should do:
+</I>&gt;<i>
+</I>&gt;<i> [root]# cat /proc/sysvipc/shm | grep 131414840
+</I>&gt;<i> [root]# gpsd -n -F /var/run/gpsd.sock
+</I>&gt;<i> [root]# cat /proc/sysvipc/shm | grep 131414840
+</I>&gt;<i> 1314148400    2097167   644         80 18539 18539      1     0     0
+</I>&gt;<i> 0...
+</I>&gt;<i> 1314148401    2129936   644         80 18539 18539      1     0     0
+</I>&gt;<i> 0...
+</I>&gt;<i> 1314148402    2162711   644         80 18539 18539      1     0     0
+</I>&gt;<i> 0...
+</I>&gt;<i> 1314148403    2195480   644         80 18539 18539      1     0     0
+</I>&gt;<i> 0...
+</I>&gt;<i>
+</I>&gt;<i> and that depends only on NTPSHM_ENABLE defined to 1 (config.h)
+</I>&gt;<i> and getuid() == 0 (gpsd.c), both of which appear to be the case
+</I>&gt;<i> based on your previous emails...which is quite a puzzler.
+</I>&gt;<i>
+</I>&gt;<i> For what it's worth, the system calls involved are:
+</I>&gt;<i>
+</I>&gt;<i>   # strace -f gpsd -n -F /var/run/gpsd.sock
+</I>&gt;<i>   ...
+</I>&gt;<i>   bind(4, {sa_family=AF_INET, sin_port=htons(2947), sin_addr=inet_addr(&quot;
+</I>&gt;<i> 0.0.0.0&quot;)}, 16) = 0
+</I>&gt;<i>   listen(4, 5)                            = 0
+</I>&gt;<i>   getuid32()                              = 0
+</I>&gt;<i>   getpriority(PRIO_PROCESS, 0)            = 20
+</I>&gt;<i>   setpriority(PRIO_PROCESS, 0, -10)       = 0
+</I>&gt;<i>   getpriority(PRIO_PROCESS, 0)            = 30
+</I>&gt;<i>   shmget(1314148400, 80, IPC_CREAT|0644)  = 2097167
+</I>&gt;<i>   shmat(2097167, 0, 0)                    = 0xb7f9e000
+</I>&gt;<i>   shmget(1314148401, 80, IPC_CREAT|0644)  = 2129936
+</I>&gt;<i>   shmat(2129936, 0, 0)                    = 0xb7f9d000
+</I>&gt;<i>   shmget(1314148402, 80, IPC_CREAT|0644)  = 2162711
+</I>&gt;<i>   shmat(2162711, 0, 0)                    = 0xb7f9c000
+</I>&gt;<i>   shmget(1314148403, 80, IPC_CREAT|0644)  = 2195480
+</I>&gt;<i>   shmat(2195480, 0, 0)                    = 0xb7f9b000
+</I>&gt;<i>   ...
+</I>&gt;<i>
+</I>&gt;<i> I suppose these system calls could be failing for some reason, in
+</I>&gt;<i> which case some errno would be set and you could add a printf to
+</I>&gt;<i> access it.
+</I>
+
+Had a quick look in the code...seems there's a call to gpsd_report if shmid
+= -1, which looks like it should output something if it i does fail.
+So i started up gpsd with -D 9 and didnt see any mention of shm failing...
+
+Jan  1 11:08:44 gumstix user.notice gpsd[332]: gpsd: launching (Version 2.30
+)
+Jan  1 11:08:44 gumstix user.notice gpsd[332]: gpsd: listening on port 2947
+Jan  1 11:08:44 gumstix user.notice gpsd[332]: gpsd: changing to group 0
+Jan  1 11:08:44 gumstix user.notice gpsd[332]: gpsd: running with effective
+group ID 0
+Jan  1 11:08:44 gumstix user.notice gpsd[332]: gpsd: running with effective
+user ID 99
+Jan  1 11:08:44 gumstix user.notice gpsd[332]: gpsd: opening GPS data source
+at '/dev/ttyS0'
+Jan  1 11:08:44 gumstix user.notice gpsd[332]: gpsd: no probe matched...
+Jan  1 11:08:44 gumstix user.notice gpsd[332]: gpsd: speed 9600, 8N1
+Jan  1 11:08:44 gumstix user.notice gpsd[332]: gpsd: gpsd_activate: opened
+GPS (5)
+Jan  1 11:08:44 gumstix user.notice gpsd[332]: gpsd: flagging descriptor 5
+in open_device
+Jan  1 11:08:44 gumstix user.notice gpsd[332]: gpsd: select waits
+Jan  1 11:08:44 gumstix user.notice gpsd[332]: gpsd: polling 5
+Jan  1 11:08:44 gumstix user.notice gpsd[332]: gpsd: Read 72 chars to buffer
+offset 0 (total 72):
+e08600788600787886e086e086e698e086007886007886e698e086e086007878787866667860e680988060786000e618e6e6981e1e861878e078e6781e1878788606781e78788678
+Jan  1 11:08:44 gumstix user.notice gpsd[332]: gpsd: ISGPS word tag not
+correct, skipping
+Jan  1 11:08:44 gumstix user.notice gpsd[332]: gpsd: 00000000: character '.'
+[e0], new state: GROUND_STATE
+
+seems weird to me. I'm thinking its possible that for some reason the struct
+isn't being intialised?
+I couldn't see it being called in a strace I ran either. Geoffrey, could you
+post a little more from either side of your strace please?
+
+
+
+--
+&gt;<i>
+</I>&gt;<i>                 Geoff
+</I>&gt;<i>                 <A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">gbc at space.mit.edu</A>
+</I>&gt;<i>
+</I>-------------- next part --------------
+An HTML attachment was scrubbed...
+URL: &lt;<A HREF="https://lists.berlios.de/pipermail/gpsd-users/attachments/20060830/96a6a648/attachment.html">https://lists.berlios.de/pipermail/gpsd-users/attachments/20060830/96a6a648/attachment.html</A>&gt;
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="001896.html">[Gpsd-users] Fwd: NTP Problems
+</A></li>
+	<LI>Next message: <A HREF="001898.html">[Gpsd-users] Fwd: NTP Problems
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1897">[ date ]</a>
+              <a href="thread.html#1897">[ thread ]</a>
+              <a href="subject.html#1897">[ subject ]</a>
+              <a href="author.html#1897">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

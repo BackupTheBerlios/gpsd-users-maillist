@@ -1,0 +1,93 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] Webgps update
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2007-November/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Webgps%20update&In-Reply-To=%3C200711111012.50810.jhecker%40wireless.org.au%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="002958.html">
+   <LINK REL="Next"  HREF="002960.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] Webgps update</H1>
+    <B>Jason Hecker</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Webgps%20update&In-Reply-To=%3C200711111012.50810.jhecker%40wireless.org.au%3E"
+       TITLE="[Gpsd-users] Webgps update">jhecker at wireless.org.au
+       </A><BR>
+    <I>Sun Nov 11 00:12:50 CET 2007</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="002958.html">[Gpsd-users] Webgps update
+</A></li>
+        <LI>Next message: <A HREF="002960.html">[Gpsd-users] Losing touch NTPD to GPSD
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2959">[ date ]</a>
+              <a href="thread.html#2959">[ thread ]</a>
+              <a href="subject.html#2959">[ subject ]</a>
+              <a href="author.html#2959">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>&gt;<i> Looks neat. Do you have any build instructions? Do I copy it into the gpsd
+</I>&gt;<i> tree and run make??
+</I>
+I modified Makefile.am as follows by making the following changes and the 
+running configure:
+
+------------
+bin_PROGRAMS = $(DBUSPROGS) $(MOTIF_PROGS) $(RTCM104PROGS) sirfmon gpspipe 
+gpsflash cgps webgps cgpxlogger
+
+# Build webgps
+webgps_SOURCES = webgps.c
+webgps_LDADD = $(LIBM) $(LIBC) $(LIBNSL) $(LIBSOCKET) -lncurses libgps.la -lm 
+$(LIBPTHREAD)
+------------
+
+Copy the webgps binary out of the .libs dir.
+
+I also just tested the following command line:
+
+gcc -Wall -I./gpsd-2.33 -lm -o webgps ./gpsd-2.33/.libs/libgps.so webgps.c
+
+This assumes you have a built gpsd tree.
+
+I am using 2.33 as that's what Ubuntu uses.  For 2.34 and above I have 
+commented an include name change in the source.
+
+I have also added a 4th command line parameter to allow defining the read 
+cycle period.  10s is good as opposed to the old hardwired 1s.
+
+Time to go.  It's hard to type when you're trying to deal with a fidgety 
+infant!
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="002958.html">[Gpsd-users] Webgps update
+</A></li>
+	<LI>Next message: <A HREF="002960.html">[Gpsd-users] Losing touch NTPD to GPSD
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2959">[ date ]</a>
+              <a href="thread.html#2959">[ thread ]</a>
+              <a href="subject.html#2959">[ subject ]</a>
+              <a href="author.html#2959">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

@@ -1,0 +1,203 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] bluetooth GPS
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2011-January/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20bluetooth%20GPS&In-Reply-To=%3C1296109351.3139.52.camel%40servy.quietwind.net%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="004976.html">
+   <LINK REL="Next"  HREF="004980.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] bluetooth GPS</H1>
+    <B>Chris Kottaridis</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20bluetooth%20GPS&In-Reply-To=%3C1296109351.3139.52.camel%40servy.quietwind.net%3E"
+       TITLE="[Gpsd-users] bluetooth GPS">chriskot at quietwind.net
+       </A><BR>
+    <I>Thu Jan 27 07:22:31 CET 2011</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="004976.html">[Gpsd-users] bluetooth GPS
+</A></li>
+        <LI>Next message: <A HREF="004980.html">[Gpsd-users] bluetooth GPS
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#4977">[ date ]</a>
+              <a href="thread.html#4977">[ thread ]</a>
+              <a href="subject.html#4977">[ subject ]</a>
+              <a href="author.html#4977">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>On Thu, 2011-01-27 at 00:11 -0500, Eric Raymond wrote:
+&gt;<i> Chris Kottaridis &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">chriskot at quietwind.net</A>&gt;:
+</I>&gt;<i> &gt; There is a side issue on this that would be nice to have. A control
+</I>&gt;<i> &gt; socket command to return the list of GPS devices would be nice.
+</I>&gt;<i> &gt; Something like a &quot;list&quot; command that returns the devies on the gpsd
+</I>&gt;<i> &gt; device list.
+</I>&gt;<i> 
+</I>&gt;<i> That would be easy and cheap to implement.  How would it help, exactly?
+</I>
+I really wanted to know what devices were on the list, just to verify
+that my add worked correctly. Also, there were times when I was adding
+and removing while monitoring various behavior and tunring the device on
+and off and I had lost track of whether it was on the list when I fired
+up the device or if I had removed it last. It would have been good to
+get see the list to see whether it was on the list at that time or not.
+Would have prevented lots of redos. It's a little thing, but I was
+wishing for it multiple times.
+
+I spent a little bit more time checking the behavior of rfcomm and how
+it reconnects.
+
+I think this may be able to be handled in gpsd without resorting to
+udev to try and manage the connects and disconnects since udev events
+don't seem to be generated when the device turns off.
+
+The rfcomm bind seems to need an open to trigger the connection:
+
+$ man rfcomm
+bind &lt;dev&gt; [bdaddr] [channel]
+    This  binds  the RFCOMM device to a remote Bluetooth device. The
+    command did not establish a connection to the remote device,  it
+    only  creates  the  binding.  The connection will be established
+    right after an application tries to open the RFCOMM  device. 
+
+I created a script:
+
+#!/bin/bash
+while /bin/true
+do
+  echo sleeping 5 seconds
+  sleep 5
+  echo cat /dev/rfcomm0
+  cat /dev/rfcomm0
+done
+
+I run it starting with the GPS device off. I then indicate below when
+I turn it on and back off:
+
+# ./watcher.sh
+sleeping 5 seconds
+cat /dev/rfcomm0
+cat: /dev/rfcomm0: Host is down
+sleeping 5 seconds
+&lt;turn device on&gt;
+cat /dev/rfcomm0
+$GPGGA,053557.314,,,,,0,00,,,M,0.0,M,,0000*51
+$GPGSA,A,1,,,,,,,,,,,,,,,*1E
+&lt;bunch of GPS commands&gt;
+&lt;turn device off&gt;
+$GPGSV,3,3,11,30,13,047,,08,13,276,,20,10,192,*4B
+$GPRMC,053648.308,V,,,,,,,270111,,,N*4E
+sleeping 5 seconds
+cat /dev/rfcomm0
+cat: /dev/rfcomm0: Host is down
+sleeping 5 seconds
+&lt;turn device back on&gt;
+cat /dev/rfcomm0
+$GPGGA,053726.721,,,,,0,00,,,M,0.0,M,,0000*57
+$GPGSA,A,1,,,,,,,,,,,,,,,*1E
+&lt;bunch of GPS commands&gt;
+&lt;turn device off&gt;
+$GPGSV,3,3,11,08,13,277,,30,13,047,,20,10,192,*4A
+$GPRMC,053833.721,V,,,,,,,270111,,,N*43
+sleeping 5 seconds
+cat /dev/rfcomm0
+cat: /dev/rfcomm0: Host is down
+sleeping 5 seconds
+
+Clearly, when I turn the device off it results in cat quitting, not
+sure what file error it may be receiving. Then when the cat tries
+to reopen the file when it gets started up when the device is on,
+the open forces a reconnect and I get data again. If the device is
+off when the script runs cat it waits for about 5 seconds or so and
+then exits with the Host is down error.
+
+So, as long as another open occurs after the gps has been turned back on
+then it'll reconnect automatically.
+
+I ran lsof -c gpsd to look at the files opened by gpsd. When I get it
+connected up I see rfcomm0:
+
+$ lsof -c gpsd
+&lt;bunch o stuff&gt;
+gpsd    1943 nobody   10u   CHR              216,0      0t0
+242674 /dev/rfcomm0
+
+When I turn the device off it no longer appears. The xgps shows:
+
+{&quot;class&quot;:&quot;DEVICE&quot;,&quot;path&quot;:&quot;/dev/rfcomm0&quot;,&quot;activated&quot;:0}
+
+Which I assume indicates a zero read which from the man page implies
+that rcomm0 should be off the list. Since lsof doesn;t show /dev/rfcomm0
+I assume the file has been closed. When I try and turn it on again it
+still doesn't appear in th elsof output. Sending an add to the device
+list also doesn't show it in lsof. Here is where list would have been
+nice. According to the gpsd man page on the GPSD DEVICE MANAGEMENT
+section when you get zero length data the device will be removed from
+the list:
+
+&gt;<i>A device may will also be dropped from the pool if GPSD gets a zero
+</I>&gt;<i>length read from it. This end-of-file condition indicates that the'
+</I>&gt;<i>device has been disconnected.
+</I>
+I would have thought that just doing an add through the control socket
+would have triggered an open since it should have no longer been on
+the list. But an add was not good enough. I have to send a remove and
+then an add while the device is on again to get it to show in the
+lsof output again. Having a &quot;list&quot; option would have been helpful
+here. I assume it really is on the list after the zero read
+
+It appears that when gpsd gets an error when the device goes off and it
+closes /dev/rfcomm0, but never tries to open it again unless I send a
+remove and an add when the device is on. I haven't looked at the gpsd
+code yet to verify that, but from monitoring the behavior that seems
+to be the way it works. I have to remove the device from the device
+list and add it back to trigger gpsd to do an open of /dev/rfcomm0.
+
+If the logic in gpsd would be to retry an open every so often after the
+file gets closed due to the device being turned off, I think it would
+re-establish connection all by itself.
+
+Does that sound reasonable ?
+
+Like I said I haven't gotten into the gpsd source code yet so maybe I
+am off base somewhere.
+
+Thanks
+Chris Kottaridis
+
+
+
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="004976.html">[Gpsd-users] bluetooth GPS
+</A></li>
+	<LI>Next message: <A HREF="004980.html">[Gpsd-users] bluetooth GPS
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#4977">[ date ]</a>
+              <a href="thread.html#4977">[ thread ]</a>
+              <a href="subject.html#4977">[ subject ]</a>
+              <a href="author.html#4977">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

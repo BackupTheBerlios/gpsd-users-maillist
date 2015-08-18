@@ -1,0 +1,108 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] Gpsd and Python with Lucid Lynx
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2010-April/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Gpsd%20and%20Python%20with%20Lucid%20Lynx&In-Reply-To=%3C4BD9EE55.3040008%40free.fr%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="004452.html">
+   <LINK REL="Next"  HREF="004454.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] Gpsd and Python with Lucid Lynx</H1>
+    <B>Benoit Guibert</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Gpsd%20and%20Python%20with%20Lucid%20Lynx&In-Reply-To=%3C4BD9EE55.3040008%40free.fr%3E"
+       TITLE="[Gpsd-users] Gpsd and Python with Lucid Lynx">benoit.guibert at free.fr
+       </A><BR>
+    <I>Thu Apr 29 22:38:45 CEST 2010</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="004452.html">[Gpsd-users] cgps reports no fix for Trimble Thunderbolt
+</A></li>
+        <LI>Next message: <A HREF="004454.html">[Gpsd-users] Gpsd and Python with Lucid Lynx
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#4453">[ date ]</a>
+              <a href="thread.html#4453">[ thread ]</a>
+              <a href="subject.html#4453">[ subject ]</a>
+              <a href="author.html#4453">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hello,
+
+I'm using a python script to display information from my GPS.
+I'm using UIbuntu &quot;distribution&quot;, but, since I've switched to Lucid 
+Lynx, my script doesn't work anymore !
+Looking at &quot;gpsd.berlios&quot; made me realize that this was not due to a 
+bug, but it was due to a deep change in the code of gpsd.
+My knowledge of Python and of English are quite limited, which is why I 
+am asking you for a few tips to solve my problems.
+The concerned part of my script comes from this weblink : 
+<A HREF="http://www.perrygeo.net/wordpress/?p=13">http://www.perrygeo.net/wordpress/?p=13</A>_
+It is copied below (I made some modifications, but they are not 
+fondamental) :
+
+-------------------------------------------------------------------------
+import gps, os, time
+session = gps.gps()
+while 1:
+    os.system('clear')
+    session.query('admosy')
+    # a = altitude, d = date/time, m=mode,
+    # o=postion/fix, s=status, y=satellites
+
+    print
+    print ' GPS reading'
+    print '----------------------------------------'
+    print 'latitude    ' , session.fix.latitude
+    print 'longitude   ' , session.fix.longitude
+    print 'time utc    ' , session.utc, session.fix.time
+    print 'altitude    ' , session.fix.altitude
+    print 'eph         ' , session.fix.eph
+    print 'epv         ' , session.fix.epv
+    print 'ept         ' , session.fix.ept
+    print 'speed       ' , session.fix.speed
+    print 'climb       ' , session.fix.climb
+    print
+    print ' Satellites (total of', len(session.satellites) , ' in view)'
+    for i in session.satellites:
+        print '\t', i
+    time.sleep(3)
+---------------------------------------------------------------------------------
+
+Thank you for helping,
+
+Best regards,
+
+Benoit Guibert
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="004452.html">[Gpsd-users] cgps reports no fix for Trimble Thunderbolt
+</A></li>
+	<LI>Next message: <A HREF="004454.html">[Gpsd-users] Gpsd and Python with Lucid Lynx
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#4453">[ date ]</a>
+              <a href="thread.html#4453">[ thread ]</a>
+              <a href="subject.html#4453">[ subject ]</a>
+              <a href="author.html#4453">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

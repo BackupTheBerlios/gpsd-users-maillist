@@ -1,0 +1,112 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] Air2u bluetooth GPS support (MTK extensions)
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2008-April/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Air2u%20bluetooth%20GPS%20support%20%28MTK%20extensions%29&In-Reply-To=%3C91981b3e0804231139p24772926wdc8dd5aa5da67d07%40mail.gmail.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="003205.html">
+   <LINK REL="Next"  HREF="003207.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] Air2u bluetooth GPS support (MTK extensions)</H1>
+    <B>Chris Kuethe</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Air2u%20bluetooth%20GPS%20support%20%28MTK%20extensions%29&In-Reply-To=%3C91981b3e0804231139p24772926wdc8dd5aa5da67d07%40mail.gmail.com%3E"
+       TITLE="[Gpsd-users] Air2u bluetooth GPS support (MTK extensions)">chris.kuethe at gmail.com
+       </A><BR>
+    <I>Wed Apr 23 20:39:21 CEST 2008</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="003205.html">[Gpsd-users] Air2u bluetooth GPS support (MTK extensions)
+</A></li>
+        <LI>Next message: <A HREF="003207.html">[Gpsd-users] Fedora and CentOS hangs when gpsd is started
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3206">[ date ]</a>
+              <a href="thread.html#3206">[ thread ]</a>
+              <a href="subject.html#3206">[ subject ]</a>
+              <a href="author.html#3206">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>On Wed, Apr 23, 2008 at 8:44 AM, Santiago Aguiar
+&lt;<A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">santiago.aguiar at edantech.com</A>&gt; wrote:
+&gt;<i>  I think the PMTK might be a MTK extension command as defined in
+</I>&gt;<i>  <A HREF="http://www.sparkfun.com/datasheets/GPS/EB-230-Data-Sheet-V1.2.pdf">http://www.sparkfun.com/datasheets/GPS/EB-230-Data-Sheet-V1.2.pdf</A>
+</I>&gt;<i>  (specially since sending a $PMTK000*32\r\n gets a $PMTK001,101,0*33\r\n
+</I>&gt;<i>  response).
+</I>
+Yes, that's a mediatek device; we have a copy of that datasheet up on
+the references page.
+
+&gt;<i>  I'm not familiar with GPS hardware, but should gpsd support or at least
+</I>&gt;<i>  recognize this extensions to figure out it should use a standard NMEA
+</I>&gt;<i>  driver? (intead of testing for all the others NMEA subtypes?).
+</I>
+Yes and no. If we know about a proprietary NMEA sentence, and we know
+that a message is useful, then we'll parse it. Otherwise we ignore it.
+That is very much a human-mediated process. Someone needs to read the
+protocol specification and figure out how to patch in the useful bits.
+Also, I'm not keen on hacking in specific device support without
+actual hardware in hand.
+
+One of the uses of a message is to probe/identify a device. For
+example, non-prehistoric SiRF firmware has a very nice navigation
+solution binary message; this message has the full navigation solution
+in a single packet which makes the internal data handling much
+cleaner. But this isn't correctly/completely implemented in all
+versions, which is why we probe. Sometimes a message is good,
+sometimes it's a pack of lies.
+
+Similarly, Ashtech/Thales/MagellanPro receivers do have a single NMEA
+message with a full navigation solution. In the case of the MTK chip,
+there's no advantage to using the proprietary messages. There is no
+single-sentence fix, so the generic NMEA is good enough.
+
+Probing isn't totally necessary; we do have a protocol detection state
+machine which can figure out what protocol is saying and pass it off
+to the right packet decoder.
+
+&gt;<i>  Anyway, gpsd seems to works ok with the device  since it defaults to
+</I>&gt;<i>  NMEA (it sends the rest of the probes when connecting to gpsd and
+</I>&gt;<i>  reopening the device).
+</I>&gt;<i>
+</I>&gt;<i>  Thanks for any input since I'm just starting to learn about GPS soft+hard!
+</I>
+GPSD works because of the protocol sniffer; the probes are, in a way,
+just icing on the cake.
+
+CK
+
+-- 
+GDB has a 'break' feature; why doesn't it have 'fix' too?
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="003205.html">[Gpsd-users] Air2u bluetooth GPS support (MTK extensions)
+</A></li>
+	<LI>Next message: <A HREF="003207.html">[Gpsd-users] Fedora and CentOS hangs when gpsd is started
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3206">[ date ]</a>
+              <a href="thread.html#3206">[ thread ]</a>
+              <a href="subject.html#3206">[ subject ]</a>
+              <a href="author.html#3206">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

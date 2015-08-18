@@ -1,0 +1,191 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] Build issue 3.1
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2011-August/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Build%20issue%203.1&In-Reply-To=%3C39AF2CF3-E811-4F9F-A361-2B4CD0EAD234%40aus-city.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="005450.html">
+   <LINK REL="Next"  HREF="005451.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] Build issue 3.1</H1>
+    <B>David Cottle</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Build%20issue%203.1&In-Reply-To=%3C39AF2CF3-E811-4F9F-A361-2B4CD0EAD234%40aus-city.com%3E"
+       TITLE="[Gpsd-users] Build issue 3.1">webmaster at aus-city.com
+       </A><BR>
+    <I>Mon Aug 29 08:50:29 CEST 2011</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="005450.html">[Gpsd-users] Build issue 3.1
+</A></li>
+        <LI>Next message: <A HREF="005451.html">[Gpsd-users] Build issue 3.1
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#5448">[ date ]</a>
+              <a href="thread.html#5448">[ thread ]</a>
+              <a href="subject.html#5448">[ subject ]</a>
+              <a href="author.html#5448">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi Eric,
+
+Back on the 3.0 build, despite adding in pps=true still no good..
+
++SHM(0)          .GPS.            0 l    3   16   17    0.000  -21.460   9.948
+ SHM(1)          .PPS.            0 l    -   16    0    0.000    0.000   0.001
+
+
+Debug 3
+
+It's hard to do on my iPad, but I got this much copied...
+
+[<A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">root at primary</A> ~]# gpsd -D 3 -Nn /dev/ttyS0
+gpsd:INFO: launching (Version 3.0)
+gpsd:INFO: listening on port gpsd
+gpsd:INFO: NTPD ntpd_link_activate: 1
+gpsd:INFO: stashing device /dev/ttyS0 at slot 0
+gpsd:INFO: opening GPS data source type 2 at '/dev/ttyS0'
+gpsd:INFO: PPS  cycle: 1199960108, duration: 1199960108 @ 1314600494.952492
+gpsd:INFO: PPS edge rejected
+gpsd:INFO: speed 9600, 8N1
+gpsd:INFO: speed 9600, 8O1
+gpsd:INFO: speed 9600, 8N1
+gpsd:INFO: gpsd_activate(): activated GPS (fd 5)
+gpsd:INFO: device /dev/ttyS0 activated
+gpsd:INFO: running with effective group ID 18
+gpsd:INFO: running with effective user ID 99
+gpsd:INFO: startup at 2011-08-29T06:48:15.000Z (1314600495)
+gpsd:INFO: PPS  cycle:  999913, duration:       0 @ 1314600495.952405
+gpsd:INFO: PPS edge rejected
+gpsd:INFO: PPS  cycle: 1201158547, duration:  198526 @ 1314600496.150931
+gpsd:INFO: PPS edge rejected
+gpsd:INFO: PPS  cycle:  999952, duration:  801426 @ 1314600496.952357
+gpsd:INFO: PPS edge rejected
+gpsd:INFO: PPS  cycle: 1000001, duration:  198575 @ 1314600497.150932
+gpsd:INFO: PPS edge rejected
+gpsd:INFO: speed 4800, 8N1
+gpsd:INFO: /dev/ttyS0 identified as type Generic NMEA (1.936006 sec @ 4800bps)
+gpsd:DATA: GPZDA time is 1314600497.000000 = 2011-08-29T06:48:17.00Z
+gpsd:DATA: packet from /dev/ttyS0 with {ONLINE|TIME|PACKET|DRIVER}
+gpsd:DATA: packet from /dev/ttyS0 with {ONLINE|PACKET}
+gpsd:DATA: packet from /dev/ttyS0 with {ONLINE|PACKET}
+gpsd:WARN: GPGSV field 3 value of 9 != actual count 12
+gpsd:DATA: GSV: Satellite data OK (3 of 3).
+gpsd:DATA: packet from /dev/ttyS0 with {ONLINE|SATELLITE|PACKET}
+gpsd:DATA: merge_ddmmyy(290811) sets year 2011
+gpsd:DATA: GPRMC: registers fractional time 64818.00
+gpsd:DATA: RMC: ddmmyy=290811 hhmmss=064818.00 lat=-33.74 lon=151.00 speed=0.00 track=268.80 mode=2 status=1
+gpsd:DATA: GPRMC time is 1314600498.000000 = 2011-08-29T06:48:18.00Z
+gpsd:DATA: packet from /dev/ttyS0 with {ONLINE|TIME|LATLON|SPEED|TRACK|STATUS|MODE|PACKET|CLEAR}
+gpsd:DATA: GPGGA: registers fractional time 64818.00
+gpsd:DATA: GGA: hhmmss=064818.00 lat=-33.74 lon=151.00 alt=173.50 mode=3 status=1
+gpsd:DATA: GPGGA time is 1314600498.000000 = 2011-08-29T06:48:18.00Z
+gpsd:DATA: packet from /dev/ttyS0 with {ONLINE|TIME|LATLON|ALTITUDE|STATUS|MODE|PACKET}
+gpsd:DATA: GPGSA: mode=3 used=8 pdop=1.60 hdop=0.90 vdop=1.20
+gpsd:DATA: packet from /dev/ttyS0 with {ONLINE|MODE|DOP|PACKET|USED}
+gpsd:DATA: GPZDA time is 1314600498.000000 = 2011-08-29T06:48:18.00Z
+gpsd:DATA: packet from /dev/ttyS0 with {ONLINE|TIME|PACKET}
+gpsd:DATA: packet from /dev/ttyS0 with {ONLINE|PACKET}
+gpsd:DATA: packet from /dev/ttyS0 with {ONLINE|PACKET}
+gpsd:WARN: GPGSV field 3 value of 9 != actual count 12
+gpsd:DATA: GSV: Satellite data OK (3 of 3).
+gpsd:DATA: DOPS computed/reported: X=0.657757/nan, Y=0.851674/nan, H=1.076101/nan, V=1.077597/nan, P=1.522894/nan, T=0.626246/nan, G=1.646630/nan
+gpsd:DATA: packet from /dev/ttyS0 with {ONLINE|DOP|SATELLITE|PACKET}
+gpsd:DATA: merge_ddmmyy(290811) sets year 2011
+gpsd:DATA: GPRMC: registers fractional time 64819.00
+gpsd:DATA: RMC: ddmmyy=290811 hhmmss=064819.00 lat=-33.74 lon=151.00 speed=0.00 track=233.90 mode=2 status=1
+gpsd:DATA: GPRMC time is 1314600499.000000 = 2011-08-29T06:48:19.00Z
+gpsd:DATA: packet from /dev/ttyS0 with {ONLINE|TIME|LATLON|SPEED|TRACK|MODE|PACKET|CLEAR}
+gpsd:DATA: GPGGA: registers fractional time 64819.00
+gpsd:DATA: GGA: hhmmss=064819.00 lat=-33.74 lon=151.00 alt=173.50 mode=3 status=1
+gpsd:DATA: GPGGA time is 1314600499.000000 = 2011-08-29T06:48:19.00Z
+gpsd:DATA: packet from /dev/ttyS0 with {ONLINE|TIME|LATLON|ALTITUDE|STATUS|MODE|PACKET|REPORT}
+gpsd:DATA: GPGSA: mode=3 used=8 pdop=1.60 hdop=0.90 vdop=1.20
+gpsd:DATA: packet from /dev/ttyS0 with {ONLINE|MODE|DOP|PACKET|USED}
+gpsd:DATA: GPZDA time is 1314600499.000000 = 2011-08-29T06:48:19.00Z
+gpsd:DATA: packet from /dev/ttyS0 with {ONLINE|TIME|PACKET|PPSTIME}
+gpsd:DATA: packet from /dev/ttyS0 with {ONLINE|PACKET}
+gpsd:DATA: packet from /dev/ttyS0 with {ONLINE|PACKET}
+gpsd:WARN: GPGSV field 3 value of 9 != actual count 12
+gpsd:DATA: GSV: Satellite data OK (3 of 3).
+gpsd:DATA: DOPS computed/reported: X=0.657757/nan, Y=0.851674/nan, H=1.076101/nan, V=1.077597/nan, P=1.522894/nan, T=0.626246/nan, G=1.646630/nan
+gpsd:DATA: packet from /dev/ttyS0 with {ONLINE|DOP|SATELLITE|PACKET}
+gpsd:DATA: merge_ddmmyy(290811) sets year 2011
+gpsd:DATA: GPRMC: registers fractional time 64820.00
+gpsd:DATA: RMC: ddmmyy=290811 hhmmss=064820.00 lat=-33.74 lon=151.00 speed=0.00 track=255.00 mode=2 status=1
+gpsd:DATA: GPRMC time is 1314600500.000000 = 2011-08-29T06:48:20.00Z
+gpsd:DATA: packet from /dev/ttyS0 with {ONLINE|TIME|LATLON|SPEED|TRACK|MODE|PACKET|CLEAR|PPSTIME}
+gpsd:DATA: GPGGA: registers fractional time 64820.00
+gpsd:DATA: GGA: hhmmss=064820.00 lat=-33.74 lon=151.00 alt=173.40 mode=3 status=1
+gpsd:DATA: GPGGA time is 1314600500.000000 = 2011-08-29T06:48:20.00Z
+gpsd:DATA: packet from /dev/ttyS0 with {ONLINE|TIME|LATLON|ALTITUDE|STATUS|MODE|PACKET|REPORT|PPSTIME}
+gpsd:DATA: GPGSA: mode=3 used=8 pdop=1.60 hdop=0.90 vdop=1.20
+gpsd:DATA: packet from /dev/ttyS0 with {ONLINE|MODE|DOP|PACKET|USED}
+
+
+Cheers,
+David
+
+
+Sent from my iPad
+
+On 29/08/2011, at 15:52, Eric Raymond &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">esr at thyrsus.com</A>&gt; wrote:
+
+&gt;<i> David Cottle &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">webmaster at aus-city.com</A>&gt;:
+</I>&gt;&gt;<i> I seem to have a problem building my rpm with 3.1 on Centos / red hat 6. It's failing to build.
+</I>&gt;<i> 
+</I>&gt;<i> Can you send a log of the failing build?
+</I>&gt;<i> 
+</I>&gt;&gt;<i> I think it's to do with /use systemd
+</I>&gt;&gt;<i> 
+</I>&gt;&gt;<i> I set it to off, but how do I add initscripts?
+</I>&gt;<i> 
+</I>&gt;<i> You should be able to set it to on.  If that's not working let's
+</I>&gt;<i> try to fix it.
+</I>&gt;<i> 
+</I>&gt;&gt;<i> Still having PPS issues in 3.0 I am hoping 3.1 is better.
+</I>&gt;<i> 
+</I>&gt;<i> Do you know git?  If so, perhaps we can run a bisection to figure out
+</I>&gt;<i> what changed.
+</I>&gt;<i> 
+</I>&gt;&gt;<i> What are the build commands for PPS with scons?
+</I>&gt;<i> 
+</I>&gt;<i> Try 'scons pps=true'.
+</I>&gt;<i> 
+</I>&gt;&gt;<i> I tried to find a list of the commands, any help greatly appreciated.
+</I>&gt;<i> 
+</I>&gt;<i> Try 'scons --help'.
+</I>&gt;<i> -- 
+</I>&gt;<i>        &lt;a href=&quot;<A HREF="http://www.catb.org/~esr/">http://www.catb.org/~esr/</A>&quot;&gt;Eric S. Raymond&lt;/a&gt;
+</I>
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="005450.html">[Gpsd-users] Build issue 3.1
+</A></li>
+	<LI>Next message: <A HREF="005451.html">[Gpsd-users] Build issue 3.1
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#5448">[ date ]</a>
+              <a href="thread.html#5448">[ thread ]</a>
+              <a href="subject.html#5448">[ subject ]</a>
+              <a href="author.html#5448">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

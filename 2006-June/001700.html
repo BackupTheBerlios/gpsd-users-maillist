@@ -1,0 +1,137 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] GPSD 2.33: undefined reference to `gpsd_position_fix_dump'
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2006-June/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20GPSD%202.33%3A%20undefined%20reference%20to%20%60gpsd_position_fix_dump%27&In-Reply-To=%3C448F4F9D.6020100%40frontiernet.net%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="001692.html">
+   <LINK REL="Next"  HREF="001702.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] GPSD 2.33: undefined reference to `gpsd_position_fix_dump'</H1>
+    <B>Beakmyn</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20GPSD%202.33%3A%20undefined%20reference%20to%20%60gpsd_position_fix_dump%27&In-Reply-To=%3C448F4F9D.6020100%40frontiernet.net%3E"
+       TITLE="[Gpsd-users] GPSD 2.33: undefined reference to `gpsd_position_fix_dump'">beakmyn at frontiernet.net
+       </A><BR>
+    <I>Wed Jun 14 01:51:57 CEST 2006</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="001692.html">[Gpsd-users] GPSD 2.33: undefined reference to `gpsd_position_fix_dump'
+</A></li>
+        <LI>Next message: <A HREF="001702.html">[Gpsd-users] GPSD 2.33: undefined reference to `gpsd_position_fix_dump'
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1700">[ date ]</a>
+              <a href="thread.html#1700">[ thread ]</a>
+              <a href="subject.html#1700">[ subject ]</a>
+              <a href="author.html#1700">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Am I really the only one?
+
+<A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">beakmyn at frontiernet.net</A> wrote:
+
+&gt;<i> Compiling with NMEA only produces error.  If I build with SIRF-II and 
+</I>&gt;<i> NMEA it's ok.
+</I>&gt;<i>
+</I>&gt;<i> ==========================================
+</I>&gt;<i> gpsd 2.33
+</I>&gt;<i> ------------------------------------------
+</I>&gt;<i> NMEA                    : yes
+</I>&gt;<i> FV-18                   : no
+</I>&gt;<i> SiRF-II                 : no
+</I>&gt;<i> Trimble TSIP            : no
+</I>&gt;<i> Tripmate                : no
+</I>&gt;<i> Earthmate               : no
+</I>&gt;<i> iTrax                   : no
+</I>&gt;<i> iTalk                   : no
+</I>&gt;<i> Garmin                  : no
+</I>&gt;<i> True North              : no
+</I>&gt;<i> Evermore                : no
+</I>&gt;<i> RTCM104 support         : no
+</I>&gt;<i> NTP SHM                 : no
+</I>&gt;<i> NTP PPS                 : no
+</I>&gt;<i> Fixed port speed        : 4800
+</I>&gt;<i> Enable shared libraries : yes
+</I>&gt;<i> Enable DBUS support     : no
+</I>&gt;<i> ------------------------------------------
+</I>&gt;<i> Configure finished, type 'make' to build.
+</I>&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">user at ws2</A>:~/gpsd-2.33$ make
+</I>&gt;<i> make  all-am
+</I>&gt;<i> make[1]: Entering directory `/home/user/gpsd-2.33'
+</I>&gt;<i> /bin/sh ./libtool --tag=CC --mode=link mipsel-linux-uclibc-gcc  -Os -s 
+</I>&gt;<i> -I/home/user/whiterussian/openwrt/staging_dir_mipsel/usr/include -Wall 
+</I>&gt;<i> -Wcast-align -Wmissing-declarations -Wmissing-prototypes 
+</I>&gt;<i> -Wstrict-prototypes -Wpointer-arith -Wreturn-type -D_GNU_SOURCE  
+</I>&gt;<i> -I/home/user/whiterussian/openwrt/staging_dir_mipsel/usr/include  
+</I>&gt;<i> -static  -L/home/user/whiterussian/openwrt/staging_dir_mipsel/usr/lib 
+</I>&gt;<i> -o gpsflash  gpsflash.o sirfflash.o -lm libgps.la -lm
+</I>&gt;<i> mipsel-linux-uclibc-gcc -Os -s 
+</I>&gt;<i> -I/home/user/whiterussian/openwrt/staging_dir_mipsel/usr/include -Wall 
+</I>&gt;<i> -Wcast-align -Wmissing-declarations -Wmissing-prototypes 
+</I>&gt;<i> -Wstrict-prototypes -Wpointer-arith -Wreturn-type -D_GNU_SOURCE 
+</I>&gt;<i> -I/home/user/whiterussian/openwrt/staging_dir_mipsel/usr/include -o 
+</I>&gt;<i> gpsflash gpsflash.o sirfflash.o  
+</I>&gt;<i> -L/home/user/whiterussian/openwrt/staging_dir_mipsel/usr/lib 
+</I>&gt;<i> ./.libs/libgps.a -lnsl -lpthread -lm
+</I>&gt;<i> ./.libs/libgps.a(ntrip.o): In function `ntrip_report':
+</I>&gt;<i> ntrip.c:(.text+0xe5c): undefined reference to `gpsd_position_fix_dump'
+</I>&gt;<i> collect2: ld returned 1 exit status
+</I>&gt;<i> make[1]: *** [gpsflash] Error 1
+</I>&gt;<i> make[1]: Leaving directory `/home/user/gpsd-2.33'
+</I>&gt;<i> make: *** [all] Error 2
+</I>&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">user at ws2</A>:~/gpsd-2.33$
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i> ./configure --host=mipsel-linux --without-motif --without-athena 
+</I>&gt;<i> --without-xpm  \
+</I>&gt;<i> --disable-tsip  --disable-fv18  --disable-tripmate  
+</I>&gt;<i> --disable-earthmate  --disable-itrax  \
+</I>&gt;<i> --disable-italk  --disable-garmin  --disable-evermore  
+</I>&gt;<i> --disable-rtcm104  --disable-ntpshm  \
+</I>&gt;<i> --disable-pps --disable-sirfII --disable-libtool-lock 
+</I>&gt;<i> --enable-fixed-port-speed=4800
+</I>&gt;<i>
+</I>&gt;<i> _______________________________________________
+</I>&gt;<i> Gpsd-users mailing list
+</I>&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">Gpsd-users at lists.berlios.de</A>
+</I>&gt;<i> <A HREF="http://lists.berlios.de/mailman/listinfo/gpsd-users">http://lists.berlios.de/mailman/listinfo/gpsd-users</A>
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i>
+</I>
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="001692.html">[Gpsd-users] GPSD 2.33: undefined reference to `gpsd_position_fix_dump'
+</A></li>
+	<LI>Next message: <A HREF="001702.html">[Gpsd-users] GPSD 2.33: undefined reference to `gpsd_position_fix_dump'
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1700">[ date ]</a>
+              <a href="thread.html#1700">[ thread ]</a>
+              <a href="subject.html#1700">[ subject ]</a>
+              <a href="author.html#1700">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

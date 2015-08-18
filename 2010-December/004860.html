@@ -1,0 +1,156 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] Cannot get Garmin 18x LVC NMEA to work right with ntp
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2010-December/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Cannot%20get%20Garmin%2018x%20LVC%20NMEA%20to%20work%20right%20with%0A%20ntp&In-Reply-To=%3C4D1E087D.90408%40funsoft.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="004859.html">
+   <LINK REL="Next"  HREF="004861.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] Cannot get Garmin 18x LVC NMEA to work right with ntp</H1>
+    <B>Gary Eheman</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Cannot%20get%20Garmin%2018x%20LVC%20NMEA%20to%20work%20right%20with%0A%20ntp&In-Reply-To=%3C4D1E087D.90408%40funsoft.com%3E"
+       TITLE="[Gpsd-users] Cannot get Garmin 18x LVC NMEA to work right with ntp">eheman at funsoft.com
+       </A><BR>
+    <I>Fri Dec 31 17:44:45 CET 2010</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="004859.html">[Gpsd-users] Cannot get Garmin 18x LVC NMEA to work right with ntp
+</A></li>
+        <LI>Next message: <A HREF="004861.html">[Gpsd-users] Cannot get Garmin 18x LVC NMEA to work right with ntp
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#4860">[ date ]</a>
+              <a href="thread.html#4860">[ thread ]</a>
+              <a href="subject.html#4860">[ subject ]</a>
+              <a href="author.html#4860">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Gary:
+In my reading of the GPS 18 Technical Specifications (Rev. D) pdf from Garmin, it
+indicates in section 4.1.3 about the $PGRMC sentence that field 10 sets the NMEA 0183
+Baud rate. Also indicates that 38400 is only valid for the GPS 18-5hz model. I have
+an 18x which I presume is not an 18-5hz.  So 19200 baud appears to be the max for my
+model.
+
+# gpsctl -f -s 19200 /dev/ttyS1
+gpsctl: /dev/ttyS1 identified as a Generic NMEA at 4800.
+gpsctl: Generic NMEA devices have no speed switch.
+#
+
+I retried the above with a D7 debug trace. Viewable here:
+<A HREF="http://pastebin.com/qFeD3Feq">http://pastebin.com/qFeD3Feq</A>
+
+Since I could not get gpsctl to set the speed, I then built a file with a $PGRMC
+sentence in it (where 5=19200) and assured a cr/lf on the end and sent it to the gps:
+# cat setgpsbaud
+$PGRMC,,,,,,,,,,5,,,,
+# hexdump -C setgpsbaud
+00000000  24 50 47 52 4d 43 2c 2c  2c 2c 2c 2c 2c 2c 2c 2c  |$PGRMC,,,,,,,,,,|
+00000010  35 2c 2c 2c 2c 0d 0a                              |5,,,,..|
+00000017
+# cat setgpsbaud &gt; /dev/ttyS1
+#
+
+I then pulled the power to reset the gps since the notes say, &quot;Baud rate and
+Measurement Pulse Outmode mode changes take effect on the next power cylce or an
+external reset event.&quot;
+
+After restarting gpsd and watching the initial conversations with gpspipe, the gps
+seemed to report that it was now running at 19200. Viewable here:
+<A HREF="http://pastebin.com/2R5BFfu2">http://pastebin.com/2R5BFfu2</A>
+
+Seems to be sending the handful of sentences every one second based on observation of
+the start/stop action while watching with gpspipe.
+
+But it still is marking the NMEA shared memory segment data as falsetick. So I
+shutdown gpsd and ntp and restarted gpsd with
+# gpsd -nND 7 /dev/ttyS1 2&gt;&amp;1 | egrep 'PPS|NTP'
+and then started ntp.  Trace can be viewed at:
+<A HREF="http://pastebin.com/0Mf8vc8P">http://pastebin.com/0Mf8vc8P</A>
+
+In case it makes a difference, I should disclose that when making my DE9 cable
+connector, I inserted a 25 foot cat-3 cable as an extension. So the GPS's cable is
+soldered to a 25' cat-3 cable that then leads to my DE9. I thought I was going to
+need the extra length to run the gps outdoors. Turns out I need not have bothered
+with the extra length as the gps seems to be able to see 10 satellites here in my
+first floor office according to the $GPGSV sentences.
+
+I appreciate your continued assistance.
+
+On 12/31/2010 02:24 AM, Gary E. Miller wrote:
+&gt;<i> -----BEGIN PGP SIGNED MESSAGE-----
+</I>&gt;<i> Hash: SHA1
+</I>&gt;<i> 
+</I>&gt;<i> Yo Gary!
+</I>&gt;<i> 
+</I>&gt;<i> On Thu, 30 Dec 2010, Gary Eheman wrote:
+</I>&gt;<i> 
+</I>&gt;&gt;<i> Ok.  See pastebin: <A HREF="http://pastebin.com/SwLUeA10">http://pastebin.com/SwLUeA10</A>
+</I>&gt;&gt;<i> for the trace you requested.
+</I>&gt;<i> 
+</I>&gt;<i> Whoops, I should have said -D 7 to get the NTP logs.
+</I>&gt;<i> 
+</I>&gt;&gt;<i> I'm pretty sure that the gps is only sending the data at 4800 baud and not
+</I>&gt;&gt;<i>  38400,
+</I>&gt;<i> 
+</I>&gt;<i> Then that is your problem.  No need for the logs.
+</I>&gt;<i> 
+</I>&gt;&gt;<i> unless gpsd is sending an instruction to the gps to specify 38400
+</I>&gt;<i> 
+</I>&gt;<i> Nope.
+</I>&gt;<i> 
+</I>&gt;&gt;<i> I thought everything I read
+</I>&gt;&gt;<i> during research said 4800 was ok and desired?
+</I>&gt;<i> 
+</I>&gt;<i> Nope, exactly the opposite.  The serial latency is what is throwing your
+</I>&gt;<i> time measurements off.  ntpd detects the sloppy data and rejects it.
+</I>&gt;<i> 
+</I>&gt;<i> You need to use gpsctl (or some other tool) to set the 18x to a much
+</I>&gt;<i> higher speed.
+</I>&gt;<i> 
+</I>&gt;<i> RGDS
+</I>&gt;<i> GARY
+</I>&gt;<i> - ---------------------------------------------------------------------------
+</I>&gt;<i> Gary E. Miller Rellim 109 NW Wilmington Ave., Suite E, Bend, OR 97701
+</I>&gt;<i> 	<A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">gem at rellim.com</A>  Tel:+1(541)382-8588
+</I>&gt;<i> 
+</I>
+
+-- 
+Gary Eheman
+Fundamental Software, Inc.
+<A HREF="http://www.funsoft.com">http://www.funsoft.com</A>
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="004859.html">[Gpsd-users] Cannot get Garmin 18x LVC NMEA to work right with ntp
+</A></li>
+	<LI>Next message: <A HREF="004861.html">[Gpsd-users] Cannot get Garmin 18x LVC NMEA to work right with ntp
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#4860">[ date ]</a>
+              <a href="thread.html#4860">[ thread ]</a>
+              <a href="subject.html#4860">[ subject ]</a>
+              <a href="author.html#4860">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

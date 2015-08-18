@@ -1,0 +1,128 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] no speed data from sirf-III, sometimes
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2008-August/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20no%20speed%20data%20from%20sirf-III%2C%20sometimes&In-Reply-To=%3C17305.1217904846%40foxharp.boston.ma.us%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   
+   <LINK REL="Next"  HREF="003298.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] no speed data from sirf-III, sometimes</H1>
+    <B>Paul Fox</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20no%20speed%20data%20from%20sirf-III%2C%20sometimes&In-Reply-To=%3C17305.1217904846%40foxharp.boston.ma.us%3E"
+       TITLE="[Gpsd-users] no speed data from sirf-III, sometimes">pgf at foxharp.boston.ma.us
+       </A><BR>
+    <I>Tue Aug  5 04:54:06 CEST 2008</I>
+    <P><UL>
+        
+        <LI>Next message: <A HREF="003298.html">[Gpsd-users] no speed data from sirf-III, sometimes
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3297">[ date ]</a>
+              <a href="thread.html#3297">[ thread ]</a>
+              <a href="subject.html#3297">[ subject ]</a>
+              <a href="author.html#3297">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>hi --
+
+are there known cases where gpsd will not receive good satellite
+counts, speed and altitude data from a sirf-II chipset?  i'm
+having an intermittent problem with a USB-connected gps receiver. 
+the receiver is one of these: 
+    <A HREF="http://www.usglobalsat.com/p-62-bu-353-w.aspx">http://www.usglobalsat.com/p-62-bu-353-w.aspx</A>
+
+i use it with RoadMap (<A HREF="http://roadmap.sourceforge.net">http://roadmap.sourceforge.net</A>) which has
+the ability to access a gps device directly via serial, via gpsd
+in NMEA mode, or via gpsd in &quot;gpsd protocol&quot; mode.
+
+sometimes the gpsd data i receive looks, good, like this:  (i've
+added a header line added to help label fields.  i hope you have
+a fixed-width font.)
+
+GPSD,Q=7 3.65 1.60 3.07 2.25 4.29
+GPSD,Y=MID4 1217897781.000 8:27 2 184 15 0:28 84 285 34 1:17 50 286 34 1:32 27 81 41 1:20 31 111 33 1:4 13 217 28 1:8 22 198 28 1:11 48 58 40 1:
+GPSD,O=MID2 1217897781.000 0.005 42.405257 -71.164387 20.40 12.80 24.58 52.3244 7.067 0.090 ? ? ? 3
+              time                lat        lon       alt              steering  speed
+GPSD,O=MID2 1217897782.000 0.005 42.405320 -71.164303 20.07 12.80 24.58 50.1236 9.514 0.179 ? 25.60 ? 3
+GPSD,O=MID2 1217897783.000 0.005 42.405376 -71.164210 20.68 12.80 24.58 49.5738 10.323 0.085 ? 25.60 ? 3
+GPSD,O=MID2 1217897784.000 0.005 42.405436 -71.164102 20.83 12.80 24.58 48.7469 11.193 0.075 ? 25.60 ? 3
+GPSD,O=MID2 1217897785.000 0.005 42.405510 -71.164002 20.71 12.80 24.58 47.3864 11.759 0.180 ? 25.60 ? 3
+GPSD,O=MID2 1217897786.000 0.005 42.405591 -71.163901 21.27 12.80 24.58 44.1617 11.858 0.139 ? 25.60 ? 3
+GPSD,Q=7 3.65 1.60 3.07 2.25 4.29
+GPSD,O=MID2 1217897787.000 0.005 42.405672 -71.163801 21.83 12.80 24.58 39.6828 11.953 0.122 ? 25.60 ? 3
+GPSD,O=MID2 1217897788.000 0.005 42.405748 -71.163712 21.48 12.80 24.58 40.4590 11.638 0.129 ? 25.60 ? 3
+GPSD,O=MID2 1217897789.000 0.005 42.405818 -71.163627 21.83 12.80 24.58 43.5373 10.553 0.150 ? 25.60 ? 3
+GPSD,O=MID2 1217897790.000 0.005 42.405878 -71.163558 21.96 12.80 24.58 44.2778 8.363 0.117 ? 25.60 ? 3
+GPSD,O=MID2 1217897791.000 0.005 42.405929 -71.163515 21.64 12.80 24.58 30.9144 6.591 0.111 ? 25.60 ? 3
+
+and sometimes it looks like this:
+
+GPSD,Q=?
+GPSD,O=GND 1217898041.000 0.005 42.414185 -71.180249 ? ? ? 59.0900 0.590 168.290 ? ? ? 3
+GPSD,O=GND 1217898042.000 0.005 42.414185 -71.180249 ? ? ? -45.8700 0.580 135.990 ? ? ? 3
+GPSD,Y=MID4 1217898042.000 8:4 15 219 21 1:11 46 57 33 1:17 51 289 32 1:28 85 262 27 1:32 27 79 30 1:8 20 198 23 1:20 33 109 20 1:9 5 328 21 0:
+GPSD,O=GND 1217898043.000 0.005 42.414185 -71.180248 ? ? ? -130.3500 0.580 118.270 ? ? ? 3
+              time                lat        lon    alt    steering  speed
+GPSD,O=GND 1217898044.000 0.005 42.414186 -71.180249 ? ? ? -225.0700 0.580 -303.000 ? ? ? 3
+GPSD,O=GND 1217898045.000 0.005 42.414189 -71.180250 ? ? ? 322.7700 0.580 23.940 ? ? ? 3
+GPSD,Q=?
+GPSD,O=GND 1217898046.000 0.005 42.414189 -71.180235 ? ? ? 197.3300 0.580 98.930 ? ? ? 3
+GPSD,O=GND 1217898047.000 0.005 42.414185 -71.180196 ? ? ? 41.1700 0.580 98.460 ? ? ? 3
+GPSD,Y=MID4 1217898047.000 7:4 15 219 20 1:11 46 57 38 1:17 51 289 32 1:28 85 261 30 1:32 27 79 35 1:8 20 198 23 1:20 33 109 38 1:
+GPSD,O=GND 1217898048.000 0.005 42.414185 -71.180134 ? ? ? -161.0700 0.570 91.370 ? ? ? 3
+GPSD,O=GND 1217898049.000 0.005 42.414193 -71.180052 ? ? ? 256.2100 0.570 83.930 ? ? ? 3
+GPSD,O=GND 1217898050.000 0.005 42.414206 -71.179959 ? ? ? 0.2100 0.570 79.600 ? ? ? 3
+
+as you can see from the timestamps, these two log segments were
+captured about two minutes apart.  in between these logs, the
+unit was unplugged, gpsd restarted, and then replugged.  i was
+travelling in the same neighborhood, with essentially the same
+view of the sky.  i was traveling at residential speeds in both
+cases.
+
+i haven't yet figured out a way to reliably make the data &quot;good&quot;
+or &quot;bad&quot;.  once the data gets into the &quot;bad&quot; mode (i.e., no data
+for 'Q', no altitude info, bad speed data), it tend to stay bad. 
+tonight i managed to get the initial good plot after bypassing
+gpsd and accessing the unit directly from RoadMap via ttyUSB0,
+but that may have been a coincidence.
+
+any ideas?
+
+paul
+=---------------------
+ paul fox, <A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">pgf at foxharp.boston.ma.us</A> (arlington, ma, where it's 68.0 degrees)
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	
+	<LI>Next message: <A HREF="003298.html">[Gpsd-users] no speed data from sirf-III, sometimes
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3297">[ date ]</a>
+              <a href="thread.html#3297">[ thread ]</a>
+              <a href="subject.html#3297">[ subject ]</a>
+              <a href="author.html#3297">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

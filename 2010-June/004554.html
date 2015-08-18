@@ -1,0 +1,136 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] How to manage reporting cycle in mixed NMEA/binary	messages?
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2010-June/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20How%20to%20manage%20reporting%20cycle%20in%20mixed%20NMEA/binary%0A%09messages%3F&In-Reply-To=%3C0A5FE2F1C1F58D4B9A821C362DA7C5E304193FFC%40roswell.ticom-geo.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="004552.html">
+   <LINK REL="Next"  HREF="004555.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] How to manage reporting cycle in mixed NMEA/binary	messages?</H1>
+    <B>Roderick Medina</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20How%20to%20manage%20reporting%20cycle%20in%20mixed%20NMEA/binary%0A%09messages%3F&In-Reply-To=%3C0A5FE2F1C1F58D4B9A821C362DA7C5E304193FFC%40roswell.ticom-geo.com%3E"
+       TITLE="[Gpsd-users] How to manage reporting cycle in mixed NMEA/binary	messages?">rmedina at ticom-geo.com
+       </A><BR>
+    <I>Wed Jun 30 00:48:20 CEST 2010</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="004552.html">[Gpsd-users] How to manage reporting cycle in mixed NMEA/binary messages?
+</A></li>
+        <LI>Next message: <A HREF="004555.html">[Gpsd-users] How to manage reporting cycle in mixed NMEA/binary messages?
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#4554">[ date ]</a>
+              <a href="thread.html#4554">[ thread ]</a>
+              <a href="subject.html#4554">[ subject ]</a>
+              <a href="author.html#4554">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Gary,
+
+I appreciate the suggestion but the messages are completely custom to a
+new driver I am trying to develop. I think the problem is my lack of
+understanding of the reporting cycle and how to manage it. Also, there
+is a function called &quot;merge_ddmmyy&quot; in the nmea driver that somehow is
+getting a totally bogus year value:
+
+(my own debug statement)gpsd: merge_ddmmyy(ddmmyy) old year: -1075138528
+
+gpsd: merge_ddmmyy(ddmmyy) sets year -1075138490 from 290610
+
+Somehow the year value is getting blown away and filled in with garbage
+(that giant negative number) and is not smart enough to figure out this
+is a horrible starting year. I could patch this in the nmea driver but
+ultimately the problem is how the old year value gets to be set with
+garbage in the first place. My custom messages currently do not
+contribute anything to the TPV or any other data structure so I don't
+think they are the cause directly except as I mentioned, I'm not sure
+what to do with the reporting cycle and the correct way to set the
+various report/clear flags.
+
+In looking at the code, I can't find a place where the year might be
+initialized to some particular value to start with.
+
+Regards,
+
+
+Roderick
+
+
+
+-----Original Message-----
+From: Gary E. Miller [mailto:<A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">gem at rellim.com</A>] 
+Sent: Tuesday, June 29, 2010 11:35 AM
+To: Roderick Medina
+Cc: <A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">gpsd-users at lists.berlios.de</A>
+Subject: Re: [Gpsd-users] How to manage reporting cycle in mixed
+NMEA/binary messages?
+
+-----BEGIN PGP SIGNED MESSAGE-----
+Hash: SHA1
+
+Yo Roderick!
+
+On Tue, 29 Jun 2010, Roderick Medina wrote:
+
+&gt;<i> I am working with a GPS unit that uses GPGGA and GPRMC NMEA messages
+</I>as
+&gt;<i> well as two other messages that are custom to that GPS. The problem is
+</I>&gt;<i> that the GPS year/century calculation freaks out when one of those
+</I>&gt;<i> custom messages is turned on.
+</I>
+Best to send this list a snippet of the sentences that cause your
+probblem.
+
+Then someone can fix the problem and it can be added to our regressions
+so it stays fixed.
+
+RGDS
+GARY
+-
+------------------------------------------------------------------------
+---
+Gary E. Miller Rellim 109 NW Wilmington Ave., Suite E, Bend, OR 97701
+	<A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">gem at rellim.com</A>  Tel:+1(541)382-8588
+
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v1.4.3 (GNU/Linux)
+
+iD8DBQFMKiCbBmnRqz71OvMRAlzVAKDCtrd+TQvWXsnVdNgq2R6tgefoSACcCgLh
+q//2Up1eTmPnhIJ8B+I6lmM=
+=jcum
+-----END PGP SIGNATURE-----
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="004552.html">[Gpsd-users] How to manage reporting cycle in mixed NMEA/binary messages?
+</A></li>
+	<LI>Next message: <A HREF="004555.html">[Gpsd-users] How to manage reporting cycle in mixed NMEA/binary messages?
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#4554">[ date ]</a>
+              <a href="thread.html#4554">[ thread ]</a>
+              <a href="subject.html#4554">[ subject ]</a>
+              <a href="author.html#4554">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

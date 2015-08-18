@@ -1,0 +1,188 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] libgps questions
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2010-July/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20libgps%20questions&In-Reply-To=%3C20100706141905.563cf61f%40dragon.localdomain%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="004565.html">
+   <LINK REL="Next"  HREF="004574.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] libgps questions</H1>
+    <B>Charles Curley</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20libgps%20questions&In-Reply-To=%3C20100706141905.563cf61f%40dragon.localdomain%3E"
+       TITLE="[Gpsd-users] libgps questions">charlescurley at charlescurley.com
+       </A><BR>
+    <I>Tue Jul  6 22:19:05 CEST 2010</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="004565.html">[Gpsd-users] libgps questions
+</A></li>
+        <LI>Next message: <A HREF="004574.html">[Gpsd-users] libgps questions
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#4573">[ date ]</a>
+              <a href="thread.html#4573">[ thread ]</a>
+              <a href="subject.html#4573">[ subject ]</a>
+              <a href="author.html#4573">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>On Mon, 5 Jul 2010 12:40:11 -0700 (PDT)
+Danforth Dyad &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">bdbcat at yahoo.com</A>&gt; wrote:
+
+&gt;<i> 
+</I>&gt;<i> 
+</I>&gt;<i> Hello...
+</I>&gt;<i> 
+</I>&gt;<i> I am Dave, lead developer of OpenCPN.
+</I>&gt;<i> We have used GPSD for some time, communicating directly with the
+</I>&gt;<i> daemon through a socket. We have recently shifted to the libgps
+</I>&gt;<i> interface, and are having some problems.
+</I>&gt;<i> 
+</I>&gt;<i> I've searched around for some production-level sample code using
+</I>&gt;<i> libgps, but to no avail.
+</I>
+You might want to look at
+<A HREF="http://www.charlescurley.com/blog/articles/gnome-gps_a_simple_gtk_gps_monitor/index.html">http://www.charlescurley.com/blog/articles/gnome-gps_a_simple_gtk_gps_monitor/index.html</A>
+
+&gt;<i> So I would appreciate it if some gpsd/libgps
+</I>&gt;<i> developers would have a look at our code and validate the basic
+</I>&gt;<i> assumptions.
+</I>&gt;<i> 
+</I>&gt;<i> The important code snippets look like this:
+</I>&gt;<i> 
+</I>&gt;<i> void libgps_hook(struct gps_data_t *data, char *buf, size_t size)
+</I>&gt;<i> {
+</I>&gt;<i> 
+</I>&gt;<i> &#160;&#160; ThreadPositionData.FixTime = (time_t)data-&gt;fix.time;
+</I>&gt;<i> &#160;&#160; ThreadPositionData.kLat = data-&gt;fix.latitude;
+</I>&gt;<i> &#160;&#160; ThreadPositionData.kLon = data-&gt;fix.longitude;
+</I>
+The contents of the struct at data are only valid if the relevant flag
+is set in data-&gt;set. E.g. my code:
+
+
+  if (gpsdata-&gt;set &amp; TIME_SET) {
+    formatTime (gpsdata-&gt;fix.time);
+  }
+
+(My formatTime would be more accurately named displayTime, come to think
+of it.)
+
+lat and long depend on the quality of the fix, so they are only valid
+if several conditions obtain. See how I did it.
+
+
+&gt;<i> 
+</I>&gt;<i> &#160;&#160; ThreadPositionData.kCog = 0.;
+</I>&gt;<i> &#160;&#160;
+</I>&gt;<i>  if(!wxIsNaN(data-&gt;fix.track))
+</I>&gt;<i> &#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160; ThreadPositionData.kCog = data-&gt;fix.track;
+</I>&gt;<i> 
+</I>&gt;<i> &#160;&#160; ThreadPositionData.kSog = 0.;
+</I>&gt;<i> &#160;&#160; if(!wxIsNaN(data-&gt;fix.speed))
+</I>&gt;<i> &#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160; ThreadPositionData.kSog = data-&gt;fix.speed;
+</I>&gt;<i> 
+</I>&gt;<i> &#160;&#160; ThreadPositionData.nSats = data-&gt;satellites_visible;
+</I>&gt;<i> 
+</I>&gt;<i> }
+</I>&gt;<i> 
+</I>&gt;<i> void NMEAWindow::OnTimerLIBGPS(wxTimerEvent&amp; event)
+</I>&gt;<i> {
+</I>&gt;<i> &#160;&#160;&#160;&#160;&#160; // Library call to set the raw hook
+</I>&gt;<i> &#160;&#160;&#160;&#160;&#160; m_fn_gps_set_raw_hook(m_gps_data, libgps_hook);
+</I>&gt;<i> 
+</I>&gt;<i> &#160;&#160;&#160;&#160;&#160; // If the library is ready.....
+</I>&gt;<i> &#160;&#160;&#160;&#160;&#160; if(m_fn_gps_waiting(m_gps_data)) {
+</I>&gt;<i> &#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160; m_fn_gps_poll(m_gps_data);
+</I>&gt;<i> 
+</I>&gt;<i> 
+</I>&gt;<i> &#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160; if((m_gps_data-&gt;set &amp; STATUS_SET) &amp;&amp;
+</I>&gt;<i>  (m_gps_data-&gt;status &gt; 0))
+</I>&gt;<i> &#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160; {
+</I>&gt;<i> &#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160; .....Process the fix
+</I>&gt;<i> &#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160; }
+</I>&gt;<i> &#160;&#160;&#160;&#160;&#160; }
+</I>&gt;<i> }
+</I>&gt;<i> 
+</I>&gt;<i> 
+</I>&gt;<i> As you can see, we poll the library periodically, and extract fix
+</I>&gt;<i> data through the hook mechanism.
+</I>&gt;<i> 
+</I>&gt;<i> Mostly this works OK, but we are seeing some inconsistent behavior.
+</I>&gt;<i> 
+</I>&gt;<i> Here are some of our problems:
+</I>&gt;<i> 1.&#160; The gps (gps_data_t.status) seems always to be set valid, even
+</I>&gt;<i> when the GPS receiver is unplugged after getting a valid fix.
+</I>&gt;<i> This is clearly a problem for a ship navigation application.
+</I>&gt;<i> Are we interprting this value incorrectly?
+</I>
+Close. It is only valid when (gpsdata-&gt;set &amp; STATUS_SET) is set.
+
+&gt;<i> 
+</I>&gt;<i> 2.&#160; (gps_data_t.version) seems sometimes to be unset, returning 0.0
+</I>&gt;<i> Why is that?
+</I>
+It is a struct, and is only valid when (gpsdata-&gt;set &amp; VERSION_SET) is
+set.
+
+&gt;<i> 
+</I>&gt;<i> 3.&#160; Related:&#160; What is the Version of libgps which installs from
+</I>&gt;<i> standard repo in Ubuntu 10.04? 
+</I>&gt;<i> We are getting mixed results again from (gps_data_t.version)
+</I>
+It's an old one, 2.92-4. I believe it has some bugs in it. I'm running
+the git head on 10.04 with no problems:
+{&quot;class&quot;:&quot;VERSION&quot;,&quot;release&quot;:&quot;2.95~dev&quot;,&quot;rev&quot;:&quot;2010-07-05T16:44:52&quot;,&quot;proto_major&quot;:3,&quot;proto_minor&quot;:3}
+
+The plan was to have 3.0 by 30 June. I don't think this has happened,
+but I expect it will soon. (I am not a developer so I can't speak for
+them.) I expect I'll switch from git head to the release tag until
+Ubuntu catches up.
+
+&gt;<i> 
+</I>&gt;<i> If anyone can point me to a better interface model, I'd be happy to
+</I>&gt;<i> look at it.
+</I>
+I think you're on the right track.
+
+-- 
+
+Charles Curley                  /&quot;\    ASCII Ribbon Campaign
+Looking for fine software       \ /    Respect for open standards
+and/or writing?                  X     No HTML/RTF in email
+<A HREF="http://www.charlescurley.com">http://www.charlescurley.com</A>    / \    No M$ Word docs in email
+
+Key fingerprint = CE5C 6645 A45A 64E4 94C0  809C FFF6 4C48 4ECD DFDB
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="004565.html">[Gpsd-users] libgps questions
+</A></li>
+	<LI>Next message: <A HREF="004574.html">[Gpsd-users] libgps questions
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#4573">[ date ]</a>
+              <a href="thread.html#4573">[ thread ]</a>
+              <a href="subject.html#4573">[ subject ]</a>
+              <a href="author.html#4573">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

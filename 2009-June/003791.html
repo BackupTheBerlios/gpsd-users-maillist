@@ -1,0 +1,274 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] problem with the haicom hi-204s
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2009-June/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20problem%20with%20the%20haicom%20hi-204s&In-Reply-To=%3C4A48D1BA.6060902%40gmail.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="003790.html">
+   <LINK REL="Next"  HREF="003792.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] problem with the haicom hi-204s</H1>
+    <B>Marc Coevoet</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20problem%20with%20the%20haicom%20hi-204s&In-Reply-To=%3C4A48D1BA.6060902%40gmail.com%3E"
+       TITLE="[Gpsd-users] problem with the haicom hi-204s">sintsixtus at gmail.com
+       </A><BR>
+    <I>Mon Jun 29 16:37:46 CEST 2009</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="003790.html">[Gpsd-users] problem with the haicom  hi-204s
+</A></li>
+        <LI>Next message: <A HREF="003792.html">[Gpsd-users] problem with the haicom hi-204s
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3791">[ date ]</a>
+              <a href="thread.html#3791">[ thread ]</a>
+              <a href="subject.html#3791">[ subject ]</a>
+              <a href="author.html#3791">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Max Afonov schreef:
+&gt;<i> What I meant was:
+</I>&gt;<i>
+</I>&gt;<i> # modprobe -r pl2303
+</I>&gt;<i> # find /dev &gt; a
+</I>&gt;<i> # modprobe pl2303
+</I>&gt;<i> # find /dev &gt; b
+</I>&gt;<i> # diff a b
+</I>&gt;<i>
+</I>&gt;<i>   
+</I>
+<A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">root at laptop</A>:~# modprobe -r pl2303
+<A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">root at laptop</A>:~#  find /dev &gt; a
+<A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">root at laptop</A>:~# modprobe pl2303
+<A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">root at laptop</A>:~# find /dev &gt; b
+<A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">root at laptop</A>:~# diff a b
+<A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">root at laptop</A>:~#
+
+
+No difference...
+
+
+
+&gt;<i> Hopefully the last diff command will show you that something has
+</I>&gt;<i> changed with the module inserted vs the module removed.
+</I>&gt;<i>
+</I>&gt;<i> However, now that I see your full situation, I think you're pushing
+</I>&gt;<i> round pegs into square holes. The pl2303 module is meant for
+</I>&gt;<i> USB-to-RS232 adapters, and it's more than likely that your PS/2-to-USB
+</I>&gt;<i> adapter does not have that particular chip. If the adapter is meant to
+</I>&gt;<i> make a mouse or keyboard work, it'll most likely implement the HID
+</I>&gt;<i> part of USB, which is what you're seeing in your dmesg output.
+</I>&gt;<i>
+</I>&gt;<i>   
+</I>
+My hi-204s only has a PS/2 connector...
+
+&gt;<i> I regret to say so, but I think your set up isn't going to work this way.
+</I>&gt;<i>
+</I>&gt;<i> On the other hand, judging by this page:
+</I>&gt;<i>
+</I>&gt;<i> <A HREF="http://gpsd.berlios.de/hardware.html">http://gpsd.berlios.de/hardware.html</A>
+</I>&gt;<i>
+</I>&gt;<i> it appears that HI-204S is a USB unit. 
+</I>
+I suppose a ps/2 tot usb works ...   but which one ;-)??
+
+
+Marc
+
+
+&gt;<i>
+</I>&gt;<i> On Mon, Jun 29, 2009 at 07:57, Marc Coevoet&lt;<A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">sintsixtus at gmail.com</A>&gt; wrote:
+</I>&gt;<i>   
+</I>&gt;&gt;<i> Max Afonov schreef:
+</I>&gt;&gt;<i>     
+</I>&gt;&gt;&gt;<i> It looks like you're not using the right device node. You should not
+</I>&gt;&gt;&gt;<i> create your own /tmp/gps. Instead, compare /dev before and after the
+</I>&gt;&gt;&gt;<i> modprobe. Ideally new device nodes (such as /dev/ttyUSB0) should have sprung
+</I>&gt;&gt;&gt;<i> up after the module was inserted. One of those nodes is your GPS.
+</I>&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;<i>       
+</I>&gt;&gt;<i> An,other thing is the dmesg,
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> [  387.577794] usb 2-2: new low speed USB device using ohci_hcd and address
+</I>&gt;&gt;<i> 2
+</I>&gt;&gt;<i> [  387.785033] usb 2-2: configuration #1 chosen from 1 choice
+</I>&gt;&gt;<i> [  387.803498] input: HID 04d9:1400 as
+</I>&gt;&gt;<i> /devices/pci0000:00/0000:00:13.1/usb2/2-2/2-2:1.0/input/input11
+</I>&gt;&gt;<i> [  387.833746] input,hidraw1: USB HID v1.10 Keyboard [HID 04d9:1400] on
+</I>&gt;&gt;<i> usb-0000:00:13.1-2
+</I>&gt;&gt;<i> [  387.847300] input: HID 04d9:1400 as
+</I>&gt;&gt;<i> /devices/pci0000:00/0000:00:13.1/usb2/2-2/2-2:1.1/input/input12
+</I>&gt;&gt;<i> [  387.889771] input,hidraw2: USB HID v1.10 Mouse [HID 04d9:1400] on
+</I>&gt;&gt;<i> usb-0000:00:13.1-2
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> if I add to this ps/2 to usb cable the antenna:
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> [  387.577794] usb 2-2: new low speed USB device using ohci_hcd and address
+</I>&gt;&gt;<i> 2
+</I>&gt;&gt;<i> [  387.785033] usb 2-2: configuration #1 chosen from 1 choice
+</I>&gt;&gt;<i> [  387.803498] input: HID 04d9:1400 as
+</I>&gt;&gt;<i> /devices/pci0000:00/0000:00:13.1/usb2/2-2/2-2:1.0/input/input11
+</I>&gt;&gt;<i> [  387.833746] input,hidraw1: USB HID v1.10 Keyboard [HID 04d9:1400] on
+</I>&gt;&gt;<i> usb-0000:00:13.1-2
+</I>&gt;&gt;<i> [  387.847300] input: HID 04d9:1400 as
+</I>&gt;&gt;<i> /devices/pci0000:00/0000:00:13.1/usb2/2-2/2-2:1.1/input/input12
+</I>&gt;&gt;<i> [  387.889771] input,hidraw2: USB HID v1.10 Mouse [HID 04d9:1400] on
+</I>&gt;&gt;<i> usb-0000:00:13.1-2
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> So nothing is added...
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> Thats's why I did modprobe myself...
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> But what is the right name of device then??
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> a modprobe doesn't change the drivers list;..
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> modprobe -l &gt; alist and
+</I>&gt;&gt;<i> modprobe pl2303
+</I>&gt;&gt;<i> modprobe -l &gt; alist2
+</I>&gt;&gt;<i> diff alist alist2
+</I>&gt;&gt;<i> (no diff)
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> [  936.499046] usb 1-2: new low speed USB device using ohci_hcd and address
+</I>&gt;&gt;<i> 5
+</I>&gt;&gt;<i> [  936.706164] usb 1-2: configuration #1 chosen from 1 choice
+</I>&gt;&gt;<i> [  936.725366] input: HID 04d9:1400 as
+</I>&gt;&gt;<i> /devices/pci0000:00/0000:00:13.0/usb1/1-2/1-2:1.0/input/input13
+</I>&gt;&gt;<i> [  936.755000] input,hidraw1: USB HID v1.10 Keyboard [HID 04d9:1400] on
+</I>&gt;&gt;<i> usb-0000:00:13.0-2
+</I>&gt;&gt;<i> [  936.768408] input: HID 04d9:1400 as
+</I>&gt;&gt;<i> /devices/pci0000:00/0000:00:13.0/usb1/1-2/1-2:1.1/input/input14
+</I>&gt;&gt;<i> [  936.811036] input,hidraw2: USB HID v1.10 Mouse [HID 04d9:1400] on
+</I>&gt;&gt;<i> usb-0000:00:13.0-2
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> This ps/2 to usb adapter cable can connect mouse + keyboard, and I suppose
+</I>&gt;&gt;<i> it works for other devices too..
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> Marc
+</I>&gt;&gt;<i>     
+</I>&gt;&gt;&gt;<i> -----Original Message-----
+</I>&gt;&gt;&gt;<i> From: Marc Coevoet &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">sintsixtus at gmail.com</A>&gt;
+</I>&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;<i> Date: Mon, 29 Jun 2009 12:02:35 To: &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">gpsd-users at lists.berlios.de</A>&gt;
+</I>&gt;&gt;&gt;<i> Subject: [Gpsd-users] problem with the haicom  hi-204s
+</I>&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;<i> Hello,
+</I>&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;<i> I connect it with a ps/2 to usb cable,
+</I>&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;<i> I did
+</I>&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;<i> mknode /tmp/gps  p
+</I>&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;<i> modprobe pl2303
+</I>&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;<i> # sudo gpsd -N -n -D 4 /tmp/gps
+</I>&gt;&gt;&gt;<i> gpsd: launching (Version 2.36)
+</I>&gt;&gt;&gt;<i> gpsd: listening on port gpsd
+</I>&gt;&gt;&gt;<i> gpsd: shmat(0,0,0) succeeded
+</I>&gt;&gt;&gt;<i> gpsd: shmat(0,0,0) succeeded
+</I>&gt;&gt;&gt;<i> gpsd: shmat(0,0,0) succeeded
+</I>&gt;&gt;&gt;<i> gpsd: shmat(0,0,0) succeeded
+</I>&gt;&gt;&gt;<i> gpsd: successfully connected to the DBUS system bus
+</I>&gt;&gt;&gt;<i> gpsd: running with effective group ID 0
+</I>&gt;&gt;&gt;<i> gpsd: running with effective user ID 0
+</I>&gt;&gt;&gt;<i> gpsd: opening read-only GPS data source at '/tmp/gps'
+</I>&gt;&gt;&gt;<i> gpsd: garmin_gps not active.
+</I>&gt;&gt;&gt;<i> gpsd: no probe matched...
+</I>&gt;&gt;&gt;<i> gpsd: gpsd_activate(1): opened GPS (5)
+</I>&gt;&gt;&gt;<i> gpsd: client 127.0.0.1 (0) connect on fd 6
+</I>&gt;&gt;&gt;<i> gpsd: checking client(0)
+</I>&gt;&gt;&gt;<i> gpsd: &lt;= client(0): w+x
+</I>&gt;&gt;&gt;<i> gpsd: client(0): assigning channel...
+</I>&gt;&gt;&gt;<i> gpsd: User requires 2, channel type is -1
+</I>&gt;&gt;&gt;<i> gpsd: client(0): channel 5 already active.
+</I>&gt;&gt;&gt;<i> gpsd: client(0): channel 5 already active.
+</I>&gt;&gt;&gt;<i> gpsd: =&gt; client(0): GPSD,W=1,X=1246268568.187791
+</I>&gt;&gt;&gt;<i> gpsd: checking client(0)
+</I>&gt;&gt;&gt;<i> gpsd: detaching 127.0.0.1 (sub0, fd 6) in detach_client
+</I>&gt;&gt;&gt;<i> gpsd: client 127.0.0.1 (0) connect on fd 6
+</I>&gt;&gt;&gt;<i> gpsd: checking client(0)
+</I>&gt;&gt;&gt;<i> gpsd: &lt;= client(0): w+x
+</I>&gt;&gt;&gt;<i> gpsd: client(0): assigning channel...
+</I>&gt;&gt;&gt;<i> gpsd: User requires 2, channel type is -1
+</I>&gt;&gt;&gt;<i> gpsd: client(0): channel 5 already active.
+</I>&gt;&gt;&gt;<i> gpsd: client(0): channel 5 already active.
+</I>&gt;&gt;&gt;<i> gpsd: =&gt; client(0): GPSD,W=1,X=1246268568.187791
+</I>&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;<i> and now, it remains quiet for more than 10 minutes, it does not give me
+</I>&gt;&gt;&gt;<i> the position...
+</I>&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;<i> In the user manual, they talk about a led on the antenna that is
+</I>&gt;&gt;&gt;<i> off/flashing/on.  Does the led work with gpsd??  Or is it a windows driver
+</I>&gt;&gt;&gt;<i> thing??
+</I>&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;<i> $lsusb
+</I>&gt;&gt;&gt;<i> Bus 003 Device 001: ID 0000:0000
+</I>&gt;&gt;&gt;<i> Bus 002 Device 001: ID 0000:0000
+</I>&gt;&gt;&gt;<i> Bus 001 Device 006: ID 04d9:1400 Holtek Semiconductor, Inc.    ---&gt; the
+</I>&gt;&gt;&gt;<i> ps/2 to usb cable
+</I>&gt;&gt;&gt;<i> Bus 001 Device 004: ID 15ca:00c3
+</I>&gt;&gt;&gt;<i> Bus 001 Device 001: ID 0000:0000
+</I>&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;<i> Marc
+</I>&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;<i>       
+</I>&gt;&gt;<i> --
+</I>&gt;&gt;<i> Shortwave transmissions in English, Francais, Nederlands, Deutsch,
+</I>&gt;&gt;<i> Suid-Afrikaans, Chinese, Dansk, Urdu, Cantonese, Greek, Spanish, Portuguese,
+</I>&gt;&gt;<i> ...
+</I>&gt;&gt;<i> <A HREF="http://users.fulladsl.be/spb13810/swlist/">http://users.fulladsl.be/spb13810/swlist/</A> <A HREF="http://radiolanguages.tk">http://radiolanguages.tk</A>  Stations
+</I>&gt;&gt;<i> list: <A HREF="http://users.fulladsl.be/spb13810/txlist/">http://users.fulladsl.be/spb13810/txlist/</A>
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i>     
+</I>&gt;<i>
+</I>&gt;<i>   
+</I>
+
+-- 
+Shortwave transmissions in English, Francais, Nederlands, Deutsch, Suid-Afrikaans, Chinese, Dansk, Urdu, Cantonese, Greek, Spanish, Portuguese, ...
+<A HREF="http://users.fulladsl.be/spb13810/swlist/">http://users.fulladsl.be/spb13810/swlist/</A> <A HREF="http://radiolanguages.tk">http://radiolanguages.tk</A>  
+Stations list: <A HREF="http://users.fulladsl.be/spb13810/txlist/">http://users.fulladsl.be/spb13810/txlist/</A>
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="003790.html">[Gpsd-users] problem with the haicom  hi-204s
+</A></li>
+	<LI>Next message: <A HREF="003792.html">[Gpsd-users] problem with the haicom hi-204s
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3791">[ date ]</a>
+              <a href="thread.html#3791">[ thread ]</a>
+              <a href="subject.html#3791">[ subject ]</a>
+              <a href="author.html#3791">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

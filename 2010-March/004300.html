@@ -1,0 +1,83 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] New OS, new PPS question
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2010-March/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20New%20OS%2C%20new%20PPS%20question&In-Reply-To=%3C4BA99A1B.2090509%40acarver.net%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="004299.html">
+   <LINK REL="Next"  HREF="004301.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] New OS, new PPS question</H1>
+    <B>Alexander Carver</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20New%20OS%2C%20new%20PPS%20question&In-Reply-To=%3C4BA99A1B.2090509%40acarver.net%3E"
+       TITLE="[Gpsd-users] New OS, new PPS question">agcarver+gpsd at acarver.net
+       </A><BR>
+    <I>Wed Mar 24 05:50:35 CET 2010</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="004299.html">[Gpsd-users] Fw:  Version checking gpsd
+</A></li>
+        <LI>Next message: <A HREF="004301.html">[Gpsd-users] New OS, new PPS question
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#4300">[ date ]</a>
+              <a href="thread.html#4300">[ thread ]</a>
+              <a href="subject.html#4300">[ subject ]</a>
+              <a href="author.html#4300">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Ok, it seems there's still some funny business going on with 
+OpenBSD/sparc and the serial ports that are slowly getting worked out 
+over on the OpenBSD lists.
+
+So for now I switched over to one of my linux systems and put gpsd 2.92 
+on there.  It sees PPS (hallelujah) but rejects it (boo).
+
+gpsd: PPS pps-detect (DCD) on /dev/ttyS1 changed to 0
+gpsd: PPS cycle: 999999, duration: 900008 @ 1269405843.010372
+gpsd: PPS 1Hz leading edge
+gpsd: PPS ntpshm_pps 1269405843.000 @ 1269405843.010372, preci -6
+gpsd: PPS pps-detect (DCD) on /dev/ttyS1 changed to 1
+gpsd: PPS cycle: 999998, duration: 99990 @ 1269405843.110362
+gpsd: PPS 1Hz trailing edge
+gpsd: PPS pulse rejected
+
+
+So the code doesn't like the length of the pulse but it's still sending 
+the PPS information to the NTP shm?
+
+I'll have to put the scope on it again but the pulse looks to be a few 
+milliseconds long though it's not a 50% duty cycle (more like 5%).
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="004299.html">[Gpsd-users] Fw:  Version checking gpsd
+</A></li>
+	<LI>Next message: <A HREF="004301.html">[Gpsd-users] New OS, new PPS question
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#4300">[ date ]</a>
+              <a href="thread.html#4300">[ thread ]</a>
+              <a href="subject.html#4300">[ subject ]</a>
+              <a href="author.html#4300">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

@@ -1,0 +1,159 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] gpsd Setup Question
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2009-May/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20gpsd%20Setup%20Question&In-Reply-To=%3Cb4104a50905152318q11c52ff6n2c8d5f4f7bccea96%40mail.gmail.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="003727.html">
+   <LINK REL="Next"  HREF="003730.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] gpsd Setup Question</H1>
+    <B>Seth Haines</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20gpsd%20Setup%20Question&In-Reply-To=%3Cb4104a50905152318q11c52ff6n2c8d5f4f7bccea96%40mail.gmail.com%3E"
+       TITLE="[Gpsd-users] gpsd Setup Question">seth.haines at gmail.com
+       </A><BR>
+    <I>Sat May 16 08:18:00 CEST 2009</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="003727.html">[Gpsd-users] Garmin GPS 60 USB - real time acquisition
+</A></li>
+        <LI>Next message: <A HREF="003730.html">[Gpsd-users] gpsd Setup Question
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3729">[ date ]</a>
+              <a href="thread.html#3729">[ thread ]</a>
+              <a href="subject.html#3729">[ subject ]</a>
+              <a href="author.html#3729">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hello,
+
+New to the gpsd world and have some generic setup questions due to a
+non-functional gpsd:
+
+Quick Configuration Outline:
+Fedora Core 10 w/ latest yum update (15 May 09 execute)
+HP Pavilion Laptop dv4
+BU-353 USB GPS device
+gpsd 2.39 configure and make successful without errors
+
+Following the INSTALL the &quot;stty -F /dev/ttyUSB0 ispeed 4800 &amp;&amp; cat
+&lt;/dev/ttyUSB0&quot; works and outputs the following:
+
+--- &lt;OUTPUT START&gt; ---
+[<A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">user at mobile3</A> gpsd-2.39]$ stty -F /dev/ttyUSB0 ispeed 4800 &amp;&amp; cat
+&lt;/dev/ttyUSB0
+stty: /dev/ttyUSB0: unable to perform all requested operations
+[<A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">user at mobile3</A> gpsd-2.39]$ stty -F /dev/ttyUSB0 ispeed 4800 &amp;&amp; cat
+&lt;/dev/ttyUSB0
+9Y&#65533;&#65533;&#65533;f&#65533;66&#65533;
+$GPRMC,060826.000,A,3900.7949,N,07724.9727,W,0.37,329.20,160509,,*1A
+
+$GPGGA,060827.000,3900.7942,N,07724.9732,W,1,07,1.1,92.0,M,-33.4,M,107.8,0000*7B
+
+$GPGSA,A,3,28,17,20,08,09,27,04,,,,,,1.9,1.1,1.6*33
+
+$GPGSV,3,1,10,28,70,137,22,17,67,338,21,04,40,220,26,20,34,089,18*77
+
+$GPGSV,3,2,10,27,25,297,19,11,22,054,,32,22,059,,09,15,314,23*79
+
+$GPGSV,3,3,10,08,13,189,19,02,06,224,*7A
+
+$GPRMC,060827.000,A,3900.7942,N,07724.9732,W,0.63,241.65,160509,,*1B
+
+$GPGGA,060828.000,3900.7940,N,07724.9740,W,1,07,1.1,91.1,M,-33.4,M,107.8,0000*71
+
+$GPGSA,A,3,28,17,20,08,09,27,04,,,,,,1.9,1.1,1.6*33
+
+$GPRMC,060828.000,A,3900.7940,N,07724.9740,W,1.32,255.40,160509,,*14
+--- &lt;OUTPUT END&gt; ---
+
+So, I believe the gps receiver is functioning properly.
+
+'lsusb' shows the connection as: Bus 005 Device 015: ID 067b:2303 Prolific
+Technology, Inc. PL2303 Serial Port
+
+An ls -lah on /dev/ttyUSB0 shows a permission snafu on my part:
+crwxrwxrwx 1 root uucp 188, 0 2009-05-16 02:01 /dev/ttyUSB0
+Only because I am playing with permissions in a vain attempt to try to fix
+things.
+
+
+When I kick off gpsd with the options:
+[<A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">root at mobile3</A> ~]# gpsd -D9 -N -F /dev/ttyUSB0
+
+I receive the following output:
+
+--- &lt;OUTPUT Starts&gt; ---
+gpsd: control socket opened at /dev/ttyUSB0
+gpsd: launching (Version 2.39)
+gpsd: listening on port gpsd
+gpsd: Priority setting failed.
+gpsd: shmat(360454,0,0) succeeded
+gpsd: shmat(393223,0,0) succeeded
+gpsd: shmat(425992,0,0) succeeded
+gpsd: shmat(458761,0,0) succeeded
+gpsd: running with effective group ID 0
+gpsd: running with effective user ID 0
+gpsd: select waits
+gpsd: select waits
+gpsd: select waits
+gpsd: select waits
+gpsd: select waits
+gpsd: select waits
+gpsd: select waits
+gpsd: select waits
+gpsd: select waits
+gpsd: select waits
+gpsd: select waits
+--- &lt;OUTPUT Ends&gt; ---
+
+The select waits continue for as long as I leave the process running before
+ctrl-c'ing the command.  The priority setting failed statement has me
+concerned, but MARC searches yielded little equivalent traffic in that most
+people who had that statement showed relevant GPS output later in the
+copy/paste.
+
+Scratching my head a bit on this one, although compeltely green when it
+comes to gpsd.  It's probably something extremely obvious that I'm
+overlooking in the INSTALL, README, and MARC searches, or at least I hope
+so.
+
+Does the list have any recommendations on what to try next?
+
+Thank you in advance for any assistance,
+
+Seth
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="003727.html">[Gpsd-users] Garmin GPS 60 USB - real time acquisition
+</A></li>
+	<LI>Next message: <A HREF="003730.html">[Gpsd-users] gpsd Setup Question
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3729">[ date ]</a>
+              <a href="thread.html#3729">[ thread ]</a>
+              <a href="subject.html#3729">[ subject ]</a>
+              <a href="author.html#3729">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

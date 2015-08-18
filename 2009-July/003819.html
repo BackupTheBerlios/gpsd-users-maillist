@@ -1,0 +1,133 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] compiling gpsd on ipod touch
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2009-July/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20compiling%20gpsd%20on%20ipod%20touch&In-Reply-To=%3C4A5F9080.1060709%40neuf.fr%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="003818.html">
+   <LINK REL="Next"  HREF="003820.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] compiling gpsd on ipod touch</H1>
+    <B>Romain Quidet</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20compiling%20gpsd%20on%20ipod%20touch&In-Reply-To=%3C4A5F9080.1060709%40neuf.fr%3E"
+       TITLE="[Gpsd-users] compiling gpsd on ipod touch">romain.quidet at neuf.fr
+       </A><BR>
+    <I>Thu Jul 16 22:41:36 CEST 2009</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="003818.html">[Gpsd-users] compiling gpsd on ipod touch
+</A></li>
+        <LI>Next message: <A HREF="003820.html">[Gpsd-users] compiling gpsd on ipod touch
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3819">[ date ]</a>
+              <a href="thread.html#3819">[ thread ]</a>
+              <a href="subject.html#3819">[ subject ]</a>
+              <a href="author.html#3819">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>I can get everything compiled. Just another error in netlib.c using ip.h 
+which is not in my includes. Used tcp.h instead... worked...
+
+now the link is not working :
+
+libtool: link: g++ -dynamiclib -Wl,-undefined -Wl,dynamic_lookup -o 
+.libs/libgps.18.dylib  .libs/bits.o .libs/bsd-base64.o .libs/crc24q.o 
+.libs/dgnss.o .libs/dgpsip.o .libs/gpsd_report.o .libs/gpsutils.o 
+.libs/geoid.o .libs/hex.o .libs/isgps.o .libs/libgps.o 
+.libs/gpsdclient.o .libs/libgpsd_core.o .libs/netlib.o .libs/ntpshm.o 
+.libs/ntrip.o .libs/packet.o .libs/serial.o .libs/srecord.o .libs/strl.o 
+.libs/subframe.o .libs/drivers.o .libs/driver_aivdm.o 
+.libs/driver_evermore.o .libs/driver_garmin.o .libs/driver_garmin_txt.o 
+.libs/driver_italk.o .libs/driver_navcom.o .libs/driver_nmea.o 
+.libs/driver_rtcm2.o .libs/driver_rtcm3.o .libs/driver_sirf.o 
+.libs/driver_superstar2.o .libs/driver_tsip.o .libs/driver_ubx.o 
+.libs/driver_zodiac.o .libs/libgpsmm.o   -lm -lc -lpthread    
+-install_name  /usr/local/lib/libgps.18.dylib -compatibility_version 19 
+-current_version 19.0 -Wl,-single_module
+ld: library not found for -lstdc++
+collect2: ld returned 1 exit status
+make[1]: *** [libgps.la] Error 1
+make[1]: Leaving directory `/private/var/mobile/Documents/dev/gpsd-2.39'
+make: *** [all] Error 2
+iPod-Romain:/User/Documents/dev/gpsd-2.39 mobile$
+
+it seems to come from my environment...
+
+Romain
+
+Romain Quidet a &#233;crit :
+&gt;<i> hello,
+</I>&gt;<i>
+</I>&gt;<i> I succeeded in getting ./configure to work
+</I>&gt;<i>
+</I>&gt;<i> the make reports me an error :
+</I>&gt;<i>
+</I>&gt;<i> libtool: compile:  gcc -DHAVE_CONFIG_H -I. -g -O2 -Wall -Wcast-align 
+</I>&gt;<i> -Wmissing-declarations -Wmissing-prototypes -Wstrict-prototypes 
+</I>&gt;<i> -Wpointer-arith -Wreturn-type -D_GNU_SOURCE -MT libgpsd_core.lo -MD -MP 
+</I>&gt;<i> -MF .deps/libgpsd_core.Tpo -c libgpsd_core.c  -fno-common -DPIC -o 
+</I>&gt;<i> .libs/libgpsd_core.o
+</I>&gt;<i> libgpsd_core.c: In function 'gpsd_switch_driver':
+</I>&gt;<i> libgpsd_core.c:50: error: 'const struct gps_type_t' has no member named 
+</I>&gt;<i> 'min_cycle'
+</I>&gt;<i> libgpsd_core.c: In function 'gpsd_error_model':
+</I>&gt;<i> libgpsd_core.c:606: warning: implicit declaration of function 'finite'
+</I>&gt;<i> make[1]: *** [libgpsd_core.lo] Error 1
+</I>&gt;<i> make[1]: Leaving directory `/private/var/mobile/Documents/dev/gpsd-2.39'
+</I>&gt;<i> make: *** [all] Error 2
+</I>&gt;<i>
+</I>&gt;<i> can you help me about that error ?
+</I>&gt;<i>
+</I>&gt;<i> I disabled the reconfiguration as there was a bug in my holux gps device 
+</I>&gt;<i> (I discovered it 2years ago with the team).
+</I>&gt;<i>
+</I>&gt;<i> min_cycle seems to be in the reconfiguration define, but is use without 
+</I>&gt;<i> border in the code...
+</I>&gt;<i>
+</I>&gt;<i> Thanks!
+</I>&gt;<i>
+</I>&gt;<i> romain
+</I>&gt;<i>
+</I>&gt;<i> _______________________________________________
+</I>&gt;<i> Gpsd-users mailing list
+</I>&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">Gpsd-users at lists.berlios.de</A>
+</I>&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">https://lists.berlios.de/mailman/listinfo/gpsd-users</A>
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i>   
+</I>
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="003818.html">[Gpsd-users] compiling gpsd on ipod touch
+</A></li>
+	<LI>Next message: <A HREF="003820.html">[Gpsd-users] compiling gpsd on ipod touch
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3819">[ date ]</a>
+              <a href="thread.html#3819">[ thread ]</a>
+              <a href="subject.html#3819">[ subject ]</a>
+              <a href="author.html#3819">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

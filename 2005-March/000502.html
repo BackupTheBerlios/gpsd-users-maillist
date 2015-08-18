@@ -1,0 +1,137 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] Gpsd on a Zaurus SL-C3000
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2005-March/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Gpsd%20on%20a%20Zaurus%20SL-C3000&In-Reply-To=%3CPine.LNX.4.62.0503311015140.8214%40catbert.rellim.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="000487.html">
+   <LINK REL="Next"  HREF="000489.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] Gpsd on a Zaurus SL-C3000</H1>
+    <B>Gary E. Miller</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Gpsd%20on%20a%20Zaurus%20SL-C3000&In-Reply-To=%3CPine.LNX.4.62.0503311015140.8214%40catbert.rellim.com%3E"
+       TITLE="[Gpsd-users] Gpsd on a Zaurus SL-C3000">gem at rellim.com
+       </A><BR>
+    <I>Thu Mar 31 20:37:58 CEST 2005</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="000487.html">[Gpsd-users] Gpsd on a Zaurus SL-C3000
+</A></li>
+        <LI>Next message: <A HREF="000489.html">[Gpsd-users] Gpsd on a Zaurus SL-C3000
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#502">[ date ]</a>
+              <a href="thread.html#502">[ thread ]</a>
+              <a href="subject.html#502">[ subject ]</a>
+              <a href="author.html#502">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>-----BEGIN PGP SIGNED MESSAGE-----
+Hash: SHA1
+
+Yo Eric!
+
+On Thu, 31 Mar 2005, Eric S. Raymond wrote:
+
+&gt;<i> Gary E. Miller &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">gem at rellim.com</A>&gt;:
+</I>&gt;<i> &gt; You lose that bet.  I hacked my first mainframe in 1968.
+</I>&gt;<i>
+</I>&gt;<i> Hm.  You predate *me*.
+</I>
+Oh great, now I really feel old.
+
+&gt;<i> &gt; I am open to learning.  Can you cite some doc to PROVE your contention?
+</I>&gt;<i>
+</I>&gt;<i> I'll leave that to Russ, who actually *has* ARM docs.
+</I>
+Patiently waiting.
+
+&gt;<i> &gt; Warnings are just warnings, not Errors.  They are warning usually
+</I>&gt;<i> &gt; because you should have a better cast.
+</I>&gt;<i>
+</I>&gt;<i> Sorry, that's wrong.  Here's one common failure scenario for the assumption
+</I>&gt;<i> you are making that I recall from, um, I think it was the PDP11 (but don't
+</I>&gt;<i> hold me to that):
+</I>
+Aw come on!  You have to go back 25 years to find an example????  How
+about when we only had ones and no zeros yet*?  (Gratuituous Dlibert
+reference).
+
+&gt;<i> 1) Your target machine has the alignment requirement that structures
+</I>&gt;<i> have to begin on a 16-bit boundary (even address), but character
+</I>&gt;<i> arrays can begin at any byte boundary.  This is actually not uncommon;
+</I>&gt;<i> on a lot of word-addressed machines dereferencing of character
+</I>&gt;<i> pointers was compiled to a word fetch followed by shift-and-mask.
+</I>
+GCC, for one, has aligned all char arrays to the most limiting
+alignment since at least the early '80s.  It also can handle C code that
+needs tweaks to get the machine code alignment right.
+
+&gt;<i> 2) You declare a character array.  Your compiler, not knowing you're
+</I>&gt;<i> going to commit unnatural acts with the array later, space-optimizes by
+</I>&gt;<i> starting it at an odd address.
+</I>
+Show me a compiler that does this that someome used THIS millenium.
+
+&gt;<i> 3) You cast the start of array to a struct and try to mine out a field
+</I>&gt;<i> of larger than char size.
+</I>
+See above aruments.
+
+&gt;<i> 4) You just tried to direct-access two or more contiguous bytes starting on
+</I>&gt;<i> an odd address.  If your machine design a silicon doohickey called a barrel
+</I>&gt;<i> shifter, this would not be a problem.  As it is....
+</I>
+If it does not, then the compiler fixed it up.
+
+&gt;<i> 5)  *BOOM!* Your code fails with a bus error.
+</I>
+Show me a MODERN compiler that does this with the GARMIN code.  Not a
+warning, a real error, segfault, etc.
+
+RGDS
+GARY
+- ---------------------------------------------------------------------------
+Gary E. Miller Rellim 20340 Empire Blvd, Suite E-3, Bend, OR 97701
+	<A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">gem at rellim.com</A>  Tel:+1(541)382-8588 Fax: +1(541)382-8676
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v1.2.3 (GNU/Linux)
+
+iD8DBQFCTEOJ8KZibdeR3qURArKyAJ9fZve68RA4Pb0lDwBkdra5qlunKgCgmNk4
+KrHaOqJFURKVe8MGJ/wLJuc=
+=gZ6d
+-----END PGP SIGNATURE-----
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="000487.html">[Gpsd-users] Gpsd on a Zaurus SL-C3000
+</A></li>
+	<LI>Next message: <A HREF="000489.html">[Gpsd-users] Gpsd on a Zaurus SL-C3000
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#502">[ date ]</a>
+              <a href="thread.html#502">[ thread ]</a>
+              <a href="subject.html#502">[ subject ]</a>
+              <a href="author.html#502">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

@@ -1,0 +1,109 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] python gpsd module
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2005-December/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20python%20gpsd%20module&In-Reply-To=%3C5383fa5e0512210202y79cac725m29cc6936b9d33e78%40mail.gmail.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="001182.html">
+   <LINK REL="Next"  HREF="001184.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] python gpsd module</H1>
+    <B>Matthew Perry</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20python%20gpsd%20module&In-Reply-To=%3C5383fa5e0512210202y79cac725m29cc6936b9d33e78%40mail.gmail.com%3E"
+       TITLE="[Gpsd-users] python gpsd module">perrygeo at gmail.com
+       </A><BR>
+    <I>Wed Dec 21 11:02:50 CET 2005</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="001182.html">[Gpsd-users] gpsd runs at 9600 baud only
+</A></li>
+        <LI>Next message: <A HREF="001184.html">[Gpsd-users] python gpsd module
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1183">[ date ]</a>
+              <a href="thread.html#1183">[ thread ]</a>
+              <a href="subject.html#1183">[ subject ]</a>
+              <a href="author.html#1183">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hey folks,
+
+  I am looking for a python module to talk with gpsd. I installed gpsd
+on debian and noticed that it came with a gpsd.py module but I can not
+seem to get it working.
+
+I can confirm that my gpsd is working...
+
+$ telnet localhost 2947
+Trying 127.0.0.1...
+Connected to localhost.localdomain.
+Escape character is '^]'.
+r
+GPSD,R=1
+$GPRMC,095545.29,A,3425.9686,N,11947.8542,W,00.0,000.0,211205,14,E*57
+$GPGSA,A,3,23,16,24,20,25,01,,,,,,,05.5,02.6,04.8*0E
+$GPGSV,3,1,10,20,71,318,41,23,43,300,52,25,42,044,41,16,36,123,48*79
+$GPGSV,3,2,10,01,33,064,36,24,29,295,47,11,25,217,,13,13,281,*77
+$GPGSV,3,3,10,04,02,326,,14,01,083,,122,11,104,44,134,14,253,*75
+$GPGLL,3425.9686,N,11947.8542,W,095546.282,A*25
+.....
+
+xgps and gpsdrive also work fine. But when I try to connect using the
+python module, I'm not getting any results:
+
+&gt;&gt;&gt;<i> import gps
+</I>&gt;&gt;&gt;<i> session = gps.gps()
+</I>&gt;&gt;&gt;<i> session
+</I>Lat/lon:  0.000000 0.000000
+Altitude: nan
+Speed:    nan
+Track:    nan
+Status:   STATUS_NO_FIX
+Mode:     MODE_NO_FIX
+Quality:  0 p=0.00 h=0.00 v=0.00
+Y: 0 satellites in view:
+
+This is probably an oversight on my part but I have not been able to
+get past this step despite a good amount of time experimenting and
+googling for answers.
+
+Does anyone have any suggestions on using gps.py? Or are there better
+solutions to higher-level gpsd access via python?
+
+--
+Matt Perry
+<A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">perrygeo at gmail.com</A>
+<A HREF="http://www.perrygeo.net">http://www.perrygeo.net</A>
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="001182.html">[Gpsd-users] gpsd runs at 9600 baud only
+</A></li>
+	<LI>Next message: <A HREF="001184.html">[Gpsd-users] python gpsd module
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1183">[ date ]</a>
+              <a href="thread.html#1183">[ thread ]</a>
+              <a href="subject.html#1183">[ subject ]</a>
+              <a href="author.html#1183">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

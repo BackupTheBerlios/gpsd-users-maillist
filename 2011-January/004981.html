@@ -1,0 +1,124 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] bluetooth GPS
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2011-January/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20bluetooth%20GPS&In-Reply-To=%3C1296211043.3139.71.camel%40servy.quietwind.net%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="004980.html">
+   <LINK REL="Next"  HREF="004985.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] bluetooth GPS</H1>
+    <B>Chris Kottaridis</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20bluetooth%20GPS&In-Reply-To=%3C1296211043.3139.71.camel%40servy.quietwind.net%3E"
+       TITLE="[Gpsd-users] bluetooth GPS">chriskot at quietwind.net
+       </A><BR>
+    <I>Fri Jan 28 11:37:23 CET 2011</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="004980.html">[Gpsd-users] bluetooth GPS
+</A></li>
+        <LI>Next message: <A HREF="004985.html">[Gpsd-users] bluetooth GPS
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#4981">[ date ]</a>
+              <a href="thread.html#4981">[ thread ]</a>
+              <a href="subject.html#4981">[ subject ]</a>
+              <a href="author.html#4981">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>On Thu, 2011-01-27 at 13:37 -0500, Eric Raymond wrote:
+&gt;<i> Chris Kottaridis &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">chriskot at quietwind.net</A>&gt;:
+</I>&gt;<i> &gt; I really wanted to know what devices were on the list, just to verify
+</I>&gt;<i> &gt; that my add worked correctly. Also, there were times when I was adding
+</I>&gt;<i> &gt; and removing while monitoring various behavior and tunring the device on
+</I>&gt;<i> &gt; and off and I had lost track of whether it was on the list when I fired
+</I>&gt;<i> &gt; up the device or if I had removed it last. It would have been good to
+</I>&gt;<i> &gt; get see the list to see whether it was on the list at that time or not.
+</I>&gt;<i> &gt; Would have prevented lots of redos. It's a little thing, but I was
+</I>&gt;<i> &gt; wishing for it multiple times.
+</I>&gt;<i> 
+</I>&gt;<i> Repo head now has a ?devices socket command.  Lists all paths in the pool,
+</I>&gt;<i> each followed by \n, terrminated with &quot;OK\n&quot;.
+</I>
+thanks!
+
+&gt;<i> 
+</I>&gt;<i> &gt; So, as long as another open occurs after the gps has been turned back on
+</I>&gt;<i> &gt; then it'll reconnect automatically.
+</I>&gt;<i> 
+</I>&gt;<i> That will normally happen only when a client issues a watch.  The dispatcher
+</I>&gt;<i> layer is carefully written to leave devices closed except when some client has
+</I>&gt;<i> requested the take.
+</I>
+Ok, so if I turn the bluetooth device off I need to exit any apps using
+gpsd. Then after I turn the device back on I can restart them, at least
+one of them, and get reconnected.
+
+I seem to be able to make this happen with the following scenario:
+
+1. start things up and have xgps running and I am connected
+2. Turn off the GPS device and in xgps see:
+
+{&quot;class&quot;:&quot;DEVICE&quot;,&quot;path&quot;:&quot;/dev/rfcomm0&quot;,&quot;activated&quot;:0}
+
+3. exit xgps
+&lt; wait a little&gt;
+4. Turn on the device
+5. start xgps over again
+6. It starts gathering data
+
+That seems to play out. In fact I can keep the original xgps I started
+in step 1 operating. I can skip step 3, let the xgps keep running, and
+at step 5 start a second xgps. Then the device comes back on and I see
+data in both xgps apps.
+
+So, the rule is if I turn the bluetooth GPS device off when I turn it
+back on I need to start up some app that uses it, to trigger an open and
+reestablish a connection that will then be visible by all apps that may
+have been left running as well as the new one started. Alternatively, I
+can write my own script to remove it from the list and add it back after
+it is turned back on and kick it in the head that way.
+
+I suppose that typically if someone turns off the GPS they also exit the
+apps. Seems you also have to remember to restart the GPS prior to
+restarting the app or else you'll miss the open and gpsd won't
+reconnect. In that case you'll have to exit the app and restart it when
+the device is on to force a reconnect or start up another app that uses
+the device through gpsd to force a reconnect.
+
+Thanks
+Chris Kottaridis
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="004980.html">[Gpsd-users] bluetooth GPS
+</A></li>
+	<LI>Next message: <A HREF="004985.html">[Gpsd-users] bluetooth GPS
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#4981">[ date ]</a>
+              <a href="thread.html#4981">[ thread ]</a>
+              <a href="subject.html#4981">[ subject ]</a>
+              <a href="author.html#4981">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

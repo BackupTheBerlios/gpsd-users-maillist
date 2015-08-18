@@ -1,0 +1,158 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] Establishing Direction of Travel / Bearing (Python)
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2011-November/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Establishing%20Direction%20of%20Travel%20/%20Bearing%20%28Python%29&In-Reply-To=%3Ce298c7483afa97c2b5db3252f9fc3d05.squirrel%40mail.seiner.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="005526.html">
+   <LINK REL="Next"  HREF="005528.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] Establishing Direction of Travel / Bearing (Python)</H1>
+    <B>Yan Seiner</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Establishing%20Direction%20of%20Travel%20/%20Bearing%20%28Python%29&In-Reply-To=%3Ce298c7483afa97c2b5db3252f9fc3d05.squirrel%40mail.seiner.com%3E"
+       TITLE="[Gpsd-users] Establishing Direction of Travel / Bearing (Python)">yan at seiner.com
+       </A><BR>
+    <I>Thu Nov  3 21:38:55 CET 2011</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="005526.html">[Gpsd-users] Establishing Direction of Travel / Bearing (Python)
+</A></li>
+        <LI>Next message: <A HREF="005528.html">[Gpsd-users] Establishing Direction of Travel / Bearing (Python)
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#5527">[ date ]</a>
+              <a href="thread.html#5527">[ thread ]</a>
+              <a href="subject.html#5527">[ subject ]</a>
+              <a href="author.html#5527">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Here's my snippet of code that does both distance and heading (although I
+think in terms of bearings, not headings):
+
+  track = gpsdata-&gt;fix.track;
+  speed = gpsdata-&gt;fix.speed;
+...
+          if (speed &lt; 0.3 ) sprintf(brg, &quot;&quot;);
+          else if (track &lt; 1.0)
+            sprintf (brg, &quot;N&quot;);
+          else if (track &lt; 89.0)
+            sprintf (brg, &quot;N%.0fE&quot;, track);
+          else if (track &lt; 91.0)
+            sprintf (brg, &quot;E&quot;);
+          else if (track &lt; 179.0)
+            sprintf (brg, &quot;S%.0fE&quot;, 180.0 - track);
+          else if (track &lt; 181.0)
+            sprintf (brg, &quot;S&quot;);
+          else if (track &lt; 269.0)
+            sprintf (brg, &quot;S%.0fW&quot;, track - 180.0);
+          else if (track &lt; 271.0)
+            sprintf (brg, &quot;W&quot;);
+          else if (track &lt; 359.0)
+            sprintf (brg, &quot;N%.0fW&quot;, 360 - track);
+          else
+            sprintf (brg, &quot;N&quot;);
+          if(speed &lt; 0.5) sprintf (info, &quot;stopped&quot;);
+          else sprintf (info, &quot;\&quot;%s  %.0f MPH\&quot;&quot;, brg, speed * 2.237);
+
+If you keep track of the last lat &amp; long you can also get the distance:
+
+double
+haversine_mi (double lat1, double long1, double lat2, double long2)
+{
+  double d2r = 0.0174532925;
+  double dlong = (long2 - long1) * d2r;
+  double dlat = (lat2 - lat1) * d2r;
+  double a = pow (sin (dlat / 2.0), 2) +
+    cos (lat1 * d2r) * cos (lat2 * d2r) * pow (sin (dlong / 2.0), 2);
+  double c = 2 * atan2 (sqrt (a), sqrt (1 - a));
+  double d = 3956 * c;
+
+  return d;
+}
+
+(Sorry it's C code but it should all translate to python).
+
+On Thu, November 3, 2011 1:06 pm, Charles Curley wrote:
+&gt;<i> On Thu, 3 Nov 2011 19:37:06 +0000
+</I>&gt;<i> Neil Greenough &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">neilgreenough at sky.com</A>&gt; wrote:
+</I>&gt;<i>
+</I>&gt;&gt;<i> I'm currently writing a script in Python which records the longitude,
+</I>&gt;&gt;<i> latitude and speed from the GPS device. What I'd like to do is also
+</I>&gt;&gt;<i> record the direction of travel / bearing for each hit (ie. North,
+</I>&gt;&gt;<i> South, East, West). I've tried researching this but to no avail. Any
+</I>&gt;&gt;<i> suggestions on how this can be implemented or does anyone have any
+</I>&gt;&gt;<i> examples of Python code containing bearings?
+</I>&gt;<i>
+</I>&gt;<i> Direction of travel, or heading, and bearing are not the same thing.
+</I>&gt;<i> Heading is the direction in which you are moving, i.e. your course
+</I>&gt;<i> made good. Bearing is the angle from the heading to a feature.
+</I>&gt;<i>
+</I>&gt;<i> That nitpick aside...  In C:
+</I>&gt;<i>
+</I>&gt;<i>     if (gpsdata.set &amp; TRACK_SET) {
+</I>&gt;<i>         formatTrack (gpsdata.fix.track);
+</I>&gt;<i>     }
+</I>&gt;<i>
+</I>&gt;<i> gpsdata.fix.track is a double, and seems to be a value in the range 0 to
+</I>&gt;<i> 360, of degrees from true north, where 0 and 360 are both true north.
+</I>&gt;<i> (To be really pedantic, it should be either 0-359 or 1-360, but I
+</I>&gt;<i> actually prefer the extra degree.)
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i> --
+</I>&gt;<i>
+</I>&gt;<i> Charles Curley                  /&quot;\    ASCII Ribbon Campaign
+</I>&gt;<i> Looking for fine software       \ /    Respect for open standards
+</I>&gt;<i> and/or writing?                  X     No HTML/RTF in email
+</I>&gt;<i> <A HREF="http://www.charlescurley.com">http://www.charlescurley.com</A>    / \    No M$ Word docs in email
+</I>&gt;<i>
+</I>&gt;<i> Key fingerprint = CE5C 6645 A45A 64E4 94C0  809C FFF6 4C48 4ECD DFDB
+</I>&gt;<i> _______________________________________________
+</I>&gt;<i> Gpsd-users mailing list
+</I>&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">Gpsd-users at lists.berlios.de</A>
+</I>&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">https://lists.berlios.de/mailman/listinfo/gpsd-users</A>
+</I>&gt;<i>
+</I>&gt;<i> !DSPAM:4eb2f44e263845133180498!
+</I>&gt;<i>
+</I>&gt;<i>
+</I>
+
+-- 
+Pain is temporary. It may last a minute, or an hour, or a day, or a year,
+but eventually it will subside and something else will take its place. If
+I quit, however, it lasts forever.
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="005526.html">[Gpsd-users] Establishing Direction of Travel / Bearing (Python)
+</A></li>
+	<LI>Next message: <A HREF="005528.html">[Gpsd-users] Establishing Direction of Travel / Bearing (Python)
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#5527">[ date ]</a>
+              <a href="thread.html#5527">[ thread ]</a>
+              <a href="subject.html#5527">[ subject ]</a>
+              <a href="author.html#5527">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

@@ -1,0 +1,93 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] how use tomtom gps
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2007-June/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20how%20use%20tomtom%20gps&In-Reply-To=%3C91981b3e0706220922i4d271c0eofa4181799ccee9d2%40mail.gmail.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="002725.html">
+   <LINK REL="Next"  HREF="002727.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] how use tomtom gps</H1>
+    <B>Chris Kuethe</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20how%20use%20tomtom%20gps&In-Reply-To=%3C91981b3e0706220922i4d271c0eofa4181799ccee9d2%40mail.gmail.com%3E"
+       TITLE="[Gpsd-users] how use tomtom gps">chris.kuethe at gmail.com
+       </A><BR>
+    <I>Fri Jun 22 18:22:55 CEST 2007</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="002725.html">[Gpsd-users] how use tomtom gps
+</A></li>
+        <LI>Next message: <A HREF="002727.html">[Gpsd-users] backtrace from the bug on gps_query
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2726">[ date ]</a>
+              <a href="thread.html#2726">[ thread ]</a>
+              <a href="subject.html#2726">[ subject ]</a>
+              <a href="author.html#2726">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>On 6/22/07, bruce &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">bruce.ol.mighty at gmail.com</A>&gt; wrote:
+&gt;<i> Yes the probleme was coming from using the gpsdrive gpsd (/usr/bin/gpsd)
+</I>&gt;<i> instead of the right  one (/usr/sbin/gpsd). Things seems better :
+</I>&gt;<i> launche as you advise gpsd say hundred of line. And xgps seems to show
+</I>&gt;<i> the good gps in GPS type.
+</I>&gt;<i> Sadly xgps is stuck on : &quot;GPSD,O=?&quot; with &quot;NO FIX (xx secs)&quot; as status.
+</I>&gt;<i> I wait about 350 sec. I try it in my flat (with a lot of stairs between
+</I>&gt;<i> my ceilling and the roof) should it work outside?
+</I>
+Generally, you should assume GPS will not work indoors. There are some
+modern, high-sensitivity receivers that do well: I have a sirf3 that
+occasionally gets a fix inside parkades, and I have an Antaris4 that
+gets a fix inside my office building. But that takes a while and in
+both of these poor reception environments I have very high error
+estimates.
+
+So part of my standard GPS troubleshooting procedure is to go outside
+and try it someplace with an unobstructed view of the sky, or at least
+with nothing higher than 45 degrees elevation.
+
+Also, I'd like to suggest that you try gpsd 2.35beta from SVN. This
+has the -b flag which you may find useful because it will prevent gpsd
+from trying to reconfigure your GPS. Some (many? all?) bluetooth
+receivers don't like having their communications protocol reset; often
+they are left unable to communicate until you pull the batteries -
+including the 2 week backup battery soldered onboard. Just to let you
+know...
+
+CK
+
+-- 
+GDB has a 'break' feature; why doesn't it have 'fix' too?
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="002725.html">[Gpsd-users] how use tomtom gps
+</A></li>
+	<LI>Next message: <A HREF="002727.html">[Gpsd-users] backtrace from the bug on gps_query
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2726">[ date ]</a>
+              <a href="thread.html#2726">[ thread ]</a>
+              <a href="subject.html#2726">[ subject ]</a>
+              <a href="author.html#2726">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

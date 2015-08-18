@@ -1,0 +1,104 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] interpreting ntpq with 1 pps
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2010-February/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20interpreting%20ntpq%20with%201%20pps&In-Reply-To=%3Calpine.LNX.1.10.1002231133240.28994%40catbert.rellim.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="004255.html">
+   <LINK REL="Next"  HREF="004225.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] interpreting ntpq with 1 pps</H1>
+    <B>Gary E. Miller</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20interpreting%20ntpq%20with%201%20pps&In-Reply-To=%3Calpine.LNX.1.10.1002231133240.28994%40catbert.rellim.com%3E"
+       TITLE="[Gpsd-users] interpreting ntpq with 1 pps">gem at rellim.com
+       </A><BR>
+    <I>Tue Feb 23 20:39:02 CET 2010</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="004255.html">[Gpsd-users] interpreting ntpq with 1 pps
+</A></li>
+        <LI>Next message: <A HREF="004225.html">[Gpsd-users] getting ntpd to work with gpsd
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#4256">[ date ]</a>
+              <a href="thread.html#4256">[ thread ]</a>
+              <a href="subject.html#4256">[ subject ]</a>
+              <a href="author.html#4256">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>-----BEGIN PGP SIGNED MESSAGE-----
+Hash: SHA1
+
+Yo Robert!
+
+On Tue, 23 Feb 2010, Robert Livingston wrote:
+
+&gt;<i> As you suggested in your reply a couple of weeks ago, moving to 2.90
+</I>&gt;<i> under Debian Squeeze solved my 1 pps problems. Thanks.
+</I>
+Glad to hear it.
+
+&gt;<i> Is there anything systematic about such excursions (e.g. incorrect ntpd
+</I>&gt;<i> settings), or was this one a fluke?
+</I>
+Most likely you had some other work happening on your clock server that
+increased the interrupt latency.  It would be useful to compare the
+times you had bad jitter to the sar report.
+
+You can help things a lot by being sure that ntpd and gpsd are both
+running at a high negative nice number. ntpd now has the -N option to
+do this, gpsd should probably have something similat.  Try running gpsd
+this way:
+
+nice -n -20 gpsd -nNGD 6 /dev/ttyS0 2&gt;&amp;1 | egrep 'PPS|NTP'
+
+The nice will give gpsd a high priority and the egrep will log the
+PPS relevant info.
+
+RGDS
+GARY
+- ---------------------------------------------------------------------------
+Gary E. Miller Rellim 109 NW Wilmington Ave., Suite E, Bend, OR 97701
+	<A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">gem at rellim.com</A>  Tel:+1(541)382-8588
+
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v1.4.3 (GNU/Linux)
+
+iD8DBQFLhC7YBmnRqz71OvMRAqABAKCX25a0csDmPxh2zdfGQ135j8jJGQCgxO28
+5HYe1HTjsNBrFNWWk7u3Vhk=
+=S6sS
+-----END PGP SIGNATURE-----
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="004255.html">[Gpsd-users] interpreting ntpq with 1 pps
+</A></li>
+	<LI>Next message: <A HREF="004225.html">[Gpsd-users] getting ntpd to work with gpsd
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#4256">[ date ]</a>
+              <a href="thread.html#4256">[ thread ]</a>
+              <a href="subject.html#4256">[ subject ]</a>
+              <a href="author.html#4256">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

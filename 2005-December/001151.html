@@ -1,0 +1,115 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] Trimble Lassen iQ Speed &amp; Mode Wrong
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2005-December/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Trimble%20Lassen%20iQ%20Speed%20%26%20Mode%20Wrong&In-Reply-To=%3C4390A919.5020008%40vonnieda.org%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="001146.html">
+   <LINK REL="Next"  HREF="001152.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] Trimble Lassen iQ Speed &amp; Mode Wrong</H1>
+    <B>Jason von Nieda</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Trimble%20Lassen%20iQ%20Speed%20%26%20Mode%20Wrong&In-Reply-To=%3C4390A919.5020008%40vonnieda.org%3E"
+       TITLE="[Gpsd-users] Trimble Lassen iQ Speed &amp; Mode Wrong">jason at vonnieda.org
+       </A><BR>
+    <I>Fri Dec  2 21:05:45 CET 2005</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="001146.html">[Gpsd-users] Trimble Lassen iQ Speed &amp; Mode Wrong
+</A></li>
+        <LI>Next message: <A HREF="001152.html">Off-topic: accuracy in conversion from meters/sec to knots (was	Re: [Gpsd-users] Trimble Lassen iQ Speed &amp; Mode Wrong)
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1151">[ date ]</a>
+              <a href="thread.html#1151">[ thread ]</a>
+              <a href="subject.html#1151">[ subject ]</a>
+              <a href="author.html#1151">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Sorry to reply to myself, but I think I found at least the speed problem.
+
+The documentation for gpsd says that velocity is reported in knots. The
+Trimble TSIP driver (tsip.c) is not converting the receivers native
+format (meters/second) to knots so the speed I am seeing is actually
+meters/second.
+gps.h defines MPS_TO_KNOTS 1.9437 which is pretty close to &quot;exactly
+half&quot; (or exactly double as the case may be) as I described.
+I took a quick glance at the specs and source for the SiRF binary driver
+and it appears to have the same problem.
+
+I'm still working on the mode problem, but I see where it is. The TSIP
+driver is ignoring a few packets where status and mode information is
+sent and I imagine my receiver is using one of those packets to transmit
+the information. I don't have my receiver handy to test and verify this
+at the moment.
+
+Attached is a patch for the speed problem. It's untested as I don't have
+the receiver handy but it's not exactly rocket science. Well, I suppose
+it is, a bit :)
+
+Jason von Nieda
+
+
+Jason von Nieda wrote:
+&gt;<i> Hi gpsd-users,
+</I>&gt;<i>
+</I>&gt;<i>     I'm using gpsd in OS X (precompiled binaries from
+</I>&gt;<i> <A HREF="http://whocares.de/archive/000936.php">http://whocares.de/archive/000936.php</A>) with a Trimble Lassen iQ
+</I>&gt;<i> Receiver. gpsd appears to be reporting the velocity as exactly half of
+</I>&gt;<i> what it really is. I'm starting to dig into the source and debug output
+</I>&gt;<i> now but I wanted to throw this question out in case someone had seen it.
+</I>&gt;<i> I have reset the receiver to factory defaults and position information
+</I>&gt;<i> seems to be dead on.
+</I>&gt;<i>
+</I>&gt;<i>     Additionally, gpsd seems to report incorrect status and mode
+</I>&gt;<i> information when the receiver does not have a clear view of the sky. If
+</I>&gt;<i> I unplug the antenna the status remains STATUS_FIX, the mode remains
+</I>&gt;<i> MODE_3D but the latitude and longitude begin to report 0.
+</I>&gt;<i>
+</I>&gt;<i>     As I said, I'm working my way through the source to see if I can
+</I>&gt;<i> find the problem but I wanted to see if these were known issues just in
+</I>&gt;<i> case. Thanks in advance to any guidance you can lend.
+</I>&gt;<i>
+</I>&gt;<i> Sincerely,
+</I>&gt;<i> Jason von Nieda
+</I>&gt;<i> _______________________________________________
+</I>&gt;<i> Gpsd-users mailing list
+</I>&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">Gpsd-users at lists.berlios.de</A>
+</I>&gt;<i> <A HREF="http://lists.berlios.de/mailman/listinfo/gpsd-users">http://lists.berlios.de/mailman/listinfo/gpsd-users</A>
+</I>&gt;<i>   
+</I>-------------- next part --------------
+An embedded and charset-unspecified text was scrubbed...
+Name: gpsd-2.30-tsip-speed-jvn.patch
+URL: &lt;<A HREF="https://lists.berlios.de/pipermail/gpsd-users/attachments/20051202/e8f5ff98/attachment.ksh">https://lists.berlios.de/pipermail/gpsd-users/attachments/20051202/e8f5ff98/attachment.ksh</A>&gt;
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="001146.html">[Gpsd-users] Trimble Lassen iQ Speed &amp; Mode Wrong
+</A></li>
+	<LI>Next message: <A HREF="001152.html">Off-topic: accuracy in conversion from meters/sec to knots (was	Re: [Gpsd-users] Trimble Lassen iQ Speed &amp; Mode Wrong)
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1151">[ date ]</a>
+              <a href="thread.html#1151">[ thread ]</a>
+              <a href="subject.html#1151">[ subject ]</a>
+              <a href="author.html#1151">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

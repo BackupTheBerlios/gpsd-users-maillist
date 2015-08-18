@@ -1,0 +1,99 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] Deluo GPS fails with 2.34
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2007-May/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Deluo%20GPS%20fails%20with%202.34&In-Reply-To=%3C200705071217.58771.ran%40netgate.net%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="002616.html">
+   <LINK REL="Next"  HREF="002610.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] Deluo GPS fails with 2.34</H1>
+    <B>Ran Talbott</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Deluo%20GPS%20fails%20with%202.34&In-Reply-To=%3C200705071217.58771.ran%40netgate.net%3E"
+       TITLE="[Gpsd-users] Deluo GPS fails with 2.34">ran at netgate.net
+       </A><BR>
+    <I>Mon May  7 21:17:58 CEST 2007</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="002616.html">[Gpsd-users] Recommended Unit
+</A></li>
+        <LI>Next message: <A HREF="002610.html">[Gpsd-users] Deluo GPS fails with 2.34
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2608">[ date ]</a>
+              <a href="thread.html#2608">[ thread ]</a>
+              <a href="subject.html#2608">[ subject ]</a>
+              <a href="author.html#2608">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>I purchased this unit used,  so I'm only 90% certain that the 
+PL2303-based USB-to-serial converter came with it originally.
+
+Clients usually get no NMEA data at all,  but once I saw one get a single 
+signal-strength message.
+
+Running gpsd in the foreground with &quot;-D2&quot;,  one of several attempted 
+client sessions produced this partial log:
+
+gpsd -ND2 /dev/ttyUSB0
+gpsd: launching (Version 2.34)
+gpsd: listening on port 2947
+gpsd: running with effective group ID 0
+gpsd: running with effective user ID 0
+gpsd: opening GPS data source at '/dev/ttyUSB0'
+gpsd: speed 9600, 8N1
+gpsd: garmin_gps not active.
+gpsd: gpsd_activate(0): opened GPS (4)
+gpsd: speed 4800, 8N1
+gpsd: can't use GGA/GGL time until after ZDA or RMC has supplied a year.
+gpsd: closing GPS=/dev/ttyUSB0 (4)
+gpsd: client connect on 4
+gpsd: opening GPS data source at '/dev/ttyUSB0'
+gpsd: speed 4800, 8N1
+gpsd: garmin_gps not active.
+gpsd: gpsd_activate(1): opened GPS (5)
+gpsd: client(0) turned on raw mode
+gpsd: GPGSV field 3 value of 11 != actual count 7
+gpsd: LOS matrix is singular, can't calculate DOPs.
+gpsd: unknown sentence: &quot;$PSRF100,0,4800,8,1,0*0F\x0d\x0a&quot;
+gpsd: closing GPS=/dev/ttyUSB0 (5)
+
+If I kill gpsd and do a cat /dev/ttyUSB0,  I can see that NMEA data is 
+still coming,  but gpsd appears to have simply lost interest in it.
+
+Ran
+
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="002616.html">[Gpsd-users] Recommended Unit
+</A></li>
+	<LI>Next message: <A HREF="002610.html">[Gpsd-users] Deluo GPS fails with 2.34
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2608">[ date ]</a>
+              <a href="thread.html#2608">[ thread ]</a>
+              <a href="subject.html#2608">[ subject ]</a>
+              <a href="author.html#2608">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

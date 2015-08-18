@@ -1,0 +1,211 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] Problem with Variotek VT-200
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2008-September/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Problem%20with%20Variotek%20VT-200&In-Reply-To=%3C200809252249.12959.stefan.brandner%40gmx.at%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="003389.html">
+   <LINK REL="Next"  HREF="003391.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] Problem with Variotek VT-200</H1>
+    <B>Stefan</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Problem%20with%20Variotek%20VT-200&In-Reply-To=%3C200809252249.12959.stefan.brandner%40gmx.at%3E"
+       TITLE="[Gpsd-users] Problem with Variotek VT-200">stefan.brandner at gmx.at
+       </A><BR>
+    <I>Thu Sep 25 22:49:12 CEST 2008</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="003389.html">[Gpsd-users] xgps problem
+</A></li>
+        <LI>Next message: <A HREF="003391.html">[Gpsd-users] Reading GPSD Data from inside Python: SIMPLY WAY?
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3390">[ date ]</a>
+              <a href="thread.html#3390">[ thread ]</a>
+              <a href="subject.html#3390">[ subject ]</a>
+              <a href="author.html#3390">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>I have a Variotek VT-200 GPS mouse. When I connect the gps it is detected as:
+
+usb 1-2: new full speed USB device using uhci_hcd and address 3
+usb 1-2: configuration #1 chosen from 1 choice
+pl2303 1-2:1.0: pl2303 converter detected
+usb 1-2: pl2303 converter now attached to ttyUSB0
+usb 1-2: New USB device found, idVendor=067b, idProduct=2303
+usb 1-2: New USB device strings: Mfr=1, Product=2, SerialNumber=0
+usb 1-2: Product: USB-Serial Controller
+usb 1-2: Manufacturer: Prolific Technology Inc.
+
+I then start gpsd with: gpsd /dev/ttyUSB0 -N -D 2
+gpsd: launching (Version 2.37)
+gpsd: listening on port gpsd
+gpsd: successfully connected to the DBUS system bus
+gpsd: running with effective group ID 0
+gpsd: running with effective user ID 0
+gpsd: opening GPS data source at '/dev/ttyUSB0'
+gpsd: speed 2400, 8N1
+gpsd: garmin_gps not active.
+gpsd: speed 38400, 8N1
+gpsd: speed 19200, 8N1
+gpsd: speed 2400, 8N1
+gpsd: speed 4800, 8N1
+gpsd: ntpd_link_activate: 0
+gpsd: gpsd_activate(0): opened GPS (5)
+gpsd: client 127.0.0.1 (0) connect on fd 6
+gpsd: closing GPS=/dev/ttyUSB0 (5)
+gpsd: opening GPS data source at '/dev/ttyUSB0'
+gpsd: speed 4800, 8N1
+gpsd: garmin_gps not active.
+gpsd: speed 38400, 8N1
+gpsd: speed 19200, 8N1
+gpsd: speed 2400, 8N1
+gpsd: speed 4800, 8N1
+gpsd: ntpd_link_activate: 0
+gpsd: gpsd_activate(1): opened GPS (5)
+gpsd: client(0) turned on raw mode
+gpsd: detaching 127.0.0.1 (sub0, fd 6) in detach_client
+gpsd: closing GPS=/dev/ttyUSB0 (5)
+
+I parallel start gpspipe. When it reaches the line gpsd: client(0) turned on raw mode
+the gpspipe starts logging data.
+Unfortunally gps does not keep the state and closes /dev/ttyUSB0.
+Then it starts again trying all speeds.
+
+gpspipe -r -n 100
+GPSD,R=1
+$GPVTG,99.65,T,,M,1.49,N,2.76,K,A*01
+$GPGGA,193722.000,4637.4464,N,01349.7321,E,1,7,1.21,520.7,M,45.4,M,,*5C
+$GPGLL,4637.4464,N,01349.7321,E,193722.000,A,A*59
+$GPGSA,A,3,06,11,18,14,03,19,22,,,,,,1.46,1.21,0.81*0B
+$GPRMC,193722.000,A,4637.4464,N,01349.7321,E,1.49,99.65,250908,,,A*57
+$GPVTG,99.65,T,,M,1.49,N,2.76,K,A*01
+$GPGGA,193723.000,4637.4463,N,01349.7320,E,1,7,1.21,520.7,M,45.4,M,,*5B
+$GPGLL,4637.4463,N,01349.7320,E,193723.000,A,A*5E
+$GPGSA,A,3,06,11,18,14,03,19,22,,,,,,1.46,1.21,0.81*0B
+$GPRMC,193723.000,A,4637.4463,N,01349.7320,E,1.49,99.65,250908,,,A*50
+$GPVTG,99.65,T,,M,1.49,N,2.76,K,A*01
+$GPGGA,193724.000,4637.4461,N,01349.7317,E,1,7,1.21,520.6,M,45.4,M,,*5B
+$GPGLL,4637.4461,N,01349.7317,E,193724.000,A,A*5F
+$GPGSA,A,3,06,11,18,14,03,19,22,,,,,,1.46,1.21,0.81*0B
+$GPRMC,193724.000,A,4637.4461,N,01349.7317,E,1.49,99.65,250908,,,A*51
+$GPVTG,99.65,T,,M,1.49,N,2.76,K,A*01
+$GPGGA,193725.000,4637.4461,N,01349.7318,E,1,7,1.21,520.7,M,45.4,M,,*54
+$GPGLL,4637.4461,N,01349.7318,E,193725.000,A,A*51
+$GPGSA,A,3,06,11,18,14,03,19,22,,,,,,1.46,1.21,0.81*0B
+$GPRMC,193725.000,A,4637.4461,N,01349.7318,E,1.49,99.65,250908,,,A*5F
+$GPVTG,99.65,T,,M,1.49,N,2.76,K,A*01
+$GPGGA,193726.000,4637.4461,N,01349.7320,E,1,7,1.21,520.7,M,45.4,M,,*5C
+$GPGLL,4637.4461,N,01349.7320,E,193726.000,A,A*59
+$GPGSA,A,3,06,11,18,14,03,19,22,,,,,,1.46,1.21,0.81*0B
+$GPGSV,3,1,11,19,71,296,34,03,69,170,36,22,61,073,41,06,59,150,35*7E
+$GPGSV,3,2,11,37,35,169,24,18,26,050,38,14,22,128,32,11,15,277,22*78
+$GPGSV,3,3,11,32,09,212,,16,06,185,,21,05,082,30*42
+$GPRMC,193726.000,A,4637.4461,N,01349.7320,E,1.49,99.65,250908,,,A*57
+$GPVTG,99.65,T,,M,1.49,N,2.76,K,A*01
+$GPGGA,193727.000,4637.4462,N,01349.7322,E,1,6,1.60,520.7,M,45.4,M,,*58
+$GPGLL,4637.4462,N,01349.7322,E,193727.000,A,A*59
+$GPGSA,A,3,06,18,14,03,19,22,,,,,,,1.87,1.60,0.95*06
+$GPRMC,193727.000,A,4637.4462,N,01349.7322,E,1.49,99.65,250908,,,A*57
+$GPVTG,99.65,T,,M,1.49,N,2.76,K,A*01
+$GPGGA,193728.000,4637.4462,N,01349.7323,E,1,6,1.60,520.7,M,45.4,M,,*56
+$GPGLL,4637.4462,N,01349.7323,E,193728.000,A,A*57
+$GPGSA,A,3,06,18,14,03,19,22,,,,,,,1.87,1.60,0.95*06
+$GPRMC,193728.000,A,4637.4462,N,01349.7323,E,1.49,99.65,250908,,,A*59
+$GPVTG,99.65,T,,M,1.49,N,2.76,K,A*01
+$GPGGA,193729.000,4637.4462,N,01349.7322,E,1,7,1.21,520.9,M,45.4,M,,*5C
+$GPGLL,4637.4462,N,01349.7322,E,193729.000,A,A*57
+$GPGSA,A,3,06,11,18,14,03,19,22,,,,,,1.46,1.21,0.81*0B
+$GPRMC,193729.000,A,4637.4462,N,01349.7322,E,1.49,99.65,250908,,,A*59
+$GPVTG,99.65,T,,M,1.49,N,2.76,K,A*01
+$GPGGA,193730.000,4637.4459,N,01349.7322,E,1,7,1.21,520.9,M,45.4,M,,*5C
+$GPGLL,4637.4459,N,01349.7322,E,193730.000,A,A*57
+$GPGSA,A,3,06,11,18,14,03,19,22,,,,,,1.46,1.21,0.81*0B
+$GPRMC,193730.000,A,4637.4459,N,01349.7322,E,1.42,99.65,250908,,,A*52
+$GPVTG,99.65,T,,M,1.42,N,2.63,K,A*0E
+$GPGGA,193731.000,4637.4461,N,01349.7319,E,1,7,1.21,521.1,M,45.4,M,,*57
+$GPGLL,4637.4461,N,01349.7319,E,193731.000,A,A*55
+$GPGSA,A,3,06,11,18,14,03,19,22,,,,,,1.46,1.21,0.81*0B
+$GPGSV,3,1,11,19,71,296,34,03,69,170,36,22,61,073,41,06,59,150,35*7E
+$GPGSV,3,2,11,18,26,050,38,14,22,128,32,44,16,119,,11,15,277,23*7D
+$GPGSV,3,3,11,32,09,212,,16,06,185,,21,05,082,30*42
+$GPRMC,193731.000,A,4637.4461,N,01349.7319,E,1.43,99.65,250908,,,A*51
+$GPVTG,99.65,T,,M,1.43,N,2.64,K,A*08
+$GPGGA,193732.000,4637.4465,N,01349.7314,E,1,7,1.21,521.4,M,45.4,M,,*58
+$GPGLL,4637.4465,N,01349.7314,E,193732.000,A,A*5F
+$GPGSA,A,3,06,11,18,14,03,19,22,,,,,,1.46,1.21,0.81*0B
+$GPRMC,193732.000,A,4637.4465,N,01349.7314,E,1.42,99.65,250908,,,A*5A
+$GPVTG,99.65,T,,M,1.42,N,2.64,K,A*09
+$GPGGA,193733.000,4637.4465,N,01349.7315,E,1,7,1.21,521.4,M,45.4,M,,*58
+$GPGLL,4637.4465,N,01349.7315,E,193733.000,A,A*5F
+$GPGSA,A,3,06,11,18,14,03,19,22,,,,,,1.46,1.21,0.81*0B
+$GPRMC,193733.000,A,4637.4465,N,01349.7315,E,1.19,99.65,250908,,,A*54
+$GPVTG,99.65,T,,M,1.19,N,2.20,K,A*07
+$GPGGA,193734.000,4637.4460,N,01349.7319,E,1,7,1.21,521.5,M,45.4,M,,*57
+$GPGLL,4637.4460,N,01349.7319,E,193734.000,A,A*51
+$GPGSA,A,3,06,11,18,14,03,19,22,,,,,,1.46,1.21,0.81*0B
+$GPRMC,193734.000,A,4637.4460,N,01349.7319,E,1.18,99.65,250908,,,A*5B
+$GPVTG,99.65,T,,M,1.18,N,2.20,K,A*06
+$GPGGA,193735.000,4637.4462,N,01349.7318,E,1,7,1.21,521.6,M,45.4,M,,*56
+$GPGLL,4637.4462,N,01349.7318,E,193735.000,A,A*53
+$GPGSA,A,3,06,11,18,14,03,19,22,,,,,,1.46,1.21,0.81*0B
+$GPRMC,193735.000,A,4637.4462,N,01349.7318,E,1.18,99.65,250908,,,A*59
+$GPVTG,99.65,T,,M,1.18,N,2.19,K,A*0C
+$GPGGA,193736.000,4637.4464,N,01349.7313,E,1,7,1.21,521.8,M,45.4,M,,*56
+$GPGLL,4637.4464,N,01349.7313,E,193736.000,A,A*5D
+$GPGSA,A,3,06,11,18,14,03,19,22,,,,,,1.46,1.21,0.81*0B
+$GPGSV,3,1,11,19,71,296,34,03,68,170,36,22,61,073,40,06,58,150,35*7F
+$GPGSV,3,2,11,18,26,050,38,14,22,128,32,11,15,277,25,32,09,212,*7C
+$GPGSV,3,3,11,16,06,185,,21,05,082,30,38,,,*70
+$GPRMC,193736.000,A,4637.4464,N,01349.7313,E,1.18,99.65,250908,,,A*57
+$GPVTG,99.65,T,,M,1.18,N,2.18,K,A*0D
+$GPGGA,193737.000,4637.4463,N,01349.7314,E,1,7,1.21,521.8,M,45.4,M,,*57
+$GPGLL,4637.4463,N,01349.7314,E,193737.000,A,A*5C
+$GPGSA,A,3,06,11,18,14,03,19,22,,,,,,1.46,1.21,0.81*0B
+$GPRMC,193737.000,A,4637.4463,N,01349.7314,E,1.18,99.65,250908,,,A*56
+$GPVTG,99.65,T,,M,1.18,N,2.18,K,A*0D
+$GPGGA,193738.000,4637.4462,N,01349.7312,E,1,7,1.21,521.8,M,45.4,M,,*5F
+$GPGLL,4637.4462,N,01349.7312,E,193738.000,A,A*54
+$GPGSA,A,3,06,11,18,14,03,19,22,,,,,,1.46,1.21,0.81*0B
+$GPRMC,193738.000,A,4637.4462,N,01349.7312,E,1.18,99.65,250908,,,A*5E
+$GPVTG,99.65,T,,M,1.18,N,2.18,K,A*0D
+$GPGGA,193739.000,4637.4462,N,01349.7309,E,1,7,1.21,521.8,M,45.4,M,,*54
+$GPGLL,4637.4462,N,01349.7309,E,193739.000,A,A*5F
+$GPGSA,A,3,06,11,18,14,03,19,22,,,,,,1.46,1.21,0.81*0B
+$GPRMC,193739.000,A,4637.4462,N,01349.7309,E,0.07,99.65,250908,,,A*5A
+
+Ist this a bug or a missusage?
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="003389.html">[Gpsd-users] xgps problem
+</A></li>
+	<LI>Next message: <A HREF="003391.html">[Gpsd-users] Reading GPSD Data from inside Python: SIMPLY WAY?
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3390">[ date ]</a>
+              <a href="thread.html#3390">[ thread ]</a>
+              <a href="subject.html#3390">[ subject ]</a>
+              <a href="author.html#3390">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

@@ -1,0 +1,168 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] Preparing for 2.93 point release
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2010-April/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Preparing%20for%202.93%20point%20release&In-Reply-To=%3C20100416065833.GA858%40thyrsus.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="004425.html">
+   <LINK REL="Next"  HREF="004399.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] Preparing for 2.93 point release</H1>
+    <B>Eric Raymond</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Preparing%20for%202.93%20point%20release&In-Reply-To=%3C20100416065833.GA858%40thyrsus.com%3E"
+       TITLE="[Gpsd-users] Preparing for 2.93 point release">esr at thyrsus.com
+       </A><BR>
+    <I>Fri Apr 16 08:58:33 CEST 2010</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="004425.html">[Gpsd-users] Bluetooth issues (was: Re: Preparing for 2.93 point release)
+</A></li>
+        <LI>Next message: <A HREF="004399.html">[Gpsd-users] Preparing for 2.93 point release
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#4392">[ date ]</a>
+              <a href="thread.html#4392">[ thread ]</a>
+              <a href="subject.html#4392">[ subject ]</a>
+              <a href="author.html#4392">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Ji&#345;&#237; Techet &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">techet at gmail.com</A>&gt;:
+&gt;<i> (by the way, you might want to consider using gitorious - it's a very
+</I>&gt;<i> convenient way for sending and merging patches from external
+</I>&gt;<i> developers)
+</I>
+Point me to a tutorial?
+ 
+&gt;<i> There are several bugs combined in gps.py:
+</I>&gt;<i> 
+</I>&gt;<i> 1. In
+</I>&gt;<i> 
+</I>&gt;<i>                 if &quot;driver&quot; in data:
+</I>&gt;<i>                     self.driver = self.data[&quot;driver&quot;]
+</I>&gt;<i>                 if &quot;subtype&quot; in data:
+</I>&gt;<i> 
+</I>&gt;<i> you are testing data, but it should be self.data.
+</I>&gt;<i> 
+</I>&gt;<i> 2. The dictwrapper class must contain __contains__() method - without
+</I>&gt;<i> this you can't use &quot;in&quot; for testing element presence.
+</I>&gt;<i> 
+</I>&gt;<i> 3. You should set the data structures also when you get DEVICES class
+</I>&gt;<i> response for the reason mentioned above.
+</I>
+I took your patches, and I did test them.  They're good, and will ship 
+in 2.93.
+ 
+&gt;<i> Note that I haven't tested the above patch much - for my application I
+</I>&gt;<i> have decided to reimplement the python interface by myself - thanks to
+</I>&gt;<i> the new protocol (really good work!) it was quite trivial.
+</I>
+Yes, it would be.  The wire-protocol objects map to Python objects
+in a very natural way.
+
+&gt;<i>                                                          There are
+</I>&gt;<i> several reasons why I think that every serious application should
+</I>&gt;<i> avoid using gps.py:
+</I>&gt;<i> 
+</I>&gt;<i> 1. There is no formal documentation of the interface - one cannot be
+</I>&gt;<i> sure which methods and mainly data members are public and which are
+</I>&gt;<i> private. I just felt uncomfortable that something will change in the
+</I>&gt;<i> future that will break my application.
+</I>
+My original plan was to leave them as is.  But you have a good point.
+The interface, as it is, is an ugly amphibian - caught between
+backward compatibility with the old protocol (all those data members)
+and the new, under which it is more natural to simply return a report
+object corresponding to the last JSON object to come up the wire.
+
+It would probably be better if I just built a new, simpler interface
+class and discarded the retained-data members and all the other old
+cruft.
+ 
+&gt;<i> 2. The interface is pull-based - that is the application is expected
+</I>&gt;<i> to periodically pull data from gpsd - but in fact, every GUI
+</I>&gt;<i> application just wants to register a callback and be notified when the
+</I>&gt;<i> data is ready. Depending on the application this can be a callback in
+</I>&gt;<i> a separate thread (yes, I know you don't like them) or by integrating
+</I>&gt;<i> it into the main loop of the GUI application. You do this in xgps by
+</I>&gt;<i> listening on the socket, but this is quite hacky - the interface
+</I>&gt;<i> should abstract the user from internals completely - it shouldn't be
+</I>&gt;<i> visible that there are some sockets behind it. Also, as I said in (1),
+</I>&gt;<i> I haven't seen any documentation of this interface so it's not clear
+</I>&gt;<i> whether the &quot;sock&quot; member is supposed to be public or private.
+</I>
+It's supposed to be private.  But otherwise I don't completely 
+understand this criticism.  
+
+I actually agree about callback-centered interfaces - you'll note
+that I wrote one in xgps.  But something has to actually manage the
+file descriptor for polling and handle the case where a JSON object
+arrives fragmented across more than one read, and it might well be
+an interface class.
+
+&gt;<i> 3. The interface isn't pythonic - poll() returns values like 0, -1,
+</I>&gt;<i> which isn't very nice.
+</I>
+Agreed.  It was originally written to mimic the C interface.
+That was a defensible decision under the old protocol, but it's
+awakward and ugly under the new one. Hence the iterator interface.
+
+&gt;<i> 4. The interface contains a lot of garbage used for backward
+</I>&gt;<i> compatibility - quite understood, but this can also introduce some
+</I>&gt;<i> bugs, which are more probable with dynamically typed languages.
+</I>
+I also agree about the historical junk; it ought to be chucked.  I think
+what I anm likely to end up doing is writing a ndw gps.client class
+adapted for the JSON protocol and documenting it.
+
+&gt;<i> I'm not saying this to criticize but to suggest that python clients
+</I>&gt;<i> should be encouraged to use the gpsd protocol directly. Each of them
+</I>&gt;<i> can have some specific needs for the callback mechanisms, which cannot
+</I>&gt;<i> be addressed by a single interface.
+</I>
+I disagree with speaking the wire protocol directly, because it leaves
+applications too exposed if that has to change.  But I agree that the
+best design for Python would be (unlike the C interface) a very thin layer
+over the wire protocol. Perhaps one just thick enough to do compatibility
+translations, supposing that ever becomes necessary.
+
+&gt;<i>                                  And doing this is quite trivial -
+</I>&gt;<i> it's 150 lines for my wrapping interface. Let me know if you are
+</I>&gt;<i> interested in seeing it.
+</I>
+I would like to see yours. I think I will prototype a new client binding,
+and ask you to critique it.
+-- 
+		&lt;a href=&quot;<A HREF="http://www.catb.org/~esr/">http://www.catb.org/~esr/</A>&quot;&gt;Eric S. Raymond&lt;/a&gt;
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="004425.html">[Gpsd-users] Bluetooth issues (was: Re: Preparing for 2.93 point release)
+</A></li>
+	<LI>Next message: <A HREF="004399.html">[Gpsd-users] Preparing for 2.93 point release
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#4392">[ date ]</a>
+              <a href="thread.html#4392">[ thread ]</a>
+              <a href="subject.html#4392">[ subject ]</a>
+              <a href="author.html#4392">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

@@ -1,0 +1,116 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] How do I set the baud rate with gpsd?
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2007-September/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20How%20do%20I%20set%20the%20baud%20rate%20with%20gpsd%3F&In-Reply-To=%3C46E02012.6080805%40gmail.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="002869.html">
+   <LINK REL="Next"  HREF="002894.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] How do I set the baud rate with gpsd?</H1>
+    <B>Xamindar</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20How%20do%20I%20set%20the%20baud%20rate%20with%20gpsd%3F&In-Reply-To=%3C46E02012.6080805%40gmail.com%3E"
+       TITLE="[Gpsd-users] How do I set the baud rate with gpsd?">junkxamindar at gmail.com
+       </A><BR>
+    <I>Thu Sep  6 17:43:14 CEST 2007</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="002869.html">[Gpsd-users] How do I set the baud rate with gpsd?
+</A></li>
+        <LI>Next message: <A HREF="002894.html">[Gpsd-users] How do I set the baud rate with gpsd?
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2876">[ date ]</a>
+              <a href="thread.html#2876">[ thread ]</a>
+              <a href="subject.html#2876">[ subject ]</a>
+              <a href="author.html#2876">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Massimo Burcheri wrote:
+&gt;<i> On Dienstag 04 September 2007, Xamindar wrote:
+</I>&gt;<i> 
+</I>&gt;&gt;<i> Like the N option maybe?  But for me when I
+</I>&gt;&gt;<i> use the N option it just sits there and doesn't print anything out in
+</I>&gt;&gt;<i> the console.  I guess it isn't able to even connect to the gps card.
+</I>&gt;<i> 
+</I>&gt;<i> Are you using the latest SVN version? Did you try starting gpsd like this:
+</I>&gt;<i> 
+</I>&gt;<i> 	./gpsd -n -N -D2 /dev/ttyS0 -S 2947
+</I>Here is what I get when I try that command:
+
+carpc xamindar # gpsd -n -N -D2 /dev/ttyS0 -S 2947
+gpsd: launching (Version 2.34)
+gpsd: listening on port 2947
+gpsd: running with effective group ID 0
+gpsd: running with effective user ID 0
+gpsd: opening GPS data source at '/dev/ttyS0'
+gpsd: speed 4800, 8N1
+gpsd: garmin_gps not active.
+gpsd: gpsd_activate(1): opened GPS (4)
+
+
+Does that indicate anything usefull?  To me it looks like it is not
+working?!?  It doesn't auto-detect the speed.  It normally shows 9600 
+baud if I haven't set it manually with the stty command listed below.
+
+&gt;<i> 
+</I>&gt;<i> Then it should print something. For me it was easier to use gpsd 
+</I>&gt;<i> than 'minicom' or 'cat' even if the interface was properly configured like
+</I>&gt;<i> 
+</I>&gt;<i> 	stty -F /dev/ttyS0 ispeed 4800 ospeed 4800
+</I>What does that do?  Set the port at that speed?
+I plugged the gps into another laptop running windows and after
+installing the ambicom drivers I was able to use their (ambicom) gps
+tools to monitor it and it is working.  But it only works at 4800.
+Anything else and it seems to spew the same &quot;satalite line&quot; uncontrollably.
+&gt;<i> 
+</I>&gt;<i> Maybe some gps need a wakeup.
+</I>
+I wouldn't think it would need some wakeup, it doesn't on the zaurus.
+But I may have a PCMCIA problem.  And I know next to nothing about 
+pcmcia.  The activity light on the gps unit blinks just like it
+normally does when it is active so I know it is doing something.  Thanks
+for you help though.
+&gt;<i> 
+</I>&gt;<i> Regards,
+</I>&gt;<i> Massimo
+</I>&gt;<i> _______________________________________________
+</I>&gt;<i> Gpsd-users mailing list
+</I>&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">Gpsd-users at lists.berlios.de</A>
+</I>&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">https://lists.berlios.de/mailman/listinfo/gpsd-users</A>
+</I>&gt;<i> 
+</I>
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="002869.html">[Gpsd-users] How do I set the baud rate with gpsd?
+</A></li>
+	<LI>Next message: <A HREF="002894.html">[Gpsd-users] How do I set the baud rate with gpsd?
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2876">[ date ]</a>
+              <a href="thread.html#2876">[ thread ]</a>
+              <a href="subject.html#2876">[ subject ]</a>
+              <a href="author.html#2876">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

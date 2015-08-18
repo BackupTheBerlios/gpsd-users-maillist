@@ -1,0 +1,97 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] The state of play
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2006-November/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20The%20state%20of%20play&In-Reply-To=%3C20061106210536.GA6807%40thyrsus.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="002164.html">
+   <LINK REL="Next"  HREF="002166.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] The state of play</H1>
+    <B>Eric S. Raymond</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20The%20state%20of%20play&In-Reply-To=%3C20061106210536.GA6807%40thyrsus.com%3E"
+       TITLE="[Gpsd-users] The state of play">esr at thyrsus.com
+       </A><BR>
+    <I>Mon Nov  6 22:05:36 CET 2006</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="002164.html">[Gpsd-users] Problem with gpsd.c
+</A></li>
+        <LI>Next message: <A HREF="002166.html">[Gpsd-users] [Gpsd-dev] The state of play
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2165">[ date ]</a>
+              <a href="thread.html#2165">[ thread ]</a>
+              <a href="subject.html#2165">[ subject ]</a>
+              <a href="author.html#2165">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>I'm back from my friend Beth Matuszek's wedding in Austin.  The bride
+looked radiant, the groom managed to stumble through his lines, and I
+made the sacred pilgrimage to Rudy's -- which advertises &quot;the worst
+barbeque in Texas&quot; and in so doing LIES THROUGH ITS *TEETH*.  Not to
+be missed if you're visiting.  Meanwhile:
+
+1. The Garmin serial driver is busted.  There is more than one report 
+that it works at -D6, but not with debugging set any lower.  I've suggested
+to Gary that he put some sleeps alongside the debug statements.
+
+2. Chris needs to tweak the E response so it ships &quot;?&quot; for data not present.
+(Chris, please don't forget to fix gpsd(8) while you're at it.)
+
+3. The True North driver is broken, and we seem to be dead-ended on
+finding a fix.  I don't think this bug is a deep one, it just need
+someone with both C skills and their hands on test hardware.  I have
+reached a real human at True North Technologies and we may be able to
+get an eval unit.
+
+4. gpsctrl is still a work in progress.  It can reliably switch SiRF
+binary to NMEA but is having trouble recognizing SiRF NMEA.  This may be
+addressed by the next item.
+
+5. While in Austin, I had a thought about how to make NMEA dialect 
+recognition more reliable.  Some devices, like the Garmin GPS-10, don't
+like being hit with a bunch of probe strings in succession.  So I 
+think I'm going to write logic to allow enqueing the probe strings and
+shipping each one between successive packet receives until the queue
+empties.  That way the GPS will only see one probe before having time to
+respond, and we'll avoid overrunning whatever internal receive buffer
+it uses.
+
+6. Mick Durkin has contributed an impressive tutorial on how to write
+a gpsd driver.  I plan to put it on the project website this evening.
+-- 
+		&lt;a href=&quot;<A HREF="http://www.catb.org/~esr/">http://www.catb.org/~esr/</A>&quot;&gt;Eric S. Raymond&lt;/a&gt;
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="002164.html">[Gpsd-users] Problem with gpsd.c
+</A></li>
+	<LI>Next message: <A HREF="002166.html">[Gpsd-users] [Gpsd-dev] The state of play
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2165">[ date ]</a>
+              <a href="thread.html#2165">[ thread ]</a>
+              <a href="subject.html#2165">[ subject ]</a>
+              <a href="author.html#2165">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

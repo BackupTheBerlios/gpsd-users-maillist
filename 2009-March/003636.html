@@ -1,0 +1,122 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] gpsfake does not seem to like AIS packets
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2009-March/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20gpsfake%20does%20not%20seem%20to%20like%20AIS%20packets&In-Reply-To=%3C800237430903090735q125e352ds612a8785abd990f0%40mail.gmail.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="003634.html">
+   <LINK REL="Next"  HREF="003639.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] gpsfake does not seem to like AIS packets</H1>
+    <B>Eric Fowler</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20gpsfake%20does%20not%20seem%20to%20like%20AIS%20packets&In-Reply-To=%3C800237430903090735q125e352ds612a8785abd990f0%40mail.gmail.com%3E"
+       TITLE="[Gpsd-users] gpsfake does not seem to like AIS packets">eric.fowler at gmail.com
+       </A><BR>
+    <I>Mon Mar  9 15:35:01 CET 2009</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="003634.html">[Gpsd-users] gpsfake does not seem to like AIS packets
+</A></li>
+        <LI>Next message: <A HREF="003639.html">[Gpsd-users] gpsfake does not seem to like AIS packets
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3636">[ date ]</a>
+              <a href="thread.html#3636">[ thread ]</a>
+              <a href="subject.html#3636">[ subject ]</a>
+              <a href="author.html#3636">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Well, guess what ... I need to process AIS strings. So it looks like I will
+be writing some code to handle those AIVDM packets. So I have a few
+questions before I start:
+
+1) Do you know of any code that will take that gobbledegook (e.g.
+'177KQJ5000G?tOK&gt;RA1wUbN0TKH')
+and process it into standard lat/long?
+
+2) Is it more reasonable that this functionality live in the gpsd daemon at
+all, or in a client? The case could be made that the daemon is intended to
+track status of a &quot;device&quot; (boat, car, etc) that has the gps attached to it,
+whereas AIS data can track several vessels at once, as well as static data
+for the vessel (draft, tonnage, etc). This IMO is quite different from what
+gpsd does right now. On the other hand, gpsd can interpret many kinds of
+strings, so perhaps it stands to reason that AIS data is just one more kind
+of string.
+
+Opinions?
+
+Eric
+
+On Sat, Mar 7, 2009 at 11:52 AM, Chris Kuethe &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">chris.kuethe at gmail.com</A>&gt;wrote:
+
+&gt;<i> I think gpsd knows enough about AIS to recognize the !AI header and
+</I>&gt;<i> pass though everything up to the *.. trailer. At least in super-raw
+</I>&gt;<i> mode. No attempt is made to process it internally.
+</I>&gt;<i>
+</I>&gt;<i> CK
+</I>&gt;<i>
+</I>&gt;<i> On Tue, Mar 3, 2009 at 8:46 PM, Eric Fowler &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">eric.fowler at gmail.com</A>&gt; wrote:
+</I>&gt;<i> &gt; I am running gpsfake using a log file full of strings sucked out of an
+</I>&gt;<i> &gt; SR-161 AIS receiver, and it is returning an error:
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; $ gpsfake -p ais_one_line.txt -o&quot;-D2 -V&quot;
+</I>&gt;<i> &gt; gpsfake: unknown packet type, leader '!' (0x21)
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; Here is the line that is choking it:
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; !AIVDM,1,1,,B,177KQJ5000G?tO`K&gt;RA1wUbN0TKH,0*5C
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; Looking at the source for gpsfake, it looks like it will not handle text
+</I>&gt;<i> &gt; like this. Can I expect gpsd to deal with it? Should gpsfake be able to
+</I>&gt;<i> &gt; handle AIS strings?
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; Enquiring minds want to know.
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; Thanks
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; Eric
+</I>&gt;<i> &gt; _______________________________________________
+</I>&gt;<i> &gt; Gpsd-users mailing list
+</I>&gt;<i> &gt; <A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">Gpsd-users at lists.berlios.de</A>
+</I>&gt;<i> &gt; <A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">https://lists.berlios.de/mailman/listinfo/gpsd-users</A>
+</I>&gt;<i> &gt;
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i> --
+</I>&gt;<i> GDB has a 'break' feature; why doesn't it have 'fix' too?
+</I>&gt;<i>
+</I>
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="003634.html">[Gpsd-users] gpsfake does not seem to like AIS packets
+</A></li>
+	<LI>Next message: <A HREF="003639.html">[Gpsd-users] gpsfake does not seem to like AIS packets
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3636">[ date ]</a>
+              <a href="thread.html#3636">[ thread ]</a>
+              <a href="subject.html#3636">[ subject ]</a>
+              <a href="author.html#3636">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

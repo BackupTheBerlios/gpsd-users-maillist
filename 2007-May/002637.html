@@ -1,0 +1,120 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] Python and version 2.34
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2007-May/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Python%20and%20version%202.34&In-Reply-To=%3CPine.LNX.4.64.0705091839200.6093%40birdbird.example.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="002636.html">
+   <LINK REL="Next"  HREF="002639.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] Python and version 2.34</H1>
+    <B>Matt Roberds</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Python%20and%20version%202.34&In-Reply-To=%3CPine.LNX.4.64.0705091839200.6093%40birdbird.example.com%3E"
+       TITLE="[Gpsd-users] Python and version 2.34">mattroberds at cox.net
+       </A><BR>
+    <I>Thu May 10 01:58:01 CEST 2007</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="002636.html">[Gpsd-users] Python and version 2.34
+</A></li>
+        <LI>Next message: <A HREF="002639.html">[Gpsd-users] how to crosscompile gpsd for avr32
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2637">[ date ]</a>
+              <a href="thread.html#2637">[ thread ]</a>
+              <a href="subject.html#2637">[ subject ]</a>
+              <a href="author.html#2637">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>On Wed, 9 May 2007, Peter Buelow wrote:
+&gt;<i> Since I don't care about this bit of the project, is there a way to
+</I>&gt;<i> turn the extension off?
+</I>
+Before doing the make, maybe 'touch -d 2038-01-18 gpspacket.so' ?
+
+You could automate it.  The target in Makefile.in looks like this
+
+gpspacket.so: gpspacket.c libgps.la
+         python setup.py build_ext --inplace
+
+but you could do
+
+gpspacket.so: gpspacket.c libgps.la
+         touch -d 2038-01-18 gpspacket.so
+
+(Also, it's interesting that this target apparently just executes
+whichever python is on your $PATH.  Nearly everything else in the
+Makefile has a configurable directory.  If someone is cross-compiling
+for a target that _does_ have Python, being able to adjust the Python
+directory might be helpful.)
+
+Another way: the configure script, at about line 2550, looks like this
+
+---
+# Check whether --enable-python was given.
+if test &quot;${enable_python+set}&quot; = set; then
+   enableval=$enable_python; try_python=&quot;$enableval&quot;
+else
+   try_python=&quot;yes&quot;
+fi
+
+ac_python=&quot;no&quot;
+if test x&quot;$try_python&quot; = xyes ; then
+# goes on to find Python interpreter, etc
+---
+
+and you could spike it so it doesn't look for Python
+
+---
+# Check whether --enable-python was given.
+if test &quot;${enable_python+set}&quot; = set; then
+   enableval=$enable_python; try_python=&quot;$enableval&quot;
+else
+   try_python=&quot;yes&quot;
+fi
+
+try_python=&quot;no&quot;
+
+ac_python=&quot;no&quot;
+if test x&quot;$try_python&quot; = xyes ; then
+# goes on to find Python interpreter, etc
+---
+
+The right thing is to figure out why --disable-python isn't working.  But
+the above things might help you get moving again.
+
+Matt Roberds
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="002636.html">[Gpsd-users] Python and version 2.34
+</A></li>
+	<LI>Next message: <A HREF="002639.html">[Gpsd-users] how to crosscompile gpsd for avr32
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2637">[ date ]</a>
+              <a href="thread.html#2637">[ thread ]</a>
+              <a href="subject.html#2637">[ subject ]</a>
+              <a href="author.html#2637">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

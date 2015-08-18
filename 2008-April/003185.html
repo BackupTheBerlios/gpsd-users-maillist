@@ -1,0 +1,96 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] Trouble Incorporating gpsd into application
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2008-April/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Trouble%20Incorporating%20gpsd%20into%20application&In-Reply-To=%3C91981b3e0804021139g7b5ed13fv663d141a4af6d9c%40mail.gmail.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="003184.html">
+   <LINK REL="Next"  HREF="003187.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] Trouble Incorporating gpsd into application</H1>
+    <B>Chris Kuethe</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Trouble%20Incorporating%20gpsd%20into%20application&In-Reply-To=%3C91981b3e0804021139g7b5ed13fv663d141a4af6d9c%40mail.gmail.com%3E"
+       TITLE="[Gpsd-users] Trouble Incorporating gpsd into application">chris.kuethe at gmail.com
+       </A><BR>
+    <I>Wed Apr  2 20:39:30 CEST 2008</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="003184.html">[Gpsd-users] Trouble Incorporating gpsd into application
+</A></li>
+        <LI>Next message: <A HREF="003187.html">[Gpsd-users] Help w/gpsd-2.37 and Garmin eTrex Venture HC on Fedora 8
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3185">[ date ]</a>
+              <a href="thread.html#3185">[ thread ]</a>
+              <a href="subject.html#3185">[ subject ]</a>
+              <a href="author.html#3185">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>On Wed, Apr 2, 2008 at 10:37 AM, Tim Palmer &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">ucsdaeroeng02 at yahoo.com</A>&gt; wrote:
+&gt;<i> Good morning all.
+</I>&gt;<i>
+</I>&gt;<i>  I am an undergraduate student at UCSD, and I am looking to use gpsd in
+</I>&gt;<i>  conjunction with a GPS Gumstix for an IMU for a student-built UAV. We want
+</I>&gt;<i>  to use libgpsd and gpsd.h in the IMU code and just use the included
+</I>&gt;<i>  functions to pull data from the GPS when required in the IMU code. I am
+</I>&gt;<i>  having trouble understanding certain parts of the libgpsd documentation
+</I>&gt;<i>  and some of the gpsd.h code.
+</I>&gt;<i>
+</I>&gt;<i>  The specific sections of code I can find out about later. For now, what
+</I>&gt;<i>  functions do i need to include to appropriately poll the GPS? What
+</I>&gt;<i>  arguments do they take, and what do they return? For instance, in
+</I>&gt;<i>  gpsd_init, what value do I assign to the pointer session? And when the
+</I>&gt;<i>  documentation says gpsd_poll() returns a mask, what does that mean? Thanks
+</I>&gt;<i>  for the help.
+</I>
+Have a look at some of the sample clients such as
+<A HREF="http://svn.berlios.de/svnroot/repos/gpsd/trunk/cgpxlogger.c">http://svn.berlios.de/svnroot/repos/gpsd/trunk/cgpxlogger.c</A> - this is
+a fairly simple client program to connect to gpsd and record your
+track. It contains basically the bare minimum required to connect to
+gpsd and process responses.
+
+The mask is just a collection of bits that describe what quantities
+are available or valid in the fix structure. Let's say you only have a
+2D fix. The altitude member of the structure will contain a value ...
+maybe your last altitude, maybe 0.0, maybe NaN... but since it's 2D
+the ALTITUDE_SET mask bit won't be set so you just ignore that member
+entirely - it's full of lies. There are a number of other mask bits
+available (check the headers).
+
+CK
+
+-- 
+GDB has a 'break' feature; why doesn't it have 'fix' too?
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="003184.html">[Gpsd-users] Trouble Incorporating gpsd into application
+</A></li>
+	<LI>Next message: <A HREF="003187.html">[Gpsd-users] Help w/gpsd-2.37 and Garmin eTrex Venture HC on Fedora 8
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3185">[ date ]</a>
+              <a href="thread.html#3185">[ thread ]</a>
+              <a href="subject.html#3185">[ subject ]</a>
+              <a href="author.html#3185">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

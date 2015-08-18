@@ -1,0 +1,83 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] Missing track field
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2011-June/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Missing%20track%20field&In-Reply-To=%3C20110629211725.8686B20C284%40snark.thyrsus.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="005369.html">
+   <LINK REL="Next"  HREF="005367.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] Missing track field</H1>
+    <B>Eric Raymond</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Missing%20track%20field&In-Reply-To=%3C20110629211725.8686B20C284%40snark.thyrsus.com%3E"
+       TITLE="[Gpsd-users] Missing track field">esr at snark.thyrsus.com
+       </A><BR>
+    <I>Wed Jun 29 23:17:25 CEST 2011</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="005369.html">[Gpsd-users] The track value always reads zero
+</A></li>
+        <LI>Next message: <A HREF="005367.html">[Gpsd-users] Missing track field
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#5363">[ date ]</a>
+              <a href="thread.html#5363">[ thread ]</a>
+              <a href="subject.html#5363">[ subject ]</a>
+              <a href="author.html#5363">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Sounds like we might have a cgps-specific bug. If you can mail me a loh
+file containin hg several sentences with a nonzero track angle I can
+test for this.
+
+Actually, you can check it yourself.  Here are the steps:
+
+1. Run your log through gpsdecode; check to see if the output JSON has
+a nonzero track angle.  If it doesn't, the daemon is failing.
+
+2. Next thing to check is whether xgps shows a nonzeroi track angle.
+Run gpsfake on your logfile to repeatedly present JSON from it on
+port 2947, then run xgps.  Likely it will show there; if it doesn't,
+the Python library binding has a bug.
+
+3. Now test the C library binding by running gpxlogger.  If it doesn't
+report the track angle, thesre's a bug in the common C binding.uswd
+by gpxlogger and cgps.
+-- 
+		&lt;a href=&quot;<A HREF="http://www.catb.org/~esr/">http://www.catb.org/~esr/</A>&quot;&gt;Eric S. Raymond&lt;/a&gt;
+
+&quot;Say what you like about my bloody murderous government,&quot; I says,
+&quot;but don't insult me poor bleedin' country.&quot;	-- Edward Abbey
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="005369.html">[Gpsd-users] The track value always reads zero
+</A></li>
+	<LI>Next message: <A HREF="005367.html">[Gpsd-users] Missing track field
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#5363">[ date ]</a>
+              <a href="thread.html#5363">[ thread ]</a>
+              <a href="subject.html#5363">[ subject ]</a>
+              <a href="author.html#5363">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

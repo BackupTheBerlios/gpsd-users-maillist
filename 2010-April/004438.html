@@ -1,0 +1,128 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] Bluetooth issues (was: Re: Preparing for 2.93 point release)
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2010-April/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Bluetooth%20issues%20%28was%3A%20Re%3A%20Preparing%20for%202.93%0A%20point%20release%29&In-Reply-To=%3C20100426203126.26f67bf4%40dragon.localdomain%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="004435.html">
+   <LINK REL="Next"  HREF="004439.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] Bluetooth issues (was: Re: Preparing for 2.93 point release)</H1>
+    <B>Charles Curley</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Bluetooth%20issues%20%28was%3A%20Re%3A%20Preparing%20for%202.93%0A%20point%20release%29&In-Reply-To=%3C20100426203126.26f67bf4%40dragon.localdomain%3E"
+       TITLE="[Gpsd-users] Bluetooth issues (was: Re: Preparing for 2.93 point release)">charlescurley at charlescurley.com
+       </A><BR>
+    <I>Tue Apr 27 04:31:26 CEST 2010</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="004435.html">[Gpsd-users] Bluetooth issues (was: Re: Preparing for 2.93	point release)
+</A></li>
+        <LI>Next message: <A HREF="004439.html">[Gpsd-users] Bluetooth issues (was: Re: Preparing for 2.93	point release)
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#4438">[ date ]</a>
+              <a href="thread.html#4438">[ thread ]</a>
+              <a href="subject.html#4438">[ subject ]</a>
+              <a href="author.html#4438">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>On Mon, 26 Apr 2010 18:11:23 -0400
+Eric Raymond &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">esr at thyrsus.com</A>&gt; wrote:
+
+&gt;<i> Ji&#345;&#237; Techet &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">techet at gmail.com</A>&gt;:
+</I>&gt;<i> &gt; Aren't you doing something special related to the device when WATCH
+</I>&gt;<i> &gt; is sent? It looks like WATCH performs some connection or device
+</I>&gt;<i> &gt; initialization and only when this happens, it starts sending data.
+</I>&gt;<i> &gt; If you do something like that, you should do it also in the case
+</I>&gt;<i> &gt; when some watching clients are connected and a device is detected
+</I>&gt;<i> &gt; and added to the pool - and it seems this doesn't happen right now.
+</I>&gt;<i> 
+</I>&gt;<i> I had code to do just that. It was sitting behind a
+</I>&gt;<i> suspecious-looking guard, which I've removed. You should pull gut
+</I>&gt;<i> HEAD and give it a try.
+</I>
+That seems to have helped. I now have working code.
+
+--------------------------------------------------
+if (strlen (gpsdata-&gt;dev.driver) == 0
+    || strlen (gpsdata-&gt;dev.subtype) == 0 ) {
+  if (gpsLost == true) {
+    sendWatch ();
+    gpsLost = false;
+  } else {
+    printf (&quot;gps lost.\n&quot;);
+    gtk_progress_bar_set_fraction (progress, 0.0);
+    gtk_progress_bar_set_text (progress, &quot;GPS lost!&quot;);
+    gpsLost = true;
+    setColor (&amp;NoFixColor);
+  }
+
+  if (verbose) {
+    strcpy (tmpBuff, &quot;driver = : subtype = &quot;);
+  }
+} else {
+  if (verbose) {
+    (void) snprintf(tmpBuff, sizeof(tmpBuff), &quot;driver = %s: subtype = %s&quot;,
+                    gpsdata-&gt;dev.driver, gpsdata-&gt;dev.subtype);
+  }
+}
+--------------------------------------------------
+
+While I only have one GPS source, I coded for multiple sources as
+well. It is almost the same, except for looking at
+
+gpsdata-&gt;devices.list[0].driver
+
+and
+
+gpsdata-&gt;devices.list[0].subtype
+
+It likely will break when two or more GPS sources are present.
+
+I haven't looked to see if it is possible to have a driver and not a
+subtype or vice versa. The code should still work, but the verbose
+printout would be incorrect.
+
+As Volkswagen used to advertise, &quot;It's ugly but it gets you there&quot;.
+
+-- 
+
+Charles Curley                  /&quot;\    ASCII Ribbon Campaign
+Looking for fine software       \ /    Respect for open standards
+and/or writing?                  X     No HTML/RTF in email
+<A HREF="http://www.charlescurley.com">http://www.charlescurley.com</A>    / \    No M$ Word docs in email
+
+Key fingerprint = CE5C 6645 A45A 64E4 94C0  809C FFF6 4C48 4ECD DFDB
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="004435.html">[Gpsd-users] Bluetooth issues (was: Re: Preparing for 2.93	point release)
+</A></li>
+	<LI>Next message: <A HREF="004439.html">[Gpsd-users] Bluetooth issues (was: Re: Preparing for 2.93	point release)
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#4438">[ date ]</a>
+              <a href="thread.html#4438">[ thread ]</a>
+              <a href="subject.html#4438">[ subject ]</a>
+              <a href="author.html#4438">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

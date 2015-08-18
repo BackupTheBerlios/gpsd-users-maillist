@@ -1,0 +1,76 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] Compiling 2.20
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2005-April/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Compiling%202.20&In-Reply-To=%3C20050401153703.GC28100%40thyrsus.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="000531.html">
+   <LINK REL="Next"  HREF="000533.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] Compiling 2.20</H1>
+    <B>Eric S. Raymond</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Compiling%202.20&In-Reply-To=%3C20050401153703.GC28100%40thyrsus.com%3E"
+       TITLE="[Gpsd-users] Compiling 2.20">esr at thyrsus.com
+       </A><BR>
+    <I>Fri Apr  1 17:37:03 CEST 2005</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="000531.html">[Gpsd-users] Compiling 2.20
+</A></li>
+        <LI>Next message: <A HREF="000533.html">[Gpsd-users] RFC 4041 and gpsd
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#532">[ date ]</a>
+              <a href="thread.html#532">[ thread ]</a>
+              <a href="subject.html#532">[ subject ]</a>
+              <a href="author.html#532">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>John Foster &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">john at jsjf.demon.co.uk</A>&gt;:
+&gt;<i> I get two issues when compiling 2.20:
+</I>&gt;<i> 
+</I>&gt;<i> 1. In gpsd.c at line 887, the declaration of cmds needs to be moved up a line 
+</I>&gt;<i> so that the declaration comes at the start of the block
+</I>&gt;<i> 
+</I>&gt;<i> 2. In drivers.c around line 96, I get a warning that a pointer is being 
+</I>&gt;<i> initialised with an int. It's in a struct initialisation, and comparing it 
+</I>&gt;<i> with the previous initialisation for the same struct, it looks like there's a 
+</I>&gt;<i> missing line, which should (?) be:
+</I>&gt;<i>     NULL,		/* no mode switcher */
+</I>
+Both correct.  GCC is a little too tolerant sometimes.  Fix merged.
+-- 
+		&lt;a href=&quot;<A HREF="http://www.catb.org/~esr/">http://www.catb.org/~esr/</A>&quot;&gt;Eric S. Raymond&lt;/a&gt;
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="000531.html">[Gpsd-users] Compiling 2.20
+</A></li>
+	<LI>Next message: <A HREF="000533.html">[Gpsd-users] RFC 4041 and gpsd
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#532">[ date ]</a>
+              <a href="thread.html#532">[ thread ]</a>
+              <a href="subject.html#532">[ subject ]</a>
+              <a href="author.html#532">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

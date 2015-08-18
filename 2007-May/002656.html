@@ -1,0 +1,144 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] FAQ &amp; queries
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2007-May/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20FAQ%20%26%20queries&In-Reply-To=%3C20070521053244.17932.qmail%40webmail73.rediffmail.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="002655.html">
+   <LINK REL="Next"  HREF="002657.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] FAQ &amp; queries</H1>
+    <B>Ravikant</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20FAQ%20%26%20queries&In-Reply-To=%3C20070521053244.17932.qmail%40webmail73.rediffmail.com%3E"
+       TITLE="[Gpsd-users] FAQ &amp; queries">sravikantk2 at rediffmail.com
+       </A><BR>
+    <I>Mon May 21 07:32:44 CEST 2007</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="002655.html">[Gpsd-users] Making Deluo work with 2.34
+</A></li>
+        <LI>Next message: <A HREF="002657.html">[Gpsd-users] gpsd in conjunction with software GPS
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2656">[ date ]</a>
+              <a href="thread.html#2656">[ thread ]</a>
+              <a href="subject.html#2656">[ subject ]</a>
+              <a href="author.html#2656">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>HI
+i have prepared a general FAQ for  NMEA.
+Can you please verify the answers?
+also i am not able to find answer to 2 questions that i placed at the end..9 and 10.
+and here it is
+
+
+1. does the Gps device send information(message) on request(from the Application)?
+ Or the Gps device is always pumping messages to the receiver.
+
+The GPS almost always outputs data gratuitously. Under rare
+circumstances you may have to poll things from the receiver, or engage
+in some bi-directional protocol. But that's very rare. And you'll know
+when such things are needed...
+
+2. As far as i got to know, type of messages and their sequence is vendor dependent 
+and there is no fix protocol to be followed. Nmea 0183 talks about a lot of messages 
+and each vendor selects a few from that list. Is this correct?
+
+The exact output order (as far as we can tell) is non-standard. There
+are a handful of sentences that make sense and are a good idea for a
+receiver to output. These are generally implemented by all vendors.
+Other sentence types (namely VTG and ZDA) are not as heavily used -
+these types are often either not enabled by default or are totally
+unimplemented in the receiver's firmware.
+
+3. is there any ack of the command?
+
+the ack of the command is vendor specific..
+in case of GARMIN
+a). if there are no errors in the sentance it will be echoed upon receipt. if an error
+is detected, the echoed PGRMI sentence contains the current defualt value. 
+b). all configuration changes take effect after receipt of a valid value except baud 
+rate. baud rate changes takes place on the next powercycle or an extrenal reset.
+in case of FASTRAX
+the command is acknowledged by the device by echo of the smae command along with the 
+checksum added to it. 
+.......................
+Depends. Some receivers just do what you ask of them or fail silently,
+other receivers send an explicit message. SiRF -&gt; $Ack (OK), uBlox -&gt;
+$PUBX (error message), Fastrax -&gt; $PERR (error code)
+
+If there are any specific acknowledgements required, those would be
+documented in the device's hardware and/or binary protocol manual.
+Garmin seems to make the only devices that need a handshake. Most
+other receivers tend to happily spew out navigation data whether or
+not anyone is listening.
+
+
+4. what is the meaning of Data valid / data not valid field.
+&quot;if for some reaosn the fix cant be calculated eg not enough visible satellite
+only the GSv message are sent in non synchronous mode. in synchronous output mode, 
+all non masked messages are sent once per second, regardless if a valid fix is 
+available or not.&quot;
+the device has this information that the current fix is a valid fix or not. so it
+informs the receiver accordingly.
+
+5. what is UTC time stamp of the fix?
+i think that there exists saperate clock in the gps receiver which it tries to synch 
+with that of the satellites. and when gps device clock is synchonised then it behaves 
+just as an atomic clock. the fix produced by the gps device has time stamp named as 
+utc.
+
+6. all commands are specific to maufacturer?
+there exist no standard commands. all the commands to these gps devices are manufacturer 
+specific just communicating efficiently their own hardware.
+
+7. NMEA sentences are complete or fragmented?
+tyhe sentences are complete in the sense that each sentence has its standard start and 
+end sequence. but may be that a single sentence does not contain the complete ifnromation.
+for example in GPGSV message the complete information is fragmented in parts.
+
+8. are there different logical channels for data and contol commnads?
+i think logically at least two channels are there one is for commands and other for data.
+
+9. why there is redundancy of information gll and gga both tell the position fix?   
+
+
+10. if we palce some wrong configuraton data, what is the behaviour of the device..?
+
+waiting for your comments and suggestions..
+regards
+ravi
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="002655.html">[Gpsd-users] Making Deluo work with 2.34
+</A></li>
+	<LI>Next message: <A HREF="002657.html">[Gpsd-users] gpsd in conjunction with software GPS
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2656">[ date ]</a>
+              <a href="thread.html#2656">[ thread ]</a>
+              <a href="subject.html#2656">[ subject ]</a>
+              <a href="author.html#2656">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

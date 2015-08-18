@@ -1,0 +1,95 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] Bidirectional 'raw' communication using libgpsd
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2010-December/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Bidirectional%20%27raw%27%20communication%20using%20libgpsd&In-Reply-To=%3C20101205130232.GA21148%40thyrsus.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="004781.html">
+   <LINK REL="Next"  HREF="004783.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] Bidirectional 'raw' communication using libgpsd</H1>
+    <B>Eric Raymond</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Bidirectional%20%27raw%27%20communication%20using%20libgpsd&In-Reply-To=%3C20101205130232.GA21148%40thyrsus.com%3E"
+       TITLE="[Gpsd-users] Bidirectional 'raw' communication using libgpsd">esr at thyrsus.com
+       </A><BR>
+    <I>Sun Dec  5 14:02:32 CET 2010</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="004781.html">[Gpsd-users] Bidirectional 'raw' communication using libgpsd
+</A></li>
+        <LI>Next message: <A HREF="004783.html">[Gpsd-users] Bidirectional 'raw' communication using libgpsd
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#4782">[ date ]</a>
+              <a href="thread.html#4782">[ thread ]</a>
+              <a href="subject.html#4782">[ subject ]</a>
+              <a href="author.html#4782">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Mario De Weerd &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">m.deweerd at ieee.org</A>&gt;:
+&gt;<i> The only solutions I see are:
+</I>&gt;<i> - Somehow 'kill' gpsd upon BT747 launch;
+</I>&gt;<i> - Uninstall gpsd;
+</I>&gt;<i> - Integrate an interface to gps in BT747.
+</I>
+That's pretty much the size of it.  I wasn't aware of BT747, but from you 
+and the project website tell me it and gpsd are just plain mutually
+incompatible.  The whole premise of gpsd is that gpsd, *and nothing else*,
+manages the device.
+
+&gt;<i> It looks like some kind of virtual device is used - is it possible to
+</I>&gt;<i> connect to that?
+</I>
+I don't know what you mean by &quot;virtual device&quot; here.
+
+&gt;<i> BT747 needs to be able to write/read the serial data to/from the GPS device.
+</I>&gt;<i>  Some sample usage of libgpsd would be usefull.  It surely can be wrapped in
+</I>&gt;<i> a native library for java.
+</I>
+Posssibly, but you still wouldn't be able to run gpsd and BT747 on the
+same serial port.
+
+&gt;<i> The highlevel protocol does not allow bidirectional communication
+</I>&gt;<i> apparently.
+</I>
+Yes.  There are security reasons for this; allowing unrestricted sends
+to the device would enable DOS attacks against applications using it.
+
+&gt;<i> What are the GPSD expert suggestions?
+</I>
+Hack BT747 to be able to use gpsd as the device manager.  
+-- 
+		&lt;a href=&quot;<A HREF="http://www.catb.org/~esr/">http://www.catb.org/~esr/</A>&quot;&gt;Eric S. Raymond&lt;/a&gt;
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="004781.html">[Gpsd-users] Bidirectional 'raw' communication using libgpsd
+</A></li>
+	<LI>Next message: <A HREF="004783.html">[Gpsd-users] Bidirectional 'raw' communication using libgpsd
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#4782">[ date ]</a>
+              <a href="thread.html#4782">[ thread ]</a>
+              <a href="subject.html#4782">[ subject ]</a>
+              <a href="author.html#4782">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

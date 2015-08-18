@@ -1,0 +1,99 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] PPS data from gpsd on OpenBSD??
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2009-November/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20PPS%20data%20from%20gpsd%20on%20OpenBSD%3F%3F&In-Reply-To=%3C4B0DBB9F.9000206%40rde-richw-3.stanford.edu%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="004081.html">
+   <LINK REL="Next"  HREF="004083.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] PPS data from gpsd on OpenBSD??</H1>
+    <B>Rich Wales</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20PPS%20data%20from%20gpsd%20on%20OpenBSD%3F%3F&In-Reply-To=%3C4B0DBB9F.9000206%40rde-richw-3.stanford.edu%3E"
+       TITLE="[Gpsd-users] PPS data from gpsd on OpenBSD??">richw at richw.org
+       </A><BR>
+    <I>Thu Nov 26 00:19:59 CET 2009</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="004081.html">[Gpsd-users] Problem compiling gpsd from SVN
+</A></li>
+        <LI>Next message: <A HREF="004083.html">[Gpsd-users] PPS data from gpsd on OpenBSD??
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#4082">[ date ]</a>
+              <a href="thread.html#4082">[ thread ]</a>
+              <a href="subject.html#4082">[ subject ]</a>
+              <a href="author.html#4082">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>I'm trying to get gpsd to report PPS-corrected time stamps (via shared
+memory) to ntpd, on an OpenBSD 4.6 system, using &quot;ldattach&quot; to invoke
+the &quot;nmea&quot; line discipline (see OpenBSD's &quot;ldattach&quot; manual page if you
+aren't sure what this means) on a serial device to which I've attached a
+Garmin 18x LVC GPS unit.
+
+I'm using the current gpsd sources from SVN (revision 6600).
+
+I can get gpsd to read the GPS and report its regular timestamps (not
+corrected for PPS) via shared memory -- but the second set of timestamps
+(which *are* corrected for PPS) are not being communicated to ntpd.
+
+I've tried running gpsd with logging (-D 5), and none of the PPS-related
+log messages in ntpshm.c or libgpsd_core.c are being output.
+
+As I examine the source code, it appears that the PPS-corrected timestamp
+data is written to shared memory via ntpshm_pps() in ntpshm.c -- which is
+called at only one place, in gpsd_ppsmonitor() in libgpsd_core.c.  But
+gpsd_ppsmonitor() is conditionally defined to be included only if *both*
+PPS_ENABLE *and* TIOCMIWAIT are defined.
+
+PPS_ENABLE is defined in gpsd_config.h, but TIOCMIWAIT appears to be a
+Linux-specific thing that doesn't exist in OpenBSD.
+
+I had been under the impression that PPS data from a reference clock
+could be processed in OpenBSD, via a combination of &quot;ldattach&quot;, &quot;gpsd&quot;,
+and &quot;ntpd&quot;.  Did I misunderstand?  Am I missing some crucial piece?
+
+I've verified that my Garmin GPS unit is configured to emit PPS pulses,
+and I've also verified (on FreeBSD and Linux) that I've correctly wired
+up the GPS to send the PPS signals via the carrier line of the serial
+port.  I want to get this working in OpenBSD, if possible, because I'm
+looking for a software platform that will support PPS out of the box,
+without requiring a custom-built kernel -- and this appears to be a
+realistic possibility in OpenBSD, but not Linux or FreeBSD.
+
+Rich Wales
+<A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">richw at richw.org</A>
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="004081.html">[Gpsd-users] Problem compiling gpsd from SVN
+</A></li>
+	<LI>Next message: <A HREF="004083.html">[Gpsd-users] PPS data from gpsd on OpenBSD??
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#4082">[ date ]</a>
+              <a href="thread.html#4082">[ thread ]</a>
+              <a href="subject.html#4082">[ subject ]</a>
+              <a href="author.html#4082">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

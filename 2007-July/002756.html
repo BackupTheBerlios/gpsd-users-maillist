@@ -1,0 +1,137 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] Simple libgps program
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2007-July/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Simple%20libgps%20program&In-Reply-To=%3C67736170707120403j6c698375g84670d366ecfe8f%40mail.gmail.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="002751.html">
+   <LINK REL="Next"  HREF="002757.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] Simple libgps program</H1>
+    <B>Eoin Murphy</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Simple%20libgps%20program&In-Reply-To=%3C67736170707120403j6c698375g84670d366ecfe8f%40mail.gmail.com%3E"
+       TITLE="[Gpsd-users] Simple libgps program">eoinomurchu at gmail.com
+       </A><BR>
+    <I>Thu Jul 12 13:03:13 CEST 2007</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="002751.html">[Gpsd-users] gps.py - how to retrieve data from the gps?
+</A></li>
+        <LI>Next message: <A HREF="002757.html">[Gpsd-users] Simple libgps program
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2756">[ date ]</a>
+              <a href="thread.html#2756">[ thread ]</a>
+              <a href="subject.html#2756">[ subject ]</a>
+              <a href="author.html#2756">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi all,
+
+I'm only starting out in the world of GPS and am kind of stuck. I was hoping
+maybe you could help me out.
+
+I'm using gumstix &lt;<A HREF="http://www.gumstix.com">http://www.gumstix.com</A>&gt; path/way finding project. I'm
+trying to use gpsd to talk to my gps. This seems to work
+out ok. If I telnet into the gumstix on port 2947 I can query gpsd and get
+my position. But I'm trying to use
+libgps, to no avail.
+
+I have a really simple program ( in c ) that should just connect to the gpsd
+server and continually poll the server.
+But it doesn't work.
+
+I seem to get a segmentation fault when I call set_raw_hook().
+
+Does anybody know whats up, or have any experience using libgps and c.
+
+Sample program: gpsd_test.c
+
+#include &lt;stdio.h&gt;
+#include &lt;stdlib.h&gt;
+#include &lt;string.h&gt;
+#include &lt;sys/types.h&gt;
+
+#include &lt;gps.h&gt;
+
+static struct gps_data_t * GPS;
+
+void gps_handler(struct gps_data_t *sent, char *buf, size_t len, int level)
+{
+
+printf(&quot;GPSD: %s\n&quot;, buf);
+fflush(stdout);
+
+}
+
+int main()
+{
+
+char server[16];
+char port[5];
+strcpy(server, &quot;127.0.0.1\0&quot;);
+strcpy(port, &quot;2947\0&quot;);
+
+printf(&quot;Opening GPSd....\n&quot;);
+GPS = gps_open(server, port);
+
+printf(&quot;Setting raw hook?....\n&quot;);
+gps_set_raw_hook(GPS, gps_handler);
+
+printf(&quot;Querying: w....\n&quot;);
+gps_query(GPS, &quot;w\n&quot;);
+
+printf(&quot;About to poll....\n&quot;);
+while (1)
+
+gps_poll(GPS);
+
+return 0;
+
+}
+
+Much appreciated,
+Cheers,
+
+-- 
+Eoin Murphy
+
+p: (+353) 087 9669 379
+e: <A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">eoinomurchu at gmail.com</A>
+w: <A HREF="http://www.eoinmurphy.org">http://www.eoinmurphy.org</A>
+
+ODCSSS 2007 &lt;<A HREF="http://www.odcsss.ie">http://www.odcsss.ie</A>&gt;
+Netsoc UCD &lt;<A HREF="http://www.netsoc.com">http://www.netsoc.com</A>&gt;
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="002751.html">[Gpsd-users] gps.py - how to retrieve data from the gps?
+</A></li>
+	<LI>Next message: <A HREF="002757.html">[Gpsd-users] Simple libgps program
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2756">[ date ]</a>
+              <a href="thread.html#2756">[ thread ]</a>
+              <a href="subject.html#2756">[ subject ]</a>
+              <a href="author.html#2756">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

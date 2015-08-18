@@ -1,0 +1,113 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] gpsd, kismet, gpsdrive
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2005-July/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20gpsd%2C%20kismet%2C%20gpsdrive&In-Reply-To=%3C1121078290.9582.234.camel%40mtack.xs4all.nl%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="000833.html">
+   <LINK REL="Next"  HREF="000836.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] gpsd, kismet, gpsdrive</H1>
+    <B>Aart Koelewijn</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20gpsd%2C%20kismet%2C%20gpsdrive&In-Reply-To=%3C1121078290.9582.234.camel%40mtack.xs4all.nl%3E"
+       TITLE="[Gpsd-users] gpsd, kismet, gpsdrive">aart at mtack.xs4all.nl
+       </A><BR>
+    <I>Mon Jul 11 12:38:09 CEST 2005</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="000833.html">[ gpsdrive ] Re: [Gpsd-users] gpsd, kismet, gpsdrive
+</A></li>
+        <LI>Next message: <A HREF="000836.html">[Gpsd-users] Microsoft Office 2003 - wholesale price
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#834">[ date ]</a>
+              <a href="thread.html#834">[ thread ]</a>
+              <a href="subject.html#834">[ subject ]</a>
+              <a href="author.html#834">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Op ma, 11-07-2005 te 08:51 +1200, schreef Craig FALCONER:
+&gt;<i> Gary - I can't help you with your problem, but I can tell you why this
+</I>&gt;<i> happens.
+</I>
+Well, it was my problem really
+
+&gt;<i> The GPS has an &quot;almanac&quot; inside it, so it can calculate the correct location
+</I>&gt;<i> of satellites in the near future.  When you start the GPS it will listen for
+</I>&gt;<i> the satellites that should be visible [1].
+</I>&gt;<i> 
+</I>&gt;<i> Since the GPS is inside or in another location with poor coverage, it can't
+</I>&gt;<i> find the satellites it is expecting.  So after a while (90 seconds for mine)
+</I>&gt;<i> the GPS will do a lengthy recalculate of the perceived out of date almanac.
+</I>&gt;<i> On my techway POS USB GPS, this takes 3.5 to 4.5 hours!
+</I>&gt;<i> 
+</I>&gt;<i> So I've learned to only connect the GPS unit once outside. Hanging the GPS
+</I>&gt;<i> out the window gave marginal results.
+</I>
+With my Garmin GPS II, if it can not get a valid position it will ask
+after some time if I want to re-init, a kind of cold start which takes a
+long time, or want to chose a country from a list, a somewhat less cold
+start which does not take as long, or just go on acquiring data from the
+satellites. I always choose this last possibility, and then it will find
+a position. It can take 5 minutes or 3 hours, but it will not
+recalculate the almanac.
+
+Where I use my gps indoors I might have a good reception for hours,
+sometimes up to 6 satellites, but sometimes there is reception of only 1
+or 2 satellites, which also can take hours. It just depends on ???
+
+I now suspect the main problem is in the hotstart script of the debian
+package of gpsd 2.28. If I do &quot;ps aux | grep gpsd&quot; some time after
+plugging in the gps I still see the hotplug script running and for
+instance xgps will hang during start up. If I then do &quot;killall gpsd&quot; and
+then start gpsd again xgps will work, kismet will work and most of the
+times gpsdrive will work too, allthough there seems to be a problem
+there too. Xpgs and Kismet might work, with a report of 4 satellites,
+and gpsdrive might report 0/0 satellites. I then will just have to stop
+everything again, start gpsd and kismet again, and then gpsdrive might
+work.
+
+The hotplug scripts are in python and I have never done any programming
+in python, but I will dive into it and maybe find where things go wrong.
+I wrote an earlier messages to the gpsd-users list, subjest &quot;Debian gpsd
+packages&quot; where I reported a problem with the gpsd.hotplug script.
+
+BTW is there a way to get some debug output from the gpsd.hotplug
+script?
+
+Aart
+
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="000833.html">[ gpsdrive ] Re: [Gpsd-users] gpsd, kismet, gpsdrive
+</A></li>
+	<LI>Next message: <A HREF="000836.html">[Gpsd-users] Microsoft Office 2003 - wholesale price
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#834">[ date ]</a>
+              <a href="thread.html#834">[ thread ]</a>
+              <a href="subject.html#834">[ subject ]</a>
+              <a href="author.html#834">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

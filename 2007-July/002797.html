@@ -1,0 +1,160 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] gpsd baud rate hunts with bluetooth on fc6
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2007-July/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20gpsd%20baud%20rate%20hunts%20with%20bluetooth%20on%20fc6&In-Reply-To=%3C11839101.post%40talk.nabble.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="002793.html">
+   <LINK REL="Next"  HREF="002798.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] gpsd baud rate hunts with bluetooth on fc6</H1>
+    <B>colesen</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20gpsd%20baud%20rate%20hunts%20with%20bluetooth%20on%20fc6&In-Reply-To=%3C11839101.post%40talk.nabble.com%3E"
+       TITLE="[Gpsd-users] gpsd baud rate hunts with bluetooth on fc6">colesen at pacbell.net
+       </A><BR>
+    <I>Sun Jul 29 22:35:02 CEST 2007</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="002793.html">[Gpsd-users] Issue with 'D' command
+</A></li>
+        <LI>Next message: <A HREF="002798.html">[Gpsd-users] gpsd baud rate hunts with bluetooth on fc6
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2797">[ date ]</a>
+              <a href="thread.html#2797">[ thread ]</a>
+              <a href="subject.html#2797">[ subject ]</a>
+              <a href="author.html#2797">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>
+How I worked around the GPSD baud rate hunting problem. Perhaps usefull to
+somebody experiencing the same problem.
+
+No new GPSD has been released since my initial post so I tried again the
+other day to find a fix/workaround for the problem. I got the GPS-500 with
+Microsofts Street and Trips 2007 for Windows and the iGPS II Bluetooth
+cradle as an accessory. That program will work only with NMEA at 4800 baud
+and stopped working with the GPS-500 via BT as well as USB after using the
+GPS-500 with GPSD. GPSD on Linux did not work with GPS-500 via BT and also
+stopped working via USB. All that GPSD would do is baud rate hunt. Leaving
+the GPS-500 useless to me.
+After much experimentation I learned that GPSD (the default build) on its
+own actually writes settings to the GPS-500 switching it to binary mode.
+Surprise! So I wanted somehow to switch the GPS-500 back to NMEA at 4800 to
+allow it to also work with S&amp;T. GPSD does support setting the GPS-500 to
+NMEA mode on demand but did not work so I couldn't use it for that. Chicken
+egg thing. And S&amp;T does not support writing to the gps device. Luckily a
+program named SiRFDemo exist (and it's free). Using that I was able to
+switch the GPS-500 back to NMEA at 4800 baud. I also discovered that GPSD
+supports NOT writing to the GPS-500 but using only a build option. So I
+rebuilt GPSD for that option using these commands
+
+./configure --disable-sirf --disable-tsip --disable-fv18 --disable-tripmate
+--disable-earthmate --disable-garmin --disable-evermore
+--enable-fixed-port-speed=4800 --enable-dbus --disable-reconfigure
+make
+make install
+
+With that I have now gotten MS S&amp;T on Windows and GPSD on Linux to work with
+the GPS-500 via USB as well as BT and so far everytime.
+
+Ought GPSD support &quot;--disable-reconfigure&quot; also as a run-time option?
+
+
+colesen wrote:
+&gt;<i> 
+</I>&gt;<i> I saw that a new release of gpsd is in the works and I'm looking forward
+</I>&gt;<i> to try it hoping that it might solve the baud rate hunting problem that
+</I>&gt;<i> I'm having.
+</I>&gt;<i> What I have is the Pharos GPS-500 in its bluetooth dock and the Dell E1505
+</I>&gt;<i> laptop with built-in bluetooth running fc6 fully up2date.
+</I>&gt;<i> When I run gpsd from a terminal like this
+</I>&gt;<i> # /usr/sbin/gpsd -ND2 /dev/rfcomm0
+</I>&gt;<i> then I get this
+</I>&gt;<i> gpsd: launching (Version 2.34)
+</I>&gt;<i> gpsd: listening on port gpsd
+</I>&gt;<i> gpsd: successfully connected to the DBUS system bus
+</I>&gt;<i> gpsd: running with effective group ID 0
+</I>&gt;<i> gpsd: running with effective user ID 0
+</I>&gt;<i> gpsd: opening GPS data source at '/dev/rfcomm0'
+</I>&gt;<i> gpsd: speed 9600, 8N1
+</I>&gt;<i> gpsd: garmin_gps not active.
+</I>&gt;<i> gpsd: gpsd_activate(0): opened GPS (5)
+</I>&gt;<i> gpsd: speed 4800, 8N1
+</I>&gt;<i> gpsd: speed 9600, 8N1
+</I>&gt;<i> gpsd: speed 19200, 8N1
+</I>&gt;<i> gpsd: speed 38400, 8N1
+</I>&gt;<i> gpsd: speed 57600, 8N1
+</I>&gt;<i> gpsd: speed 0, 7N2
+</I>&gt;<i> gpsd: speed 4800, 7N2
+</I>&gt;<i> gpsd: speed 9600, 7N2
+</I>&gt;<i> gpsd: speed 19200, 7N2
+</I>&gt;<i> gpsd: speed 38400, 7N2
+</I>&gt;<i> gpsd: speed 57600, 7N2
+</I>&gt;<i> gpsd: packet sniffer failed to sync up
+</I>&gt;<i> gpsd: closing GPS=/dev/rfcomm0 (5)
+</I>&gt;<i> 
+</I>&gt;<i> The problem started after a regular up2date incl. a new kernel release not
+</I>&gt;<i> long ago. I've lost track of which exact kernel release that was. But
+</I>&gt;<i> since then and incl the latest kernel 2.6.20-1.2944.fc6 I had this
+</I>&gt;<i> problem. Also, there is no problem if connected directly via USB i.e.
+</I>&gt;<i> without bluetooth.
+</I>&gt;<i> hcidump shows connection and lots of traffic. I don't understand the
+</I>&gt;<i> messages but none of them appear as errors to me. In particular I think
+</I>&gt;<i> this excerpt
+</I>&gt;<i> 
+</I>&gt;&gt;<i> ACL data: handle 12 flags 0x02 dlen 16
+</I>&gt;<i>     L2CAP(s): Connect rsp: dcid 0x0040 scid 0x0040 result 1 status 2
+</I>&gt;<i>       Connection pending - Authorization pending
+</I>&gt;&gt;<i> HCI Event: Remote Name Req Complete (0x07) plen 255
+</I>&gt;&gt;<i> HCI Event: Link Key Request (0x17) plen 6
+</I>&gt;<i> &lt; HCI Command: Link Key Request Reply (0x01|0x000b) plen 22
+</I>&gt;&gt;<i> HCI Event: Command Complete (0x0e) plen 10
+</I>&gt;&gt;<i> ACL data: handle 12 flags 0x02 dlen 16
+</I>&gt;<i>     L2CAP(s): Connect rsp: dcid 0x0040 scid 0x0040 result 0 status 0
+</I>&gt;<i>       Connection successful
+</I>&gt;<i> 
+</I>&gt;<i> shows that authentication is not a problem.
+</I>&gt;<i> I've tried reinstalling the bluez and gpsd rpms but to no avail. For what
+</I>&gt;<i> it is worth I also have a bluetooth mouse and that works. But I've had
+</I>&gt;<i> that turned off while running gpsd.
+</I>&gt;<i> Has anyone else experienced this problem? Anyone know how to fix it?  
+</I>&gt;<i> 
+</I>
+-- 
+View this message in context: <A HREF="http://www.nabble.com/gpsd-baud-rate-hunts-with-bluetooth-on-fc6-tf3674008.html#a11839101">http://www.nabble.com/gpsd-baud-rate-hunts-with-bluetooth-on-fc6-tf3674008.html#a11839101</A>
+Sent from the GPSd - Users mailing list archive at Nabble.com.
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="002793.html">[Gpsd-users] Issue with 'D' command
+</A></li>
+	<LI>Next message: <A HREF="002798.html">[Gpsd-users] gpsd baud rate hunts with bluetooth on fc6
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2797">[ date ]</a>
+              <a href="thread.html#2797">[ thread ]</a>
+              <a href="subject.html#2797">[ subject ]</a>
+              <a href="author.html#2797">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

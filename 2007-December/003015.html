@@ -1,0 +1,79 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] Release of 2.35 is imminent (question	on	1ppshandling)
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2007-December/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Release%20of%202.35%20is%20imminent%20%28question%0A%09on%091ppshandling%29&In-Reply-To=%3C20071217221029.GB22835%40thyrsus.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="003012.html">
+   <LINK REL="Next"  HREF="003013.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] Release of 2.35 is imminent (question	on	1ppshandling)</H1>
+    <B>Eric S. Raymond</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Release%20of%202.35%20is%20imminent%20%28question%0A%09on%091ppshandling%29&In-Reply-To=%3C20071217221029.GB22835%40thyrsus.com%3E"
+       TITLE="[Gpsd-users] Release of 2.35 is imminent (question	on	1ppshandling)">esr at thyrsus.com
+       </A><BR>
+    <I>Mon Dec 17 23:10:29 CET 2007</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="003012.html">[Gpsd-users] Release of 2.35 is imminent (question on	1ppshandling)
+</A></li>
+        <LI>Next message: <A HREF="003013.html">[Gpsd-users] gpsfake crash: &quot;unexpected keyword argument 'port'&quot;
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3015">[ date ]</a>
+              <a href="thread.html#3015">[ thread ]</a>
+              <a href="subject.html#3015">[ subject ]</a>
+              <a href="author.html#3015">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Michael St. Laurent &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">mikes at hartwellcorp.com</A>&gt;:
+&gt;<i> I hacked the code of the current release to ignore the trailing edge and
+</I>&gt;<i> it's ugly (code wise) but does work.  If a configuration option were
+</I>&gt;<i> available that would allow you to specify which edge should be used it
+</I>&gt;<i> would be great.
+</I>
+One of the design objectives of the project is not to have configuration
+options -- I consider it part of my job to kick, scream, and bitch whenever
+anyone proposes one.  The reason is simple: we're trying to make gpsd 
+totally self-configuring, zero-administration.
+
+The way to handle this case would be to automatically switch to ignoring the
+trailing edge whenever the daemon sees something in the GPSClock's output
+that identifies this particular device.  Is there some proprietary sentence
+it emits that we can recognize?  Alternatively, is there some probe we can
+send it that would elicit a recognizable device type ID?
+-- 
+		&lt;a href=&quot;<A HREF="http://www.catb.org/~esr/">http://www.catb.org/~esr/</A>&quot;&gt;Eric S. Raymond&lt;/a&gt;
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="003012.html">[Gpsd-users] Release of 2.35 is imminent (question on	1ppshandling)
+</A></li>
+	<LI>Next message: <A HREF="003013.html">[Gpsd-users] gpsfake crash: &quot;unexpected keyword argument 'port'&quot;
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3015">[ date ]</a>
+              <a href="thread.html#3015">[ thread ]</a>
+              <a href="subject.html#3015">[ subject ]</a>
+              <a href="author.html#3015">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

@@ -1,0 +1,110 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] [Gpsd-dev] Have we cut processor utilization	any?
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2006-July/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20%5BGpsd-dev%5D%20Have%20we%20cut%20processor%20utilization%09any%3F&In-Reply-To=%3C20060726190810.GA31311%40thyrsus.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="001790.html">
+   <LINK REL="Next"  HREF="001793.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] [Gpsd-dev] Have we cut processor utilization	any?</H1>
+    <B>Eric S. Raymond</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20%5BGpsd-dev%5D%20Have%20we%20cut%20processor%20utilization%09any%3F&In-Reply-To=%3C20060726190810.GA31311%40thyrsus.com%3E"
+       TITLE="[Gpsd-users] [Gpsd-dev] Have we cut processor utilization	any?">esr at thyrsus.com
+       </A><BR>
+    <I>Wed Jul 26 21:08:10 CEST 2006</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="001790.html">[Gpsd-users] [Gpsd-dev] Have we cut processor utilization	any?
+</A></li>
+        <LI>Next message: <A HREF="001793.html">[Gpsd-users] [Gpsd-dev] Have we cut processor utilization	any?
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1791">[ date ]</a>
+              <a href="thread.html#1791">[ thread ]</a>
+              <a href="subject.html#1791">[ subject ]</a>
+              <a href="author.html#1791">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Marshall Crocker &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">crocker at cavs.msstate.edu</A>&gt;:
+&gt;<i> I got some time to test today. I built svn revision 3558 and loaded it
+</I>&gt;<i> onto my embedded system. Processor utilization was between 20% and 30%
+</I>&gt;<i> with a single client connected with watcher mode on.  This is a definite
+</I>&gt;<i> improvement over the stock gpsd code that was running from  60% to over
+</I>&gt;<i> 80%.
+</I>
+That's good news!
+ 
+&gt;<i> Now the bad news.  Gpsd was very unstable.  I could telnet to gpsd,
+</I>&gt;<i> exit telnet, and gpsd would quit working.  I ran gpsd with debug options
+</I>&gt;<i> and got the following output:
+</I>&gt;<i> 
+</I>&gt;<i> /initrd/tmp/var.d/log/vcom $ gpsd -n -N -D 1 /dev/ttyS2
+</I>&gt;<i> gpsd: launching (Version 2.33)
+</I>&gt;<i> gpsd: listening on port 2947
+</I>&gt;<i> gpsd: opening GPS data source at '/dev/ttyS2'
+</I>&gt;<i> gpsd: speed 4800, 8N1
+</I>&gt;<i> gpsd: gpsd_activate: opened GPS (5)
+</I>&gt;<i> gpsd: GPGSV field 3 value of 11 != actual count 7
+</I>&gt;<i> gpsd: found $PGRMC.
+</I>&gt;<i> gpsd: found $PGRMC.
+</I>&gt;<i> gpsd: found $PGRMC.
+</I>&gt;<i> gpsd: found $PGRMC.
+</I>&gt;<i> gpsd: &lt;= client(8): w+
+</I>&gt;<i> gpsd: User requires 2, channel type is 0
+</I>&gt;<i> gpsd: client(8): channel 5 already active.
+</I>&gt;<i> gpsd: &lt;= client(8): w+gpsd: client(8): channel 5 already active
+</I>&gt;<i> gpsd: client(8): channel 5 already active.
+</I>&gt;<i> gpsd: client(8): channel 5 already active.
+</I>&gt;<i> 
+</I>&gt;<i> 
+</I>&gt;<i> The &quot;gpsd: client(8): channel 5 already active.&quot; message would repeat
+</I>&gt;<i> until I closed telnet at which point it would stop and then gpsd quit
+</I>&gt;<i> responding.  I also ran with -D 2 and got the same output and even the
+</I>&gt;<i> raw gps data stopped after a client exited.
+</I>
+Fortunately, I tripped over this problem yesterday and have already
+fixed it.  It was due to a bug in the code I wrote for tracking 
+maximum fd in use.  Try pulling svn head (currently 3364); you
+should find the lockups are gone.
+
+Next, you ought to try profiling to locate the remaining hot spots.
+
+You might get some use out of Eivind Tagsetsh's patch, now merged,
+that allows you to constrain the maximum number of devices and the
+largest session fd.
+-- 
+		&lt;a href=&quot;<A HREF="http://www.catb.org/~esr/">http://www.catb.org/~esr/</A>&quot;&gt;Eric S. Raymond&lt;/a&gt;
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="001790.html">[Gpsd-users] [Gpsd-dev] Have we cut processor utilization	any?
+</A></li>
+	<LI>Next message: <A HREF="001793.html">[Gpsd-users] [Gpsd-dev] Have we cut processor utilization	any?
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1791">[ date ]</a>
+              <a href="thread.html#1791">[ thread ]</a>
+              <a href="subject.html#1791">[ subject ]</a>
+              <a href="author.html#1791">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

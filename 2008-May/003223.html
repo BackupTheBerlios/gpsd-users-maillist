@@ -1,0 +1,118 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] problem with NTRIP, authentication
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2008-May/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20problem%20with%20NTRIP%2C%20authentication&In-Reply-To=%3C91981b3e0805071432j30a6d921rd7889c0d741df0ca%40mail.gmail.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="003227.html">
+   <LINK REL="Next"  HREF="003228.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] problem with NTRIP, authentication</H1>
+    <B>Chris Kuethe</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20problem%20with%20NTRIP%2C%20authentication&In-Reply-To=%3C91981b3e0805071432j30a6d921rd7889c0d741df0ca%40mail.gmail.com%3E"
+       TITLE="[Gpsd-users] problem with NTRIP, authentication">chris.kuethe at gmail.com
+       </A><BR>
+    <I>Wed May  7 23:32:43 CEST 2008</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="003227.html">[Gpsd-users] problem with NTRIP, authentication
+</A></li>
+        <LI>Next message: <A HREF="003228.html">[Gpsd-users] problem with NTRIP, authentication
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3223">[ date ]</a>
+              <a href="thread.html#3223">[ thread ]</a>
+              <a href="subject.html#3223">[ subject ]</a>
+              <a href="author.html#3223">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>On Wed, May 7, 2008 at 11:54 AM, Zanardi &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">gasperotti at supereva.it</A>&gt; wrote:
+&gt;<i>  If I understood correctly with my &quot;GPS Garmin&quot; is impossible to use DGPS!
+</I>
+I think you probably can't use external DGPS sources with this
+receiver. Check your receiver documentation to see if it supports
+external RTCM input. I had an old etrex that could actually take RTCM.
+If you're in north america you already get DGPS from WAAS. I'm going
+to guess (based on your email) that you're in Italy, thus you should
+be able to get EGNOS.
+
+I just checked <A HREF="http://www.egnos-pro.esa.int/IMAGEtech/imagetech_realtime_html.html">http://www.egnos-pro.esa.int/IMAGEtech/imagetech_realtime_html.html</A>
+ and I'm kind of shocked that EGNOS is *still* in test mode. Couldn't
+they have just bought a some WAAS gear now that the FAA has it all
+figured out, and leased some transponder time from InMarSat. Oh,
+right.... Not-Invented-Here syndrome. Yes, that's my completely
+unqualified opinion.
+
+&gt;<i>  How can I resolve this?
+</I>&gt;<i>  What kind of GPS can use with GPSD and NTRIP? Which GPS work with DGPS
+</I>&gt;<i>  (NTRIP)?
+</I>
+With a few exceptions most receivers output position data on one port
+and accept corrections on another. I think you'd be hard-pressed to
+find a *chip* that doesn't accept RTCM input somehow. The big problem
+is how to get the RTCM into the chip. Many OEM module vendors don't
+hook up secondary ports (globalsat), or there's some other software
+layer in the way (garmin).
+
+SiRF chips have up to 4 ports and only one protocol (NMEA, SIRF, RTCM,
+USER) can be active on a port at a given time. uBlox chips can run
+multiple protocols (NMEA, UBX, RTCM, USER) on their multiple ports -
+simultaneously. Motorola OnCore speaks NMEA or Binary on port1 only,
+and receives RTCM on port2 only.
+
+&gt;<i>  Thanks, I hope you can help me, is very important for me. I am currently
+</I>&gt;<i>  working on a project on DGPS and I hope I can use GPSD.
+</I>
+One thing you need to consider is the data flow. Currently GPSD can't
+write NTRIP/DGPS/RTCM data back to a receiver. You'd have to do some
+tricks with gpspipe to read the corrections and feed them to the com
+port where the receiver's secondary input is connected. ick.
+
+I think GPSD's fairly weak NTRIP support is strongly correlated with
+the lack of motivation. Motivation is influenced by having hardware to
+test with, having access to an NTRIP stream, and having a
+local/relevant NTRIP server. In my case, i've got quite good coverage
+from WAAS and I don't know of any nearby reference stations, and no
+one's donated me any receivers that can generate RTCM corrections.
+
+Alas, correction-generating receivers are pretty expensive, and I've
+already sunk thousands of dollars in to buying hardware - my gps toy
+budget is tapped out for a while.
+
+CK
+
+-- 
+GDB has a 'break' feature; why doesn't it have 'fix' too?
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="003227.html">[Gpsd-users] problem with NTRIP, authentication
+</A></li>
+	<LI>Next message: <A HREF="003228.html">[Gpsd-users] problem with NTRIP, authentication
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3223">[ date ]</a>
+              <a href="thread.html#3223">[ thread ]</a>
+              <a href="subject.html#3223">[ subject ]</a>
+              <a href="author.html#3223">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

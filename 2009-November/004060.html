@@ -1,0 +1,116 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] Ntp Problems
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2009-November/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Ntp%20Problems&In-Reply-To=%3Calpine.LNX.1.10.0911131352310.10898%40catbert.rellim.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="004059.html">
+   <LINK REL="Next"  HREF="004062.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] Ntp Problems</H1>
+    <B>Gary E. Miller</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Ntp%20Problems&In-Reply-To=%3Calpine.LNX.1.10.0911131352310.10898%40catbert.rellim.com%3E"
+       TITLE="[Gpsd-users] Ntp Problems">gem at rellim.com
+       </A><BR>
+    <I>Fri Nov 13 22:57:50 CET 2009</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="004059.html">[Gpsd-users] Ntp Problems
+</A></li>
+        <LI>Next message: <A HREF="004062.html">[Gpsd-users] Ntp Problems
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#4060">[ date ]</a>
+              <a href="thread.html#4060">[ thread ]</a>
+              <a href="subject.html#4060">[ subject ]</a>
+              <a href="author.html#4060">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>-----BEGIN PGP SIGNED MESSAGE-----
+Hash: SHA1
+
+Yo Don!
+
+
+On Fri, 13 Nov 2009, Don Weeks wrote:
+
+&gt;<i>    I think I see the problem. In the /proc/sysvipc/shm that was created on
+</I>&gt;<i> my system, gpsd, which is compiled with a 64bit OCTEON MIPs compiler is
+</I>&gt;<i> running against an NTP compiled with 32 bit O32 compiler.
+</I>
+Hmm...  If you see how we can fix the packing to make both 64/32 work
+then pass on the idea.
+
+I'm thinking this structure, in ntpshm.c is the problem:
+
+struct shmTime {
+    int    mode; /* 0 - if valid set
+                  *       use values,
+                  *       clear valid
+                  * 1 - if valid set
+                  *       if count before and after read of values is equal,
+                  *         use values
+                  *       clear valid
+                  */
+    int    count;
+    time_t clockTimeStampSec;
+    int    clockTimeStampUSec;
+    time_t receiveTimeStampSec;
+    int    receiveTimeStampUSec;
+    int    leap;
+    int    precision;
+    int    nsamples;
+    int    valid;
+    int    pad[10];
+};
+
+That is right out of the ntpd driver file  refclock_shm.c, so likely
+nothing we can do about it.
+
+RGDS
+GARY
+- ---------------------------------------------------------------------------
+Gary E. Miller Rellim 109 NW Wilmington Ave., Suite E, Bend, OR 97701
+	<A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">gem at rellim.com</A>  Tel:+1(541)382-8588
+
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v1.4.3 (GNU/Linux)
+
+iD8DBQFK/dZgBmnRqz71OvMRAiE5AJ985iDLlCLEuQwBmghBuNN1nEnI8QCfdqdN
+E/FaIvQNeJvQqUatS3DEzuw=
+=4iRw
+-----END PGP SIGNATURE-----
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="004059.html">[Gpsd-users] Ntp Problems
+</A></li>
+	<LI>Next message: <A HREF="004062.html">[Gpsd-users] Ntp Problems
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#4060">[ date ]</a>
+              <a href="thread.html#4060">[ thread ]</a>
+              <a href="subject.html#4060">[ subject ]</a>
+              <a href="author.html#4060">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

@@ -1,0 +1,159 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] how to crosscompile gpsd for avr32
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2007-May/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20how%20to%20crosscompile%20gpsd%20for%20avr32&In-Reply-To=%3C20070509043604.DCEE0E3683%40mail.berlios.de%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="002638.html">
+   <LINK REL="Next"  HREF="002634.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] how to crosscompile gpsd for avr32</H1>
+    <B>Randy</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20how%20to%20crosscompile%20gpsd%20for%20avr32&In-Reply-To=%3C20070509043604.DCEE0E3683%40mail.berlios.de%3E"
+       TITLE="[Gpsd-users] how to crosscompile gpsd for avr32">wrr01 at yahoo.com
+       </A><BR>
+    <I>Wed May  9 07:27:02 CEST 2007</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="002638.html">[Gpsd-users] how to crosscompile gpsd for avr32
+</A></li>
+        <LI>Next message: <A HREF="002634.html">[Gpsd-users] how to crosscompile gpsd for avr32
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2627">[ date ]</a>
+              <a href="thread.html#2627">[ thread ]</a>
+              <a href="subject.html#2627">[ subject ]</a>
+              <a href="author.html#2627">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Next problem(s)
+
+I appear to have been able to get everything compiled  after hacking a couple
+of things (the path to limits.h is linux/limits.h on my toolset, and I had
+to remove a bit of python stuff even though i supposedly told configure to
+not include python stuff)
+
+1)During the make process I get:        ldconfig: command not found.  
+This seems to be not included in my toolset for some reason. The make
+appears to complete ok though.
+
+2)  when i take the resulting gpsd executable to my avr32 system and attempt to run it,
+i get &quot;can't load library 'libstdc++.so.6'.   since there is no such lib already on the target system,
+i found a lib like this on the avr32-linux compiler directory and ftp'd it to the avr32 and made a symbolic like with the 
+desired name and now the loader says '/lib/libstdc++.so.6' is not an ELF file
+
+is there a way to tell the configure script for gpsd to completely link the gpsd exe to all shared libs so it wont need 
+any shared libs at run time?  any other ideas on how to proceed?
+
+As I said previously.  I have gotten the hello world compiled and it runs on the avr32.  And i was able to build
+the gpsd ok on my ubuntu linux and run it there.  si i cant be too far off it seems like!
+
+Thanks much!
+
+Randy Rainwater
+
+
+On Sat, 28 Apr 2007 18:10:22 -0600, Randy wrote:
+
+&gt;<i>Thanks Matt - thats a big help.   Hello world has been done and works
+</I>&gt;<i>on the embedded system itself.  I'll dig into what  you emailed and see
+</I>&gt;<i>what I can do!   That looks like exactly what I need to try.
+</I>
+&gt;<i>Thanks again for the great reply!
+</I>
+&gt;<i>Randy Rainwater
+</I>
+&gt;<i>On Fri, 27 Apr 2007 21:04:37 -0500 (CDT), Matt Roberds wrote:
+</I>
+&gt;&gt;<i>On Fri, 27 Apr 2007, Randy wrote:
+</I>&gt;&gt;&gt;<i> Can anyone point me to some docs on what needs to be configured in
+</I>&gt;&gt;&gt;<i> the scripts to allow a crosscompile of gpsd using the avr32 toolchain?
+</I>
+&gt;&gt;<i>The Autoconf documentation at
+</I>&gt;&gt;<i><A HREF="http://www.gnu.org/software/autoconf/manual/html_node/index.html">http://www.gnu.org/software/autoconf/manual/html_node/index.html</A> may be
+</I>&gt;&gt;<i>helpful, specifically chapter 15:
+</I>&gt;&gt;<i><A HREF="http://www.gnu.org/software/autoconf/manual/html_node/Running-configure-Scripts.html#Running-configure-Scripts">http://www.gnu.org/software/autoconf/manual/html_node/Running-configure-Scripts.html#Running-configure-Scripts</A>
+</I>
+&gt;&gt;<i>Some general steps...
+</I>
+&gt;&gt;<i>The first thing you have to be able to do is to make &quot;Hello, world&quot;
+</I>&gt;&gt;<i>work.  In other words, you need to be able to write a simple program to
+</I>&gt;&gt;<i>print &quot;Hello, world&quot; on the screen, or blink an LED, or buzz the buzzer,
+</I>&gt;&gt;<i>or whatever your embedded system has.  Then you need to be able to
+</I>&gt;&gt;<i>compile that program with the avr32 compiler on your desktop machine,
+</I>&gt;&gt;<i>get the executable over to the embedded system, and run it on the
+</I>&gt;&gt;<i>embedded system.  This proves that your toolchain is basically working,
+</I>&gt;&gt;<i>and also lets you figure out if the avr32 compiler needs any special
+</I>&gt;&gt;<i>flags or other command-line options to work.
+</I>
+&gt;&gt;<i>Then, you can move on to persuading gpsd (or whatever other package you
+</I>&gt;&gt;<i>want to use) to build with the avr32 compiler instead of the desktop
+</I>&gt;&gt;<i>machine's native gcc.  If you run 'configure --help' in the stock gpsd
+</I>&gt;&gt;<i>distribution, you will see a lot of options for tuning the build process.
+</I>&gt;&gt;<i>--build and --host are probably a good place to start.  Near the end of
+</I>&gt;&gt;<i>the help document, there are some variables you can set regarding the
+</I>&gt;&gt;<i>compiler and linker.  You can set them as environment variables, or
+</I>&gt;&gt;<i>give them to configure on the command line.
+</I>
+&gt;&gt;<i>For instance, say you figured out you had to tell the avr compiler
+</I>&gt;&gt;<i>'--nifty-option-3' on the command line to get &quot;Hello, world&quot; working.
+</I>&gt;&gt;<i>Also, your avr stuff is in /usr/avr/lib, and the avr compiler is called
+</I>&gt;&gt;<i>avrcc.  Your configure command may end up looking something like this...
+</I>
+&gt;&gt;<i>./configure --build=avr --host=avr CC=avrcc CFLAGS='--nifty-option-3' LDFLAGS='-L/usr/avr/lib'
+</I>
+&gt;&gt;<i>You may want to use some of the with/without and enable/disable flags
+</I>&gt;&gt;<i>to control what gets built.  For instance, on a small embedded system,
+</I>&gt;&gt;<i>you might want --disable-python and --without-x .  This should prevent
+</I>&gt;&gt;<i>the build (or attempted build) of things you aren't going to use anyway.
+</I>&gt;&gt;<i>If you know that you will always use the same type of GPS receiver, you
+</I>&gt;&gt;<i>could use the --disable flags for the other types of receivers to get
+</I>&gt;&gt;<i>a smaller library/executable.
+</I>
+&gt;&gt;<i>I hope this helps!
+</I>
+&gt;&gt;<i>Matt Roberds
+</I>
+
+
+
+&gt;<i>_______________________________________________
+</I>&gt;<i>Gpsd-users mailing list
+</I>&gt;<i><A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">Gpsd-users at lists.berlios.de</A>
+</I>&gt;<i><A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">https://lists.berlios.de/mailman/listinfo/gpsd-users</A>
+</I>
+
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="002638.html">[Gpsd-users] how to crosscompile gpsd for avr32
+</A></li>
+	<LI>Next message: <A HREF="002634.html">[Gpsd-users] how to crosscompile gpsd for avr32
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2627">[ date ]</a>
+              <a href="thread.html#2627">[ thread ]</a>
+              <a href="subject.html#2627">[ subject ]</a>
+              <a href="author.html#2627">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

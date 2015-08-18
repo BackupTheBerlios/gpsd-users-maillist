@@ -1,0 +1,142 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] n00b question (probably a little OT)
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2007-December/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20n00b%20question%20%28probably%20a%20little%20OT%29&In-Reply-To=%3C620594.19728.qm%40web45815.mail.sp1.yahoo.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="003049.html">
+   <LINK REL="Next"  HREF="003050.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] n00b question (probably a little OT)</H1>
+    <B>Hamish</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20n00b%20question%20%28probably%20a%20little%20OT%29&In-Reply-To=%3C620594.19728.qm%40web45815.mail.sp1.yahoo.com%3E"
+       TITLE="[Gpsd-users] n00b question (probably a little OT)">hamish_b at yahoo.com
+       </A><BR>
+    <I>Sun Dec 30 01:57:38 CET 2007</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="003049.html">[Gpsd-users] n00b question (probably a little OT)
+</A></li>
+        <LI>Next message: <A HREF="003050.html">[Gpsd-users] n00b question (probably a little OT)
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3051">[ date ]</a>
+              <a href="thread.html#3051">[ thread ]</a>
+              <a href="subject.html#3051">[ subject ]</a>
+              <a href="author.html#3051">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Dave wrote:
+&gt;<i> &gt; I recently bought a GlobalSat BU-353, plugged it in, fired up gpsd,
+</I>&gt;<i> &gt; and magic happened. Then I started looking at the numbers coming
+</I>&gt;<i> &gt; out and realized that with (usually) 7 or 8 satellites in view, I
+</I>&gt;<i> &gt; was getting drifts (overnight) of over 100M vertically and a 
+</I>&gt;<i> &gt; horizontal drift of a couple blocks horizontally (according to
+</I>&gt;<i> &gt; Google Maps' geocoding, anyway). I looked at the NMEA, and
+</I>&gt;<i> &gt; realized this is a receiver problem and gpsd is working properly,
+</I>&gt;<i> &gt; but I'm trying to figure out if I should RMA it before I leave town
+</I>&gt;<i> &gt; on Monday, and figured there were other BU-353 users here.
+</I>
+Chris Kuethe wrote:
+&gt;<i> Do you have good skyview? Any tall buildings either obstructing parts
+</I>&gt;<i> of the sky or possibly causing reflections?
+</I>
+This is a good question. I have a BU-353 and when using it indoors (our
+building is built a bit like Windsor castle) I often see the fix bounce
+out by ~100m. We have a solid wall just across from the office window
+and a 10 story building across the street. In the field, given a clear
+view of the sky the position is stable within 2-5m. I have always
+assumed the 100m errors were because of multipath reflections and the
+GPS's ability to lock onto those very weak signals. Interestingly, the
+100m errors all happen along a very clear bearing from the fixed GPS
+antenna.
+
+&gt;<i> &gt; My questions:
+</I>&gt;<i> &gt; Is this level of accuracy typical cheap GPS receivers in general,
+</I>&gt;<i> &gt; or is this one just a turkey?
+</I>
+If it happens in an urban jungle, count it as reflections causing
+delays in the signal arrival times of obscured sats. If it happens with
+a clear sky to the horizon, it's a goose.
+
+
+&gt;<i> &quot;Poor man's DGPS&quot;. no. for you to have a hope of having that work,
+</I>&gt;<i> you need to have the clocks in your receivers be synchronized, and
+</I>&gt;<i> you need to have a way to ensure that they're both making 
+</I>&gt;<i> observations at the same time.
+</I>
+And a way to ensure that they are tracking the same birds as they go
+above and below the horizon or other barriers.
+
+To do it properly, you need 2 GPSs which output per satellite pseudo-
+ranges, and keep one at a surveyed position. Calculate corrections for
+base station GPS vs. surveyed position, and (post-processing) apply
+corrections to the roving GPS record. Add a real-time VHF link to the
+roving GPS with the corrections and you've reinvented DGPS.
+
+
+&gt;<i> &gt; My intended application involves some (very rough) GIS stuff for
+</I>&gt;<i> &gt; educational purposes on a very limited budget,
+</I>
+may I suggest some free solutions then:
+GRASS GIS (load GPS data with v.in.gpsbabel or v.in.ascii modules)
+  <A HREF="http://grass.ibiblio.org">http://grass.ibiblio.org</A>
+QuantumGIS (GPS Plugin [also using gpsbabel])
+  <A HREF="http://www.qgis.org">http://www.qgis.org</A>
+GPSdrive  (live gpsd using navigation software)
+  http//www.gpsdrive.de
+
+
+&gt;<i> &gt; and my past experience with (much higher end) GPS survey gear
+</I>&gt;<i> &gt; suggested that I could get accuracy to within 2-3 meters and
+</I>&gt;<i> &gt; consistency to about a meter (within a few-hour daylight time
+</I>&gt;<i> &gt; window), which is &quot;good enough&quot;.
+</I>
+You should be able to get that with most mainstream GPSs, as with CD
+players, you (mostly) get the same stream of digital output from a $50
+or $2000 player. The big difference comes in things like error handling
+or hard core precision....
+
+
+Hamish
+
+
+
+      ____________________________________________________________________________________
+Be a better friend, newshound, and 
+know-it-all with Yahoo! Mobile.  Try it now.  <A HREF="http://mobile.yahoo.com/;_ylt=Ahu06i62sR8HDtDypao8Wcj9tAcJ">http://mobile.yahoo.com/;_ylt=Ahu06i62sR8HDtDypao8Wcj9tAcJ</A> 
+
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="003049.html">[Gpsd-users] n00b question (probably a little OT)
+</A></li>
+	<LI>Next message: <A HREF="003050.html">[Gpsd-users] n00b question (probably a little OT)
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3051">[ date ]</a>
+              <a href="thread.html#3051">[ thread ]</a>
+              <a href="subject.html#3051">[ subject ]</a>
+              <a href="author.html#3051">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

@@ -1,0 +1,113 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] Low Budget Bathymetry
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2006-September/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Low%20Budget%20Bathymetry&In-Reply-To=%3C200609172044.08838.cbsled%40verizon.net%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="001951.html">
+   <LINK REL="Next"  HREF="001953.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] Low Budget Bathymetry</H1>
+    <B>Carl Brown</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Low%20Budget%20Bathymetry&In-Reply-To=%3C200609172044.08838.cbsled%40verizon.net%3E"
+       TITLE="[Gpsd-users] Low Budget Bathymetry">cbsled at verizon.net
+       </A><BR>
+    <I>Mon Sep 18 02:44:08 CEST 2006</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="001951.html">[Gpsd-users] Your NTP Server Using A Garmin 18 LVC
+</A></li>
+        <LI>Next message: <A HREF="001953.html">[Gpsd-users] Low Budget Bathymetry
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1952">[ date ]</a>
+              <a href="thread.html#1952">[ thread ]</a>
+              <a href="subject.html#1952">[ subject ]</a>
+              <a href="author.html#1952">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>I'm new to this GPS data transfer stuff. 
+I hope this isn't a sore subject here...
+
+Why does gpsd not parse more varieties of NMEA sentences?
+
+I hooked up a Humminbird fishfinder with an attached GPS unit which both speak 
+NMEA0183. The GPS talks to the fishfinder, which in turn outputs groups of 
+sentences in the following sequence, with an &quot;IN&quot; prefix:
+
+DPT (depth)
+RMC
+DPT
+GLL
+VTG
+MTW (water temperature)
+DPT
+RMC
+DPT
+GGA
+ZDA
+MTW
+
+The RMC, GLL, and GGA sentences all include position information. Parsing all 
+of them would quadruple the position update frequency over parsing only GGA 
+on this unit. Also, neither gpsd nor gpsbabel can parse the DPT sentences, 
+which makes gpsd useful only as a serial port communication tool for my 
+application, and renders gpsbabel useless, since it aborts with an error upon 
+its first encounter with a DPT sentence.
+
+Of course I can capture the raw NMEA output, but since my intent is to pipe 
+this data into a GIS, some parsing and reformatting along the way would be 
+quite helpful. The timestamps that gpsd could add, for example, would provide 
+valuable position interpolation information for more precisely positioning 
+the depth readings between position readings. Boat speed may be as fast as 
+10m/s, so not compensating for the delays between depth and position readings 
+could misplace the depth readings on the map by as much as 30m.
+
+Ideally, I would have the incoming sentences parsed on arrival at the laptop, 
+with position translated from lat-lon to UTM. Then the bathymetry would be 
+compensated to MSL elevation using the known water surface elevation, 
+compensated for position change, then a point would be added to a vector 
+point map in QGIS or GRASS, all in nearly real time. 
+
+See: &lt;gis.esri.com/library/userconf/proc03/p0750.pdf&gt; for an example of this 
+type of data collection in Nebraska using proprietary software, although it 
+appears that the bulk of the processing was not done on the spot.
+
+Is anyone already doing anything like this with Free software? 
+
+-- 
+Carl Brown
+Whitefield, NH USA
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="001951.html">[Gpsd-users] Your NTP Server Using A Garmin 18 LVC
+</A></li>
+	<LI>Next message: <A HREF="001953.html">[Gpsd-users] Low Budget Bathymetry
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1952">[ date ]</a>
+              <a href="thread.html#1952">[ thread ]</a>
+              <a href="subject.html#1952">[ subject ]</a>
+              <a href="author.html#1952">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

@@ -1,0 +1,91 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] [Gpsd-dev]  gps_read() does not block
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2011-March/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20%5BGpsd-dev%5D%20%20gps_read%28%29%20does%20not%20block&In-Reply-To=%3C20110309185054.GA23740%40thyrsus.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="005113.html">
+   <LINK REL="Next"  HREF="005120.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] [Gpsd-dev]  gps_read() does not block</H1>
+    <B>Eric Raymond</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20%5BGpsd-dev%5D%20%20gps_read%28%29%20does%20not%20block&In-Reply-To=%3C20110309185054.GA23740%40thyrsus.com%3E"
+       TITLE="[Gpsd-users] [Gpsd-dev]  gps_read() does not block">esr at thyrsus.com
+       </A><BR>
+    <I>Wed Mar  9 19:50:54 CET 2011</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="005113.html">[Gpsd-users] gps_read() does not block
+</A></li>
+        <LI>Next message: <A HREF="005120.html">[Gpsd-users] [Gpsd-dev]  gps_read() does not block
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#5115">[ date ]</a>
+              <a href="thread.html#5115">[ thread ]</a>
+              <a href="subject.html#5115">[ subject ]</a>
+              <a href="author.html#5115">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Andre Naujoks &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">nautsch2 at googlemail.com</A>&gt;:
+&gt;<i> &gt;&gt; I lean towards 3, but I'm open to persuasion.
+</I>&gt;<i> &gt; 
+</I>&gt;<i> &gt; I'd suggest implementing both 2 &amp; 3. To me, doing nothing leaves a hole in
+</I>&gt;<i> &gt; the implementation. I think the library needs to provide what I see as a
+</I>&gt;<i> &gt; basic way of interfacing with the gps. Either of these implementations
+</I>&gt;<i> &gt; extend the existing functionality in an upward compatible way (assuming the
+</I>&gt;<i> &gt; argument to gps_waiting is optional).
+</I>&gt;<i> 
+</I>&gt;<i> You got my vote on the 2 &amp; 3 approach. Where I see 2 as much simpler
+</I>&gt;<i> (Eric said so, too) and more intuitive to work with if you are
+</I>&gt;<i> accustomed to working with sockets in their default blocking state.
+</I>
+The current state of play is this:
+
+(1) I have fully implemented, documented, and tested the timeout argument to
+gps_waiting(). Charles Curley has verified that it works with his client.
+I am happy with this change.  It enabled me to replace select(2) machinery
+in three test clients with simpler, more elegant code involving a single
+gps_waiting() call.
+
+(2) I am undecided about, and currently leaning against, implementing 
+POLL_BLOCK.  This would add complexity and (it seems to me) duplicate
+capability the new gps_waiting() already gives us.  (The reverse would
+not have been true.)
+
+Can show me a use case that a POLL_BLOCK flag would address
+but gps_waiting() does not, I think POLL_BLOCK will die.
+-- 
+		&lt;a href=&quot;<A HREF="http://www.catb.org/~esr/">http://www.catb.org/~esr/</A>&quot;&gt;Eric S. Raymond&lt;/a&gt;
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="005113.html">[Gpsd-users] gps_read() does not block
+</A></li>
+	<LI>Next message: <A HREF="005120.html">[Gpsd-users] [Gpsd-dev]  gps_read() does not block
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#5115">[ date ]</a>
+              <a href="thread.html#5115">[ thread ]</a>
+              <a href="subject.html#5115">[ subject ]</a>
+              <a href="author.html#5115">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

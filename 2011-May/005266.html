@@ -1,0 +1,98 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] [Gpsd-dev] Gpsd configuration files
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2011-May/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20%5BGpsd-dev%5D%20Gpsd%20configuration%20files&In-Reply-To=%3C20110531163953.GB20361%40thyrsus.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="005263.html">
+   <LINK REL="Next"  HREF="005267.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] [Gpsd-dev] Gpsd configuration files</H1>
+    <B>Eric Raymond</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20%5BGpsd-dev%5D%20Gpsd%20configuration%20files&In-Reply-To=%3C20110531163953.GB20361%40thyrsus.com%3E"
+       TITLE="[Gpsd-users] [Gpsd-dev] Gpsd configuration files">esr at thyrsus.com
+       </A><BR>
+    <I>Tue May 31 18:39:53 CEST 2011</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="005263.html">[Gpsd-users] Gpsd configuration files
+</A></li>
+        <LI>Next message: <A HREF="005267.html">[Gpsd-users] [Gpsd-dev] Gpsd configuration files
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#5266">[ date ]</a>
+              <a href="thread.html#5266">[ thread ]</a>
+              <a href="subject.html#5266">[ subject ]</a>
+              <a href="author.html#5266">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Sebastian Arcus &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">shop at open-t.co.uk</A>&gt;:
+&gt;<i> I was just wondering why gpsd doesn't have a configuration file in
+</I>&gt;<i> /etc/gpsd.conf, like most other Unix/Linux software?
+</I>
+Because configuration files are evil, and not to be countenanced unless they
+become an absolutely necessary evil. Which in gpsd's case is not yet,
+and I sincerely hope not *ever*.
+
+Yes, I know this sounds like heresy coming from a Unix programmer.  But the
+trouble with configuration files is that they too easily become an excuse
+for not doing the right thing. (The same is true of command-line switches;
+all of what I have to say here against config files applies to switches
+as well, which is why gpsd has so few of them.)
+
+Can't decide whether that new feature is a good idea or not? Create an
+option.  Can't settle a design issue?  Create an option. Can't be
+bothered to figure out how to autoconfigure your software properly?
+Create an option.  Want to double your software's test complexity?
+Create an option.
+
+Lots of options and elaborate config files are sometimes necessary for
+Swiss-Army-knife-like system utilities; I implemented a boatload of them
+in fetchmail because I had to. But doing that made me unhappy and I 
+junked a lot of delivery options when I figured out that forwarding
+fetched mail to SMTP was the right thing.
+
+It's better to design so you don't *need* a configuration file.  One
+of gpsd's goals is to be zero-configuration; when it's installed properly, 
+you plug in a USB GPS and it just works.  Nothing to tweak, nothing
+to configure, nothing you have to mess with.  
+
+While gpsd sometimes departs from this ideal, we treat those departures
+as bugs to be actually fixed rather than kluged around with an option.
+So the right question to ask youself is not &quot;how might an option fix this?&quot;
+but &quot;how can we teach the program to figure out the right thing itself?&quot;.
+-- 
+		&lt;a href=&quot;<A HREF="http://www.catb.org/~esr/">http://www.catb.org/~esr/</A>&quot;&gt;Eric S. Raymond&lt;/a&gt;
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="005263.html">[Gpsd-users] Gpsd configuration files
+</A></li>
+	<LI>Next message: <A HREF="005267.html">[Gpsd-users] [Gpsd-dev] Gpsd configuration files
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#5266">[ date ]</a>
+              <a href="thread.html#5266">[ thread ]</a>
+              <a href="subject.html#5266">[ subject ]</a>
+              <a href="author.html#5266">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

@@ -1,0 +1,162 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] gpsd-2.34, globalsat BC-337 and usb
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2007-December/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20gpsd-2.34%2C%20globalsat%20BC-337%20and%20usb&In-Reply-To=%3C4.3.2.7.2.20071222074844.03098828%40postoffice.creativesilicon.com.au%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="003035.html">
+   <LINK REL="Next"  HREF="003038.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] gpsd-2.34, globalsat BC-337 and usb</H1>
+    <B>Dave C</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20gpsd-2.34%2C%20globalsat%20BC-337%20and%20usb&In-Reply-To=%3C4.3.2.7.2.20071222074844.03098828%40postoffice.creativesilicon.com.au%3E"
+       TITLE="[Gpsd-users] gpsd-2.34, globalsat BC-337 and usb">gpsd at creativesilicon.com.au
+       </A><BR>
+    <I>Fri Dec 21 22:56:24 CET 2007</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="003035.html">[Gpsd-users] gpsd-2.34, globalsat BC-337 and usb
+</A></li>
+        <LI>Next message: <A HREF="003038.html">[Gpsd-users] gpsd-2.34, globalsat BC-337 and usb
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3036">[ date ]</a>
+              <a href="thread.html#3036">[ thread ]</a>
+              <a href="subject.html#3036">[ subject ]</a>
+              <a href="author.html#3036">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hiya,
+
+I've fought with a couple of different Sandisk readers and Linux over the 
+past couple of years. One trick I found was to insert the CF card into the 
+card reader BEFORE plugging the USB port into the PC.
+
+I found that if you don't do this, the kernel doesn't seem to get a hotplug 
+event when the CF card is plugged in for the first time and therefore 
+doesn't try to enumerate the CF card. If you plug the CF card in before 
+plugging the USB, the kernel will get both the USB hotplug event, and the 
+CF card insertion event and you will get sdb (or similar). After this point 
+you can mount/unmount and remove/insert cards to your heart's content.
+
+However, my experience and understanding of the PCMCIA/CARDBUS (yes, they 
+are different protocols, although they fit in the same slots) agrees with 
+Matt, and I also believe that you are probably hosed without getting a 
+PCMCIA to USB adapter.
+
+ciao, Dave
+
+
+At 03:30 PM 21/12/2007 -0600, you wrote:
+&gt;<i>On Fri, 21 Dec 2007, Dennis Veatch wrote:
+</I>&gt;<i> &gt;Subject: [Gpsd-users] gpsd-2.34, globalsat BC-337 and usb
+</I>&gt;<i>
+</I>&gt;<i>The Globalsat receiver appears to be a CompactFlash card; is this
+</I>&gt;<i>correct?
+</I>&gt;<i>
+</I>&gt;<i> &gt; After realizing I needed kernel module serial_cs, got gpsd to work
+</I>&gt;<i> &gt; on my T60 laptop using the pcmcia slot and gpsd worked fine.
+</I>&gt;<i>
+</I>&gt;<i>Sounds reasonable.  One of the modes of many CompactFlash (CF) cards
+</I>&gt;<i>is a &quot;PCMCIA&quot; mode; the commonly available adapters (that look like a
+</I>&gt;<i>PCMCIA card with a notch out of the end) that let you put a CF card
+</I>&gt;<i>    in a PCMCIA slot are just two connectors and some wires - there is no
+</I>&gt;<i>active circuitry in the adapter.  The PCMCIA interfacing is handled
+</I>&gt;<i>inside the CF card.
+</I>&gt;<i>
+</I>&gt;<i> &gt; So now I am trying to get gpsd to see this device as a USB device on a
+</I>&gt;<i> &gt; different machine using a SanDisk 12-in-1 reader.
+</I>&gt;<i>
+</I>&gt;<i>Trying to do this through a card reader may be the problem.  I am not an
+</I>&gt;<i>expert, but I'm pretty sure that CF cards can present different interfaces
+</I>&gt;<i>to the outside world depending on how they are accessed.  One of them is
+</I>&gt;<i>PCMCIA, as above, and another is IDE, like a hard drive.
+</I>&gt;<i>
+</I>&gt;<i>The PCMCIA bus is (to a rough approximation, I think) an ISA or PCI bus
+</I>&gt;<i>with a funny-shaped connector.  What this means is that you can plug the
+</I>&gt;<i>same kinds of things into a PCMCIA slot as you would plug into an ISA or
+</I>&gt;<i>PCI slot and have them work.  In your case, the CF card starts &quot;speaking&quot;
+</I>&gt;<i>PCMCIA, and the CPU &quot;sees&quot; it as a normal expansion card.  The details
+</I>&gt;<i>get passed along to the Linux kernel, which says &quot;Serial port!  I know
+</I>&gt;<i>about those.&quot; and creates the /dev/ttySomething device.
+</I>&gt;<i>
+</I>&gt;<i>IDE is... well, IDE.  It is optimized for transferring data between two
+</I>&gt;<i>devices (normally a hard drive and the motherboard), but doesn't have as
+</I>&gt;<i>much in the way of interrupts, addressing, etc.  CF cards also support
+</I>&gt;<i>this mode; in this case the CF card is basically a slow-ish hard drive
+</I>&gt;<i>with a funny connector.  When you plug the CF GPS into the card reader,
+</I>&gt;<i>the CF GPS is either doing a) nothing or b) &quot;speaking&quot; IDE, and the CPU
+</I>&gt;<i>&quot;sees&quot; it as a normal hard drive or flash card (like you would use in a
+</I>&gt;<i>digital camera).  This gets passed along to the Linux kernel, which says
+</I>&gt;<i>&quot;Hard disk!  I know about those.&quot; and creates something like /dev/hda or
+</I>&gt;<i>/dev/sdb .
+</I>&gt;<i>
+</I>&gt;<i>One way to tell if this is happening is to look at the kernel messages
+</I>&gt;<i>with the dmesg command.  You might say dmesg first, before doing
+</I>&gt;<i>anything, so you know what messages were already there (dmesg output is
+</I>&gt;<i>typically not timestamped).  Then, plug the GPS card in, wait a few
+</I>&gt;<i>seconds, and say dmesg again.  If you see messages along the lines of
+</I>&gt;<i>&quot;attached SCSI disk sdb&quot;, then the kernel is seeing the GPS as a flash
+</I>&gt;<i>card instead of as a serial device.
+</I>&gt;<i>
+</I>&gt;<i>If you don't see anything in dmesg - or something like an &quot;unknown
+</I>&gt;<i>device&quot; error - then the chances are fair that the CF GPS is simply
+</I>&gt;<i>refusing to speak IDE.  The card reader knows that *something* has been
+</I>&gt;<i>plugged in, but the GPS is just sulking in the corner.
+</I>&gt;<i>
+</I>&gt;<i>What you *probably* need is a USB-to-PCMCIA adapter.  These do exist,
+</I>&gt;<i>but are not as common or as cheap (maybe US$70) as USB memory card
+</I>&gt;<i>readers.  Places that sell the newer wireless-Internet-over-cell-phone
+</I>&gt;<i>PCMCIA cards tend to stock them.  I have little experience with these,
+</I>&gt;<i>but reading Web sites gives me the impression that they vary somewhat in
+</I>&gt;<i>quality and device support; if you buy one, you might see if you can try
+</I>&gt;<i>it at a local store first, or look for an online vendor with a decent
+</I>&gt;<i>return/exchange policy.
+</I>&gt;<i>
+</I>&gt;<i>I hope this helps!
+</I>&gt;<i>
+</I>&gt;<i>Matt Roberds
+</I>&gt;<i>
+</I>&gt;<i>_______________________________________________
+</I>&gt;<i>Gpsd-users mailing list
+</I>&gt;<i><A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">Gpsd-users at lists.berlios.de</A>
+</I>&gt;<i><A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">https://lists.berlios.de/mailman/listinfo/gpsd-users</A>
+</I>&gt;<i>
+</I>&gt;<i>__________ NOD32 2741 (20071221) Information __________
+</I>&gt;<i>
+</I>&gt;<i>This message was checked by NOD32 antivirus system.
+</I>&gt;<i><A HREF="http://www.eset.com">http://www.eset.com</A>
+</I>
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="003035.html">[Gpsd-users] gpsd-2.34, globalsat BC-337 and usb
+</A></li>
+	<LI>Next message: <A HREF="003038.html">[Gpsd-users] gpsd-2.34, globalsat BC-337 and usb
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3036">[ date ]</a>
+              <a href="thread.html#3036">[ thread ]</a>
+              <a href="subject.html#3036">[ subject ]</a>
+              <a href="author.html#3036">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

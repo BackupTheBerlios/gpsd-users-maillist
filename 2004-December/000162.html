@@ -1,0 +1,148 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] serial connection problems, gpsd compile failed
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2004-December/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20serial%20connection%20problems%2C%20gpsd%20compile%20failed&In-Reply-To=%3C200412121338.18647.list%2BGpsd%40room101.us.eu.org%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="000161.html">
+   <LINK REL="Next"  HREF="000163.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] serial connection problems, gpsd compile failed</H1>
+    <B>Rob McGee</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20serial%20connection%20problems%2C%20gpsd%20compile%20failed&In-Reply-To=%3C200412121338.18647.list%2BGpsd%40room101.us.eu.org%3E"
+       TITLE="[Gpsd-users] serial connection problems, gpsd compile failed">list+Gpsd at room101.us.eu.org
+       </A><BR>
+    <I>Sun Dec 12 20:38:16 CET 2004</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="000161.html">[Gpsd-users] success report - techway tp-051 USB GPS
+</A></li>
+        <LI>Next message: <A HREF="000163.html">[Gpsd-users] serial connection problems, gpsd compile failed
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#162">[ date ]</a>
+              <a href="thread.html#162">[ thread ]</a>
+              <a href="subject.html#162">[ subject ]</a>
+              <a href="author.html#162">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi list,
+
+I'm new to the list, new to GPS, and looking forward to it. I've had my
+Garmin Geko 201 for a fortnight or so and I got an interface/power cable
+for it a few days ago. Just today I got the old ThinkPad booting
+Slackware-current, kernel 2.6.9. Almost ready for the road!
+
+The power part of the dual cable works. When that's plugged in I see the
+battery icon change. But I'm not yet getting intelligible serial input
+from the Geko. No matter what protocol is chosen, the most I get is
+binary junk.
+
+I suppose none of that is really on topic here, but having downloaded
+the full archive I see this isn't a busy list, so I hope it will be
+tolerated. :) Guidance, if any, will be appreciated. For gpsd I guess I
+need NMEA, but that protocol seems to produce no output at all with the
+Geko on the ThinkPad's /dev/tts/0, with the command from INSTALL:
+    stty -F /dev/tts/0 ispeed 4800 &amp;&amp; cat &lt;/dev/tts/0
+
+My user account has group rw privileges on the device, but to rule
+permissions out I did the above as root.
+
+Now, to get on topic: I have attempted the gpsd compile on Slackware
+10.0, a desktop machine, and again on the aforementioned ThinkPad. Both
+failed at the same point:
+[...]
+creating libgps.la
+(cd .libs &amp;&amp; rm -f libgps.la &amp;&amp; ln -s ../libgps.la libgps.la)
+if gcc -DHAVE_CONFIG_H -I. -I. -I.   -I/usr/X11R6/include -I/usr/X11R6/include -g -O2 -Wall -Werror  -I/usr/X11R6/include -MT gps-display.o -MD -MP -MF &quot;.deps/gps-display.Tpo&quot; -c -o gps-display.o `test -f 'display.c' || echo './'`display.c; \
+then mv -f &quot;.deps/gps-display.Tpo&quot; &quot;.deps/gps-display.Po&quot;; else rm -f &quot;.deps/gps-display.Tpo&quot;; exit 1; fi
+if gcc -DHAVE_CONFIG_H -I. -I. -I.   -I/usr/X11R6/include -I/usr/X11R6/include -g -O2 -Wall -Werror  -I/usr/X11R6/include -MT gps-gps.o -MD -MP -MF &quot;.deps/gps-gps.Tpo&quot; -c -o gps-gps.o `test -f 'gps.c' || echo './'`gps.c; \
+then mv -f &quot;.deps/gps-gps.Tpo&quot; &quot;.deps/gps-gps.Po&quot;; else rm -f &quot;.deps/gps-gps.Tpo&quot;; exit 1; fi
+gps.c: In function `get_pixel':
+gps.c:72: warning: implicit declaration of function `fprintf'
+gps.c:72: error: `stderr' undeclared (first use in this function)
+gps.c:72: error: (Each undeclared identifier is reported only once
+gps.c:72: error: for each function it appears in.)
+gps.c: In function `update_panel':
+gps.c:264: warning: implicit declaration of function `sprintf'
+gps.c: In function `main':
+gps.c:352: warning: implicit declaration of function `fputs'
+gps.c:352: error: `stderr' undeclared (first use in this function)
+make[1]: *** [gps-gps.o] Error 1
+make[1]: Leaving directory `/home/rob0/src/gpsd-2.3'
+make: *** [all] Error 2
+
+Apparently Slackware is lacking some required library. Both of these
+were complete installs, so apparently it's something not included in
+Slackware. I *do* have lesstif (the only listed dependency I could see
+in INSTALL) on both machines.
+
+I looked in the #include lines of gps.c and made a list of all the
+X/Motif includes. Here they are, from the ThinkPad:
+
+<A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">rob0 at tp</A>:/usr/X11R6/include$ v `&lt; /home/rob0/src/gpsd-2.3/motif.includes`
+-r--r--r--  1 root root 17574 2004-10-18 17:45 X11/Shell.h
+-rw-r--r--  1 root root  1508 2004-09-26 23:13 Xm/ArrowB.h
+-rw-r--r--  1 root root  1620 2004-09-26 23:13 Xm/CascadeB.h
+-rw-r--r--  1 root root  1520 2004-09-26 23:13 Xm/DrawingA.h
+-rw-r--r--  1 root root  1508 2004-09-26 23:13 Xm/DrawnB.h
+-rw-r--r--  1 root root  1550 2004-09-26 23:13 Xm/Form.h
+-rw-r--r--  1 root root  1464 2004-09-26 23:13 Xm/Frame.h
+-rw-r--r--  1 root root  1471 2004-09-26 23:13 Xm/Label.h
+-rw-r--r--  1 root root  5217 2004-09-26 23:13 Xm/List.h
+-rw-r--r--  1 root root  1499 2004-09-26 23:13 Xm/MenuShell.h
+-rw-r--r--  1 root root  3504 2004-09-26 23:13 Xm/MwmUtil.h
+-rw-r--r--  1 root root  3658 2004-09-26 23:13 Xm/Protocols.h
+-rw-r--r--  1 root root  1495 2004-09-26 23:13 Xm/PushB.h
+-rw-r--r--  1 root root  2635 2004-09-26 23:13 Xm/RowColumn.h
+-rw-r--r--  1 root root  1596 2004-09-26 23:13 Xm/Scale.h
+-rw-r--r--  1 root root  1827 2004-09-26 23:13 Xm/ScrollBar.h
+-rw-r--r--  1 root root  1812 2004-09-26 23:13 Xm/ScrolledW.h
+-rw-r--r--  1 root root  1503 2004-09-26 23:13 Xm/Separator.h
+-rw-r--r--  1 root root  5180 2004-09-26 23:13 Xm/Text.h
+-rw-r--r--  1 root root  4383 2004-09-26 23:13 Xm/TextF.h
+-rw-r--r--  1 root root  1683 2004-09-26 23:13 Xm/ToggleB.h
+-rw-r--r--  1 root root 48233 2004-09-26 23:13 Xm/Xm.h
+
+This is X.org 6.8.1 and lesstif 0.93.96 (6.7.0 and 0.93.94 respectively
+on the other machine.)
+
+<A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">rob0 at tp</A>:/usr/X11R6/include$ egrep '[fs]printf|fputs' `&lt; /home/rob0/src/gpsd-2.3/motif.includes`
+(comes up empty)
+
+Again, I'd appreciate a shove in the right direction here.
+-- 
+    Rob - /dev/rob0
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="000161.html">[Gpsd-users] success report - techway tp-051 USB GPS
+</A></li>
+	<LI>Next message: <A HREF="000163.html">[Gpsd-users] serial connection problems, gpsd compile failed
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#162">[ date ]</a>
+              <a href="thread.html#162">[ thread ]</a>
+              <a href="subject.html#162">[ subject ]</a>
+              <a href="author.html#162">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

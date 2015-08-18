@@ -1,0 +1,80 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] Control Socket and Receiver Commands in 3.1
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2011-September/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Control%20Socket%20and%20Receiver%20Commands%20in%203.1&In-Reply-To=%3C4E7A17A6.5070802%40compass-sys-inc.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="005482.html">
+   <LINK REL="Next"  HREF="005485.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] Control Socket and Receiver Commands in 3.1</H1>
+    <B>Matthew Beckman</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Control%20Socket%20and%20Receiver%20Commands%20in%203.1&In-Reply-To=%3C4E7A17A6.5070802%40compass-sys-inc.com%3E"
+       TITLE="[Gpsd-users] Control Socket and Receiver Commands in 3.1">matthew.beckman at compass-sys-inc.com
+       </A><BR>
+    <I>Wed Sep 21 18:58:14 CEST 2011</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="005482.html">[Gpsd-users] Suppressing unwanted output from gpsdecode
+</A></li>
+        <LI>Next message: <A HREF="005485.html">[Gpsd-users] Control Socket and Receiver Commands in 3.1
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#5483">[ date ]</a>
+              <a href="thread.html#5483">[ thread ]</a>
+              <a href="subject.html#5483">[ subject ]</a>
+              <a href="author.html#5483">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>I am using the control socket to send startup commands to a GPS 
+receiver. In GPSD 2.96, one could send a command to a receiver by 
+sending an exclamation point or an ampersand, followed by the device 
+name, the equals sign and a command. For instance, sending the string 
+&quot;&amp;/dev/ttyACM0=[command]&quot; worked well for me.
+
+However, sending this string with GPSD 3.1 always returns the string 
+&quot;ERROR&quot; on the socket. A little investigation reveals that in the 
+handle_control() function located in gpsd.c, this functionality has been 
+#ifdef'ed out with the macro __UNUSED__. If I remove the #ifdef, this 
+feature seems to work as it did before.
+
+Is there a reason why the ability to directly send commands to a 
+receiver has been disabled? Or is there a new way to go about 
+accomplishing the same thing? I would prefer not to use a modified 
+version of GPSD if at all possible.
+
+--Matt
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="005482.html">[Gpsd-users] Suppressing unwanted output from gpsdecode
+</A></li>
+	<LI>Next message: <A HREF="005485.html">[Gpsd-users] Control Socket and Receiver Commands in 3.1
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#5483">[ date ]</a>
+              <a href="thread.html#5483">[ thread ]</a>
+              <a href="subject.html#5483">[ subject ]</a>
+              <a href="author.html#5483">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

@@ -1,0 +1,90 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] Another bug in (and patch for) Trimble TSIP driver
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2009-June/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Another%20bug%20in%20%28and%20patch%20for%29%20Trimble%20TSIP%20driver&In-Reply-To=%3C20090604222215.N39A4.195904.imail%40eastrmwml40%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="003771.html">
+   <LINK REL="Next"  HREF="003773.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] Another bug in (and patch for) Trimble TSIP driver</H1>
+    <B>mattroberds at cox.net</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Another%20bug%20in%20%28and%20patch%20for%29%20Trimble%20TSIP%20driver&In-Reply-To=%3C20090604222215.N39A4.195904.imail%40eastrmwml40%3E"
+       TITLE="[Gpsd-users] Another bug in (and patch for) Trimble TSIP driver">mattroberds at cox.net
+       </A><BR>
+    <I>Fri Jun  5 04:22:15 CEST 2009</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="003771.html">[Gpsd-users] Bug in gpsctl.c
+</A></li>
+        <LI>Next message: <A HREF="003773.html">[Gpsd-users] TSIP mode switch for gpsctl
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3772">[ date ]</a>
+              <a href="thread.html#3772">[ thread ]</a>
+              <a href="subject.html#3772">[ subject ]</a>
+              <a href="author.html#3772">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hello all!
+
+I found another minor bug in the Trimble TSIP driver.  In
+tsip_speed_switch(), the byte that asks for 8-bit characters is not now
+set correctly.  This is documented in the TSIP reference
+<A HREF="http://gpsd.berlios.de/vendor-docs/trimble/tsip-reference.pdf">http://gpsd.berlios.de/vendor-docs/trimble/tsip-reference.pdf</A>
+(paper page 2-138, PDF page 192) and also in the hard-copy &quot;Resolution
+T System Designer Reference Manual&quot; that I have (no version, but
+copyright 2005).
+
+This should be independent of the patch I sent a couple of hours ago.
+It should apply to both 2.39 and svn.
+
+----cut here----
+--- driver_tsip.c.orig	2009-06-04 21:07:32.000000000 -0500
++++ driver_tsip.c	2009-06-04 21:08:27.000000000 -0500
+@@ -819,7 +819,7 @@
+     putbyte(buf,0,0xff);		/* current port */
+     putbyte(buf,1,(round(log((double)speed/300)/M_LN2))+2); /* input baudrate */
+     putbyte(buf,2,getub(buf,1));	/* output baudrate */
+-    putbyte(buf,3,8);			/* character width (8 bits) */
++    putbyte(buf,3,3);			/* character width (8 bits) */
+     putbyte(buf,4,parity);		/* parity (normally odd) */
+     putbyte(buf,5,stopbits-1);		/* stop bits (normally 1 stopbit) */
+     putbyte(buf,6,0);			/* flow control (none) */
+----cut here----
+
+Matt Roberds
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="003771.html">[Gpsd-users] Bug in gpsctl.c
+</A></li>
+	<LI>Next message: <A HREF="003773.html">[Gpsd-users] TSIP mode switch for gpsctl
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3772">[ date ]</a>
+              <a href="thread.html#3772">[ thread ]</a>
+              <a href="subject.html#3772">[ subject ]</a>
+              <a href="author.html#3772">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

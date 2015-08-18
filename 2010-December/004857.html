@@ -1,0 +1,112 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] Cannot get Garmin 18x LVC NMEA to work right with ntp
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2010-December/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Cannot%20get%20Garmin%2018x%20LVC%20NMEA%20to%20work%20right%20with%0A%20ntp&In-Reply-To=%3Calpine.LNX.1.00.1012301120110.10014%40catbert.rellim.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="004856.html">
+   <LINK REL="Next"  HREF="004858.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] Cannot get Garmin 18x LVC NMEA to work right with ntp</H1>
+    <B>Gary E. Miller</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Cannot%20get%20Garmin%2018x%20LVC%20NMEA%20to%20work%20right%20with%0A%20ntp&In-Reply-To=%3Calpine.LNX.1.00.1012301120110.10014%40catbert.rellim.com%3E"
+       TITLE="[Gpsd-users] Cannot get Garmin 18x LVC NMEA to work right with ntp">gem at rellim.com
+       </A><BR>
+    <I>Thu Dec 30 20:24:40 CET 2010</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="004856.html">[Gpsd-users] Cannot get Garmin 18x LVC NMEA to work right with ntp
+</A></li>
+        <LI>Next message: <A HREF="004858.html">[Gpsd-users] Cannot get Garmin 18x LVC NMEA to work right with ntp
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#4857">[ date ]</a>
+              <a href="thread.html#4857">[ thread ]</a>
+              <a href="subject.html#4857">[ subject ]</a>
+              <a href="author.html#4857">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>-----BEGIN PGP SIGNED MESSAGE-----
+Hash: SHA1
+
+Yo Gary!
+
+On Thu, 30 Dec 2010, Gary Eheman wrote:
+
+&gt;<i> I recently purchased a Garmin 18x LVC and built myself a DE9 (female-DB9
+</I>&gt;<i> ) cable with
+</I>&gt;<i> integrated led for confirming PPS signal using the info from the various
+</I>&gt;<i>  recommended
+</I>&gt;<i> websites. The GPS seems to be working ok, and I can get ntpd to sync wit
+</I>&gt;<i> h the PPS
+</I>&gt;<i> shared memory segment. It never seems to like the NMEA shared memory seg
+</I>&gt;<i> ment data and
+</I>&gt;<i> always marks the NMEA signal as &quot;falsetick&quot; as reported by ntpq associates.
+</I>
+You are close, but we need to see your gpsd debug logs to futher debug.
+
+Run gpsd this way:
+	gpsd -nND 5 /dev/ttyS0 2&gt;&amp;1 | egrep 'PPS|NTP'
+
+Then put the first few minutes of that on a pastebin somewhere.
+
+Also confirm that your port speed is 38400 or better.
+
+Here is my ntp.conf for my 18/LVC:
+
+# for gpsd
+server 127.127.28.0 minpoll 4 maxpoll 4
+fudge 127.127.28.0 time1 0.0  refid GPS
+
+# for PPS and gpsd
+server 127.127.28.1 minpoll 4 maxpoll 4 prefer
+fudge 127.127.28.1 refid GPS1
+
+
+RGDS
+GARY
+- ---------------------------------------------------------------------------
+Gary E. Miller Rellim 109 NW Wilmington Ave., Suite E, Bend, OR 97701
+	<A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">gem at rellim.com</A>  Tel:+1(541)382-8588
+
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v1.4.3 (GNU/Linux)
+
+iD8DBQFNHNx7BmnRqz71OvMRAlBvAKC30qNnCQ4PgeekN6wegKu+nzUhnQCeMU5v
+72f5FjyBgmcOBd595uAjcCU=
+=dnPC
+-----END PGP SIGNATURE-----
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="004856.html">[Gpsd-users] Cannot get Garmin 18x LVC NMEA to work right with ntp
+</A></li>
+	<LI>Next message: <A HREF="004858.html">[Gpsd-users] Cannot get Garmin 18x LVC NMEA to work right with ntp
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#4857">[ date ]</a>
+              <a href="thread.html#4857">[ thread ]</a>
+              <a href="subject.html#4857">[ subject ]</a>
+              <a href="author.html#4857">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

@@ -1,0 +1,116 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] How to set initial time?
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2011-October/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20How%20to%20set%20initial%20time%3F&In-Reply-To=%3C4EAC300F.7020803%40seiner.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="005523.html">
+   <LINK REL="Next"  HREF="005517.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] How to set initial time?</H1>
+    <B>Yan Seiner</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20How%20to%20set%20initial%20time%3F&In-Reply-To=%3C4EAC300F.7020803%40seiner.com%3E"
+       TITLE="[Gpsd-users] How to set initial time?">yan at seiner.com
+       </A><BR>
+    <I>Sat Oct 29 18:55:43 CEST 2011</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="005523.html">[Gpsd-users] How to set initial time?
+</A></li>
+        <LI>Next message: <A HREF="005517.html">[Gpsd-users] How to set initial time?
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#5524">[ date ]</a>
+              <a href="thread.html#5524">[ thread ]</a>
+              <a href="subject.html#5524">[ subject ]</a>
+              <a href="author.html#5524">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Yan Seiner wrote:
+&gt;<i> Charles Curley wrote:
+</I>&gt;&gt;<i> On Fri, 28 Oct 2011 15:42:38 -0700 (PDT)
+</I>&gt;&gt;<i> &quot;Yan Seiner&quot; &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">yan at seiner.com</A>&gt; wrote:
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i>  
+</I>&gt;&gt;&gt;<i> OK, to close the loop for posterity.
+</I>&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;<i> To set the time on a box that has no RTC and no network connection,
+</I>&gt;&gt;&gt;<i> you need to set the clock to any date after about 2001, then run the
+</I>&gt;&gt;&gt;<i> following:
+</I>&gt;&gt;&gt;<i>     
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> Would it be more robust to set the date, then fire up gpsd, wait until
+</I>&gt;&gt;<i> you know you have a good fix (thus ensuring you have valid time from the
+</I>&gt;&gt;<i> receiver), then query for the time?
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> I've observed my BU-353 return a date around 2005 for a few seconds as
+</I>&gt;&gt;<i> it warms up.
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i>   
+</I>&gt;<i> Good point.  Unfortunately I've filled up my limited flash with test 
+</I>&gt;<i> cruft so I have to rebuild the image and reflash my test platform; 
+</I>&gt;<i> that will take a few days as I have a life too.  :-)  I'll try a few 
+</I>&gt;<i> different ways once I have it running.
+</I>&gt;<i>
+</I>OK, turns out to be a rainy weekend and I can't work on the fence....
+
+Here's the latest and greatest way to set the clock using gpsd:
+
+date -s 2010.01.01-01:01
+/etc/init.d/gpsd start
+#now wait for a lock
+echo &quot;Waiting for GPS lock&quot;
+sleep 10
+echo '?WATCH={&quot;enable&quot;:true,&quot;json&quot;:true}' | netcat  localhost 2947 | awk 
+'/&quot;mode&quot;:3/{exit}'
+echo &quot;Got GPS lock - setting date&quot;
+
+date -s \
+$( \
+ echo '?WATCH={&quot;enable&quot;:true,&quot;json&quot;:false,&quot;nmea&quot;:true}' \
+ | netcat  localhost 2947 \
+ | awk '/GPRMC/{FS=&quot;,&quot;; print 20 substr($10,5,2) &quot;.&quot; substr ($10,3,2) 
+&quot;.&quot; substr($10,0,2) &quot;-&quot; substr($2,0,2) &quot;:&quot; substr($2,3,2) &quot;:&quot; substr($ 
+2,5,2); exit}' \
+ )
+ 
+/etc/init.d/ntpd start
+
+
+-- 
+Few people are capable of expressing with equanimity opinions which differ from the prejudices of their social environment. Most people are even incapable of forming such opinions.
+    Albert Einstein
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="005523.html">[Gpsd-users] How to set initial time?
+</A></li>
+	<LI>Next message: <A HREF="005517.html">[Gpsd-users] How to set initial time?
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#5524">[ date ]</a>
+              <a href="thread.html#5524">[ thread ]</a>
+              <a href="subject.html#5524">[ subject ]</a>
+              <a href="author.html#5524">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

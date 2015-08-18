@@ -1,0 +1,102 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] Bluetooth issues (was: Re: Preparing for 2.93 point	release)
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2010-April/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Bluetooth%20issues%20%28was%3A%20Re%3A%20Preparing%20for%202.93%20point%0A%09release%29&In-Reply-To=%3C20100416054417.GA27141%40thyrsus.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="004362.html">
+   <LINK REL="Next"  HREF="004398.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] Bluetooth issues (was: Re: Preparing for 2.93 point	release)</H1>
+    <B>Eric Raymond</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Bluetooth%20issues%20%28was%3A%20Re%3A%20Preparing%20for%202.93%20point%0A%09release%29&In-Reply-To=%3C20100416054417.GA27141%40thyrsus.com%3E"
+       TITLE="[Gpsd-users] Bluetooth issues (was: Re: Preparing for 2.93 point	release)">esr at thyrsus.com
+       </A><BR>
+    <I>Fri Apr 16 07:44:17 CEST 2010</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="004362.html">[Gpsd-users] Preparing for 2.93 point release
+</A></li>
+        <LI>Next message: <A HREF="004398.html">[Gpsd-users] Bluetooth issues (was: Re: Preparing for 2.93	point release)
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#4390">[ date ]</a>
+              <a href="thread.html#4390">[ thread ]</a>
+              <a href="subject.html#4390">[ subject ]</a>
+              <a href="author.html#4390">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Ji&#345;&#237; Techet &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">techet at gmail.com</A>&gt;:
+&gt;<i> The only problem I see now is that with the bluetooth device I don't
+</I>&gt;<i> get any data from the device when
+</I>&gt;<i> 
+</I>&gt;<i> 1. I first connect gpsd (the gps device is off)
+</I>&gt;<i> 2. Turn on the gps device
+</I>
+What do you mean by &quot;connect gpsd&quot;? 
+
+If you just mean &quot;Pass the device name to gpsd as a command-line
+argument&quot; or even &quot;pass its name to the control socket as an available
+device&quot; (as the hotplug script does) then that should work fine.
+
+All either of these operations do is put the device in gpsd's internal
+pool of potential data sources; it won't be opened until some client
+declares a watch.  As long as no client requests data 
+until after you power on the Bluetooth device, there sgould be no
+problem.
+ 
+&gt;<i> Is this problem related to the FAQ question
+</I>&gt;<i> 
+</I>&gt;<i> &quot;Why do I have to restart gpsd whenever I power-cycle my Bluetooth device?&quot;
+</I>
+I don't know. I'm afraid I don't even know if the bug I described in the
+Bluetooth bug is still there. It was reported by a user some time back.
+ 
+&gt;<i> (I don't really need to restart gspd to get some data, all I have to
+</I>&gt;<i> do is to first turn on the device and then connect gpsd.) I had this
+</I>&gt;<i> problem with 2.3x so it's nothing specific to the new protocol. If
+</I>&gt;<i> it's OS problem, has it been reported to the kernel developers? If so,
+</I>&gt;<i> is there any reason why this hasn't been fixed yet?
+</I>
+Sorry, my ignorance of Bluetooth is nearly total.  I have no answers
+to these questions.
+ 
+We do, however, have Bluetooth users on this list.  One of them might
+be able to help you more effectively than I can.
+
+I'll respond to your issues about the Python interface separately.
+-- 
+		&lt;a href=&quot;<A HREF="http://www.catb.org/~esr/">http://www.catb.org/~esr/</A>&quot;&gt;Eric S. Raymond&lt;/a&gt;
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="004362.html">[Gpsd-users] Preparing for 2.93 point release
+</A></li>
+	<LI>Next message: <A HREF="004398.html">[Gpsd-users] Bluetooth issues (was: Re: Preparing for 2.93	point release)
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#4390">[ date ]</a>
+              <a href="thread.html#4390">[ thread ]</a>
+              <a href="subject.html#4390">[ subject ]</a>
+              <a href="author.html#4390">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

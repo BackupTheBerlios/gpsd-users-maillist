@@ -1,0 +1,106 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] Ubuntu 10.10 Udev package problems
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2010-December/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Ubuntu%2010.10%20Udev%20package%20problems&In-Reply-To=%3C20101228204458.46adccc7%40dragon%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="004855.html">
+   <LINK REL="Next"  HREF="004845.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] Ubuntu 10.10 Udev package problems</H1>
+    <B>Charles Curley</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Ubuntu%2010.10%20Udev%20package%20problems&In-Reply-To=%3C20101228204458.46adccc7%40dragon%3E"
+       TITLE="[Gpsd-users] Ubuntu 10.10 Udev package problems">charlescurley at charlescurley.com
+       </A><BR>
+    <I>Wed Dec 29 04:44:58 CET 2010</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="004855.html">[Gpsd-users] Ubuntu 10.10 Udev package problems
+</A></li>
+        <LI>Next message: <A HREF="004845.html">[Gpsd-users] Ubuntu 10.10 Udev package problems
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#4843">[ date ]</a>
+              <a href="thread.html#4843">[ thread ]</a>
+              <a href="subject.html#4843">[ subject ]</a>
+              <a href="author.html#4843">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>On Tue, 28 Dec 2010 20:15:01 -0500
+Eric Raymond &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">esr at thyrsus.com</A>&gt; wrote:
+
+&gt;<i> Hmm.  I just checked the same functionality under 10.04 and it worked.
+</I>
+Interesting. I just upgraded a box from Ubuntu 8.04 to 10.04. pulled in
+HEAD, compiled and installed it. I do not see it running there.
+
+* no socket; I remove that after each each successful run, but I
+  haven't had one on the 10.04 box so far.
+
+* Minimal python. I did not build the clients.
+
+* The device file is there:
+
+crw-rw---- 1 root dialout 188, 0 Dec 28 20:22 /dev/ttyUSB0
+
+I see the following in /var/log/syslog:
+
+Dec 28 20:27:58 taltos kernel: [ 1550.904026] usb 1-1: new full speed USB device using uhci_hcd and address 4
+Dec 28 20:27:58 taltos kernel: [ 1551.063429] usb 1-1: configuration #1 chosen from 1 choice
+Dec 28 20:27:58 taltos kernel: [ 1551.064901] pl2303 1-1:1.0: pl2303 converter detected
+Dec 28 20:27:58 taltos kernel: [ 1551.082018] usb 1-1: pl2303 converter now attached to ttyUSB0
+Dec 28 20:27:58 taltos gpsd.hotplug: gpsd_control(action=add, arg=/dev/ttyUSB0)
+Dec 28 20:27:58 taltos gpsd.hotplug: socket /var/run/gpsd.sock doesn't exist
+Dec 28 20:27:58 taltos gpsd.hotplug: launching gpsd -G -F /var/run/gpsd.sock
+Dec 28 20:27:58 taltos gpsd.hotplug: socket /var/run/gpsd.sock doesn't exist
+Dec 28 20:27:58 taltos gpsd.hotplug: can't reach gpsd
+
+I tried running it manually. I get:
+
+gpsd: error while loading shared libraries: libgpsd.so.0: cannot open
+shared object file: No such file or directory
+
+Is there a magic incantation I'm missing?
+
+
+-- 
+
+Charles Curley                  /&quot;\    ASCII Ribbon Campaign
+Looking for fine software       \ /    Respect for open standards
+and/or writing?                  X     No HTML/RTF in email
+<A HREF="http://www.charlescurley.com">http://www.charlescurley.com</A>    / \    No M$ Word docs in email
+
+Key fingerprint = CE5C 6645 A45A 64E4 94C0  809C FFF6 4C48 4ECD DFDB
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="004855.html">[Gpsd-users] Ubuntu 10.10 Udev package problems
+</A></li>
+	<LI>Next message: <A HREF="004845.html">[Gpsd-users] Ubuntu 10.10 Udev package problems
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#4843">[ date ]</a>
+              <a href="thread.html#4843">[ thread ]</a>
+              <a href="subject.html#4843">[ subject ]</a>
+              <a href="author.html#4843">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

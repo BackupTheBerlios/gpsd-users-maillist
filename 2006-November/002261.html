@@ -1,0 +1,89 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] Subtle,	nasty bug in NMEA handling may account for 2D/3D jitter
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2006-November/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Subtle%2C%0A%09nasty%20bug%20in%20NMEA%20handling%20may%20account%20for%202D/3D%20jitter&In-Reply-To=%3C20061124085801.GA5894%40thyrsus.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="002264.html">
+   <LINK REL="Next"  HREF="002265.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] Subtle,	nasty bug in NMEA handling may account for 2D/3D jitter</H1>
+    <B>Eric S. Raymond</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Subtle%2C%0A%09nasty%20bug%20in%20NMEA%20handling%20may%20account%20for%202D/3D%20jitter&In-Reply-To=%3C20061124085801.GA5894%40thyrsus.com%3E"
+       TITLE="[Gpsd-users] Subtle,	nasty bug in NMEA handling may account for 2D/3D jitter">esr at thyrsus.com
+       </A><BR>
+    <I>Fri Nov 24 09:58:01 CET 2006</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="002264.html">[Gpsd-users] gpsd not working with Garmin GPS Map 60CSX
+</A></li>
+        <LI>Next message: <A HREF="002265.html">[Gpsd-users] Source-tree Lock
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2261">[ date ]</a>
+              <a href="thread.html#2261">[ thread ]</a>
+              <a href="subject.html#2261">[ subject ]</a>
+              <a href="author.html#2261">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>I don't normally copy my commit messages to these lists, but I just found
+a bug that is sufficiently nasty and long-standing that everybody should
+get a heads-up on it.
+
+My change in revision 3959 unmasked a long-standing bug.  GPGGA and GPGLL need
+to set the mode field when they have valid fix data, otherwise the O reports
+will often show no fix on a GLL or GGA that arrives before GSA in the send
+cycle (and some devices, like the FV-18, don't normally send GSA at all).
+
+This bug was being masked by an incorrect test; the have_fix()
+function was returning positive if status had been set to nonzero and
+no mode had yet been seen.  This, in turn, caused some misbehavior in
+the P response; it would sometimes return P=? ?, which should not
+actually have happened.  I spotted this symptom when looking at
+reports from Chris Kuethe's PHP script.
+
+This fix required rebuilding the regression tests, as the mode field on
+GLL and GGA sentences now frequently has a different (higher) value than
+it used to.
+
+It is quite possible that this bug accounted for a lot of the 2D/3D
+jitter that fans of the J patch were complaining about.
+
+Screwing with the mode field like this in the absence of received GSAs is a
+bit dodgy, but I don't see a better alternative.  NMEA 0183
+brain-damage strikes again -- what a %@!$&amp;# botch of a protocol!
+-- 
+		&lt;a href=&quot;<A HREF="http://www.catb.org/~esr/">http://www.catb.org/~esr/</A>&quot;&gt;Eric S. Raymond&lt;/a&gt;
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="002264.html">[Gpsd-users] gpsd not working with Garmin GPS Map 60CSX
+</A></li>
+	<LI>Next message: <A HREF="002265.html">[Gpsd-users] Source-tree Lock
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2261">[ date ]</a>
+              <a href="thread.html#2261">[ thread ]</a>
+              <a href="subject.html#2261">[ subject ]</a>
+              <a href="author.html#2261">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

@@ -1,0 +1,103 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] Low Budget Bathymetry
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2006-October/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Low%20Budget%20Bathymetry&In-Reply-To=%3C20061023203006.GC10387%40thyrsus.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="002127.html">
+   <LINK REL="Next"  HREF="002117.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] Low Budget Bathymetry</H1>
+    <B>Eric S. Raymond</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Low%20Budget%20Bathymetry&In-Reply-To=%3C20061023203006.GC10387%40thyrsus.com%3E"
+       TITLE="[Gpsd-users] Low Budget Bathymetry">esr at thyrsus.com
+       </A><BR>
+    <I>Mon Oct 23 22:30:06 CEST 2006</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="002127.html">[Gpsd-users] Your NTP Server Using A Garmin 18 LVC
+</A></li>
+        <LI>Next message: <A HREF="002117.html">[Gpsd-users] Low Budget Bathymetry
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2116">[ date ]</a>
+              <a href="thread.html#2116">[ thread ]</a>
+              <a href="subject.html#2116">[ subject ]</a>
+              <a href="author.html#2116">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Gary E. Miller &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">gem at rellim.com</A>&gt;:
+&gt;<i> Conceptually should be easy to add in to gpsd.  It looks simple:
+</I>&gt;<i> 
+</I>&gt;<i> Digital Depth is embedded in the DPT sentence.  Its format is as follows:
+</I>&gt;<i> 
+</I>&gt;<i> INDPT,d.d,o.o*hh&lt;CR&gt;&lt;LF&gt;
+</I>&gt;<i> 
+</I>&gt;<i> where:
+</I>&gt;<i> 
+</I>&gt;<i>     * d.d is the decimal depth value in meters relative to the transducer
+</I>&gt;<i>     * o.o is an offset from the the transducer to the surface.
+</I>&gt;<i>     * hh is an automatically generated checksum
+</I>&gt;<i>     * &lt;CR&gt;&lt;LF&gt;
+</I>&gt;<i> 
+</I>&gt;<i> Eric would have to alocate some way for gpsd to present the info to the
+</I>&gt;<i> client.  Not a big deal, but just some bookeeping.  Eric: what do you
+</I>&gt;<i> think about this?
+</I>
+How is this different from altitude?  Is there any reason we shouldn't use the 
+normal altitude fields(s)?
+
+
+&gt;<i> &gt; The timestamps that gpsd could add, for example, would provide
+</I>&gt;<i> &gt; valuable position interpolation information for more precisely positioning
+</I>&gt;<i> &gt; the depth readings between position readings.
+</I>&gt;<i> 
+</I>&gt;<i> gpsd has stayed away from interpolation of data.  The intent has been to
+</I>&gt;<i> just provide the facts to the client and let the client do any fancy
+</I>&gt;<i> processing of the data.
+</I>&gt;<i> 
+</I>&gt;<i> &gt; Ideally, I would have the incoming sentences parsed on arrival at the
+</I>&gt;<i> &gt; laptop, with position translated from lat-lon to UTM.
+</I>&gt;<i> 
+</I>&gt;<i> No one else has requested UTM.  GPS seem to be pretty much wgs84.  I
+</I>&gt;<i> guess it could be done, but seems to me to be the sort of thing best
+</I>&gt;<i> done in a client.  I would hate to see something like proj.4 linked in to
+</I>&gt;<i> gpsd.
+</I>
+Agreed.  gpsd's job is to give you clean data in a known reference frame.  How
+you transform it afterward is a client-side issue.
+-- 
+		&lt;a href=&quot;<A HREF="http://www.catb.org/~esr/">http://www.catb.org/~esr/</A>&quot;&gt;Eric S. Raymond&lt;/a&gt;
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="002127.html">[Gpsd-users] Your NTP Server Using A Garmin 18 LVC
+</A></li>
+	<LI>Next message: <A HREF="002117.html">[Gpsd-users] Low Budget Bathymetry
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2116">[ date ]</a>
+              <a href="thread.html#2116">[ thread ]</a>
+              <a href="subject.html#2116">[ subject ]</a>
+              <a href="author.html#2116">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

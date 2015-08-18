@@ -1,0 +1,85 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] Altitude not always being reported
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2006-March/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Altitude%20not%20always%20being%20reported&In-Reply-To=%3Cp0623091fc047995649b7%40%5B58.163.136.223%5D%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="001459.html">
+   <LINK REL="Next"  HREF="001467.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] Altitude not always being reported</H1>
+    <B>Robin L Darroch</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Altitude%20not%20always%20being%20reported&In-Reply-To=%3Cp0623091fc047995649b7%40%5B58.163.136.223%5D%3E"
+       TITLE="[Gpsd-users] Altitude not always being reported">robin at spade-men.com
+       </A><BR>
+    <I>Thu Mar 23 01:19:56 CET 2006</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="001459.html">[Gpsd-users] Altitude not always being reported
+</A></li>
+        <LI>Next message: <A HREF="001467.html">[Gpsd-users] Altitude not always being reported
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1464">[ date ]</a>
+              <a href="thread.html#1464">[ thread ]</a>
+              <a href="subject.html#1464">[ subject ]</a>
+              <a href="author.html#1464">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>At 9:52 -0800 22/3/06, Gary E. Miller wrote:
+&gt;<i>Not sure where Eric has been lately, he can better explain why the order
+</I>&gt;<i>of NMEA receipt can not be counted on.
+</I>
+I understand that the order can't be counted on... but it shouldn't 
+discard information it's already received when it gets a different 
+sentence with the same timestamp.  That was the logical problem with 
+it prior to the patch.
+
+&gt;<i>For example your code makes an assupmtion on when the RMC sentence should
+</I>&gt;<i>be seen in the cycle and that is not consistent between different GPS.
+</I>
+Well, that's not quite true.  I added a debug-level warning if the 
+RMC was received &quot;first&quot;, because that is what the bug was causing it 
+to think had happened, when in fact it had not.  All it should do now 
+is *not* throw out any information until it receives a new timestamp, 
+whatever sentence that comes from (which was clearly the intent, but 
+not the operation, of the code before).
+-- 
+
+-------------------------------------------------------------------------
+  Robin L. Darroch - PO Box 2715, South Hedland WA 6722 - +61 421 503 966
+       <A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">robin at darroch.id.au</A> - <A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">robin at nyca.org.au</A> - <A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">robin at spade-men.com</A>
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="001459.html">[Gpsd-users] Altitude not always being reported
+</A></li>
+	<LI>Next message: <A HREF="001467.html">[Gpsd-users] Altitude not always being reported
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1464">[ date ]</a>
+              <a href="thread.html#1464">[ thread ]</a>
+              <a href="subject.html#1464">[ subject ]</a>
+              <a href="author.html#1464">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

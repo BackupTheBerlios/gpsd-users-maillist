@@ -1,0 +1,156 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] Have I failed to simplify *enough*?
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2011-March/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Have%20I%20failed%20to%20simplify%20%2Aenough%2A%3F&In-Reply-To=%3CAANLkTimcFxiDqJhxkp%2B1KxYiDz1f_NuMM7QeAj73bofu%40mail.gmail.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="005118.html">
+   <LINK REL="Next"  HREF="005123.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] Have I failed to simplify *enough*?</H1>
+    <B>Charles Suprin</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Have%20I%20failed%20to%20simplify%20%2Aenough%2A%3F&In-Reply-To=%3CAANLkTimcFxiDqJhxkp%2B1KxYiDz1f_NuMM7QeAj73bofu%40mail.gmail.com%3E"
+       TITLE="[Gpsd-users] Have I failed to simplify *enough*?">hamaa1vs at gmail.com
+       </A><BR>
+    <I>Thu Mar 10 13:41:38 CET 2011</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="005118.html">[Gpsd-users] Have I failed to simplify *enough*?
+</A></li>
+        <LI>Next message: <A HREF="005123.html">[Gpsd-users] GPS in (not) offline
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#5122">[ date ]</a>
+              <a href="thread.html#5122">[ thread ]</a>
+              <a href="subject.html#5122">[ subject ]</a>
+              <a href="author.html#5122">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Eric,
+
+Yippee on not having another API break for a long time. The #ifdefs in
+my code are starting to become a readability problem. Also I expect to
+need to support from 2.92 to atleast whatever this release will be.
+
+As a thought towards robustness, if gps_read(&amp;gpsdata, 5000000) has
+any issue where it blocks under any circumstance for longer than the
+timeout, there is no way for the application to handle it without
+going multithreaded and having only that one thread block. (I am
+thinking back to when gps_waiting appeared to give bogus results if
+the gps disconnected.)
+
+Consider the single threaded application that does the following:
+
+while (1) {
+  do a bunch of other stuff
+ if gps_read(..)
+    do the no data thing
+ else
+   update spatial information
+}
+
+If gps_read blocks then the application lock and never recovers. (yes
+going multithreaded allows only one thread to block but now the
+developer needs to worry about synchronization issues.yuck.)  As an
+application developer, one needs to wait for distributions to update
+their libraries to get the libgps fix or insist users compile libgps.
+Look at how many distributions are still running 2.92.
+
+In summary, combining everything into a single call is great when
+everything is working perfectly. If it is not, then the application
+developer is at the mercy of the gpsd team and the distribution
+packagers. Of course this is also an argument to not change the API at
+all either.  All this brings us back to your point in &quot;Scenes from the
+Life of a System Architect&quot; where history is important.
+
+Respectfully,
+
+Charles
+
+
+
+On Wed, Mar 9, 2011 at 2:05 PM, Eric Raymond &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">esr at snark.thyrsus.com</A>&gt; wrote:
+&gt;<i> I was thinking about the library API issues around gps_waiting() and
+</I>&gt;<i> gps_read() and the never-implemented POLL_BLOCK proposal, and a thought
+</I>&gt;<i> struck me. &#160;Have I failed to simplify *enough*?
+</I>&gt;<i>
+</I>&gt;<i> In principle, gps_waiting() could probably be abolished if I were to add
+</I>&gt;<i> a timeout argument to gps_read().
+</I>&gt;<i>
+</I>&gt;<i> This may be the last right time to discuss such a change for years, because
+</I>&gt;<i> I'm devoutly hoping we won't need to have another major library API break
+</I>&gt;<i> for years.
+</I>&gt;<i>
+</I>&gt;<i> The archetypal client polling loop currently looks like this:
+</I>&gt;<i>
+</I>&gt;<i> &#160; &#160;(void)gps_stream(&amp;gpsdata, flags, source.device);
+</I>&gt;<i> &#160; &#160;for (;;) {
+</I>&gt;<i> &#160; &#160; &#160; &#160;if (!gps_waiting(&amp;gpsdata, 5000000)) {
+</I>&gt;<i> &#160; &#160; &#160; &#160; &#160; &#160;(void)fprintf(stderr, &quot;%s: error while waiting\n&quot;, progname);
+</I>&gt;<i> &#160; &#160; &#160; &#160; &#160; &#160;break;
+</I>&gt;<i> &#160; &#160; &#160; &#160;} else {
+</I>&gt;<i> &#160; &#160; &#160; &#160; &#160; &#160;(void)gps_read(&amp;gpsdata);
+</I>&gt;<i> &#160; &#160; &#160; &#160; &#160; &#160;//refresh display,
+</I>&gt;<i> &#160; &#160; &#160; &#160; &#160; &#160;//do nonblocking read of user input,
+</I>&gt;<i> &#160; &#160; &#160; &#160; &#160; &#160;//dispatch on it.
+</I>&gt;<i> &#160; &#160; &#160; &#160;}
+</I>&gt;<i> &#160; &#160;}
+</I>&gt;<i> &#160; &#160;(void)gps_close(&amp;gpsdata);
+</I>&gt;<i>
+</I>&gt;<i> Is there any reason it shouldn't look like this?
+</I>&gt;<i>
+</I>&gt;<i> &#160; &#160;(void)gps_stream(&amp;gpsdata, flags, source.device);
+</I>&gt;<i> &#160; &#160;for (;;) {
+</I>&gt;<i> &#160; &#160; &#160; &#160;if (gps_read(&amp;gpsdata, 5000000) == -1) {
+</I>&gt;<i> &#160; &#160; &#160; &#160; &#160; &#160;(void)fprintf(stderr, &quot;%s: error while reading\n&quot;, progname);
+</I>&gt;<i> &#160; &#160; &#160; &#160;} else {
+</I>&gt;<i> &#160; &#160; &#160; &#160; &#160; &#160;//refresh display,
+</I>&gt;<i> &#160; &#160; &#160; &#160; &#160; &#160;//do nonblocking read of user input,
+</I>&gt;<i> &#160; &#160; &#160; &#160; &#160; &#160;//dispatch on it.
+</I>&gt;<i> &#160; &#160; &#160; &#160;}
+</I>&gt;<i> &#160; &#160;}
+</I>&gt;<i> &#160; &#160;(void)gps_close(&amp;gpsdata);
+</I>&gt;<i>
+</I>&gt;<i> --
+</I>&gt;<i> &#160; &#160; &#160; &#160; &#160; &#160; &#160; &#160;&lt;a href=&quot;<A HREF="http://www.catb.org/~esr/">http://www.catb.org/~esr/</A>&quot;&gt;Eric S. Raymond&lt;/a&gt;
+</I>&gt;<i>
+</I>&gt;<i> As war and government prove, insanity is the most contagious of
+</I>&gt;<i> diseases. &#160; &#160; &#160; -- Edward Abbey
+</I>&gt;<i> _______________________________________________
+</I>&gt;<i> Gpsd-users mailing list
+</I>&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">Gpsd-users at lists.berlios.de</A>
+</I>&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">https://lists.berlios.de/mailman/listinfo/gpsd-users</A>
+</I>&gt;<i>
+</I>
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="005118.html">[Gpsd-users] Have I failed to simplify *enough*?
+</A></li>
+	<LI>Next message: <A HREF="005123.html">[Gpsd-users] GPS in (not) offline
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#5122">[ date ]</a>
+              <a href="thread.html#5122">[ thread ]</a>
+              <a href="subject.html#5122">[ subject ]</a>
+              <a href="author.html#5122">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

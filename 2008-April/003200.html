@@ -1,0 +1,205 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users]  Missing PPS signal after midnight
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2008-April/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20%20Missing%20PPS%20signal%20after%20midnight&In-Reply-To=%3C16761435.post%40talk.nabble.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="003202.html">
+   <LINK REL="Next"  HREF="003201.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users]  Missing PPS signal after midnight</H1>
+    <B>Ulrich Voigt</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20%20Missing%20PPS%20signal%20after%20midnight&In-Reply-To=%3C16761435.post%40talk.nabble.com%3E"
+       TITLE="[Gpsd-users]  Missing PPS signal after midnight">ulrich.voigt at gmx.de
+       </A><BR>
+    <I>Fri Apr 18 09:49:16 CEST 2008</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="003202.html">[Gpsd-users] Fw: Keymaze 300 trackpoint/waypoint transfer	protocol
+</A></li>
+        <LI>Next message: <A HREF="003201.html">[Gpsd-users] Missing PPS signal after midnight
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3200">[ date ]</a>
+              <a href="thread.html#3200">[ thread ]</a>
+              <a href="subject.html#3200">[ subject ]</a>
+              <a href="author.html#3200">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>
+Hello,
+
+I have a curious problem with gpsd and the PPS signal. Gpsd (2.37) stops
+working with the PPS signal just after midnight. The problem is
+reproducable. It appears each night. After restarting the GPS the PPS signal
+os detected instantly, so I expect that this is a software problem of gpsd.
+
+Any ideas?
+Ulrich
+
+Here are the facts:
+
+I am using a Garmin HVS17, serial cable 9600. 
+The OS is SuSE Linux 10.2 64bit.
+uname -a: Linux swe2-sp 2.6.18.8-0.8-default #1 SMP Mon Jan 21 06:27:30 UTC
+2008 x86_64 x86_64 x86_64 GNU/Linux
+Gpsd startup: /usr/sbin/gpsd -F /var/run/gpsd.socket -P /var/run/gpsd.pid -n
+-N -D 5 /dev/ttyS0 &gt; gpsd.log
+
+gpsd.log where the PPS signal is detected last:
+====================================
+gpsd: &lt;= GPS: $PGRMC,A,,100,,,,,,A,,1,2,1,30*4B
+gpsd: GPRMC sets mode 0
+gpsd: found $PGRMC,.
+gpsd: switch_driver(Garmin Serial) called...
+gpsd: Reconfiguring for Garmin Serial...
+gpsd: pps-detect (DCD) on /dev/ttyS0 changed to 1
+gpsd: ntpshm_pps: clock: 1208476809 @ 1208476808.959995, precision -4
+gpsd: PPS pulse. cycle: 1000000, duration: 959999
+gpsd: pps-detect (DCD) on /dev/ttyS0 changed to 0
+gpsd: ntpshm_pps: clock: 1208476809 @ 1208476808.999997, precision -18
+gpsd: PPS pulse. cycle: 1000001, duration: 40002
+gpsd: =&gt; GPS: $PGRMC,A,,100,,,,,,A,,1,2,1,30*4B\x0d
+
+gpsd: &lt;= GPS: $PGRMB,0.0,200,,,,K,,W,W*31
+gpsd: unknown sentence: &quot;$PGRMB,0.0,200,,,,K,,W,W*31\x0d\x0a&quot;
+gpsd: &lt;= GPS: $PGRMM,WGS 84*06
+gpsd: unknown sentence: &quot;$PGRMM,WGS 84*06\x0d\x0a&quot;
+gpsd: pps-detect (DCD) on /dev/ttyS0 changed to 1
+gpsd: ntpshm_pps: clock: 1208476810 @ 1208476809.959995, precision -4
+gpsd: PPS pulse. cycle: 1000000, duration: 959998
+gpsd: pps-detect (DCD) on /dev/ttyS0 changed to 0
+gpsd: ntpshm_pps: clock: 1208476810 @ 1208476809.999996, precision -17
+gpsd: PPS pulse. cycle: 999999, duration: 40001
+gpsd: &lt;= GPS: $GPGSV,3,3,11,30,83,065,36,31,42,303,00,39,29,157,45*40
+gpsd: GPGSV field 3 value of 11 != actual count 14
+gpsd: Satellite data OK (3 of 3).
+gpsd: &lt;= GPS: $PGRME,6.0,M,4.6,M,7.7,M*2A
+gpsd: &lt;= GPS: $GPVTG,153,T,153,M,000.0,N,0000.0,K*7E
+gpsd: &lt;= GPS: $PGRMB,0.0,200,,,,K,,W,W*31
+gpsd: unknown sentence: &quot;$PGRMB,0.0,200,,,,K,,W,W*31\x0d\x0a&quot;
+gpsd: &lt;= GPS: $PGRMM,WGS 84*06
+gpsd: unknown sentence: &quot;$PGRMM,WGS 84*06\x0d\x0a&quot;
+gpsd: &lt;= GPS:
+$GPRMC,000012,A,5107.8635,N,00644.0834,E,000.0,152.5,180408,000.1,W*62
+gpsd: GPRMC starts a reporting cycle.
+gpsd: GPRMC sets mode 2
+gpsd: ntpshm_put: Clock: 1208476812 @ 1208476812.345313
+gpsd: &lt;= GPS:
+$GPGGA,000012,5107.8635,N,00644.0834,E,2,03,5.4,79.5,M,47.1,M,,*7B
+gpsd: GPGGA sets status 2 and mode 3 (changed)
+gpsd: &lt;= GPS: $GPGSA,A,3,,,05,,,,,29,30,,,,5.5,5.4,1.0*3F
+gpsd: GPGSA sets mode 3
+gpsd: &lt;= GPS:
+$GPGSV,3,1,11,02,32,063,00,04,11,032,00,05,63,094,39,09,08,149,00*72
+gpsd: Partial satellite data (1 of 3).
+gpsd: &lt;= GPS: $PGRME,6.2,M,4.6,M,7.9,M*26
+gpsd: &lt;= GPS: $GPVTG,153,T,153,M,000.0,N,0000.0,K*7E
+gpsd: &lt;= GPS: $PGRMB,0.0,200,,,,K,,W,W*31
+gpsd: unknown sentence: &quot;$PGRMB,0.0,200,,,,K,,W,W*31\x0d\x0a&quot;
+gpsd: &lt;= GPS: $PGRMM,WGS 84*06
+gpsd: unknown sentence: &quot;$PGRMM,WGS 84*06\x0d\x0a&quot;
+gpsd: &lt;= GPS:
+$GPRMC,000013,A,5107.8632,N,00644.0836,E,000.0,152.5,180408,000.1,W*66
+gpsd: GPRMC starts a reporting cycle.
+gpsd: GPRMC sets mode 2
+========================================
+
+This is what ntpq -p tells me this morning:
+
+     remote           refid      st t when poll reach   delay   offset 
+jitter
+==============================================================================
+ LOCAL(0)        .LOCL.          10 l   14   64  377    0.000    0.000  
+0.001
+*SHM(0)          .GPS.            1 l    4   16  377    0.000   13.539 
+30.252
+ SHM(1)          .PPS.            1 l   7h   16    0    0.000    0.004  
+0.012
+
+=========================================
+The ntp log file:
+17 Apr 23:49:04 ntpd[5981]: synchronized to SHM(1), stratum 1
+17 Apr 23:49:22 ntpd[5981]: synchronized to LOCAL(0), stratum 10
+17 Apr 23:50:58 ntpd[5981]: synchronized to SHM(1), stratum 1
+17 Apr 23:51:16 ntpd[5981]: synchronized to LOCAL(0), stratum 10
+17 Apr 23:51:49 ntpd[5981]: synchronized to SHM(1), stratum 1
+17 Apr 23:52:07 ntpd[5981]: synchronized to LOCAL(0), stratum 10
+17 Apr 23:54:02 ntpd[5981]: synchronized to SHM(1), stratum 1
+17 Apr 23:54:20 ntpd[5981]: synchronized to LOCAL(0), stratum 10
+17 Apr 23:55:27 ntpd[5981]: synchronized to SHM(1), stratum 1
+17 Apr 23:55:45 ntpd[5981]: synchronized to LOCAL(0), stratum 10
+17 Apr 23:56:18 ntpd[5981]: synchronized to SHM(1), stratum 1
+17 Apr 23:56:33 ntpd[5981]: synchronized to LOCAL(0), stratum 10
+17 Apr 23:57:06 ntpd[5981]: synchronized to SHM(1), stratum 1
+17 Apr 23:57:23 ntpd[5981]: synchronized to LOCAL(0), stratum 10
+17 Apr 23:57:55 ntpd[5981]: synchronized to SHM(1), stratum 1
+17 Apr 23:59:00 ntpd[5981]: synchronized to LOCAL(0), stratum 10
+17 Apr 23:59:17 ntpd[5981]: synchronized to SHM(1), stratum 1
+17 Apr 23:59:50 ntpd[5981]: synchronized to LOCAL(0), stratum 10
+18 Apr 00:01:16 ntpd[5981]: synchronized to SHM(1), stratum 1
+18 Apr 00:01:49 ntpd[5981]: synchronized to SHM(0), stratum 1
+18 Apr 00:02:21 ntpd[5981]: synchronized to SHM(1), stratum 1
+18 Apr 00:02:54 ntpd[5981]: synchronized to SHM(0), stratum 1
+18 Apr 00:05:19 ntpd[5981]: synchronized to LOCAL(0), stratum 10
+18 Apr 00:05:35 ntpd[5981]: synchronized to SHM(0), stratum 1
+18 Apr 00:10:47 ntpd[5981]: synchronized to LOCAL(0), stratum 10
+18 Apr 00:11:02 ntpd[5981]: synchronized to SHM(0), stratum 1
+18 Apr 06:36:11 ntpd[5981]: synchronized to LOCAL(0), stratum 10
+
+=========================
+My ntp.conf:
+
+server 127.127.1.0
+fudge 127.127.1.0  stratum 10
+server 127.127.28.0  minpoll 4 maxpoll 4
+fudge 127.127.28.0  stratum 1 time1 0.150 refid GPS
+server 127.127.28.1  minpoll 4 maxpoll 4 prefer
+fudge 127.127.28.1  stratum 1 refid PPS
+driftfile /var/lib/ntp/drift/ntp.drift
+logfile /var/log/ntp
+enable stats
+tinker panic 0
+
+
+
+
+
+
+-- 
+View this message in context: <A HREF="http://www.nabble.com/Missing-PPS-signal-after-midnight-tp16761435p16761435.html">http://www.nabble.com/Missing-PPS-signal-after-midnight-tp16761435p16761435.html</A>
+Sent from the GPSd - Users mailing list archive at Nabble.com.
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="003202.html">[Gpsd-users] Fw: Keymaze 300 trackpoint/waypoint transfer	protocol
+</A></li>
+	<LI>Next message: <A HREF="003201.html">[Gpsd-users] Missing PPS signal after midnight
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3200">[ date ]</a>
+              <a href="thread.html#3200">[ thread ]</a>
+              <a href="subject.html#3200">[ subject ]</a>
+              <a href="author.html#3200">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

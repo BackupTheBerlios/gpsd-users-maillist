@@ -1,0 +1,90 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] gpsd 2.20 - sirfmon doesn't compile on Max OS X - Probably others
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2005-April/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20gpsd%202.20%20-%20sirfmon%20doesn%27t%20compile%20on%20Max%20OS%20X%20-%20Probably%20others&In-Reply-To=%3C230ef80a555e547bfe9a5f51b9de2998%40nicholasfamilycentral.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="000520.html">
+   <LINK REL="Next"  HREF="000523.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] gpsd 2.20 - sirfmon doesn't compile on Max OS X - Probably others</H1>
+    <B>Frank Nicholas</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20gpsd%202.20%20-%20sirfmon%20doesn%27t%20compile%20on%20Max%20OS%20X%20-%20Probably%20others&In-Reply-To=%3C230ef80a555e547bfe9a5f51b9de2998%40nicholasfamilycentral.com%3E"
+       TITLE="[Gpsd-users] gpsd 2.20 - sirfmon doesn't compile on Max OS X - Probably others">frank at nicholasfamilycentral.com
+       </A><BR>
+    <I>Fri Apr  1 03:31:45 CEST 2005</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="000520.html">[Gpsd-users] Announcing release 2.20 of gpsd
+</A></li>
+        <LI>Next message: <A HREF="000523.html">[Gpsd-users] Re: [Gpsd-dev] gpsd 2.20 - sirfmon doesn't compile on Max OS X - Probably others
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#521">[ date ]</a>
+              <a href="thread.html#521">[ thread ]</a>
+              <a href="subject.html#521">[ subject ]</a>
+              <a href="author.html#521">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>if gcc -DHAVE_CONFIG_H -I. -I. -I.   -I/usr/X11R6/include  -mcpu=7450 
+-O3 -pipe -faltivec -fsigned-char -maltivec -mabi=altivec 
+-mpowerpc-gfxopt -Wall -Wcast-align -Wmissing-declarations 
+-Wmissing-prototypes -Wstrict-prototypes -Wpointer-arith -Wreturn-type 
+-W  -I/usr/X11R6/include -MT sirfmon.o -MD -MP -MF &quot;.deps/sirfmon.Tpo&quot; 
+-c -o sirfmon.o sirfmon.c; \
+then mv -f &quot;.deps/sirfmon.Tpo&quot; &quot;.deps/sirfmon.Po&quot;; else rm -f 
+&quot;.deps/sirfmon.Tpo&quot;; exit 1; fi
+sirfmon.c: In function `tzoffset':
+sirfmon.c:252: error: structure has no member named `tm'
+sirfmon.c: In function `readbyte':
+sirfmon.c:967: error: storage size of `timeval' isn't known
+sirfmon.c:967: warning: unused variable `timeval'
+make[1]: *** [sirfmon.o] Error 1
+make: *** [all] Error 2
+
+
+This line (252):
+     res = localtime_r(&amp;now, &amp;tm)-&gt;tm.tm_gmtoff;
+
+Should be:
+     res = localtime_r(&amp;now, &amp;tm)-&gt;tm_gmtoff;
+
+Needs the following with the includes:
+
+#if defined(HAVE_SYS_TIME_H)
+#include &lt;sys/time.h&gt;
+#endif
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="000520.html">[Gpsd-users] Announcing release 2.20 of gpsd
+</A></li>
+	<LI>Next message: <A HREF="000523.html">[Gpsd-users] Re: [Gpsd-dev] gpsd 2.20 - sirfmon doesn't compile on Max OS X - Probably others
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#521">[ date ]</a>
+              <a href="thread.html#521">[ thread ]</a>
+              <a href="subject.html#521">[ subject ]</a>
+              <a href="author.html#521">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

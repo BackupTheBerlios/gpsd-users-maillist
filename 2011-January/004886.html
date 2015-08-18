@@ -1,0 +1,122 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] Trouble installing on Opensuse 10.2
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2011-January/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Trouble%20installing%20on%20Opensuse%2010.2&In-Reply-To=%3C4D234AE9.8080401%40funsoft.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="004885.html">
+   <LINK REL="Next"  HREF="004888.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] Trouble installing on Opensuse 10.2</H1>
+    <B>Gary Eheman</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Trouble%20installing%20on%20Opensuse%2010.2&In-Reply-To=%3C4D234AE9.8080401%40funsoft.com%3E"
+       TITLE="[Gpsd-users] Trouble installing on Opensuse 10.2">eheman at funsoft.com
+       </A><BR>
+    <I>Tue Jan  4 17:29:29 CET 2011</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="004885.html">[Gpsd-users] Trouble installing on Opensuse 10.2
+</A></li>
+        <LI>Next message: <A HREF="004888.html">[Gpsd-users] Trouble installing on Opensuse 10.2
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#4886">[ date ]</a>
+              <a href="thread.html#4886">[ thread ]</a>
+              <a href="subject.html#4886">[ subject ]</a>
+              <a href="author.html#4886">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>In my case, in the gpsd-2.95 directory, during the ./configure step prior to running
+&quot;make&quot;, I saw this (recovered from config.log):
+
+&lt;snip&gt;
+configure:18164: found /usr/bin/xsltproc
+configure:18176: result: yes
+configure:18188: checking whether xsltproc knows about docbook xsl
+configure:18213: result: no
+configure:18221: checking for xmlto
+configure:18249: result: no
+configure:18263: WARNING: Neither xsltproc nor xmlto works: I will not build man pages.
+configure:18265: WARNING: To build man pages, install xsltproc/xsltlib or xmlto and
+run autogen.sh again.
+&lt;end snip&gt;
+
+I went into yast software mangement, put xmlto into the search field. Selected the
+rpm and then probably repeated the step for xsltproc.  It asked if I wanted some
+co-requisite packages and I allowed it.
+
+I then ran ./configure again, problem was solved and pages were built during &quot;make&quot;.
+
+Based upon your description, it is possible that it is complaining about one of the
+python related xml packages.  Again, since I first chose to install
+gpsd
+gpsd-clients
+gpsd-devel
+via yast and *then* manually install gpsd-2.95 after that, yast would have already
+taken care of any requisites that those packages needed, and that likely satisfied
+what ./configure for the 2.95 level may have been looking for with the exception of
+the above described xmlto/xsltproc.
+
+
+On 01/04/2011 10:40 AM, bob wrote:
+&gt;<i> On 04/01/11 16:19, Gary Eheman wrote:
+</I>&gt;&gt;<i> I recently did this on an openSuSE 10.1 and a 10.3 system (surrounding releases for
+</I>&gt;&gt;<i> 10.2).
+</I>&gt;<i> &lt;snip&gt;
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> When I did the ./configure step in the gpsd 2.95 directory prior to doing the &quot;make&quot;,
+</I>&gt;&gt;<i> it did issue a warning about not being able to locate something it was seeking
+</I>&gt;&gt;<i> relating to building the man pages.  I cannot recall what it was looking for, but I
+</I>&gt;&gt;<i> went back into yast and searched/installed it, and then reran ./configure prior to
+</I>&gt;&gt;<i> the &quot;make&quot;. So for me, the man pages were built ok.
+</I>&gt;<i> 
+</I>&gt;<i> The only message I get is &quot;No XML processor, omitting manual page
+</I>&gt;<i> installation&quot; which is not (for me) intuitive as to what exactly is
+</I>&gt;<i> missing. Would appreciate any advice.
+</I>&gt;<i> Robert
+</I>&gt;<i> 
+</I>&gt;<i> 
+</I>&gt;<i> _______________________________________________
+</I>&gt;<i> Gpsd-users mailing list
+</I>&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">Gpsd-users at lists.berlios.de</A>
+</I>&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">https://lists.berlios.de/mailman/listinfo/gpsd-users</A>
+</I>&gt;<i> 
+</I>&gt;<i> 
+</I>
+-- 
+Gary Eheman
+Fundamental Software, Inc.
+<A HREF="http://www.funsoft.com">http://www.funsoft.com</A>
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="004885.html">[Gpsd-users] Trouble installing on Opensuse 10.2
+</A></li>
+	<LI>Next message: <A HREF="004888.html">[Gpsd-users] Trouble installing on Opensuse 10.2
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#4886">[ date ]</a>
+              <a href="thread.html#4886">[ thread ]</a>
+              <a href="subject.html#4886">[ subject ]</a>
+              <a href="author.html#4886">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

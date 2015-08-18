@@ -1,0 +1,92 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] Moxa NPort 5210 serial port over LAN emulation
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2006-September/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Moxa%20NPort%205210%20serial%20port%20over%20LAN%20emulation&In-Reply-To=%3C1157617548.8384.24.camel%40mabupc.psk%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="001938.html">
+   <LINK REL="Next"  HREF="001933.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] Moxa NPort 5210 serial port over LAN emulation</H1>
+    <B>Massimo Burcheri</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Moxa%20NPort%205210%20serial%20port%20over%20LAN%20emulation&In-Reply-To=%3C1157617548.8384.24.camel%40mabupc.psk%3E"
+       TITLE="[Gpsd-users] Moxa NPort 5210 serial port over LAN emulation">burcheri at fgan.de
+       </A><BR>
+    <I>Thu Sep  7 10:25:48 CEST 2006</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="001938.html">[Gpsd-users] cat /dev/ttyS0
+</A></li>
+        <LI>Next message: <A HREF="001933.html">[Gpsd-users] Moxa NPort 5210 serial port over LAN emulation
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1932">[ date ]</a>
+              <a href="thread.html#1932">[ thread ]</a>
+              <a href="subject.html#1932">[ subject ]</a>
+              <a href="author.html#1932">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hello
+
+I found <A HREF="http://www.moxa.com/product/NPort_5210.htm">http://www.moxa.com/product/NPort_5210.htm</A> Moxa NPort 5210 and
+the developers finally provided me with beta sources for TTY modules
+that successfully build on 2.6.16-gentoo-r9.
+I got myself a unit and transmission works.
+There is a new kernel modul, virtual com ports /dev/ttyr00
+and /dev/ttyr01[/i], a web and telnet console with many networking and
+serial settings.
+
+But there's one problem I encounter: As soon as a process is connected
+to the serial port, it cannot disconnect anymore. &quot;gpsd&quot; hangs on
+disconnecting sometimes also &quot;cat /dev/ttyr00&quot;. I even can't kill -9 the
+process gpsd, reload the module or continue using that port.
+The only way to restart gpsd is to restart the computer.
+
+Mabye something's wrong with the serial settings?
+
+Port 1  TNTC   19200  8  1  Even  Disable  RTS/CTS  RS-232
+Port 2  Magellan   19200  8  1  Even  Disable  RTS/CTS  RS-232
+
+For those who are interested in long distance serial line I made some
+screenshots from the user interface:
+
+<A HREF="http://img.photoamp.com/i/zyZiLkwO3.jpg">http://img.photoamp.com/i/zyZiLkwO3.jpg</A>
+<A HREF="http://img.photoamp.com/i/u1gLius.jpg">http://img.photoamp.com/i/u1gLius.jpg</A>
+<A HREF="http://img.photoamp.com/i/anAC0.jpg">http://img.photoamp.com/i/anAC0.jpg</A>
+
+Best regards,
+Massimo
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="001938.html">[Gpsd-users] cat /dev/ttyS0
+</A></li>
+	<LI>Next message: <A HREF="001933.html">[Gpsd-users] Moxa NPort 5210 serial port over LAN emulation
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1932">[ date ]</a>
+              <a href="thread.html#1932">[ thread ]</a>
+              <a href="subject.html#1932">[ subject ]</a>
+              <a href="author.html#1932">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

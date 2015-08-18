@@ -1,0 +1,89 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] embedded gpsd fails to return data 1 in 15 times. xgps, unblocks the flow. no watchdog?
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2011-June/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20embedded%20gpsd%20fails%20to%20return%20data%201%20in%2015%20times.%0A%20xgps%2C%20unblocks%20the%20flow.%20no%20watchdog%3F&In-Reply-To=%3C4E02E246.2040902%40obviously.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="005342.html">
+   <LINK REL="Next"  HREF="005350.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] embedded gpsd fails to return data 1 in 15 times. xgps, unblocks the flow. no watchdog?</H1>
+    <B>Bryce Nesbitt</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20embedded%20gpsd%20fails%20to%20return%20data%201%20in%2015%20times.%0A%20xgps%2C%20unblocks%20the%20flow.%20no%20watchdog%3F&In-Reply-To=%3C4E02E246.2040902%40obviously.com%3E"
+       TITLE="[Gpsd-users] embedded gpsd fails to return data 1 in 15 times. xgps, unblocks the flow. no watchdog?">bryce2 at obviously.com
+       </A><BR>
+    <I>Thu Jun 23 08:50:46 CEST 2011</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="005342.html">[Gpsd-users] Error using Serial to USB adapter
+</A></li>
+        <LI>Next message: <A HREF="005350.html">[Gpsd-users] embedded gpsd fails to return data 1 in 15 times. xgps, unblocks the flow. no watchdog?
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#5345">[ date ]</a>
+              <a href="thread.html#5345">[ thread ]</a>
+              <a href="subject.html#5345">[ subject ]</a>
+              <a href="author.html#5345">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>I've found some additional information.  Delaying launch of my client by 
+a few seconds made no difference.
+
+----------------------------------------------------
+But I can now instrument a seemingly similar failure:
+
+If I boot, then remove the gps, then start a client, I get no data (as 
+expected).
+If I plug in the BU-353 I get no data (unexpected).
+If I start a second client, the first client starts returning data 
+(unexpected).
+
+What do people think of a watchdog layer for gpsd... if a GPS should be 
+returning data but not doing so, have the daemon kick the unit in 
+whatever way is necessary?
+
+A watchdog would not only help my embedded unattended application, but 
+real-world mapping applications.  How many times have you replugged the 
+GPS in a car in order to untangle it from some other passenger's doohickey?
+
+In my embedded world I'm concerned that after a few hours of operation 
+the GPS might reset itself (for whatever reason - static - lighting - 
+camel spit) and gpsd won't recover.
+
+                     -Bryce Nesbitt
+
+Note to Charles: I find the use of port 2947 clear and easy, with a 
+lower learning curve than Net::GPSD3.
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="005342.html">[Gpsd-users] Error using Serial to USB adapter
+</A></li>
+	<LI>Next message: <A HREF="005350.html">[Gpsd-users] embedded gpsd fails to return data 1 in 15 times. xgps, unblocks the flow. no watchdog?
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#5345">[ date ]</a>
+              <a href="thread.html#5345">[ thread ]</a>
+              <a href="subject.html#5345">[ subject ]</a>
+              <a href="author.html#5345">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

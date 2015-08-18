@@ -1,0 +1,127 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] gpsd cpu usage
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2006-July/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20gpsd%20cpu%20usage&In-Reply-To=%3C44B815D2.8000404%40multinet.no%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="001754.html">
+   <LINK REL="Next"  HREF="001762.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] gpsd cpu usage</H1>
+    <B>Eivind Tagseth</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20gpsd%20cpu%20usage&In-Reply-To=%3C44B815D2.8000404%40multinet.no%3E"
+       TITLE="[Gpsd-users] gpsd cpu usage">eivindt-gmane at multinet.no
+       </A><BR>
+    <I>Sat Jul 15 00:08:18 CEST 2006</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="001754.html">[Gpsd-users] gpsd cpu usage
+</A></li>
+        <LI>Next message: <A HREF="001762.html">[Gpsd-users] gpsd cpu usage
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1760">[ date ]</a>
+              <a href="thread.html#1760">[ thread ]</a>
+              <a href="subject.html#1760">[ subject ]</a>
+              <a href="author.html#1760">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Eric S. Raymond wrote:
+&gt;<i> Marshall Crocker &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">crocker at cavs.msstate.edu</A>&gt;:
+</I>&gt;&gt;<i> FD_SETSIZE=8 and adding the sleep statement has reduced processor
+</I>&gt;&gt;<i> utilization to a little over 30%. Thanks for the help Elvind.  
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> I wish it weren't necessary to implement such hacks to get gpsd to a
+</I>&gt;&gt;<i> reasonable utilization.
+</I>&gt;<i> 
+</I>&gt;<i> What puzzles me is that I'm not seeing these crazy processor-utilization
+</I>&gt;<i> figures.  But I'm not running on an SBC, either -- it may well be that
+</I>&gt;<i> gpsd is using an unreasonable number of cycles and I just don't see it
+</I>&gt;<i> because my desktop GUIs eat more.
+</I>
+I cannot see them on a PC either.
+
+&gt;<i> I'd like to develop a solution to your problem that is not just a hack.
+</I>&gt;<i> We need to start with a clear understanding of where the processor clocks
+</I>&gt;<i> are getting burned up and why changing FD_SETSIZE and adding the sleep()
+</I>&gt;<i> are helpful.
+</I>
+Well, in our case, the problem was twofold:
+
+	1.  The main loop seems to be a bit too expensive for an embedded
+device.  Just going through 1024 array elements 3 times (once for all
+potential gps devices, once for all potential clients and a second time
+for all clients if nowait is unset) takes enough time to be noticeable.
+
+	2.  At least with our embedded device, the select would return for each
+_character_ returned by the gps device, which really made 1) a big
+problem.  Adding the sleep() meant that we'd always be able to read a
+full line, and only run through the main loop once a second.
+
+&gt;<i> What are your thoughts?
+</I>
+Problem number 1 is a problem both when it comes to performace and
+especially when it comes to memory consumption.  Many embedded devices
+have no MMU, and therefore no swapping capabilities.  Allocating 1024 *
+sizeof(subscriber_t) + 1024 * sizeof(gps_device_t) (gps_device_t is
+_huge_!) is a major resource problem.
+
+Problem number 2 may be a serial port configuration issue I guess.
+Maybe if the port was initialized with ICANON, things would be better?
+We did try that with our device, but without success.  Didn't check why
+though.
+
+Possible solutions:
+
+I have a patch solving problem number 1.  It adds two new parameters to
+configure, limiting the maximum number of gps devices and the maximum
+file descriptor of the clients.  I'm not very pleased with it though,
+I'd like to try changing how the subscribers array is used, and add the
+client's file descriptor to the subscriber_t, just as what's done with
+the gps_device_t type, so that one can set the maximum number of
+clients, rather than the maximum value of the clients' file descriptor.
+
+Problem number two is harder.  I don't think you'd like a sleep() in the
+main loop as it is a rather ugly hack.  But I'm not sure if configuring
+the serial port differently is good either, setting ICANON would surely
+be a bad idea for binary protocols?  This problem may be locally
+solvable on our side by making sure the serial port is properly
+configured before starting gpsd.
+
+
+
+Eivind
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="001754.html">[Gpsd-users] gpsd cpu usage
+</A></li>
+	<LI>Next message: <A HREF="001762.html">[Gpsd-users] gpsd cpu usage
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1760">[ date ]</a>
+              <a href="thread.html#1760">[ thread ]</a>
+              <a href="subject.html#1760">[ subject ]</a>
+              <a href="author.html#1760">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

@@ -1,0 +1,108 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] gpsd closes device
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2008-October/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20gpsd%20closes%20device&In-Reply-To=%3C48F641D2.7090207%40ozob.net%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="003424.html">
+   <LINK REL="Next"  HREF="003426.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] gpsd closes device</H1>
+    <B>Gene Imes</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20gpsd%20closes%20device&In-Reply-To=%3C48F641D2.7090207%40ozob.net%3E"
+       TITLE="[Gpsd-users] gpsd closes device">ebi6 at ozob.net
+       </A><BR>
+    <I>Wed Oct 15 21:17:38 CEST 2008</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="003424.html">[Gpsd-users] cross compiling on fedora vs ubuntu
+</A></li>
+        <LI>Next message: <A HREF="003426.html">[Gpsd-users] gpsd closes device
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3425">[ date ]</a>
+              <a href="thread.html#3425">[ thread ]</a>
+              <a href="subject.html#3425">[ subject ]</a>
+              <a href="author.html#3425">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>When I start gpsd with this command:
+
+/usr/sbin/gpsd -D10 -b /dev/rfcomm0
+
+I get this in the system log:
+
+Oct 15 14:11:26 [gpsd] gpsd: packet sniff finds type -1_
+Oct 15 14:11:26 [gpsd] gpsd: GPS sent 24 new characters_
+Oct 15 14:11:26 [gpsd] gpsd: New data, not yet a packet_
+Oct 15 14:11:26 [gpsd] gpsd: select waits_
+Oct 15 14:11:26 [gpsd] gpsd: polling 6_
+Oct 15 14:11:26 [gpsd] gpsd: Read 24 chars to buffer offset 72 (total 
+96): 0d0a244750524d432c3139313035342e3235382c562c3333_
+Oct 15 14:11:26 [gpsd] gpsd: 00000072: character '.' [0d], new state: 
+NMEA_CR_
+Oct 15 14:11:26 [gpsd] gpsd: 00000073: character '.' [0a], new state: 
+NMEA_RECOGNIZED_
+Oct 15 14:11:26 [gpsd] gpsd: Packet type 1 accepted 74 = 
+2447504747412c3139313035342e3235382c333332382e383034352c4e2c30383832352e323234362c572c302c30302c2c35332e332c4d2c2d32382e352c4d2c2c303030302a37370d0a_
+Oct 15 14:11:26 [gpsd] gpsd: Packet discard of 74, chars remaining is 22 
+= 244750524d432c3139313035342e3235382c562c3333_
+Oct 15 14:11:26 [gpsd] gpsd: packet sniff finds type 1_
+Oct 15 14:11:26 [gpsd] gpsd: switch_driver(Generic NMEA) called..._
+Oct 15 14:11:26 [gpsd] gpsd: selecting Generic NMEA driver..._
+Oct 15 14:11:26 [gpsd] gpsd: GPS sent 24 new characters_
+Oct 15 14:11:26 [gpsd] gpsd: &lt;= GPS: 
+$GPGGA,191054.258,3328.8045,N,08825.2246,W,0,00,,53.3,M,-28.5,M,,0000*77__
+Oct 15 14:11:26 [gpsd] gpsd: GPGGA sets status 0 and mode 0 (unchanged)_
+Oct 15 14:11:26 [gpsd] gpsd: unflagging descriptor 6_
+Oct 15 14:11:26 [gpsd] gpsd: closing GPS=/dev/rfcomm0 (6)_
+Oct 15 14:11:26 [gpsd] gpsd: select waits_
+
+It appears that the gps is detected emitting an NMEA stream.
+
+Also if I kill gpsd and cat /dev/rfcomm0 an NMEA stream is there. This 
+has worked nicely before now.
+
+What gives?
+
+Linux version 2.6.27
+gpsd 2.37
+
+Thanks,
+
+
+-- 
+Gene Imes
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="003424.html">[Gpsd-users] cross compiling on fedora vs ubuntu
+</A></li>
+	<LI>Next message: <A HREF="003426.html">[Gpsd-users] gpsd closes device
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3425">[ date ]</a>
+              <a href="thread.html#3425">[ thread ]</a>
+              <a href="subject.html#3425">[ subject ]</a>
+              <a href="author.html#3425">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

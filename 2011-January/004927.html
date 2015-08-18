@@ -1,0 +1,220 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] GPSD segmentation fault problem
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2011-January/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20GPSD%20segmentation%20fault%20problem&In-Reply-To=%3CAANLkTi%3DfKsReqqnGw_0uqNSyZ_faYQNdYJtAwd2s1a2o%40mail.gmail.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="004924.html">
+   <LINK REL="Next"  HREF="004929.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] GPSD segmentation fault problem</H1>
+    <B>Ahmed Ramadan</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20GPSD%20segmentation%20fault%20problem&In-Reply-To=%3CAANLkTi%3DfKsReqqnGw_0uqNSyZ_faYQNdYJtAwd2s1a2o%40mail.gmail.com%3E"
+       TITLE="[Gpsd-users] GPSD segmentation fault problem">eng.a.ramdan at gmail.com
+       </A><BR>
+    <I>Sat Jan 15 15:33:34 CET 2011</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="004924.html">[Gpsd-users] GPSD segmentation fault problem
+</A></li>
+        <LI>Next message: <A HREF="004929.html">[Gpsd-users] GPSD segmentation fault problem
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#4927">[ date ]</a>
+              <a href="thread.html#4927">[ thread ]</a>
+              <a href="subject.html#4927">[ subject ]</a>
+              <a href="author.html#4927">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Yaaa, No more segmentation error, thanks charles :) ...
+but i have still a problem which is that, query status and fix status is
+always &quot;0&quot; , don't know why and the longitude and latitude and even time is
+&quot;nan&quot; ,,, despite i monitor the NEMA messages using &quot;cat /dev/ttyS2&quot; and i
+can see the longitude and latitude and everything is going well ... but my
+client gives &quot;nan&quot; instead :S do you know what is the reason ?
+
+On Fri, Jan 14, 2011 at 8:34 PM, Ahmed Ramadan &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">eng.a.ramdan at gmail.com</A>&gt;wrote:
+
+&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i> On Fri, Jan 14, 2011 at 7:33 PM, Charles Curley &lt;
+</I>&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">charlescurley at charlescurley.com</A>&gt; wrote:
+</I>&gt;<i>
+</I>&gt;&gt;<i> On Fri, 14 Jan 2011 18:52:20 +0200
+</I>&gt;&gt;<i> Ahmed Ramadan &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">eng.a.ramdan at gmail.com</A>&gt; wrote:
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> &gt; here is my client:
+</I>&gt;&gt;<i> &gt;
+</I>&gt;&gt;<i> &gt; #include &lt;stdio.h&gt;
+</I>&gt;&gt;<i> &gt; #include &lt;stdlib.h&gt;
+</I>&gt;&gt;<i> &gt; #include &lt;string.h&gt;
+</I>&gt;&gt;<i> &gt; #include &lt;errno.h&gt;
+</I>&gt;&gt;<i> &gt; #include &quot;gps.h&quot;
+</I>&gt;&gt;<i> &gt;
+</I>&gt;&gt;<i> &gt; static struct gps_data_t *gpsdata;
+</I>&gt;&gt;<i> &gt; int main(int argc, char *argv[])
+</I>&gt;&gt;<i> &gt; {
+</I>&gt;&gt;<i> &gt;       char *err_str = NULL;
+</I>&gt;&gt;<i> &gt;     char server[16];
+</I>&gt;&gt;<i> &gt; char port[5];
+</I>&gt;&gt;<i> &gt; strcpy(server, &quot;127.0.0.1\0&quot;);
+</I>&gt;&gt;<i> &gt; strcpy(port, &quot;2947\0&quot;);
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> Assuming this is ANSI C, I think I'd do it as:
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> char server[] = &quot;127.0.0.1&quot;;
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> Also, you don't need to add the trailing \0, as the compiler will do
+</I>&gt;&gt;<i> that for you. Those two items should save you a few bytes.
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> &gt;
+</I>&gt;&gt;<i> &gt; printf(&quot;Opening GPSd....\n&quot;);
+</I>&gt;&gt;<i> &gt; gps_open(server, port, gpsdata);
+</I>&gt;&gt;<i> &gt;     gps_query(gpsdata, &quot;w\n&quot;);
+</I>&gt;&gt;<i> &gt;     while (1) {
+</I>&gt;&gt;<i> &gt;         gps_poll(gpsdata);
+</I>&gt;&gt;<i> &gt;         printf(&quot;Fix Status = %d Latitiude=%lg Longitude=%lg
+</I>&gt;&gt;<i> &gt; Altitude=%f Time=%f\n\n&quot;, gpsdata-&gt;fix.mode, gpsdata-&gt;fix.latitude,
+</I>&gt;&gt;<i> &gt; gpsdata-&gt;fix.longitude, gpsdata-&gt;fix.altitude, gpsdata-&gt;fix.time);
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> Won't work. You also need to look at the status (gpsdata-&gt;status) and
+</I>&gt;&gt;<i> quality of the fix (gpsdata-&gt;fix.mode) e.g. altitude is undefined
+</I>&gt;&gt;<i> unless you have mode == 3.
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> Also, the gpsdata struct includes several unions. Which union is
+</I>&gt;&gt;<i> valid and whether other parts of the struct are valid depends on the
+</I>&gt;&gt;<i> contents of gpsdata-&gt;set.
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> You also need to query gpsd when you want it to send data.
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> &gt;
+</I>&gt;&gt;<i> &gt; One more question , how can i find a good c-based client source code
+</I>&gt;&gt;<i> &gt; that i can run on gumstix ?
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> Take a look at how I did it. See the functions resync and showData, my
+</I>&gt;&gt;<i> libgps callback routine, in
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> <A HREF="http://www.charlescurley.com/blog/articles/gnome-gps_a_simple_gtk_gps_monitor/index.html">http://www.charlescurley.com/blog/articles/gnome-gps_a_simple_gtk_gps_monitor/index.html</A>
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> Charles, i find it very useful to me as it contains lots of cases that i
+</I>&gt;<i> didn't take into ma consideration. , also i found the source codes of famous
+</I>&gt;<i> clients like cgps here:
+</I>&gt;<i> <A HREF="http://gpsd.sourcearchive.com/documentation/2.37-6/files.html">http://gpsd.sourcearchive.com/documentation/2.37-6/files.html</A>
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;&gt;<i> You don't need all the gnome cruft, but that callback should give you
+</I>&gt;&gt;<i> what you need. That code is about 6 months old, and I need to update
+</I>&gt;&gt;<i> the web site to a more current version.
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> &gt;
+</I>&gt;&gt;<i> &gt; On Fri, Jan 14, 2011 at 4:09 PM, Tomalak Geret'kal &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">tom at kera.name</A>&gt;
+</I>&gt;&gt;<i> &gt; wrote:
+</I>&gt;&gt;<i> &gt;
+</I>&gt;&gt;<i> &gt; &gt; On 14/01/2011 13:45, Ahmed Ramadan wrote:
+</I>&gt;&gt;<i> &gt; &gt;
+</I>&gt;&gt;<i> &gt; &gt;&gt; HI,
+</I>&gt;&gt;<i> &gt; &gt;&gt; I have a technical problem with my Client GPSD client, i have
+</I>&gt;&gt;<i> &gt; &gt;&gt; build a simple
+</I>&gt;&gt;<i> &gt; &gt;&gt; client that talks to GPSD service Demon. The application and the
+</I>&gt;&gt;<i> &gt; &gt;&gt; service are
+</I>&gt;&gt;<i> &gt; &gt;&gt; running on gumstix verdex pro.the problem is that , when i run the
+</I>&gt;&gt;<i> &gt; &gt;&gt; client it
+</I>&gt;&gt;<i> &gt; &gt;&gt; gives a segmentation fault here :gps_open(server, port, gpsdata);
+</I>&gt;&gt;<i> &gt; &gt;&gt;
+</I>&gt;&gt;<i> &gt; &gt;&gt; i don't know what is the problem ??, i'm running Gpsd version 3.x
+</I>&gt;&gt;<i> &gt; &gt;&gt;
+</I>&gt;&gt;<i> &gt; &gt;&gt; may anyone share an idea with me... thanks in advance
+</I>&gt;&gt;<i> &gt; &gt;&gt;
+</I>&gt;&gt;<i> &gt; &gt;&gt;
+</I>&gt;&gt;<i> &gt; &gt; Hi there Ahmed!
+</I>&gt;&gt;<i> &gt; &gt;
+</I>&gt;&gt;<i> &gt; &gt; Since gpsd works perfectly fine for perhaps tens of thousands of
+</I>&gt;&gt;<i> &gt; &gt; people, there is something specifically wrong here. We cannot know
+</I>&gt;&gt;<i> &gt; &gt; what that is unless you provide a lot more information.
+</I>&gt;&gt;<i> &gt; &gt;
+</I>&gt;&gt;<i> &gt; &gt; What does your debugger say. Can you give us a backtrace? How about
+</I>&gt;&gt;<i> &gt; &gt; a testcase -- a *minimal*, complete, version of your code that
+</I>&gt;&gt;<i> &gt; &gt; demonstrates the issue?
+</I>&gt;&gt;<i> &gt; &gt;
+</I>&gt;&gt;<i> &gt; &gt; Best regards
+</I>&gt;&gt;<i> &gt; &gt; Tom
+</I>&gt;&gt;<i> &gt; &gt; _______________________________________________
+</I>&gt;&gt;<i> &gt; &gt; Gpsd-users mailing list
+</I>&gt;&gt;<i> &gt; &gt; <A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">Gpsd-users at lists.berlios.de</A>
+</I>&gt;&gt;<i> &gt; &gt; <A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">https://lists.berlios.de/mailman/listinfo/gpsd-users</A>
+</I>&gt;&gt;<i> &gt; &gt;
+</I>&gt;&gt;<i> &gt;
+</I>&gt;&gt;<i> &gt;
+</I>&gt;&gt;<i> &gt;
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> --
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> Charles Curley                  /&quot;\    ASCII Ribbon Campaign
+</I>&gt;&gt;<i> Looking for fine software       \ /    Respect for open standards
+</I>&gt;&gt;<i> and/or writing?                  X     No HTML/RTF in email
+</I>&gt;&gt;<i> <A HREF="http://www.charlescurley.com">http://www.charlescurley.com</A>    / \    No M$ Word docs in email
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> Key fingerprint = CE5C 6645 A45A 64E4 94C0  809C FFF6 4C48 4ECD DFDB
+</I>&gt;&gt;<i> _______________________________________________
+</I>&gt;&gt;<i> Gpsd-users mailing list
+</I>&gt;&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">Gpsd-users at lists.berlios.de</A>
+</I>&gt;&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">https://lists.berlios.de/mailman/listinfo/gpsd-users</A>
+</I>&gt;&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i> --
+</I>&gt;<i> *A.Ramadan
+</I>&gt;<i>
+</I>&gt;<i> Cellular: +20-12-9961294
+</I>&gt;<i> Tel: +202-22392779
+</I>&gt;<i>
+</I>&gt;<i> *
+</I>&gt;<i>
+</I>&gt;<i>
+</I>
+
+-- 
+*A.Ramadan
+
+Cellular: +20-12-9961294
+Tel: +202-22392779
+
+*
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="004924.html">[Gpsd-users] GPSD segmentation fault problem
+</A></li>
+	<LI>Next message: <A HREF="004929.html">[Gpsd-users] GPSD segmentation fault problem
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#4927">[ date ]</a>
+              <a href="thread.html#4927">[ thread ]</a>
+              <a href="subject.html#4927">[ subject ]</a>
+              <a href="author.html#4927">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

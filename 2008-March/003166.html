@@ -1,0 +1,83 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] gpsd does not survive sleep/suspend to	ram/lid	close of laptop
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2008-March/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20gpsd%20does%20not%20survive%20sleep/suspend%20to%0A%09ram/lid%09close%20of%20laptop&In-Reply-To=%3C20080310094303.GA24964%40thyrsus.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="003165.html">
+   <LINK REL="Next"  HREF="003167.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] gpsd does not survive sleep/suspend to	ram/lid	close of laptop</H1>
+    <B>Eric S. Raymond</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20gpsd%20does%20not%20survive%20sleep/suspend%20to%0A%09ram/lid%09close%20of%20laptop&In-Reply-To=%3C20080310094303.GA24964%40thyrsus.com%3E"
+       TITLE="[Gpsd-users] gpsd does not survive sleep/suspend to	ram/lid	close of laptop">esr at thyrsus.com
+       </A><BR>
+    <I>Mon Mar 10 10:43:03 CET 2008</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="003165.html">[Gpsd-users] gpsd does not survive sleep/suspend to ram/lid close of laptop
+</A></li>
+        <LI>Next message: <A HREF="003167.html">[Gpsd-users] gpsd does not survive sleep/suspend to ram/lid close of laptop
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3166">[ date ]</a>
+              <a href="thread.html#3166">[ thread ]</a>
+              <a href="subject.html#3166">[ subject ]</a>
+              <a href="author.html#3166">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Matt Roberds &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">mattroberds at cox.net</A>&gt;:
+&gt;<i> On Sun, 9 Mar 2008, Lixus Zoran wrote:
+</I>&gt;<i> &gt; I am using gpsd 2.30-1ubuntu3 together with viking for real time
+</I>&gt;<i> &gt; tracking.  I have a Garmin eTrex connected to an USB2Serial dongle
+</I>&gt;<i> &gt; and I am using NMEA.  That all works fine but if I close the lid
+</I>&gt;<i> &gt; of my Laptop it is suspending to RAM to save battery power. If I
+</I>&gt;<i> &gt; wake it up again, gpsd hangs and therefore also viking hangs:
+</I>&gt;<i> 
+</I>&gt;<i> I wonder if the laptop is turning off the USB devices to save power,
+</I>&gt;<i> and the USB-to-serial device (or even the eTrex) is getting confused.
+</I>
+This is almost certainly the case.  USB drivers are a notoriously 
+bad trouble spot in Linux suspend/resume, to the point where one of the
+standard hacks if you can't get it to work is to custonize your 
+suspend script to rmmod USB support from the kernel.  
+
+Alas, there is nothing gpsd can do about this.  The kernel will
+have to improve to fix it.
+
+Chris, you might consider adding this to the Upstream Bugs page.
+-- 
+		&lt;a href=&quot;<A HREF="http://www.catb.org/~esr/">http://www.catb.org/~esr/</A>&quot;&gt;Eric S. Raymond&lt;/a&gt;
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="003165.html">[Gpsd-users] gpsd does not survive sleep/suspend to ram/lid close of laptop
+</A></li>
+	<LI>Next message: <A HREF="003167.html">[Gpsd-users] gpsd does not survive sleep/suspend to ram/lid close of laptop
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3166">[ date ]</a>
+              <a href="thread.html#3166">[ thread ]</a>
+              <a href="subject.html#3166">[ subject ]</a>
+              <a href="author.html#3166">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

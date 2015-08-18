@@ -1,0 +1,86 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] gpsd_config.h
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2007-August/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20gpsd_config.h&In-Reply-To=%3C20070819133359.GA22000%40truch.net%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="002818.html">
+   <LINK REL="Next"  HREF="002820.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] gpsd_config.h</H1>
+    <B>Matthew D Truch</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20gpsd_config.h&In-Reply-To=%3C20070819133359.GA22000%40truch.net%3E"
+       TITLE="[Gpsd-users] gpsd_config.h">matt at truch.net
+       </A><BR>
+    <I>Sun Aug 19 15:33:59 CEST 2007</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="002818.html">[Gpsd-users] gpsd client trouble
+</A></li>
+        <LI>Next message: <A HREF="002820.html">[Gpsd-users] gpsd opens multiple ports
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2819">[ date ]</a>
+              <a href="thread.html#2819">[ thread ]</a>
+              <a href="subject.html#2819">[ subject ]</a>
+              <a href="author.html#2819">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>In gpsd 2.34, gpsd_config.h is not listed in the Makefile as an
+include_HEADER, and therefore is not installed upon make install.  This
+is wrong, as libgpsmm.h includes it.  The following (trivial) patch
+should fix this.  
+
+-- 
+&quot;Two Hundred -- And Forty Dollars -- Worth of Pudding -- Aww Yeah!&quot;
+--------------------------
+Matthew Truch
+Department of Physics and Astronomy
+University of Pennsylvania
+<A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">matt at truch.net</A>
+<A HREF="http://matt.truch.net/">http://matt.truch.net/</A>
+-------------- next part --------------
+diff -u gpsd-2.34/Makefile.am gpsd-2.34-fixed-install/Makefile.am
+--- gpsd-2.34/Makefile.am	2006-12-14 18:43:39.000000000 -0500
++++ gpsd-2.34-fixed-install/Makefile.am	2007-08-19 09:11:14.000000000 -0400
+@@ -242,7 +242,7 @@
+ 
+ endif
+ 
+-include_HEADERS = gps.h gpsd.h libgpsmm.h 
++include_HEADERS = gps.h gpsd.h gpsd_config.h libgpsmm.h 
+ 
+ EXTRA_DIST = \
+ 	autogen.sh \
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="002818.html">[Gpsd-users] gpsd client trouble
+</A></li>
+	<LI>Next message: <A HREF="002820.html">[Gpsd-users] gpsd opens multiple ports
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2819">[ date ]</a>
+              <a href="thread.html#2819">[ thread ]</a>
+              <a href="subject.html#2819">[ subject ]</a>
+              <a href="author.html#2819">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

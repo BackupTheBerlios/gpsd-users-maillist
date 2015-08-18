@@ -1,0 +1,292 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] Build bugs in gpsd from svn
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2005-September/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Build%20bugs%20in%20gpsd%20from%20svn&In-Reply-To=%3C433C6530.8080709%40them.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="001064.html">
+   <LINK REL="Next"  HREF="001066.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] Build bugs in gpsd from svn</H1>
+    <B>David I S Mandala</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Build%20bugs%20in%20gpsd%20from%20svn&In-Reply-To=%3C433C6530.8080709%40them.com%3E"
+       TITLE="[Gpsd-users] Build bugs in gpsd from svn">davidm at them.com
+       </A><BR>
+    <I>Fri Sep 30 00:05:36 CEST 2005</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="001064.html">[Gpsd-users] Re:
+</A></li>
+        <LI>Next message: <A HREF="001066.html">[Gpsd-users] Re:
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1065">[ date ]</a>
+              <a href="thread.html#1065">[ thread ]</a>
+              <a href="subject.html#1065">[ subject ]</a>
+              <a href="author.html#1065">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>System info: Debian stable up to date.
+
+Checked out revision 3216 of gpsd
+
+Desired to build a version with no binary support only NEMA
+
+Two problems found.
+
+First:
+When running ./autogen
+src/test$ ./autogen.sh
+
+Your automake version  is older than the suggested one, 1.7.6
+Go on at your own risk. :-)
+
+Configuring build environment for gpsd
+automake: configure.ac: installing `./install-sh'
+automake: configure.ac: installing `./mkinstalldirs'
+automake: configure.ac: installing `./missing'
+Makefile.am:8: HAVE_MOTIF does not appear in AM_CONDITIONAL
+Makefile.am:14: HAVE_DBUS does not appear in AM_CONDITIONAL
+Makefile.am:22: invalid variable `dist_bin_SCRIPTS'
+Makefile.am:22: invalid variable `dist_bin_SCRIPTS'
+Makefile.am:152: warning: automake does not support conditional 
+definition of DBUSPAGES in man_MANS
+Makefile.am:128: invalid unused variable name: `nodist_libgps_la_SOURCES'
+
+and you don't get a configure command to use.
+
+If you run each command
+aclocal \
+   &amp;&amp; libtoolize --force --copy \
+   &amp;&amp; autoheader --force \
+   &amp;&amp; automake --add-missing --foreign --copy \
+   &amp;&amp; autoconf --force \
+   &amp;&amp; echo Now running configure to configure gpsd \
+   &amp;&amp; echo &quot;./configure $@&quot; \
+   &amp;&amp; ./configure $@
+
+manually you get:
+
+<A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">davidm at nscdev</A>:~/work/src/test$ aclocal
+<A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">davidm at nscdev</A>:~/work/src/test$ libtoolize --force --copy
+<A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">davidm at nscdev</A>:~/work/src/test$ autoheader --force
+<A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">davidm at nscdev</A>:~/work/src/test$ automake --add-missing --foreign --copy
+
+Makefile.am:8: HAVE_MOTIF does not appear in AM_CONDITIONAL
+Makefile.am:14: HAVE_DBUS does not appear in AM_CONDITIONAL
+Makefile.am:22: invalid variable `dist_bin_SCRIPTS'
+Makefile.am:22: invalid variable `dist_bin_SCRIPTS'
+Makefile.am:152: warning: automake does not support conditional 
+definition of DBUSPAGES in man_MANS
+Makefile.am:128: invalid unused variable name: `nodist_libgps_la_SOURCES'
+
+<A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">davidm at nscdev</A>:~/work/src/test$ autoconf --force
+
+And now you have a configure application.
+
+Second problem found, can not build NEMA only support garmin and 
+evermore collide in some fashion. Examples below:
+
+
+With Garmin and Evermore support left on:
+
+==========================================
+gpsd 2.30
+------------------------------------------
+NMEA                    : yes
+FV-18                   : no
+SiRF-II                 : no
+Trimble TSIP            : no
+Tripmate                : no
+Earthmate               : no
+iTrax                   : no
+iTalk                   : no
+Garmin                  : yes
+True North              : no
+Evermore                : yes
+RTCM104 support         : no
+NTP SHM                 : yes
+NTP PPS                 : no
+Enable shared libraries : yes
+Enable DBUS support     : no
+------------------------------------------
+Configure finished, type 'make' to build.
+
+Note Evermore shows up as yes
+
+This will build.
+
+Now Gramin left on and Evermore off:
+
+==========================================
+gpsd 2.30
+------------------------------------------
+NMEA                    : yes
+FV-18                   : no
+SiRF-II                 : no
+Trimble TSIP            : no
+Tripmate                : no
+Earthmate               : no
+iTrax                   : no
+iTalk                   : no
+Garmin                  : yes
+True North              : no
+Evermore                :
+RTCM104 support         : no
+NTP SHM                 : yes
+NTP PPS                 : no
+Enable shared libraries : yes
+Enable DBUS support     : no
+------------------------------------------
+Configure finished, type 'make' to build.
+
+Note first hint of problem, Evermore is blank not &quot;no&quot;
+
+This will build.
+
+==========================================
+gpsd 2.30
+------------------------------------------
+NMEA                    : yes
+FV-18                   : no
+SiRF-II                 : no
+Trimble TSIP            : no
+Tripmate                : no
+Earthmate               : no
+iTrax                   : no
+iTalk                   : no
+Garmin                  : no
+True North              : no
+Evermore                : yes
+RTCM104 support         : no
+NTP SHM                 : yes
+NTP PPS                 : no
+Enable shared libraries : yes
+Enable DBUS support     : no
+------------------------------------------
+Configure finished, type 'make' to build.
+
+Note Evermore does show up as &quot;yes&quot;
+
+This will build.
+
+Garmin and Evermore off
+==========================================
+gpsd 2.30
+------------------------------------------
+NMEA                    : yes
+FV-18                   : no
+SiRF-II                 : no
+Trimble TSIP            : no
+Tripmate                : no
+Earthmate               : no
+iTrax                   : no
+iTalk                   : no
+Garmin                  : no
+True North              : no
+Evermore                :
+RTCM104 support         : no
+NTP SHM                 : yes
+NTP PPS                 : no
+Enable shared libraries : yes
+Enable DBUS support     : no
+------------------------------------------
+Configure finished, type 'make' to build.
+
+Again Evermore is blank instead of &quot;no&quot;
+
+Runing make gets:
+
+isgps.c:175: error: union has no member named `isgps'
+isgps.c:176: error: union has no member named `isgps'
+isgps.c:177: error: union has no member named `isgps'
+isgps.c:178: error: union has no member named `isgps'
+isgps.c: In function `isgps_decode':
+isgps.c:200: error: union has no member named `isgps'
+isgps.c:201: error: union has no member named `isgps'
+isgps.c:202: error: union has no member named `isgps'
+isgps.c:204: error: union has no member named `isgps'
+isgps.c:205: error: union has no member named `isgps'
+isgps.c:206: error: union has no member named `isgps'
+isgps.c:207: error: union has no member named `isgps'
+isgps.c:207: error: union has no member named `isgps'
+isgps.c:209: error: union has no member named `isgps'
+isgps.c:209: error: union has no member named `isgps'
+isgps.c:211: error: union has no member named `isgps'
+isgps.c:213: error: union has no member named `isgps'
+isgps.c:214: error: union has no member named `isgps'
+isgps.c:214: error: union has no member named `isgps'
+isgps.c:217: error: union has no member named `isgps'
+isgps.c:224: error: union has no member named `isgps'
+isgps.c:227: error: union has no member named `isgps'
+isgps.c:230: error: union has no member named `isgps'
+isgps.c:231: error: union has no member named `isgps'
+isgps.c:231: error: union has no member named `isgps'
+isgps.c:233: error: union has no member named `isgps'
+isgps.c:233: error: union has no member named `isgps'
+isgps.c:236: error: union has no member named `isgps'
+isgps.c:238: error: union has no member named `isgps'
+isgps.c:239: error: union has no member named `isgps'
+isgps.c:241: error: union has no member named `isgps'
+isgps.c:241: error: union has no member named `isgps'
+isgps.c:256: error: union has no member named `isgps'
+isgps.c:256: error: union has no member named `isgps'
+isgps.c:262: error: union has no member named `isgps'
+isgps.c:263: error: union has no member named `isgps'
+isgps.c:269: error: union has no member named `isgps'
+isgps.c:269: error: union has no member named `isgps'
+isgps.c:269: error: union has no member named `isgps'
+isgps.c:271: error: union has no member named `isgps'
+isgps.c:272: error: union has no member named `isgps'
+isgps.c:277: error: union has no member named `isgps'
+isgps.c:281: error: union has no member named `isgps'
+isgps.c:285: error: union has no member named `isgps'
+isgps.c:286: error: union has no member named `isgps'
+isgps.c:287: error: union has no member named `isgps'
+isgps.c:288: error: union has no member named `isgps'
+isgps.c:288: error: union has no member named `isgps'
+isgps.c:290: error: union has no member named `isgps'
+isgps.c:290: error: union has no member named `isgps'
+isgps.c:295: error: union has no member named `isgps'
+isgps.c:298: error: union has no member named `isgps'
+isgps.c:299: error: union has no member named `isgps'
+make: *** [isgps.lo] Error 1
+
+
+-- 
+David Mandala &lt;davidm at them dot com&gt;
+www.them.com/~davidm Public Key id: 45B2D952
+Murphy TX, 75094 214.774-2569 H 972.693.4007 C
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="001064.html">[Gpsd-users] Re:
+</A></li>
+	<LI>Next message: <A HREF="001066.html">[Gpsd-users] Re:
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1065">[ date ]</a>
+              <a href="thread.html#1065">[ thread ]</a>
+              <a href="subject.html#1065">[ subject ]</a>
+              <a href="author.html#1065">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

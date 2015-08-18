@@ -1,0 +1,137 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] gps protocol problem
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2007-January/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20gps%20protocol%20problem&In-Reply-To=%3C91981b3e0701241059m6427d1bdw2e4027096a073b96%40mail.gmail.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="002425.html">
+   <LINK REL="Next"  HREF="002427.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] gps protocol problem</H1>
+    <B>Chris Kuethe</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20gps%20protocol%20problem&In-Reply-To=%3C91981b3e0701241059m6427d1bdw2e4027096a073b96%40mail.gmail.com%3E"
+       TITLE="[Gpsd-users] gps protocol problem">chris.kuethe at gmail.com
+       </A><BR>
+    <I>Wed Jan 24 19:59:32 CET 2007</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="002425.html">[Gpsd-users] gps protocol problem
+</A></li>
+        <LI>Next message: <A HREF="002427.html">[Gpsd-users] gps protocol problem
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2426">[ date ]</a>
+              <a href="thread.html#2426">[ thread ]</a>
+              <a href="subject.html#2426">[ subject ]</a>
+              <a href="author.html#2426">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>On 1/22/07, Gene Imes &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">ebi6 at ozob.net</A>&gt; wrote:
+&gt;<i> Massimo Burcheri wrote:
+</I>&gt;<i> &gt; Am Montag, den 22.01.2007, 08:06 -0600 schrieb Gene Imes:
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt;&gt; The battery trick did not work. I guess I need the B and N commands but
+</I>&gt;<i> &gt;&gt; I do not know how to issue those commnads.
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; I think Chris means the B and N commands of the gpsd interface -&gt; take a
+</I>&gt;<i> &gt; look at
+</I>&gt;<i> &gt; # man gpsd
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; Just set up your telnet connection to gpsd daemon.
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; Massimo
+</I>&gt;<i> &gt;
+</I>&gt;<i>
+</I>&gt;<i> I assume you mean this since 'man gpsd' did not mention telnet:
+</I>&gt;<i>
+</I>&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">root at go</A>:~# telnet localhost 2947
+</I>&gt;<i> Trying 127.0.0.1...
+</I>&gt;<i> Connected to localhost.
+</I>&gt;<i> Escape character is '^]'.
+</I>&gt;<i> B
+</I>&gt;<i> GPSD,B=57600 8 N 1
+</I>&gt;<i> B
+</I>&gt;<i> GPSD,B=4800 8 N 1
+</I>&gt;<i> N
+</I>&gt;<i> GPSD,N=0
+</I>
+Telnet, netcat or any other tool you like to make an arbitrary tcp
+connection. That's why the manpage doesn't say &quot;telnet&quot; but does make
+mention of the tcp port gpsd listens on.
+
+&gt;<i> This seems to cycle through the baudrates. Is there a particular format
+</I>&gt;<i> for these commands to actually set the gps?
+</I>
+Yes, that's because gpsd is trying to detect what speed and protocol
+your receiver is running at. Give it a while to finish the detection
+(a non-trivial task)
+
+Once your receiver is detected,
+    N=0
+and
+    B=4800
+will set it back to NMEA mode.
+
+&gt;<i> and a cat /dev/rfcomm0 after the telnet gives this:
+</I>&gt;<i>
+</I>&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">root at go</A>:~# cat /dev/rfcomm0
+</I>&gt;<i>
+</I>&gt;<i> and that goes on and on.
+</I>&gt;<i>
+</I>&gt;<i> I suppose the gps receiver could be malfunctioning.
+</I>&gt;<i>
+</I>&gt;<i> I still need help.
+</I>
+As for taking the batteries out, you might need to leave them out for
+a while... several minutes, a few hours or as much as two weeks. Some
+receivers just have a small capacitor that keeps the NVRAM live long
+enough to change batteries, others are designed for up to 8hrs of
+memory retention. Some OEMs actually put a small rechargeable battery
+onboard that will maintain the memory for two weeks.
+
+We've seen this before where some receivers don't like speed
+switches... you may be able to force the receiver back to <A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">nmea at 4800</A>
+with this tool:
+
+<A HREF="http://svn.berlios.de/svnroot/repos/gpsd/trunk/contrib/sirfctl.c">http://svn.berlios.de/svnroot/repos/gpsd/trunk/contrib/sirfctl.c</A>
+
+# gcc -o sirfctl sirfctl.c
+# ./sirfctl
+Usage: ./sirfctl &lt;tty&gt; &lt;nmea|sirf&gt; &lt;speed&gt;
+# ./sirfctl /dev/rfcomm0 nmea 4800
+
+-- 
+GDB has a 'break' feature; why doesn't it have 'fix' too?
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="002425.html">[Gpsd-users] gps protocol problem
+</A></li>
+	<LI>Next message: <A HREF="002427.html">[Gpsd-users] gps protocol problem
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2426">[ date ]</a>
+              <a href="thread.html#2426">[ thread ]</a>
+              <a href="subject.html#2426">[ subject ]</a>
+              <a href="author.html#2426">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

@@ -1,0 +1,99 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] gpsd isn't recognizing TSIP
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2009-August/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20gpsd%20isn%27t%20recognizing%20TSIP&In-Reply-To=%3C4A9322A4.6060904%40softdevsys.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="003868.html">
+   <LINK REL="Next"  HREF="003871.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] gpsd isn't recognizing TSIP</H1>
+    <B>David Severt</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20gpsd%20isn%27t%20recognizing%20TSIP&In-Reply-To=%3C4A9322A4.6060904%40softdevsys.com%3E"
+       TITLE="[Gpsd-users] gpsd isn't recognizing TSIP">severtd at softdevsys.com
+       </A><BR>
+    <I>Tue Aug 25 01:30:44 CEST 2009</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="003868.html">[Gpsd-users] gpsd isn't recognizing TSIP
+</A></li>
+        <LI>Next message: <A HREF="003871.html">[Gpsd-users] gpsd isn't recognizing TSIP
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3870">[ date ]</a>
+              <a href="thread.html#3870">[ thread ]</a>
+              <a href="subject.html#3870">[ subject ]</a>
+              <a href="author.html#3870">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Ed;
+
+I have tried using stty before running gpsd and that didn't help.  It 
+does start out with the baud rate set by stty (9600) but it always 
+forces &quot;no parity&quot; rather than using what stty set up.  I have not tried 
+the -f option.  The man page said that was deprecated, so I didn't look 
+at it very closely.  I'll take a look at the source for valid 
+devicenames (after guessing TSIP) and give it a try.
+
+Regards,
+David Severt
+
+Ed W wrote:
+&gt;<i> David Severt wrote:
+</I>&gt;&gt;<i> I have been working with a Trimble Resolution SMT &quot;starter kit.&quot; It's 
+</I>&gt;&gt;<i> not an end product but a way to evaluate their chipset. If I 
+</I>&gt;&gt;<i> configure and build the gpsd 2.39 source &quot;as is,&quot; gpsd does not 
+</I>&gt;&gt;<i> recognize the packets as binary TSIP packets and eventually goes 
+</I>&gt;&gt;<i> through all the baud rates at 8N1, then again at 7E2 without ever 
+</I>&gt;&gt;<i> recognizing any packets. However, if I hack the &quot;gpsd_open()&quot; 
+</I>&gt;&gt;<i> function in serial.c so that it does &quot;gpsd_set_speed(session, 9600, 
+</I>&gt;&gt;<i> 'O', 1)&quot; on line 276 to force the correct baud rate and parity, it 
+</I>&gt;&gt;<i> recognizes TSIP packets immediately.   
+</I>&gt;<i>
+</I>&gt;<i> Does it find the device is you use
+</I>&gt;<i>
+</I>&gt;<i> gpsctl -f -D 99 /dev/whatever
+</I>&gt;<i>
+</I>&gt;<i> What about if you use
+</I>&gt;<i>    stty /dev/whatever ispeed 9600
+</I>&gt;<i>
+</I>&gt;<i> My observation is that the gpsd isn't changing the speed whilst 
+</I>&gt;<i> scanning?  I can see some mode changing in driver_tsip.c, but it's not 
+</I>&gt;<i> obviously on your code path?
+</I>&gt;<i>
+</I>&gt;<i> Ed W
+</I>&gt;<i>
+</I>
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="003868.html">[Gpsd-users] gpsd isn't recognizing TSIP
+</A></li>
+	<LI>Next message: <A HREF="003871.html">[Gpsd-users] gpsd isn't recognizing TSIP
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3870">[ date ]</a>
+              <a href="thread.html#3870">[ thread ]</a>
+              <a href="subject.html#3870">[ subject ]</a>
+              <a href="author.html#3870">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

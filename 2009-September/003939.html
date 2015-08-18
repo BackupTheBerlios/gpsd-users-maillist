@@ -1,0 +1,102 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] How to start gpsd with fix baud rate of	serial	interface
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2009-September/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20How%20to%20start%20gpsd%20with%20fix%20baud%20rate%20of%0A%09serial%09interface&In-Reply-To=%3C20090916193310.GA17047%40thyrsus.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="003938.html">
+   <LINK REL="Next"  HREF="003940.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] How to start gpsd with fix baud rate of	serial	interface</H1>
+    <B>Eric S. Raymond</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20How%20to%20start%20gpsd%20with%20fix%20baud%20rate%20of%0A%09serial%09interface&In-Reply-To=%3C20090916193310.GA17047%40thyrsus.com%3E"
+       TITLE="[Gpsd-users] How to start gpsd with fix baud rate of	serial	interface">esr at thyrsus.com
+       </A><BR>
+    <I>Wed Sep 16 21:33:10 CEST 2009</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="003938.html">[Gpsd-users] How to start gpsd with fix baud rate of serial	interface
+</A></li>
+        <LI>Next message: <A HREF="003940.html">[Gpsd-users] How to start gpsd with fix baud rate of serial	interface
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3939">[ date ]</a>
+              <a href="thread.html#3939">[ thread ]</a>
+              <a href="subject.html#3939">[ subject ]</a>
+              <a href="author.html#3939">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Paul Fox &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">pgf at foxharp.boston.ma.us</A>&gt;:
+&gt;<i> sorry, i certainly wasn't clear.  it's the behavior of preserving
+</I>&gt;<i> the current baud rate across a device close/open which i believe is
+</I>&gt;<i> a linux-ism.  at least, it was definitely a change from unix tty
+</I>&gt;<i> behavior that i first observed in linux -- perhaps it's customary
+</I>&gt;<i> behavior everywhere (or perhaps even specified by posix) now.  i've
+</I>&gt;<i> never viewed it as more than a convenience before this.
+</I>
+This can be checked; we have developers running under OpenBSD and MacOS X.
+Can anyone report whether baud rate is preserved across device closes on these
+systems?  
+
+&gt;<i>  &gt; So, what you've described isn't even a bug.  You hacked the code to fix
+</I>&gt;<i>  &gt; your &quot;problem&quot; before you realized that gpsd would cheerfully
+</I>&gt;<i>  &gt; reconnect to the device and *just work*.
+</I>&gt;<i> 
+</I>&gt;<i> if it it had &quot;just worked&quot;, i wouldn't have had to hack.
+</I>
+Then I don't understand your bug scenario.  If you set the port to 2317 bad,
+then gpsd closed the port because there were no clients, then gpsd reopened 
+it later, gpsd should simply have continued reading bytes at that speed.
+
+&gt;<i> in general i don't modify code needlessly.  gpsd wouldn't find my
+</I>&gt;<i> device because my device was running at a speed not in the hunt
+</I>&gt;<i> loop.  how would &quot;preserve previous baud rate&quot; help there?
+</I>
+It wouldn't. You're making a pretty good argument that I should remove
+bspeed changes from the command set, or at least make them a privileged 
+command that can only be sent over the control port.
+
+&gt;<i>  &gt; I love the Unix culture.  But this particular &quot;tradition&quot; (bolting on
+</I>&gt;<i>  &gt; configuration options as a substitute for autoconfiguration) should die
+</I>&gt;<i>  &gt; a swift and horrible death. It's not gpsd that is defective here, it's
+</I>&gt;<i>  &gt; your habits of thought.
+</I>&gt;<i> 
+</I>&gt;<i> please.  lose the condescension.
+</I>
+I'll lose the &quot;condescension&quot; within ten seconds of when Unix programmers
+as a culture get a clue about autoconfiguration.  And *not before then*.
+-- 
+		&lt;a href=&quot;<A HREF="http://www.catb.org/~esr/">http://www.catb.org/~esr/</A>&quot;&gt;Eric S. Raymond&lt;/a&gt;
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="003938.html">[Gpsd-users] How to start gpsd with fix baud rate of serial	interface
+</A></li>
+	<LI>Next message: <A HREF="003940.html">[Gpsd-users] How to start gpsd with fix baud rate of serial	interface
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3939">[ date ]</a>
+              <a href="thread.html#3939">[ thread ]</a>
+              <a href="subject.html#3939">[ subject ]</a>
+              <a href="author.html#3939">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

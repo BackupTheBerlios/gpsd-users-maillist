@@ -1,0 +1,121 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] Garmin eTrex Vista HCx / gpsd issues
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2009-June/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Garmin%20eTrex%20Vista%20HCx%20/%20gpsd%20issues&In-Reply-To=%3C20090630131748.GA9424%40suse.de%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="003799.html">
+   <LINK REL="Next"  HREF="003802.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] Garmin eTrex Vista HCx / gpsd issues</H1>
+    <B>Stefan Dirsch</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Garmin%20eTrex%20Vista%20HCx%20/%20gpsd%20issues&In-Reply-To=%3C20090630131748.GA9424%40suse.de%3E"
+       TITLE="[Gpsd-users] Garmin eTrex Vista HCx / gpsd issues">sndirsch at suse.de
+       </A><BR>
+    <I>Tue Jun 30 15:17:48 CEST 2009</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="003799.html">[Gpsd-users] Garmin eTrex Vista HCx / gpsd issues
+</A></li>
+        <LI>Next message: <A HREF="003802.html">[Gpsd-users] Garmin eTrex Vista HCx / gpsd issues
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3801">[ date ]</a>
+              <a href="thread.html#3801">[ thread ]</a>
+              <a href="subject.html#3801">[ subject ]</a>
+              <a href="author.html#3801">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>On Tue, Jun 30, 2009 at 08:54:13AM -0400, Greg Troxel wrote:
+&gt;<i> 
+</I>&gt;<i> [Your post belongs on gpsd-users; please don't dual-post to -users and
+</I>&gt;<i> -dev.]
+</I>
+I apologize.
+
+&gt;<i> Why do you think the HCx does NMEA?  I have the (fuzzy) impression that
+</I>&gt;<i> it only speaks the proprietary garmin protocol.
+</I>
+Sure, but gpsd converts it to some NMEA-like data, right? From INSTALL
+file:
+
+---
+6. Type &quot;wr&quot; to start raw and watcher modes.  You should see NMEA data
+(text lines beginning with $) spewing out.  You will also see lines
+with a GPSD prefix; these are sentence translations in GPSD protocol.
+---
+
+Anyway, apparently I don't get any data out of it. That is my issue.
+
+&gt;<i> I would turn debugging up even higher, and try getting tracks/waypoints
+</I>&gt;<i> with gpsbabel also.
+</I>
+Using gpsbabel with the device works fine when using libusb ...
+
+# gpsbabel -T -i garmin -f usb: 
+Tue Jun 30 15:10:22 2009
+ 49.453276N 11.093853E  337.796600
+Tue Jun 30 15:10:23 2009
+ 49.453276N 11.093853E  337.796600
+
+(Garmin is currently running in Demo Mode)
+
+... but doesn't when using /dev/ttyUSB0 directly.
+
+# gpsbabel -T -i garmin -f /dev/ttyUSB0 
+[ERROR] INIT: No table entry for ID 694
+
+GARMIN:Can't init /dev/ttyUSB0
+
+But since it's a known issue, that gpsbabel doesn't work reliably
+together with garmin_gps kernel module (see
+<A HREF="http://www.gpsbabel.org/os/Linux_Hotplug.html">http://www.gpsbabel.org/os/Linux_Hotplug.html</A>) ...
+
+Maybe a kernel issue? Apparently /dev/ttyUSB0 does not really work for
+me at all. :-(
+
+Best regards,
+Stefan
+
+Public Key available
+------------------------------------------------------
+Stefan Dirsch (Res. &amp; Dev.)   SUSE LINUX Products GmbH
+Tel: 0911-740 53 0            Maxfeldstra&#223;e 5
+FAX: 0911-740 53 479          D-90409 N&#252;rnberg
+<A HREF="http://www.suse.de">http://www.suse.de</A>            Germany 
+-----------------------------------------------------------------
+SUSE LINUX Products GmbH, GF: Markus Rex, HRB 16746 (AG N&#252;rnberg)
+-----------------------------------------------------------------
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="003799.html">[Gpsd-users] Garmin eTrex Vista HCx / gpsd issues
+</A></li>
+	<LI>Next message: <A HREF="003802.html">[Gpsd-users] Garmin eTrex Vista HCx / gpsd issues
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3801">[ date ]</a>
+              <a href="thread.html#3801">[ thread ]</a>
+              <a href="subject.html#3801">[ subject ]</a>
+              <a href="author.html#3801">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

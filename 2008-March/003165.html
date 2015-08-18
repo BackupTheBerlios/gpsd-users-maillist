@@ -1,0 +1,88 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] gpsd does not survive sleep/suspend to ram/lid close of laptop
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2008-March/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20gpsd%20does%20not%20survive%20sleep/suspend%20to%20ram/lid%0A%20close%20of%20laptop&In-Reply-To=%3CPine.LNX.4.64.0803091752170.2761%40birdbird.example.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="003164.html">
+   <LINK REL="Next"  HREF="003166.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] gpsd does not survive sleep/suspend to ram/lid close of laptop</H1>
+    <B>Matt Roberds</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20gpsd%20does%20not%20survive%20sleep/suspend%20to%20ram/lid%0A%20close%20of%20laptop&In-Reply-To=%3CPine.LNX.4.64.0803091752170.2761%40birdbird.example.com%3E"
+       TITLE="[Gpsd-users] gpsd does not survive sleep/suspend to ram/lid close of laptop">mattroberds at cox.net
+       </A><BR>
+    <I>Mon Mar 10 00:00:59 CET 2008</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="003164.html">[Gpsd-users] gpsd does not survive sleep/suspend to ram/lid close	of laptop
+</A></li>
+        <LI>Next message: <A HREF="003166.html">[Gpsd-users] gpsd does not survive sleep/suspend to	ram/lid	close of laptop
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3165">[ date ]</a>
+              <a href="thread.html#3165">[ thread ]</a>
+              <a href="subject.html#3165">[ subject ]</a>
+              <a href="author.html#3165">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>On Sun, 9 Mar 2008, Lixus Zoran wrote:
+&gt;<i> I am using gpsd 2.30-1ubuntu3 together with viking for real time
+</I>&gt;<i> tracking.  I have a Garmin eTrex connected to an USB2Serial dongle
+</I>&gt;<i> and I am using NMEA.  That all works fine but if I close the lid
+</I>&gt;<i> of my Laptop it is suspending to RAM to save battery power. If I
+</I>&gt;<i> wake it up again, gpsd hangs and therefore also viking hangs:
+</I>
+I wonder if the laptop is turning off the USB devices to save power,
+and the USB-to-serial device (or even the eTrex) is getting confused.
+To check: Don't run gpsd at all, but instead launch minicom or a
+similar terminal emulator.  Point minicom at the serial port of your
+GPS device, adjust bit rate, parity, etc, and you should see the NMEA
+sentences coming in.  Close the lid, wait for the laptop to suspend,
+and then open the lid again.  If the NMEA sentences resume, possibly
+after a few seconds delay, then the problem may indeed be in gpsd.
+If the NMEA sentences never resume, then maybe your USB-to-serial
+dongle or kernel drivers are getting confused; you might look at the
+output of dmesg for clues.
+
+&gt;<i> I would love to test against newest gpsd but unfortunately gpsd from
+</I>&gt;<i> svn does not compile on my ubuntu dapper 6.06.
+</I>
+You should be able to get a little newer than 2.30; have you tried
+downloading the tarball of 2.37 and compiling that?
+
+Matt Roberds
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="003164.html">[Gpsd-users] gpsd does not survive sleep/suspend to ram/lid close	of laptop
+</A></li>
+	<LI>Next message: <A HREF="003166.html">[Gpsd-users] gpsd does not survive sleep/suspend to	ram/lid	close of laptop
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3165">[ date ]</a>
+              <a href="thread.html#3165">[ thread ]</a>
+              <a href="subject.html#3165">[ subject ]</a>
+              <a href="author.html#3165">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

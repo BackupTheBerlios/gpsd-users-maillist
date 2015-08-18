@@ -1,0 +1,108 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] [PATCH] Re: Garmin GPS almost never sends new position data
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2006-October/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20%5BPATCH%5D%20Re%3A%20Garmin%20GPS%20almost%20never%20sends%20new%0A%20position%20data&In-Reply-To=%3CPine.LNX.4.64.0610251034550.6569%40catbert.rellim.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="002140.html">
+   <LINK REL="Next"  HREF="002141.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] [PATCH] Re: Garmin GPS almost never sends new position data</H1>
+    <B>Gary E. Miller</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20%5BPATCH%5D%20Re%3A%20Garmin%20GPS%20almost%20never%20sends%20new%0A%20position%20data&In-Reply-To=%3CPine.LNX.4.64.0610251034550.6569%40catbert.rellim.com%3E"
+       TITLE="[Gpsd-users] [PATCH] Re: Garmin GPS almost never sends new position data">gem at rellim.com
+       </A><BR>
+    <I>Wed Oct 25 19:39:40 CEST 2006</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="002140.html">[Gpsd-users] [PATCH] Re: Garmin GPS almost never sends new	position data
+</A></li>
+        <LI>Next message: <A HREF="002141.html">[Gpsd-users] gpsprof -f cycle
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2142">[ date ]</a>
+              <a href="thread.html#2142">[ thread ]</a>
+              <a href="subject.html#2142">[ subject ]</a>
+              <a href="author.html#2142">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>-----BEGIN PGP SIGNED MESSAGE-----
+Hash: SHA1
+
+Yo Eivind!
+
+On Wed, 25 Oct 2006, Eric S. Raymond wrote:
+
+&gt;<i> &gt; 	o at the start of GetPacket, initialize the buffer with the left
+</I>&gt;<i> &gt; 	  over bytes from the last run, and only read more bytes if
+</I>&gt;<i> &gt; 	  necessary
+</I>&gt;<i>
+</I>&gt;<i> Catching up on my back mail.  Gary, was this ever integrated, or did you
+</I>&gt;<i> downcheck it for some reason?
+</I>
+This is a workaround for a broken kernel driver.  It will work on some
+machines but has many problems.  It is very speed dependent and if lock
+is every lost there is no way to recover.
+
+&gt;<i> (I don't intend to interfere with whatever decision you made, I just want
+</I>&gt;<i> to know if the matter was resolved.)
+</I>
+There are 2 Garmin binary transports.  One sues &lt;DLE&gt;..&lt;DLE&gt;&lt;ETX&gt;, and
+one uses packets.  The packet type only works on USB garmins.  The DLE
+works on both serial Garmins and USB Garmins with the garmin kernel
+driver.
+
+The packet transport is broken in the linux kernel for slower CPUs or
+when kernel latency occurs.  So I have added a handler for the &lt;DLE&gt;
+transport.  That works in SVN now for serial Garmins but not quite yet
+for USB Garmins.  I just have a few more things to work out and then
+that will also be in SVN.  Just need some quality time to finish it up,
+something I am finding hard to scavenge at the moment.
+
+RGDS
+GARY
+- ---------------------------------------------------------------------------
+Gary E. Miller Rellim 20340 Empire Ave., Suite E-3, Bend, OR 97701
+	<A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">gem at rellim.com</A>  Tel:+1(541)382-8588
+
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v1.4.3 (GNU/Linux)
+
+iD8DBQFFP6Ff8KZibdeR3qURAooeAJ9604tlKHFXVLZq+7Hu4/l14isPbQCg7OAV
+64wPmoz2VYRVh5sz7HOGxrc=
+=SEh3
+-----END PGP SIGNATURE-----
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="002140.html">[Gpsd-users] [PATCH] Re: Garmin GPS almost never sends new	position data
+</A></li>
+	<LI>Next message: <A HREF="002141.html">[Gpsd-users] gpsprof -f cycle
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2142">[ date ]</a>
+              <a href="thread.html#2142">[ thread ]</a>
+              <a href="subject.html#2142">[ subject ]</a>
+              <a href="author.html#2142">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

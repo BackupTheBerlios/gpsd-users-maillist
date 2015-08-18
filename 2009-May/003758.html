@@ -1,0 +1,227 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] Garmin GPS 60 USB - real time acquisition
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2009-May/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Garmin%20GPS%2060%20USB%20-%20real%20time%20acquisition&In-Reply-To=%3C4A16E79D.30601%40w2lie.net%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="003757.html">
+   <LINK REL="Next"  HREF="003759.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] Garmin GPS 60 USB - real time acquisition</H1>
+    <B>Phil - w2lie</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Garmin%20GPS%2060%20USB%20-%20real%20time%20acquisition&In-Reply-To=%3C4A16E79D.30601%40w2lie.net%3E"
+       TITLE="[Gpsd-users] Garmin GPS 60 USB - real time acquisition">w2lie at w2lie.net
+       </A><BR>
+    <I>Fri May 22 19:57:49 CEST 2009</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="003757.html">[Gpsd-users] Garmin GPS 60 USB - real time acquisition
+</A></li>
+        <LI>Next message: <A HREF="003759.html">[Gpsd-users] Garmin GPS 60 USB - real time acquisition
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3758">[ date ]</a>
+              <a href="thread.html#3758">[ thread ]</a>
+              <a href="subject.html#3758">[ subject ]</a>
+              <a href="author.html#3758">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Davide,
+I have the same problem with my Garmin Vista Cx (USB GPS)
+gpsd will open the port, spit out some debug info, and then immediately 
+close the port down.
+
+Just like you , I am unable to
+
+$ stty -F /dev/ttyXXX ispeed 4800 &amp;&amp; cat &lt;/dev/ttyXXX
+
+
+
+So - I am following your thread very closely..  The only thing where you lost me so far is how you found and installed the Garmin drivers into the Kernel.
+
+Good luck!  Hopefully when you finish this up you will be able to help me with my Garmin too!  ;)
+
+Phil
+
+www.w2lie.net
+Long Island Live Scanner Feeds and Forums.
+
+
+
+&gt;<i>
+</I>&gt;<i> ------------------------------
+</I>&gt;<i>
+</I>&gt;<i> Message: 4
+</I>&gt;<i> Date: Thu, 21 May 2009 23:50:55 +0100
+</I>&gt;<i> From: TheMrOrange &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">themrorange at gmail.com</A>&gt;
+</I>&gt;<i> Subject: Re: [Gpsd-users] Garmin GPS 60 USB - real time acquisition
+</I>&gt;<i> To: <A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">gpsd-users at lists.berlios.de</A>
+</I>&gt;<i> Message-ID: &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">6970F23E-6866-45F8-A3A4-14A06FA83AE9 at gmail.com</A>&gt;
+</I>&gt;<i> Content-Type: text/plain; charset=US-ASCII; format=flowed; delsp=yes
+</I>&gt;<i>
+</I>&gt;<i> one step forward...
+</I>&gt;<i>
+</I>&gt;<i> It seems the garmin_gps module wasn't loaded...
+</I>&gt;<i>
+</I>&gt;<i> # dmesg
+</I>&gt;<i> [   59.260238] usb 5-1: new full speed USB device using uhci_hcd and  
+</I>&gt;<i> address 3
+</I>&gt;<i> [   59.410695] usb 5-1: configuration #1 chosen from 1 choice
+</I>&gt;<i>
+</I>&gt;<i> I tried to load the module using
+</I>&gt;<i> # /sbin/modprobe garmin_gps
+</I>&gt;<i>
+</I>&gt;<i> the module seems to be loaded succesfully and my device get the  
+</I>&gt;<i> &quot;ttyUSB0&quot;
+</I>&gt;<i>
+</I>&gt;<i> # dmesg
+</I>&gt;<i> [  107.060571] USB Serial support registered for Garmin GPS usb/tty
+</I>&gt;<i> [  107.060616] garmin_gps 5-1:1.0: Garmin GPS usb/tty converter detected
+</I>&gt;<i> [  107.060766] usb 5-1: Garmin GPS usb/tty converter now attached to  
+</I>&gt;<i> ttyUSB0
+</I>&gt;<i> [  107.060797] usbcore: registered new interface driver garmin_gps
+</I>&gt;<i> [  107.060803] garmin_gps: v0.31:garmin gps driver
+</I>&gt;<i>
+</I>&gt;<i> now there is another obscure mistake:
+</I>&gt;<i>
+</I>&gt;<i> # gpsd -N -D 6 /dev/ttyUSB0
+</I>&gt;<i> gpsd: Can't open /proc/bus/usb/devices
+</I>&gt;<i> gpsd: no probe matched...
+</I>&gt;<i> gpsd: gpsd_activate(1): opened GPS (5)
+</I>&gt;<i>
+</I>&gt;<i> I tried to mount the file system
+</I>&gt;<i> # mount -t usbfs none /proc/bus/usb/
+</I>&gt;<i>
+</I>&gt;<i> finally it works fine:
+</I>&gt;<i> # gpsd -N -D 2 /dev/ttyUSB0
+</I>&gt;<i> gpsd: launching (Version 2.38)
+</I>&gt;<i> gpsd: listening on port gpsd
+</I>&gt;<i> gpsd: Priority sertting failed.
+</I>&gt;<i> gpsd: successfully connected to the DBUS system bus
+</I>&gt;<i> gpsd: running with effective group ID 0
+</I>&gt;<i> gpsd: running with effective user ID 0
+</I>&gt;<i> gpsd: opening GPS data source at '/dev/ttyUSB0'
+</I>&gt;<i> gpsd: speed 9600, 8N1
+</I>&gt;<i> gpsd: ntpd_link_activate: 0
+</I>&gt;<i> gpsd: gpsd_activate(1): opened GPS (5)
+</I>&gt;<i> gpsd: Garmin Product ID: 289, SoftVer: 2.40
+</I>&gt;<i> gpsd: Garmin Product Desc: GPS60 Software Version 2.40
+</I>&gt;<i> gpsd: Appl, Product Capability, sz: 111
+</I>&gt;<i> gpsd:   P000
+</I>&gt;<i> gpsd:   L001
+</I>&gt;<i> gpsd:   A010
+</I>&gt;<i> gpsd:   T001
+</I>&gt;<i> gpsd:   A100
+</I>&gt;<i> gpsd:   D109
+</I>&gt;<i> gpsd:   A201
+</I>&gt;<i> gpsd:   D202
+</I>&gt;<i> gpsd:   D109
+</I>&gt;<i> gpsd:   D210
+</I>&gt;<i> gpsd:   A301
+</I>&gt;<i> gpsd:   D310
+</I>&gt;<i> gpsd:   D301
+</I>&gt;<i> gpsd:   A400
+</I>&gt;<i> gpsd:   D109
+</I>&gt;<i> gpsd:   A500
+</I>&gt;<i> gpsd:   D501
+</I>&gt;<i> gpsd:   A600
+</I>&gt;<i> gpsd:   D600
+</I>&gt;<i> gpsd:   A601
+</I>&gt;<i> gpsd:   D601
+</I>&gt;<i> gpsd:   A700
+</I>&gt;<i> gpsd:   D700
+</I>&gt;<i> gpsd:   A800
+</I>&gt;<i> gpsd:   D800
+</I>&gt;<i> gpsd:   A900
+</I>&gt;<i> gpsd:   A902
+</I>&gt;<i> gpsd:   A903
+</I>&gt;<i> gpsd:   A904
+</I>&gt;<i> gpsd:   A907
+</I>&gt;<i> gpsd:   D907
+</I>&gt;<i> gpsd:   D908
+</I>&gt;<i> gpsd:   D909
+</I>&gt;<i> gpsd:   D910
+</I>&gt;<i> gpsd:   A914
+</I>&gt;<i> gpsd:   A1010
+</I>&gt;<i> gpsd:   A1011
+</I>&gt;<i> gpsd: UTC Time: 1242923667.000000
+</I>&gt;<i> gpsd: Geoid Separation (MSL-WGS84): from garmin 56.921867, calculated  
+</I>&gt;<i> 56.921936
+</I>&gt;<i> gpsd: Alt: 73.483, Epe: 32.796, Eph: 24.840, Epv: 21.413, Fix: 3,  
+</I>&gt;<i> Gps_tow: 405282.000001, Lat: 51.883, Lon: -8.536, LonVel: -0.004,  
+</I>&gt;<i> LatVel: -0.030, AltVel: -0.007, MslHgt: -56.922, Leap: 15, GarminDays:  
+</I>&gt;<i> 7077
+</I>&gt;<i> gpsd: UTC Time: 1242923668.000000
+</I>&gt;<i> gpsd: Geoid Separation (MSL-WGS84): from garmin 56.921867, calculated  
+</I>&gt;<i> 56.921938
+</I>&gt;<i> gpsd: Alt: 73.342, Epe: 32.796, Eph: 24.840, Epv: 21.413, Fix: 3,  
+</I>&gt;<i> Gps_tow: 405283.000001, Lat: 51.883, Lon: -8.536, LonVel: 0.002,  
+</I>&gt;<i> LatVel: -0.002, AltVel: -0.006, MslHgt: -56.922, Leap: 15, GarminDays:  
+</I>&gt;<i> 7077
+</I>&gt;<i> gpsd: UTC Time: 1242923669.000000
+</I>&gt;<i> gpsd: Geoid Separation (MSL-WGS84): from garmin 56.921867, calculated  
+</I>&gt;<i> 56.921941
+</I>&gt;<i> gpsd: Alt: 73.205, Epe: 32.796, Eph: 24.840, Epv: 21.413, Fix: 3,  
+</I>&gt;<i> Gps_tow: 405284.000002, Lat: 51.883, Lon: -8.536, LonVel: -0.002,  
+</I>&gt;<i> LatVel: -0.024, AltVel: -0.008, MslHgt: -56.922, Leap: 15, GarminDays:  
+</I>&gt;<i> 7077
+</I>&gt;<i> gpsd: UTC Time: 1242923670.000000
+</I>&gt;<i> gpsd: Geoid Separation (MSL-WGS84): from garmin 56.921867, calculated  
+</I>&gt;<i> 56.921942
+</I>&gt;<i> gpsd: Alt: 73.118, Epe: 32.796, Eph: 24.840, Epv: 21.413, Fix: 3,  
+</I>&gt;<i> Gps_tow: 405285.000002, Lat: 51.883, Lon: -8.536, LonVel: 0.001,  
+</I>&gt;<i> LatVel: -0.011, AltVel: -0.007, MslHgt: -56.922, Leap: 15, GarminDays:  
+</I>&gt;<i> 7077
+</I>&gt;<i> gpsd: UTC Time: 1242923671.000000
+</I>&gt;<i> gpsd: Geoid Separation (MSL-WGS84): from garmin 56.921867, calculated  
+</I>&gt;<i> 56.921944
+</I>&gt;<i> gpsd: Alt: 73.047, Epe: 32.796, Eph: 24.840, Epv: 21.413, Fix: 3,  
+</I>&gt;<i> Gps_tow: 405286.000002, Lat: 51.883, Lon: -8.536, LonVel: -0.001,  
+</I>&gt;<i> LatVel: 0.002, AltVel: -0.008, MslHgt: -56.922, Leap: 15, GarminDays:  
+</I>&gt;<i> 7077
+</I>&gt;<i> ^Cgpsd: Received terminating signal 2. Exiting...
+</I>&gt;<i> gpsd: closing GPS=/dev/ttyUSB0 (5)
+</I>&gt;<i>
+</I>&gt;<i> Now you know where I am!
+</I>&gt;<i>
+</I>&gt;<i> thanks a million
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i> Davide
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i>   
+</I>&gt;<i>
+</I>
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="003757.html">[Gpsd-users] Garmin GPS 60 USB - real time acquisition
+</A></li>
+	<LI>Next message: <A HREF="003759.html">[Gpsd-users] Garmin GPS 60 USB - real time acquisition
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3758">[ date ]</a>
+              <a href="thread.html#3758">[ thread ]</a>
+              <a href="subject.html#3758">[ subject ]</a>
+              <a href="author.html#3758">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

@@ -1,0 +1,115 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] Design issue -- date computations
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2005-March/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Design%20issue%20--%20date%20computations&In-Reply-To=%3C20050325173231.GA31387%40thyrsus.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="000438.html">
+   <LINK REL="Next"  HREF="000430.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] Design issue -- date computations</H1>
+    <B>Eric S. Raymond</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Design%20issue%20--%20date%20computations&In-Reply-To=%3C20050325173231.GA31387%40thyrsus.com%3E"
+       TITLE="[Gpsd-users] Design issue -- date computations">esr at thyrsus.com
+       </A><BR>
+    <I>Fri Mar 25 18:32:31 CET 2005</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="000438.html">[Gpsd-users] Static navigation mode
+</A></li>
+        <LI>Next message: <A HREF="000430.html">[Gpsd-users] Design issue -- date computations
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#429">[ date ]</a>
+              <a href="thread.html#429">[ thread ]</a>
+              <a href="subject.html#429">[ subject ]</a>
+              <a href="author.html#429">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>(Copied to the lists because there is a design issue here on which I would
+like other peoples' inputs.)
+
+Daniele Giangrazi &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">daniele.giangrazi at elital.net</A>&gt;:
+&gt;<i> &gt; Are you trying to say that gpsd gets an incorrect date if the D command
+</I>&gt;<i> &gt; happens to come at a bad place in the update cycle?
+</I>&gt;<i> 
+</I>&gt;<i> Yes, if the GPRMC sentence arrives before GPGGA the date supplied by GPRMC
+</I>&gt;<i> is overwritten with the fake date.
+</I>&gt;<i> 
+</I>&gt;<i> &gt; If so, between what two sentences is the window of vulnerability?
+</I>&gt;<i> 
+</I>&gt;<i> The vulnerability is after the arrival of GPGGA and before the arrival of
+</I>&gt;<i> GPRMC.
+</I>&gt;<i> In this period the date memorized is the fake date.
+</I>&gt;<i> My receiver send always GPRMC and then GPGGA therefore I have always the
+</I>&gt;<i> fake date with XGPS.
+</I>
+I understand now.  But I am not sure there is any cure for this that would
+not be worse than the disease.  I think instead this will turn into a FAQ 
+entry.
+
+The fundamental problem is that NMEA 0183 does not supply full dates.
+Three sentences in the repertoire gpsd recognizes conntain date
+fields; GPGGA/GPGLL date fields supply hhmmss.ss (with the trailing
+.ss part optional), GPRMC adds ddmmyy but gives only a two-digit year
+lacking a century part.  You can deduce the reason for this from the
+fact that NMEA 0183 was specified for 4800bps; it was designed when
+serial bandwidth was scarce and precious.
+
+For various reasons including time display on clients, it is desirable
+for gpsd to complete these dates.  The century part is never given and
+hast to be faked from host-machine time (fortunately this could only 
+cause problems about once ever hundred years).  The time of day is 
+always given.  The remaining issue is how to fake up ddmmyy.
+
+There are two possible strategies gpsd could use: (1) fill ddmmyy in
+from the host machine's computation of GMT, or (2) copy it from the
+last GPRMC. 
+
+(1) has the benefit that it produces correct timestamps for GGA and
+GLL in case they show up before GPRMC.  (2) has the benefit that it
+will produce correct timestamps after the first GPRMC even if the system
+clock is badly mis-set
+
+(1) has the downside that it doesn't cope well with a mis-set system clock.
+(2) has at least two downsides: (A) it won't put good timestamps in
+GPGGA/GPGLL that show up before first GPRMC, (B) it may also put the
+wrong date in a GLL or GGA collected within a cycle after midnight.
+
+Presently gpsd uses (1).  I don't see that switching would really
+improve matters
+-- 
+		&lt;a href=&quot;<A HREF="http://www.catb.org/~esr/">http://www.catb.org/~esr/</A>&quot;&gt;Eric S. Raymond&lt;/a&gt;
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="000438.html">[Gpsd-users] Static navigation mode
+</A></li>
+	<LI>Next message: <A HREF="000430.html">[Gpsd-users] Design issue -- date computations
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#429">[ date ]</a>
+              <a href="thread.html#429">[ thread ]</a>
+              <a href="subject.html#429">[ subject ]</a>
+              <a href="author.html#429">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

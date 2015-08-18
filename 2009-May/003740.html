@@ -1,0 +1,176 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] Newbie Help - gpsd: Can't open	/proc/bus/usb/devices
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2009-May/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Newbie%20Help%20-%20gpsd%3A%20Can%27t%20open%0A%09/proc/bus/usb/devices&In-Reply-To=%3C200905172220.11051.w2lie%40w2lie.net%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="003760.html">
+   <LINK REL="Next"  HREF="003741.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] Newbie Help - gpsd: Can't open	/proc/bus/usb/devices</H1>
+    <B>Phil Lichtenberger</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Newbie%20Help%20-%20gpsd%3A%20Can%27t%20open%0A%09/proc/bus/usb/devices&In-Reply-To=%3C200905172220.11051.w2lie%40w2lie.net%3E"
+       TITLE="[Gpsd-users] Newbie Help - gpsd: Can't open	/proc/bus/usb/devices">w2lie at w2lie.net
+       </A><BR>
+    <I>Mon May 18 04:20:10 CEST 2009</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="003760.html">[Gpsd-users] gpsd on mac osx leopard
+</A></li>
+        <LI>Next message: <A HREF="003741.html">[Gpsd-users]  gpsd can not find device garminGPS60
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3740">[ date ]</a>
+              <a href="thread.html#3740">[ thread ]</a>
+              <a href="subject.html#3740">[ subject ]</a>
+              <a href="author.html#3740">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Beat,
+Thanks for the help - I feel I am actually getting very close to getting this 
+to work!  I can't thank you enough for guiding me through this.
+
+When I tried to grep the usb, it came back to the command prompt, so I 
+followed your example and was able to mount the device.  Here is the output:
+
+linux-ahlk:/home/Phil # mount -t usbfs -onodev,noexec,nosuid none 
+/proc/bus/usb
+linux-ahlk:/home/Phil # mount | grep usb
+none on /proc/bus/usb type usbfs (rw,noexec,nosuid,nodev)
+
+
+Now when I try to run gpsd, I am not seeing any GPS stings being echoed back 
+via the terminal.. is that correct?
+
+Here is what I see after I am able to mount /proc/bus/usb
+Looks like I am 90% of the way there - just another hurdle..  At least gpsd is 
+now reading my USB GPS's make and model info!
+
+GPSD closes the /dev/ttyUSB0 connection automatically
+is there any reason for that?
+Also - my system is unable to kill gpsd once it gets into this state.
+
+73
+
+linux-ahlk:/home/Phil # gpsd -N -D 3 /dev/ttyUSB0
+gpsd: launching (Version 2.37)                   
+gpsd: listening on port gpsd                     
+gpsd: shmat(0,0,0) succeeded                     
+gpsd: shmat(0,0,0) succeeded                     
+gpsd: shmat(0,0,0) succeeded                     
+gpsd: shmat(0,0,0) succeeded
+gpsd: successfully connected to the DBUS system bus
+gpsd: running with effective group ID 0
+gpsd: running with effective user ID 0
+gpsd: opening GPS data source at '/dev/ttyUSB0'
+gpsd: speed 9600, 8N1
+gpsd: Navcom: sent command 0x1c (Test Support Block)
+gpsd: Navcom: sent command 0x20 (Data Request) - data block id = ae at rate 00
+gpsd: Navcom: sent command 0x20 (Data Request) - data block id = 86 at rate 0a
+gpsd: Set garmin_gps driver mode = 0
+gpsd: PrintUSBPacket()
+gpsd: Private, Set Mode: 1
+gpsd: probe found Garmin USB binary driver...
+gpsd: ntpd_link_activate: 0
+gpsd: gpsd_activate(0): opened GPS (6)
+gpsd: Get Garmin Product Data
+gpsd: Appl, Product Data req
+gpsd: Set Garmin to send reports every 1 second
+gpsd: Appl, Command Data: Start Xmit PVT data
+gpsd: Appl, Product Data, sz: 87
+gpsd: Garmin Product ID: 421, SoftVer: 3.00
+gpsd: Garmin Product Desc: eTrex VistaCx Software Version 3.00
+gpsd: ACK
+gpsd: garmin_close()
+gpsd: closing GPS=/dev/ttyUSB0 (6)
+
+
+
+
+
+
+On Sunday 17 May 2009 12:27:00 pm Beat Bolli wrote:
+&gt;<i> Phil - w2lie wrote:
+</I>&gt;<i> &gt; Beat,
+</I>&gt;<i> &gt; Thanks for the reply.
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; I am trying to open /dev/ttyUSB0 and the following is the error I am
+</I>&gt;<i> &gt; getting.  For some reason, opening /dev/ttyUSB0 is trying to associate
+</I>&gt;<i> &gt; with
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; /proc/bus/usb/devices
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; gpsd: Can't open /proc/bus/usb/devices
+</I>&gt;<i>
+</I>&gt;<i> Ok, in this case it seems that your usbfs isn't mounted at all or not
+</I>&gt;<i> under /proc/bus/usb. You can check if OpenSUSE mounts usbfs somewhere
+</I>&gt;<i> else with &quot;mount | grep usb&quot;. This should output one line on the form
+</I>&gt;<i>
+</I>&gt;<i> procbususb on /proc/bus/usb type usbfs (rw)
+</I>&gt;<i>
+</I>&gt;<i> The third word tells you where usbfs is mounted. If nothing is output at
+</I>&gt;<i> all, usbfs is not mounted. You can do this yourself with the line
+</I>&gt;<i>
+</I>&gt;<i> mount -t usbfs -onodev,noexec,nosuid none /proc/bus/usb
+</I>&gt;<i>
+</I>&gt;<i> (taken from by Debian Linux system). This assumes that /proc/bus/usb is
+</I>&gt;<i> an empty directory.
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i> HTH, Beat
+</I>&gt;<i>
+</I>&gt;<i> &gt; Beat Bolli wrote:
+</I>&gt;<i> &gt;&gt; Phil Lichtenberger wrote:
+</I>&gt;<i> &gt;&gt;&gt; Linux is seeing the GPS on boot:
+</I>&gt;<i> &gt;&gt;&gt; My Kernel is seeing the Garmin GPS as follows (from Boot.msg)
+</I>&gt;<i> &gt;&gt;&gt; &lt;6&gt;usbserial: USB Serial support registered for Garmin GPS usb/tty
+</I>&gt;<i> &gt;&gt;&gt; &lt;6&gt;garmin_gps 5-1:1.0: Garmin GPS usb/tty converter detected
+</I>&gt;<i> &gt;&gt;&gt; &lt;6&gt;usb 5-1: Garmin GPS usb/tty converter now attached to ttyUSB0
+</I>&gt;<i> &gt;&gt;
+</I>&gt;<i> &gt;&gt;                                                            ^^^^^^^
+</I>&gt;<i> &gt;&gt;
+</I>&gt;<i> &gt;&gt;&gt; &lt;6&gt;usbcore: registered new interface driver garmin_gps
+</I>&gt;<i> &gt;&gt;&gt; &lt;6&gt;garmin_gps: garmin gps driver v0.31
+</I>&gt;<i> &gt;&gt;
+</I>&gt;<i> &gt;&gt; Hi Phil,
+</I>&gt;<i> &gt;&gt;
+</I>&gt;<i> &gt;&gt; according to this you have to use the command &quot;gpsd /dev/ttyUSB0&quot;. This
+</I>&gt;<i> &gt;&gt; is the device node created for your GPS.
+</I>&gt;<i> &gt;&gt;
+</I>&gt;<i> &gt;&gt; HTH,
+</I>&gt;<i> &gt;&gt;
+</I>&gt;<i> &gt;&gt; Beat Bolli
+</I>
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="003760.html">[Gpsd-users] gpsd on mac osx leopard
+</A></li>
+	<LI>Next message: <A HREF="003741.html">[Gpsd-users]  gpsd can not find device garminGPS60
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3740">[ date ]</a>
+              <a href="thread.html#3740">[ thread ]</a>
+              <a href="subject.html#3740">[ subject ]</a>
+              <a href="author.html#3740">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

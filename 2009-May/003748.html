@@ -1,0 +1,166 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] Garmin GPS 60 USB - real time acquisition
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2009-May/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Garmin%20GPS%2060%20USB%20-%20real%20time%20acquisition&In-Reply-To=%3C24EB99C6-42E3-4FAE-8658-7B0993B7226B%40gmail.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="003747.html">
+   <LINK REL="Next"  HREF="003749.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] Garmin GPS 60 USB - real time acquisition</H1>
+    <B>TheMrOrange</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Garmin%20GPS%2060%20USB%20-%20real%20time%20acquisition&In-Reply-To=%3C24EB99C6-42E3-4FAE-8658-7B0993B7226B%40gmail.com%3E"
+       TITLE="[Gpsd-users] Garmin GPS 60 USB - real time acquisition">themrorange at gmail.com
+       </A><BR>
+    <I>Wed May 20 23:49:44 CEST 2009</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="003747.html">[Gpsd-users] Garmin GPS 60 USB - real time acquisition
+</A></li>
+        <LI>Next message: <A HREF="003749.html">[Gpsd-users] Garmin GPS 60 USB - real time acquisition
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3748">[ date ]</a>
+              <a href="thread.html#3748">[ thread ]</a>
+              <a href="subject.html#3748">[ subject ]</a>
+              <a href="author.html#3748">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi,
+as I told you I can try tomorrow morning using Dell Latitude Laptop  
+but using another laptop (MacBook has only 2 USB) using Ubuntu 8.10 or  
+Ubuntu 9.04 the problem is the same:
+
+# dmsg
+[ 2134.840143] usb 2-1: new full speed USB device using uhci_hcd and  
+address 4
+[ 2135.481231] usb 2-1: configuration #1 chosen from 1 choice
+[ 2185.548918] usb 2-1: USB disconnect, address 4
+[ 2188.940540] usb 2-1: new full speed USB device using uhci_hcd and  
+address 5
+[ 2189.530359] usb 2-1: configuration #1 chosen from 1 choice
+
+# lsusb
+Bus 002 Device 005: ID 091e:0003 Garmin International GPSmap (various  
+models)
+
+garmin_gps driver should be installed because of the kernel so I don't  
+know why it's using uhci_hcd
+What should I do?
+
+
+
+
+I don't know if this old log using Dell Latitude could be useful:
+
+# gpsd -N -D 6 /dev/ttyS0
+gpsd: launching (Version 2.37)
+gpsd: listening on port gpsd
+gpsd: shmat(0,0,0) succeeded
+gpsd: shmat(0,0,0) succeeded
+gpsd: shmat(0,0,0) succeeded
+gpsd: shmat(0,0,0) succeeded
+gpsd: successfully connected to the DBUS system bus
+gpsd: running with effective group ID 0
+gpsd: running with effective user ID 0
+gpsd: opening GPS data source at '/dev/ttyS0'
+gpsd: speed 9600, 8N1
+
+gpsd: =&gt; GPS: $PASHQ,RID*28\x0d
+
+gpsd: Navcom: command dump: 0299661c0800040200001203
+gpsd: =&gt; GPS: 0299661c0800040200001203
+gpsd: Navcom: sent command 0x1c (Test Support Block)
+gpsd: Navcom: command 0x1c mode = 02, length = 0
+gpsd: Navcom: command dump: 029966200e000001ae02000071000000f203
+gpsd: =&gt; GPS: 029966200e000001ae02000071000000f203
+gpsd: Navcom: sent command 0x20 (Data Request) - data block id = ae at  
+rate 00
+gpsd: Navcom: command dump: 029966200e00000186020a0071000000d003
+gpsd: =&gt; GPS: 029966200e00000186020a0071000000d003
+gpsd: Navcom: sent command 0x20 (Data Request) - data block id = 86 at  
+rate 0a
+gpsd: garmin_gps not active.
+gpsd: no probe matched...
+gpsd: gpsd_activate(0): opened GPS (5)
+
+
+
+thanks a lot
+
+
+Davide
+
+On 20/mag/09, at 20:45, Gary E. Miller wrote:
+
+&gt;<i> -----BEGIN PGP SIGNED MESSAGE-----
+</I>&gt;<i> Hash: SHA1
+</I>&gt;<i>
+</I>&gt;<i> Yo Davide!
+</I>&gt;<i>
+</I>&gt;<i> On Wed, 20 May 2009, TheMrOrange wrote:
+</I>&gt;<i>
+</I>&gt;&gt;<i> I don't have the device now but I'll send you all message tomorrow  
+</I>&gt;&gt;<i> morning...
+</I>&gt;&gt;<i> ()
+</I>&gt;&gt;<i> by the way all message (for all USB socket) are like this:
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> # dmesg
+</I>&gt;&gt;<i> [22793.600226] usb 4-1: USB disconnect, address 5
+</I>&gt;&gt;<i> [22798.800104] usb 4-1: new full speed USB device using uhci_hcd  
+</I>&gt;&gt;<i> and address
+</I>&gt;&gt;<i> 6
+</I>&gt;&gt;<i> [22798.952314] usb 4-1: configuration #1 chosen from 1 choice
+</I>&gt;<i>
+</I>&gt;<i> If the Garmin is using the uhci_hcd driver I do not see how it can
+</I>&gt;<i> ever work.  So check again.
+</I>&gt;<i>
+</I>&gt;<i> RGDS
+</I>&gt;<i> GARY
+</I>&gt;<i> -  
+</I>&gt;<i> ---------------------------------------------------------------------------
+</I>&gt;<i> Gary E. Miller Rellim 109 NW Wilmington Ave., Suite E, Bend, OR 97701
+</I>&gt;<i> 	<A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">gem at rellim.com</A>  Tel:+1(541)382-8588
+</I>&gt;<i>
+</I>&gt;<i> -----BEGIN PGP SIGNATURE-----
+</I>&gt;<i> Version: GnuPG v1.4.3 (GNU/Linux)
+</I>&gt;<i>
+</I>&gt;<i> iD8DBQFKFF3DBmnRqz71OvMRApBTAKCCpWgkSCwQvpMpltGukGgLGuTphgCdE72W
+</I>&gt;<i> OnmzON7NxPMF/dGuvNgkoHs=
+</I>&gt;<i> =/LCb
+</I>&gt;<i> -----END PGP SIGNATURE-----
+</I>&gt;<i>
+</I>
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="003747.html">[Gpsd-users] Garmin GPS 60 USB - real time acquisition
+</A></li>
+	<LI>Next message: <A HREF="003749.html">[Gpsd-users] Garmin GPS 60 USB - real time acquisition
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3748">[ date ]</a>
+              <a href="thread.html#3748">[ thread ]</a>
+              <a href="subject.html#3748">[ subject ]</a>
+              <a href="author.html#3748">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

@@ -1,0 +1,162 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] Infinite loop with gps_query() on dropped	connection
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2010-June/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Infinite%20loop%20with%20gps_query%28%29%20on%20dropped%0A%09connection&In-Reply-To=%3CAANLkTin2Mkz3YOocnCVPUIGzfRPQihGQZL9BacoKBgBc%40mail.gmail.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="004537.html">
+   <LINK REL="Next"  HREF="004539.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] Infinite loop with gps_query() on dropped	connection</H1>
+    <B>Adam Boggs</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Infinite%20loop%20with%20gps_query%28%29%20on%20dropped%0A%09connection&In-Reply-To=%3CAANLkTin2Mkz3YOocnCVPUIGzfRPQihGQZL9BacoKBgBc%40mail.gmail.com%3E"
+       TITLE="[Gpsd-users] Infinite loop with gps_query() on dropped	connection">boggs-gpsd at aircrafter.org
+       </A><BR>
+    <I>Thu Jun 17 22:49:22 CEST 2010</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="004537.html">[Gpsd-users] Infinite loop with gps_query() on dropped connection
+</A></li>
+        <LI>Next message: <A HREF="004539.html">[Gpsd-users] Infinite loop with gps_query() on dropped connection
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#4538">[ date ]</a>
+              <a href="thread.html#4538">[ thread ]</a>
+              <a href="subject.html#4538">[ subject ]</a>
+              <a href="author.html#4538">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>On Thu, Jun 17, 2010 at 1:05 PM, Charles Curley &lt;
+<A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">charlescurley at charlescurley.com</A>&gt; wrote:
+
+&gt;<i> On Thu, 17 Jun 2010 10:34:18 -0600
+</I>&gt;<i> Adam Boggs &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">boggs-gpsd at aircrafter.org</A>&gt; wrote:
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; I am using libgps/gpsd and the gps_query() interface in a program I
+</I>&gt;<i> &gt; wrote ( <A HREF="http://sourceforge.net/projects/brain-storm/">http://sourceforge.net/projects/brain-storm/</A>) and I noticed
+</I>&gt;<i> &gt; that if I run my program without my gps plugged in (garmin usb serial
+</I>&gt;<i> &gt; nmea) but while gpsd is still running, my CPU becomes pegged.  I
+</I>&gt;<i> &gt; tracked it down to the process_gps() callback getting called
+</I>&gt;<i> &gt; repeatedly.  It happens about a minute after the program starts.  I
+</I>&gt;<i> &gt; tried to telnet into the daemon directly, and discovered that this
+</I>&gt;<i> &gt; problem seems to correlate to gpsd closing the connection on me:
+</I>&gt;<i>
+</I>&gt;<i> On very recent versions of gpsd (e.g.: the git HEAD), gpsd will notify
+</I>&gt;<i> you when it sees a receiver go away. It does so with DEVICE_SET, and
+</I>&gt;<i> setting the &quot;activated&quot; field to 0. Since this is a float, and I'm
+</I>&gt;<i> paranoid, I check for less than 1. Here is how I handle it in code I
+</I>&gt;<i> just wrote (mind the wrapping):
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i>  /* Fill in receiver type. Detect missing gps receiver. */
+</I>&gt;<i>  if (gpsdata-&gt;set &amp; (DEVICE_SET)) {
+</I>&gt;<i>    if (gpsdata-&gt;dev.activated &lt; 1.0) {
+</I>&gt;<i>      sendWatch ();
+</I>&gt;<i>      gpsLost = true;
+</I>&gt;<i>
+</I>&gt;<i>      gtk_progress_bar_set_fraction (progress, 0.0);
+</I>&gt;<i>      gtk_progress_bar_set_text (progress, &quot;GPS lost!&quot;);
+</I>&gt;<i>      setColor (&amp;NoFixColor);
+</I>&gt;<i>
+</I>&gt;<i>      if (verbose) {
+</I>&gt;<i>        (void) fprintf (stderr, &quot;gps lost.\n&quot;);
+</I>&gt;<i>        (void) strcpy (tmpBuff, &quot;driver = nil: subtype = nil: activated
+</I>&gt;<i>      = 0.0&quot;); }
+</I>&gt;<i>    } else {
+</I>&gt;<i>      gpsLost = false;
+</I>&gt;<i>      if (strlen (gpsdata-&gt;dev.driver)) {
+</I>&gt;<i>        (void) snprintf(tmpBuff, sizeof(tmpBuff), &quot;%s GPS Found!&quot;,
+</I>&gt;<i>      gpsdata-&gt;dev.driver); } else {
+</I>&gt;<i>        (void) strcpy (tmpBuff, &quot;GPS Found!&quot;);
+</I>&gt;<i>      }
+</I>&gt;<i>      gtk_progress_bar_set_text (progress, tmpBuff);
+</I>&gt;<i>      if (verbose) {
+</I>&gt;<i>        (void) snprintf(tmpBuff, sizeof(tmpBuff), &quot;driver = %s: subtype
+</I>&gt;<i>      = %s: activated = %f&quot;, gpsdata-&gt;dev.driver, gpsdata-&gt;dev.subtype,
+</I>&gt;<i>      gpsdata-&gt;dev.activated); (void) printf (&quot;gps found.\n&quot;);
+</I>&gt;<i>      }
+</I>&gt;<i>    }
+</I>&gt;<i>
+</I>&gt;<i>    if (verbose) {
+</I>&gt;<i>      (void) printf (&quot;set 0x%08x, (device) GPS Driver: %s\n&quot;,
+</I>&gt;<i>                     gpsdata-&gt;set, tmpBuff);
+</I>&gt;<i>    }
+</I>&gt;<i>
+</I>&gt;<i>    return;
+</I>&gt;<i>  }
+</I>&gt;<i>
+</I>&gt;<i> I am assuming a single GPS because I am too cheap to buy multiple
+</I>&gt;<i> receivers to test. :-)
+</I>&gt;<i>
+</I>&gt;<i> This does not handle your issue directly. I haven't tried to handle
+</I>&gt;<i> it yet. But it leads me to think that checking at startup for one or
+</I>&gt;<i> more receivers present via the DEVICE_SET code and watching gpsLost
+</I>&gt;<i> might help.
+</I>&gt;<i>
+</I>&gt;<i> Or look at the array that you get via the DEVICELIST_SET, and don't
+</I>&gt;<i> start polling until you see at least one entry with its &quot;activated&quot;
+</I>&gt;<i> field set to non-zero.
+</I>&gt;<i>
+</I>&gt;<i> More generally, you should use gps_waiting () to check for incoming
+</I>&gt;<i> data, and sleep if there is none, before calling gps_poll().
+</I>&gt;<i>
+</I>&gt;<i> --
+</I>&gt;<i>
+</I>&gt;<i> Charles Curley                  /&quot;\    ASCII Ribbon Campaign
+</I>&gt;<i> Looking for fine software       \ /    Respect for open standards
+</I>&gt;<i> and/or writing?                  X     No HTML/RTF in email
+</I>&gt;<i> <A HREF="http://www.charlescurley.com">http://www.charlescurley.com</A>    / \    No M$ Word docs in email
+</I>&gt;<i>
+</I>&gt;<i>
+</I>Thanks for your quick response, Charles.  Actually, this solves a
+long-lasting peeve with the old protocol, which was that I could never tell
+if the GPS became mysteriously unplugged.  It would keep returning the same
+data telling me it had a 3D differential signal.  So this is cool.
+
+But as you mentioned, I'm not sure it solves my particular problem.  I guess
+this is normal behavior for gpsd/libgps though (closing the connection), and
+what I need to add is code to check if the GPS is no longer activated, and
+if not, then close the socket and remove the input event handler for that
+socket.  Then set a timer to retry the gps_open().  Otherwise, the event
+loop is going to continue calling my callback repeatedly on a socket that is
+(half) closed.  Unfortunately, it means I can't carry my gps_data around
+either, since it could change out from under me.
+
+Is this how everyone else handles this?  Seems kind of clunky.
+
+-Adam
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="004537.html">[Gpsd-users] Infinite loop with gps_query() on dropped connection
+</A></li>
+	<LI>Next message: <A HREF="004539.html">[Gpsd-users] Infinite loop with gps_query() on dropped connection
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#4538">[ date ]</a>
+              <a href="thread.html#4538">[ thread ]</a>
+              <a href="subject.html#4538">[ subject ]</a>
+              <a href="author.html#4538">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

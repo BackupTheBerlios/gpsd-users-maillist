@@ -1,0 +1,83 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] NovAtel OEM-V3 &amp; gpsd --&gt; 1PPS problem &amp; NMEA question
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2011-August/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20NovAtel%20OEM-V3%20%26%20gpsd%20--%3E%201PPS%20problem%20%26%20NMEA%20question&In-Reply-To=%3C3BFA7B75-74E0-4DEA-8AC0-8284C3F52C36%40pelgrum.org%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="005429.html">
+   <LINK REL="Next"  HREF="005431.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] NovAtel OEM-V3 &amp; gpsd --&gt; 1PPS problem &amp; NMEA question</H1>
+    <B>Wouter Pelgrum</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20NovAtel%20OEM-V3%20%26%20gpsd%20--%3E%201PPS%20problem%20%26%20NMEA%20question&In-Reply-To=%3C3BFA7B75-74E0-4DEA-8AC0-8284C3F52C36%40pelgrum.org%3E"
+       TITLE="[Gpsd-users] NovAtel OEM-V3 &amp; gpsd --&gt; 1PPS problem &amp; NMEA question">wouter at pelgrum.org
+       </A><BR>
+    <I>Thu Aug 25 17:03:19 CEST 2011</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="005429.html">[Gpsd-users] gpsd 3.0 no PPS on Centos 6
+</A></li>
+        <LI>Next message: <A HREF="005431.html">[Gpsd-users] NovAtel OEM-V3 &amp; gpsd --&gt; 1PPS problem &amp; NMEA question
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#5430">[ date ]</a>
+              <a href="thread.html#5430">[ thread ]</a>
+              <a href="subject.html#5430">[ subject ]</a>
+              <a href="author.html#5430">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi,
+
+I'm trying to use gpsd to synchronize my data collection computer to UTC. My target accuracy is ms-level, and therefore I want to use a 1PPS
+I have a NovAtel OEM-V3 GPS receiver. This receiver can output a 1-ms wide pulse on a serial-port RTS line, I made a cable to connect it to the DCD line for GPSD.
+GPSD is receiving the 1PPS but doesn't accept it:
+
+gpsd: GPS on /dev/ttyS0 is offline (0.000297 sec since data)
+gpsd: PPS cycle: 999923, duration: 998948 @ 1314283636.990037
+gpsd: PPS cycle: 999925, duration: 977 @ 1314283636.991014
+gpsd: PPS pulse rejected
+
+My guess is that GPSD doesn't like a 1ms pulse... 
+ - Is this the case? What are the requirements of the 1PPS pulse for GPSD?
+ - Is it possible to have GPSD accept 1ms PPS pulses?
+I do have an option of using another 1PPS source that allows me to change the pulse length, but I was planning on using that output for another purpose. Using the RTS 1PPS output would be preferable.
+
+Another question:
+- What NMEA messages are needed to have GPSD working correctly with NTP?
+GPGGA, GPZDA ?
+
+Thanks!
+
+Wouter Pelgrum
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="005429.html">[Gpsd-users] gpsd 3.0 no PPS on Centos 6
+</A></li>
+	<LI>Next message: <A HREF="005431.html">[Gpsd-users] NovAtel OEM-V3 &amp; gpsd --&gt; 1PPS problem &amp; NMEA question
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#5430">[ date ]</a>
+              <a href="thread.html#5430">[ thread ]</a>
+              <a href="subject.html#5430">[ subject ]</a>
+              <a href="author.html#5430">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

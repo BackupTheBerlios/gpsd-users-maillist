@@ -1,0 +1,99 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] Python - Current Location
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2011-September/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Python%20-%20Current%20Location&In-Reply-To=%3CCAPWn0eACTS4BbknfJc%2BCu1t8m3wzMASaAX_F0QKia9xwOC%2BfZA%40mail.gmail.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="005499.html">
+   <LINK REL="Next"  HREF="005492.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] Python - Current Location</H1>
+    <B>Neil Greenough</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Python%20-%20Current%20Location&In-Reply-To=%3CCAPWn0eACTS4BbknfJc%2BCu1t8m3wzMASaAX_F0QKia9xwOC%2BfZA%40mail.gmail.com%3E"
+       TITLE="[Gpsd-users] Python - Current Location">neilgreenough at sky.com
+       </A><BR>
+    <I>Tue Sep 27 23:01:12 CEST 2011</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="005499.html">[Gpsd-users] gpsd build failed...
+</A></li>
+        <LI>Next message: <A HREF="005492.html">[Gpsd-users] Python - Current Location
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#5491">[ date ]</a>
+              <a href="thread.html#5491">[ thread ]</a>
+              <a href="subject.html#5491">[ subject ]</a>
+              <a href="author.html#5491">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi folks.
+
+I'm currently putting together a Python (v2.6) script to be run on Linux.
+This scripts uses the gpsd module (gps) to grab the location of laptop
+running the script as well as access points in the vicinity.
+
+To scan for the access points, I have a continual loop in a function. Now to
+get the current GPS location for each time an access point is located, I'm
+just wondering how is best to do this? At present I have a continual while
+loop also grabbing the GPS function. The problem is, as I now have two
+loops, I have to threads running - one with the GPS loop and the other with
+the wifi loop. Here's the code I'm using so far for the GPS function:-
+
+*#!/usr/bin/python*
+
+*import gps, os, time*
+
+*session = gps.gps()
+session.poll()
+session.stream()*
+
+*while 1:
+    session.poll()*
+
+*    print session.fix.latitude*
+
+*    print session.fix.longitude*
+
+
+Is there a way of embedding a call within my wifi loop to grab the current
+location? So for example, whilst my wifi scanning is running, if an access
+point is detected, print the coordinates. I think the only way to do this
+(without a delay each time for polling / streaming) is to have the code
+running in the background in another thread but just wondering if anyone
+knows of an alternative way?
+
+
+Thanks
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="005499.html">[Gpsd-users] gpsd build failed...
+</A></li>
+	<LI>Next message: <A HREF="005492.html">[Gpsd-users] Python - Current Location
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#5491">[ date ]</a>
+              <a href="thread.html#5491">[ thread ]</a>
+              <a href="subject.html#5491">[ subject ]</a>
+              <a href="author.html#5491">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

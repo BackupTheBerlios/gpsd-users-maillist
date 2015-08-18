@@ -1,0 +1,80 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] C++ interface problems
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2011-May/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20C%2B%2B%20interface%20problems&In-Reply-To=%3C20110523175219.18ce9732%40gmail.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="005243.html">
+   <LINK REL="Next"  HREF="005245.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] C++ interface problems</H1>
+    <B>Daniel Taylor</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20C%2B%2B%20interface%20problems&In-Reply-To=%3C20110523175219.18ce9732%40gmail.com%3E"
+       TITLE="[Gpsd-users] C++ interface problems">dbtayl at gmail.com
+       </A><BR>
+    <I>Tue May 24 00:52:19 CEST 2011</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="005243.html">[Gpsd-users] why does gpsd not decode my data?
+</A></li>
+        <LI>Next message: <A HREF="005245.html">[Gpsd-users] C++ interface problems
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#5244">[ date ]</a>
+              <a href="thread.html#5244">[ thread ]</a>
+              <a href="subject.html#5244">[ subject ]</a>
+              <a href="author.html#5244">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>It seems like the C++ interface is a bit broken. There's a gpsmm::close
+() function defined in libgpsmm.h, but it's not implemented in
+libgpsmm.cpp.
+
+I don't know if it's supposed to be there or not, but either way
+there's a problem.
+
+More immediately, I've got code like this: <A HREF="http://pastebin.com/Qz9GVczq">http://pastebin.com/Qz9GVczq</A>
+
+foobar will properly give output from the GPS, but, when uncommented,
+gpsObj will not. The only difference I can see is where they're
+defined; gpsObj is previously initialized elsewhere. When using gpsObj,
+I also get a crash when trying to clean things up (it looks like it's
+trying to free a pointer twice), which seems like it's related. Any
+help would be appreciated.
+
+Thanks.
+
+-Dan Taylor
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="005243.html">[Gpsd-users] why does gpsd not decode my data?
+</A></li>
+	<LI>Next message: <A HREF="005245.html">[Gpsd-users] C++ interface problems
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#5244">[ date ]</a>
+              <a href="thread.html#5244">[ thread ]</a>
+              <a href="subject.html#5244">[ subject ]</a>
+              <a href="author.html#5244">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

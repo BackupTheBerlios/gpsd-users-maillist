@@ -1,0 +1,93 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] patch for cgpxlogger.c
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2007-October/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20patch%20for%20cgpxlogger.c&In-Reply-To=%3C20071011195145.05ef5d44.hamish_nospam%40yahoo.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="002936.html">
+   <LINK REL="Next"  HREF="002938.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] patch for cgpxlogger.c</H1>
+    <B>Hamish</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20patch%20for%20cgpxlogger.c&In-Reply-To=%3C20071011195145.05ef5d44.hamish_nospam%40yahoo.com%3E"
+       TITLE="[Gpsd-users] patch for cgpxlogger.c">hamish_nospam at yahoo.com
+       </A><BR>
+    <I>Thu Oct 11 08:51:45 CEST 2007</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="002936.html">[Gpsd-users] Stuff for RPM packaging
+</A></li>
+        <LI>Next message: <A HREF="002938.html">[Gpsd-users] Com-1289 board and cgps
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2937">[ date ]</a>
+              <a href="thread.html#2937">[ thread ]</a>
+              <a href="subject.html#2937">[ subject ]</a>
+              <a href="author.html#2937">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi,
+
+Here is a small patch for cgpxlogger.c  (against latest SVN)
+
+it does two things-
+
+* decide to output timestamp based on if the GPS has a valid fix, not if
+it knows what satellites are in the sky. Like several other GPSs, our
+Furuno GP-31 doesn't ship GSA.
+<A HREF="http://www.furuno.com/Furuno/Doc/0/5OS1KKAL2OP434ND790LNUEPEB/GP31-GP36%20Operator%27s%20Manual%20%20k.pdf">http://www.furuno.com/Furuno/Doc/0/5OS1KKAL2OP434ND790LNUEPEB/GP31-GP36%20Operator%27s%20Manual%20%20k.pdf</A>
+
+* output lat/lon doubles as %.7f. RTK will get you a position within 2mm
+in the horizontal. I speculate the vertical to be an order of magnitude
+worse, ~2cm, which is ok as elevation is already given at %.2f.
+ 1852m/naut mi. * 60nm/deg_lat * %.6f = 11cm.  (* %.7f = 1.1cm)
+
+
+
+With that, all is ticking along nicely for us.
+Hardware is a 21m research vessel, Furuno GP-31 GPS, Keyspan RS232-&gt;USB,
+Mac intel MacBookPro. RTK system is running in parallel to the ship's
+navigation GPS. Software is OSX 10.4, gpsd 2.34, cgpslogger, and
+GpsDrive 2.09. Another little app records the raw NMEA to save the depth
+and temperature from the sounder ($SDDPT, $YCMTW) for manual parsing and
+tidal correction in Matlab and interpolation in GRASS GIS.
+
+
+
+cheers,
+Hamish Bowman
+Dept Marine Science
+University of Otago
+New Zealand
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="002936.html">[Gpsd-users] Stuff for RPM packaging
+</A></li>
+	<LI>Next message: <A HREF="002938.html">[Gpsd-users] Com-1289 board and cgps
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2937">[ date ]</a>
+              <a href="thread.html#2937">[ thread ]</a>
+              <a href="subject.html#2937">[ subject ]</a>
+              <a href="author.html#2937">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

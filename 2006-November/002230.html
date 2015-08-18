@@ -1,0 +1,121 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] Is this bug list correct and complete?
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2006-November/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Is%20this%20bug%20list%20correct%20and%20complete%3F&In-Reply-To=%3C20061110174044.GA21335%40thyrsus.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="002226.html">
+   <LINK REL="Next"  HREF="002257.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] Is this bug list correct and complete?</H1>
+    <B>Eric S. Raymond</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Is%20this%20bug%20list%20correct%20and%20complete%3F&In-Reply-To=%3C20061110174044.GA21335%40thyrsus.com%3E"
+       TITLE="[Gpsd-users] Is this bug list correct and complete?">esr at thyrsus.com
+       </A><BR>
+    <I>Fri Nov 10 18:40:44 CET 2006</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="002226.html">[Gpsd-users] Another GPSD progress report
+</A></li>
+        <LI>Next message: <A HREF="002257.html">[Gpsd-users] [Gpsd-dev] Is this bug list correct and complete?
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2230">[ date ]</a>
+              <a href="thread.html#2230">[ thread ]</a>
+              <a href="subject.html#2230">[ subject ]</a>
+              <a href="author.html#2230">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Preparatory to release, and so everybody knows the state of play,
+I have revised the bug list in our TODO file.  To the best of 
+everyone's knowledge, is this both correct and complete?
+
+----------------------------------------------------------------------
+
+*** Support for the True North magnetic compass is currently broken
+
+Massimo Burcheri reported that it broke somewhere between rev 3654 and
+3722.  We think this is a shallow bug, but we can't fix it without
+test hardware.  If TNT support is a problem for you, and you can't
+fix the driver yourself and send us the patch, contact Bill Powell 
+&lt;<A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">bpowell at tntc.com</A>&gt; at True North Technologies and tell him he needs
+to send us an eval unit.
+
+*** Support for Garmin USB binary in serial mode is currently broken
+
+We rewrote the Garmin USB binary support in a different mode to
+work around a bug in the Linux 2.16 tty layer.  Unfortunately the new
+driver has some kind of bad timing interaction with the kernel
+(probably due to another kernel bug) and only works at -D6 or up.
+
+The new driver also requires a tool to switch between binary and NMEA
+modes.  There is experimental untested code to do this via gpsctl, but
+it could do anything including make bats fly out of your nose.
+
+The new Garmin driver and gpsctl should be much more solid in the next
+point release.
+
+*** PPS support is temporarily broken.
+
+It got sideswiped during the architectural changes need to implement
+the new gpsctl tool.  We should have this fixed in the next release.
+
+*** Devices based on SirFStar I chips are not properly autodetected
+
+Devices based on the now-obsolete SiRfStar I chip, like the Axiom
+Sandpiper II OEM module, are not properly detected by gpsd's 
+autoprobe logic and remain in NMEA mode rather than being switched
+to SiRF binary.  
+
+The project lead has a Sandpiper to test with, and one of our
+contributors thinks he has a way to snoop on the way SiRFDemo (SiRF's
+official device control program) does this, so we should be able to
+solve this problem.
+
+*** There's a report that RoyalTek support broke between 2.25 and 2.28 
+
+There's a report that RoyalTek support broke between 2.25 and 2.28 by
+David Mandala &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">davidm at them.com</A>&gt;.  His workaround is to condition out
+SiRF support; it works OK in NMEA mode.  The Royaltek died in an
+accident, so we're stuck until someone else can test this.
+
+----------------------------------------------------------------------
+
+I'm going to work on the Sandpiper problem.  Other than that and
+merging more of Chris's pile of documents onto the website, I have
+run out of things to do before release.
+-- 
+		&lt;a href=&quot;<A HREF="http://www.catb.org/~esr/">http://www.catb.org/~esr/</A>&quot;&gt;Eric S. Raymond&lt;/a&gt;
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="002226.html">[Gpsd-users] Another GPSD progress report
+</A></li>
+	<LI>Next message: <A HREF="002257.html">[Gpsd-users] [Gpsd-dev] Is this bug list correct and complete?
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2230">[ date ]</a>
+              <a href="thread.html#2230">[ thread ]</a>
+              <a href="subject.html#2230">[ subject ]</a>
+              <a href="author.html#2230">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

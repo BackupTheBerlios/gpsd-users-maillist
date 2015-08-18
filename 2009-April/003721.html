@@ -1,0 +1,131 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] RoyalTek RCD-1100, how to make it working
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2009-April/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20RoyalTek%20RCD-1100%2C%20how%20to%20make%20it%20working&In-Reply-To=%3CPine.LNX.4.64.0904212222350.10779%40birdbird.example.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="003718.html">
+   <LINK REL="Next"  HREF="003717.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] RoyalTek RCD-1100, how to make it working</H1>
+    <B>Matt Roberds</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20RoyalTek%20RCD-1100%2C%20how%20to%20make%20it%20working&In-Reply-To=%3CPine.LNX.4.64.0904212222350.10779%40birdbird.example.com%3E"
+       TITLE="[Gpsd-users] RoyalTek RCD-1100, how to make it working">mattroberds at cox.net
+       </A><BR>
+    <I>Wed Apr 22 05:48:02 CEST 2009</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="003718.html">[Gpsd-users] RoyalTek RCD-1100, how to make it working
+</A></li>
+        <LI>Next message: <A HREF="003717.html">[Gpsd-users] EM406 dynamic response is fine: mystery solved
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3721">[ date ]</a>
+              <a href="thread.html#3721">[ thread ]</a>
+              <a href="subject.html#3721">[ subject ]</a>
+              <a href="author.html#3721">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>On Mon, 20 Apr 2009, Nibbly wrote:
+&gt;<i> * sudo gpsd -b -n -N -D2 /dev/rfcomm4
+</I>&gt;<i> gpsd: launching (Version 2.37)
+</I>[...]
+&gt;<i> gpsd: opening read-only GPS data source at '/dev/rfcomm4'	#read-only??
+</I>&gt;<i> gpsd: speed 9600, 8N1						#device spec claim 57600 instead
+</I>
+The &quot;read-only&quot; and the 9600 bps are most likely because of the -b
+switch.  Many (most?) GPS receivers start life with a serial port only.
+When everybody wanted serial, the only extra piece you needed was
+something to change the 0 V/5 V serial that came out of the GPS receiver
+to the -12 V/12 V serial that an RS-232 serial port wants.  Really cheap
+chips to do this reliably have existed since before GPS existed, so that
+was no problem.
+
+Then people decided they wanted USB.  A lot of GPS manufacturers just
+ran the serial port from the receiver into a serial-to-USB chip (really
+a custom microprocessor).  The serial-to-USB chips had also been pretty
+thoroughly debugged (although I'm sure there were some early ones that
+sucked) - in particular, they didn't mind if the serial device (the GPS
+receiver) suddenly started speaking at a different rate.  The serial-to-
+USB chip would figure it out, adjust its speed to match the serial
+device, and life was OK.
+
+Then people decided they wanted Bluetooth.  The GPS manufacturers
+noticed the pattern and ran the serial port from the receiver into a
+serial-to-Bluetooth chip (really a custom microprocessor plus a radio).
+The problem here is that some of the serial-to-Bluetooth chips are
+buggy, and can't deal with the idea that the serial device (the GPS
+receiver) might suddenly start speaking at a different rate.  Since most
+GPSes can be commanded to switch speeds over their serial port, this is
+sometimes a problem.  There have been cases where gpsd started talking
+to a GPS at (say) 9600 bps, and then told the GPS to switch to (say)
+57600 bps.  The GPS switched to 57600 bps just fine, but the Bluetooth
+chip was still expecting the GPS to be at 9600 bps, resulting in no
+communication.  Sometimes when this happens, it can't be fixed in
+software; you have to do something like remove *all* the sources of
+power from the GPS and let it sit for a while so everything resets.
+
+Since this is bad, the -b switch tells gpsd to not write to the GPS
+at all - gpsd won't try to switch speeds or reconfigure the GPS in
+any way.  You may not get the best performance out of your GPS this
+way, but you probably won't break it, either.
+
+&gt;<i> I tried running gpsd without additional parameters but made no
+</I>&gt;<i> difference.
+</I>
+I was going to say to try it without the -b switch, but you already
+tried that.  (Did the log files say anything interesting when you
+did that?  You might try &quot;sudo gpsd -n -N -D2 /dev/rfcomm4&quot; so you
+still get the debug messages on the console.)
+
+If this is a brand new GPS, have you let it run for a while in a place
+with a good view of the sky?  Some GPS receivers can take a relatively
+long time (like a half-hour) to initialize for the very first time
+ever, or if they have been moved a long distance (thousands of miles)
+since they were last powered on.  You don't have to have it synced
+to a computer for this; you just have to turn it on and let it sit
+there.
+
+You might try running minicom (a terminal emulator) and pointing it
+at /dev/rfcomm4 .  Don't run gpsd for this; just use minicom.  If the
+GPS is synced to the Bluetooth receiver, you should see *something*
+coming in - it may or may not be NMEA strings (which are ASCII and
+sort of human-readable), but you should at least get some response.
+If you don't, then you have some lower-level problem with Bluetooth
+or with the GPS itself.
+
+Matt Roberds
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="003718.html">[Gpsd-users] RoyalTek RCD-1100, how to make it working
+</A></li>
+	<LI>Next message: <A HREF="003717.html">[Gpsd-users] EM406 dynamic response is fine: mystery solved
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3721">[ date ]</a>
+              <a href="thread.html#3721">[ thread ]</a>
+              <a href="subject.html#3721">[ subject ]</a>
+              <a href="author.html#3721">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

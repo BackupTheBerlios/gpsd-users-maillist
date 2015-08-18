@@ -1,0 +1,94 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] An algorithm to prevent GPS from jumping
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2007-March/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20An%20algorithm%20to%20prevent%20GPS%20from%20jumping&In-Reply-To=%3C91981b3e0703011229q6f40cdfdwf07f3ffc4b9298ca%40mail.gmail.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="002483.html">
+   <LINK REL="Next"  HREF="002484.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] An algorithm to prevent GPS from jumping</H1>
+    <B>Chris Kuethe</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20An%20algorithm%20to%20prevent%20GPS%20from%20jumping&In-Reply-To=%3C91981b3e0703011229q6f40cdfdwf07f3ffc4b9298ca%40mail.gmail.com%3E"
+       TITLE="[Gpsd-users] An algorithm to prevent GPS from jumping">chris.kuethe at gmail.com
+       </A><BR>
+    <I>Thu Mar  1 21:29:08 CET 2007</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="002483.html">[Gpsd-users] An algorithm to prevent GPS from jumping
+</A></li>
+        <LI>Next message: <A HREF="002484.html">[Gpsd-users] An algorithm to prevent GPS from jumping
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2486">[ date ]</a>
+              <a href="thread.html#2486">[ thread ]</a>
+              <a href="subject.html#2486">[ subject ]</a>
+              <a href="author.html#2486">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>On 3/1/07, Paul Bawon &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">alkemiman at yahoo.co.uk</A>&gt; wrote:
+&gt;<i> Hi,
+</I>&gt;<i>
+</I>&gt;<i> I'm building a pedestrian based GPS application that uses GPSD to
+</I>&gt;<i> pull the data from the GPS unit and pass it to my application. I have
+</I>&gt;<i> noticed that, especially in urban canyons, the positions jumps around
+</I>&gt;<i> a lot.
+</I>&gt;<i>
+</I>&gt;<i> I was wondering whether anyone was aware of, or if there are any
+</I>&gt;<i> plans to include, a algorithm that filters the data based on physical
+</I>&gt;<i> improbability of a pedestrian being able to move that fast, and
+</I>&gt;<i> therefore dampens this movement down?
+</I>&gt;<i>
+</I>&gt;<i> Any help would be greatly appreciated.
+</I>
+GPSD just passes on what the receiver gives us.
+
+Some receivers (ie. SiRFstar 2 and 3) have static navigation and DOP
+filter modes. if you're not moving they just hold your position, and
+if constellation geometry is too poor they don't output a fix.
+
+Trimble receivers have a configurable dynamics mode ...  land, sea or airborne.
+
+uBlox takes that further: their dynamics modes are: Stationary,
+Pedestrian, Automotive, Sea Airborne with (&lt;1g, &lt;2g, &lt;4g) Acceleration
+
+GPSBabel has a number of filters. I believe they can exclude points
+based on DOP or other criteria. You may want to check that out.
+
+CK
+
+-- 
+GDB has a 'break' feature; why doesn't it have 'fix' too?
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="002483.html">[Gpsd-users] An algorithm to prevent GPS from jumping
+</A></li>
+	<LI>Next message: <A HREF="002484.html">[Gpsd-users] An algorithm to prevent GPS from jumping
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2486">[ date ]</a>
+              <a href="thread.html#2486">[ thread ]</a>
+              <a href="subject.html#2486">[ subject ]</a>
+              <a href="author.html#2486">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

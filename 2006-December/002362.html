@@ -1,0 +1,97 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] Too many satellites error
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2006-December/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Too%20many%20satellites%20error&In-Reply-To=%3Cadbbf73e0612262244y5b62f8b6qdd6b571d10f2ff25%40mail.gmail.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="002361.html">
+   <LINK REL="Next"  HREF="002363.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] Too many satellites error</H1>
+    <B>Jim Hogan</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Too%20many%20satellites%20error&In-Reply-To=%3Cadbbf73e0612262244y5b62f8b6qdd6b571d10f2ff25%40mail.gmail.com%3E"
+       TITLE="[Gpsd-users] Too many satellites error">jim.hogan at gmail.com
+       </A><BR>
+    <I>Wed Dec 27 07:44:27 CET 2006</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="002361.html">[Gpsd-users] NMEA vs Garmin
+</A></li>
+        <LI>Next message: <A HREF="002363.html">[Gpsd-users] Too many satellites error
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2362">[ date ]</a>
+              <a href="thread.html#2362">[ thread ]</a>
+              <a href="subject.html#2362">[ subject ]</a>
+              <a href="author.html#2362">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Over the weekend I installed 2.3.4 under Fedora Core 6 x86_64 and ran
+it with a Motorola Oncore GT connected via an (out-of-production)
+interface board from a gent named Larry Cochrane.    The interface
+board has an output for 1PPS and I routed this to pin 1 (DCD) on the
+DB9 RS232 output (which did not otherwise seem to be connected.
+
+I ran gpsd at debug level 5 and initially seemed to run fine.  For the
+period before the GPS got a fix, I saw frequest messages to the effect
+that 1PPS status was changing. Good.  Once it got a fix, the 1PPS
+messages stopped appearing.
+
+After some period of time, though, gpsd would segfault after a number
+of messages to the effect &quot;too many satellites&quot;  Ironic, I am using
+this GPS for timing, mostly, and, as it has a view only to the east, I
+was hard pressed to get enough satellites to get a 2D fix.
+
+Anyhow, I removed the 2.3.4 RPM and rebuilt from source with same
+result.  I also edited drivers.c and increased satellites under NMEA
+to 14, but no change.
+
+I see reference to this &quot;too many satellites&quot; being fixed previously.
+Any thoughts on steps I should take/  Any additional logging I could
+capture that would be more informative?
+
+FWIW, in the meantime I have the Oncore running and configured NTP to
+use it directly as an NMEA (non-1PPS) device.  No problem.  I have not
+tried running it as 1PPS Oncore as I didn't want to do that extra work
+if I can get gpsd to work.
+
+Thanks,
+
+Jim
+
+-- 
+-*-  Jim Hogan
+     Seattle, WA
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="002361.html">[Gpsd-users] NMEA vs Garmin
+</A></li>
+	<LI>Next message: <A HREF="002363.html">[Gpsd-users] Too many satellites error
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2362">[ date ]</a>
+              <a href="thread.html#2362">[ thread ]</a>
+              <a href="subject.html#2362">[ subject ]</a>
+              <a href="author.html#2362">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

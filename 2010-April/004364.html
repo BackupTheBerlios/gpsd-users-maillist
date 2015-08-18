@@ -1,0 +1,121 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] gpsd via telnet
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2010-April/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20gpsd%20via%20telnet&In-Reply-To=%3C20100407163202.1ffa41ea%40dragon.localdomain%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="004361.html">
+   <LINK REL="Next"  HREF="004365.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] gpsd via telnet</H1>
+    <B>Charles Curley</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20gpsd%20via%20telnet&In-Reply-To=%3C20100407163202.1ffa41ea%40dragon.localdomain%3E"
+       TITLE="[Gpsd-users] gpsd via telnet">charlescurley at charlescurley.com
+       </A><BR>
+    <I>Thu Apr  8 00:32:02 CEST 2010</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="004361.html">[Gpsd-users] gpsd via telnet
+</A></li>
+        <LI>Next message: <A HREF="004365.html">[Gpsd-users] gpsd via telnet
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#4364">[ date ]</a>
+              <a href="thread.html#4364">[ thread ]</a>
+              <a href="subject.html#4364">[ subject ]</a>
+              <a href="author.html#4364">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>On Wed, 07 Apr 2010 23:24:18 +0200
+Klaus Klein &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">k.klein at gmx.de</A>&gt; wrote:
+
+&gt;<i> Hi,
+</I>&gt;<i> 
+</I>&gt;<i>  I'm using gpsd 2.92 under Debian Squeeze.
+</I>&gt;<i> 
+</I>&gt;<i> I just came across the problem that if I connect to gpsd via telnet
+</I>&gt;<i> (e.g. telnet localhost 2947) that i get the following message:
+</I>&gt;<i> 
+</I>&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">user at host</A>:~$ telnet localhost 2947
+</I>&gt;<i> Trying 127.0.0.1...
+</I>&gt;<i> Connected to localhost.
+</I>&gt;<i> Escape character is '^]'.
+</I>&gt;<i> {&quot;class&quot;:&quot;VERSION&quot;,&quot;release&quot;:&quot;2.92&quot;,&quot;rev&quot;:&quot;svn&quot;,&quot;proto_major&quot;:3,&quot;proto_minor&quot;:1}
+</I>&gt;<i> 
+</I>&gt;<i> After I type 'r' to initiate the output, I'll get nothing. :-(
+</I>
+I see the same with today's &quot;git pull&quot; and rebuild.
+
+<A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">ccurley at dragon</A>:~$ telnet white 2947
+Trying 192.168.1.29...
+Connected to white.localdomain.
+Escape character is '^]'.
+{&quot;class&quot;:&quot;VERSION&quot;,&quot;release&quot;:&quot;2.93dev&quot;,&quot;rev&quot;:&quot;2010-04-07T22:05:25&quot;,&quot;proto_major&quot;:3,&quot;proto_minor&quot;:2}
+r
+r
+^]
+
+telnet&gt; q
+Connection closed.
+<A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">ccurley at dragon</A>:~$ 
+
+
+
+&gt;<i> 
+</I>&gt;<i> Am I doing something wrong or is something broken in 2.92?
+</I>&gt;<i> 
+</I>&gt;<i> Also, if I want to connect xgps to a remote gpsd (e.g. 'xgps
+</I>&gt;<i> 10.0.0.1:2947' or 'xgps gpsd.mainframe.cx:2947') I only get &quot;gpsd is
+</I>&gt;<i> not running&quot;. If I use cgps in the same configuration it works fine.
+</I>
+Hate to bring up the obvious, but is your firewall blocking you?
+
+Also, how are you launching gpsd? In Ubuntu (and I assume Debian)
+launching gpsd from /etc/init.d/gpsd feeds the contents
+of /etc/default/gpsd to the daemon.
+
+You must now feed -G to gpsd so that it will listen on interfaces other
+than localhost.
+
+
+-- 
+
+Charles Curley                  /&quot;\    ASCII Ribbon Campaign
+Looking for fine software       \ /    Respect for open standards
+and/or writing?                  X     No HTML/RTF in email
+<A HREF="http://www.charlescurley.com">http://www.charlescurley.com</A>    / \    No M$ Word docs in email
+
+Key fingerprint = CE5C 6645 A45A 64E4 94C0  809C FFF6 4C48 4ECD DFDB
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="004361.html">[Gpsd-users] gpsd via telnet
+</A></li>
+	<LI>Next message: <A HREF="004365.html">[Gpsd-users] gpsd via telnet
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#4364">[ date ]</a>
+              <a href="thread.html#4364">[ thread ]</a>
+              <a href="subject.html#4364">[ subject ]</a>
+              <a href="author.html#4364">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

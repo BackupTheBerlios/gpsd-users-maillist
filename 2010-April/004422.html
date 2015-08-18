@@ -1,0 +1,177 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] Bluetooth issues (was: Re: Preparing for 2.93	point release)
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2010-April/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Bluetooth%20issues%20%28was%3A%20Re%3A%20Preparing%20for%202.93%0A%09point%20release%29&In-Reply-To=%3Cy2y2196fd761004231326i845257e5w7fedbe1a21c29e51%40mail.gmail.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="004419.html">
+   <LINK REL="Next"  HREF="004426.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] Bluetooth issues (was: Re: Preparing for 2.93	point release)</H1>
+    <B>Ji&#345;&#237; Techet</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Bluetooth%20issues%20%28was%3A%20Re%3A%20Preparing%20for%202.93%0A%09point%20release%29&In-Reply-To=%3Cy2y2196fd761004231326i845257e5w7fedbe1a21c29e51%40mail.gmail.com%3E"
+       TITLE="[Gpsd-users] Bluetooth issues (was: Re: Preparing for 2.93	point release)">techet at gmail.com
+       </A><BR>
+    <I>Fri Apr 23 22:26:25 CEST 2010</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="004419.html">[Gpsd-users] Bluetooth issues (was: Re: Preparing for 2.93	point release)
+</A></li>
+        <LI>Next message: <A HREF="004426.html">[Gpsd-users] Bluetooth issues (was: Re: Preparing for 2.93	point release)
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#4422">[ date ]</a>
+              <a href="thread.html#4422">[ thread ]</a>
+              <a href="subject.html#4422">[ subject ]</a>
+              <a href="author.html#4422">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>On Fri, Apr 23, 2010 at 08:00, Eric Raymond &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">esr at thyrsus.com</A>&gt; wrote:
+&gt;<i> Ji&#345;&#237; Techet &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">techet at gmail.com</A>&gt;:
+</I>&gt;&gt;<i> OK, what I mean is:
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> 0. GPS device is off
+</I>&gt;&gt;<i> 1. connect the gpsd socket
+</I>&gt;<i>
+</I>&gt;<i> I still do not understand what you mean by &quot;connect the GPSD socket&quot;.
+</I>&gt;<i> It would help a lot if you explained this.
+</I>
+Hmm, I'm not quite sure what's so hard to understand about this - if
+you look at the interface sample I gave, I mean these two lines:
+
+self.sock = socket.socket(af, socktype, proto)
+self.sock.connect(sa)  # &lt;-- TALKING ABOUT THIS CONNECT - NORMAL
+TCP/IP CONNECTION :-)
+
+&gt;<i>
+</I>&gt;&gt;<i> 2. initialize gpsd with
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> ?WATCH={&quot;enable&quot;:true,&quot;json&quot;:true,&quot;nmea&quot;:false,&quot;raw&quot;:0,&quot;scaled&quot;:false}\n
+</I>&gt;&gt;<i>
+</I>
+cmd = '?WATCH={&quot;enable&quot;:true,\
+               &quot;json&quot;:true,\
+               &quot;nmea&quot;:false,\
+               &quot;raw&quot;:0,\
+               &quot;scaled&quot;:false}\n'
+
+success = self.sock.send(cmd) == len(cmd)
+
+&gt;&gt;<i> 3. turn on the GPS device
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> =&gt; I get no data from the GPS device - it seems it's not detected by
+</I>&gt;&gt;<i> gpsd. (I would expect I should get the DEVICE message followed by the
+</I>&gt;&gt;<i> data from the device)
+</I>&gt;<i>
+</I>&gt;<i> You need to turn the GPS on before issuing the WATCH. &#160;Otherwise you'll
+</I>&gt;<i> have a race condition; the WATCH will attempt to activate (open) the
+</I>&gt;<i> GPS, and if the open fails it will be removed from the device pool.
+</I>&gt;<i>
+</I>&gt;&gt;<i> The only way to get gpsd working is to do the above in the order: 3,
+</I>&gt;&gt;<i> 1, 2. So basically I never see DEVICE message, only DEVICES as from
+</I>&gt;&gt;<i> what you've told me the device is already in the pool when I connect
+</I>&gt;&gt;<i> gpsd. It appears as if gpsd checked whether there is a gps device only
+</I>&gt;&gt;<i> when the client connects it, otherwise the client doesn't get data
+</I>&gt;&gt;<i> from the device.
+</I>&gt;<i>
+</I>&gt;<i> That is correct.
+</I>&gt;<i>
+</I>&gt;&gt;<i> Can anyone else reproduce this problem (or does it work for anyone)?
+</I>&gt;&gt;<i> Do I do anything wrong here? Maybe there is something wrong with my
+</I>&gt;&gt;<i> gps device, but it would be interesting to know whether it's a device
+</I>&gt;&gt;<i> problem or gpsd bug.
+</I>&gt;<i>
+</I>&gt;<i> It's not a bug. &#160;GPSD is working as designed.
+</I>&gt;<i>
+</I>&gt;<i> The way it's intended to work with a wired device is like this:
+</I>&gt;<i>
+</I>&gt;<i> 1. You plug a GPS into a USB port.
+</I>&gt;<i>
+</I>&gt;<i> 2. The hotplug system notices that the device that just went active might
+</I>&gt;<i> be a GPS, and sends gpsd a message to that effect.
+</I>&gt;<i>
+</I>&gt;<i> 3. gpsd adds the device to its pool, but does not yet open it.
+</I>&gt;<i>
+</I>&gt;<i> 4. Later, a client app issues a WATCH. &#160;At this time, gpsd tries
+</I>&gt;<i> to activate all the devices in its pool.
+</I>&gt;<i>
+</I>&gt;<i> 5. Any devices it cannot sync up with are thrown out of the pool.
+</I>&gt;<i>
+</I>&gt;<i> Normally, you should expect a DEVICE message only at step 4, after WATCH
+</I>&gt;<i> is issued and the device successfully opened.
+</I>&gt;<i> --
+</I>&gt;<i>                &lt;a href=&quot;<A HREF="http://www.catb.org/~esr/">http://www.catb.org/~esr/</A>&quot;&gt;Eric S. Raymond&lt;/a&gt;
+</I>&gt;<i>
+</I>
+And why couldn't it be in the order 4, 1, 2? What I would like to see is:
+
+1. gpsd daemon is running, client application is started, connects
+(hope it's clear now) gpsd, issues WATCH.
+2. like your 2 above
+3. gpsd checks if some clients are watching. If not, it only adds the
+device into its pool. If someone is watching (and if he isn't watching
+a different device), start sending him data from the device.
+
+Or I'll try to tell it from the perspective of a user of say GPS
+navigation application:
+
+1. User starts the application (which internally does the same as in
+step 1 above)
+2. He starts his GPS device - his position will start updating
+3. An interference comes so the bluetooth connection gets lost - his
+position isn't updated any more
+4. The bluetooth connection gets reestablished after a while - the
+position starts updating again
+5. The user turns off his bluetooth GPS device - his position isn't
+updated any more
+6. The user connects his USB GPS device -  the position starts updating again
+
+&gt;<i>From your description, this isn't possible now - you have to reissue
+</I>WATCH after 2, 4 and 6 in order to get updates again (and looks like
+some remains of the pull interface where you have to issue a command
+first in order to get some data). From the application user
+perspective, currently there has to be a button &quot;reinitialize&quot; that
+reissues WATCH - what I would like is that no such button is necessary
+in the user interface.
+
+Is there some technical problem implementing this behaviour? From what
+you say it seems that gpsd gets informed when the device gets
+available so I don't see a reason why, when some clients are still
+connected and watching, the clients couldn't start receiving data from
+the device (after first receiving the DEVICE message). This is
+actually what I expected would happen even from the documentation.
+
+Jiri
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="004419.html">[Gpsd-users] Bluetooth issues (was: Re: Preparing for 2.93	point release)
+</A></li>
+	<LI>Next message: <A HREF="004426.html">[Gpsd-users] Bluetooth issues (was: Re: Preparing for 2.93	point release)
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#4422">[ date ]</a>
+              <a href="thread.html#4422">[ thread ]</a>
+              <a href="subject.html#4422">[ subject ]</a>
+              <a href="author.html#4422">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

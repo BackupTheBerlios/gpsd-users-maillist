@@ -1,0 +1,129 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] Initializing clock with gpsd &amp; ntpd
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2009-September/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Initializing%20clock%20with%20gpsd%20%26%20ntpd&In-Reply-To=%3C4ABD3290.3040107%40softdevsys.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="003974.html">
+   <LINK REL="Next"  HREF="003981.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] Initializing clock with gpsd &amp; ntpd</H1>
+    <B>David Severt</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Initializing%20clock%20with%20gpsd%20%26%20ntpd&In-Reply-To=%3C4ABD3290.3040107%40softdevsys.com%3E"
+       TITLE="[Gpsd-users] Initializing clock with gpsd &amp; ntpd">severtd at softdevsys.com
+       </A><BR>
+    <I>Fri Sep 25 23:13:52 CEST 2009</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="003974.html">[Gpsd-users] Initializing clock with gpsd &amp; ntpd
+</A></li>
+        <LI>Next message: <A HREF="003981.html">[Gpsd-users] Initializing clock with gpsd &amp; ntpd
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3980">[ date ]</a>
+              <a href="thread.html#3980">[ thread ]</a>
+              <a href="subject.html#3980">[ subject ]</a>
+              <a href="author.html#3980">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Ed W wrote:
+&gt;<i> David Severt wrote:
+</I>&gt;&gt;<i> I have an embedded data gathering application that requires valid 
+</I>&gt;&gt;<i> time information to go with the data, so I am trying to use gpsd 
+</I>&gt;&gt;<i> along with ntpd to maintain the clock.  The real-time clock in this 
+</I>&gt;&gt;<i> device will not survive an extended power outage and, since it is 
+</I>&gt;&gt;<i> headless, there can be no user interaction to restore the system 
+</I>&gt;&gt;<i> clock.  I can use ntpd to initialize the clock via an ntp server 
+</I>&gt;&gt;<i> (ntpd -Agq) and the ntpd/gpsd combination will work to maintain the 
+</I>&gt;&gt;<i> clock.  However, if I don't have access to an ntp server because the 
+</I>&gt;&gt;<i> network is unavailable, I can't get ntpd to initialize the clock 
+</I>&gt;&gt;<i> using time information from gpsd.  It looks like the gpsd time 
+</I>&gt;&gt;<i> information will only be used to slew the clock, rather than step the 
+</I>&gt;&gt;<i> clock, which is what needs to happen when the date is Jan 1, 1970.  
+</I>&gt;&gt;<i> If the system time is Jan 1, 1970, is there a way to get ntpd to 
+</I>&gt;&gt;<i> initialize the clock using only gpsd data, or will I need to write an 
+</I>&gt;&gt;<i> application to get time information from gpsd to initialize the clock 
+</I>&gt;&gt;<i> before starting ntpd?  Once the clock is initialized, ntpd works fine 
+</I>&gt;&gt;<i> with only gpsd for time information but first I have to get it 
+</I>&gt;&gt;<i> initialized somehow.
+</I>&gt;&gt;<i>   
+</I>&gt;<i>
+</I>&gt;<i> Try &quot;chrony&quot; - it's a rather neat ntp implementation which has given a 
+</I>&gt;<i> lot of thought to this kind of situation.  If you check the mailing 
+</I>&gt;<i> list there is a chap who has posted patches which can take the gpsd 
+</I>&gt;<i> output directly into chrony (there are some other patches which can 
+</I>&gt;<i> use ntp as an intermediary, but I don't think you want this)
+</I>&gt;<i>
+</I>&gt;<i> Chrony can be configured to step when the time change is large.  Also 
+</I>&gt;<i> it can be used to do clever things like combine a gps + upstream ntp.  
+</I>&gt;<i> It appears to converge VERY much faster than ntp (mins/secs instead of 
+</I>&gt;<i> hours) and it even has a bunch of features to condition your RTC clock 
+</I>&gt;<i> if this is useful
+</I>&gt;<i>
+</I>&gt;<i> If you have control over the hardware you could also consider 
+</I>&gt;<i> replacing whatever supercap is there for a lithium cell so that your 
+</I>&gt;<i> RTC works for longer?  Chrony is still useful in that it uses the RTC 
+</I>&gt;<i> much more intelligently
+</I>&gt;<i>
+</I>&gt;<i> Good luck
+</I>&gt;<i>
+</I>&gt;<i> Ed W
+</I>&gt;<i>
+</I>
+Ed;
+
+Thanks for the tip, I'll definitely look into it.  I saw an issue today 
+that bothered me as well.  Last night, I shut down the Linux box that 
+was acting as a gateway for my embedded test box and I had already 
+killed gpsd.  This morning, I started up the gateway, started up gpsd 
+and ntpd was still running.  But even though ntpd was able to contact 
+the servers, it decided to reject both my ntp server and gpsd as &quot;false 
+tickers&quot; since the clock had drifted almost 30 seconds away from the 
+reference clocks during the time the network and gpsd were unavailable.  
+So ntpd decided to use &quot;LOCAL(0)&quot; as it's preferred clock even though it 
+was way off and the servers were actually correct.  Maybe if I let it 
+run long enough, it would eventually start believing the time servers 
+but I wasn't patient enough to just let it run, so I just killed it and 
+restarted with &quot;-g&quot; to step the clock.  Does ntpd ignore a server 
+forever if it's been flagged as a &quot;false ticker&quot; or would it eventually 
+start using ntp/gpsd server time instead of LOCAL(0)?
+
+A lithium cell would be very nice.  Unfortunately, the hardware group 
+&quot;wins&quot; this argument every time and I'm stuck with a super-cap, mostly 
+due to lifetime and accessibility issues.  New hardware and we're 
+designing-in the same problems as the old hardware.  Sigh....
+
+David
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="003974.html">[Gpsd-users] Initializing clock with gpsd &amp; ntpd
+</A></li>
+	<LI>Next message: <A HREF="003981.html">[Gpsd-users] Initializing clock with gpsd &amp; ntpd
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3980">[ date ]</a>
+              <a href="thread.html#3980">[ thread ]</a>
+              <a href="subject.html#3980">[ subject ]</a>
+              <a href="author.html#3980">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

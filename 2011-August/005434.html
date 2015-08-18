@@ -1,0 +1,77 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] Direct access to PPS transition time
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2011-August/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Direct%20access%20to%20PPS%20transition%20time&In-Reply-To=%3CDA25051F-1894-4704-9DA9-46E1F088446A%40pelgrum.org%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="005433.html">
+   <LINK REL="Next"  HREF="005435.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] Direct access to PPS transition time</H1>
+    <B>Wouter Pelgrum</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Direct%20access%20to%20PPS%20transition%20time&In-Reply-To=%3CDA25051F-1894-4704-9DA9-46E1F088446A%40pelgrum.org%3E"
+       TITLE="[Gpsd-users] Direct access to PPS transition time">wouter at pelgrum.org
+       </A><BR>
+    <I>Fri Aug 26 02:58:52 CEST 2011</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="005433.html">[Gpsd-users] gpsd 3 without scons
+</A></li>
+        <LI>Next message: <A HREF="005435.html">[Gpsd-users] Direct access to PPS transition time
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#5434">[ date ]</a>
+              <a href="thread.html#5434">[ thread ]</a>
+              <a href="subject.html#5434">[ subject ]</a>
+              <a href="author.html#5434">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi,
+
+I got gpsd to work with ntpd (thanks Gary!), but I'm running into some occasional startup issues. 
+The computer that needs the time sync is not connected to internet, and I need precise time quickly after startup. ntpd sometimes complains, and requires some time to lock &amp; align with the 1PPS time. 
+
+Assuming the 1PPS is correct, and the NTPD-provided time not always, the provision of the offset between the two would work. In post processing (I'm time-tagging sensor data, not a real problem to adjust the time stamps later) I can then correct for the time offsets, after outlier detection and filtering of the offset values.
+
+I can get that offset via ntpq -p, but that's not a call I can embed in my c application.
+I tried ntp_adjtime() but that function doesn't output a correct offset value if ntpd is in error state. (Also, ntp_adjtime() and ntp_gettime() seem to sometimes report in ns, and other times in us)
+
+Is there a way to get the 1PPS info from GPSD, similar to how NTPD is getting the information?
+
+Or is there a way to get ntpd to startup more reliably and converge faster?
+
+Thanks,
+
+Wouter
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="005433.html">[Gpsd-users] gpsd 3 without scons
+</A></li>
+	<LI>Next message: <A HREF="005435.html">[Gpsd-users] Direct access to PPS transition time
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#5434">[ date ]</a>
+              <a href="thread.html#5434">[ thread ]</a>
+              <a href="subject.html#5434">[ subject ]</a>
+              <a href="author.html#5434">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

@@ -1,0 +1,655 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] Jentro BT-GPS-8 problem
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2008-September/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Jentro%20BT-GPS-8%20problem&In-Reply-To=%3C48BE7E34.5000002%40andreas-weller.de%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="003352.html">
+   <LINK REL="Next"  HREF="003356.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] Jentro BT-GPS-8 problem</H1>
+    <B>Andreas Weller</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Jentro%20BT-GPS-8%20problem&In-Reply-To=%3C48BE7E34.5000002%40andreas-weller.de%3E"
+       TITLE="[Gpsd-users] Jentro BT-GPS-8 problem">weller at andreas-weller.de
+       </A><BR>
+    <I>Wed Sep  3 14:08:20 CEST 2008</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="003352.html">[Gpsd-users] PCMCIA help
+</A></li>
+        <LI>Next message: <A HREF="003356.html">[Gpsd-users] Lassen IQ + gpsd + shm
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3353">[ date ]</a>
+              <a href="thread.html#3353">[ thread ]</a>
+              <a href="subject.html#3353">[ subject ]</a>
+              <a href="author.html#3353">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi!
+I've got a problem with my Jentro BT-GPS-7 bluetooth GPS receiver (Sirf
+star III chipset based):
+Apparently it connects as a serial device with rfcomm - but gpsd fails
+syncing to the data stream and decoding anything. The GPS seems to
+deliver endless blocks containing only hex &quot;E0&quot;
+
+Any idea?
+
+
+Regards,
+  Andreas Weller
+
+
+This is what I tried yet:
+
+&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">andreas at notebook</A>:~$ sudo hcitool info 00:0D:b5:81:4b:5f
+</I>&gt;<i> [sudo] password for andreas: 
+</I>&gt;<i> Requesting information ...
+</I>&gt;<i> 	BD Address:  00:0D:b5:81:4b:5f
+</I>&gt;<i> 	LMP Version: 1.2 (0x2) LMP Subversion: 0x5df
+</I>&gt;<i> 	Manufacturer: Cambridge Silicon Radio (10)
+</I>&gt;<i> 	Features: 0xff 0xff 0x8f 0x78 0x18 0x18 0x00 0x80
+</I>&gt;<i> 		&lt;3-slot packets&gt; &lt;5-slot packets&gt; &lt;encryption&gt; &lt;slot offset&gt; 
+</I>&gt;<i> 		&lt;timing accuracy&gt; &lt;role switch&gt; &lt;hold mode&gt; &lt;sniff mode&gt; 
+</I>&gt;<i> 		&lt;park state&gt; &lt;RSSI&gt; &lt;channel quality&gt; &lt;SCO link&gt; &lt;HV2 packets&gt; 
+</I>&gt;<i> 		&lt;HV3 packets&gt; &lt;u-law log&gt; &lt;A-law log&gt; &lt;CVSD&gt; &lt;paging scheme&gt; 
+</I>&gt;<i> 		&lt;power control&gt; &lt;transparent SCO&gt; &lt;broadcast encrypt&gt; 
+</I>&gt;<i> 		&lt;enhanced iscan&gt; &lt;interlaced iscan&gt; &lt;interlaced pscan&gt; 
+</I>&gt;<i> 		&lt;inquiry with RSSI&gt; &lt;AFH cap. slave&gt; &lt;AFH class. slave&gt; 
+</I>&gt;<i> 		&lt;AFH cap. master&gt; &lt;AFH class. master&gt; &lt;extended features&gt; 
+</I>&gt;<i> 
+</I>&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">andreas at notebook</A>:/etc/bluetooth$ cat rfcomm.conf
+</I>&gt;<i> #
+</I>&gt;<i> # RFCOMM configuration file.
+</I>&gt;<i> #
+</I>&gt;<i> rfcomm0 {
+</I>&gt;<i> #	# Automatically bind the device at startup
+</I>&gt;<i> #	bind no;
+</I>&gt;<i> #
+</I>&gt;<i> #	# Bluetooth address of the device
+</I>&gt;<i> 	device 00:0D:b5:81:4b:5f;
+</I>&gt;<i> #
+</I>&gt;<i> #	# RFCOMM channel for the connection
+</I>&gt;<i> #	channel	1;
+</I>&gt;<i> #
+</I>&gt;<i> #	# Description of the connection
+</I>&gt;<i> 	comment &quot;Bluetooth GPS&quot;;
+</I>&gt;<i> }
+</I>&gt;<i> 
+</I>&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">andreas at notebook</A>:/etc/bluetooth$ rfcomm connect 00:0D:b5:81:4b:5f
+</I>&gt;<i> Connected /dev/rfcomm0 to 00:0D:B5:81:4B:5F on channel 1
+</I>&gt;<i> Press CTRL-C for hangup
+</I>&gt;<i> 
+</I>&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">andreas at notebook</A>:/dev$ sudo gpsd -N -D5 /dev/rfcomm0 
+</I>&gt;<i> gpsd: launching (Version 2.36)
+</I>&gt;<i> gpsd: listening on port gpsd
+</I>&gt;<i> gpsd: shmat(0,0,0) succeeded
+</I>&gt;<i> gpsd: shmat(0,0,0) succeeded
+</I>&gt;<i> gpsd: shmat(0,0,0) succeeded
+</I>&gt;<i> gpsd: shmat(0,0,0) succeeded
+</I>&gt;<i> gpsd: successfully connected to the DBUS system bus
+</I>&gt;<i> gpsd: running with effective group ID 0
+</I>&gt;<i> gpsd: running with effective user ID 0
+</I>&gt;<i> gpsd: opening GPS data source at '/dev/rfcomm0'
+</I>&gt;<i> gpsd: speed 9600, 8N1
+</I>&gt;<i> gpsd: =&gt; GPS: $PASHQ,RID*28\x0d
+</I>&gt;<i> 
+</I>&gt;<i> gpsd: Navcom: command dump: 0299661c0800040200001203
+</I>&gt;<i> gpsd: =&gt; GPS: 0299661c0800040200001203
+</I>&gt;<i> gpsd: Navcom: sent command 0x1c (Test Support Block)
+</I>&gt;<i> gpsd: Navcom: command 0x1c mode = 02, length = 0
+</I>&gt;<i> gpsd: Navcom: command dump: 029966200e000001ae02000071000000f203
+</I>&gt;<i> gpsd: =&gt; GPS: 029966200e000001ae02000071000000f203
+</I>&gt;<i> gpsd: Navcom: sent command 0x20 (Data Request) - data block id = ae at rate 00
+</I>&gt;<i> gpsd: Navcom: command dump: 029966200e00000186020a0071000000d003
+</I>&gt;<i> gpsd: =&gt; GPS: 029966200e00000186020a0071000000d003
+</I>&gt;<i> gpsd: Navcom: sent command 0x20 (Data Request) - data block id = 86 at rate 0a
+</I>&gt;<i> gpsd: garmin_gps not active.
+</I>&gt;<i> gpsd: no probe matched...
+</I>&gt;<i> gpsd: gpsd_activate(0): opened GPS (5)
+</I>&gt;<i> gpsd: client 127.0.0.1 (0) connect on fd 6
+</I>&gt;<i> gpsd: checking client(0)
+</I>&gt;<i> gpsd: &lt;= client(0): w+x
+</I>&gt;<i> gpsd: client(0): assigning channel...
+</I>&gt;<i> gpsd: User requires 2, channel type is -1
+</I>&gt;<i> gpsd: client(0): channel 5 already active.
+</I>&gt;<i> gpsd: client(0): channel 5 already active.
+</I>&gt;<i> gpsd: =&gt; client(0): GPSD,W=1,X=1219604903.085715
+</I>&gt;<i> gpsd: checking client(0)
+</I>&gt;<i> gpsd: detaching 127.0.0.1 (sub0, fd 6) in detach_client
+</I>&gt;<i> 
+</I>&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">andreas at notebook</A>:~$ rfcomm -a
+</I>&gt;<i> rfcomm0: 00:02:72:C7:8C:8F -&gt; 00:0D:B5:81:4B:5F channel 1 connected [reuse-dlc release-on-hup tty-attached]
+</I>&gt;<i> 
+</I>&gt;<i> gpsd: Character discarded, buffer 3 chars = e0e0e0
+</I>&gt;<i> gpsd: ISGPS word tag not correct, skipping
+</I>&gt;<i> gpsd: Character discarded, buffer 2 chars = e0e0
+</I>&gt;<i> gpsd: ISGPS word tag not correct, skipping
+</I>&gt;<i> gpsd: Character discarded, buffer 1 chars = e0
+</I>&gt;<i> gpsd: ISGPS word tag not correct, skipping
+</I>&gt;<i> gpsd: Character discarded, buffer 0 chars = 
+</I>&gt;<i> gpsd: packet sniff finds type -1
+</I>&gt;<i> gpsd: polling 5
+</I>&gt;<i> gpsd: Read 11 chars to buffer offset 0 (total 11): e0e0e0e0e0e0e0e0e0e0e0
+</I>&gt;<i> gpsd: ISGPS word tag not correct, skipping
+</I>&gt;<i> gpsd: Character discarded, buffer 10 chars = e0e0e0e0e0e0e0e0e0e0
+</I>&gt;<i> gpsd: ISGPS word tag not correct, skipping
+</I>&gt;<i> gpsd: Character discarded, buffer 9 chars = e0e0e0e0e0e0e0e0e0
+</I>&gt;<i> gpsd: ISGPS word tag not correct, skipping
+</I>&gt;<i> gpsd: Character discarded, buffer 8 chars = e0e0e0e0e0e0e0e0
+</I>&gt;<i> gpsd: ISGPS word tag not correct, skipping
+</I>&gt;<i> gpsd: Character discarded, buffer 7 chars = e0e0e0e0e0e0e0
+</I>&gt;<i> gpsd: ISGPS word tag not correct, skipping
+</I>&gt;<i> gpsd: Character discarded, buffer 6 chars = e0e0e0e0e0e0
+</I>&gt;<i> gpsd: ISGPS word tag not correct, skipping
+</I>&gt;<i> gpsd: Character discarded, buffer 5 chars = e0e0e0e0e0
+</I>&gt;<i> gpsd: ISGPS word tag not correct, skipping
+</I>&gt;<i> gpsd: Character discarded, buffer 4 chars = e0e0e0e0
+</I>&gt;<i> gpsd: ISGPS word tag not correct, skipping
+</I>&gt;<i> gpsd: Character discarded, buffer 3 chars = e0e0e0
+</I>&gt;<i> gpsd: ISGPS word tag not correct, skipping
+</I>&gt;<i> gpsd: Character discarded, buffer 2 chars = e0e0
+</I>&gt;<i> gpsd: ISGPS word tag not correct, skipping
+</I>&gt;<i> gpsd: Character discarded, buffer 1 chars = e0
+</I>&gt;<i> gpsd: ISGPS word tag not correct, skipping
+</I>&gt;<i> gpsd: Character discarded, buffer 0 chars = 
+</I>&gt;<i> gpsd: packet sniff finds type -1
+</I>&gt;<i> gpsd: polling 5
+</I>&gt;<i> gpsd: Read 10 chars to buffer offset 0 (total 10): e0e0e0e0e0e0e0e0e0e0
+</I>&gt;<i> gpsd: ISGPS word tag not correct, skipping
+</I>&gt;<i> gpsd: Character discarded, buffer 9 chars = e0e0e0e0e0e0e0e0e0
+</I>&gt;<i> gpsd: ISGPS word tag not correct, skipping
+</I>&gt;<i> gpsd: Character discarded, buffer 8 chars = e0e0e0e0e0e0e0e0
+</I>&gt;<i> gpsd: ISGPS word tag not correct, skipping
+</I>&gt;<i> gpsd: Character discarded, buffer 7 chars = e0e0e0e0e0e0e0
+</I>&gt;<i> gpsd: ISGPS word tag not correct, skipping
+</I>&gt;<i> gpsd: Character discarded, buffer 6 chars = e0e0e0e0e0e0
+</I>&gt;<i> gpsd: ISGPS word tag not correct, skipping
+</I>&gt;<i> gpsd: Character discarded, buffer 5 chars = e0e0e0e0e0
+</I>&gt;<i> gpsd: ISGPS word tag not correct, skipping
+</I>&gt;<i> gpsd: Character discarded, buffer 4 chars = e0e0e0e0
+</I>&gt;<i> gpsd: ISGPS word tag not correct, skipping
+</I>&gt;<i> gpsd: Character discarded, buffer 3 chars = e0e0e0
+</I>&gt;<i> gpsd: ISGPS word tag not correct, skipping
+</I>&gt;<i> gpsd: Character discarded, buffer 2 chars = e0e0
+</I>&gt;<i> gpsd: ISGPS word tag not correct, skipping
+</I>&gt;<i> gpsd: Character discarded, buffer 1 chars = e0
+</I>&gt;<i> gpsd: ISGPS word tag not correct, skipping
+</I>&gt;<i> gpsd: Character discarded, buffer 0 chars = 
+</I>&gt;<i> gpsd: packet sniff finds type -1
+</I>&gt;<i> gpsd: polling 5
+</I>&gt;<i> gpsd: Read 8 chars to buffer offset 0 (total 8): e0e0e0e0e0e0e0e0
+</I>&gt;<i> gpsd: ISGPS word tag not correct, skipping
+</I>&gt;<i> gpsd: Character discarded, buffer 7 chars = e0e0e0e0e0e0e0
+</I>&gt;<i> gpsd: ISGPS word tag not correct, skipping
+</I>&gt;<i> gpsd: Character discarded, buffer 6 chars = e0e0e0e0e0e0
+</I>&gt;<i> gpsd: ISGPS word tag not correct, skipping
+</I>&gt;<i> gpsd: Character discarded, buffer 5 chars = e0e0e0e0e0
+</I>&gt;<i> gpsd: ISGPS word tag not correct, skipping
+</I>&gt;<i> gpsd: Character discarded, buffer 4 chars = e0e0e0e0
+</I>&gt;<i> gpsd: ISGPS word tag not correct, skipping
+</I>&gt;<i> gpsd: Character discarded, buffer 3 chars = e0e0e0
+</I>&gt;<i> gpsd: ISGPS word tag not correct, skipping
+</I>&gt;<i> gpsd: Character discarded, buffer 2 chars = e0e0
+</I>&gt;<i> gpsd: ISGPS word tag not correct, skipping
+</I>&gt;<i> gpsd: Character discarded, buffer 1 chars = e0
+</I>&gt;<i> gpsd: ISGPS word tag not correct, skipping
+</I>&gt;<i> gpsd: Character discarded, buffer 0 chars = 
+</I>&gt;<i> gpsd: packet sniff finds type -1
+</I>&gt;<i> gpsd: polling 5
+</I>&gt;<i> gpsd: Read 11 chars to buffer offset 0 (total 11): e0e0e0e0e0e0e0e0e0e0e0
+</I>&gt;<i> gpsd: ISGPS word tag not correct, skipping
+</I>&gt;<i> gpsd: Character discarded, buffer 10 chars = e0e0e0e0e0e0e0e0e0e0
+</I>&gt;<i> gpsd: ISGPS word tag not correct, skipping
+</I>&gt;<i> gpsd: Character discarded, buffer 9 chars = e0e0e0e0e0e0e0e0e0
+</I>&gt;<i> gpsd: ISGPS word tag not correct, skipping
+</I>&gt;<i> gpsd: Character discarded, buffer 8 chars = e0e0e0e0e0e0e0e0
+</I>&gt;<i> gpsd: ISGPS word tag not correct, skipping
+</I>&gt;<i> gpsd: Character discarded, buffer 7 chars = e0e0e0e0e0e0e0
+</I>&gt;<i> gpsd: ISGPS word tag not correct, skipping
+</I>&gt;<i> gpsd: Character discarded, buffer 6 chars = e0e0e0e0e0e0
+</I>&gt;<i> gpsd: ISGPS word tag not correct, skipping
+</I>&gt;<i> gpsd: Character discarded, buffer 5 chars = e0e0e0e0e0
+</I>&gt;<i> gpsd: ISGPS word tag not correct, skipping
+</I>&gt;<i> gpsd: Character discarded, buffer 4 chars = e0e0e0e0
+</I>&gt;<i> gpsd: ISGPS word tag not correct, skipping
+</I>&gt;<i> gpsd: Character discarded, buffer 3 chars = e0e0e0
+</I>&gt;<i> gpsd: ISGPS word tag not correct, skipping
+</I>&gt;<i> gpsd: Character discarded, buffer 2 chars = e0e0
+</I>&gt;<i> gpsd: ISGPS word tag not correct, skipping
+</I>&gt;<i> gpsd: Character discarded, buffer 1 chars = e0
+</I>&gt;<i> gpsd: ISGPS word tag not correct, skipping
+</I>&gt;<i> gpsd: Character discarded, buffer 0 chars = 
+</I>&gt;<i> gpsd: packet sniff finds type -1
+</I>&gt;<i> gpsd: Received terminating signal 2. Exiting...
+</I>&gt;<i> gpsd: closing GPS=/dev/rfcomm0 (5)
+</I>&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">andreas at notebook</A>:~$ sudo gpsd -N -D5 /dev/rfcomm0 
+</I>&gt;<i> gpsd: launching (Version 2.36)
+</I>&gt;<i> gpsd: listening on port gpsd
+</I>&gt;<i> gpsd: shmat(0,0,0) succeeded
+</I>&gt;<i> gpsd: shmat(0,0,0) succeeded
+</I>&gt;<i> gpsd: shmat(0,0,0) succeeded
+</I>&gt;<i> gpsd: shmat(0,0,0) succeeded
+</I>&gt;<i> gpsd: successfully connected to the DBUS system bus
+</I>&gt;<i> gpsd: running with effective group ID 0
+</I>&gt;<i> gpsd: running with effective user ID 0
+</I>&gt;<i> gpsd: opening GPS data source at '/dev/rfcomm0'
+</I>&gt;<i> gpsd: speed 9600, 8N1
+</I>&gt;<i> gpsd: =&gt; GPS: $PASHQ,RID*28\x0d
+</I>&gt;<i> 
+</I>&gt;<i> gpsd: Navcom: command dump: 0299661c0800040200001203
+</I>&gt;<i> gpsd: =&gt; GPS: 0299661c0800040200001203
+</I>&gt;<i> gpsd: Navcom: sent command 0x1c (Test Support Block)
+</I>&gt;<i> gpsd: Navcom: command 0x1c mode = 02, length = 0
+</I>&gt;<i> gpsd: Navcom: command dump: 029966200e000001ae02000071000000f203
+</I>&gt;<i> gpsd: =&gt; GPS: 029966200e000001ae02000071000000f203
+</I>&gt;<i> gpsd: Navcom: sent command 0x20 (Data Request) - data block id = ae at rate 00
+</I>&gt;<i> gpsd: Navcom: command dump: 029966200e00000186020a0071000000d003
+</I>&gt;<i> gpsd: =&gt; GPS: 029966200e00000186020a0071000000d003
+</I>&gt;<i> gpsd: Navcom: sent command 0x20 (Data Request) - data block id = 86 at rate 0a
+</I>&gt;<i> gpsd: garmin_gps not active.
+</I>&gt;<i> gpsd: no probe matched...
+</I>&gt;<i> gpsd: gpsd_activate(0): opened GPS (5)
+</I>&gt;<i> gpsd: packet sniff finds type -1
+</I>&gt;<i> gpsd: packet sniff finds type -1
+</I>&gt;<i> gpsd: packet sniff finds type -1
+</I>&gt;<i> gpsd: packet sniff finds type -1
+</I>&gt;<i> gpsd: packet sniff finds type -1
+</I>&gt;<i> gpsd: packet sniff finds type -1
+</I>&gt;<i> gpsd: packet sniff finds type -1
+</I>&gt;<i> gpsd: packet sniff finds type -1
+</I>&gt;<i> gpsd: packet sniff finds type -1
+</I>&gt;<i> gpsd: packet sniff finds type -1
+</I>&gt;<i> gpsd: packet sniff finds type -1
+</I>&gt;<i> gpsd: packet sniff finds type -1
+</I>&gt;<i> gpsd: packet sniff finds type -1
+</I>&gt;<i> gpsd: packet sniff finds type -1
+</I>&gt;<i> gpsd: packet sniff finds type -1
+</I>&gt;<i> gpsd: packet sniff finds type -1
+</I>&gt;<i> gpsd: packet sniff finds type -1
+</I>&gt;<i> gpsd: packet sniff finds type -1
+</I>&gt;<i> gpsd: packet sniff finds type -1
+</I>&gt;<i> gpsd: packet sniff finds type -1
+</I>&gt;<i> gpsd: packet sniff finds type -1
+</I>&gt;<i> gpsd: packet sniff finds type -1
+</I>&gt;<i> gpsd: packet sniff finds type -1
+</I>&gt;<i> gpsd: packet sniff finds type -1
+</I>&gt;<i> gpsd: packet sniff finds type -1
+</I>&gt;<i> gpsd: packet sniff finds type -1
+</I>&gt;<i> gpsd: packet sniff finds type -1
+</I>&gt;<i> gpsd: packet sniff finds type -1
+</I>&gt;<i> gpsd: packet sniff finds type -1
+</I>&gt;<i> gpsd: packet sniff finds type -1
+</I>&gt;<i> gpsd: packet sniff finds type -1
+</I>&gt;<i> gpsd: packet sniff finds type -1
+</I>&gt;<i> gpsd: packet sniff finds type -1
+</I>&gt;<i> gpsd: packet sniff finds type -1
+</I>&gt;<i> gpsd: packet sniff finds type -1
+</I>&gt;<i> gpsd: packet sniff finds type -1
+</I>&gt;<i> gpsd: packet sniff finds type -1
+</I>&gt;<i> gpsd: packet sniff finds type -1
+</I>&gt;<i> gpsd: packet sniff finds type -1
+</I>&gt;<i> gpsd: packet sniff finds type -1
+</I>&gt;<i> gpsd: packet sniff finds type -1
+</I>&gt;<i> gpsd: packet sniff finds type -1
+</I>&gt;<i> gpsd: packet sniff finds type -1
+</I>&gt;<i> gpsd: packet sniff finds type -1
+</I>&gt;<i> gpsd: packet sniff finds type -1
+</I>&gt;<i> gpsd: packet sniff finds type -1
+</I>&gt;<i> gpsd: packet sniff finds type -1
+</I>&gt;<i> gpsd: packet sniff finds type -1
+</I>&gt;<i> gpsd: packet sniff finds type -1
+</I>&gt;<i> gpsd: packet sniff finds type -1
+</I>&gt;<i> gpsd: packet sniff finds type -1
+</I>&gt;<i> gpsd: packet sniff finds type -1
+</I>&gt;<i> gpsd: packet sniff finds type -1
+</I>&gt;<i> gpsd: packet sniff finds type -1
+</I>&gt;<i> gpsd: packet sniff finds type -1
+</I>&gt;<i> gpsd: packet sniff finds type -1
+</I>&gt;<i> gpsd: packet sniff finds type -1
+</I>&gt;<i> gpsd: packet sniff finds type -1
+</I>&gt;<i> gpsd: packet sniff finds type -1
+</I>&gt;<i> gpsd: packet sniff finds type -1
+</I>&gt;<i> gpsd: packet sniff finds type -1
+</I>&gt;<i> gpsd: packet sniff finds type -1
+</I>&gt;<i> gpsd: packet sniff finds type -1
+</I>&gt;<i> gpsd: packet sniff finds type -1
+</I>&gt;<i> gpsd: packet sniff finds type -1
+</I>&gt;<i> gpsd: packet sniff finds type -1
+</I>&gt;<i> gpsd: packet sniff finds type -1
+</I>&gt;<i> gpsd: packet sniff finds type -1
+</I>&gt;<i> gpsd: packet sniff finds type -1
+</I>&gt;<i> gpsd: packet sniff finds type -1
+</I>&gt;<i> gpsd: packet sniff finds type -1
+</I>&gt;<i> gpsd: packet sniff finds type -1
+</I>&gt;<i> gpsd: packet sniff finds type -1
+</I>&gt;<i> gpsd: packet sniff finds type -1
+</I>&gt;<i> gpsd: packet sniff finds type -1
+</I>&gt;<i> gpsd: packet sniff finds type -1
+</I>&gt;<i> gpsd: packet sniff finds type -1
+</I>&gt;<i> gpsd: packet sniff finds type -1
+</I>&gt;<i> gpsd: packet sniff finds type -1
+</I>&gt;<i> gpsd: packet sniff finds type -1
+</I>&gt;<i> gpsd: packet sniff finds type -1
+</I>&gt;<i> gpsd: packet sniff finds type -1
+</I>&gt;<i> gpsd: packet sniff finds type -1
+</I>&gt;<i> gpsd: packet sniff finds type -1
+</I>&gt;<i> gpsd: packet sniff finds type -1
+</I>&gt;<i> gpsd: packet sniff finds type -1
+</I>&gt;<i> gpsd: packet sniff finds type -1
+</I>&gt;<i> gpsd: packet sniff finds type -1
+</I>&gt;<i> gpsd: packet sniff finds type -1
+</I>&gt;<i> gpsd: packet sniff finds type -1
+</I>&gt;<i> gpsd: packet sniff finds type -1
+</I>&gt;<i> gpsd: packet sniff finds type -1
+</I>&gt;<i> gpsd: packet sniff finds type -1
+</I>&gt;<i> gpsd: packet sniff finds type -1
+</I>&gt;<i> gpsd: packet sniff finds type -1
+</I>&gt;<i> gpsd: packet sniff finds type -1
+</I>&gt;<i> gpsd: packet sniff finds type -1
+</I>&gt;<i> gpsd: packet sniff finds type -1
+</I>&gt;<i> gpsd: packet sniff finds type -1
+</I>&gt;<i> gpsd: packet sniff finds type -1
+</I>&gt;<i> gpsd: packet sniff finds type -1
+</I>&gt;<i> gpsd: packet sniff finds type -1
+</I>&gt;<i> gpsd: packet sniff finds type -1
+</I>&gt;<i> gpsd: packet sniff finds type -1
+</I>&gt;<i> gpsd: packet sniff finds type -1
+</I>&gt;<i> gpsd: packet sniff finds type -1
+</I>&gt;<i> gpsd: packet sniff finds type -1
+</I>&gt;<i> gpsd: packet sniff finds type -1
+</I>&gt;<i> gpsd: packet sniff finds type -1
+</I>&gt;<i> gpsd: packet sniff finds type -1
+</I>&gt;<i> gpsd: packet sniff finds type -1
+</I>&gt;<i> gpsd: packet sniff finds type -1
+</I>&gt;<i> gpsd: packet sniff finds type -1
+</I>&gt;<i> gpsd: packet sniff finds type -1
+</I>&gt;<i> gpsd: packet sniff finds type -1
+</I>&gt;<i> gpsd: packet sniff finds type -1
+</I>&gt;<i> gpsd: packet sniff finds type -1
+</I>&gt;<i> gpsd: packet sniff finds type -1
+</I>&gt;<i> gpsd: packet sniff finds type -1
+</I>&gt;<i> gpsd: packet sniff finds type -1
+</I>&gt;<i> gpsd: packet sniff finds type -1
+</I>&gt;<i> gpsd: packet sniff finds type -1
+</I>&gt;<i> gpsd: packet sniff finds type -1
+</I>&gt;<i> gpsd: packet sniff finds type -1
+</I>&gt;<i> gpsd: packet sniff finds type -1
+</I>&gt;<i> gpsd: packet sniff finds type -1
+</I>&gt;<i> gpsd: packet sniff finds type -1
+</I>&gt;<i> gpsd: packet sniff finds type -1
+</I>&gt;<i> gpsd: packet sniff finds type -1
+</I>&gt;<i> gpsd: packet sniff finds type -1
+</I>&gt;<i> gpsd: packet sniff finds type -1
+</I>&gt;<i> gpsd: packet sniff finds type -1
+</I>&gt;<i> gpsd: packet sniff finds type -1
+</I>&gt;<i> gpsd: packet sniff finds type -1
+</I>&gt;<i> gpsd: packet sniff finds type -1
+</I>&gt;<i> gpsd: packet sniff finds type -1
+</I>&gt;<i> gpsd: packet sniff finds type -1
+</I>&gt;<i> gpsd: packet sniff finds type -1
+</I>&gt;<i> gpsd: packet sniff finds type -1
+</I>&gt;<i> gpsd: packet sniff finds type -1
+</I>&gt;<i> gpsd: packet sniff finds type -1
+</I>&gt;<i> gpsd: packet sniff finds type -1
+</I>&gt;<i> gpsd: packet sniff finds type -1
+</I>&gt;<i> gpsd: packet sniff finds type -1
+</I>&gt;<i> gpsd: packet sniff finds type -1
+</I>&gt;<i> gpsd: packet sniff finds type -1
+</I>&gt;<i> gpsd: packet sniff finds type -1
+</I>&gt;<i> gpsd: packet sniff finds type -1
+</I>&gt;<i> gpsd: packet sniff finds type -1
+</I>&gt;<i> gpsd: packet sniff finds type -1
+</I>&gt;<i> gpsd: packet sniff finds type -1
+</I>&gt;<i> gpsd: packet sniff finds type -1
+</I>&gt;<i> gpsd: packet sniff finds type -1
+</I>&gt;<i> gpsd: packet sniff finds type -1
+</I>&gt;<i> gpsd: packet sniff finds type -1
+</I>&gt;<i> gpsd: packet sniff finds type -1
+</I>&gt;<i> gpsd: packet sniff finds type -1
+</I>&gt;<i> gpsd: packet sniff finds type -1
+</I>&gt;<i> gpsd: packet sniff finds type -1
+</I>&gt;<i> gpsd: packet sniff finds type -1
+</I>&gt;<i> gpsd: packet sniff finds type -1
+</I>&gt;<i> gpsd: packet sniff finds type -1
+</I>&gt;<i> gpsd: packet sniff finds type -1
+</I>&gt;<i> gpsd: packet sniff finds type -1
+</I>&gt;<i> gpsd: packet sniff finds type -1
+</I>&gt;<i> gpsd: packet sniff finds type -1
+</I>&gt;<i> gpsd: packet sniff finds type -1
+</I>&gt;<i> gpsd: packet sniff finds type -1
+</I>&gt;<i> gpsd: packet sniff finds type -1
+</I>&gt;<i> gpsd: packet sniff finds type -1
+</I>&gt;<i> gpsd: packet sniff finds type -1
+</I>&gt;<i> gpsd: packet sniff finds type -1
+</I>&gt;<i> gpsd: packet sniff finds type -1
+</I>&gt;<i> gpsd: packet sniff finds type -1
+</I>&gt;<i> gpsd: packet sniff finds type -1
+</I>&gt;<i> gpsd: packet sniff finds type -1
+</I>&gt;<i> gpsd: packet sniff finds type -1
+</I>&gt;<i> gpsd: packet sniff finds type -1
+</I>&gt;<i> gpsd: packet sniff finds type -1
+</I>&gt;<i> gpsd: packet sniff finds type -1
+</I>&gt;<i> gpsd: packet sniff finds type -1
+</I>&gt;<i> gpsd: packet sniff finds type -1
+</I>&gt;<i> gpsd: packet sniff finds type -1
+</I>&gt;<i> gpsd: packet sniff finds type -1
+</I>&gt;<i> gpsd: packet sniff finds type -1
+</I>&gt;<i> gpsd: packet sniff finds type -1
+</I>&gt;<i> gpsd: packet sniff finds type -1
+</I>&gt;<i> gpsd: packet sniff finds type -1
+</I>&gt;<i> gpsd: packet sniff finds type -1
+</I>&gt;<i> gpsd: packet sniff finds type -1
+</I>&gt;<i> gpsd: packet sniff finds type -1
+</I>&gt;<i> gpsd: packet sniff finds type -1
+</I>&gt;<i> gpsd: packet sniff finds type -1
+</I>&gt;<i> gpsd: packet sniff finds type -1
+</I>&gt;<i> gpsd: packet sniff finds type -1
+</I>&gt;<i> gpsd: packet sniff finds type -1
+</I>&gt;<i> gpsd: packet sniff finds type -1
+</I>&gt;<i> gpsd: packet sniff finds type -1
+</I>&gt;<i> gpsd: packet sniff finds type -1
+</I>&gt;<i> gpsd: packet sniff finds type -1
+</I>&gt;<i> gpsd: packet sniff finds type -1
+</I>&gt;<i> gpsd: packet sniff finds type -1
+</I>&gt;<i> gpsd: packet sniff finds type -1
+</I>&gt;<i> gpsd: packet sniff finds type -1
+</I>&gt;<i> gpsd: packet sniff finds type -1
+</I>&gt;<i> gpsd: packet sniff finds type -1
+</I>&gt;<i> gpsd: packet sniff finds type -1
+</I>&gt;<i> gpsd: packet sniff finds type -1
+</I>&gt;<i> gpsd: packet sniff finds type -1
+</I>&gt;<i> gpsd: packet sniff finds type -1
+</I>&gt;<i> gpsd: packet sniff finds type -1
+</I>&gt;<i> gpsd: packet sniff finds type -1
+</I>&gt;<i> gpsd: packet sniff finds type -1
+</I>&gt;<i> gpsd: packet sniff finds type -1
+</I>&gt;<i> gpsd: packet sniff finds type -1
+</I>&gt;<i> gpsd: packet sniff finds type -1
+</I>&gt;<i> gpsd: packet sniff finds type -1
+</I>&gt;<i> gpsd: packet sniff finds type -1
+</I>&gt;<i> gpsd: packet sniff finds type -1
+</I>&gt;<i> gpsd: packet sniff finds type -1
+</I>&gt;<i> gpsd: packet sniff finds type -1
+</I>&gt;<i> gpsd: packet sniff finds type -1
+</I>&gt;<i> gpsd: packet sniff finds type -1
+</I>&gt;<i> gpsd: packet sniff finds type -1
+</I>&gt;<i> gpsd: packet sniff finds type -1
+</I>&gt;<i> gpsd: packet sniff finds type -1
+</I>&gt;<i> gpsd: packet sniff finds type -1
+</I>&gt;<i> gpsd: packet sniff finds type -1
+</I>&gt;<i> gpsd: packet sniff finds type -1
+</I>&gt;<i> gpsd: packet sniff finds type -1
+</I>&gt;<i> gpsd: packet sniff finds type -1
+</I>&gt;<i> gpsd: packet sniff finds type -1
+</I>&gt;<i> gpsd: packet sniff finds type -1
+</I>&gt;<i> gpsd: packet sniff finds type -1
+</I>&gt;<i> gpsd: packet sniff finds type -1
+</I>&gt;<i> gpsd: packet sniff finds type -1
+</I>&gt;<i> gpsd: packet sniff finds type -1
+</I>&gt;<i> gpsd: packet sniff finds type -1
+</I>&gt;<i> gpsd: packet sniff finds type -1
+</I>&gt;<i> gpsd: packet sniff finds type -1
+</I>&gt;<i> gpsd: packet sniff finds type -1
+</I>&gt;<i> gpsd: packet sniff finds type -1
+</I>&gt;<i> gpsd: packet sniff finds type -1
+</I>&gt;<i> gpsd: packet sniff finds type -1
+</I>&gt;<i> gpsd: packet sniff finds type -1
+</I>&gt;<i> gpsd: packet sniff finds type -1
+</I>&gt;<i> gpsd: packet sniff finds type -1
+</I>&gt;<i> gpsd: packet sniff finds type -1
+</I>&gt;<i> gpsd: packet sniff finds type -1
+</I>&gt;<i> gpsd: packet sniff finds type -1
+</I>&gt;<i> gpsd: packet sniff finds type -1
+</I>&gt;<i> gpsd: packet sniff finds type -1
+</I>&gt;<i> gpsd: packet sniff finds type -1
+</I>&gt;<i> gpsd: packet sniff finds type -1
+</I>&gt;<i> gpsd: packet sniff finds type -1
+</I>&gt;<i> gpsd: packet sniff finds type -1
+</I>&gt;<i> gpsd: packet sniff finds type -1
+</I>&gt;<i> gpsd: speed 4800, 8N1
+</I>&gt;<i> gpsd: =&gt; GPS: $PASHQ,RID*28\x0d
+</I>&gt;<i> 
+</I>&gt;<i> gpsd: Navcom: command dump: 0299661c0800040200001203
+</I>&gt;<i> gpsd: =&gt; GPS: 0299661c0800040200001203
+</I>&gt;<i> gpsd: Navcom: sent command 0x1c (Test Support Block)
+</I>&gt;<i> gpsd: Navcom: command 0x1c mode = 02, length = 0
+</I>&gt;<i> gpsd: Navcom: command dump: 029966200e000001ae02000071000000f203
+</I>&gt;<i> gpsd: =&gt; GPS: 029966200e000001ae02000071000000f203
+</I>&gt;<i> gpsd: Navcom: sent command 0x20 (Data Request) - data block id = ae at rate 00
+</I>&gt;<i> gpsd: Navcom: command dump: 029966200e00000186020a0071000000d003
+</I>&gt;<i> gpsd: =&gt; GPS: 029966200e00000186020a0071000000d003
+</I>&gt;<i> gpsd: Navcom: sent command 0x20 (Data Request) - data block id = 86 at rate 0a
+</I>&gt;<i> gpsd: packet sniff finds type -1
+</I>&gt;<i> gpsd: packet sniff finds type -1
+</I>&gt;<i> gpsd: packet sniff finds type -1
+</I>&gt;<i> gpsd: packet sniff finds type -1
+</I>&gt;<i> gpsd: packet sniff finds type -1
+</I>&gt;<i> gpsd: packet sniff finds type -1
+</I>&gt;<i> gpsd: packet sniff finds type -1
+</I>&gt;<i> gpsd: packet sniff finds type -1
+</I>&gt;<i> gpsd: packet sniff finds type -1
+</I>&gt;<i> gpsd: packet sniff finds type -1
+</I>&gt;<i> gpsd: packet sniff finds type -1
+</I>&gt;<i> gpsd: packet sniff finds type -1
+</I>&gt;<i> gpsd: packet sniff finds type -1
+</I>&gt;<i> gpsd: packet sniff finds type -1
+</I>&gt;<i> gpsd: packet sniff finds type -1
+</I>&gt;<i> gpsd: packet sniff finds type -1
+</I>&gt;<i> gpsd: packet sniff finds type -1
+</I>&gt;<i> gpsd: packet sniff finds type -1
+</I>&gt;<i> gpsd: packet sniff finds type -1
+</I>&gt;<i> gpsd: packet sniff finds type -1
+</I>&gt;<i> gpsd: packet sniff finds type -1
+</I>&gt;<i> gpsd: packet sniff finds type -1
+</I>&gt;<i> gpsd: packet sniff finds type -1
+</I>&gt;<i> gpsd: packet sniff finds type -1
+</I>&gt;<i> gpsd: packet sniff finds type -1
+</I>&gt;<i> gpsd: packet sniff finds type -1
+</I>&gt;<i> gpsd: packet sniff finds type -1
+</I>&gt;<i> gpsd: packet sniff finds type -1
+</I>&gt;<i> gpsd: packet sniff finds type -1
+</I>&gt;<i> gpsd: packet sniff finds type -1
+</I>&gt;<i> gpsd: packet sniff finds type -1
+</I>&gt;<i> gpsd: packet sniff finds type -1
+</I>&gt;<i> gpsd: packet sniff finds type -1
+</I>&gt;<i> gpsd: packet sniff finds type -1
+</I>&gt;<i> gpsd: packet sniff finds type -1
+</I>&gt;<i> gpsd: packet sniff finds type -1
+</I>&gt;<i> gpsd: packet sniff finds type -1
+</I>&gt;<i> gpsd: packet sniff finds type -1
+</I>&gt;<i> gpsd: packet sniff finds type -1
+</I>&gt;<i> gpsd: packet sniff finds type -1
+</I>&gt;<i> gpsd: packet sniff finds type -1
+</I>&gt;<i> gpsd: packet sniff finds type -1
+</I>&gt;<i> gpsd: packet sniff finds type -1
+</I>&gt;<i> gpsd: packet sniff finds type -1
+</I>&gt;<i> gpsd: packet sniff finds type -1
+</I>&gt;<i> gpsd: packet sniff finds type -1
+</I>&gt;<i> gpsd: packet sniff finds type -1
+</I>&gt;<i> gpsd: packet sniff finds type -1
+</I>&gt;<i> gpsd: packet sniff finds type -1
+</I>&gt;<i> gpsd: packet sniff finds type -1
+</I>&gt;<i> gpsd: packet sniff finds type -1
+</I>&gt;<i> gpsd: packet sniff finds type -1
+</I>&gt;<i> gpsd: packet sniff finds type -1
+</I>&gt;<i> gpsd: packet sniff finds type -1
+</I>&gt;<i> gpsd: packet sniff finds type -1
+</I>&gt;<i> gpsd: packet sniff finds type -1
+</I>&gt;<i> gpsd: packet sniff finds type -1
+</I>&gt;<i> gpsd: packet sniff finds type -1
+</I>&gt;<i> gpsd: packet sniff finds type -1
+</I>&gt;<i> gpsd: packet sniff finds type -1
+</I>&gt;<i> gpsd: packet sniff finds type -1
+</I>&gt;<i> gpsd: packet sniff finds type -1
+</I>&gt;<i> gpsd: Received terminating signal 2. Exiting...
+</I>&gt;<i> gpsd: closing GPS=/dev/rfcomm0 (5)
+</I>&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">andreas at notebook</A>:~$ sudo gpsd -N -D3 /dev/rfcomm0 
+</I>&gt;<i> gpsd: launching (Version 2.36)
+</I>&gt;<i> gpsd: listening on port gpsd
+</I>&gt;<i> gpsd: shmat(0,0,0) succeeded
+</I>&gt;<i> gpsd: shmat(0,0,0) succeeded
+</I>&gt;<i> gpsd: shmat(0,0,0) succeeded
+</I>&gt;<i> gpsd: shmat(0,0,0) succeeded
+</I>&gt;<i> gpsd: successfully connected to the DBUS system bus
+</I>&gt;<i> gpsd: running with effective group ID 0
+</I>&gt;<i> gpsd: running with effective user ID 0
+</I>&gt;<i> gpsd: opening GPS data source at '/dev/rfcomm0'
+</I>&gt;<i> gpsd: speed 9600, 8N1
+</I>&gt;<i> gpsd: Navcom: sent command 0x1c (Test Support Block)
+</I>&gt;<i> gpsd: Navcom: sent command 0x20 (Data Request) - data block id = ae at rate 00
+</I>&gt;<i> gpsd: Navcom: sent command 0x20 (Data Request) - data block id = 86 at rate 0a
+</I>&gt;<i> gpsd: garmin_gps not active.
+</I>&gt;<i> gpsd: no probe matched...
+</I>&gt;<i> gpsd: gpsd_activate(0): opened GPS (5)
+</I>&gt;<i> gpsd: speed 4800, 8N1
+</I>&gt;<i> gpsd: Navcom: sent command 0x1c (Test Support Block)
+</I>&gt;<i> gpsd: Navcom: sent command 0x20 (Data Request) - data block id = ae at rate 00
+</I>&gt;<i> gpsd: Navcom: sent command 0x20 (Data Request) - data block id = 86 at rate 0a
+</I>&gt;<i> gpsd: speed 9600, 8N1
+</I>&gt;<i> gpsd: Navcom: sent command 0x1c (Test Support Block)
+</I>&gt;<i> gpsd: Navcom: sent command 0x20 (Data Request) - data block id = ae at rate 00
+</I>&gt;<i> gpsd: Navcom: sent command 0x20 (Data Request) - data block id = 86 at rate 0a
+</I>&gt;<i> gpsd: speed 19200, 8N1
+</I>&gt;<i> gpsd: Navcom: sent command 0x1c (Test Support Block)
+</I>&gt;<i> gpsd: Navcom: sent command 0x20 (Data Request) - data block id = ae at rate 00
+</I>&gt;<i> gpsd: Navcom: sent command 0x20 (Data Request) - data block id = 86 at rate 0a
+</I>&gt;<i> gpsd: speed 38400, 8N1
+</I>&gt;<i> gpsd: Navcom: sent command 0x1c (Test Support Block)
+</I>&gt;<i> gpsd: Navcom: sent command 0x20 (Data Request) - data block id = ae at rate 00
+</I>&gt;<i> gpsd: Navcom: sent command 0x20 (Data Request) - data block id = 86 at rate 0a
+</I>&gt;<i> gpsd: Received terminating signal 2. Exiting...
+</I>&gt;<i> gpsd: closing GPS=/dev/rfcomm0 (5)
+</I>
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="003352.html">[Gpsd-users] PCMCIA help
+</A></li>
+	<LI>Next message: <A HREF="003356.html">[Gpsd-users] Lassen IQ + gpsd + shm
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3353">[ date ]</a>
+              <a href="thread.html#3353">[ thread ]</a>
+              <a href="subject.html#3353">[ subject ]</a>
+              <a href="author.html#3353">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

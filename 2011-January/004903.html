@@ -1,0 +1,160 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] How to prevent gpsd from sending data to USB/serial adapters
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2011-January/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20How%20to%20prevent%20gpsd%20from%20sending%20data%20to%0A%20USB/serial%20adapters&In-Reply-To=%3CBLU0-SMTP1693B0628FE7AB4D4E53B2FF90B0%40phx.gbl%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="004902.html">
+   <LINK REL="Next"  HREF="004904.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] How to prevent gpsd from sending data to USB/serial adapters</H1>
+    <B>Federico Terraneo</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20How%20to%20prevent%20gpsd%20from%20sending%20data%20to%0A%20USB/serial%20adapters&In-Reply-To=%3CBLU0-SMTP1693B0628FE7AB4D4E53B2FF90B0%40phx.gbl%3E"
+       TITLE="[Gpsd-users] How to prevent gpsd from sending data to USB/serial adapters">fede.tft at hotmail.it
+       </A><BR>
+    <I>Fri Jan  7 01:58:48 CET 2011</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="004902.html">[Gpsd-users] How to prevent gpsd from sending data to USB/serial adapters
+</A></li>
+        <LI>Next message: <A HREF="004904.html">[Gpsd-users] How to prevent gpsd from sending data to USB/serial adapters
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#4903">[ date ]</a>
+              <a href="thread.html#4903">[ thread ]</a>
+              <a href="subject.html#4903">[ subject ]</a>
+              <a href="author.html#4903">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>-----BEGIN PGP SIGNED MESSAGE-----
+Hash: SHA1
+
+On 01/06/2011 10:40 PM, Eric Raymond wrote:
+&gt;<i> Federico Terraneo &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">fede.tft at hotmail.it</A>&gt;:
+</I>&gt;&gt;<i> I have tried two different USB/serial adapters:
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> ID 0403:6001 Future Technology Devices International, Ltd FT232
+</I>&gt;&gt;<i> USB-Serial (UART) IC
+</I>&gt;&gt;<i> ID 067b:2303 Prolific Technology, Inc. PL2303 Serial Port
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> and both trigger gpsd into thinking it's a GPS unit.
+</I>&gt;<i> 
+</I>&gt;<i> I'm the project lead. You are caught in a very unfortunate set of
+</I>&gt;<i> circumstances. I'll explain.
+</I>&gt;<i> 
+</I>&gt;<i> The root of the problem is that the USB standard does not define a device
+</I>&gt;<i> class code for GPSes.  If it did, and USB manufacturers followed it, then
+</I>&gt;<i> GPSD hotplug rules could simply say &quot;hand everything with that type to GPSD&quot;.
+</I>&gt;<i> But it doesn't, so we have to look at the device type and guess.
+</I>
+I understand that you're using a hack to fix a problem that someone else
+made.
+
+&gt;<i> 
+</I>&gt;<i> Actually, even if there were a GPS device class, it is more than
+</I>&gt;<i> possible that the manufacturers of GPS mice wouldn't bother to make
+</I>&gt;<i> the devices present it.  You see, most GPS mice are lash-ups
+</I>&gt;<i> consisting of a receiver module that's interfaced by a sort of
+</I>&gt;<i> bastardized TTL version of RS-232 with an RS-232-to-USB adaptor chip.
+</I>&gt;<i> The USB device class is presented down the wire to your PC by the
+</I>&gt;<i> adaptor chip, which would have to be custom-modified to show something
+</I>&gt;<i> other than its *own* device class and vendor/product ID.  GPS mice are
+</I>&gt;<i> manufactured on thin enough margins that the vendors probably wouldn't
+</I>&gt;<i> pay for that.
+</I>&gt;<i> 
+</I>&gt;<i> So all we get to see is the class and vendor/product ID of the USB interface
+</I>&gt;<i> chip.  The only way we can guess at &quot;is this a GPS?&quot; is by checking a list
+</I>&gt;<i> of vendor/product codes of USB interface chips commonly used in GPSes and
+</I>&gt;<i> throwing that device at gpsd if it matches.
+</I>&gt;<i> 
+</I>&gt;<i> Yes, this does mean that if you're using a device that has one of these
+</I>&gt;<i> chips in it that is not a GPS, you lose.  Sorry, we can't help that.  
+</I>&gt;<i> We knew this failure mode was possible, but until you complained
+</I>&gt;<i> (and yes, you're the first) it was theoretical. These USB chips are
+</I>&gt;<i> not very commonly used for anything else - or if they are, the integrators
+</I>&gt;<i> are being good citizens and changing the class/vendor/product ID to
+</I>&gt;<i> something that tells USB what is behind them.
+</I>
+As for the &quot;the integrators are being good&quot;, I found out that they're
+not. After removing the udev rules as you suggested and rebooting, there
+was another program, modem-manager, trying to open the serial port and
+writing to it... it looks like integrators of GSM usb sticks are at
+least as careless as GPS mice integrators, and another open source
+project is trying to work around that :(
+So now I'm left with trying to remove this other program, but that's off
+topic.
+
+Curious, I've been using Linux for years, and there has never been
+anything lurking at serial ports, it's probably the price for the &quot;plug
+and play&quot; philosophy.
+
+&gt;<i> 
+</I>&gt;&gt;<i> At first I tried to simply &quot;yum remove gpsd&quot; but the whole KDE
+</I>&gt;&gt;<i> environment seems to depend on it...
+</I>&gt;<i> 
+</I>&gt;<i> That's the other unfoertunate circumstance.
+</I>&gt;<i> 
+</I>&gt;&gt;<i> So, I'm asking if it is possible to disable gpsd without uninstalling it
+</I>&gt;&gt;<i> (I'm not an expert of udev).
+</I>&gt;<i> 
+</I>&gt;<i> Yes.  Just perform the equivalent pg &quot;make udev-uninstall&quot;, removing
+</I>&gt;<i> the udev rules file installed by GPSD. This means USB GPSes will no
+</I>&gt;<i> longer hotplug, of course.
+</I>
+Thanks, make udev-uninstall worked.
+
+&gt;<i> 
+</I>&gt;&gt;<i> And lastly, despite I've read <A HREF="http://esr.ibiblio.org/?p=801">http://esr.ibiblio.org/?p=801</A> and
+</I>&gt;&gt;<i> discovered that dealing with GPSes is a mess, I still think that opening
+</I>&gt;&gt;<i> automatically every USB/serial adapter and start sending data is a bit
+</I>&gt;&gt;<i> invasive.
+</I>&gt;<i> 
+</I>&gt;<i> We don't actually do that.  When a hotplug event notifies gpsd about a
+</I>&gt;<i> candidate device, the device path is stashed away and opned only when
+</I>&gt;<i> a gpsd client actually requests data.
+</I>
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v1.4.10 (GNU/Linux)
+Comment: Using GnuPG with Mozilla - <A HREF="http://enigmail.mozdev.org/">http://enigmail.mozdev.org/</A>
+
+iQEcBAEBAgAGBQJNJmVEAAoJECkLFtN5Xr9f0KUIAJiBeqX6GDB+DVGReOaDDb2N
+E68hBJYzezSi+GRpz/DSeMFoPw69cSKe6Oeu4NrmdyesXfx2IAUbpwZMBMl2S1cu
+C5+FuDeZWYM85/YoPSNYuWdMU5GKU3kK1jyFv8MDB/cjlEi13BZLEq3rmOzVMv2G
+93odFb0VAMHr41N8yQhrRIo75Cl8IAp9V3kCjSIDM7JIlYifhAqEQQVdLzijtxA4
+fAu4/Gxqt061hSCBopD6XgoCdKOhi20Jv2vxdcxz5BcxfWqMKY7jE10IzmvZzkiZ
+/8GMRKC1w/QfTnMUJ3o0dUGRXLp+VHyv4ySexmvhyJHgw/vNqakV5XnEiH60CYI=
+=TEJ2
+-----END PGP SIGNATURE-----
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="004902.html">[Gpsd-users] How to prevent gpsd from sending data to USB/serial adapters
+</A></li>
+	<LI>Next message: <A HREF="004904.html">[Gpsd-users] How to prevent gpsd from sending data to USB/serial adapters
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#4903">[ date ]</a>
+              <a href="thread.html#4903">[ thread ]</a>
+              <a href="subject.html#4903">[ subject ]</a>
+              <a href="author.html#4903">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

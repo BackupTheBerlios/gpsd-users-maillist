@@ -1,0 +1,125 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] n00b question (probably a little OT)
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2007-December/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20n00b%20question%20%28probably%20a%20little%20OT%29&In-Reply-To=%3C91981b3e0712291545g6274aa3bkfb9e57a45e0f0446%40mail.gmail.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="003048.html">
+   <LINK REL="Next"  HREF="003051.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] n00b question (probably a little OT)</H1>
+    <B>Chris Kuethe</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20n00b%20question%20%28probably%20a%20little%20OT%29&In-Reply-To=%3C91981b3e0712291545g6274aa3bkfb9e57a45e0f0446%40mail.gmail.com%3E"
+       TITLE="[Gpsd-users] n00b question (probably a little OT)">chris.kuethe at gmail.com
+       </A><BR>
+    <I>Sun Dec 30 00:45:34 CET 2007</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="003048.html">[Gpsd-users] n00b question (probably a little OT)
+</A></li>
+        <LI>Next message: <A HREF="003051.html">[Gpsd-users] n00b question (probably a little OT)
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3049">[ date ]</a>
+              <a href="thread.html#3049">[ thread ]</a>
+              <a href="subject.html#3049">[ subject ]</a>
+              <a href="author.html#3049">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>On Dec 29, 2007 11:58 AM, Dave E &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">gpsd at dpe.lusars.net</A>&gt; wrote:
+&gt;<i> I recently bought a GlobalSat BU-353, plugged it in, fired up gpsd, and magic
+</I>&gt;<i> happened. Then I started looking at the numbers coming out and realized that
+</I>&gt;<i> with (usually) 7 or 8 satellites in view, I was getting drifts (overnight) of
+</I>&gt;<i> over 100M vertically and a horizontal drift of a couple blocks horizontally
+</I>&gt;<i> (according to Google Maps' geocoding, anyway). I looked at the NMEA, and
+</I>&gt;<i> realized this is a receiver problem and gpsd is working properly, but I'm
+</I>&gt;<i> trying to figure out if I should RMA it before I leave town on Monday, and
+</I>&gt;<i> figured there were other BU-353 users here.
+</I>
+ex-BU353 user. the usb-serial chip on mine stopped working, so i'm
+going to try hack it to just do regular serial.
+
+i had a BU-303 on top of an office building for the last couple of
+years, and on a bad day, i'd have an HDOP of 1.4 - usually it was
+0.8-1.0, but sometimes it would go as low as 0.6. I had great
+observation conditions. Even then, I'd see +/-15m vertical drifts, but
+only +/-2m horizontal drift. My 353 was pretty similar, though
+globalsat sold me one that didn't do WAAS, and then either refused to
+upgrade the firmware or wanted to charge me stupid amounts of money to
+do so.
+
+Do you have good skyview? Any tall buildings either obstructing parts
+of the sky or possibly causing reflections?
+
+&gt;<i> My questions:
+</I>&gt;<i> Is this level of accuracy typical cheap GPS receivers in general, or is this
+</I>&gt;<i> one just a turkey?
+</I>
+Turkey, or a bad time of day. See comment above. A typical &quot;cheap&quot; gps
+with WAAS and  should easily be able to do better than 5m. Heck, my
+old garmin etrex (ca. 1999) could do 3m on a good day.
+
+&gt;<i> Also... If I get a second one, will it read the same as the first one, so I can
+</I>&gt;<i> keep one stationary for a differential offset?
+</I>
+&quot;Poor man's DGPS&quot;. no. for you to have a hope of having that work, you
+need to have the clocks in your receivers be synchronized, and you
+need to have a way to ensure that they're both making observations at
+the same time.
+
+&gt;<i> My intended application involves
+</I>&gt;<i> some (very rough) GIS stuff for educational purposes on a very limited budget,
+</I>&gt;<i> and my past experience with (much higher end) GPS survey gear suggested that I
+</I>&gt;<i> could get accuracy to within 2-3 meters and consistency to about a meter
+</I>&gt;<i> (within a few-hour daylight time window), which is &quot;good enough&quot;. (A randomly
+</I>&gt;<i> varying error of up to almost a kilometer is definately not.)
+</I>
+you can get a ublox antaris4T eval kit for ~$350. I got a thales ac12
+board for $150. I got an iTrax03-based usb/bluetooth/datalogger for
+$120. NovAtel SuperStarII are about $165 new (are you listening, Santa
+Claus?). All of these are considered to be decent entry level
+receivers for mucking about w/ carrier phase applications. see
+<A HREF="http://www.abacuscity.ch/abashop?s=142&amp;p=productdetail&amp;sku=60">http://www.abacuscity.ch/abashop?s=142&amp;p=productdetail&amp;sku=60</A> and
+<A HREF="https://www.navtechgps.com/">https://www.navtechgps.com/</A>
+
+see <A HREF="http://www.precision-gps.org/Hardware.htm">http://www.precision-gps.org/Hardware.htm</A> for more opinions.
+
+Also, have a look at Trimble's planning software to figure out when
+your best observation window is...
+<A HREF="http://www.trimble.com/planningsoftware.shtml">http://www.trimble.com/planningsoftware.shtml</A>
+
+-- 
+GDB has a 'break' feature; why doesn't it have 'fix' too?
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="003048.html">[Gpsd-users] n00b question (probably a little OT)
+</A></li>
+	<LI>Next message: <A HREF="003051.html">[Gpsd-users] n00b question (probably a little OT)
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3049">[ date ]</a>
+              <a href="thread.html#3049">[ thread ]</a>
+              <a href="subject.html#3049">[ subject ]</a>
+              <a href="author.html#3049">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

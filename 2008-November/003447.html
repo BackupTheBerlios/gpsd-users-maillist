@@ -1,0 +1,156 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] Help needed for a newly installed gpsd 2.37
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2008-November/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Help%20needed%20for%20a%20newly%20installed%20gpsd%202.37&In-Reply-To=%3C91981b3e0811221508i30aaa88fp118a290e5c5ba5b3%40mail.gmail.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="003446.html">
+   <LINK REL="Next"  HREF="003658.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] Help needed for a newly installed gpsd 2.37</H1>
+    <B>Chris Kuethe</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Help%20needed%20for%20a%20newly%20installed%20gpsd%202.37&In-Reply-To=%3C91981b3e0811221508i30aaa88fp118a290e5c5ba5b3%40mail.gmail.com%3E"
+       TITLE="[Gpsd-users] Help needed for a newly installed gpsd 2.37">chris.kuethe at gmail.com
+       </A><BR>
+    <I>Sun Nov 23 00:08:13 CET 2008</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="003446.html">[Gpsd-users] Help needed for a newly installed gpsd 2.37
+</A></li>
+        <LI>Next message: <A HREF="003658.html">[Gpsd-users] GPS photo project
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3447">[ date ]</a>
+              <a href="thread.html#3447">[ thread ]</a>
+              <a href="subject.html#3447">[ subject ]</a>
+              <a href="author.html#3447">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>On Sat, Nov 22, 2008 at 2:05 PM, Daniel Knapp &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">dknapp at gmx.net</A>&gt; wrote:
+&gt;<i> Hi there...
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i> ...also had a couple of problems getting my USB GPS device working with
+</I>&gt;<i> the gpsd. I played around a little bit and found out, that it has
+</I>&gt;<i> something to do with the sequence of parameters. So my starting script
+</I>&gt;<i> for testing starts the gpsd like this:
+</I>&gt;<i>
+</I>&gt;<i> gpsd /dev/ttyUSB0 -D2 -N -n
+</I>
+of these, &quot;-n&quot; is the only one i consider necessary. &quot;-D2 -N&quot; will
+just give you some debug spew in the foreground which is great for
+figuring out if your gps is talking but isn't necessary for normal
+use.
+
+&gt;<i> ...if I do it like you Bo, it also doesn`t work for me.
+</I>&gt;<i>
+</I>&gt;<i> Hope that helps...
+</I>&gt;<i>
+</I>&gt;<i> Dan
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i> Am Sonntag, den 16.11.2008, 21:52 -0500 schrieb Bo Li:
+</I>&gt;&gt;<i> Hi,
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> Sorry for bothering again.
+</I>&gt;&gt;<i> My gpsd is still not running well, I really appreciate if you can give
+</I>&gt;&gt;<i> some adivce.  Thanks in advance!
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> System information:
+</I>&gt;&gt;<i> OS: CentOS 5.1
+</I>&gt;&gt;<i> gpsd: 2.37 (installed from tar ball)
+</I>&gt;&gt;<i> hardware: USB PHAROS GPS-500 sirf III gps
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> Here is what I did:
+</I>&gt;&gt;<i> 1, Start daemon
+</I>&gt;&gt;<i> gpsd -N -n -D 2 /dev/ttyUSB0
+</I>&gt;&gt;<i> 2, Test gpsd with telnet
+</I>&gt;&gt;<i> telnet localhost 2947 (sometimes command 'p' can return a position)
+</I>&gt;&gt;<i> 3, Test gpsd with a c program
+</I>&gt;&gt;<i> The most important part is:
+</I>&gt;&gt;<i> ////////////////////////////////////////////
+</I>&gt;&gt;<i>    struct gps_data_t* gpsdata;
+</I>&gt;&gt;<i>    gpsdata = gps_open(&quot;127.0.0.1&quot;, &quot;2947&quot;);
+</I>&gt;&gt;<i>    (void)gps_query(gpsdata, &quot;p\n&quot;);
+</I>&gt;&gt;<i>    lat = gpsdata-&gt;fix.latitude;
+</I>&gt;&gt;<i>    lon = gpsdata-&gt;fix.longitude;
+</I>&gt;&gt;<i>    gps_close(gpsdata);
+</I>&gt;&gt;<i>    printf(&quot;%f - %f\n&quot;,lat, lon);
+</I>&gt;&gt;<i>    sleep(80);
+</I>&gt;&gt;<i> /////////////////////////////////////////////
+</I>&gt;&gt;<i> But the lat and lon is always nan.
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> So what is the problem?  What should I do?
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> Thanks,
+</I>&gt;&gt;<i> Bo Li
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> On Tue, 2008-11-11 at 23:23 +0100, Jan-Benedict Glaw wrote:
+</I>&gt;&gt;<i> &gt; On Tue, 2008-11-11 16:43:03 -0500, Bo Li &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">bli0406 at gmail.com</A>&gt; wrote:
+</I>&gt;&gt;<i> &gt; &gt; I guess I missed the other warning message:
+</I>&gt;&gt;<i> &gt; &gt;
+</I>&gt;&gt;<i> &gt; &gt; gpsd: can't use GGA time until after ZDA or RMC has supplied a year.
+</I>&gt;&gt;<i> &gt; &gt;
+</I>&gt;&gt;<i> &gt; &gt; Do we just ignore it too?
+</I>&gt;&gt;<i> &gt;
+</I>&gt;&gt;<i> &gt; Yes. GGA only uses a 2-digit year, so you don't know the century.
+</I>&gt;&gt;<i> &gt; However, the ZDA and RMC sentences of NMEA actually supply the
+</I>&gt;&gt;<i> &gt; complete year number, including the century.
+</I>&gt;&gt;<i> &gt;
+</I>&gt;&gt;<i> &gt; So if you don't need your system to tell you the exact date and time
+</I>&gt;&gt;<i> &gt; (including a non-guesses century), this is only a cosmetic problem.
+</I>&gt;&gt;<i> &gt;
+</I>&gt;&gt;<i> &gt; MfG, JBG
+</I>&gt;&gt;<i> &gt;
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> _______________________________________________
+</I>&gt;&gt;<i> Gpsd-users mailing list
+</I>&gt;&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">Gpsd-users at lists.berlios.de</A>
+</I>&gt;&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">https://lists.berlios.de/mailman/listinfo/gpsd-users</A>
+</I>&gt;<i>
+</I>&gt;<i> _______________________________________________
+</I>&gt;<i> Gpsd-users mailing list
+</I>&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">Gpsd-users at lists.berlios.de</A>
+</I>&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">https://lists.berlios.de/mailman/listinfo/gpsd-users</A>
+</I>&gt;<i>
+</I>
+
+
+-- 
+GDB has a 'break' feature; why doesn't it have 'fix' too?
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="003446.html">[Gpsd-users] Help needed for a newly installed gpsd 2.37
+</A></li>
+	<LI>Next message: <A HREF="003658.html">[Gpsd-users] GPS photo project
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3447">[ date ]</a>
+              <a href="thread.html#3447">[ thread ]</a>
+              <a href="subject.html#3447">[ subject ]</a>
+              <a href="author.html#3447">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

@@ -1,0 +1,100 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] Semantics of libgps
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2007-March/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Semantics%20of%20libgps&In-Reply-To=%3C22161-38196%40sneakemail.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="002516.html">
+   <LINK REL="Next"  HREF="002515.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] Semantics of libgps</H1>
+    <B>Yang</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Semantics%20of%20libgps&In-Reply-To=%3C22161-38196%40sneakemail.com%3E"
+       TITLE="[Gpsd-users] Semantics of libgps">wtfc2m902 at sneakemail.com
+       </A><BR>
+    <I>Tue Mar 27 16:28:47 CEST 2007</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="002516.html">[Gpsd-users] Semantics of libgps
+</A></li>
+        <LI>Next message: <A HREF="002515.html">[Gpsd-users] [Gpsd-dev] What does your application need from	the config variables?
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2519">[ date ]</a>
+              <a href="thread.html#2519">[ thread ]</a>
+              <a href="subject.html#2519">[ subject ]</a>
+              <a href="author.html#2519">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Sorry my question wasn't clear. I was asking about whether libgps sets
+(overwrites) all fields on each iteration, or whether it may leave
+certain fields unchanged from the previous iteration (such that they
+carry old data). It seems that the latter is what's happening from my
+read through gps.py....
+
+Yang
+
+On 3/26/07, Chris Kuethe chris.kuethe-at-......... |gpsd-users|
+&lt;...&gt; wrote:
+&gt;<i> On 3/26/07, Yang &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">wtfc2m902 at sneakemail.com</A>&gt; wrote:
+</I>&gt;<i> &gt; Do either the Python module or C implementation of libgps clear out
+</I>&gt;<i> &gt; the data structures that they use to hold the data? (fix, gpsdata,
+</I>&gt;<i> &gt; etc.)
+</I>&gt;<i>
+</I>&gt;<i> The library doesn't clear - it overwrites old data with whatever comes
+</I>&gt;<i> down the wire next.
+</I>&gt;<i>
+</I>&gt;<i> &gt; I was reading through gps.py and it doesn't seem like it
+</I>&gt;<i> &gt; necessary sets all fields.... Although one might be able to figure out
+</I>&gt;<i> &gt; which fields to ignore based on certain other fields, this is very
+</I>&gt;<i> &gt; misleading.
+</I>&gt;<i>
+</I>&gt;<i> Have a look at cgps... floating point quantities are compared to NaN.
+</I>&gt;<i> If there is valid data isnan() will return false. If the data is not
+</I>&gt;<i> valid, gpsd will instead send a '?' which can't be meaningfully
+</I>&gt;<i> interpreted as a float, so isnan() is true. Basically, you should be
+</I>&gt;<i> able to rely on all numeric types in the struct.
+</I>&gt;<i>
+</I>&gt;<i> The daemon tries very hard to not send data that isn't real... no
+</I>&gt;<i> valid altitude is sent in 2D fix mode. If this interferes with your
+</I>&gt;<i> application, you can enable a form of buffering with the &quot;J&quot; command,
+</I>&gt;<i> which merges new fix data into old.
+</I>&gt;<i>
+</I>&gt;<i> CK
+</I>&gt;<i>
+</I>&gt;<i> --
+</I>&gt;<i> GDB has a 'break' feature; why doesn't it have 'fix' too?
+</I>&gt;<i>
+</I>
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="002516.html">[Gpsd-users] Semantics of libgps
+</A></li>
+	<LI>Next message: <A HREF="002515.html">[Gpsd-users] [Gpsd-dev] What does your application need from	the config variables?
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2519">[ date ]</a>
+              <a href="thread.html#2519">[ thread ]</a>
+              <a href="subject.html#2519">[ subject ]</a>
+              <a href="author.html#2519">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

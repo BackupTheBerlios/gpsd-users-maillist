@@ -1,0 +1,91 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] Re: magellan explorist 210
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2006-February/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Re%3A%20magellan%20explorist%20210&In-Reply-To=%3Cloom.20060228T022158-402%40post.gmane.org%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="001364.html">
+   <LINK REL="Next"  HREF="001368.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] Re: magellan explorist 210</H1>
+    <B>Brett Barton</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Re%3A%20magellan%20explorist%20210&In-Reply-To=%3Cloom.20060228T022158-402%40post.gmane.org%3E"
+       TITLE="[Gpsd-users] Re: magellan explorist 210">archer36 at chartermi.net
+       </A><BR>
+    <I>Tue Feb 28 02:36:17 CET 2006</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="001364.html">[Gpsd-users] Re: magellan explorist 210
+</A></li>
+        <LI>Next message: <A HREF="001368.html">[Gpsd-users] Re: magellan explorist 210
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1365">[ date ]</a>
+              <a href="thread.html#1365">[ thread ]</a>
+              <a href="subject.html#1365">[ subject ]</a>
+              <a href="author.html#1365">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Eric S. Raymond &lt;esr &lt;at&gt; thyrsus.com&gt; writes:
+&gt;<i> Brett, once you get this thing working I'd appreciate it if you'd write
+</I>&gt;<i> an entry for the hardware page including a note on how you grot it to work.
+</I>
+Ok, time for a update took long because my ISP is acting up tonight. So
+basically getting no where I poked around with the /proc/bus/usb/devices and by
+my GPS it has &quot;Cls=02(comm.)&quot; and didn't really understand what that was. So I
+looked around the kernel and found cdc_acm and it caught my attention because
+the way windows uses the gps. First you install the software then it makes a
+&quot;modem&quot; on com4 then you use windows apps though com4. 
+
+So I read the documentation on acm and I saw that same line &quot;Cls=02(comm.)&quot; and
+it said &quot;The presence of these three lines is important, it means it's an
+ACM device&quot;. So I built it as a module then rebuilt the kernel, booted in pluged
+in the GPS and check dmesg and see &quot;cdc_acm 4-1:1.0: ttyACM0: USB ACM device&quot;. 
+SoI quickly cat /dev/ttyACM0 and I see a flow of text. Next I do gpsd -p
+/dev/ttyACM0 and then launch xgps which seems to work, and gpsdrive works 
+great too!
+
+So enabling ACM in the USB Modem section of the kenerel config did it for me. 
+I would like to thank you guys for all the help as I could not have done it
+without the help, and I also learned a great deal too.
+
+Thanks,
+Brett
+
+
+
+
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="001364.html">[Gpsd-users] Re: magellan explorist 210
+</A></li>
+	<LI>Next message: <A HREF="001368.html">[Gpsd-users] Re: magellan explorist 210
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1365">[ date ]</a>
+              <a href="thread.html#1365">[ thread ]</a>
+              <a href="subject.html#1365">[ subject ]</a>
+              <a href="author.html#1365">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

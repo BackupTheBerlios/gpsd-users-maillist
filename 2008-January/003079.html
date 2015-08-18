@@ -1,0 +1,106 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] Bug - Switching Drivers from Generic NMEA to	Garmin serial creates 2 gpsd_ppsmonitor threads
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2008-January/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Bug%20-%20Switching%20Drivers%20from%20Generic%20NMEA%20to%0A%09Garmin%20serial%20creates%202%20gpsd_ppsmonitor%20threads&In-Reply-To=%3C000401c855d4%2409ff4090%24fbc31eac%40tau%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="003072.html">
+   <LINK REL="Next"  HREF="003084.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] Bug - Switching Drivers from Generic NMEA to	Garmin serial creates 2 gpsd_ppsmonitor threads</H1>
+    <B>John Arthur</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Bug%20-%20Switching%20Drivers%20from%20Generic%20NMEA%20to%0A%09Garmin%20serial%20creates%202%20gpsd_ppsmonitor%20threads&In-Reply-To=%3C000401c855d4%2409ff4090%24fbc31eac%40tau%3E"
+       TITLE="[Gpsd-users] Bug - Switching Drivers from Generic NMEA to	Garmin serial creates 2 gpsd_ppsmonitor threads">lists at davey.net.au
+       </A><BR>
+    <I>Sun Jan 13 12:04:11 CET 2008</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="003072.html">[Gpsd-users] Bug - Switching Drivers from Generic NMEA to Garmin serial creates 2 gpsd_ppsmonitor threads
+</A></li>
+        <LI>Next message: <A HREF="003084.html">[Gpsd-users] Bug - Switching Drivers from Generic NMEA to Garmin serial creates 2 gpsd_ppsmonitor threads
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3079">[ date ]</a>
+              <a href="thread.html#3079">[ thread ]</a>
+              <a href="subject.html#3079">[ subject ]</a>
+              <a href="author.html#3079">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi Gary,
+
+Please find attached a patch to make gpsd/pps work with a Garmin 18-5Hz.
+
+It's the first time I've touched a C compiler in about 6 years so please be
+kind ;-).
+
+The Garmin 18-5Hz outputs a pulse every 200ms. I've reconfigured the pulse
+length from 100ms to 160ms and added code to look for 40ms pulses inside a
+200ms cycle in libgpsd_core.c. 
+
+ntpshm.c I've removed these lines from the pps monitor code. 
+
+ shmTimeP-&gt;precision = -1;   /* lost lock */
+ gpsd_report(LOG_INF, &quot;ntpshm_pps: lost PPS lock\n&quot;);
+
+so that gpsd only takes action on the top of the second and all else is
+ignored. Should work for all GPSs.
+
+I could not really understand the reason for changing shmTimeP-&gt;precision
+since it should still  be relevant to the time data that is currently in the
+SHM segment and since no time data has changed it should not be modified. As
+far as I understand the NTP SHM driver. It does not matter when or how long
+after the data has been placed in SHM before ntpd retrieves it ntpd checks
+the time stamps and acts appropriately.
+
+drivers.c 
+#if defined(NMEA_ENABLE) moved up a couple of lines. Not a problem for me
+but if built with --disable-nmea it would be broken. Leaving
+garmin_nmea_configurator without any closing braces when in fact I think it
+should be removed.
+
+Changed the Garmin PPS pulse length to 160ms.
+
+I think the code should work correctly and not interfere with 1Hz GPSs like
+the Garmin 18lvc since the 160ms pulse will leave a 840ms low state in the
+1Hz cycle time in libgpsd_core.c.
+
+Any feed back and suggestions or pointing out any clangers in the code would
+be appreciated.
+
+Regards John
+
+
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="003072.html">[Gpsd-users] Bug - Switching Drivers from Generic NMEA to Garmin serial creates 2 gpsd_ppsmonitor threads
+</A></li>
+	<LI>Next message: <A HREF="003084.html">[Gpsd-users] Bug - Switching Drivers from Generic NMEA to Garmin serial creates 2 gpsd_ppsmonitor threads
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3079">[ date ]</a>
+              <a href="thread.html#3079">[ thread ]</a>
+              <a href="subject.html#3079">[ subject ]</a>
+              <a href="author.html#3079">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

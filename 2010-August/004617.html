@@ -1,0 +1,225 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] PPS Pulse rejected, but ntpshm_put called?
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2010-August/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20PPS%20Pulse%20rejected%2C%20but%20ntpshm_put%20called%3F&In-Reply-To=%3C4C557174.1020609%40uni-duesseldorf.de%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   
+   <LINK REL="Next"  HREF="004618.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] PPS Pulse rejected, but ntpshm_put called?</H1>
+    <B>Norbert Goebel</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20PPS%20Pulse%20rejected%2C%20but%20ntpshm_put%20called%3F&In-Reply-To=%3C4C557174.1020609%40uni-duesseldorf.de%3E"
+       TITLE="[Gpsd-users] PPS Pulse rejected, but ntpshm_put called?">goebel at uni-duesseldorf.de
+       </A><BR>
+    <I>Sun Aug  1 15:07:00 CEST 2010</I>
+    <P><UL>
+        
+        <LI>Next message: <A HREF="004618.html">[Gpsd-users] PPS Pulse rejected, but ntpshm_put called?
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#4617">[ date ]</a>
+              <a href="thread.html#4617">[ thread ]</a>
+              <a href="subject.html#4617">[ subject ]</a>
+              <a href="author.html#4617">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi,
+
+I have a nasty problem with my Garmin OEM 18x LVC GPS with PPS signal
+connected to a dedicated machine running ubuntu 9.10 amd64 with gpsd
+2.39 and ntp 4.2.4p6. The 18x LVC is configured to send 20ms PPS Pulses.
+ntp.confs server part looks like this:
+server 127.127.28.0 minpoll 4 noselect
+fudge 127.127.28.0 time1 0.510 refid GPS
+server 127.127.28.1 minpoll 4 prefer
+fudge 127.127.28.1 refid PPS
+
+
+Most of the time I have nice and solid synchronization to the gps time
+via the PPS shm device, but about 5-10 times a day I get large spikes
+in the order of ~20ms offsets.
+I think I traced the problem down to gpsd rejecting the pulse but
+still sending it to ntp via ntpshm_put and as the PPS is the only
+timesource for this machine this badly influences timestability - or
+maybe I am totally wrong and made anoter mistake ;)
+
+I pick just one of many examples, second 34719 of today, which relates
+to 11:38:39 time in var log messages.
+As you can see there is a spike to 19 ms offset in ntp.
+loopstats file looks like this:
+55409 34703.875 -0.000937000 -146.428 0.001650542 0.017825 10
+55409 34719.875 0.019056022 -146.427 0.007235252 0.016678 10
+55409 34737.875 -0.001019000 -146.427 0.009807195 0.015601 10
+55409 34755.875 -0.001023000 -146.427 0.009173791 0.014594 10
+
+peerstats (filtered for the PPS device) like this:
+55409 34703.875 127.127.28.1 9614 -0.000937000 0.000000000 0.000000000
+0.000001000
+55409 34719.875 127.127.28.1 9614 0.019056022 0.000000000 0.000000000
+0.019992450
+55409 34737.875 127.127.28.1 9614 -0.001019000 0.000000000 0.000000000
+0.007588030
+55409 34755.875 127.127.28.1 9614 -0.001023000 0.000000000 0.000000000
+0.007589510
+
+and gpsd with -D 5 logs the following in /var/log/messages
+Aug  1 11:38:37 latency gpsd[3048]: gpsd: pps-detect (DCD) on
+/dev/ttyS0 changed to 1
+Aug  1 11:38:37 latency gpsd[3048]: gpsd: ntpshm_pps: clock:
+1280655518 @ 1280655517.980945, precision -5
+Aug  1 11:38:37 latency gpsd[3048]: gpsd: PPS pulse. cycle: 1000002,
+duration: 980009
+Aug  1 11:38:38 latency gpsd[3048]: gpsd: pps-detect (DCD) on
+/dev/ttyS0 changed to 0
+Aug  1 11:38:38 latency gpsd[3048]: gpsd: ntpshm_pps: clock:
+1280655518 @ 1280655518.000938, precision -10
+Aug  1 11:38:38 latency gpsd[3048]: gpsd: PPS pulse. cycle: 1000002,
+duration: 19993
+Aug  1 11:38:38 latency gpsd[3048]: gpsd: &lt;= GPS:
+$GPRMC,093838,A,5111.3090,N,00647.8252,E,000.0,157.9,010810,000.1,W*68#015
+Aug  1 11:38:38 latency gpsd[3048]: gpsd: GPRMC starts a reporting cycle.
+Aug  1 11:38:38 latency gpsd[3048]: gpsd: GPRMC sets mode 2
+Aug  1 11:38:38 latency gpsd[3048]: gpsd: ntpshm_put: Clock:
+1280655518 @ 1280655518.470898
+Aug  1 11:38:38 latency gpsd[3048]: gpsd: DOPS computed/reported:
+H=1.617201/1.300000, V=1.858000/0.900000, P=2.463230/1.600000,
+T=1.467380/0.679402, G=2.867178/1.724225
+Aug  1 11:38:38 latency gpsd[3048]: gpsd: &lt;= GPS:
+$GPGGA,093838,5111.3090,N,00647.8252,E,2,06,1.3,72.0,M,45.8,M,,*76#015
+Aug  1 11:38:38 latency gpsd[3048]: gpsd: GPGGA sets status 2 and mode
+3 (changed)
+Aug  1 11:38:38 latency gpsd[3048]: gpsd: &lt;= GPS:
+$GPGSA,A,3,05,08,15,17,,27,28,,,,,,1.6,1.3,0.9*3E#015
+Aug  1 11:38:38 latency gpsd[3048]: gpsd: GPGSA sets mode 3
+Aug  1 11:38:38 latency gpsd[3048]: gpsd: &lt;= GPS:
+$GPGSV,3,1,11,05,12,192,19,08,20,075,32,15,77,264,19,17,21,115,34*7D#015
+Aug  1 11:38:38 latency gpsd[3048]: gpsd: Partial satellite data (1 of 3).
+Aug  1 11:38:38 latency gpsd[3048]: gpsd: &lt;= GPS:
+$GPGSV,3,2,11,26,69,139,19,27,51,272,24,28,47,061,47,09,32,267,00*76#015
+Aug  1 11:38:38 latency gpsd[3048]: gpsd: Partial satellite data (2 of 3).
+Aug  1 11:38:38 latency gpsd[3048]: gpsd: &lt;= GPS:
+$GPGSV,3,3,11,18,28,306,00,22,06,331,00,24,04,342,00*4F#015
+Aug  1 11:38:38 latency gpsd[3048]: gpsd: Satellite data OK (3 of 3).
+Aug  1 11:38:38 latency gpsd[3048]: gpsd: pps-detect (DCD) on
+/dev/ttyS0 changed to 1
+Aug  1 11:38:38 latency gpsd[3048]: gpsd: ntpshm_pps: clock:
+1280655519 @ 1280655518.980944, precision -5
+Aug  1 11:38:38 latency gpsd[3048]: gpsd: PPS pulse. cycle: 999999,
+duration: 980006
+Aug  1 11:38:39 latency gpsd[3048]: gpsd: pps-detect (DCD) on
+/dev/ttyS0 changed to 0
+Aug  1 11:38:39 latency gpsd[3048]: gpsd: PPS pulse rejected.  cycle:
+1001016, duration: 21010
+Aug  1 11:38:39 latency gpsd[3048]: gpsd: &lt;= GPS:
+$GPRMC,093839,A,5111.3090,N,00647.8252,E,000.0,157.9,010810,000.1,W*69#015
+Aug  1 11:38:39 latency gpsd[3048]: gpsd: GPRMC starts a reporting cycle.
+Aug  1 11:38:39 latency gpsd[3048]: gpsd: GPRMC sets mode 2
+Aug  1 11:38:39 latency gpsd[3048]: gpsd: ntpshm_put: Clock:
+1280655519 @ 1280655519.471606
+Aug  1 11:38:39 latency gpsd[3048]: gpsd: DOPS computed/reported:
+H=1.617201/1.300000, V=1.858000/0.900000, P=2.463230/1.600000,
+T=1.467380/0.679402, G=2.867178/1.724225
+Aug  1 11:38:39 latency gpsd[3048]: gpsd: &lt;= GPS:
+$GPGGA,093839,5111.3090,N,00647.8252,E,2,06,1.3,72.0,M,45.8,M,,*77#015
+Aug  1 11:38:39 latency gpsd[3048]: gpsd: GPGGA sets status 2 and mode
+3 (changed)
+Aug  1 11:38:39 latency gpsd[3048]: gpsd: &lt;= GPS:
+$GPGSA,A,3,05,08,15,17,,,27,28,,,,,1.6,1.3,0.9*3E#015
+Aug  1 11:38:39 latency gpsd[3048]: gpsd: GPGSA sets mode 3
+Aug  1 11:38:39 latency gpsd[3048]: gpsd: &lt;= GPS:
+$GPGSV,3,1,11,05,12,192,19,08,20,075,32,15,77,264,20,17,21,115,34*77#015
+Aug  1 11:38:39 latency gpsd[3048]: gpsd: Partial satellite data (1 of 3).
+Aug  1 11:38:39 latency gpsd[3048]: gpsd: &lt;= GPS:
+$GPGSV,3,2,11,24,04,342,16,26,69,139,18,27,51,272,23,28,47,061,47*7B#015
+Aug  1 11:38:39 latency gpsd[3048]: gpsd: Partial satellite data (2 of 3).
+Aug  1 11:38:39 latency gpsd[3048]: gpsd: &lt;= GPS:
+$GPGSV,3,3,11,09,32,267,00,18,28,306,00,22,06,331,00*43#015
+Aug  1 11:38:39 latency gpsd[3048]: gpsd: Satellite data OK (3 of 3).
+Aug  1 11:38:39 latency gpsd[3048]: gpsd: pps-detect (DCD) on
+/dev/ttyS0 changed to 1
+Aug  1 11:38:39 latency gpsd[3048]: gpsd: ntpshm_pps: clock:
+1280655520 @ 1280655519.980946, precision -5
+Aug  1 11:38:39 latency gpsd[3048]: gpsd: PPS pulse. cycle: 1000002,
+duration: 978992
+Aug  1 11:38:40 latency gpsd[3048]: gpsd: pps-detect (DCD) on
+/dev/ttyS0 changed to 0
+Aug  1 11:38:40 latency gpsd[3048]: gpsd: PPS pulse rejected.  cycle:
+998983, duration: 19991
+Aug  1 11:38:40 latency gpsd[3048]: gpsd: &lt;= GPS:
+$GPRMC,093840,A,5111.3090,N,00647.8252,E,000.0,157.9,010810,000.1,W*67#015
+Aug  1 11:38:40 latency gpsd[3048]: gpsd: GPRMC starts a reporting cycle.
+Aug  1 11:38:40 latency gpsd[3048]: gpsd: GPRMC sets mode 2
+Aug  1 11:38:40 latency gpsd[3048]: gpsd: ntpshm_put: Clock:
+1280655520 @ 1280655520.472684
+Aug  1 11:38:40 latency gpsd[3048]: gpsd: DOPS computed/reported:
+H=1.085323/1.300000, V=1.201238/0.900000, P=1.618919/1.600000,
+T=0.729043/0.679402, G=1.775501/1.724225
+Aug  1 11:38:40 latency gpsd[3048]: gpsd: &lt;= GPS:
+$GPGGA,093840,5111.3090,N,00647.8252,E,2,06,1.3,72.0,M,45.8,M,,*79#015
+Aug  1 11:38:40 latency gpsd[3048]: gpsd: GPGGA sets status 2 and mode
+3 (changed)
+Aug  1 11:38:40 latency gpsd[3048]: gpsd: &lt;= GPS:
+$GPGSA,A,3,05,08,15,17,,27,28,,,,,,1.6,1.3,0.9*3E#015
+Aug  1 11:38:40 latency gpsd[3048]: gpsd: GPGSA sets mode 3
+Aug  1 11:38:40 latency gpsd[3048]: gpsd: &lt;= GPS:
+$GPGSV,3,1,11,05,12,192,18,08,20,075,33,15,77,264,21,17,21,115,34*76#015
+Aug  1 11:38:40 latency gpsd[3048]: gpsd: Partial satellite data (1 of 3).
+Aug  1 11:38:40 latency gpsd[3048]: gpsd: &lt;= GPS:
+$GPGSV,3,2,11,26,69,139,18,27,51,272,23,28,47,061,47,09,32,267,00*70#015
+Aug  1 11:38:40 latency gpsd[3048]: gpsd: Partial satellite data (2 of 3).
+Aug  1 11:38:40 latency gpsd[3048]: gpsd: &lt;= GPS:
+$GPGSV,3,3,11,18,28,306,00,22,06,331,00,24,04,342,00*4F#015
+Aug  1 11:38:40 latency gpsd[3048]: gpsd: Satellite data OK (3 of 3).
+
+Any ideas on how to fix this problem are welcome,
+
+Many thanks in advance,
+Norbert
+
+-- 
+Norbert Goebel
+Rechnernetze und Kommunikationssysteme
+Heinrich-Heine-Universit&#228;t
+Universit&#228;tsstr. 1, D-40225 D&#252;sseldorf
+
+Geb&#228;ude 25.12, Raum 02.41
+Tel: +49 211 81 11637
+Fax: +49 211 81 11638
+
+<A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">goebel at cs.uni-duesseldorf.de</A>
+
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	
+	<LI>Next message: <A HREF="004618.html">[Gpsd-users] PPS Pulse rejected, but ntpshm_put called?
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#4617">[ date ]</a>
+              <a href="thread.html#4617">[ thread ]</a>
+              <a href="subject.html#4617">[ subject ]</a>
+              <a href="author.html#4617">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

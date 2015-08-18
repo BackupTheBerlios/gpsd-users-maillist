@@ -1,0 +1,92 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] RFC on removing DBUS support from GPSD
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2010-March/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20RFC%20on%20removing%20DBUS%20support%20from%20GPSD&In-Reply-To=%3C20100311002207.BF71420CBB0%40snark.thyrsus.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="004273.html">
+   <LINK REL="Next"  HREF="004274.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] RFC on removing DBUS support from GPSD</H1>
+    <B>Eric Raymond</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20RFC%20on%20removing%20DBUS%20support%20from%20GPSD&In-Reply-To=%3C20100311002207.BF71420CBB0%40snark.thyrsus.com%3E"
+       TITLE="[Gpsd-users] RFC on removing DBUS support from GPSD">esr at thyrsus.com
+       </A><BR>
+    <I>Thu Mar 11 01:22:07 CET 2010</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="004273.html">[Gpsd-users] gpsd goes into endless loop after disconnecting gps receiver
+</A></li>
+        <LI>Next message: <A HREF="004274.html">[Gpsd-users] gpsd goes into endless loop after disconnecting gps receiver
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#4272">[ date ]</a>
+              <a href="thread.html#4272">[ thread ]</a>
+              <a href="subject.html#4272">[ subject ]</a>
+              <a href="author.html#4272">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>This is a request for comment to the development leads of all known 
+GPSD client applications.  I am considering removing DBUS support from
+the gpsd daemon. 
+
+freedesktop.org's geoclue service, deployed in Ubuntu since 9.10 and
+in Fedora since 9, talks to various providers of locational
+information, including gpsd, and provides that information to the
+DBUS system. 
+
+geoclue renders gpsd's direct DBUS support redundant on any system
+running geoclue. For geoclue, DBUS is a primary mission; for gpsd, it's a
+dusty and seldom-visited backwater in our code.  I'd like to remove
+it from our code; I think it has become unnecessary complexity there
+and could become a hard-to-detect source of version-skew bugs.
+
+Unless I hear an objection to this course, my plan is to deprecate DBUS
+support in the next release (2.93) and remove it entirely in 3.0,
+which is scheduled for June 2010.  3.0 is also the release which
+will remove the last remnants of support for the old (pre-JSON) GPSD
+protocol.
+
+Comments and objections, if any, are solicited.
+-- 
+		&lt;a href=&quot;<A HREF="http://www.catb.org/~esr/">http://www.catb.org/~esr/</A>&quot;&gt;Eric S. Raymond&lt;/a&gt;
+
+The danger (where there is any) from armed citizens, is only to the
+*government*, not to *society*; and as long as they have nothing to
+revenge in the government (which they cannot have while it is in their
+own hands) there are many advantages in their being accustomed to the 
+use of arms, and no possible disadvantage.
+        -- Joel Barlow, &quot;Advice to the Privileged Orders&quot;, 1792-93
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="004273.html">[Gpsd-users] gpsd goes into endless loop after disconnecting gps receiver
+</A></li>
+	<LI>Next message: <A HREF="004274.html">[Gpsd-users] gpsd goes into endless loop after disconnecting gps receiver
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#4272">[ date ]</a>
+              <a href="thread.html#4272">[ thread ]</a>
+              <a href="subject.html#4272">[ subject ]</a>
+              <a href="author.html#4272">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

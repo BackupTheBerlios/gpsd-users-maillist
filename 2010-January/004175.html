@@ -1,0 +1,321 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] GPSD with FC12 - a Fix
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2010-January/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20GPSD%20with%20FC12%20-%20a%20Fix&In-Reply-To=%3C1264111738.14595.6.camel%40localhost%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="004174.html">
+   <LINK REL="Next"  HREF="004176.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] GPSD with FC12 - a Fix</H1>
+    <B>Tom Smith</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20GPSD%20with%20FC12%20-%20a%20Fix&In-Reply-To=%3C1264111738.14595.6.camel%40localhost%3E"
+       TITLE="[Gpsd-users] GPSD with FC12 - a Fix">smitty at smittypaddler.com
+       </A><BR>
+    <I>Thu Jan 21 23:08:58 CET 2010</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="004174.html">[Gpsd-users] gpsd on fc12 not working
+</A></li>
+        <LI>Next message: <A HREF="004176.html">[Gpsd-users] GPSD wins a prize
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#4175">[ date ]</a>
+              <a href="thread.html#4175">[ thread ]</a>
+              <a href="subject.html#4175">[ subject ]</a>
+              <a href="author.html#4175">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hopefully this will help anyone using gpsd in Fedora Core 12. I see
+a lot of hits on this problem with a Google search, but no solutions.
+To use gpsd in perl, one can open a socket using IO::Socket, and send
+it commands, such as &quot;p\n&quot;, for example, which asks for the current
+location reported by the GPS antenna.  You can see everything I tried
+below, but what actually worked was to change the print statement to
+include a string of blanks:
+
+                        print &quot;p                         \n&quot;; # to
+socket
+
+The complete example perl script is listed towards the end of the text
+which follows.
+
+I recently upgraded from Fedora 9 to 12, and now my interface to gpsd,
+a program called chartview,
+(<A HREF="http://smittypaddler.com/chartview/index.htm">http://smittypaddler.com/chartview/index.htm</A>) is no longer receiving
+GPS data, though gpsmon shows data is being received from the GPS
+antenna, which is a Microsoft GPS-360 USB device:
+
+Partial output from gpsmon:
+----------------------------------------------------------------------
+127.0.0.1:2947:/dev/ttyUSB0   SiRF binary&gt;
+&#9484;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472; X &#9472;&#9472;&#9472;&#9472;&#9472;&#9472; Y &#9472;&#9472;&#9472;&#9472;&#9472;&#9472; Z &#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472; North &#9472;&#9472;&#9472;&#9472; East &#9472;&#9472;&#9472;&#9472;&#9472; Alt &#9472;
+&#9474;Pos:   115260 -4576483  4426521 m       44.22897&#176;-88.55729&#176;      268 m
+&#9474;
+----------------------------------------------------------------------
+
+I tried the code snippet from the Net::GPSD man page:
+
+#!/usr/bin/perl
+use Net::GPSD;
+my $obj=Net::GPSD-&gt;new;
+my $device=$obj-&gt;device;
+my $commands=$obj-&gt;commands;
+my $baud=$obj-&gt;baud;
+warn &quot;obj=$obj device=$device commands=$commands baud=$baud\n&quot;;
+#for(;;) {
+for $i (0..5) {
+        my $point=$obj-&gt;get;
+        my $fix=$point-&gt;fix ? 'fix' : 'no fix';
+        my $ll=$point-&gt;latlon;
+        warn &quot;$fix: point=$point point=&gt;latlon=$ll\n&quot;;
+        sleep 1;
+}
+
+and even when I use the infinite for(;;) loop I never see a fix:
+
+obj=Net::GPSD=HASH(0x85b28c4) device=/dev/ttyUSB0 commands=2.39
+baud=4800
+no fix: point=Net::GPSD::Point=HASH(0x8735b6c) point=&gt;latlon=
+no fix: point=Net::GPSD::Point=HASH(0x85d0bac) point=&gt;latlon=
+no fix: point=Net::GPSD::Point=HASH(0x873fc3c) point=&gt;latlon=
+no fix: point=Net::GPSD::Point=HASH(0x85d0b8c) point=&gt;latlon=
+no fix: point=Net::GPSD::Point=HASH(0x8708c14) point=&gt;latlon=
+no fix: point=Net::GPSD::Point=HASH(0x873fd3c) point=&gt;latlon=
+
+xgps sees 11 satellites, 4 of which are green as I write this, yet it
+also shows a status of NO FIX (42282 secs).  I have another computer
+running Fedora 9 right next to the machine
+running Fedora 12. The FC9 system has gpsd-2.37-2.fc9.i386 and
+gpsd-clients.i386 0:2.37-2.fc9 installed.  The FC12 system is running
+gpsd-2.39-5.fc12.i686 and gpsd-clients-2.39-5.fc12.i686. I unplugged
+the GPS antenna from the fc12 system and plugged it into the fc9 system,
+started gpsd, and xgps works fine there, but the above code snippet
+still fails:
+
+obj=Net::GPSD=HASH(0x99a68c4) device=/dev/ttyUSB0
+commands=abcdefgijklmnopqrstuvwxyz baud=4800
+no fix: point=Net::GPSD::Point=HASH(0x99c5c74) point=&gt;latlon=
+no fix: point=Net::GPSD::Point=HASH(0x99d464c) point=&gt;latlon=
+no fix: point=Net::GPSD::Point=HASH(0x9a4a9ac) point=&gt;latlon=
+no fix: point=Net::GPSD::Point=HASH(0x9ad809c) point=&gt;latlon=
+no fix: point=Net::GPSD::Point=HASH(0x9a7a744) point=&gt;latlon=
+no fix: point=Net::GPSD::Point=HASH(0x99c5c74) point=&gt;latlon=
+
+However, my chartview software
+(<A HREF="http://smittypaddler.com/chartview/index.htm">http://smittypaddler.com/chartview/index.htm</A>)
+does work on fc9. However, it uses a slightly different method.  Here
+are code snippets:
+
+...
+sub gpsInit {
+        $GpsSocket = IO::Socket::INET-&gt;new('localhost:2947');
+        $GpsSocket-&gt;autoflush(1) if($GpsSocket);
+...
+}
+sub gpsGetSocket {
+...
+        if($GpsSocket) {
+                for($i=0;;$i++) {
+                        last if($i&gt;10); # Make 10 tries.
+                        select($GpsSocket);
+                        print &quot;p\n&quot;; # to socket
+                        select STDOUT;
+                        $save=$/; $/=$Crlf;
+                        next unless(defined($data=&lt;$GpsSocket&gt;));
+                        chomp($data);
+                        $/=$save;
+                        next unless($data &amp;&amp; $data ne 'GPSD,P=?');
+                        next unless($data=~/^GPSD,P=(\S+) (\S+)$/);
+                        next unless($lat=&amp;getnum($1));
+                        next unless($lon=&amp;getnum($2));
+                        $pos=&amp;gpxtopos([$lat,$lon]);
+                        last;
+                }
+        }
+        return($pos);
+}
+
+I noticed that on the fc9 system, /dev/ttyUSB0 is owned by group uucp -
+
+[<A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">smitty at welaka</A> ~]$ ll /dev/ttyUSB0
+crw-rw---- 1 root uucp 188, 0 2010-01-21 10:41 /dev/ttyUSB0
+
+and on the fc12 system, /dev/ttyUSB1 (the number changes everytime I
+unplug the USB antenna and plug it back in) is owned by group dialout,
+so as a test, I chmod-ed it to 666, which did not help:
+
+[<A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">smitty at isengard</A> ~]$ ll /dev/ttyUSB1
+crw-rw-rw- 1 root dialout 188, 1 2010-01-21 11:17 /dev/ttyUSB1
+
+However, I noticed these messages in /var/log/messages:
+
+----------------------------------------------------------------------
+Jan 21 11:17:56 localhost kernel: usb 3-1: Product: USB-Serial
+Controller
+Jan 21 11:17:56 localhost kernel: usb 3-1: Manufacturer: Prolific
+Technology Inc.
+Jan 21 11:17:56 localhost kernel: usb 3-1: SerialNumber: 12345678
+Jan 21 11:17:56 localhost kernel: usb 3-1: configuration #1 chosen from
+1 choice
+Jan 21 11:17:56 localhost kernel: pl2303 3-1:1.0: pl2303 converter
+detected
+Jan 21 11:17:56 localhost kernel: usb 3-1: pl2303 converter now attached
+to ttyUSB1
+Jan 21 11:17:56 localhost gpsd.hotplug: gpsd_control(action=add,
+arg=/dev/ttyUSB1)
+Jan 21 11:17:56 localhost gpsd.hotplug: reached a running gpsd
+Jan 21 11:17:56 localhost modem-manager: (ttyUSB1) opening serial
+device...
+Jan 21 11:17:56 localhost kernel: pl2303 ttyUSB1: pl2303_open - failed
+submitting read urb, error -22
+----------------------------------------------------------------------
+
+To keep things the same, I rebooted and re-chmod-ed /dev/ttyUSB0 to 666,
+and re-started xgps; still no joy. xgps shows 10 satellites, 6 of which
+are green, but still reports a status of NO FIX. gpsmon still shows my
+correct position, 44.22897,-88.55729, and my chartview software still
+doesn't show a position from GPS.  All I get back is data=GPSD,P=?.
+
+=========================================================================
+
+Next, with great trepidation, since the last time I did this I ended up
+with a kernel that wouldn't boot, I did
+
+        yum update
+
+After 1267 installs/updates, including a new kernel, I did &quot;shutdown -r
+now&quot;
+and it boots OK, but the problem with gpsd isn't resolved.  I rewrote
+my test perl script, and now I can, very rarely, get it to return a
+position:
+
+#!/usr/bin/perl
+use strict 'vars';
+use Glib qw/TRUE FALSE/;
+use IO::Socket;
+use Net::GPSD;
+use CHARTCOMMON;
+use NAV;
+
+shift() ? &amp;trygpsd() : &amp;trysocket();
+
+sub trygpsd {
+        my $obj=Net::GPSD-&gt;new;
+        my $device=$obj-&gt;device;
+        my $commands=$obj-&gt;commands;
+        my $baud=$obj-&gt;baud;
+        warn &quot;obj=$obj device=$device commands=$commands baud=$baud\n&quot;;
+        #for(;;) {
+        for my $i (0..5) {
+                my $point=$obj-&gt;get;
+                my $fix=$point-&gt;fix ? 'fix' : 'no fix';
+                my $ll=$point-&gt;latlon;
+                warn &quot;$fix: point=$point point=&gt;latlon=$ll\n&quot;;
+                sleep 1;
+        }
+}
+
+sub trysocket {
+        my(
+                $Crlf, $data, $GpsSocket, $i, $lat, $lon, $pos, $save
+
+        );
+
+        $Crlf=&quot;\r\n&quot;; # Gps data is terminated with this.
+        $GpsSocket = IO::Socket::INET-&gt;new('localhost:2947');
+        die &quot;failed to get socket&quot; unless($GpsSocket);
+        $GpsSocket-&gt;autoflush(1);
+        $pos=undef;
+        for(;;) {
+                for($i=0;;$i++) {
+                        last if($i&gt;9); # Make 9 tries.
+                        select($GpsSocket);
+                        sleep 1;
+                        print &quot;p\n&quot;; # to socket
+                        select STDOUT;
+                        $save=$/; $/=$Crlf;
+                        next unless(defined($data=&lt;$GpsSocket&gt;));
+                        chomp($data);
+                        warn &quot;gpsGetSocket loop i=&gt;$i, data=&gt;'$data'\n&quot;;
+                        $/=$save;
+                        next unless($data &amp;&amp; $data ne 'GPSD,P=?');
+                        next unless($data=~/^GPSD,P=(\S+) (\S+)$/);
+                        next unless($lat=&amp;getnum($1));
+                        next unless($lon=&amp;getnum($2));
+                        $pos=&amp;gpxtopos([$lat,$lon]);
+                        last;
+                }
+                warn &quot;pos=&quot;,$pos ? &amp;positionFormat($pos,1,1) :
+'undef',&quot;\n&quot;;
+                warn &quot;sleeping\n&quot;;
+                sleep 1
+        }
+}
+
+I also tried telnet, and again, I can get it to occasionally, but not
+consistently, return a position
+
+----------------------------------------------------
+[<A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">smitty at isengard</A> scripts]$ telnet localhost 2947
+Trying ::1...
+telnet: connect to address ::1: Connection refused
+Trying 127.0.0.1...
+Connected to localhost.
+Escape character is '^]'.
+o
+GPSD,O=?
+O
+GPSD,O=?
+P
+GPSD,P=?
+p
+GPSD,P=44.229022364 -88.557442110
+p
+GPSD,P=?
+p
+GPSD,P=?
+p
+GPSD,P=44.228965127 -88.557357995
+----------------------------------------------------
+
+On a hunch, I changed the print to include a string of trailing blanks,
+and it works. Unbelievable!
+
+                        print &quot;p                         \n&quot;; # to
+socket
+
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="004174.html">[Gpsd-users] gpsd on fc12 not working
+</A></li>
+	<LI>Next message: <A HREF="004176.html">[Gpsd-users] GPSD wins a prize
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#4175">[ date ]</a>
+              <a href="thread.html#4175">[ thread ]</a>
+              <a href="subject.html#4175">[ subject ]</a>
+              <a href="author.html#4175">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

@@ -1,0 +1,140 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] [patch] expose buffer_policy as a command line option
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2007-November/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20%5Bpatch%5D%20expose%20buffer_policy%20as%20a%20command%20line%20option&In-Reply-To=%3C864pfy8w37.fsf%40coulee.tdb.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="002948.html">
+   <LINK REL="Next"  HREF="002950.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] [patch] expose buffer_policy as a command line option</H1>
+    <B>Russell Senior</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20%5Bpatch%5D%20expose%20buffer_policy%20as%20a%20command%20line%20option&In-Reply-To=%3C864pfy8w37.fsf%40coulee.tdb.com%3E"
+       TITLE="[Gpsd-users] [patch] expose buffer_policy as a command line option">seniorr at aracnet.com
+       </A><BR>
+    <I>Wed Nov  7 06:26:36 CET 2007</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="002948.html">[Gpsd-users] installing
+</A></li>
+        <LI>Next message: <A HREF="002950.html">[Gpsd-users] Lost PPS pulse
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2949">[ date ]</a>
+              <a href="thread.html#2949">[ thread ]</a>
+              <a href="subject.html#2949">[ subject ]</a>
+              <a href="author.html#2949">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>
+Here is a patch relative to r4440.  It makes my life easier in
+embedded land, to make the desired behavior optionally available
+without rewriting all the clients.
+
+
+Index: gpsd.c
+===================================================================
+--- gpsd.c      (revision 4440)
++++ gpsd.c      (working copy)
+@@ -201,6 +201,7 @@
+   -b                   = bluetooth-safe: open data sources read-only\n\
+   -n                       = don't wait for client connects to poll GPS\n\
+   -N                       = don't go into background\n\
++  -j                        = make nocasoc the default buffer_policy\n\
+   -F sockfile             = specify control socket location\n\
+   -P pidfile           = set file to record process ID \n\
+   -D integer (default 0)       = set debug level \n\
+@@ -322,6 +323,8 @@
+ #define free_channel(chp)      (chp)-&gt;gpsdata.gps_device[0] = '\0'
+ #define syncing(chp)   (chp-&gt;gpsdata.gps_fd&gt;-1&amp;&amp; chp-&gt;packet_type==BAD_PACKET)
+ 
++typedef enum {casoc=0, nocasoc=1} buffering_policy;
++
+ static struct subscriber_t {
+     int fd;                            /* client file descriptor. -1 if unused */
+     double active;                     /* when subscriber last polled for data */
+@@ -331,7 +334,7 @@
+     enum {GPS,RTCM104,ANY} requires;   /* type of device requested */
+     struct gps_fix_t fixbuffer;                /* info to report to the client */
+     struct gps_fix_t oldfix;           /* previous fix for error modeling */
+-    enum {casoc=0, nocasoc=1} buffer_policy;   /* buffering policy */
++    buffering_policy buffer_policy;    /* buffering policy */
+     /*@relnull@*/struct gps_device_t *device;  /* device subscriber listens to */
+ } subscribers[MAXSUBSCRIBERS];         /* indexed by client file descriptor */
+ 
+@@ -1270,6 +1273,7 @@
+ #endif /* RTCM104_SERVICE */
+     struct subscriber_t *sub;
+     struct gps_device_t *testdevice = NULL;
++    buffering_policy default_buffer_policy = casoc;
+ 
+ #ifdef PPS_ENABLE
+     pthread_mutex_init(&amp;report_mutex, NULL);
+@@ -1279,7 +1283,7 @@
+     (void)setlocale(LC_NUMERIC, &quot;C&quot;);
+ #endif
+     debuglevel = 0;
+-    while ((option = getopt(argc, argv, &quot;F:D:S:bhNnP:VT&quot;
++    while ((option = getopt(argc, argv, &quot;F:D:S:bhjNnP:VT&quot;
+ #ifdef RTCM104_SERVICE
+                            &quot;R:&quot;
+ #endif /* RTCM104_SERVICE */
+@@ -1302,6 +1306,9 @@
+            rtcm_service = optarg;
+            break;
+ #endif /* RTCM104_SERVICE */
++        case 'j':
++          default_buffer_policy = nocasoc;
++          break;
+        case 'S':
+            gpsd_service = optarg;
+            break;
+@@ -1550,8 +1557,10 @@
+                    client-&gt;active = timestamp();
+                    client-&gt;tied = false;
+                    client-&gt;requires = ANY;
++                    client-&gt;buffer_policy = default_buffer_policy;
+                    gpsd_report(LOG_INF, &quot;client %s (%d) connect on fd %d\n&quot;,
+                        c_ip, sub_index(client), ssock);
++                    assign_channel(client);
+                }
+            }
+            FD_CLR(msock, &amp;rfds);
+
+
+-- 
+Russell Senior         ``I have nine fingers; you have ten.''
+<A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">seniorr at aracnet.com</A>
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="002948.html">[Gpsd-users] installing
+</A></li>
+	<LI>Next message: <A HREF="002950.html">[Gpsd-users] Lost PPS pulse
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2949">[ date ]</a>
+              <a href="thread.html#2949">[ thread ]</a>
+              <a href="subject.html#2949">[ subject ]</a>
+              <a href="author.html#2949">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

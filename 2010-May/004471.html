@@ -1,0 +1,106 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] NTP with only gpsd
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2010-May/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20NTP%20with%20only%20gpsd&In-Reply-To=%3C20100509203501.a34q6medlds00kg4%40www.umrk.nl%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="004470.html">
+   <LINK REL="Next"  HREF="004472.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] NTP with only gpsd</H1>
+    <B>Jaap Winius</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20NTP%20with%20only%20gpsd&In-Reply-To=%3C20100509203501.a34q6medlds00kg4%40www.umrk.nl%3E"
+       TITLE="[Gpsd-users] NTP with only gpsd">jwinius at umrk.nl
+       </A><BR>
+    <I>Sun May  9 20:35:01 CEST 2010</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="004470.html">[Gpsd-users] NTP with only gpsd
+</A></li>
+        <LI>Next message: <A HREF="004472.html">[Gpsd-users] Looking for linux devices.. Sony Dash??
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#4471">[ date ]</a>
+              <a href="thread.html#4471">[ thread ]</a>
+              <a href="subject.html#4471">[ subject ]</a>
+              <a href="author.html#4471">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Quoting Mamoru Yamamoto &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">yamamoto at rish.kyoto-u.ac.jp</A>&gt;:
+
+&gt;<i> To my following questions I got three replies.  One was posted
+</I>&gt;<i> on this mailing list.  They were all very informative.  ...
+</I>
+Thanks, but there's much that I still have to learn. For example,  
+after a talk with a more knowledgeable friend this afternoon, my  
+understanding now is that when combining Internet time sources with  
+ntpd, three server entries is the minimum, because this is the only  
+way that it can calculate a time average, discard the server that is  
+furthest from this value, and then still have two servers left. After  
+that, ntpd decides which server to synchronize with to based on other  
+values, such as jitter.
+
+However, if no Internet time sources are used and your only time  
+source is a Garmin GPS 18 LVC, I have not yet managed to find any  
+reason why ntpd should not sync with it. The only thing you must be  
+sure of is that the Garmin GPS device always has a valid position fix.  
+One of the keys to success here is proper positioning. I've written  
+about this issue here:
+
+    * Synchronizing ntpd to a Garmin GPS 18 LVC via gpsd
+      <A HREF="http://www.rjsystems.nl/en/2100-ntpd-garmin-gps-18-lvc-gpsd.php#posi">http://www.rjsystems.nl/en/2100-ntpd-garmin-gps-18-lvc-gpsd.php#posi</A>
+
+Also, if you have the gpsd-clients package installed, you can  
+determine the position fix status of your Garmin device with the  
+&quot;gpspipe -r&quot; command and examining the lines that start with $GPRMC  
+(sent once per second by default), for example:
+
+    $GPRMC,154052,A,5209.2345,N,00428.9922,E,000.0,145.9,090510,001.0,W*66
+
+The second field is for the status. &quot;A&quot; represents &quot;valid position&quot;  
+(good), while &quot;V&quot; is &quot;NAV receiver warning&quot; (not good). Basically, you  
+never want to see a status &quot;V.&quot; If the device has just been turned on  
+and it has yet to acquire a position fix, it will not even produce a  
+pulse per second (PPS) signal.
+
+On the other hand, if the device has previously acquired a position  
+fix and is giving a PPS signal, but then loses its fix, it will  
+continue to provide a PPS signal. However, its timing accuracy will  
+then be degraded considerably.
+
+Cheers,
+
+Jaap
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="004470.html">[Gpsd-users] NTP with only gpsd
+</A></li>
+	<LI>Next message: <A HREF="004472.html">[Gpsd-users] Looking for linux devices.. Sony Dash??
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#4471">[ date ]</a>
+              <a href="thread.html#4471">[ thread ]</a>
+              <a href="subject.html#4471">[ subject ]</a>
+              <a href="author.html#4471">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

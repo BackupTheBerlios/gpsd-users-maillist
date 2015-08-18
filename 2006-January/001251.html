@@ -1,0 +1,98 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] gpxlogger bug and gpxlogger RFE
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2006-January/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20gpxlogger%20bug%20and%20gpxlogger%20RFE&In-Reply-To=%3C20060125025518.82531.qmail%40web32501.mail.mud.yahoo.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="001249.html">
+   <LINK REL="Next"  HREF="001252.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] gpxlogger bug and gpxlogger RFE</H1>
+    <B>Michael R. Davis</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20gpxlogger%20bug%20and%20gpxlogger%20RFE&In-Reply-To=%3C20060125025518.82531.qmail%40web32501.mail.mud.yahoo.com%3E"
+       TITLE="[Gpsd-users] gpxlogger bug and gpxlogger RFE">mrdvt92 at yahoo.com
+       </A><BR>
+    <I>Wed Jan 25 03:55:18 CET 2006</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="001249.html">[Gpsd-users] gpxlogger bug and gpxlogger RFE
+</A></li>
+        <LI>Next message: <A HREF="001252.html">[Gpsd-users] gpxlogger bug and gpxlogger RFE
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1251">[ date ]</a>
+              <a href="thread.html#1251">[ thread ]</a>
+              <a href="subject.html#1251">[ subject ]</a>
+              <a href="author.html#1251">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>&gt;<i> &gt; &gt; Also, two things would be nice for gpxlogger to have:
+</I>&gt;<i> &gt; &gt; b) a command line option to set the time between trackpoints.
+</I>&gt;<i> &gt; &gt; Currently gpxlogger logs every positon that comes through which
+</I>&gt;<i> &gt; &gt; leads to HUGE log  files if you leave it running for hours at a
+</I>&gt;<i> &gt; &gt; time. 
+</I>
+I wrote a gpsd-tracker that makes a few tests before it &quot;reports&quot;
+(logs) anything (time since last report, distance since last report,
+difference in the track (predicted location) since last report.).  I
+have a version that sends an http request to my server and I have a
+version that logs to PostgreSQL.
+
+Look at the code and let me know what you think?
+<A HREF="http://twiki.davisnetworks.com/bin/view/Main/GpsApplications">http://twiki.davisnetworks.com/bin/view/Main/GpsApplications</A>
+
+Here's the good stuff...
+
+my $updatetime=$opt{'s'} || 900; #seconds s=seconds
+my $updatedist=$opt{'l'} || 1000; #meters l=location
+my $updatetrack=$opt{'t'} || 200; #meters t=track
+
+if (testdefined($fix_last, $fix) || 
+    testtime($fix_last, $fix, $updatetime) || 
+    testdist($fix_last, $fix, $updatedist) || 
+    testtrack($fix_last, $fix, $updatetrack) ) {
+  report($trackservice, $fix);
+  $fix_last={%$fix};
+}
+
+Thanks,
+Mike (mrdvt92)
+
+
+__________________________________________________
+Do You Yahoo!?
+Tired of spam?  Yahoo! Mail has the best spam protection around 
+<A HREF="http://mail.yahoo.com">http://mail.yahoo.com</A> 
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="001249.html">[Gpsd-users] gpxlogger bug and gpxlogger RFE
+</A></li>
+	<LI>Next message: <A HREF="001252.html">[Gpsd-users] gpxlogger bug and gpxlogger RFE
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1251">[ date ]</a>
+              <a href="thread.html#1251">[ thread ]</a>
+              <a href="subject.html#1251">[ subject ]</a>
+              <a href="author.html#1251">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

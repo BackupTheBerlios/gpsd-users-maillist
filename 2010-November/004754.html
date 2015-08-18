@@ -1,0 +1,106 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] gpsd and python: running
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2010-November/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20gpsd%20and%20python%3A%20running&In-Reply-To=%3C20101118065730.GA5574%40dizzy.vulkor.net%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="004752.html">
+   <LINK REL="Next"  HREF="004753.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] gpsd and python: running</H1>
+    <B>vwf</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20gpsd%20and%20python%3A%20running&In-Reply-To=%3C20101118065730.GA5574%40dizzy.vulkor.net%3E"
+       TITLE="[Gpsd-users] gpsd and python: running">vwf at vulkor.net
+       </A><BR>
+    <I>Thu Nov 18 07:57:30 CET 2010</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="004752.html">[Gpsd-users] gpsd and python
+</A></li>
+        <LI>Next message: <A HREF="004753.html">[Gpsd-users] xgps no satellites bug
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#4754">[ date ]</a>
+              <a href="thread.html#4754">[ thread ]</a>
+              <a href="subject.html#4754">[ subject ]</a>
+              <a href="author.html#4754">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>On Wed, Nov 17, 2010 at 02:20:23PM -0700, Charles Curley wrote:
+&gt;<i> On Wed, 17 Nov 2010 21:15:31 +0100
+</I>&gt;<i> vwf &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">vwf at vulkor.net</A>&gt; wrote:
+</I>&gt;<i> 
+</I>&gt;<i> &gt; On Wed, Nov 17, 2010 at 06:21:05PM +0000, Tomalak Geret'kal wrote:
+</I>&gt;<i> &gt; &gt; On 17/11/2010 17:02, vwf wrote:
+</I>&gt;<i> &gt; &gt;&gt; I just started using gpsd 2.39. Gpsd works fine, but I need
+</I>&gt;<i> &gt; &gt;&gt; position data using python
+</I>&gt;<i> &gt; [...]
+</I>&gt;<i> &gt; &gt;
+</I>&gt;<i> &gt; &gt; First of all, can you upgrade to gpsd 2.95? Lots of bugs have been
+</I>&gt;<i> &gt; &gt; fixed since gpsd 2.39.
+</I>&gt;<i> &gt; [...]
+</I>&gt;<i> &gt; Thank you for your reply. Jumped through several hoops to build the
+</I>&gt;<i> &gt; debian packages but xgps shows the desired result. Now python. My Q&amp;D
+</I>&gt;<i> &gt; test;
+</I>[...] 
+&gt;<i> This sentence is an acknowledgement that gpsd is running. It says
+</I>&gt;<i> nothing about the state of your gps receiver.
+</I>
+This morning I saw that xgps is a python app; ripped it apart and made
+
+#!/usr/bin/env python2.5
+from gps import *
+(host, port, device) = (&quot;localhost&quot;, &quot;2947&quot;, None)
+debug=0
+try:
+    daemon = gps(host=host,
+            port=port,
+            mode=WATCH_ENABLE|WATCH_JSON|WATCH_SCALED,
+            verbose=debug)
+    while (True):
+        # Do stuff
+        if daemon.poll() == -1:
+            print &quot;daemon error&quot;
+        if daemon.valid &amp; PACKET_SET:
+            report = daemon.data
+            # if (0==1):
+            print report
+except socket.error:
+    print &quot;GPSD not running&quot;
+
+This seems to work. Several shortcomings but I hope to resolve them.
+
+fvw
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="004752.html">[Gpsd-users] gpsd and python
+</A></li>
+	<LI>Next message: <A HREF="004753.html">[Gpsd-users] xgps no satellites bug
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#4754">[ date ]</a>
+              <a href="thread.html#4754">[ thread ]</a>
+              <a href="subject.html#4754">[ subject ]</a>
+              <a href="author.html#4754">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

@@ -1,0 +1,186 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] more fluffy graph generators
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2006-December/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20more%20fluffy%20graph%20generators&In-Reply-To=%3C91981b3e0612012022vad420ccj840684b22fd6ce92%40mail.gmail.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="002351.html">
+   <LINK REL="Next"  HREF="002289.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] more fluffy graph generators</H1>
+    <B>Chris Kuethe</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20more%20fluffy%20graph%20generators&In-Reply-To=%3C91981b3e0612012022vad420ccj840684b22fd6ce92%40mail.gmail.com%3E"
+       TITLE="[Gpsd-users] more fluffy graph generators">chris.kuethe at gmail.com
+       </A><BR>
+    <I>Sat Dec  2 05:22:22 CET 2006</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="002351.html">[Gpsd-users] more fluffy graph generators
+</A></li>
+        <LI>Next message: <A HREF="002289.html">[Gpsd-users] more fluffy graph generators
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2288">[ date ]</a>
+              <a href="thread.html#2288">[ thread ]</a>
+              <a href="subject.html#2288">[ subject ]</a>
+              <a href="author.html#2288">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>I've been thudding at this email for a few days now.... in the
+meantime, those of you following gpsd-commit-watch might have noticed
+that we've started taking some of these suggestions to heart. I
+suspect we'll be continuing to revise as we get more comments and use
+cases.
+
+On 11/30/06, Eric S. Raymond &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">esr at thyrsus.com</A>&gt; wrote:
+&gt;<i> It makes pretty pictures.  And stimulates a couple of thoughts in my mind...
+</I>
+More than one geek I know calls graphs &quot;manager porn&quot;; sometimes a
+graph is not merely pretty to look at but it is absolutely the right
+way to condense stuff. This toy was actually a side effect of setting
+up my ANTARIS so I could debug OpenBSD's time stamping code. I wanted
+to know what my actual sky view was.
+
+As a side effect, it's instructive on a couple of fronts. It helps you
+understand polar plots (if you didn't already get it) and it's a very
+clear demonstration of multi-path. At least at gpsd2, everything
+that's not green is a reflection around here, is probably 20 or 30
+metres of path error.
+
+&gt;<i> One:  As a fit-and-finish issue, I'm beginning to think we need a common set
+</I>&gt;<i> of default visual conventions for our sky-views.  That is, somebody who has
+</I>&gt;<i> seen xgps should be able to interpret output from these PHP scripts at
+</I>&gt;<i> a glance and vice-versa.  When the GNOME client comes in, its defaults
+</I>
+GTK, not GNOME. or the Qt client. Or wxWidgets.
+
+&gt;<i> should look the same way.
+</I>
+Indeed. I know for sure I've failed in my presentation style if I have
+to go back to the source to see what the picture means. thus far:
+* not-completely-sucky. it makes sense to me.
+* a small success: others look at it and say &quot;oooh, shiny!&quot;
+* possibly a good idea, even: others look at it and decide to use it...
+
+&gt;<i> In each case, there could be other presentations -- I don't want to
+</I>&gt;<i> step on anyone's creativity or prevent experiments that might lead us
+</I>&gt;<i> to a better set of conventions -- but the *defaults* should look
+</I>&gt;<i> the same.
+</I>
+I'd like to see what other tools gpsd users have come up with.
+
+&gt;<i> I mostly like Chris's conventions -- actually, I like them better than
+</I>&gt;<i> my own attempts to pack more information into the xgps skyview.  As a
+</I>&gt;<i> start, I suppose I should fix xgps.c to use them.  One change I would
+</I>&gt;<i> like to see is WAAS/EGNOS satellites rendered in a different shape; a
+</I>&gt;<i> little diamond or square would be my first choice.  Right now we're
+</I>&gt;<i> using color to convey two different kinds of information -- signal
+</I>&gt;<i> strength and satellite type -- which is just generally bad practice in a
+</I>&gt;<i> UI like this.
+</I>
+No objection to a different shape. I guess I could abstract gd's
+ImageFilledPolygon() into something a little prettier. I was just
+being lazy... because plotting a circle was easy and plotting polygons
+meant I had to compute vertexes.
+
+&gt;<i> Two: I think this script crosses a line I had hoped nobody would push
+</I>&gt;<i> for a while.  Maintenance problems rise with the square of the number
+</I>&gt;<i> of languages in the package, and I was serious about trying to hold us
+</I>&gt;<i> to C and Python.  I took Chris's gpsd.php script because it's fairly
+</I>&gt;<i> hard to argue with PHP for live web pages, but I was a little uneasy
+</I>&gt;<i> about it because I feared opening the floodgates to anyone's favorite
+</I>&gt;<i> special-purpose language.
+</I>
+I only used php for sky view because I had 99% of what I needed
+already done; you can totally see where I ripped off gpsd.php. I have
+a perl script in my cvs tree that does something very similar, but its
+output isn't nearly as pretty.
+
+Note that I never pushed for the integration of gpsd.php or
+regress-build or this sky view analyzer. This is more along the lines
+of &quot;here's a tool that I use with gpsd. It's not core to gpsd's main
+mission, but it's compatible with the program. Enjoy!&quot;
+
+&gt;<i> So, what happens next?  Chris, the clever bastard, materializes some
+</I>&gt;<i> code that is a near-perfect argument for accepting PHP as a main
+</I>&gt;<i> language for the data-analysis tools.  I look at it, and while the right
+</I>&gt;<i> hemisphere of my brain goes &quot;Oooh, *shiny*...&quot; the left hemisphere
+</I>&gt;<i> is screaming &quot;Nooooo!  No more languages!&quot;
+</I>
+If you don't like php, I could redo it in perl. I prefer perl over
+php, but php has better integration into my web servers.
+
+This is a great argument for / example of reusable code; it took maybe
+3 minutes to write skyview.php, because so much of what i needed was
+already there.
+
+&gt;<i> We've got more than you'd think.   To be a competent maintainer for
+</I>&gt;<i> the entire project one should need to be able to at least limp along
+</I>&gt;<i> in all of C, C++, Python, shell, PHP, and gnuplot.
+</I>
+Don't forget rudimentary make and m4 (if you dare to hack at the
+autoconf stuff).
+
+After you get a grip on the syntax of the languages, you get to learn
+tool kits and their bindings: gd, gtk, motif, qt, wxwidgets .... :P
+
+GD is wonderful for programmatically generating pictures. Scripting
+languages are wonderful for slurping up text and drawing a graph. I
+could have written a pure C/gd tool do the same thing, but I'm lazy.
+It's way easier to do this this kind of processing in a scripting
+language; chances are, you're going to be tinkering with the guts of
+it quite frequently, and this just feels like a scripting language
+kind of task.
+
+&gt;<i> So, even though half my brain is still going &quot;Oooh, shiny!&quot; I think
+</I>&gt;<i> I have to say nyet, this at most goes into the contrib directory as
+</I>&gt;<i> unsupported.
+</I>
+there's a reason why i didn't commit it, why i called it fluffy... I
+wouldn't mind seeing something like this go into contrib, where it can
+live with sundry other analyzers. I'm actually quite surprised that
+I've received any feedback on it at all, but I've had several
+indications that there is a demand for this sort of thing.
+
+&gt;<i> As a to-do item, we might add translating this into
+</I>&gt;<i> Python that generates gnuplot, the way gpsprof does.
+</I>
+Pain. And. Agony. I'm not fond of gnuplot's command language, nor its
+inconsistencies in output devices. Nor some of its obstinant
+molly-coddling behaviour.
+
+-- 
+GDB has a 'break' feature; why doesn't it have 'fix' too?
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="002351.html">[Gpsd-users] more fluffy graph generators
+</A></li>
+	<LI>Next message: <A HREF="002289.html">[Gpsd-users] more fluffy graph generators
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2288">[ date ]</a>
+              <a href="thread.html#2288">[ thread ]</a>
+              <a href="subject.html#2288">[ subject ]</a>
+              <a href="author.html#2288">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

@@ -1,0 +1,118 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] getting ntpd to work with gpsd
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2010-February/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20getting%20ntpd%20to%20work%20with%20gpsd&In-Reply-To=%3C9114FF5C9483EC46AAE0526E0433F022017EB6%40mail5.amherst.edu%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="004233.html">
+   <LINK REL="Next"  HREF="004235.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] getting ntpd to work with gpsd</H1>
+    <B>Ryan Turcotte 10E</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20getting%20ntpd%20to%20work%20with%20gpsd&In-Reply-To=%3C9114FF5C9483EC46AAE0526E0433F022017EB6%40mail5.amherst.edu%3E"
+       TITLE="[Gpsd-users] getting ntpd to work with gpsd">rturcotte10 at amherst.edu
+       </A><BR>
+    <I>Tue Feb 16 23:17:26 CET 2010</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="004233.html">[Gpsd-users] getting ntpd to work with gpsd
+</A></li>
+        <LI>Next message: <A HREF="004235.html">[Gpsd-users] getting ntpd to work with gpsd
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#4234">[ date ]</a>
+              <a href="thread.html#4234">[ thread ]</a>
+              <a href="subject.html#4234">[ subject ]</a>
+              <a href="author.html#4234">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>&quot;That is over 8 hours!  Until you fix that ntpd will reject the gpsd data.&quot;
+
+Oh dear. I think that's why it hasn't been working...
+
+These are computers being used for an experiment in the future, so their current system time hasn't bothered me what so ever. That explains why it worked on the one personal-use computer that I tried it on. Silly of ntpd to ignore gpsd data when the time is that far off, IMO. Isn't the role of ntpd to set the system clock when it is off, regardless of the time difference? Surely if your computer woke up and thought it was 1970, you'd want ntpd to set the date back to normal. There's the -g flag but that has not changed the behavior in these tests.
+
+Well now I feel really stupid but it seems we've got to the bottom of the problem. FML
+
+Thanks a lot Gary for your patience and your help.
+
+Ryan
+
+-----Original Message-----
+From: Gary E. Miller [mailto:<A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">gem at rellim.com</A>]
+Sent: Tue 2/16/2010 4:37 PM
+To: Ryan Turcotte 10E
+Cc: <A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">gpsd-users at lists.berlios.de</A>
+Subject: RE: [Gpsd-users] getting ntpd to work with gpsd
+ 
+-----BEGIN PGP SIGNED MESSAGE-----
+Hash: SHA1
+
+Yo Ryan!
+
+On Tue, 16 Feb 2010, Ryan Turcotte 10E wrote:
+
+&gt;<i> gpsd: NTPD ntpshm_put: Clock: 1266355303.000000 @ 1266384409.732061,
+</I>&gt;<i> fudge: 0.000
+</I>&gt;<i> gpsd: NTPD ntpshm_put: Clock: 1266355304.000000 @ 1266384410.688147,
+</I>&gt;<i> fudge: 0.000
+</I>
+I see no PPS, so you rPPS is not being seen at all.
+
+Also notice the spread from the GPS time and the system time:
+	1266355304 - 1266384410 = 29,106 seconds!
+
+That is over 8 hours!  Until you fix that ntpd will reject the gpsd data.
+
+What do you get from this:
+
+	# ntpdc -p
+
+RGDS
+GARY
+- ---------------------------------------------------------------------------
+Gary E. Miller Rellim 109 NW Wilmington Ave., Suite E, Bend, OR 97701
+	<A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">gem at rellim.com</A>  Tel:+1(541)382-8588
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v1.4.3 (GNU/Linux)
+
+iD8DBQFLexAPBmnRqz71OvMRApCZAKCdYqPDt+6XJq1PIbtSPivKuhwF+QCcCxTK
+gIxk17b5K2IIWe+qNq6/HUs=
+=AUrp
+-----END PGP SIGNATURE-----
+
+
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="004233.html">[Gpsd-users] getting ntpd to work with gpsd
+</A></li>
+	<LI>Next message: <A HREF="004235.html">[Gpsd-users] getting ntpd to work with gpsd
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#4234">[ date ]</a>
+              <a href="thread.html#4234">[ thread ]</a>
+              <a href="subject.html#4234">[ subject ]</a>
+              <a href="author.html#4234">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

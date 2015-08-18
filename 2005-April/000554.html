@@ -1,0 +1,653 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] Re: New GPS report, gpsd 2.20, Mac OS X 10.3.8, GlobalSat BT-318 Bluetooth GPS, specs &amp; gpsd status
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2005-April/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Re%3A%20New%20GPS%20report%2C%20gpsd%202.20%2C%20Mac%20OS%20X%2010.3.8%2C%20GlobalSat%20BT-318%20Bluetooth%20GPS%2C%20specs%20%26%20gpsd%20status&In-Reply-To=%3C89bb57a1cc984d715b6dcbf8a838e1ad%40nicholasfamilycentral.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="000564.html">
+   <LINK REL="Next"  HREF="000555.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] Re: New GPS report, gpsd 2.20, Mac OS X 10.3.8, GlobalSat BT-318 Bluetooth GPS, specs &amp; gpsd status</H1>
+    <B>Frank Nicholas</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Re%3A%20New%20GPS%20report%2C%20gpsd%202.20%2C%20Mac%20OS%20X%2010.3.8%2C%20GlobalSat%20BT-318%20Bluetooth%20GPS%2C%20specs%20%26%20gpsd%20status&In-Reply-To=%3C89bb57a1cc984d715b6dcbf8a838e1ad%40nicholasfamilycentral.com%3E"
+       TITLE="[Gpsd-users] Re: New GPS report, gpsd 2.20, Mac OS X 10.3.8, GlobalSat BT-318 Bluetooth GPS, specs &amp; gpsd status">frank at nicholasfamilycentral.com
+       </A><BR>
+    <I>Sat Apr  9 02:32:36 CEST 2005</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="000564.html">[Gpsd-users] Re: [Gpsd-dev] New GPS report, gpsd 2.20, Mac OS X 10.3.8, GlobalSat BT-318 Bluetooth GPS, specs &amp; gpsd status
+</A></li>
+        <LI>Next message: <A HREF="000555.html">[Gpsd-users] Good site for SiRF reference information
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#554">[ date ]</a>
+              <a href="thread.html#554">[ thread ]</a>
+              <a href="subject.html#554">[ subject ]</a>
+              <a href="author.html#554">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>The GlobalSAT BT-318 Bluetooth GPS, running with SiRFDemo.exe, reports:
+SW Version 2.4.13.03-XTrac2.0.2-C3PROD1.0
+
+SiRFDemo.exe (a windows program :^( ) can change the GPS mode to SiRF,  
+when the GPS is not &quot;really confused&quot;.  When the GPS is in SiRF mode,  
+it works with sirfmon &amp; gpsd.  gpsd will recognize it as a SiRF II GPS:
+
+$ gpsd -N -D8 -f /dev/tty.gps
+gpsd: launching (Version 2.20)
+gpsd: listening on port gpsd
+gpsd: client connect on 4
+gpsd: closed GPS
+gpsd: opening GPS data source at /dev/tty.gps
+gpsd: No USB serial drivers found.
+gpsd: no probe matched...
+gpsd: hunting at speed 4800, 8N1
+gpsd: packet_sniff begins
+gpsd: Read 320 chars (total 320):  
+\x00\xef\x00\x00\x01n\x00\x00\x00\x00\x00\x00l\xd5\x02v\x00\x00\x00\x00\ 
+x00\x1b\xf3\x90\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x08\x04\ 
+x00\x10\xe9\xb0\xb3\xa0\xa2\x00\xbc\x04\x01%\x03\x18\x96\x0b\x0c\x09\x1d 
+*\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x12MT\x00\xad&quot;#\x20&quot;#&quot; 
+#&quot;%%\x01\xb5&gt;\x00\xad\x16\x18\x16\x18\x19\x19\x17\x18\x1a\x19\x0e\xd2\x8 
+3\x00\xbf&quot;&quot;\x20#&quot;!$&quot;&quot;#\x16&gt;\x94\x00\xbf\x1f!\x1f\x20\x20! 
+\x20\x20\x1f\x1e\x0572\x00\xad\x17\x11\x16\x15\x11\x15\x15\x15\x14\x15\x 
+0f\x7fC\x00\xbf\x1e\x1e\x1e\x1e\x1d\x1e\x1e\x1e\x1e\x1e\x19\x8d7\x00\xad 
+\x16\x17\x17\x15\x17\x1a\x19\x19\x19\x17\x1eR,\x00? 
+\x1b\x1b\x1a\x19\x1b\x1b\x1b\x1b\x1b\x1d\x0b\xd4\x13\x00\xbf\x1e\x1e\x1e 
+\x1e\x1f\x1e\x1e\x1d\x1e\x1f\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00 
+\x00\x00\x00\x00\x09\x1d*\x00\xff\x00\x00\x00\x00\x00\x00\x00\x00\x00\x0 
+0\x1a\x16\xb0\xb3\xa0\xa2\x00)\x02\x00\x05\xa2: 
+\xff\xb4\xa2\xd1\x00=\x1e\xbd\x00\x00\x00\x00\x00\x00\x04\x04\x02\x01%\x 
+03\x18\x96\x0b\x08\x12\x01\x0e\x16\x05\x0fgpsd: Packet copy, type 1
+gpsd: Packet discard with 81 remaining
+gpsd: Packet copy, type 1
+gpsd: Packet discard with 32 remaining
+gpsd: Packet copy, type 1
+gpsd: Packet discard with 15 remaining
+gpsd: packet_sniff ends
+gpsd: gpsd_activate: opened GPS (5)
+gpsd: Selecting SiRF-II binary driver...
+gpsd: Setting DGPS control to use SBAS...
+gpsd: Writing SiRF control type 85: a0 a2 00 07 85 01 00 00 00 00 00 00  
+86 b0 b3
+gpsd: Setting SBAS to auto/integrity mode...
+gpsd: Writing SiRF control type aa: a0 a2 00 06 aa 00 01 00 00 00 00 ab  
+b0 b3
+gpsd: Probing for firmware version...
+gpsd: Writing SiRF control type 84: a0 a2 00 02 84 00 00 84 b0 b3
+gpsd: checking 4
+gpsd: &lt;= client: p
+gpsd: GPS is confused about whether it has a fix (status=0, mode=0).
+gpsd: =&gt; client(4): GPSD,P=?
+gpsd: GPS has 346 chars waiting
+gpsd: Read 346 chars (total 378):  
+\x07\xd5\x04\x09\x00\x10\xdf\x8f\x01&quot;d\x11\x17V&amp;\xfb\xcc\xe7j\xae\x00\x0 
+0P\x84\x00\x00]\x9a\x15\x00\x00\x0a\x1b\x00\x00\x00\x00\x00\x00\x00\x00\ 
+x00\xf1\x00\x00\x01w\x00\x00\x00\x00\x00\x00l\xf0\xf6@\x00\x00\x00\x00\x 
+00\x1b\xf3}\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x08\x04\x00\ 
+x11\x92\xb0\xb3\xa0\xa2\x00\xbc\x04\x01%\x03\x18\x96o\x0c\x09\x1d*\x00\x 
+00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x12MT\x00\xad&quot;&quot;\x20#$#%$##\x0 
+1\xb5&gt;\x00\xad\x1b\x1b\x19\x16\x15\x17\x17\x19\x17\x17\x0e\xd2\x83\x00\x 
+bf&quot;&quot;&quot;!&quot;&quot;\x20$#&quot;\x16&gt;\x94\x00\xbf!!\x1e\x20\x20\x1f!\x1f\x20! 
+\x0572\x00\xad\x15\x13\x13\x11\x16\x15\x16\x13\x16\x17\x0f\x7fC\x00\xbf\ 
+x1d\x1e\x1e\x1e\x1d\x1e\x1d\x1e\x1e\x1d\x19\x8d7\x00\xad\x15\x19\x1a\x19 
+\x18\x17\x19\x19\x1a\x1a\x1eR,\x00- 
+\x1b\x1b\x1a\x1a\x1b\x1a\x19\x1c\x1a\x1a\x0b\xd4\x13\x00\xbf\x1e\x1f\x1e 
+\x1e\x1e\x1d\x1e\x1e\x1e\x1e\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00 
+\x00\x00\x00\x00\x09\x1d*\x00\xff\x00\x00\x00\x00\x00\x00\x00\x00\x00\x0 
+0\x1am\xb0\xb3\xa0\xa2\x00)\x0gpsd: Packet discard with 279 remaining
+gpsd: Packet copy, type 1
+gpsd: Packet discard with 83 remaining
+gpsd: Packet copy, type 1
+gpsd: Packet discard with 34 remaining
+gpsd: Packet copy, type 1
+gpsd: Packet discard with 17 remaining
+gpsd: Raw SiRF packet type 9 length 9: 0900460004002b0093
+gpsd: THR 0x09: SegStatMax=0.376, SegStatLat=  0, AveTrkTime=0.231,  
+Last MS=  0
+gpsd: GPS has 1 chars waiting
+gpsd: Read 1 chars (total 1): \xa0
+gpsd: GPS has 10 chars waiting
+gpsd: Read 10 chars (total 11): \xa2\x00\x02\x0c\x85\x00\x91\xb0\xb3\xa0
+gpsd: Packet copy, type 1
+gpsd: Packet discard with 1 remaining
+gpsd: Raw SiRF packet type 12 length 2: 0c85
+gpsd: NAK 0x0c: 85
+gpsd: GPS has 35 chars waiting
+gpsd: Read 35 chars (total 36):  
+\xa2\x00!\x062.4.13.03-XTrac2.0.2-C3PROD1.0\x20
+gpsd: GPS has 15 chars waiting
+gpsd: Read 15 chars (total 51):  
+\x00\x07C\xb0\xb3\xa0\xa2\x00\x02\x0b\x84\x00\x8f\xb0\xb3
+gpsd: Packet copy, type 1
+gpsd: Packet discard with 10 remaining
+gpsd: Packet copy, type 1
+gpsd: Packet discard with 0 remaining
+gpsd: Raw SiRF packet type 11 length 2: 0b84
+gpsd: ACK 0x0b: 84
+gpsd: GPS has 1 chars waiting
+gpsd: Read 1 chars (total 1): \xa0
+gpsd: GPS has 36 chars waiting
+gpsd: Read 36 chars (total 37):  
+\xa2\x00[)\x00\x00\x02\x04\x05%\x1e\xf5\xe4? 
+\x07\xd5\x04\x09\x00\x10\xe3w\x01&quot;d\x11\x17V&amp;\xfb\xcc\xe7j\xae\x00\x00
+gpsd: GPS has 29 chars waiting
+gpsd: Read 29 chars (total 66):  
+P\x84\x00\x00]\x9a\x15\x00\x00\x0a\x1b\x00\x00\x00\x00\x00\x00\x00\x00\x 
+00\xf5\x00\x00\x01\x83\x00\x00\x00\x00
+gpsd: GPS has 38 chars waiting
+gpsd: Read 38 chars (total 104):  
+\x00\x00m\x0c\xe9\xb0\x00\x00\x00\x00\x00\x1b\xf3}\x00\x00\x00\x00\x00\x 
+00\x00\x00\x00\x00\x00\x00\x08\x04\x00\x10\xfa\xb0\xb3\xa0\xa2\x00\xbc\x 
+04
+gpsd: Packet copy, type 1
+gpsd: Packet discard with 5 remaining
+gpsd: Raw SiRF packet type 41 length 91:  
+290000020405251ef5e43f07d504090010e37701226411175626fbcce76aae0000508400 
+005d9a1500000a1b000000000000000000f5000001830000000000006d0ce9b000000000 
+001bf37d000000000000000000000000080400
+gpsd: GPS has 61 chars waiting
+gpsd: Read 61 chars (total 66):  
+\x01%\x03\x18\x96\xd3\x0c\x09\x1d*\x00\x00\x00\x00\x00\x00\x00\x00\x00\x 
+00\x00\x00\x12MT\x00\xad#$#&quot;$#!&quot;$$\x01\xb5&gt;\x00\xad\x17\x18\x18\x18\x19\ 
+x18\x18\x1a\x1a\x18\x0e\xd2\x83\x00\xbf&quot;##&quot;
+gpsd: GPS has 29 chars waiting
+gpsd: Read 29 chars (total 95):  
+&quot;&quot;#&quot;&quot;&quot;\x16&gt;\x94\x00\xbf\x1e\x1f\x1e\x20\x1f\x1e\x20&quot;! 
+\x1e\x0572\x00\xad\x15\x13\x14
+gpsd: GPS has 37 chars waiting
+gpsd: Read 37 chars (total 132):  
+\x15\x16\x14\x15\x17\x18\x15\x0f\x7fC\x00\xbf\x1e\x1e\x1f\x1e\x1f\x1f\x1 
+f\x1e\x1e\x1e\x19\x8d7\x00\xad\x17\x17\x1a\x19\x18\x1a\x19\x1b\x17\x18
+gpsd: GPS has 91 chars waiting
+gpsd: Read 91 chars (total 223):  
+\x1eR,\x00- 
+\x1b\x1a\x16\x1b\x1a\x18\x1b\x1a\x1a\x1a\x0b\xd4\x13\x00\xbf\x1e\x1f! 
+\x1e\x1d\x1e\x1f\x1e\x1e\x1e\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00 
+\x00\x00\x00\x00\x09\x1d*\x00\xff\x00\x00\x00\x00\x00\x00\x00\x00\x00\x0 
+0\x1a\xdf\xb0\xb3\xa0\xa2\x00)\x02\x00\x05\xa2: 
+\xff\xb4\xa2\xd1\x00=\x1e\xbd\x00\x00\x00\x00\x00\x00\x04\x04\x02\x01
+gpsd: Packet copy, type 1
+gpsd: Packet discard with 27 remaining
+gpsd: Raw SiRF packet type 4 length 188:  
+040125031896d30c091d2a000000000000000000000000124d5400ad2324232224232122 
+242401b53e00ad171818181918181a1a180ed28300bf22232322222223222222163e9400 
+bf1e1f1e201f1e2022211e05373200ad151314151614151718150f7f4300bf1e1e1f1e1f 
+1f1f1e1e1e198d3700ad17171a19181a191b17181e522c002d1b1a161b1a181b1a1a1a0b 
+d41300bf1e1f211e1d1e1f1e1e1e000000000000000000000000000000091d2a00ff0000 
+0000000000000000
+gpsd: GPS has 37 chars waiting
+gpsd: Read 37 chars (total 64):  
+%\x03\x18\x96\xd3\x08\x12\x01\x0e\x16\x05\x0f\x19\x0b\x00\x00\x00\x00\x0 
+7L\xb0\xb3\xa0\xa2\x00\x09\x09\x00A\x00\x04\x00+\x00\x96\x01\x0f
+gpsd: Packet copy, type 1
+gpsd: Packet discard with 15 remaining
+gpsd: Raw SiRF packet type 2 length 41:  
+020005a23affb4a2d1003d1ebd0000000000000404020125031896d30812010e16050f19 
+0b00000000
+gpsd: MND 0x02: Navtype = 0x4, Status = 1, mode = 3
+gpsd: &lt;= GPS:  
+$GPGGA,001658,3909.1325,N,8543.4946,W,3,00,,206.1,M,,,,,*3F
+$GPRMC,001658,A,3909.1325,N,8543.4946,W,0.0000,0.000,090405,,*0E
+$GPGSA,A,3,00,00,00,00,00,00,00,00,,,,,0.0,0.8,0.0*3A
+gpsd: GPS has 2 chars waiting
+gpsd: Read 2 chars (total 17): \xb0\xb3
+gpsd: Packet copy, type 1
+gpsd: Packet discard with 0 remaining
+gpsd: Raw SiRF packet type 9 length 9: 0900410004002b0096
+gpsd: THR 0x09: SegStatMax=0.349, SegStatLat=  0, AveTrkTime=0.231,  
+Last MS=  0
+gpsd: GPS has 2 chars waiting
+gpsd: Read 2 chars (total 2): \xa0\xa2
+gpsd: GPS has 63 chars waiting
+gpsd: Read 63 chars (total 65):  
+\x00[)\x00\x00\x02\x04\x05%\x1e\xf5\xe8'\x07\xd5\x04\x09\x00\x10\xe7_\x0 
+1&quot;d\x11\x17V&amp;\xfb\xcc\xe7j\xae\x00\x00P\x84\x00\x00]\x9a\x15\x00\x00\x0a 
+\x1b\x00\x00\x00\x00\x00\x00\x00\x00\x00\xf2\x00\x00\x01w\x00\x00\x00
+gpsd: GPS has 36 chars waiting
+gpsd: Read 36 chars (total 101):  
+\x00\x00\x00m(\xdc\xe4\x00\x00\x00\x00\x00\x1b\xf3}\x00\x00\x00\x00\x00\ 
+x00\x00\x00\x00\x00\x00\x00\x08\x04\x00\x11\x06\xb0\xb3\xa0\xa2
+gpsd: Packet copy, type 1
+gpsd: Packet discard with 2 remaining
+gpsd: Raw SiRF packet type 41 length 91:  
+290000020405251ef5e82707d504090010e75f01226411175626fbcce76aae0000508400 
+005d9a1500000a1b000000000000000000f2000001770000000000006d28dce400000000 
+001bf37d000000000000000000000000080400
+gpsd: GPS has 66 chars waiting
+gpsd: Read 66 chars (total 68):  
+\x00\xbc\x04\x01%\x03\x18\x977\x0c\x09\x1d*\x00\x00\x00\x00\x00\x00\x00\ 
+x00\x00\x00\x00\x00\x12MT\x00\xad&quot;##$&quot;! 
+\x1f&quot;\x20&quot;\x01\xb5&gt;\x00\xad\x17\x18\x18\x17\x19\x19\x14\x14\x17\x17\x0e\ 
+xd2\x83\x00\xbf!#!&quot;&quot;!
+gpsd: GPS has 26 chars waiting
+gpsd: Read 26 chars (total 94):  
+!#&quot;&quot;\x16&gt;\x94\x00\xbf\x20&quot;\x20\x1f\x20!\x1f!\x20!\x0572\x00\xad\x17\x15
+gpsd: GPS has 35 chars waiting
+gpsd: Read 35 chars (total 129):  
+\x13\x13\x16\x18\x13\x15\x15\x15\x0f\x7fC\x00\xbf\x1d\x1d\x1d\x1e\x1d\x1 
+e\x1d\x1d\x1e\x1d\x19\x8d7\x00\xad\x1a\x19\x1a\x1a\x17\x1a\x19
+gpsd: GPS has 65 chars waiting
+gpsd: Read 65 chars (total 194):  
+\x15\x17\x17\x1eR,\x00- 
+\x1a\x1b\x1a\x1b\x1a\x1a\x1e\x1c\x1a\x19\x0b\xd4\x13\x00\xbf\x1d\x1e\x1e 
+\x1e\x1e\x1e\x1f\x1f\x1e\x1f\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00 
+\x00\x00\x00\x00\x09\x1d*\x00\xff\x00\x00\x00\x00\x00\x00\x00\x00\x00\x0 
+0\x1a(
+gpsd: GPS has 28 chars waiting
+gpsd: Read 28 chars (total 222):  
+\xb0\xb3\xa0\xa2\x00)\x02\x00\x05\xa2: 
+\xff\xb4\xa2\xd1\x00=\x1e\xbd\x00\x00\x00\x00\x00\x00\x04\x04\x02
+gpsd: Packet copy, type 1
+gpsd: Packet discard with 26 remaining
+gpsd: Raw SiRF packet type 4 length 188:  
+040125031897370c091d2a000000000000000000000000124d5400ad2223232422211f22 
+202201b53e00ad171818171919141417170ed28300bf21232122222121232222163e9400 
+bf2022201f20211f21202105373200ad171513131618131515150f7f4300bf1d1d1d1e1d 
+1e1d1d1e1d198d3700ad1a191a1a171a191517171e522c002d1a1b1a1b1a1a1e1c1a190b 
+d41300bf1d1e1e1e1e1e1f1f1e1f000000000000000000000000000000091d2a00ff0000 
+0000000000000000
+gpsd: GPS has 36 chars waiting
+gpsd: Read 36 chars (total 62):  
+\x01%\x03\x18\x977\x08\x12\x01\x0e\x16\x05\x0f\x19\x0b\x00\x00\x00\x00\x 
+06\xb1\xb0\xb3\xa0\xa2\x00\x09\x09\x00M\x00\x05\x00*\x00\x95
+gpsd: Packet copy, type 1
+gpsd: Packet discard with 13 remaining
+gpsd: Raw SiRF packet type 2 length 41:  
+020005a23affb4a2d1003d1ebd0000000000000404020125031897370812010e16050f19 
+0b00000000
+gpsd: MND 0x02: Navtype = 0x4, Status = 1, mode = 3
+gpsd: &lt;= GPS:  
+$GPGGA,001659,3909.1325,N,8543.4946,W,3,08,0.80,206.1,M,,,,,*20
+$GPRMC,001659,A,3909.1325,N,8543.4946,W,0.0000,0.000,090405,,*0F
+$GPGSA,A,3,00,00,00,00,00,00,00,00,,,,,0.0,0.8,0.0*3A
+$PGRME,6.51,0.00,0.00*7D
+gpsd: GPS has 4 chars waiting
+gpsd: Read 4 chars (total 17): \x01\x1a\xb0\xb3
+gpsd: Packet copy, type 1
+gpsd: Packet discard with 0 remaining
+gpsd: Raw SiRF packet type 9 length 9: 09004d0005002a0095
+gpsd: THR 0x09: SegStatMax=0.414, SegStatLat=  0, AveTrkTime=0.226,  
+Last MS=  0
+gpsd: GPS has 1 chars waiting
+gpsd: Read 1 chars (total 1): \xa0
+gpsd: GPS has 36 chars waiting
+gpsd: Read 36 chars (total 37):  
+\xa2\x00[)\x00\x00\x02\x04\x05%\x1e\xf5\xec\x0f\x07\xd5\x04\x09\x00\x11\ 
+x00\xe7\x01&quot;d\x11\x17V&amp;\xfb\xcc\xe7j\xae\x00\x00
+gpsd: GPS has 30 chars waiting
+gpsd: Read 30 chars (total 67):  
+P\x84\x00\x00]\x9a\x15\x00\x00\x0a\x1b\x00\x00\x00\x00\x00\x00\x00\x00\x 
+00\xf2\x00\x00\x01\x7f\x00\x00\x00\x00\x00
+gpsd: GPS has 62 chars waiting
+gpsd: Read 62 chars (total 129):  
+\x00mD\xd0\x90\x00\x00\x00\x00\x00\x1b\xf3}\x00\x00\x00\x00\x00\x00\x00\ 
+x00\x00\x00\x00\x00\x08\x04\x00\x10X\xb0\xb3\xa0\xa2\x00\xbc\x04\x01%\x0 
+3\x18\x97\x9b\x0c\x09\x1d*\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x 
+00\x12MT
+gpsd: Packet copy, type 1
+gpsd: Packet discard with 30 remaining
+gpsd: Raw SiRF packet type 41 length 91:  
+290000020405251ef5ec0f07d50409001100e701226411175626fbcce76aae0000508400 
+005d9a1500000a1b000000000000000000f20000017f0000000000006d44d09000000000 
+001bf37d000000000000000000000000080400
+gpsd: GPS has 36 chars waiting
+gpsd: Read 36 chars (total 66):  
+\x00\xbf#\x20\x1d!&quot;\x1f\x20!\x1e! 
+\x01\xb5&gt;\x00\xad\x15\x17\x13\x15\x16\x18\x19\x12\x17\x18\x0e\xd2\x83\x0 
+0\xbf##&quot;#
+gpsd: GPS has 30 chars waiting
+gpsd: Read 30 chars (total 96):  
+&quot;&quot;&quot;&quot;\x20#\x16&gt;\x94\x00\xbf\x20!\x1f!\x20! 
+\x1f\x1f\x20&quot;\x0572\x00\xad\x15\x17\x14\x16
+gpsd: GPS has 99 chars waiting
+gpsd: Read 99 chars (total 195):  
+\x15\x17\x18\x18\x17\x17\x0f\x7fC\x00\xbf\x1d\x1e\x1e\x1e\x1f\x1e\x1f\x2 
+0\x1f\x1e\x19\x8d7\x00\xad\x18\x18\x19\x17\x18\x18\x17\x18\x19\x1a\x1eR, 
+\x00- 
+\x1c\x1a\x18\x1b\x1d\x1c\x1b\x1c\x1d\x1c\x0b\xd4\x13\x00\xbf\x1e\x1e\x1e 
+\x1e\x1e\x1d\x1e\x1e\x1c\x1c\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00 
+\x00\x00\x00\x00\x09\x1d*\x00\xff\x00\x00\x00\x00\x00\x00\x00\x00\x00\x0 
+0\x1a\x9e\xb0
+gpsd: GPS has 29 chars waiting
+gpsd: Read 29 chars (total 224):  
+\xb3\xa0\xa2\x00)\x02\x00\x05\xa2: 
+\xff\xb4\xa2\xd1\x00=\x1e\xbd\x00\x00\x00\x00\x00\x00\x04\x04\x02\x01%
+gpsd: Packet copy, type 1
+gpsd: Packet discard with 28 remaining
+gpsd: Raw SiRF packet type 4 length 188:  
+0401250318979b0c091d2a000000000000000000000000124d5400bf23201d21221f2021 
+1e2101b53e00ad151713151618191217180ed28300bf23232223222222222023163e9400 
+bf20211f2120211f1f202205373200ad151714161517181817170f7f4300bf1d1e1e1e1f 
+1e1f201f1e198d3700ad1818191718181718191a1e522c002d1c1a181b1d1c1b1c1d1c0b 
+d41300bf1e1e1e1e1e1d1e1e1c1c000000000000000000000000000000091d2a00ff0000 
+0000000000000000
+gpsd: GPS has 0 chars waiting
+gpsd: checking 4
+gpsd: &lt;= client: p
+gpsd: GPS has a fix (status=1, mode=3).
+gpsd: =&gt; client(4): GPSD,P=39.1522 -85.7249
+gpsd: GPS has 38 chars waiting
+gpsd: Read 38 chars (total 66):  
+\x03\x18\x97\x9b\x08\x12\x01\x0e\x16\x05\x0f\x19\x0b\x00\x00\x00\x00\x07 
+\x15\xb0\xb3\xa0\xa2\x00\x09\x09\x00K\x00\x04\x00*\x00\x99\x01\x1b\xb0\x 
+b3
+gpsd: Packet copy, type 1
+gpsd: Packet discard with 17 remaining
+gpsd: Packet copy, type 1
+gpsd: Packet discard with 0 remaining
+gpsd: Raw SiRF packet type 9 length 9: 09004b0004002a0099
+gpsd: THR 0x09: SegStatMax=0.403, SegStatLat=  0, AveTrkTime=0.226,  
+Last MS=  0
+gpsd: GPS has 2 chars waiting
+gpsd: Read 2 chars (total 2): \xa0\xa2
+gpsd: GPS has 64 chars waiting
+gpsd: Read 64 chars (total 66):  
+\x00[)\x00\x00\x02\x04\x05%\x1e\xf5\xef\xf7\x07\xd5\x04\x09\x00\x11\x04\ 
+xcf\x01&quot;d\x11\x17V&amp;\xfb\xcc\xe7j\xae\x00\x00P\x84\x00\x00]\x9a\x15\x00\x 
+00\x0a\x1b\x00\x00\x00\x00\x00\x00\x00\x00\x01\x08\x00\x00\x01\xc8\x00\x 
+00\x00\x00
+gpsd: GPS has 38 chars waiting
+gpsd: Read 38 chars (total 104):  
+\x00\x00m`\xc6\x1b\x00\x00\x00\x00\x00\x1b\xf3}\x00\x00\x00\x00\x00\x00\ 
+x00\x00\x00\x00\x00\x00\x08\x04\x00\x10,\xb0\xb3\xa0\xa2\x00\xbc\x04
+gpsd: Packet copy, type 1
+gpsd: Packet discard with 5 remaining
+gpsd: Raw SiRF packet type 41 length 91:  
+290000020405251ef5eff707d50409001104cf01226411175626fbcce76aae0000508400 
+005d9a1500000a1b00000000000000000108000001c80000000000006d60c61b00000000 
+001bf37d000000000000000000000000080400
+gpsd: GPS has 27 chars waiting
+gpsd: Read 27 chars (total 32):  
+\x01%\x03\x18\x97\xff\x0c\x09\x1d*\x00\x00\x00\x00\x00\x00\x00\x00\x00\x 
+00\x00\x00\x12MT\x00\xaf
+gpsd: GPS has 128 chars waiting
+gpsd: Read 128 chars (total 160):  
+&quot;\x1e\x1a\x1a\x1f\x1d\x1c\x1d\x1c\x1a\x01\xb5&gt;\x00\xad\x15\x14\x17\x13\x 
+13\x15\x13\x12\x13\x14\x0e\xd2\x83\x00\xaf&quot;\x1f\x1d\x1d\x1c\x1f\x1d\x20\ 
+x1f\x1c\x16&gt;\x94\x00\xbf\x1f\x1e\x1b\x1d\x1c\x1b\x1c\x1b\x1b\x1e\x0572\x 
+00\xad\x17\x13\x13\x13\x0d\x11\x15\x12\x11\x0f\x0f\x7fC\x00\xaf\x1e\x1b\ 
+x19\x18\x19\x1b\x1a\x19\x1a\x19\x19\x8d7\x00\xad\x1b\x17\x13\x16\x15\x14 
+\x15\x15\x13\x0f\x1eR,\x00- 
+\x1c\x1a\x17\x18\x15\x19\x19\x17\x15\x17\x0b\xd4\x13\x00\xbf\x1c\x19\x16 
+\x17\x19\x1e\x19\x19
+gpsd: GPS has 36 chars waiting
+gpsd: Read 36 chars (total 196):  
+\x1d\x1b\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x09 
+\x1d*\x00\xff\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x19\x8c\xb0\xb3
+gpsd: Packet copy, type 1
+gpsd: Packet discard with 0 remaining
+gpsd: Raw SiRF packet type 4 length 188:  
+040125031897ff0c091d2a000000000000000000000000124d5400af221e1a1a1f1d1c1d 
+1c1a01b53e00ad151417131315131213140ed28300af221f1d1d1c1f1d201f1c163e9400 
+bf1f1e1b1d1c1b1c1b1b1e05373200ad171313130d111512110f0f7f4300af1e1b191819 
+1b1a191a19198d3700ad1b17131615141515130f1e522c002d1c1a17181519191715170b 
+d41300bf1c191617191e19191d1b000000000000000000000000000000091d2a00ff0000 
+0000000000000000
+gpsd: MTD 0x04: 11 satellites
+gpsd: &lt;= GPS:  
+$GPGSV,3,1,11,09,21,043,00,18,42,115,28,01,31,271,19,14,65,315,30*7B
+$GPGSV,3,2,11,22,74,093,28,05,25,082,18,15,33,190,26,25,27,211,20*70
+$GPGSV,3,3,11,30,22,123,23,11,09,318,25,09,21,043,00*42
+gpsd: GPS has 26 chars waiting
+gpsd: Read 26 chars (total 26):  
+\xa0\xa2\x00)\x02\x00\x05\xa2: 
+\xff\xb4\xa2\xd1\x00=\x1e\xbd\x00\x00\x00\x00\x00\x00\x04\x04\x02
+gpsd: GPS has 40 chars waiting
+gpsd: Read 40 chars (total 66):  
+\x01%\x03\x18\x97\xff\x08\x12\x01\x0e\x16\x05\x0f\x19\x0b\x00\x00\x00\x0 
+0\x07y\xb0\xb3\xa0\xa2\x00\x09\x09\x00? 
+\x00\x04\x00+\x00\x97\x01\x0e\xb0\xb3
+gpsd: Packet copy, type 1
+gpsd: Packet discard with 17 remaining
+gpsd: Packet copy, type 1
+gpsd: Packet discard with 0 remaining
+gpsd: Raw SiRF packet type 9 length 9: 09003f0004002b0097
+gpsd: THR 0x09: SegStatMax=0.339, SegStatLat=  0, AveTrkTime=0.231,  
+Last MS=  0
+gpsd: GPS has 1 chars waiting
+gpsd: Read 1 chars (total 1): \xa0
+gpsd: GPS has 64 chars waiting
+gpsd: Read 64 chars (total 65):  
+\xa2\x00[)\x00\x00\x02\x04\x05%\x1e\xf5\xf3\xdf\x07\xd5\x04\x09\x00\x11\ 
+x08\xb7\x01&quot;d\x11\x17V&amp;\xfb\xcc\xe7j\xae\x00\x00P\x84\x00\x00]\x9a\x15\x 
+00\x00\x0a\x1b\x00\x00\x00\x00\x00\x00\x00\x00\x01\x11\x00\x00\x01\xf3\x 
+00\x00\x00
+gpsd: GPS has 35 chars waiting
+gpsd: Read 35 chars (total 100):  
+\x00\x00\x00m|\xb9\xc7\x00\x00\x00\x00\x00\x1b\xf3}\x00\x00\x00\x00\x00\ 
+x00\x00\x00\x00\x00\x00\x00\x08\x04\x00\x10\xf3\xb0\xb3\xa0
+gpsd: Packet copy, type 1
+gpsd: Packet discard with 1 remaining
+gpsd: Raw SiRF packet type 41 length 91:  
+290000020405251ef5f3df07d50409001108b701226411175626fbcce76aae0000508400 
+005d9a1500000a1b00000000000000000111000001f30000000000006d7cb9c700000000 
+001bf37d000000000000000000000000080400
+gpsd: GPS has 29 chars waiting
+gpsd: Read 29 chars (total 30):  
+\xa2\x00\xbc\x04\x01%\x03\x18\x98c\x0c\x09\x1d*\x00\x00\x00\x00\x00\x00\ 
+x00\x00\x00\x00\x00\x00\x12MT
+gpsd: GPS has 37 chars waiting
+gpsd: Read 37 chars (total 67):  
+\x00\xad\x1a\x1e\x1d\x1e\x1b\x1b\x1c\x1c\x1b\x1d\x01\xb5&gt;\x00\xad\x13\x1 
+4\x12\x13\x17\x12\x12\x14\x0f\x16\x0e\xd2\x83\x00\xad\x1e\x1f\x1f\x1d\x1 
+f
+gpsd: GPS has 128 chars waiting
+gpsd: Read 128 chars (total 195):  
+\x1f\x1e\x1f\x1d\x1d\x16&gt;\x94\x00\xad\x1d\x1c\x1c\x1d\x1e\x1d\x1c\x1c\x1 
+d\x1b\x0572\x00\xad\x11\x14\x15\x13\x15\x13\x14\x0f\x13\x13\x0f\x7fC\x00 
+\xad\x1a\x19\x1b\x18\x18\x1a\x19\x1b\x17\x17\x19\x8d7\x00\xad\x14\x14\x1 
+1\x14\x15\x13\x12\x17\x12\x14\x1eR,\x00- 
+\x14\x19\x18\x15\x17\x19\x1b\x17\x17\x18\x0b\xd4\x13\x00\xad\x19\x1a\x1e 
+\x1a\x18\x1a\x18\x17\x19\x1c\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00 
+\x00\x00\x00\x00\x09\x1d*\x00\xff\x00\x00\x00\x00\x00\x00\x00\x00\x00\x0 
+0\x18\xa8\xb0
+gpsd: GPS has 27 chars waiting
+gpsd: Read 27 chars (total 222):  
+\xb3\xa0\xa2\x00)\x02\x00\x05\xa2: 
+\xff\xb4\xa2\xd1\x00=\x1e\xbd\x00\x00\x00\x00\x00\x00\x04\x04\x02
+gpsd: Packet copy, type 1
+gpsd: Packet discard with 26 remaining
+gpsd: Raw SiRF packet type 4 length 188:  
+040125031898630c091d2a000000000000000000000000124d5400ad1a1e1d1e1b1b1c1c 
+1b1d01b53e00ad13141213171212140f160ed28300ad1e1f1f1d1f1f1e1f1d1d163e9400 
+ad1d1c1c1d1e1d1c1c1d1b05373200ad111415131513140f13130f7f4300ad1a191b1818 
+1a191b1717198d3700ad141411141513121712141e522c002d1419181517191b1717180b 
+d41300ad191a1e1a181a1817191c000000000000000000000000000000091d2a00ff0000 
+0000000000000000
+gpsd: GPS has 40 chars waiting
+gpsd: Read 40 chars (total 66):  
+\x01%\x03\x18\x98c\x08\x12\x01\x0e\x16\x05\x0f\x19\x0b\x00\x00\x00\x00\x 
+06\xde\xb0\xb3\xa0\xa2\x00\x09\x09\x00B\x00\x07\x00+\x00\x9a\x01\x17\xb0 
+\xb3
+gpsd: Packet copy, type 1
+gpsd: Packet discard with 17 remaining
+gpsd: Packet copy, type 1
+gpsd: Packet discard with 0 remaining
+gpsd: Raw SiRF packet type 9 length 9: 0900420007002b009a
+gpsd: THR 0x09: SegStatMax=0.355, SegStatLat=  0, AveTrkTime=0.231,  
+Last MS=  0
+gpsd: GPS has 1 chars waiting
+gpsd: Read 1 chars (total 1): \xa0
+gpsd: GPS has 64 chars waiting
+gpsd: Read 64 chars (total 65):  
+\xa2\x00[)\x00\x00\x02\x04\x05%\x1e\xf5\xf7\xc7\x07\xd5\x04\x09\x00\x11\ 
+x0c\x9f\x01&quot;d\x11\x17V&amp;\xfb\xcc\xe7j\xae\x00\x00P\x84\x00\x00]\x9a\x15\x 
+00\x00\x0a\x1b\x00\x00\x00\x00\x00\x00\x00\x00\x01\x12\x00\x00\x01\xf5\x 
+00\x00\x00
+gpsd: GPS has 38 chars waiting
+gpsd: Read 38 chars (total 103):  
+\x00\x00\x00m\x98\xads\x00\x00\x00\x00\x00\x1b\xf3j\x00\x00\x00\x00\x00\ 
+x00\x00\x00\x00\x00\x00\x00\x08\x04\x00\x10w\xb0\xb3\xa0\xa2\x00\xbc
+gpsd: Packet copy, type 1
+gpsd: Packet discard with 4 remaining
+gpsd: Raw SiRF packet type 41 length 91:  
+290000020405251ef5f7c707d5040900110c9f01226411175626fbcce76aae0000508400 
+005d9a1500000a1b00000000000000000112000001f50000000000006d98ad7300000000 
+001bf36a000000000000000000000000080400
+gpsd: GPS has 27 chars waiting
+gpsd: Read 27 chars (total 31):  
+\x04\x01%\x03\x18\x98\xc7\x0c\x09\x1d*\x00\x00\x00\x00\x00\x00\x00\x00\x 
+00\x00\x00\x00\x12MT\x00
+gpsd: GPS has 128 chars waiting
+gpsd: Read 128 chars (total 159):  
+\xad\x1b\x1a\x1d\x1e\x1b\x1d\x1e\x1b\x1b\x1b\x01\xb5&gt;\x00\xad\x14\x12\x1 
+7\x14\x13\x16\x15\x15\x16\x17\x0e\xd2\x83\x00\xad\x1c\x1d\x1d\x1e\x1e\x1 
+c\x1c\x1e\x1f\x1e\x16&gt;\x94\x00\xad\x1b\x1c\x1b\x1c\x1b\x1b\x1c\x1e\x1c\x 
+1d\x0572\x00\xad\x14\x13\x12\x14\x12\x17\x15\x11\x12\x14\x0f\x7fC\x00\xa 
+d\x19\x1a\x18\x1b\x1b\x19\x18\x1a\x18\x1a\x19\x8d7\x00\xad\x14\x13\x11\x 
+15\x14\x13\x17\x13\x14\x13\x1eR,\x00- 
+\x15\x17\x19\x1a\x19\x19\x18\x19\x17\x18\x0b\xd4\x13\x00\xad\x1a\x17\x1a 
+\x1a\x15\x17\x18
+gpsd: GPS has 36 chars waiting
+gpsd: Read 36 chars (total 195):  
+\x19\x1c\x1a\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00 
+\x12MT\x00\xff\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x19u\xb0
+gpsd: GPS has 27 chars waiting
+gpsd: Read 27 chars (total 222):  
+\xb3\xa0\xa2\x00)\x02\x00\x05\xa2: 
+\xff\xb4\xa2\xd1\x00=\x1e\xbd\x00\x00\x00\x00\x00\x00\x04\x04\x02
+gpsd: Packet copy, type 1
+gpsd: Packet discard with 26 remaining
+gpsd: Raw SiRF packet type 4 length 188:  
+040125031898c70c091d2a000000000000000000000000124d5400ad1b1a1d1e1b1d1e1b 
+1b1b01b53e00ad141217141316151516170ed28300ad1c1d1d1e1e1c1c1e1f1e163e9400 
+ad1b1c1b1c1b1b1c1e1c1d05373200ad141312141217151112140f7f4300ad191a181b1b 
+19181a181a198d3700ad141311151413171314131e522c002d1517191a1919181917180b 
+d41300ad1a171a1a151718191c1a000000000000000000000000000000124d5400ff0000 
+0000000000000000
+gpsd: GPS has 40 chars waiting
+gpsd: Read 40 chars (total 66):  
+\x01%\x03\x18\x98\xc7\x08\x12\x01\x0e\x16\x05\x0f\x19\x0b\x00\x00\x00\x0 
+0\x07B\xb0\xb3\xa0\xa2\x00\x09\x09\x00? 
+\x00\x05\x00)\x00\x9a\x01\x10\xb0\xb3
+gpsd: Packet copy, type 1
+gpsd: Packet discard with 17 remaining
+gpsd: Packet copy, type 1
+gpsd: Packet discard with 0 remaining
+gpsd: Raw SiRF packet type 9 length 9: 09003f00050029009a
+gpsd: THR 0x09: SegStatMax=0.339, SegStatLat=  0, AveTrkTime=0.220,  
+Last MS=  0
+gpsd: GPS has 2 chars waiting
+gpsd: Read 2 chars (total 2): \xa0\xa2
+gpsd: GPS has 38 chars waiting
+gpsd: Read 38 chars (total 40):  
+\x00[)\x00\x00\x02\x04\x05%\x1e\xf5\xfb\xaf\x07\xd5\x04\x09\x00\x11\x10\ 
+x87\x01&quot;d\x11\x17V&amp;\xfb\xcc\xe7j\xae\x00\x00P\x84\x00
+gpsd: GPS has 26 chars waiting
+gpsd: Read 26 chars (total 66):  
+\x00]\x9a\x15\x00\x00\x0a\x1b\x00\x00\x00\x00\x00\x00\x00\x00\x01\x14\x0 
+0\x00\x01\xf6\x00\x00\x00\x00
+gpsd: GPS has 37 chars waiting
+gpsd: Read 37 chars (total 103):  
+\x00\x00m\xb4\xa0\xc5\x00\x00\x00\x00\x00\x1b\xf3}\x00\x00\x00\x00\x00\x 
+00\x00\x00\x00\x00\x00\x00\x08\x04\x00\x10\xc6\xb0\xb3\xa0\xa2\x00\xbc
+gpsd: Packet copy, type 1
+gpsd: Packet discard with 4 remaining
+gpsd: Raw SiRF packet type 41 length 91:  
+290000020405251ef5fbaf07d504090011108701226411175626fbcce76aae0000508400 
+005d9a1500000a1b00000000000000000114000001f60000000000006db4a0c500000000 
+001bf37d000000000000000000000000080400
+gpsd: GPS has 29 chars waiting
+gpsd: Read 29 chars (total 33):  
+\x04\x01%\x03\x18\x99+\x0c\x09\x1d*\x00\x00\x00\x00\x00\x00\x00\x00\x00\ 
+x00\x00\x00\x12MT\x00\xad\x1c
+gpsd: GPS has 189 chars waiting
+gpsd: Read 189 chars (total 222):  
+\x1d\x1d\x1b\x1c\x1b\x1b\x1c\x1e\x1b\x01\xb5&gt;\x00\xad\x15\x13\x14\x14\x1 
+6\x17\x16\x0f\x15\x15\x0e\xd2\x83\x00\xad\x1d\x1e\x1e\x1e\x1d\x1e\x1e\x1 
+f\x1d\x1d\x16&gt;\x94\x00\xad\x1a\x1b\x1b\x1c\x1d\x1c\x1c\x1b\x1b\x1b\x0572 
+\x00\xad\x12\x12\x13\x12\x11\x13\x0d\x12\x0d\x14\x0f\x7fC\x00\xbf\x1b\x1 
+a\x19\x1a\x19\x1b\x1a\x1a\x1a\x1a\x19\x8d7\x00\xad\x17\x17\x12\x12\x14\x 
+13\x14\x15\x12\x15\x1eR,\x00- 
+\x17\x18\x18\x17\x18\x1b\x1a\x16\x17\x19\x0b\xd4\x13\x00\xad\x18\x1a\x1b 
+\x1a\x19\x1a\x19\x1a\x17\x1b\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00 
+\x00\x00\x00\x00\x12MT\x00\xff\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x 
+18\xe3\xb0\xb3\xa0\xa2\x00)\x02\x00\x05\xa2: 
+\xff\xb4\xa2\xd1\x00=\x1e\xbd\x00\x00\x00\x00\x00\x00\x04\x04\x02
+gpsd: Packet copy, type 1
+gpsd: Packet discard with 26 remaining
+gpsd: Raw SiRF packet type 4 length 188:  
+0401250318992b0c091d2a000000000000000000000000124d5400ad1c1d1d1b1c1b1b1c 
+1e1b01b53e00ad151314141617160f15150ed28300ad1d1e1e1e1d1e1e1f1d1d163e9400 
+ad1a1b1b1c1d1c1c1b1b1b05373200ad1212131211130d120d140f7f4300bf1b1a191a19 
+1b1a1a1a1a198d3700ad171712121413141512151e522c002d17181817181b1a1617190b 
+d41300ad181a1b1a191a191a171b000000000000000000000000000000124d5400ff0000 
+0000000000000000
+gpsd: GPS has 40 chars waiting
+gpsd: Read 40 chars (total 66):  
+\x01%\x03\x18\x99+\x08\x12\x01\x0e\x16\x05\x0f\x19\x0b\x00\x00\x00\x00\x 
+06\xa7\xb0\xb3\xa0\xa2\x00\x09\x09\x00K\x00\x04\x00+\x00\x9e\x01! 
+\xb0\xb3
+gpsd: Packet copy, type 1
+gpsd: Packet discard with 17 remaining
+gpsd: Packet copy, type 1
+gpsd: Packet discard with 0 remaining
+gpsd: Raw SiRF packet type 9 length 9: 09004b0004002b009e
+gpsd: THR 0x09: SegStatMax=0.403, SegStatLat=  0, AveTrkTime=0.231,  
+Last MS=  0
+^Cgpsd: closed GPS
+gpsd: Received terminating signal 2. Exiting...
+
+
+On Apr 7, 2005, at 6:53 PM, Frank Nicholas wrote:
+
+I am working with the following setup:
+
+Computer/Build environment:
+Mac 17&quot; 1.33 Powerbook, Mac mini 1.44, &amp; G5 1.8DP, all w/Bluetooth
+All Mac OS X 10.3.8, latest updates
+gcc version 3.3 20030304 (Apple Computer, Inc. build 1666)
+	No gcc optimization or compile flags, except '-g'
+	Building from the command line with:
+		./configure
+		make
+		sudo make install
+	Builds &amp; installs successfully, without any errors or issues (after  
+fixing sirfmon.c).
+
+GPS:
+GlobalSat BT-318 Bluetooth GPS:
+	<A HREF="http://www.globalsat.com.tw/english/products_detail.php?">http://www.globalsat.com.tw/english/products_detail.php?</A> 
+main_id=21&amp;p_id=107
+Uses Bluetooth Serial Protocol
+GPS Protocol (from box):
+	Default:  NMEA 0183 (Secondary:  SiRF binary)
+	NMEA-0183 v2.2
+GPS Output format:
+	GGA(1sec), GSA(1sec), GSV(5sec), RMC(1sec), VTG(1sec)
+Chipset - Sirf Star II/LP
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="000564.html">[Gpsd-users] Re: [Gpsd-dev] New GPS report, gpsd 2.20, Mac OS X 10.3.8, GlobalSat BT-318 Bluetooth GPS, specs &amp; gpsd status
+</A></li>
+	<LI>Next message: <A HREF="000555.html">[Gpsd-users] Good site for SiRF reference information
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#554">[ date ]</a>
+              <a href="thread.html#554">[ thread ]</a>
+              <a href="subject.html#554">[ subject ]</a>
+              <a href="author.html#554">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

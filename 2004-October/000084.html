@@ -1,0 +1,123 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] gpsd with royaltek onyx (nmea 3.0) on debian woody
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2004-October/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20gpsd%20with%20royaltek%20onyx%20%28nmea%203.0%29%20on%20debian%20woody&In-Reply-To=%3C20041010201437.GA6988%40ns30618.ovh.net%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="000108.html">
+   <LINK REL="Next"  HREF="000085.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] gpsd with royaltek onyx (nmea 3.0) on debian woody</H1>
+    <B>Christophe Devine</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20gpsd%20with%20royaltek%20onyx%20%28nmea%203.0%29%20on%20debian%20woody&In-Reply-To=%3C20041010201437.GA6988%40ns30618.ovh.net%3E"
+       TITLE="[Gpsd-users] gpsd with royaltek onyx (nmea 3.0) on debian woody">c.devine at cr0.net
+       </A><BR>
+    <I>Sun Oct 10 22:14:37 CEST 2004</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="000108.html">[Gpsd-users] Re:I got 1.98 to work
+</A></li>
+        <LI>Next message: <A HREF="000085.html">[Gpsd-users] Re: gpsd with royaltek onyx (nmea 3.0) on debian woody
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#84">[ date ]</a>
+              <a href="thread.html#84">[ thread ]</a>
+              <a href="subject.html#84">[ subject ]</a>
+              <a href="author.html#84">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>   Hi,
+
+I intend to use gpsd in airodump (a tool similar to Kismet). However
+I've stumbled upon various problems with gpsd 2.1: it doesn't compile
+out-of-the-box on debian woody, mainly because of the -Werror flag.
+
+----
+zodiac.c: In function `handle1002':
+zodiac.c:263: warning: value computed is not used
+    
+    session-&gt;gNMEAdata.used[session-&gt;gNMEAdata.satellites_used++];
+should be either:
+    session-&gt;gNMEAdata.used[session-&gt;gNMEAdata.satellites_used]++;
+or
+    session-&gt;gNMEAdata.satellites_used++;
+----
+display.c: In function `set_color':
+display.c:34: warning: implicit declaration of function `sprintf'
+
+#include &lt;stdio.h&gt; has to be added (same thing in gps.c)
+----
+gps-display.o: In function `set_color':
+/usr/src/gps/gpsd-2.1/display.c:28: undefined reference to `XtDisplay'
+/usr/src/gps/gpsd-2.1/display.c:29: undefined reference to `XtScreen'
+/usr/src/gps/gpsd-2.1/display.c:32: undefined reference to `XAllocNamedColor'
+...
+above errors appear because -lXt -lX11 is missing in the Makefile
+----
+gpsd.c: In function `passivesock':
+gpsd.c:447: warning: implicit declaration of function `socket'
+gpsd.c:454: warning: implicit declaration of function `setsockopt'
+...
+#include &lt;sys/socket.h&gt; has to be added
+----
+gpsd.c: In function `main':
+gpsd.c:491: warning: variable `dgpsserver' might be clobbered by `longjmp' or `vfork'
+gpsd.c:496: warning: variable `gpsd_speed' might be clobbered by `longjmp' or `vfork'
+...
+got rid of those errors by removing the -Werror flag in Makefile
+----
+
+After being finally able to start gpsd using device /dev/ttyUSB0, it seems
+unable to get a satellite lock, although there are 3 satellites in view:
+
+GPSD,Y=3:18 37 109 35 0:22 0 0 37 0:1 0 0 0 1:
+GPSD,S=0,P=?,A=?
+GPSD,P=?,T=?,V=?,D=10/10/2004 20:08:28,S=0
+GPSD,Q=?,M=1
+GPSD,S=0,P=?,A=?
+
+$GPGGA,200851.00,4851.8559,N,00221.0427,E,0,03,5.8,455.6,M,45.9,M,,*6E
+$GPRMC,200851.00,V,4851.8559,N,00221.0427,E,9.38,205.45,101004,-1.6,E,N*00
+$GPGSA,A,1,05,24,30,,,,,,,,,,5.9,5.8,1.0*30
+$GPGGA,200852.00,4851.8559,N,00221.0427,E,0,03,5.8,455.6,M,45.9,M,,*6D
+$GPRMC,200852.00,V,4851.8559,N,00221.0427,E,9.38,205.45,101004,-1.6,E,N*03
+$GPGSA,A,1,05,24,30,,,,,,,,,,5.9,5.8,1.0*30
+$GPGSV,1,1,02,18,37,109,35,22,00,000,39*72
+$GPGGA,200853.00,4851.8559,N,00221.0427,E,0,03,5.8,455.6,M,45.9,M,,*6C
+$GPRMC,200853.00,V,4851.8559,N,00221.0427,E,9.38,205.45,101004,-1.6,E,N*02
+$GPGSA,A,1,05,24,30,,,,,,,,,,5.9,5.8,1.0*30
+
+Any idea ?
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="000108.html">[Gpsd-users] Re:I got 1.98 to work
+</A></li>
+	<LI>Next message: <A HREF="000085.html">[Gpsd-users] Re: gpsd with royaltek onyx (nmea 3.0) on debian woody
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#84">[ date ]</a>
+              <a href="thread.html#84">[ thread ]</a>
+              <a href="subject.html#84">[ subject ]</a>
+              <a href="author.html#84">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

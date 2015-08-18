@@ -1,0 +1,365 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] Garmin GPS almost never sends new position data
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2006-September/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Garmin%20GPS%20almost%20never%20sends%20new%20position%20data&In-Reply-To=%3C6452053.post%40talk.nabble.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="001973.html">
+   <LINK REL="Next"  HREF="001969.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] Garmin GPS almost never sends new position data</H1>
+    <B>MikeyCarter</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Garmin%20GPS%20almost%20never%20sends%20new%20position%20data&In-Reply-To=%3C6452053.post%40talk.nabble.com%3E"
+       TITLE="[Gpsd-users] Garmin GPS almost never sends new position data">mikey at carterfamily.ca
+       </A><BR>
+    <I>Fri Sep 22 19:56:54 CEST 2006</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="001973.html">[Gpsd-users] Garmin Forerunner 305 compatibility
+</A></li>
+        <LI>Next message: <A HREF="001969.html">[Gpsd-users] Garmin GPS almost never sends new position data
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1968">[ date ]</a>
+              <a href="thread.html#1968">[ thread ]</a>
+              <a href="subject.html#1968">[ subject ]</a>
+              <a href="author.html#1968">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>
+Did you ever get your GPS working with gpsd?
+
+I've got the same problem.
+
+I'm running Fedora Core 5 : 2.6.17-1.2187_FC5
+GPS: Garmin GPSMap 60Cx
+
+[<A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">root at blue-faerie</A> log]# gpsd -D 99 -n -N /dev/ttyUSB0
+gpsd: launching (Version 2.33)
+gpsd: listening on port gpsd
+gpsd: successfully connected to the DBUS system bus
+gpsd: running with effective group ID 0
+gpsd: running with effective user ID 0
+gpsd: opening GPS data source at '/dev/ttyUSB0'
+gpsd: Set garmin_gps driver mode = 0
+gpsd: SendPacket(), writing 16 bytes
+gpsd: PrintPacket()
+gpsd: Private, Set Mode: 0
+gpsd: SendPacket(), wrote 16 bytes
+gpsd: Get garmin_gps driver version
+gpsd: SendPacket(), writing 12 bytes
+gpsd: PrintPacket()
+gpsd: Private, ID: Info Req
+gpsd: SendPacket(), wrote 12 bytes
+gpsd: GetPacket()
+gpsd: got 24 bytes
+gpsd: GotPacket() sz=24
+gpsd: PrintPacket()
+gpsd: Private, ID: Info Resp
+gpsd: Garmin USB Driver found, Version 0.23, Mode: 0, GPS Serial# 3300021732
+gpsd: Send Garmin Start Session
+gpsd: SendPacket(), writing 12 bytes
+gpsd: PrintPacket()
+gpsd: Transport, Start Session req
+gpsd: SendPacket(), wrote 12 bytes
+gpsd: GetPacket()
+gpsd: got 16 bytes
+gpsd: GotPacket() sz=16
+gpsd: Got packet waiting for START_SESSION
+gpsd: PrintPacket()
+gpsd: Transport, Start Session resp, unit: 0xc4b255e4
+gpsd: Get Garmin Product Data
+gpsd: SendPacket(), writing 12 bytes
+gpsd: PrintPacket()
+gpsd: Appl, Product Data req
+gpsd: SendPacket(), wrote 12 bytes
+gpsd: GetPacket()
+gpsd: got 12 bytes
+gpsd: GotPacket() sz=12
+gpsd: PrintPacket()
+gpsd: Transport, Packet: Type 0 0 0, ID: 2, Sz: 0
+gpsd: GetPacket()
+gpsd: got 64 bytes
+gpsd: got 64 bytes
+gpsd: got 64 bytes
+gpsd: got 64 bytes
+gpsd: GetPacket() packet too long!
+gpsd: GotPacket() sz=0
+gpsd: PrintPacket()
+gpsd: Appl, Product Data, sz: 135
+gpsd: Garmin Product ID: 292, SoftVer: 3.00
+gpsd: Garmin Product Desc: GPSMap60CX Software Version 3.00
+gpsd: probe found Garmin binary driver...
+gpsd: to garmin_probe()
+gpsd: Set garmin_gps driver mode = 0
+gpsd: SendPacket(), writing 16 bytes
+gpsd: PrintPacket()
+gpsd: Private, Set Mode: 0
+gpsd: SendPacket(), wrote 16 bytes
+gpsd: Get garmin_gps driver version
+gpsd: SendPacket(), writing 12 bytes
+gpsd: PrintPacket()
+gpsd: Private, ID: Info Req
+gpsd: SendPacket(), wrote 12 bytes
+gpsd: GetPacket()
+gpsd: got 24 bytes
+gpsd: GotPacket() sz=24
+gpsd: PrintPacket()
+gpsd: Private, ID: Info Resp
+gpsd: Garmin USB Driver found, Version 0.23, Mode: 0, GPS Serial# 3300021732
+gpsd: Send Garmin Start Session
+gpsd: SendPacket(), writing 12 bytes
+gpsd: PrintPacket()
+gpsd: Transport, Start Session req
+gpsd: SendPacket(), wrote 12 bytes
+gpsd: GetPacket()
+gpsd: got 16 bytes
+gpsd: GotPacket() sz=16
+gpsd: Got packet waiting for START_SESSION
+gpsd: PrintPacket()
+gpsd: Transport, Start Session resp, unit: 0xc4b255e4
+gpsd: Get Garmin Product Data
+gpsd: SendPacket(), writing 12 bytes
+gpsd: PrintPacket()
+gpsd: Appl, Product Data req
+gpsd: SendPacket(), wrote 12 bytes
+gpsd: GetPacket()
+gpsd: got 12 bytes
+gpsd: GotPacket() sz=12
+gpsd: PrintPacket()
+gpsd: Transport, Packet: Type 0 0 0, ID: 2, Sz: 0
+gpsd: GetPacket()
+gpsd: got 64 bytes
+gpsd: got 64 bytes
+gpsd: got 64 bytes
+gpsd: got 64 bytes
+gpsd: GetPacket() packet too long!
+gpsd: GotPacket() sz=0
+gpsd: PrintPacket()
+gpsd: Appl, Product Data, sz: 135
+gpsd: Garmin Product ID: 292, SoftVer: 3.00
+gpsd: Garmin Product Desc: GPSMap60CX Software Version 3.00
+gpsd: from garmin_probe() = 1
+gpsd: Set Garmin to send reports every 1 second
+gpsd: SendPacket(), writing 14 bytes
+gpsd: PrintPacket()
+gpsd: Appl, Command Data: Start Xmit PVT data
+gpsd: SendPacket(), wrote 14 bytes
+gpsd: gpsd_activate: opened GPS (5)
+gpsd: flagging descriptor 5 in open_device
+gpsd: select waits
+gpsd: polling 5
+gpsd: GetPacket()
+gpsd: got 64 bytes
+gpsd: got 59 bytes
+gpsd: GotPacket() sz=123
+gpsd: GPS sent 1 new characters
+gpsd: garmin_parse_input()
+gpsd: PrintPacket()
+gpsd: bogus packet, size too large=7226368
+gpsd: select waits
+gpsd: polling 5
+gpsd: GetPacket()
+gpsd: got 64 bytes
+gpsd: got 64 bytes
+gpsd: got 64 bytes
+gpsd: got 64 bytes
+gpsd: GetPacket() packet too long!
+gpsd: GotPacket() sz=0
+gpsd: GPS sent 1 new characters
+gpsd: New data, not yet a packet
+gpsd: select waits
+gpsd: polling 5
+gpsd: GetPacket()
+gpsd: got 64 bytes
+gpsd: got 8 bytes
+gpsd: GotPacket() sz=72
+gpsd: GPS sent 1 new characters
+gpsd: garmin_parse_input()
+gpsd: PrintPacket()
+gpsd: bogus packet, size too large=1137544069
+gpsd: select waits
+gpsd: polling 5
+gpsd: GetPacket()
+gpsd: got 64 bytes
+gpsd: got 64 bytes
+gpsd: got 64 bytes
+gpsd: got 64 bytes
+gpsd: GetPacket() packet too long!
+gpsd: GotPacket() sz=0
+gpsd: GPS sent 1 new characters
+gpsd: New data, not yet a packet
+gpsd: select waits
+gpsd: polling 5
+gpsd: GetPacket()
+gpsd: got 64 bytes
+gpsd: got 8 bytes
+gpsd: GotPacket() sz=72
+gpsd: GPS sent 1 new characters
+gpsd: garmin_parse_input()
+gpsd: PrintPacket()
+gpsd: bogus packet, size too large=1137544069
+gpsd: select waits
+gpsd: polling 5
+gpsd: GetPacket()
+gpsd: got 64 bytes
+gpsd: got 64 bytes
+gpsd: got 64 bytes
+gpsd: got 64 bytes
+gpsd: GetPacket() packet too long!
+gpsd: GotPacket() sz=0
+gpsd: GPS sent 1 new characters
+gpsd: New data, not yet a packet
+gpsd: select waits
+gpsd: polling 5
+gpsd: GetPacket()
+gpsd: got 64 bytes
+gpsd: got 8 bytes
+gpsd: GotPacket() sz=72
+gpsd: GPS sent 1 new characters
+gpsd: garmin_parse_input()
+gpsd: PrintPacket()
+gpsd: bogus packet, size too large=1137544069
+gpsd: select waits
+gpsd: polling 5
+gpsd: GetPacket()
+gpsd: got 64 bytes
+gpsd: got 64 bytes
+gpsd: got 64 bytes
+gpsd: got 64 bytes
+gpsd: GetPacket() packet too long!
+gpsd: GotPacket() sz=0
+gpsd: GPS sent 1 new characters
+gpsd: New data, not yet a packet
+gpsd: select waits
+gpsd: polling 5
+gpsd: GetPacket()
+gpsd: got 64 bytes
+gpsd: got 8 bytes
+gpsd: GotPacket() sz=72
+gpsd: GPS sent 1 new characters
+gpsd: garmin_parse_input()
+gpsd: PrintPacket()
+gpsd: bogus packet, size too large=1137544069
+gpsd: select waits
+gpsd: polling 5
+gpsd: GetPacket()
+gpsd: got 64 bytes
+gpsd: got 64 bytes
+gpsd: got 64 bytes
+gpsd: got 64 bytes
+gpsd: GetPacket() packet too long!
+gpsd: GotPacket() sz=0
+gpsd: GPS sent 1 new characters
+gpsd: New data, not yet a packet
+gpsd: select waits
+gpsd: polling 5
+gpsd: GetPacket()
+gpsd: got 64 bytes
+gpsd: got 8 bytes
+gpsd: GotPacket() sz=72
+gpsd: GPS sent 1 new characters
+gpsd: garmin_parse_input()
+gpsd: PrintPacket()
+gpsd: bogus packet, size too large=1137544069
+gpsd: select waits
+gpsd: polling 5
+gpsd: GetPacket()
+gpsd: got 64 bytes
+gpsd: got 64 bytes
+gpsd: got 64 bytes
+gpsd: got 64 bytes
+gpsd: GetPacket() packet too long!
+gpsd: GotPacket() sz=0
+gpsd: GPS sent 1 new characters
+gpsd: New data, not yet a packet
+gpsd: select waits
+gpsd: polling 5
+gpsd: GetPacket()
+gpsd: got 64 bytes
+gpsd: got 8 bytes
+gpsd: GotPacket() sz=72
+gpsd: GPS sent 1 new characters
+gpsd: garmin_parse_input()
+gpsd: PrintPacket()
+gpsd: bogus packet, size too large=1137544069
+gpsd: select waits
+gpsd: polling 5
+gpsd: GetPacket()
+gpsd: got 64 bytes
+gpsd: got 64 bytes
+gpsd: got 64 bytes
+gpsd: got 64 bytes
+gpsd: GetPacket() packet too long!
+gpsd: GotPacket() sz=0
+gpsd: GPS sent 1 new characters
+gpsd: New data, not yet a packet
+gpsd: select waits
+gpsd: polling 5
+gpsd: GetPacket()
+gpsd: got 64 bytes
+gpsd: got 8 bytes
+gpsd: GotPacket() sz=72
+gpsd: GPS sent 1 new characters
+gpsd: garmin_parse_input()
+gpsd: PrintPacket()
+gpsd: bogus packet, size too large=1137544069
+gpsd: select waits
+gpsd: polling 5
+gpsd: GetPacket()
+gpsd: got 64 bytes
+gpsd: got 64 bytes
+gpsd: got 64 bytes
+gpsd: got 64 bytes
+gpsd: GetPacket() packet too long!
+gpsd: GotPacket() sz=0
+gpsd: GPS sent 1 new characters
+gpsd: New data, not yet a packet
+gpsd: select waits
+gpsd: polling 5
+gpsd: GetPacket()
+gpsd: got 60 bytes
+gpsd: GotPacket() sz=60
+gpsd: GPS sent 1 new characters
+gpsd: garmin_parse_input()
+gpsd: PrintPacket()
+gpsd: bogus packet, size too large=1110704128
+.....
+
+-- 
+View this message in context: <A HREF="http://www.nabble.com/Garmin-GPS-almost-never-sends-new-position-data-tf1753147.html#a6452053">http://www.nabble.com/Garmin-GPS-almost-never-sends-new-position-data-tf1753147.html#a6452053</A>
+Sent from the GPSd - Users mailing list archive at Nabble.com.
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="001973.html">[Gpsd-users] Garmin Forerunner 305 compatibility
+</A></li>
+	<LI>Next message: <A HREF="001969.html">[Gpsd-users] Garmin GPS almost never sends new position data
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1968">[ date ]</a>
+              <a href="thread.html#1968">[ thread ]</a>
+              <a href="subject.html#1968">[ subject ]</a>
+              <a href="author.html#1968">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

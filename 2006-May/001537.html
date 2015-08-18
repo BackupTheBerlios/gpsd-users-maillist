@@ -1,0 +1,87 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] gpsd 2.20, BT, rfcomm and suspend/resume on a PDA
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2006-May/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20gpsd%202.20%2C%20BT%2C%20rfcomm%20and%20suspend/resume%20on%20a%20PDA&In-Reply-To=%3Cb72f8fc71aa7c8db21d4a7c640cbe0bf%40localhost%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   
+   <LINK REL="Next"  HREF="001582.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] gpsd 2.20, BT, rfcomm and suspend/resume on a PDA</H1>
+    <B>joshua</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20gpsd%202.20%2C%20BT%2C%20rfcomm%20and%20suspend/resume%20on%20a%20PDA&In-Reply-To=%3Cb72f8fc71aa7c8db21d4a7c640cbe0bf%40localhost%3E"
+       TITLE="[Gpsd-users] gpsd 2.20, BT, rfcomm and suspend/resume on a PDA">joshua at willowisp.net
+       </A><BR>
+    <I>Mon May  1 22:45:02 CEST 2006</I>
+    <P><UL>
+        
+        <LI>Next message: <A HREF="001582.html">[Gpsd-users] gpsd 2.20, BT, rfcomm and suspend/resume on a PDA
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1537">[ date ]</a>
+              <a href="thread.html#1537">[ thread ]</a>
+              <a href="subject.html#1537">[ subject ]</a>
+              <a href="author.html#1537">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi All,
+I am running a pre-release version of familiar 0.8.4 (rc1) on an iPaq h2200 interfacing to a Holux GPSlim236 BT GPS via gpsd2.20.  I connect using the rfcomm layer and primarily use roadmap as an application (full details here: <A HREF="http://www.handhelds.org/moin/moin.cgi/HpIpaqH2200gps">http://www.handhelds.org/moin/moin.cgi/HpIpaqH2200gps</A>)  I have had to implement a somewhat heavy-handed fix for suspend/resume and I just wanted to see if this is a reasonable approach or if anyone has a better idea of where to deal with the issue.
+
+Fundamentally gpsd works great - I start up the app, it makes a call to gpsd, gpsd binds to /dev/rfcomm0 and rfcomm handles the BT connection to the GPS (at least, this is my layman's understanding of it)
+
+The problem arises when I suspend the ipaq (for example when I stop for groceries) - when I resume the ipaq, the program hangs with a GPSD,R=1 and does not update position.
+It is quite easy to fix: I can either restart the program (which then makes a request of gpsd and....) or I can restart gpsd, and it reports out position fine.
+
+I have added a script to the suspend/resume apmd scripts to kill gpsd on suspend and start it on resume.
+
+Is there a better way to do this?  Is this fixed in a newer version?  I think it is most likely related to the first FAQ cited below.
+
+I have read through the FAQ, specifically:
+Why does the first A,E,O,P,T,U, or V command to a device always return &quot;?&quot;
+
+Why do I have to restart gpsd whenever I power-cycle my Bluetooth device?
+
+
+Any information on this would be greatly appreciated.
+
+Thank you for a great program.
+
+Regards,
+Joshua Layne
+
+(could you please 'reply all' if you respond to this?  I am not subscribed to the listserv)
+
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	
+	<LI>Next message: <A HREF="001582.html">[Gpsd-users] gpsd 2.20, BT, rfcomm and suspend/resume on a PDA
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1537">[ date ]</a>
+              <a href="thread.html#1537">[ thread ]</a>
+              <a href="subject.html#1537">[ subject ]</a>
+              <a href="author.html#1537">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

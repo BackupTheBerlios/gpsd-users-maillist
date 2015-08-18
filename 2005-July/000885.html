@@ -1,0 +1,91 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] Compiling/running gpsd 2.25+ on Zaurus
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2005-July/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Compiling/running%20gpsd%202.25%2B%20on%20Zaurus&In-Reply-To=%3C42E72DB7.5010004%40users.sourceforge.net%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="000883.html">
+   <LINK REL="Next"  HREF="000888.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] Compiling/running gpsd 2.25+ on Zaurus</H1>
+    <B>Lance F.</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Compiling/running%20gpsd%202.25%2B%20on%20Zaurus&In-Reply-To=%3C42E72DB7.5010004%40users.sourceforge.net%3E"
+       TITLE="[Gpsd-users] Compiling/running gpsd 2.25+ on Zaurus">ashikase at users.sourceforge.net
+       </A><BR>
+    <I>Wed Jul 27 08:46:15 CEST 2005</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="000883.html">[Gpsd-users] Compiling/running gpsd 2.25+ on Zaurus
+</A></li>
+        <LI>Next message: <A HREF="000888.html">[Gpsd-users] Compiling/running gpsd 2.25+ on Zaurus
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#885">[ date ]</a>
+              <a href="thread.html#885">[ thread ]</a>
+              <a href="subject.html#885">[ subject ]</a>
+              <a href="author.html#885">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Lance Fetters wrote:
+
+&gt;<i> Just an update, I found out why gpsd is crashing in processGPGSA in my 
+</I>&gt;<i> case. If you look at the log below, you'll see that my GPS (i.Trek M3) 
+</I>&gt;<i> returns a GPGSA line with only 7 fields; processGPGSA expects 18, and 
+</I>&gt;<i> hence ends up reading beyond the fields array. If I wait until my 
+</I>&gt;<i> receiver has a fix before starting gpsd, it seems to work ok.
+</I>
+Eric said he'll look into it; I have sent appropriate log files to him.
+He has also patches the issue that I was having with anonymous unions.
+
+I just wanted to mention some issues that still remain in the current 
+repository (3004) when compiling on the Zaurus (and possibly some other 
+platforms):
+
+- packet_names.h is not generated automatically; I had to run 'make 
+packet_names.h&quot;
+
+- 'xmlto' is needed to generate some of the documentation; neither my 
+Zaurus nor any of the Linux boxes I have access to have this installed 
+(by default).
+
+- there is still an issue with stdbool.h, libgpsmm.cpp, and g++: 
+libgpsmm includes gps.h, which itself includes stdbool.h; putting 
+&quot;#ifndef __cplusplus ... #endif&quot; around the include stifles the issue
+
+Otherwise the compile goes smoothly, including the autogen.sh script (I 
+noticed that the dbus issue now appears to be fixed).
+
+- Lance F.
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="000883.html">[Gpsd-users] Compiling/running gpsd 2.25+ on Zaurus
+</A></li>
+	<LI>Next message: <A HREF="000888.html">[Gpsd-users] Compiling/running gpsd 2.25+ on Zaurus
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#885">[ date ]</a>
+              <a href="thread.html#885">[ thread ]</a>
+              <a href="subject.html#885">[ subject ]</a>
+              <a href="author.html#885">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

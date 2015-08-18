@@ -1,0 +1,137 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] Garmin GPS almost never sends new position data
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2006-September/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Garmin%20GPS%20almost%20never%20sends%20new%20position%20data&In-Reply-To=%3Cef71g3%24cc4%241%40sea.gmane.org%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="001993.html">
+   <LINK REL="Next"  HREF="001999.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] Garmin GPS almost never sends new position data</H1>
+    <B>Eivind Tagseth</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Garmin%20GPS%20almost%20never%20sends%20new%20position%20data&In-Reply-To=%3Cef71g3%24cc4%241%40sea.gmane.org%3E"
+       TITLE="[Gpsd-users] Garmin GPS almost never sends new position data">eivindt-gmane at multinet.no
+       </A><BR>
+    <I>Mon Sep 25 00:40:02 CEST 2006</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="001993.html">[Gpsd-users] Garmin GPS almost never sends new position data
+</A></li>
+        <LI>Next message: <A HREF="001999.html">[Gpsd-users] Garmin GPS almost never sends new position data
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1996">[ date ]</a>
+              <a href="thread.html#1996">[ thread ]</a>
+              <a href="subject.html#1996">[ subject ]</a>
+              <a href="author.html#1996">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Gary E. Miller wrote:
+&gt;&gt;&gt;<i> You would have to contact the garmin kernel driver for help on that.  He is
+</I>&gt;&gt;&gt;<i> not on this list.
+</I>&gt;&gt;<i> Just to clarify, the functions mentioned are in the tty layer, not in
+</I>&gt;&gt;<i> the garmin_gps driver.  So I don't really think that the garmin_gps
+</I>&gt;&gt;<i> driver is at fault, I think the tty layer messes up our assumptions on
+</I>&gt;&gt;<i> what packets we should expect.
+</I>&gt;<i> 
+</I>&gt;<i> Still, that puts it in the kernel.  If the kernel is corrupting packets
+</I>&gt;<i> then we need to get a kernel guy to fix it.
+</I>
+No, the kernel is not corrupting any packets, it's concatenating 
+packets.  The packets are not corrupted until gpsd throws away the extra 
+bytes read, and then starts reading in the middle of a packet.
+
+&gt;<i> Have you tried the dump program that comes with the garmin kernel driver?
+</I>&gt;<i> If the dump program fails then we have removed gpsd as a source of the
+</I>&gt;<i> problem.
+</I>
+I cannot find any dump program with the garmin drivers.  I can see what 
+the garmin_gps driver writes to the tty layer by enabling debug in the 
+driver though, and it seems to be doing it's stuff just fine.
+
+&gt;<i> The garminusb2nmea is a good one to try, it just does a nice simple
+</I>&gt;<i> dump of the garmin binary and converts to nmea.
+</I>
+Yes, I've tried that one.  It works just fine.  But then again, this 
+program doesn't expect to read the same packets from the tty as the gps 
+driver receives over usb.
+
+
+Let me try to illustrate this again:
+
+GPS -&gt; garmin_gps
+
+  64 b SAT data
+  32 b SAT data
+  64 b PVT data
+  12 b PVT data
+
+  22 b Transport data
+  64 b SAT data
+  ...
+
+(I realize the byte counts may be wrong)
+
+
+each of these packets are simply pushed up to the tty layer by the 
+garmin_gps driver.  When being pushed up to the tty layer, the default 
+tty line discipline will copy those data into a single buffer. continuously.
+
+This means that if the reader (gpsd) isn't fast enough with it's reads, 
+the 32b SAT data will get concatenated with the 64 b PVT data by the tty 
+layer.
+
+This means that the reader (gpsd) will read the following:
+
+64 b SAT data  -- not a short read, so it will nanosleep() and reread
+32 b SAT data + 32 b PVT data  -- still not a short read
+44 b PVT data  -- a short read, stop reading
+
+gpsd will now recognize the SAT data, but _ignore_ the fact that it has 
+read more data than it needs, and just throw the rest of the data away,
+thereby completely missing the PVT data.
+
+Now, for the next read, it will read:
+  22 b transport data + 44 b SAT data  -- not a short read
+  20 b SAT data  -- short read, stop
+
+Again, the transport data will be ok, but the next read will start in 
+the middle of the next SAT data, and look corrupted.
+
+
+
+Eivind
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="001993.html">[Gpsd-users] Garmin GPS almost never sends new position data
+</A></li>
+	<LI>Next message: <A HREF="001999.html">[Gpsd-users] Garmin GPS almost never sends new position data
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1996">[ date ]</a>
+              <a href="thread.html#1996">[ thread ]</a>
+              <a href="subject.html#1996">[ subject ]</a>
+              <a href="author.html#1996">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

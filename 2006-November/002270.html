@@ -1,0 +1,92 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] Gpsdrive and Garmin problems (was:	Source-tree	Lock)
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2006-November/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Gpsdrive%20and%20Garmin%20problems%20%28was%3A%0A%09Source-tree%09Lock%29&In-Reply-To=%3C1164755955.4424.20.camel%40haktar%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="002269.html">
+   <LINK REL="Next"  HREF="002277.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] Gpsdrive and Garmin problems (was:	Source-tree	Lock)</H1>
+    <B>Daniel</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Gpsdrive%20and%20Garmin%20problems%20%28was%3A%0A%09Source-tree%09Lock%29&In-Reply-To=%3C1164755955.4424.20.camel%40haktar%3E"
+       TITLE="[Gpsd-users] Gpsdrive and Garmin problems (was:	Source-tree	Lock)">garkein at mailueberfall.de
+       </A><BR>
+    <I>Wed Nov 29 00:19:15 CET 2006</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="002269.html">[Gpsd-users] Gpsdrive and Garmin problems (was: Source-tree	Lock)
+</A></li>
+        <LI>Next message: <A HREF="002277.html">[Gpsd-users] Source-tree Lock
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2270">[ date ]</a>
+              <a href="thread.html#2270">[ thread ]</a>
+              <a href="subject.html#2270">[ subject ]</a>
+              <a href="author.html#2270">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Am Dienstag, den 28.11.2006, 14:26 -0700 schrieb Chris Kuethe:
+&gt;<i> On 11/28/06, Eric S. Raymond &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">esr at thyrsus.com</A>&gt; wrote:
+</I>&gt;<i> &gt; Um, I don't think I saw this.  Or perhaps it hit my spam filters for
+</I>&gt;<i> &gt; some odd reason.  Do I need to dig tghis up in the archives, Chris,
+</I>&gt;<i> &gt; or will you take care of it.
+</I>
+Could be. The first response you sent me about that device probing
+problem also went straight into my provider's spam filter. Reason:
+Header... - no idea why.
+
+&gt;<i> Like I say, I'll give it a read, but I'm not a garmin guru. The device
+</I>&gt;<i> independent parts I can certainly test.
+</I>
+Thank you.
+There's no garmin voodoo involved. It's just splitting
+gpsd_binary_quality_dump() to have it build a PGRME setence if ERR_SET
+is set (by garmin.c) because the current condition HDOP_SET for both
+GPGSA and PGRME sentence would never be met for garmin devices
+(see also parsing of PGRME in nmea_parse.c which only sets ERR_SET).
+
+Second thing is taking care of that for all three places I could find,
+- garmin.c binary mode
+- nmea_parse.c parsing PGRME
+- libgpsd_core.c generating PGRME sentence
+there's always CEP50_SIGMA used instead of just &quot;2&quot; in garmin.c which
+introduced a rounding error.
+
+Thanks,
+Daniel
+
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="002269.html">[Gpsd-users] Gpsdrive and Garmin problems (was: Source-tree	Lock)
+</A></li>
+	<LI>Next message: <A HREF="002277.html">[Gpsd-users] Source-tree Lock
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2270">[ date ]</a>
+              <a href="thread.html#2270">[ thread ]</a>
+              <a href="subject.html#2270">[ subject ]</a>
+              <a href="author.html#2270">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

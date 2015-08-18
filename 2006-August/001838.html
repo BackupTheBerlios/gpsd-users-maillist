@@ -1,0 +1,155 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] Some problems? too many satellites?
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2006-August/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Some%20problems%3F%20too%20many%20satellites%3F&In-Reply-To=%3CPine.LNX.4.64.0608100054250.9075%40catbert.rellim.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="001837.html">
+   <LINK REL="Next"  HREF="001846.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] Some problems? too many satellites?</H1>
+    <B>Gary E. Miller</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Some%20problems%3F%20too%20many%20satellites%3F&In-Reply-To=%3CPine.LNX.4.64.0608100054250.9075%40catbert.rellim.com%3E"
+       TITLE="[Gpsd-users] Some problems? too many satellites?">gem at rellim.com
+       </A><BR>
+    <I>Thu Aug 10 10:13:59 CEST 2006</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="001837.html">[Gpsd-users] Some problems? too many satellites?
+</A></li>
+        <LI>Next message: <A HREF="001846.html">[Gpsd-users] Some problems? too many satellites?
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1838">[ date ]</a>
+              <a href="thread.html#1838">[ thread ]</a>
+              <a href="subject.html#1838">[ subject ]</a>
+              <a href="author.html#1838">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>-----BEGIN PGP SIGNED MESSAGE-----
+Hash: SHA1
+
+Yo Dave!
+
+On Wed, 9 Aug 2006, Dave Hylands wrote:
+
+&gt;<i> I put a much larger snippet (about 1/2 Mb) on
+</I>&gt;<i> my web site:
+</I>&gt;<i> <A HREF="http://www.DaveHylands.com/Misc/gps/nmea.log">http://www.DaveHylands.com/Misc/gps/nmea.log</A>
+</I>
+Probably a bit too complete.  Can you cut it down to a cycle or
+two of each state you have?  Don't worry about the time stamps
+as long as you have complete cycles and are increasing.  Then Eric
+can add them to the regressions.
+
+&gt;<i> So I tried changing the .channels from 12 to 14 and 16 and ran it on
+</I>&gt;<i> my gumstix (ARM XScale).
+</I>
+Since the sats in GPGSV's come in 4 at a time we prolly need this too:
+
+- --- gps.h       (revision 3369)
++++ gps.h       (working copy)
+@@ -18,7 +18,7 @@
+ #endif
+
+ #define MAXTAGLEN      8       /* maximum length of sentence tag name */
+- -#define MAXCHANNELS    14      /* maximum GPS channels (*not* satellites!) */
++#define MAXCHANNELS    16      /* maximum GPS channels (*not* satellites!) */
+ #define SIRF_CHANNELS  12      /* max channels allowed in SiRF format */
+
+
+Do any of the other devleopers see a problem with these two tweaks?
+
+&gt;<i> # ./gpsd -n -N -D2 nmea.log
+</I>[...]
+&gt;<i> gpsd: &lt;= GPS: $GPGSA,A,1,,,,,,,,,,,,,99.99,99.99,99.99*30
+</I>&gt;<i> Segmentation fault
+</I>
+Wow, you did not even get to the GPGSV this time.  Dunno what could
+be wrong with that GPGSA.  We have had problems with the ARM port before
+so not a big surprise either.  Can you run gdb on your gumstix?
+
+&gt;<i> I did the same thing on my Fedora FC5 machine and it ran fine, producing
+</I>&gt;<i> <A HREF="http://www.davehylands.com/Misc/gps/gpsd-14.log">http://www.davehylands.com/Misc/gps/gpsd-14.log</A>
+</I>
+So we are half way there, maybe.
+
+&gt;<i> Here's the web site on the GPS module:
+</I>&gt;<i> <A HREF="http://www.u-blox.com/products/lea_4h.html">http://www.u-blox.com/products/lea_4h.html</A>
+</I>
+Uh, oh, that says 16 channels!  So I guess we gotta bump .channels up
+to 16.
+
+Here is what we need for the hardware matrix, can you fill out the rest:
+
+   1. The GPS model name
+
+   2. Whether or not it works
+	Requires gpsd 2.34+
+
+   3. If possible, an URL to a technical reference on it
+<A HREF="http://www.u-blox.com/products/lea_4h.html">http://www.u-blox.com/products/lea_4h.html</A>
+
+   4. The GPS and (if applicable) USB-to-serial chip it uses. (Look at the output of lsusb(1), it may identify the USB-to-serial chip. If it gives a vendor and product ID, send us those numbers.)
+
+Antares LES-4H gps module.
+
+   5. The interface type (RS232, USB, CF)
+
+   6. The vendor
+
+   7. Version of gpsd you tested with
+
+   8. NMEA version it emits, or '?' if the documentation doesn't say
+
+   9. A list of NMEA sentences it emits
+
+  10. Notes on the device
+
+
+RGDS
+GARY
+- ---------------------------------------------------------------------------
+Gary E. Miller Rellim 20340 Empire Blvd, Suite E-3, Bend, OR 97701
+	<A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">gem at rellim.com</A>  Tel:+1(541)382-8588
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v1.4.3 (GNU/Linux)
+
+iD8DBQFE2urK8KZibdeR3qURAi4bAKCq+FnuOSeEqd4r2h9Ji0xDIulPJQCfeyen
+I89I3gHdDd0Xm/UoBCJiOco=
+=1urQ
+-----END PGP SIGNATURE-----
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="001837.html">[Gpsd-users] Some problems? too many satellites?
+</A></li>
+	<LI>Next message: <A HREF="001846.html">[Gpsd-users] Some problems? too many satellites?
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1838">[ date ]</a>
+              <a href="thread.html#1838">[ thread ]</a>
+              <a href="subject.html#1838">[ subject ]</a>
+              <a href="author.html#1838">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

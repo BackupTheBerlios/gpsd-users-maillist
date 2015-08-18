@@ -1,0 +1,193 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] [Gpsd-dev] Gpsd startup/hotplug system - new	proposal
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2011-June/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20%5BGpsd-dev%5D%20Gpsd%20startup/hotplug%20system%20-%20new%0A%09proposal&In-Reply-To=%3C4E0C54EC.3040505%40wildgooses.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="005372.html">
+   <LINK REL="Next"  HREF="005378.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] [Gpsd-dev] Gpsd startup/hotplug system - new	proposal</H1>
+    <B>Ed W</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20%5BGpsd-dev%5D%20Gpsd%20startup/hotplug%20system%20-%20new%0A%09proposal&In-Reply-To=%3C4E0C54EC.3040505%40wildgooses.com%3E"
+       TITLE="[Gpsd-users] [Gpsd-dev] Gpsd startup/hotplug system - new	proposal">lists at wildgooses.com
+       </A><BR>
+    <I>Thu Jun 30 12:50:20 CEST 2011</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="005372.html">[Gpsd-users] [Gpsd-dev] Gpsd startup/hotplug system - new proposal
+</A></li>
+        <LI>Next message: <A HREF="005378.html">[Gpsd-users] [Gpsd-dev] Gpsd startup/hotplug system - new proposal
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#5376">[ date ]</a>
+              <a href="thread.html#5376">[ thread ]</a>
+              <a href="subject.html#5376">[ subject ]</a>
+              <a href="author.html#5376">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>On 30/06/2011 02:34, Eric Raymond wrote:
+&gt;<i> Ed W &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">lists at wildgooses.com</A>&gt;:
+</I>&gt;&gt;<i> I think your implicit assumption is that there are only (4) binary
+</I>&gt;&gt;<i> packagers in the whole world and everyone else is using their packages?
+</I>&gt;<i> 
+</I>&gt;<i> Mostly, yes. For a python=no switch to have a lot of utility, there
+</I>&gt;<i> have to be a lot of people who are (a) installing from source, (b)
+</I>&gt;<i> therefore have Python on their source machines, but (b) for some
+</I>&gt;<i> reason don't want to install the Python support.  
+</I>&gt;<i> 
+</I>&gt;<i> Sorry, I just don't believe that's a large set.  And you haven't
+</I>&gt;<i> helped your case any by talking about target machines as though you're
+</I>&gt;<i> cross-compiling; thatt's a completely different set of issues.  
+</I>
+I think we are talking past each other again?
+
+We are digressing, but are we in dispute that for *any* linux package,
+the number of users who run the equivalent of &quot;make install&quot; is near
+zero, compared with the number of users who do &quot;yum/dpkg my_package&quot;?
+
+I would presume not?
+
+I would claim that just because few people use something, is not always
+a good reason for rendering it unimportant?  One person in the whole
+world might use &quot;python=no&quot;, but the result of running that might be a
+binary package for every android phone in the world?  The number of
+users can be large compared with the number using the source package?
+
+(FWIW: I have zero expectation of ANY user of my distribution EVER
+compiling the sources themselves... They will all use the binaries... I
+would be impressed if any even knew what source code was...)
+
+Now, for sure I will eventually develop a series of patches to your
+build system that hack it support my choices, but since it appears like
+a trivial upstream inclusion, it would be great if that time could be
+spent programming other stuff?
+
+&gt;<i> Yes, I get that you want to binary-package for systems without Python,
+</I>&gt;<i> but python=no would be just no help at all with that.  In what unverse is
+</I>&gt;<i> it difficult to do
+</I>&gt;<i> 
+</I>&gt;<i>    scons install
+</I>&gt;<i>    &lt;build package&gt;
+</I>&gt;<i>    scons uninstall
+</I>
+Ok... So do this on your Netgear router right now..?
+
+I think you are missing the point that binary packages are built on a
+different system to where they are installed (as a general rule)?
+Therefore step 3 above is not needed.  You do:
+
+1) scons install
+2) Build package (python=no)
+3) Distribute package to hundreds of other machines
+4) Install package on hundreds of other machines
+
+The goal is to avoid as much as possible of step 2.5: Fixup built
+package to manually exclude redundant extra stuff
+
+For sure there always ends up being a step 2.5 (deliberate silly name),
+just have a look at Debian/Redhat source packages, but I think the goal
+of opensource is to develop everything in upstream, not closed off.  If
+I implement python=no for my own purposes then it's one more thing I
+need to maintain and I claim that there exist other users of small
+systems who will need to also do the same work again?
+
+
+&gt;&gt;<i>  If that were so then arguably we wouldn't even need a &quot;make install&quot;
+</I>&gt;&gt;<i> script..?!
+</I>&gt;<i> 
+</I>&gt;<i> Don't be silly.  'make install' is required for people who *aren't* packagers.
+</I>
+Very few people run &quot;make install&quot; versus using the output of a packager
+though...
+
+However, I don't think this makes it fair to give the package maintainer
+a bunch of work though - they have plenty of other packages to maintain
+(seems to be the biggest barrier for all distributions - cost of
+developing and maintaining packaging tools)
+
+
+
+&gt;<i> I ask again:  Where is the not-good experience in
+</I>&gt;<i> 
+</I>&gt;<i>    scons install
+</I>&gt;<i>    &lt;build package&gt;
+</I>&gt;<i>    scons uninstall
+</I>&gt;<i> 
+</I>&gt;<i> You've got Python on your build machine, by hypothesis, so what is so terrible
+</I>&gt;<i> about installing the Python support and uninstalling it after your package 
+</I>&gt;<i> build?  Has it got cooties or something?
+</I>
+I don't need to uninstall it from the build machine?
+
+The build machine is big and beefy and has python/scons, etc permanently
+installed.  The build machine generates a binary package (which
+currently includes a bunch of .py files) that is then installed on the
+target machine.  The target machine has no python interpretor so the
+extra .py files are just taking up space
+
+We seem to be talking cross purposes, so I don't know scons, but in
+autotools kind of thinking you might implement a crude packager
+something like:
+
+	./configure --prefix=/tmp/my_package --disable-python
+	make install
+	tar -f my_package-0.1.tar.gz /tmp/my_package
+
+Then you take your output from step 3 (which for sure is likely
+something better than a tar file, but that's not important), and apply
+it to your various target
+
+Note step 2 could be:
+	make use-python-to-install
+
+It's a given that python is available during the build process, what I
+desire is a way to filter the output of make install to exclude any .py
+files
+
+My build script at present looks something like:
+
+	./configure --prefix=/tmp/my_package
+	make install
+	rm /tmp/my_package/usr/lib/python2.{6,7}
+	rm /tmp/my_package/usr/bin/*.py
+	package_it /tmp/my_package
+
+Please help me remove the &quot;rm&quot; steps in the middle?
+
+Thanks
+
+Ed W
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="005372.html">[Gpsd-users] [Gpsd-dev] Gpsd startup/hotplug system - new proposal
+</A></li>
+	<LI>Next message: <A HREF="005378.html">[Gpsd-users] [Gpsd-dev] Gpsd startup/hotplug system - new proposal
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#5376">[ date ]</a>
+              <a href="thread.html#5376">[ thread ]</a>
+              <a href="subject.html#5376">[ subject ]</a>
+              <a href="author.html#5376">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

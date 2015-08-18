@@ -1,0 +1,106 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] gpsd issues
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2005-May/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20gpsd%20issues&In-Reply-To=%3C20050523141601.GA19001%40thyrsus.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="000695.html">
+   <LINK REL="Next"  HREF="000705.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] gpsd issues</H1>
+    <B>Eric S. Raymond</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20gpsd%20issues&In-Reply-To=%3C20050523141601.GA19001%40thyrsus.com%3E"
+       TITLE="[Gpsd-users] gpsd issues">esr at thyrsus.com
+       </A><BR>
+    <I>Mon May 23 16:16:01 CEST 2005</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="000695.html">[Gpsd-users] gpsd issues
+</A></li>
+        <LI>Next message: <A HREF="000705.html">[Gpsd-users] gpsd issues
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#699">[ date ]</a>
+              <a href="thread.html#699">[ thread ]</a>
+              <a href="subject.html#699">[ subject ]</a>
+              <a href="author.html#699">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Steve Arnold &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">nerdboy at gentoo.org</A>&gt;:
+&gt;<i> I couldn't view your Gentoo ebuild so I made my own;
+</I>
+I've fixed the permissions on the site copy.
+
+&gt;<i> 1) gpsd only sees the device (and receives data) when I start it as
+</I>&gt;<i> root (or with sudo and my normal user in the wheel group), and then
+</I>&gt;<i> only when I use the -p /dev/ttyUSB0 on the command line.
+</I>
+gpsd has to start as root in order to get handles on some privileged resources.
+Later it drops privileges to run as user nobody and whatever group owns
+/dev/ttyS0.  If it isn't root, that change of identity won't work.
+
+Starting gpsd without specifying a device on the command line won't work
+unless the hotplug scripts are already installed to notify gpsd about USB 
+device connects.
+
+Therefore, nothing you've said yet is especially surprising.
+
+&gt;<i> I have myself in the tty group, and the device is created correctly:
+</I>
+Having yourself in the tty group is not necessary.
+
+&gt;<i> crw-rw----  1 root tty 188, 0 May 22 22:25 /dev/tts/USB0
+</I>&gt;<i> lrwxrwxrwx  1 root root 8 May 22 21:12 /dev/ttyUSB0 -&gt; tts/USB0
+</I>&gt;<i> 
+</I>&gt;<i> It doesn't seem to matter whether I start it with the usb script or
+</I>&gt;<i> a real init script, the thing always runs as user/group nobody/tty.
+</I>&gt;<i> 
+</I>&gt;<i> So I assume the issue is my lack of the proper group setup, but I'm
+</I>&gt;<i> not sure how to go about it...
+</I>
+It would be sufficient to cause a problem if you're not launching gpsd as root.
+
+I also see that the the /dev/ttyUSB0 link is created with owning group
+root when it needs to be group tty.  How is it actually being made?
+Are you using the hotplug scripts in the gpsd distribution?
+ 
+&gt;<i> 2) gpsprof barfs with a TypeError with Python 2.3, and I couldn't
+</I>&gt;<i> see anywhere that specified a particular version.
+</I>
+Still working on this -- can't try to reproduce it yet as my test
+device is stubbornly refusing to get a fix.
+-- 
+		&lt;a href=&quot;<A HREF="http://www.catb.org/~esr/">http://www.catb.org/~esr/</A>&quot;&gt;Eric S. Raymond&lt;/a&gt;
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="000695.html">[Gpsd-users] gpsd issues
+</A></li>
+	<LI>Next message: <A HREF="000705.html">[Gpsd-users] gpsd issues
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#699">[ date ]</a>
+              <a href="thread.html#699">[ thread ]</a>
+              <a href="subject.html#699">[ subject ]</a>
+              <a href="author.html#699">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

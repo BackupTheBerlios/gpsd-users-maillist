@@ -1,0 +1,104 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] Does the gpsd on my machine really use the PPS signal?
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2011-April/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Does%20the%20gpsd%20on%20my%20machine%20really%20use%20the%20PPS%20signal%3F&In-Reply-To=%3CBANLkTikcMQn75h8qk5Od8jQuTb61D%3DP31A%40mail.gmail.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="005208.html">
+   <LINK REL="Next"  HREF="005210.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] Does the gpsd on my machine really use the PPS signal?</H1>
+    <B>Mihail Popa</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Does%20the%20gpsd%20on%20my%20machine%20really%20use%20the%20PPS%20signal%3F&In-Reply-To=%3CBANLkTikcMQn75h8qk5Od8jQuTb61D%3DP31A%40mail.gmail.com%3E"
+       TITLE="[Gpsd-users] Does the gpsd on my machine really use the PPS signal?">mihail.popa.upb at gmail.com
+       </A><BR>
+    <I>Wed Apr 13 19:34:07 CEST 2011</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="005208.html">[Gpsd-users] qtGpsc 0.3.1 -- Qt4 gpsd client updated
+</A></li>
+        <LI>Next message: <A HREF="005210.html">[Gpsd-users] Does the gpsd on my machine really use the PPS signal?
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#5209">[ date ]</a>
+              <a href="thread.html#5209">[ thread ]</a>
+              <a href="subject.html#5209">[ subject ]</a>
+              <a href="author.html#5209">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hello everyone!
+
+Could you please help me with some advice on the following issue?
+I am not 100% sure whether this is a real issue and that is why I need your
+opinion.
+
+I configured gpsd 2.92 on my machine (OpenSUSE 11.3 x64) to communicate with
+a GPS module connected on /dev/ttyS0.
+Everything works fine up to this point.
+
+When running &quot;*gpsd -nNGD 10 /dev/ttyS0 2&gt;&amp;1 | egrep 'NTP|PPS'*&quot; I receive
+the following output, which makes me worry a little about the fact that gpsd
+might not actually use the PPS signal coming from my GPS.
+
+I'm pasting here the last part of the output:
+*gpsd: NTPD ntpshm_put: Clock: 1302708424.000000 @ 1302708419.156008, fudge:
+0.000
+gpsd: PPS pps-detect (DCD) on /dev/ttyS0 changed to 0
+gpsd: PPS cycle: 999614, duration: 899605 @ 1302708419.791231
+gpsd: PPS 1Hz leading edge
+gpsd: PPS ntpshm_pps 1302708425.000 @ 1302708419.791231, preci 3
+gpsd: PPS pps-detect (DCD) on /dev/ttyS0 changed to 1
+gpsd: PPS cycle: 999507, duration: 99902 @ 1302708419.891133
+gpsd: PPS 1Hz trailing edge
+gpsd: PPS pulse rejected
+gpsd: NTPD ntpshm_put: Clock: 1302708425.000000 @ 1302708420.149003, fudge:
+0.000
+gpsd: PPS pps-detect (DCD) on /dev/ttyS0 changed to 0
+gpsd: PPS cycle: 999509, duration: 899607 @ 1302708420.790740
+gpsd: PPS 1Hz leading edge
+gpsd: PPS ntpshm_pps 1302708426.000 @ 1302708420.790740, preci 3
+gpsd: PPS pps-detect (DCD) on /dev/ttyS0 changed to 1
+gpsd: PPS cycle: 999509, duration: 99902 @ 1302708420.890642
+gpsd: PPS 1Hz trailing edge
+gpsd: PPS pulse rejected*
+
+How can I interpret the above output?
+It's &quot;PPS pulse rejected&quot; that actually scares me... Is it a bad thing?
+
+Many thanks in advance to all!
+
+Cheers,
+Mihail
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="005208.html">[Gpsd-users] qtGpsc 0.3.1 -- Qt4 gpsd client updated
+</A></li>
+	<LI>Next message: <A HREF="005210.html">[Gpsd-users] Does the gpsd on my machine really use the PPS signal?
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#5209">[ date ]</a>
+              <a href="thread.html#5209">[ thread ]</a>
+              <a href="subject.html#5209">[ subject ]</a>
+              <a href="author.html#5209">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

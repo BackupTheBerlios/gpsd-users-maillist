@@ -1,0 +1,112 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] virtual serial ports
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2005-July/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20virtual%20serial%20ports&In-Reply-To=%3C20050707173001.GG26701%40wacka.mjr.org%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="000820.html">
+   <LINK REL="Next"  HREF="000825.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] virtual serial ports</H1>
+    <B>Paul Hedderly</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20virtual%20serial%20ports&In-Reply-To=%3C20050707173001.GG26701%40wacka.mjr.org%3E"
+       TITLE="[Gpsd-users] virtual serial ports">bulkpaul at mjr.org
+       </A><BR>
+    <I>Thu Jul  7 19:30:01 CEST 2005</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="000820.html">[Gpsd-users] virtual serial ports
+</A></li>
+        <LI>Next message: <A HREF="000825.html">[Gpsd-users] virtual serial ports
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#821">[ date ]</a>
+              <a href="thread.html#821">[ thread ]</a>
+              <a href="subject.html#821">[ subject ]</a>
+              <a href="author.html#821">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>I find this a real pain. I'm using a couple of packages that really need
+a 'serial port'. One is the &quot;Directions Ltd&quot; mapping package...
+
+the others run under windows, so I need to give VMWare a serial port for
+them to talk to...
+
+So I currently use a little script like this:
+
+  mkfifo /tmp/navigatorgps
+  while :; do
+    { echo r1; sleep 9999999; } | \
+      socat - tcp4:localhost:2947 &gt; /tmp/navigatorgps
+  done
+
+
+But this is really hacky. I would love gpsd to provide an (optional) raw
+nmea port or psuedo tty.
+
+--
+Paul
+				
+				
+On Thu, Jul 07, 2005 at 10:07:29AM -0400, Eric S. Raymond wrote:
+&gt;<i> Dana Rawding &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">dana at rawding.com</A>&gt;:
+</I>&gt;<i> &gt; I've downloaded and installed gpsd on my Linux laptop and it seems to  
+</I>&gt;<i> &gt; work well.  However some of the software that I use does not have the  
+</I>&gt;<i> &gt; ability to connect via a socket.  It will only connect to a serial  
+</I>&gt;<i> &gt; port (/dev/ttySx).
+</I>&gt;<i> &gt; 
+</I>&gt;<i> &gt; Is there a way to echo the output of gpsd to a 'virtual serial  
+</I>&gt;<i> &gt; port'?  I have search the web and I've found many applications on the  
+</I>&gt;<i> &gt; Windows side that performs this exact function however I have not  
+</I>&gt;<i> &gt; found anything under Linux.
+</I>&gt;<i> 
+</I>&gt;<i> It's possible.  There's an undocumented client in the contrib directory 
+</I>&gt;<i> of the gpsd source distribution called gpspipe that I think could be modified
+</I>&gt;<i> to do this eithout much trouble.
+</I>&gt;<i> 
+</I>&gt;<i> I've been reluctant to, however.  I fear that if gpsd supplies raw data,
+</I>&gt;<i> lazy application developers will take that as a signal that they need never
+</I>&gt;<i> convert to using libgps.  This would be bad for users, as applications that
+</I>&gt;<i> read raw NMEA are prone to various flaky failure modes when they don't
+</I>&gt;<i> see eaxactly what they expect.
+</I>&gt;<i> 
+</I>&gt;<i> What software are you using?  Maybe it's time to lobby the author(s).
+</I>&gt;<i> -- 
+</I>&gt;<i> 		&lt;a href=&quot;<A HREF="http://www.catb.org/~esr/">http://www.catb.org/~esr/</A>&quot;&gt;Eric S. Raymond&lt;/a&gt;
+</I>&gt;<i> _______________________________________________
+</I>&gt;<i> Gpsd-users mailing list
+</I>&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">Gpsd-users at lists.berlios.de</A>
+</I>&gt;<i> <A HREF="http://lists.berlios.de/mailman/listinfo/gpsd-users">http://lists.berlios.de/mailman/listinfo/gpsd-users</A>
+</I>
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="000820.html">[Gpsd-users] virtual serial ports
+</A></li>
+	<LI>Next message: <A HREF="000825.html">[Gpsd-users] virtual serial ports
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#821">[ date ]</a>
+              <a href="thread.html#821">[ thread ]</a>
+              <a href="subject.html#821">[ subject ]</a>
+              <a href="author.html#821">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

@@ -1,0 +1,120 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] Using garmin devices in new distros (no ttyUSB)?
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2010-May/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Using%20garmin%20devices%20in%20new%20distros%20%28no%20ttyUSB%29%3F&In-Reply-To=%3Calpine.LNX.1.10.1005251628540.17780%40catbert.rellim.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="004495.html">
+   <LINK REL="Next"  HREF="004497.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] Using garmin devices in new distros (no ttyUSB)?</H1>
+    <B>Gary E. Miller</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Using%20garmin%20devices%20in%20new%20distros%20%28no%20ttyUSB%29%3F&In-Reply-To=%3Calpine.LNX.1.10.1005251628540.17780%40catbert.rellim.com%3E"
+       TITLE="[Gpsd-users] Using garmin devices in new distros (no ttyUSB)?">gem at rellim.com
+       </A><BR>
+    <I>Wed May 26 01:35:33 CEST 2010</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="004495.html">[Gpsd-users] Using garmin devices in new distros (no ttyUSB)?
+</A></li>
+        <LI>Next message: <A HREF="004497.html">[Gpsd-users] Using garmin devices in new distros (no ttyUSB)?
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#4496">[ date ]</a>
+              <a href="thread.html#4496">[ thread ]</a>
+              <a href="subject.html#4496">[ subject ]</a>
+              <a href="author.html#4496">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>-----BEGIN PGP SIGNED MESSAGE-----
+Hash: SHA1
+
+Yo Michal!
+
+On Wed, 26 May 2010, Michal Zatloukal wrote:
+
+&gt;<i> &gt; Been there, done that, I do not believe it.  Just use gpsd 2.93 and
+</I>&gt;<i> &gt; garmin_gps.
+</I>&gt;<i> Fair enough. I just built the 2.94 from the project page on karmic. It
+</I>&gt;<i> does sort-of work, meaning the gpsd daemon is getting data [1] (I think),
+</I>
+Yep, those Ubuntu folks seem to just make stuff up.  Not sure if they
+ever listen to anyone.
+
+&gt;<i> but xgps is only displaying [3] in the middle textfield but there's
+</I>&gt;<i> nothing on the graphics. The data seems to be there (in the packet between
+</I>&gt;<i> gpsd and xgps) and I'm not after the graphics anyway, so I'll leave that
+</I>&gt;<i> aside.
+</I>
+Be sure to wait at least 30 mins, the Garmins can be VERY slow to
+acquire the ephemeris and a solid fix.  I just found out that my
+GPS-18/USB was dead due to a bad USB hub, fixing the hub and my GPS-18/USB
+works fine.
+
+&gt;<i>  Anyway, thanks and two minor nitpicks:
+</I>&gt;<i>
+</I>&gt;<i> The INSTALL file says to read data from the tty device [2] - this doesn't
+</I>&gt;<i> work for me. The command from the file fails with &quot;unable to perform all
+</I>&gt;<i> requested operations&quot;. Leaving out the speed setting leaves me with an
+</I>&gt;<i> idling cat. dd also can't read anything from ttyUSB0.
+</I>
+garmin_gps is very special.  None of that cat/dd stuff will work and the
+Garmin USBs are very finicky about handshakes.
+
+&gt;<i> Second, what should I look into if I want the aforementioned Spanner
+</I>&gt;<i> functionality - getting whatever the garmin's putting out in the form of
+</I>&gt;<i> NMEA sentences, preferably in realtime? I'm trying to use this as a
+</I>&gt;<i> Linux-compatible Spanner work-alike for a lab exercise, so as nice as TPV
+</I>&gt;<i> data from gpsd is, I need it in &quot;the broken format&quot;.
+</I>
+I assume you did not look at the output of:
+	gpspipe -r
+
+
+RGDS
+GARY
+- ---------------------------------------------------------------------------
+Gary E. Miller Rellim 109 NW Wilmington Ave., Suite E, Bend, OR 97701
+	<A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">gem at rellim.com</A>  Tel:+1(541)382-8588
+
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v1.4.3 (GNU/Linux)
+
+iD8DBQFL/F7IBmnRqz71OvMRAlhSAKCyzzYLUJXm4qaU7+1X5BzWk8ZX4QCgxyF5
+vKPiCG7ghaN3o5y4BgXLt3I=
+=FA0Z
+-----END PGP SIGNATURE-----
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="004495.html">[Gpsd-users] Using garmin devices in new distros (no ttyUSB)?
+</A></li>
+	<LI>Next message: <A HREF="004497.html">[Gpsd-users] Using garmin devices in new distros (no ttyUSB)?
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#4496">[ date ]</a>
+              <a href="thread.html#4496">[ thread ]</a>
+              <a href="subject.html#4496">[ subject ]</a>
+              <a href="author.html#4496">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

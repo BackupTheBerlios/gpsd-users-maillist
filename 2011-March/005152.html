@@ -1,0 +1,104 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] cant get python to talk to gpsd
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2011-March/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20cant%20get%20python%20to%20talk%20to%20gpsd&In-Reply-To=%3CAANLkTin5ps%2Bo1J05YV3K4ce9rEYytJ2dSoBuYwQhminJ%40mail.gmail.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="005151.html">
+   <LINK REL="Next"  HREF="005153.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] cant get python to talk to gpsd</H1>
+    <B>Thomas Sprinkmeier</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20cant%20get%20python%20to%20talk%20to%20gpsd&In-Reply-To=%3CAANLkTin5ps%2Bo1J05YV3K4ce9rEYytJ2dSoBuYwQhminJ%40mail.gmail.com%3E"
+       TITLE="[Gpsd-users] cant get python to talk to gpsd">thomas.sprinkmeier at gmail.com
+       </A><BR>
+    <I>Fri Mar 18 06:22:49 CET 2011</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="005151.html">[Gpsd-users] cant get python to talk to gpsd
+</A></li>
+        <LI>Next message: <A HREF="005153.html">[Gpsd-users] sending UBX binary commands
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#5152">[ date ]</a>
+              <a href="thread.html#5152">[ thread ]</a>
+              <a href="subject.html#5152">[ subject ]</a>
+              <a href="author.html#5152">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>On 18 March 2011 15:46, TJ &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">jordan.trevor at gmail.com</A>&gt; wrote:
+&gt;&gt;<i> &#160; &#160;session = gps()
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> will use the defaults (local connection), which should work.
+</I>&gt;&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i> it doesn't though. This is what I get when I try that;
+</I>&gt;<i>
+</I>&gt;&gt;&gt;&gt;<i> import gps
+</I>&gt;&gt;&gt;&gt;<i> session = gps()
+</I>&gt;<i> Traceback (most recent call last):
+</I>&gt;<i> &#160;File &quot;&lt;stdin&gt;&quot;, line 1, in &lt;module&gt;
+</I>&gt;<i> TypeError: 'module' object is not callable
+</I>
+that's a python-ism.
+
+The module gps has defines an object called gps.
+
+If you import the module you have to prefix the class with the module name:
+
+$ python
+Python 2.6.5 (r265:79063, Apr 16 2010, 13:09:56)
+[GCC 4.4.3] on linux2
+Type &quot;help&quot;, &quot;copyright&quot;, &quot;credits&quot; or &quot;license&quot; for more information.
+&gt;&gt;&gt;<i> import gps
+</I>&gt;&gt;&gt;<i> session = gps.gps()
+</I>&gt;&gt;&gt;<i>
+</I>
+as a short-cut you can import the names from the module directly:
+
+$ python
+Python 2.6.5 (r265:79063, Apr 16 2010, 13:09:56)
+[GCC 4.4.3] on linux2
+Type &quot;help&quot;, &quot;copyright&quot;, &quot;credits&quot; or &quot;license&quot; for more information.
+&gt;&gt;&gt;<i> from gps import *
+</I>&gt;&gt;&gt;<i> session = gps()
+</I>&gt;&gt;&gt;<i>
+</I>
+Based on your email I thought you'd done the second and the &quot;gps.&quot;
+prefix wasn't needed.
+
+
+Thomas
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="005151.html">[Gpsd-users] cant get python to talk to gpsd
+</A></li>
+	<LI>Next message: <A HREF="005153.html">[Gpsd-users] sending UBX binary commands
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#5152">[ date ]</a>
+              <a href="thread.html#5152">[ thread ]</a>
+              <a href="subject.html#5152">[ subject ]</a>
+              <a href="author.html#5152">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

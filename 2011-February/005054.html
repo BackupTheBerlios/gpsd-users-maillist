@@ -1,0 +1,102 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] Synchronization with a gps
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2011-February/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Synchronization%20with%20a%20gps&In-Reply-To=%3C1298497693.3888.8.camel%40adelie%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="005052.html">
+   <LINK REL="Next"  HREF="005055.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] Synchronization with a gps</H1>
+    <B>Thomas Sprinkmeier</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Synchronization%20with%20a%20gps&In-Reply-To=%3C1298497693.3888.8.camel%40adelie%3E"
+       TITLE="[Gpsd-users] Synchronization with a gps">thomas.sprinkmeier at cohdawireless.com
+       </A><BR>
+    <I>Wed Feb 23 22:48:13 CET 2011</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="005052.html">[Gpsd-users] Synchronization with a gps
+</A></li>
+        <LI>Next message: <A HREF="005055.html">[Gpsd-users] Synchronization with a gps
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#5054">[ date ]</a>
+              <a href="thread.html#5054">[ thread ]</a>
+              <a href="subject.html#5054">[ subject ]</a>
+              <a href="author.html#5054">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>On Wed, 2011-02-23 at 10:37 -0800, Gary E. Miller wrote:
+&gt;<i> -----BEGIN PGP SIGNED MESSAGE-----
+</I>&gt;<i> Hash: SHA1
+</I>&gt;<i> 
+</I>&gt;<i> Yo Damien!
+</I>&gt;<i> 
+</I>&gt;<i> On Wed, 23 Feb 2011, Damien R. wrote:
+</I>&gt;<i> 
+</I>&gt;<i> &gt; I want to synchronize two or more machines with no internet connection and no
+</I>&gt;<i> &gt; wired or wireless connection between them.
+</I>&gt;<i> 
+</I>&gt;<i> That is impossible without SOME sort of connection.
+</I>&gt;<i> 
+</I>&gt;<i> [...]
+</I>&gt;<i> 
+</I>&gt;<i> &gt; I have searched on the list and I read that I should use chrony instead of ntp
+</I>&gt;<i> &gt; for this purpose but it was not explain why.
+</I>&gt;<i> 
+</I>&gt;<i> ntpd is designed to be on a constant network connection with at least 3
+</I>&gt;<i> other servers at all times.  It then uses a voting system to pick the
+</I>&gt;<i> best candidate time.  Your setup does not meet this profile.
+</I>
+We're using GPSD and NTPD to sync some embedded devices, so it is
+possible.
+
+chrony may be a simpler/better solution, but we need very high accuracy
+so we're using NTPD and the GPSs PPS (pulse-per-second) to discipline
+the clock.
+
+I'd suggest you look at chrony, but if your heart is set on NTP read on.
+
+NTP rejects time sources when they jump around (or disagree with other
+sources).
+run &quot;gpspipe -r&quot; and confirm that the timestamps are increasing nicely.
+(we had a problem with a GPS trying to send too much data at 9600, it
+ended up sending sentences out of order which confused GPSD which in
+turn annoyed NTPD).
+
+
+Thomas
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="005052.html">[Gpsd-users] Synchronization with a gps
+</A></li>
+	<LI>Next message: <A HREF="005055.html">[Gpsd-users] Synchronization with a gps
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#5054">[ date ]</a>
+              <a href="thread.html#5054">[ thread ]</a>
+              <a href="subject.html#5054">[ subject ]</a>
+              <a href="author.html#5054">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

@@ -1,0 +1,326 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] Re: Holux GM-210 / sample Java gpsd code
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2005-January/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Re%3A%20Holux%20GM-210%20/%20sample%20Java%20gpsd%20code&In-Reply-To=%3C200501191053.18556.ceo%40phosco.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="000215.html">
+   <LINK REL="Next"  HREF="000217.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] Re: Holux GM-210 / sample Java gpsd code</H1>
+    <B>Mike Calder</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Re%3A%20Holux%20GM-210%20/%20sample%20Java%20gpsd%20code&In-Reply-To=%3C200501191053.18556.ceo%40phosco.com%3E"
+       TITLE="[Gpsd-users] Re: Holux GM-210 / sample Java gpsd code">ceo at phosco.com
+       </A><BR>
+    <I>Wed Jan 19 11:53:18 CET 2005</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="000215.html">[Gpsd-users] Holux GM-210
+</A></li>
+        <LI>Next message: <A HREF="000217.html">[Gpsd-users] Re: Holux GM-210 / sample Java gpsd code
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#216">[ date ]</a>
+              <a href="thread.html#216">[ thread ]</a>
+              <a href="subject.html#216">[ subject ]</a>
+              <a href="author.html#216">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>On Wednesday 19 January 2005 10:06, Dat Phan wrote:
+&gt;<i> This gps receiver didn't come with any documentation and I
+</I>&gt;<i> don't know much about hardware installation on Linux. I don't
+</I>&gt;<i> know how to get the driver to install cleanly. This device also
+</I>&gt;<i> uses pl2303 which I just learned has problems with 2.4.18+
+</I>&gt;<i> kernels, which I guess means I'll need to use an older kernel.
+</I>&gt;<i> Has anyone gotten it to work?
+</I>&gt;<i>
+</I>
+PL2303 doesn't need a driver; it just works with the kernel - unfortunately 
+this was broken with some 2.4 kernels.  You just need to plug it in if you 
+have USB hotplugging working, and find out what device name it was recognised 
+as.
+
+I use the 2.6 kernel, so the problem has gone away or me - Suse has USB 
+hotplugging configured out of the box.  I looked at the end 
+of /var/log/messages after plugging in, and saw that it had been assigned 
+to /dev/usb/ttyUSB0 - so I issued the command
+
+gpsd -p /dev/usb/ttyUSB0
+
+and everything started to work fine immediately.
+
+I want to do more than the gps module will give me, so I've written some Java 
+code to get the data from gpsd.  I attach the code for the gpsd connection 
+below for anyone who may be interested.
+
+-- 
+Clear skies!
+Mike Calder.
+
+Sample gpsd Java code - actual program stuff deleted.  (email may muck about 
+with lines and formatting, but you should be able to sort it.)
+
+
+public class &lt;whatever - I used a JFrame&gt; {
+
+  protected Socket gpsSocket;
+  protected BufferedReader gpsBR;
+  protected BufferedWriter gpsBW;
+  protected String nmeaSentence;
+  protected boolean gpsOK;
+  protected String gpstext;
+  protected String gpsDate;
+  protected String gpsLatitude;
+  protected String gpsLongitude;
+  protected String gpsAltitude;
+  protected String gpsMode;
+  protected String gpsSatCount;
+  protected String gpsErrPos;
+  protected String gpsErrHoriz;
+  protected String gpsErrVert;
+  protected String gpsFix;
+  protected String gpsTrack;
+  protected String gpsSpeed;
+  protected String gpsOnline;
+  
+  protected java.util.Timer timer;
+
+  /** Constructor
+  */
+  public &lt;whatever&gt;() {
+
+    gpsSocket = null;
+    gpsBR = null;
+    gpsOK = false;
+    nmeaSentence = &quot;Unititialised&quot;;
+    gpsDate = &quot;&quot;;
+    gpsLatitude = &quot;&quot;;
+    gpsLongitude = &quot;&quot;;
+    gpsAltitude = &quot;&quot;;
+    gpstext = &quot;&quot;;
+    gpsMode = &quot;&quot;;
+    gpsSatCount = &quot;&quot;;
+    gpsErrPos = &quot;&quot;;
+    gpsErrHoriz = &quot;&quot;;
+    gpsErrVert = &quot;&quot;;
+    gpsFix = &quot;&quot;;
+    gpsTrack = &quot;&quot;;
+    gpsSpeed = &quot;&quot;;
+    gpsOnline = &quot;&quot;;
+    
+    // Stuff to set up GUI here
+
+    connectGPS();
+    timer = new java.util.Timer();
+    timer.schedule(new GPSTask(), 0, 5); // poll every 5 seconds
+
+    this.addWindowListener(new WindowAdapter() {
+      public void windowClosing(WindowEvent e) {
+
+        dispose();
+        quit();
+      }
+    });
+
+  }
+
+    // All actual program code removed
+
+    protected void connectGPS() {
+    
+      if (gpsSocket == null) {
+        try {
+	  gpsSocket = new Socket( InetAddress.getLocalHost(), 2947);	
+	  gpsOK = true;
+	  nmeaSentence = &quot;gpsd Initialised&quot;;
+	  gpsBR = new BufferedReader( new 
+InputStreamReader( gpsSocket.getInputStream()) );
+	  gpsBW = new BufferedWriter( new 
+OutputStreamWriter( gpsSocket.getOutputStream() ) );
+	  gpsBW.write( &quot;w+r-\n&quot; );
+	  gpsBW.flush();
+	} catch(Exception e ) {
+	  gpsOK = false;
+	  nmeaSentence = &quot;gpsd socket failure &quot; + e;
+	}  
+      }
+      
+      System.out.println( &quot;Connect GPS &quot; + gpsOK + &quot;\n&quot;);
+    }  
+    
+    protected void pollGPS() {
+    
+      if (gpsBR == null) return;
+      
+      try {
+        while  (gpsBR.ready()) {
+          nmeaSentence = gpsBR.readLine();
+	  gpsOK = true;
+	  gpsDecode();
+        }
+      } catch(IOException ioe) {
+        nmeaSentence = &quot;I/O Error &quot; + ioe;
+	gpsOK = false;
+      }
+      
+    }
+    
+    protected void gpsDecode() {
+      String[] toks;
+      String[]subtoks;
+      char ctl;
+      int i;
+      int n;
+    
+      if (nmeaSentence.startsWith(&quot;GPSD&quot;)) {
+        toks = nmeaSentence.split(&quot;,&quot;);
+	n = toks.length;
+	for (i=1;i&lt;n;i++) {
+	  ctl = toks[i].charAt(0);
+	  if (ctl == 'A') {
+	    // Altitude
+	    gpsAltitude = (toks[i].substring(1)).trim();
+	  } else if (ctl == 'D') {
+	    // date and time
+	    gpsDate = (toks[i].substring(1)).trim();
+	  } else if (ctl == 'M') {
+	    // mode
+	    ctl = toks[i].charAt(2);
+	    if (ctl == '0') {
+	      gpsMode = &quot;Unknown&quot;;
+	    } else if (ctl == '1') {
+	      gpsMode = &quot;No fix&quot;;
+	    } else if (ctl == '2') {
+	      gpsMode = &quot;2D&quot;;
+	    } else if (ctl == '3') {
+	      gpsMode = &quot;3D&quot;;
+	    }
+	  } else if (ctl == 'P') {
+	    // Position
+	    toks[i] = (toks[i].substring(1)).trim();
+            subtoks = toks[i].split(&quot; &quot;);
+	    gpsLatitude = subtoks[0];
+	    gpsLongitude = subtoks[1];
+	  } else if (ctl == 'Q') {
+	    // Satellite count and position error
+	    toks[i] = (toks[i].substring(1)).trim();
+            subtoks = toks[i].split(&quot; &quot;);
+	    gpsSatCount = subtoks[0];
+	    gpsErrPos = subtoks[1];
+	    gpsErrHoriz = subtoks[2];
+	    gpsErrVert = subtoks[3];
+	  } else if (ctl == 'S') {
+	    // DGPS - rather academic for UK
+	    ctl = toks[i].charAt(2);
+	    if (ctl == '0') {
+	      gpsFix = &quot;No fix&quot;;
+	    } else if (ctl == '1') {
+	      gpsFix = &quot;Fix&quot;;
+	    } else if (ctl == '2') {
+	      gpsFix = &quot;DGPS fix&quot;;
+	    }
+	  } else if (ctl == 'T') {
+	    // Track
+	    gpsTrack = (toks[i].substring(1)).trim();
+	  } else if (ctl == 'V') {
+	    // Speed over Ground
+	    gpsSpeed = (toks[i].substring(1)).trim();
+	  } else if (ctl == 'X') {
+	    // GPS online
+	    ctl = toks[i].charAt(2);
+	    if (ctl == '0') {
+	      gpsOnline = &quot;Offline&quot;;
+	    } else if (ctl == '1') {
+	      gpsOnline = &quot;Online&quot;;
+	    }  
+	  } else if (ctl == 'Y') {
+	    // Satsused count = n, n off sets.
+	    // PRN (id number), elevation, azimuth, sig strength in decibels, 1/0 = 
+used or not used in fix
+	    // e.g. GPSD:  Y=8:11 78 111 33 1:20 64 224 36 1:1 44 91 36 1:7 30 307 0 
+0:14 2343 0 0:28 22 264 0 0:19 18 154 34 1:23 8 177 0 0:
+
+	    System.out.println( &quot;GPSD:  &quot; + toks[i] + &quot;\n&quot;);
+	  }
+	}
+      }
+      annunciator.setGPSText();
+      repaint();
+    }
+    
+    class GPSTask extends TimerTask {
+        public void run() {
+	  pollGPS();
+        }
+    }
+  
+  /**
+  Annunciator Panel
+  */
+  class AnnuncPanel extends JPanel {
+    String annunciatortext;
+    private AnnuncPanel() {
+      setAnnunciatorText();
+    }
+
+    public void paintComponent(Graphics g) {
+      super.paintComponent(g);
+
+      Graphics2D g2D = (Graphics2D)g;
+      g2D.setBackground( new Color( 180, 135, 200) );
+      g2D.drawString( annunciatortext, 10, 15 );
+      g2D.drawString( gpstext, 10, 35 );
+
+    }
+
+    protected void setAnnunciatorText() {
+      annunciatortext = new String( &quot;Xscale &quot; + xscale + &quot;  Yscale &quot; +
+                       yscale + &quot;   &quot; +  errmsg + &quot;     &quot; + promptmsg );
+      repaint();
+    }
+    
+    protected void setGPSText() {
+      gpstext = new String( &quot;Date &quot; + gpsDate + &quot;  Longitude &quot; +
+                       gpsLongitude + &quot;  Latitude&quot; +  gpsLatitude + &quot;  
+Altitude&quot; + gpsAltitude +
+		       &quot;  Error &quot; + gpsErrPos + &quot;  Track &quot; + gpsTrack + &quot;  Speed &quot; + 
+gpsSpeed );
+    }
+
+  
+  }
+  
+}
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="000215.html">[Gpsd-users] Holux GM-210
+</A></li>
+	<LI>Next message: <A HREF="000217.html">[Gpsd-users] Re: Holux GM-210 / sample Java gpsd code
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#216">[ date ]</a>
+              <a href="thread.html#216">[ thread ]</a>
+              <a href="subject.html#216">[ subject ]</a>
+              <a href="author.html#216">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

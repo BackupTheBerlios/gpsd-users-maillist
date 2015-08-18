@@ -1,0 +1,151 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] Looks like this should be in gpsd-2.8
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2005-January/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Looks%20like%20this%20should%20be%20in%20gpsd-2.8&In-Reply-To=%3C1105739186.25141.452.camel%40owen.vsd.titan.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="000208.html">
+   <LINK REL="Next"  HREF="000210.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] Looks like this should be in gpsd-2.8</H1>
+    <B>Owen, Wallace</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Looks%20like%20this%20should%20be%20in%20gpsd-2.8&In-Reply-To=%3C1105739186.25141.452.camel%40owen.vsd.titan.com%3E"
+       TITLE="[Gpsd-users] Looks like this should be in gpsd-2.8">Owen at vsd.titan.com
+       </A><BR>
+    <I>Fri Jan 14 22:46:26 CET 2005</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="000208.html">[Gpsd-users] Announcing release 2.7 of gpsd
+</A></li>
+        <LI>Next message: <A HREF="000210.html">[Gpsd-users] Looks like this should be in gpsd-2.8
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#209">[ date ]</a>
+              <a href="thread.html#209">[ thread ]</a>
+              <a href="subject.html#209">[ subject ]</a>
+              <a href="author.html#209">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>I don't have commit privileges, and I didn't see this in the release
+notes for 2.7, so I'm posting this to the list.
+
+
+  // Wally
+
+Patch:
+
+diff -r -u gpsd-2.6/gpsd.c gpsd-2.6-modified/gpsd.c
+--- gpsd-2.6/gpsd.c     2004-12-31 10:40:34.000000000 -0800
++++ gpsd-2.6-modified/gpsd.c    2005-01-14 13:42:48.857045592 -0800
+@@ -494,7 +494,7 @@
+ 
+     FD_ZERO(&amp;all_fds); FD_ZERO(&amp;nmea_fds); FD_ZERO(&amp;watcher_fds);
+     FD_SET(msock, &amp;all_fds);
+-    nfds = getdtablesize();
++    nfds = FD_SETSIZE;
+ 
+     session = gpsd_init(gpstype, dgpsserver);
+     if (gpsd_speed)
+
+Context:
+&gt;<i> From: <A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">dalen.kruse at blacklion.org</A>
+</I>&gt;<i> To: <A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">gpsd-users at lists.berlios.de</A>
+</I>&gt;<i> Subject: Re: [Gpsd-users] select: Invalid argument
+</I>&gt;<i> Date: Wed, 12 Jan 2005 12:07:47 -0700
+</I>&gt;<i> 
+</I>&gt;<i> Thanks, that seems to work.  Now that I see the solution, I remember making a
+</I>&gt;<i> similar change when I was working with gpsd v1.10.  I don't remember the value
+</I>&gt;<i> returned by getdtablesize(), but it's unusable on my system unless I make your
+</I>&gt;<i> change.
+</I>&gt;<i> 
+</I>&gt;<i> Thanks again,
+</I>&gt;<i> 
+</I>&gt;<i> Dalen
+</I>&gt;<i> 
+</I>&gt;<i> 
+</I>&gt;<i> Quoting &quot;Owen, Wallace&quot; &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">Owen at vsd.titan.com</A>&gt;:
+</I>&gt;<i> 
+</I>&gt;<i> &gt; diff -r -u gpsd-2.6/gpsd.c gpsd-2.6-modified/gpsd.c
+</I>&gt;<i> &gt; --- gpsd-2.6/gpsd.c     2004-12-31 10:40:34.000000000 -0800
+</I>&gt;<i> &gt; +++ gpsd-2.6-modified/gpsd.c    2005-01-12 09:53:01.640614056 -0800
+</I>&gt;<i> &gt; @@ -494,7 +494,7 @@
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt;      FD_ZERO(&amp;all_fds); FD_ZERO(&amp;nmea_fds); FD_ZERO(&amp;watcher_fds);
+</I>&gt;<i> &gt;      FD_SET(msock, &amp;all_fds);
+</I>&gt;<i> &gt; -    nfds = getdtablesize();
+</I>&gt;<i> &gt; +    nfds = FD_SETSIZE;
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt;      session = gpsd_init(gpstype, dgpsserver);
+</I>&gt;<i> &gt;      if (gpsd_speed)
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt;   // Wally
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; On Wed, 2005-01-12 at 08:40, <A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">dalen.kruse at blacklion.org</A> wrote:
+</I>&gt;<i> &gt; &gt; I'm have some problems running gpsd.  I'm running this on Solaris 9 on a
+</I>&gt;<i> &gt; SunFire
+</I>&gt;<i> &gt; &gt; V120 machine.  Here's the output that I'm getting:
+</I>&gt;<i> &gt; &gt;
+</I>&gt;<i> &gt; &gt; gpsd: launching (Version 2.6)
+</I>&gt;<i> &gt; &gt; gpsd: listening on port 2947
+</I>&gt;<i> &gt; &gt; gpsd: open GPS data source at /dev/term/b
+</I>&gt;<i> &gt; &gt; gpsd: setting speed 4800, 8 bits, no parity
+</I>&gt;<i> &gt; &gt; gpsd: gpsd_activate: opened GPS (4)
+</I>&gt;<i> &gt; &gt; gpsd: select: Invalid argument
+</I>&gt;<i> &gt; &gt;
+</I>&gt;<i> &gt; &gt; After that, gpsd just stops.  Here's the command that I'm using to run
+</I>&gt;<i> &gt; gpsd:
+</I>&gt;<i> &gt; &gt; gpsd -p /dev/term/b -s 4800 -D 2 -T n -S 2947 -n
+</I>&gt;<i> &gt; &gt;
+</I>&gt;<i> &gt; &gt; I tried looking at the source code, but I'm not really sure what's going on
+</I>&gt;<i> &gt; at
+</I>&gt;<i> &gt; &gt; this point in the code.  If anyone can give me any pointers, I'd appreciate
+</I>&gt;<i> &gt; it.
+</I>&gt;<i> &gt; &gt;  I can also try to provide more debug data if that would be helpful.
+</I>&gt;<i> &gt; &gt;
+</I>&gt;<i> &gt; &gt; Thanks,
+</I>&gt;<i> &gt; &gt;
+</I>&gt;<i> &gt; &gt; Dalen Kruse
+</I>&gt;<i> &gt; &gt;
+</I>&gt;<i> &gt; &gt;___________________________________
+</I>&gt;<i> Gpsd-users mailing list
+</I>&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">Gpsd-users at lists.berlios.de</A>
+</I>&gt;<i> <A HREF="http://lists.berlios.de/mailman/listinfo/gpsd-users">http://lists.berlios.de/mailman/listinfo/gpsd-users</A>
+</I>-- 
+Your eyes are weary from staring at the CRT.  You feel sleepy.  Notice
+how restful it is to watch the cursor blink.  Close your eyes.  The   
+opinions stated above are yours.  You cannot imagine why you ever felt
+otherwise.
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="000208.html">[Gpsd-users] Announcing release 2.7 of gpsd
+</A></li>
+	<LI>Next message: <A HREF="000210.html">[Gpsd-users] Looks like this should be in gpsd-2.8
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#209">[ date ]</a>
+              <a href="thread.html#209">[ thread ]</a>
+              <a href="subject.html#209">[ subject ]</a>
+              <a href="author.html#209">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

@@ -1,0 +1,157 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] NTP time sync problem
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2010-November/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20NTP%20time%20sync%20problem&In-Reply-To=%3C39189D563C2E9145952369A51775BA50FBC631%40KOL-SLK-MBX01.wipro.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="004725.html">
+   <LINK REL="Next"  HREF="004726.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] NTP time sync problem</H1>
+    <B>souvik.datta at wipro.com</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20NTP%20time%20sync%20problem&In-Reply-To=%3C39189D563C2E9145952369A51775BA50FBC631%40KOL-SLK-MBX01.wipro.com%3E"
+       TITLE="[Gpsd-users] NTP time sync problem">souvik.datta at wipro.com
+       </A><BR>
+    <I>Wed Nov  3 06:58:54 CET 2010</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="004725.html">[Gpsd-users] NTP time sync problem
+</A></li>
+        <LI>Next message: <A HREF="004726.html">[Gpsd-users] Bugs in Trimble Driver
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#4728">[ date ]</a>
+              <a href="thread.html#4728">[ thread ]</a>
+              <a href="subject.html#4728">[ subject ]</a>
+              <a href="author.html#4728">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hello Gary,
+
+We have made following changes in the gpsd_classify() of &quot;serial.c&quot;
+file.
+
+1.	Under else if(S_ISCHR(sb.st_mode)) case devtype has been set to
+source_rs232 when the devmajor is 253 as the high speed driver major
+number is 253 in our case. 
+The code snippet is given below:
+else if(S_ISCHR(sb.st_mode))
+{
+                ....
+.....
+Else if(devmajor == 253)
+{
+                 devtype = source_rs232;
+}
+}
+This causes the following output when we run GPSD in our target:
+#gpsd -N -n -D 2 /dev/ttyHS1
+gpsd: launching (Version 2.95)
+gpsd: can't create IPv6 socket
+gpsd: listening on port gpsd
+gpsd: running with effective group ID 0
+gpsd: running with effective user ID 0
+gpsd: opening GPS data source type 2 at '/dev/ttyHS1'
+gpsd: speed 9600, 8N1
+gpsd: speed 9600, 8O1
+gpsd: speed 9600, 8N1
+gpsd: gpsd_activate(): opened GPS (fd 4)
+
+Telnet at 2947 port causes the following output:
+# telnet 127.0.0.1 2947
+{&quot;class&quot;:&quot;VERSION&quot;,&quot;release&quot;:&quot;2.95&quot;,&quot;rev&quot;:&quot;2010-11-03T04:39:48&quot;,&quot;proto_m
+ajor&quot;:3,
+&quot;proto_minor&quot;:3}
+gpsd: speed 19200, 8N1
+gpsd: speed 38400, 8N1
+
+We observe that the speed is changing. 
+
+Can you please give your comment on the above console logs? Kindly note
+that our GPS receiver at present is kept indoor.
+
+Regards,
+Souvik 
+
+-----Original Message-----
+From: Gary E. Miller [mailto:<A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">gem at rellim.com</A>] 
+Sent: Wednesday, November 03, 2010 1:28 AM
+To: Souvik Datta (WT01 - PES-Mobile-Auto-CE Practice)
+Cc: Indrajit Rakshit (WT01 - Manufacturing); <A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">Gpsd-users at lists.berlios.de</A>
+Subject: RE: [Gpsd-users] NTP time sync problem
+
+-----BEGIN PGP SIGNED MESSAGE-----
+Hash: SHA1
+
+Yo Souvik!
+
+On Tue, 2 Nov 2010, <A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">souvik.datta at wipro.com</A> wrote:
+
+&gt;<i> @Gary, Here are the details of the /dev/ttyHS1 :
+</I>&gt;<i>
+</I>&gt;<i> crw-rw---- 1 root dialout 253, 1 Jan  1 00:00 ttyHS1
+</I>
+Interesting.
+
+&gt;<i> There is ttyHS2 which as per schematic is connected to a BT chipset.
+</I>&gt;<i> Are you suspecting some issue in hardware connectivity?
+</I>
+Nope, just never seen that before.  Looks OK to me.
+
+RGDS
+GARY
+-
+------------------------------------------------------------------------
+---
+Gary E. Miller Rellim 109 NW Wilmington Ave., Suite E, Bend, OR 97701
+	<A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">gem at rellim.com</A>  Tel:+1(541)382-8588
+
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v1.4.3 (GNU/Linux)
+
+iD8DBQFM0G1UBmnRqz71OvMRAqXAAKCQaBlGe0N04MQ99kxygpVZJNk04QCg3Lgk
+ANb3NYx8dOrhqwoylksfzoM=
+=act+
+-----END PGP SIGNATURE-----
+
+
+Please do not print this email unless it is absolutely necessary. 
+
+The information contained in this electronic message and any attachments to this message are intended for the exclusive use of the addressee(s) and may contain proprietary, confidential or privileged information. If you are not the intended recipient, you should not disseminate, distribute or copy this e-mail. Please notify the sender immediately and destroy all copies of this message and any attachments. 
+
+WARNING: Computer viruses can be transmitted via email. The recipient should check this email and any attachments for the presence of viruses. The company accepts no liability for any damage caused by any virus transmitted by this email. 
+
+www.wipro.com
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="004725.html">[Gpsd-users] NTP time sync problem
+</A></li>
+	<LI>Next message: <A HREF="004726.html">[Gpsd-users] Bugs in Trimble Driver
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#4728">[ date ]</a>
+              <a href="thread.html#4728">[ thread ]</a>
+              <a href="subject.html#4728">[ subject ]</a>
+              <a href="author.html#4728">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

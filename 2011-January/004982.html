@@ -1,0 +1,119 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] Compatibility warning for GPSD client projects
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2011-January/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Compatibility%20warning%20for%20GPSD%20client%20projects&In-Reply-To=%3C20110129190411.5AADF20C279%40snark.thyrsus.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="004979.html">
+   <LINK REL="Next"  HREF="004983.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] Compatibility warning for GPSD client projects</H1>
+    <B>Eric Raymond</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Compatibility%20warning%20for%20GPSD%20client%20projects&In-Reply-To=%3C20110129190411.5AADF20C279%40snark.thyrsus.com%3E"
+       TITLE="[Gpsd-users] Compatibility warning for GPSD client projects">esr at snark.thyrsus.com
+       </A><BR>
+    <I>Sat Jan 29 20:04:11 CET 2011</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="004979.html">[Gpsd-users] Trimble Thunderbolt Parity (8N1)
+</A></li>
+        <LI>Next message: <A HREF="004983.html">[Gpsd-users] [Roadmap-general] Compatibility warning for GPSD client projects
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#4982">[ date ]</a>
+              <a href="thread.html#4982">[ thread ]</a>
+              <a href="subject.html#4982">[ subject ]</a>
+              <a href="author.html#4982">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Another GPSD release is coming up, with support for many new device types
+and tasty features including the ability to report subframe data and noise
+statistics. Also, the requirement for clients to define a gpsd_report() 
+hook is gone.
+
+Sadly, this release also brings with it an ABI and API compatibility
+break in the C client library.  Yes, we know we've had too many binary
+compatibility breaks in the past, and have been striving mightily to
+avoid them over the last two years after one client maintainer
+justifiably slapped us around about the problems they cause.  But
+we've been defeated in our good intentions by GLONASS (the Russian
+satnav system), support for which has required us to increase the
+maximum allowed number of satellite channels.
+
+Since the ABI had to change incompatibly, that opened a window.  We
+have had a few improvements planned to the client API - things like
+changing gps_open() to use a specified fix buffer rather than
+returning an internally allocated one, making re-entrant code
+possible.  Rather than spread these out over several releases, causing
+pain each time, we're doing them all at once in hopes we can stay
+forward-compatible without a break for the next few years.
+
+Summary of changes:
+
+gps_open() now takes three arguments instead of two, as previously noted.  
+
+gps_poll() is renamed to gps_read().  The 'gps_poll()' name should be
+considered reserved, as we may have plans for it relating to the new
+semi-experimental ?POLL; command in the wire protocol.
+
+gps_waiting() is now documented and officially available.
+
+The set_raw_hook feature is gone.  Instead, code can just look at the 
+response buffer after a read.
+
+GPSD_API_MAJOR_VERSION has been bumped, so you will be able to
+conditionalize your C code properly. As usual, cgps and gpxlogger
+provide live usage examples and the entrty points are fully
+documented.
+
+At the wire-protocol level, timestamps in TPV and SKY objects are now
+ISO 8601 timestamp strings rather than floats expressing seconds since
+Unix epoch. The minor protocol version number in the VERSION response
+has been bumped accordingly. 
+
+?POLL; is a new facility for requesting a state dump from the daemon.
+The response is a pile of hair that aggregates TPV and SKY
+objects. Not yet supported in the C client API and, because of C static
+typing and choices made to keep the client JSON parser small, may
+never be.  It's intended for the use of client bindings in Python
+and Perl and other dynamic languages.
+-- 
+		&lt;a href=&quot;<A HREF="http://www.catb.org/~esr/">http://www.catb.org/~esr/</A>&quot;&gt;Eric S. Raymond&lt;/a&gt;
+
+I don't like the idea that the police department seems bent on keeping
+a pool of unarmed victims available for the predations of the criminal
+class.
+         -- David Mohler, 1989, on being denied a carry permit in NYC
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="004979.html">[Gpsd-users] Trimble Thunderbolt Parity (8N1)
+</A></li>
+	<LI>Next message: <A HREF="004983.html">[Gpsd-users] [Roadmap-general] Compatibility warning for GPSD client projects
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#4982">[ date ]</a>
+              <a href="thread.html#4982">[ thread ]</a>
+              <a href="subject.html#4982">[ subject ]</a>
+              <a href="author.html#4982">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

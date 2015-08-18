@@ -1,0 +1,167 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] Fwd: NTP Problems
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2006-August/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Fwd%3A%20NTP%20Problems&In-Reply-To=%3C7e272c5c0608301511n2d83a942g3c87ed1de1f443dd%40mail.gmail.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="001904.html">
+   <LINK REL="Next"  HREF="001907.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] Fwd: NTP Problems</H1>
+    <B>Karl von Muller</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Fwd%3A%20NTP%20Problems&In-Reply-To=%3C7e272c5c0608301511n2d83a942g3c87ed1de1f443dd%40mail.gmail.com%3E"
+       TITLE="[Gpsd-users] Fwd: NTP Problems">vertigok at gmail.com
+       </A><BR>
+    <I>Thu Aug 31 00:11:08 CEST 2006</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="001904.html">[Gpsd-users] Fwd: NTP Problems
+</A></li>
+        <LI>Next message: <A HREF="001907.html">[Gpsd-users] Fwd: NTP Problems
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1906">[ date ]</a>
+              <a href="thread.html#1906">[ thread ]</a>
+              <a href="subject.html#1906">[ subject ]</a>
+              <a href="author.html#1906">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Well, I tried making a little patch for the gpsd_reports...
+
+<A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">vert at mvk</A> /space/bk-gum $ cat gpsd/gpsd-shm-report.patch
+--- gpsd-2.30/gpsd.c.orig       2005-09-14 14:27:41.000000000 +1000
++++ gpsd-2.30/gpsd.c    2006-08-31 07:44:20.000000000 +1000
+@@ -1187,8 +1187,11 @@
+
+ #ifdef NTPSHM_ENABLE
+     if (getuid() == 0) {
++       gpsd_report (1, &quot;Attempting to start ntpshm.\n&quot;);
+        (void)nice(-10);                /* for precise timekeeping increase
+priority */
+        (void)ntpshm_init(&amp;context, nowait);
++    } else {
++       gpsd_report (2, &quot;Unable to start ntpshm.  gpsd must run as
+root.\n&quot;);
+     }
+ #endif /* NTPSHM_ENABLE */
+
+but then i started getting compile errors, so i pulled the patch out and im
+still getting them. very weird as i havent changed anything else...
+
+(cd .libs &amp;&amp; rm -f libgps.la &amp;&amp; ln -s ../libgps.la libgps.la)
+/bin/sh ./libtool --mode=link --tag=CC
+/space/gumstix-buildroot-200/build_arm_nofpu/staging_dir/bin/arm-linux-uclibc-gcc
+-Os -pipe -Os -march=armv5te -mtune=xscale -Wa,-mcpu=xscale  -Wall
+-Wcast-align -Wmissing-declarations -Wmissing-prototypes -Wstrict-prototypes
+-Wpointer-arith -Wreturn-type -D_GNU_SOURCE   -lm  -o gpsd  gpsd_dbus.o
+gpsd.o  -lm libgps.la -lm -lpthread
+/space/gumstix-buildroot-200/build_arm_nofpu/staging_dir/bin/arm-linux-uclibc-gcc
+-Os -pipe -Os -march=armv5te -mtune=xscale -Wa,-mcpu=xscale -Wall
+-Wcast-align -Wmissing-declarations -Wmissing-prototypes -Wstrict-prototypes
+-Wpointer-arith -Wreturn-type -D_GNU_SOURCE -o .libs/gpsd gpsd_dbus.o gpsd.o
+./.libs/libgps.so -lc -lnsl -lm -lpthread
+arm-linux-uclibc-gcc: ./.libs/libgps.so: No such file or directory
+make[1]: *** [gpsd] Error 1
+make[1]: Leaving directory
+`/space/gumstix-buildroot-200/build_arm_nofpu/gpsd-2.30'
+make: *** [/space/gumstix-buildroot-200/build_arm_nofpu/gpsd-2.30/gpsd]
+Error 2
+
+
+On 8/31/06, Gary E. Miller &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">gem at rellim.com</A>&gt; wrote:
+&gt;<i>
+</I>&gt;<i> -----BEGIN PGP SIGNED MESSAGE-----
+</I>&gt;<i> Hash: SHA1
+</I>&gt;<i>
+</I>&gt;<i> Yo Karl!
+</I>&gt;<i>
+</I>&gt;<i> On Wed, 30 Aug 2006, Karl von Muller wrote:
+</I>&gt;<i>
+</I>&gt;<i> &gt; NTP SHM                 : yes
+</I>&gt;<i> &gt; NTP PPS                 : yes
+</I>&gt;<i>
+</I>&gt;<i> That shows NTP support compiled in.
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i> &gt; mq_notify(2, ptrace: umoven: Input/output error
+</I>&gt;<i> &gt; {...})                     = 3
+</I>&gt;<i> &gt; SYS_294(0x3, 0x1, 0x2, 0xbe8db914, 0x4) = 0
+</I>&gt;<i> &gt; mq_getsetattr(3, {mq_flags=O_RDWR|O_DIRECT|O_LARGEFILE|0x83080000,
+</I>&gt;<i> &gt; mq_maxmsg=0, mq_msgsize=0, mq_curmsg=0}, ptrace: umoven: Input/output
+</I>&gt;<i> error
+</I>&gt;<i> &gt; {...}) = 0
+</I>&gt;<i> &gt; waitid(0x3 /* P_??? */, 5, ptrace: umoven: Input/output error
+</I>&gt;<i> &gt; {???}, __WCLONE|__WNOTHREAD|0x1e8db914, NULL) = 0
+</I>&gt;<i>
+</I>&gt;<i> Not sure what the above are, but does not look good.
+</I>&gt;<i>
+</I>&gt;<i> &gt; getuid()                                = 0
+</I>&gt;<i> &gt; getegid()                               = 0
+</I>&gt;<i> &gt; geteuid()                               = 0
+</I>&gt;<i>
+</I>&gt;<i> Good, you are running as root.
+</I>&gt;<i>
+</I>&gt;<i> &gt; rt_sigaction(SIGHUP, {0x9e90, [HUP], SA_RESTART|0x4000000}, {SIG_DFL},
+</I>&gt;<i> 8) =
+</I>&gt;<i> &gt; 0
+</I>&gt;<i>
+</I>&gt;<i> But the ntpshm_init() does not seem to be called.
+</I>&gt;<i>
+</I>&gt;<i> Try adding some gpsd_report()s to the call to ntpshm_init() in gpsd.c
+</I>&gt;<i> and in ntpshm.c to see why the shared memory funcs are not being called.
+</I>&gt;<i>
+</I>&gt;<i> Have you tried the currrent SVN code?  If you can pull that code I could
+</I>&gt;<i> add
+</I>&gt;<i> some debugging code for you.
+</I>&gt;<i>
+</I>&gt;<i> RGDS
+</I>&gt;<i> GARY
+</I>&gt;<i> -
+</I>&gt;<i> ---------------------------------------------------------------------------
+</I>&gt;<i> Gary E. Miller Rellim 20340 Empire Blvd, Suite E-3, Bend, OR 97701
+</I>&gt;<i>         <A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">gem at rellim.com</A>  Tel:+1(541)382-8588
+</I>&gt;<i>
+</I>&gt;<i> -----BEGIN PGP SIGNATURE-----
+</I>&gt;<i> Version: GnuPG v1.4.3 (GNU/Linux)
+</I>&gt;<i>
+</I>&gt;<i> iD8DBQFE9dvQ8KZibdeR3qURApRmAKDXAHSc/3HOkM6/MzHq5qYH7deuwACggE9H
+</I>&gt;<i> GHwAxuUvqiGRKwQnj33WjoI=
+</I>&gt;<i> =ATxA
+</I>&gt;<i> -----END PGP SIGNATURE-----
+</I>&gt;<i>
+</I>&gt;<i>
+</I>-------------- next part --------------
+An HTML attachment was scrubbed...
+URL: &lt;<A HREF="https://lists.berlios.de/pipermail/gpsd-users/attachments/20060831/5427847d/attachment.html">https://lists.berlios.de/pipermail/gpsd-users/attachments/20060831/5427847d/attachment.html</A>&gt;
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="001904.html">[Gpsd-users] Fwd: NTP Problems
+</A></li>
+	<LI>Next message: <A HREF="001907.html">[Gpsd-users] Fwd: NTP Problems
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1906">[ date ]</a>
+              <a href="thread.html#1906">[ thread ]</a>
+              <a href="subject.html#1906">[ subject ]</a>
+              <a href="author.html#1906">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

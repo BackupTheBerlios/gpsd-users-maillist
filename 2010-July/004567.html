@@ -1,0 +1,235 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] Garmin Geko 201 + serial to USB
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2010-July/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Garmin%20Geko%20201%20%2B%20serial%20to%20USB&In-Reply-To=%3CAANLkTinquZY2IInF9AfzOw-LLFdafoKKQ6sxujA1JbkB%40mail.gmail.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="004583.html">
+   <LINK REL="Next"  HREF="004568.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] Garmin Geko 201 + serial to USB</H1>
+    <B>Marcel Hecko</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Garmin%20Geko%20201%20%2B%20serial%20to%20USB&In-Reply-To=%3CAANLkTinquZY2IInF9AfzOw-LLFdafoKKQ6sxujA1JbkB%40mail.gmail.com%3E"
+       TITLE="[Gpsd-users] Garmin Geko 201 + serial to USB">maco at blava.net
+       </A><BR>
+    <I>Tue Jul  6 20:05:04 CEST 2010</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="004583.html">[Gpsd-users] Error estimates not being displayed
+</A></li>
+        <LI>Next message: <A HREF="004568.html">[Gpsd-users] Garmin Geko 201 + serial to USB
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#4567">[ date ]</a>
+              <a href="thread.html#4567">[ thread ]</a>
+              <a href="subject.html#4567">[ subject ]</a>
+              <a href="author.html#4567">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi all,
+I do have a slight problem using the latest 2.94 gpsd with Geko 201,
+actually I have also tried it with the package from Ubuntu 10.04 and
+the results are the same.
+
+The device is in DEMO mode connected via serial to USB cable to the
+laptop. The serial to usb device is recognized as /dev/ttyUSB0 and
+works like a charm with other devices. Now when I set the GPS to NMEA
+the gpsd starts emiting data (-n -N), however none of the data is
+recognized by xgps. The Geko's FW is 2.50. I have had this working
+couple of years ago, however I always seen to work around all the
+problems with gpsd and get the information to me, however this time
+I'm kind of stuck.
+
+The dump is attached (please mind that this is Garmins DEMO mode):
+
+
+Thanks for your support,
+Marcel
+
+
+-- 
+
+------------------------------------------------------
+This message is not intended to have
+contractual effect
+------------------------------------------------------
+-------------- next part --------------
+gpsd: launching (Version 2.94)
+gpsd: listening on port gpsd
+gpsd: running with effective group ID 0
+gpsd: running with effective user ID 0
+gpsd: opening GPS data source type 3 at '/dev/ttyUSB0'
+gpsd: speed 4800, 8N1
+gpsd: Garmin: garmin_gps Linux USB module not active.
+gpsd: speed 9600, 8O1
+gpsd: speed 4800, 8N1
+gpsd: gpsd_activate(): opened GPS (fd 5)
+gpsd: NTPD ntpd_link_activate: 0
+gpsd: /dev/ttyUSB0 identified as type Generic NMEA (0.213486 sec @ 4800bps)
+gpsd: =&gt; Probing device subtype 0
+gpsd: GPGSV field 3 value of 8 != actual count 4
+gpsd: GSV: Satellite data OK (2 of 2).
+gpsd: LOS matrix is singular, can't calculate DOPs - source '/dev/ttyUSB0'
+gpsd: modeling errors: mode=0, masks={ONLINE|SATELLITE|DEVICE|PACKET}
+gpsd: =&gt; Probing device subtype 1
+gpsd: GPGLL: registers fractional time 81122.00
+gpsd: can't use GLL time until after ZDA or RMC has supplied a year.
+gpsd: GLL: hhmmss=081122 lat=nan lon=nan mode=0 status=0 mask={ERROR}
+gpsd: modeling errors: mode=0, masks={ONLINE|ERROR|PACKET|CLEAR}
+gpsd: =&gt; Probing device subtype 2
+gpsd: unknown sentence: &quot;$GPBOD,,T,,M,,*47\x0d\x0a&quot;
+gpsd: modeling errors: mode=0, masks={ONLINE|PACKET}
+gpsd: =&gt; Probing device subtype 3
+gpsd: PGRME: epx=22.02 epy=22.02 epv=46.72 mask={HERR|VERR|PERR}
+gpsd: modeling errors: mode=0, masks={ONLINE|HERR|VERR|PERR|PACKET}
+gpsd: =&gt; Probing device subtype 4
+gpsd: unknown sentence: &quot;$PGRMZ,-125,f,3*30\x0d\x0a&quot;
+gpsd: modeling errors: mode=0, masks={ONLINE|PACKET}
+gpsd: =&gt; Probing device subtype 5
+gpsd: unknown sentence: &quot;$GPRTE,1,1,c,*37\x0d\x0a&quot;
+gpsd: modeling errors: mode=0, masks={ONLINE|PACKET}
+gpsd: =&gt; Probing device subtype 6
+gpsd: RMC: ddmmyy=110709 hhmmss=081124 lat=nan lon=nan speed=nan track=nan mode=0 status=0 mask={ONLINE}
+gpsd: modeling errors: mode=0, masks={ONLINE|PACKET}
+gpsd: =&gt; Probing device subtype 7
+gpsd: unknown sentence: &quot;$GPRMB,V,,,,,,,,,,,,A,S*0E\x0d\x0a&quot;
+gpsd: modeling errors: mode=0, masks={ONLINE|PACKET}
+gpsd: =&gt; Probing device subtype 8
+gpsd: GPGGA: registers fractional time 81124.00
+gpsd: can't use GGA time until after ZDA or RMC has supplied a year.
+gpsd: GGA: hhmmss=081124 lat=43.08 lon=16.18 alt=-38.00 mode=3 status=8 mask={LATLON|ALTITUDE|STATUS|MODE}
+gpsd: modeling errors: mode=3, masks={ONLINE|LATLON|ALTITUDE|STATUS|MODE|PACKET|CLEAR}
+gpsd: GPGSA: mode=3 used=8 pdop=3.60 hdop=2.00 vdop=3.00 mask={MODE|DOP|USED}
+gpsd: modeling errors: mode=3, masks={ONLINE|MODE|DOP|USED|PACKET}
+gpsd: modeling errors: mode=3, masks={ONLINE|ERROR|PACKET}
+gpsd: GSV: Satellite data OK (2 of 2).
+gpsd: DOPS computed/reported: X=0.555791/nan, Y=0.854411/nan, H=1.019275/2.000000, V=2.387675/3.000000, P=2.596135/3.600000, T=1.307083/nan, G=2.906610/nan
+gpsd: modeling errors: mode=3, masks={ONLINE|DOP|SATELLITE|PACKET}
+gpsd: GPGLL: registers fractional time 81124.00
+gpsd: can't use GLL time until after ZDA or RMC has supplied a year.
+gpsd: GLL: hhmmss=081124 lat=nan lon=nan mode=0 status=8 mask={ERROR}
+gpsd: modeling errors: mode=3, masks={ONLINE|ERROR|PACKET|REPORT}
+gpsd: unknown sentence: &quot;$GPBOD,,T,,M,,*47\x0d\x0a&quot;
+gpsd: modeling errors: mode=3, masks={ONLINE|PACKET}
+gpsd: PGRME: epx=22.02 epy=22.02 epv=46.72 mask={HERR|VERR|PERR}
+gpsd: modeling errors: mode=3, masks={ONLINE|HERR|VERR|PERR|PACKET}
+gpsd: unknown sentence: &quot;$PGRMZ,-125,f,3*30\x0d\x0a&quot;
+gpsd: modeling errors: mode=3, masks={ONLINE|PACKET}
+gpsd: unknown sentence: &quot;$GPRTE,1,1,c,*37\x0d\x0a&quot;
+gpsd: modeling errors: mode=3, masks={ONLINE|PACKET}
+gpsd: RMC: ddmmyy=110709 hhmmss=081126 lat=nan lon=nan speed=nan track=nan mode=0 status=0 mask={ONLINE|STATUS}
+gpsd: modeling errors: mode=3, masks={ONLINE|STATUS|PACKET}
+gpsd: unknown sentence: &quot;$GPRMB,V,,,,,,,,,,,,A,S*0E\x0d\x0a&quot;
+gpsd: modeling errors: mode=3, masks={ONLINE|PACKET}
+gpsd: GPGGA: registers fractional time 81126.00
+gpsd: can't use GGA time until after ZDA or RMC has supplied a year.
+gpsd: GGA: hhmmss=081126 lat=43.08 lon=16.18 alt=-38.00 mode=3 status=8 mask={LATLON|ALTITUDE|STATUS|MODE}
+gpsd: modeling errors: mode=3, masks={ONLINE|LATLON|ALTITUDE|STATUS|MODE|PACKET|CLEAR}
+gpsd: GPGSA: mode=3 used=8 pdop=3.60 hdop=2.00 vdop=3.00 mask={MODE|DOP|USED}
+gpsd: modeling errors: mode=3, masks={ONLINE|MODE|DOP|USED|PACKET}
+gpsd: modeling errors: mode=3, masks={ONLINE|ERROR|PACKET}
+gpsd: GSV: Satellite data OK (2 of 2).
+gpsd: DOPS computed/reported: X=0.555791/nan, Y=0.854411/nan, H=1.019275/2.000000, V=2.387675/3.000000, P=2.596135/3.600000, T=1.307083/nan, G=2.906610/nan
+gpsd: modeling errors: mode=3, masks={ONLINE|DOP|SATELLITE|PACKET}
+gpsd: GPGLL: registers fractional time 81126.00
+gpsd: can't use GLL time until after ZDA or RMC has supplied a year.
+gpsd: GLL: hhmmss=081126 lat=nan lon=nan mode=0 status=8 mask={ERROR}
+gpsd: modeling errors: mode=3, masks={ONLINE|ERROR|PACKET|REPORT}
+gpsd: unknown sentence: &quot;$GPBOD,,T,,M,,*47\x0d\x0a&quot;
+gpsd: modeling errors: mode=3, masks={ONLINE|PACKET}
+gpsd: PGRME: epx=22.02 epy=22.02 epv=46.72 mask={HERR|VERR|PERR}
+gpsd: modeling errors: mode=3, masks={ONLINE|HERR|VERR|PERR|PACKET}
+gpsd: unknown sentence: &quot;$PGRMZ,-125,f,3*30\x0d\x0a&quot;
+gpsd: modeling errors: mode=3, masks={ONLINE|PACKET}
+gpsd: unknown sentence: &quot;$GPRTE,1,1,c,*37\x0d\x0a&quot;
+gpsd: modeling errors: mode=3, masks={ONLINE|PACKET}
+gpsd: RMC: ddmmyy=110709 hhmmss=081128 lat=nan lon=nan speed=nan track=nan mode=0 status=0 mask={ONLINE|STATUS}
+gpsd: modeling errors: mode=3, masks={ONLINE|STATUS|PACKET}
+gpsd: unknown sentence: &quot;$GPRMB,V,,,,,,,,,,,,A,S*0E\x0d\x0a&quot;
+gpsd: modeling errors: mode=3, masks={ONLINE|PACKET}
+gpsd: GPGGA: registers fractional time 81128.00
+gpsd: can't use GGA time until after ZDA or RMC has supplied a year.
+gpsd: GGA: hhmmss=081128 lat=43.08 lon=16.18 alt=-38.00 mode=3 status=8 mask={LATLON|ALTITUDE|STATUS|MODE}
+gpsd: modeling errors: mode=3, masks={ONLINE|LATLON|ALTITUDE|STATUS|MODE|PACKET|CLEAR}
+gpsd: GPGSA: mode=3 used=8 pdop=3.60 hdop=2.00 vdop=3.00 mask={MODE|DOP|USED}
+gpsd: modeling errors: mode=3, masks={ONLINE|MODE|DOP|USED|PACKET}
+gpsd: modeling errors: mode=3, masks={ONLINE|ERROR|PACKET}
+gpsd: GSV: Satellite data OK (2 of 2).
+gpsd: DOPS computed/reported: X=0.555791/nan, Y=0.854411/nan, H=1.019275/2.000000, V=2.387675/3.000000, P=2.596135/3.600000, T=1.307083/nan, G=2.906610/nan
+gpsd: modeling errors: mode=3, masks={ONLINE|DOP|SATELLITE|PACKET}
+gpsd: GPGLL: registers fractional time 81128.00
+gpsd: can't use GLL time until after ZDA or RMC has supplied a year.
+gpsd: GLL: hhmmss=081128 lat=nan lon=nan mode=0 status=8 mask={ERROR}
+gpsd: modeling errors: mode=3, masks={ONLINE|ERROR|PACKET|REPORT}
+gpsd: unknown sentence: &quot;$GPBOD,,T,,M,,*47\x0d\x0a&quot;
+gpsd: modeling errors: mode=3, masks={ONLINE|PACKET}
+gpsd: PGRME: epx=22.02 epy=22.02 epv=46.72 mask={HERR|VERR|PERR}
+gpsd: modeling errors: mode=3, masks={ONLINE|HERR|VERR|PERR|PACKET}
+gpsd: unknown sentence: &quot;$PGRMZ,-125,f,3*30\x0d\x0a&quot;
+gpsd: modeling errors: mode=3, masks={ONLINE|PACKET}
+gpsd: unknown sentence: &quot;$GPRTE,1,1,c,*37\x0d\x0a&quot;
+gpsd: modeling errors: mode=3, masks={ONLINE|PACKET}
+gpsd: RMC: ddmmyy=110709 hhmmss=081130 lat=nan lon=nan speed=nan track=nan mode=0 status=0 mask={ONLINE|STATUS}
+gpsd: modeling errors: mode=3, masks={ONLINE|STATUS|PACKET}
+gpsd: unknown sentence: &quot;$GPRMB,V,,,,,,,,,,,,A,S*0E\x0d\x0a&quot;
+gpsd: modeling errors: mode=3, masks={ONLINE|PACKET}
+gpsd: GPGGA: registers fractional time 81130.00
+gpsd: can't use GGA time until after ZDA or RMC has supplied a year.
+gpsd: GGA: hhmmss=081130 lat=43.08 lon=16.18 alt=-38.00 mode=3 status=8 mask={LATLON|ALTITUDE|STATUS|MODE}
+gpsd: modeling errors: mode=3, masks={ONLINE|LATLON|ALTITUDE|STATUS|MODE|PACKET|CLEAR}
+gpsd: GPGSA: mode=3 used=8 pdop=3.60 hdop=2.00 vdop=3.00 mask={MODE|DOP|USED}
+gpsd: modeling errors: mode=3, masks={ONLINE|MODE|DOP|USED|PACKET}
+gpsd: modeling errors: mode=3, masks={ONLINE|ERROR|PACKET}
+gpsd: GSV: Satellite data OK (2 of 2).
+gpsd: DOPS computed/reported: X=0.555791/nan, Y=0.854411/nan, H=1.019275/2.000000, V=2.387675/3.000000, P=2.596135/3.600000, T=1.307083/nan, G=2.906610/nan
+gpsd: modeling errors: mode=3, masks={ONLINE|DOP|SATELLITE|PACKET}
+gpsd: GPGLL: registers fractional time 81130.00
+gpsd: can't use GLL time until after ZDA or RMC has supplied a year.
+gpsd: GLL: hhmmss=081130 lat=nan lon=nan mode=0 status=8 mask={ERROR}
+gpsd: modeling errors: mode=3, masks={ONLINE|ERROR|PACKET|REPORT}
+gpsd: unknown sentence: &quot;$GPBOD,,T,,M,,*47\x0d\x0a&quot;
+gpsd: modeling errors: mode=3, masks={ONLINE|PACKET}
+gpsd: PGRME: epx=22.02 epy=22.02 epv=46.72 mask={HERR|VERR|PERR}
+gpsd: modeling errors: mode=3, masks={ONLINE|HERR|VERR|PERR|PACKET}
+gpsd: unknown sentence: &quot;$PGRMZ,-125,f,3*30\x0d\x0a&quot;
+gpsd: modeling errors: mode=3, masks={ONLINE|PACKET}
+gpsd: unknown sentence: &quot;$GPRTE,1,1,c,*37\x0d\x0a&quot;
+gpsd: modeling errors: mode=3, masks={ONLINE|PACKET}
+gpsd: RMC: ddmmyy=110709 hhmmss=081132 lat=nan lon=nan speed=nan track=nan mode=0 status=0 mask={ONLINE|STATUS}
+gpsd: modeling errors: mode=3, masks={ONLINE|STATUS|PACKET}
+gpsd: unknown sentence: &quot;$GPRMB,V,,,,,,,,,,,,A,S*0E\x0d\x0a&quot;
+gpsd: modeling errors: mode=3, masks={ONLINE|PACKET}
+gpsd: Received terminating signal 2. Exiting...
+gpsd: closing GPS=/dev/ttyUSB0 (5)
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="004583.html">[Gpsd-users] Error estimates not being displayed
+</A></li>
+	<LI>Next message: <A HREF="004568.html">[Gpsd-users] Garmin Geko 201 + serial to USB
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#4567">[ date ]</a>
+              <a href="thread.html#4567">[ thread ]</a>
+              <a href="subject.html#4567">[ subject ]</a>
+              <a href="author.html#4567">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

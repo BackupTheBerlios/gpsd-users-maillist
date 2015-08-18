@@ -1,0 +1,222 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] BU-353 Headache
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2010-August/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20BU-353%20Headache&In-Reply-To=%3CSNT132-w24CDA2F71F6C27FF04A4EFC49A0%40phx.gbl%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="004629.html">
+   <LINK REL="Next"  HREF="004632.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] BU-353 Headache</H1>
+    <B>Brian Platt</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20BU-353%20Headache&In-Reply-To=%3CSNT132-w24CDA2F71F6C27FF04A4EFC49A0%40phx.gbl%3E"
+       TITLE="[Gpsd-users] BU-353 Headache">brianplatt at hotmail.com
+       </A><BR>
+    <I>Sun Aug 15 22:14:31 CEST 2010</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="004629.html">[Gpsd-users] Running gpsd on openwrt
+</A></li>
+        <LI>Next message: <A HREF="004632.html">[Gpsd-users] BU-353 Headache
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#4631">[ date ]</a>
+              <a href="thread.html#4631">[ thread ]</a>
+              <a href="subject.html#4631">[ subject ]</a>
+              <a href="author.html#4631">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>
+Hi all
+
+I've been trying to get my BU-353 running on Debian but have a brick wall so hoping someone might be able to help.
+
+I've run it using 
+
+gpsd -nN -D 5 -b /dev/ttyUSB0
+
+gpsd: launching (Version 2.37)
+gpsd: listening on port gpsd
+gpsd: shmat(0,0,0) succeeded
+gpsd: shmat(0,0,0) succeeded
+gpsd: shmat(0,0,0) succeeded
+gpsd: shmat(0,0,0) succeeded
+gpsd: successfully connected to the DBUS system bus
+gpsd: running with effective group ID 0
+gpsd: running with effective user ID 0
+gpsd: opening read-only GPS data source at '/dev/ttyUSB0'
+gpsd: speed 115200, 8N1
+gpsd: garmin_gps not active.
+gpsd: no probe matched...
+gpsd: gpsd_activate(1): opened GPS (5)
+gpsd: packet sniff finds type -1
+gpsd: packet sniff finds type -1
+gpsd: packet sniff finds type -1
+gpsd: packet sniff finds type -1
+[SNIP]
+gpsd: speed 4800, 8N1           
+gpsd: packet sniff finds type -1
+gpsd: packet sniff finds type -1
+gpsd: packet sniff finds type -1
+gpsd: packet sniff finds type -1
+[SNIP]
+gpsd: packet sniffer failed to sync up
+gpsd: closing GPS=/dev/ttyUSB0 (5)
+
+System info
+
+2.6.26-2-ixp4xx
+
+ls /dev/ttyUS*
+/dev/ttyUSB0
+
+lsusb
+067b:2303 Prolific Technology, Inc. PL2303 Serial Port
+
+lsusb -v -d 067b:2303
+
+Bus 003 Device 004: ID 067b:2303 Prolific Technology, Inc. PL2303 Serial Port
+Device Descriptor:
+  bLength                18
+  bDescriptorType         1
+  bcdUSB               1.10
+  bDeviceClass            0 (Defined at Interface level)
+  bDeviceSubClass         0 
+  bDeviceProtocol         0 
+  bMaxPacketSize0        64
+  idVendor           0x067b Prolific Technology, Inc.
+  idProduct          0x2303 PL2303 Serial Port
+  bcdDevice            3.00
+  iManufacturer           1 Prolific Technology Inc.
+  iProduct                2 USB-Serial Controller
+  iSerial                 0 
+  bNumConfigurations      1
+  Configuration Descriptor:
+    bLength                 9
+    bDescriptorType         2
+    wTotalLength           39
+    bNumInterfaces          1
+    bConfigurationValue     1
+    iConfiguration          0 
+    bmAttributes         0x80
+      (Bus Powered)
+    MaxPower              100mA
+    Interface Descriptor:
+      bLength                 9
+      bDescriptorType         4
+      bInterfaceNumber        0
+      bAlternateSetting       0
+      bNumEndpoints           3
+      bInterfaceClass       255 Vendor Specific Class
+      bInterfaceSubClass      0 
+      bInterfaceProtocol      0 
+      iInterface              0 
+      Endpoint Descriptor:
+        bLength                 7
+        bDescriptorType         5
+        bEndpointAddress     0x81  EP 1 IN
+        bmAttributes            3
+          Transfer Type            Interrupt
+          Synch Type               None
+          Usage Type               Data
+        wMaxPacketSize     0x000a  1x 10 bytes
+        bInterval               1
+      Endpoint Descriptor:
+        bLength                 7
+        bDescriptorType         5
+        bEndpointAddress     0x02  EP 2 OUT
+        bmAttributes            2
+          Transfer Type            Bulk
+          Synch Type               None
+          Usage Type               Data
+        wMaxPacketSize     0x0040  1x 64 bytes
+        bInterval               0
+      Endpoint Descriptor:
+        bLength                 7
+        bDescriptorType         5
+        bEndpointAddress     0x83  EP 3 IN
+        bmAttributes            2
+          Transfer Type            Bulk
+          Synch Type               None
+          Usage Type               Data
+        wMaxPacketSize     0x0040  1x 64 bytes
+        bInterval               0
+Device Status:     0x0000
+  (Bus Powered)
+
+dmesg
+kernel: [42974832.140000] ttyUSB0: 1 input overrun(s)
+kernel: [42974836.890000] ttyUSB0: 3 input overrun(s)
+kernel: [42974841.890000] ttyUSB0: 3 input overrun(s)
+kernel: [42974846.890000] ttyUSB0: 4 input overrun(s)
+kernel: [42974851.910000] ttyUSB0: 3 input overrun(s)
+kernel: [42974856.910000] ttyUSB0: 3 input overrun(s)
+
+if I run gpspipe -r immediately after gpsd -nN -D 5 -b /dev/ttyUSB0 I get
+
+gpsd: launching (Version 2.37)
+gpsd: listening on port gpsd
+gpsd: shmat(0,0,0) succeeded
+gpsd: shmat(0,0,0) succeeded
+gpsd: shmat(0,0,0) succeeded
+gpsd: shmat(0,0,0) succeeded
+gpsd: successfully connected to the DBUS system bus
+gpsd: running with effective group ID 0
+gpsd: running with effective user ID 0
+gpsd: opening read-only GPS data source at '/dev/ttyUSB0'
+gpsd: speed 115200, 8N1
+gpsd: garmin_gps not active.
+gpsd: no probe matched...
+gpsd: gpsd_activate(1): opened GPS (5)
+gpsd: client 127.0.0.1 (0) connect on fd 6
+gpsd: checking client(0)
+gpsd: &lt;= client(0): r=1;
+gpsd: client(0): assigning channel...
+gpsd: User requires 2, channel type is -1
+gpsd: client(0): channel 5 already active.
+gpsd: client(0) turned on raw mode
+gpsd: =&gt; client(0): GPSD,R=1
+gpsd: packet sniff finds type -1
+gpsd: transfer mask on : 01
+gpsd: packet sniff finds type -1
+gpsd: transfer mask on : 01
+gpsd: packet sniff finds type -1
+gpsd: transfer mask on : 01
+gpsd: packet sniff finds type -1
+gpsd: transfer mask on : 01
+gpsd: packet sniffer failed to sync up
+gpsd: closing GPS=/dev/ttyUSB0 (5)
+
+ 		 	   		  
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="004629.html">[Gpsd-users] Running gpsd on openwrt
+</A></li>
+	<LI>Next message: <A HREF="004632.html">[Gpsd-users] BU-353 Headache
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#4631">[ date ]</a>
+              <a href="thread.html#4631">[ thread ]</a>
+              <a href="subject.html#4631">[ subject ]</a>
+              <a href="author.html#4631">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

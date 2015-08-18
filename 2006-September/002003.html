@@ -1,0 +1,104 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] PPS on RTS?
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2006-September/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20PPS%20on%20RTS%3F&In-Reply-To=%3C4.3.2.7.2.20060926211233.028fe768%40postoffice.creativesilicon.com.au%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="001972.html">
+   <LINK REL="Next"  HREF="002004.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] PPS on RTS?</H1>
+    <B>Dave C</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20PPS%20on%20RTS%3F&In-Reply-To=%3C4.3.2.7.2.20060926211233.028fe768%40postoffice.creativesilicon.com.au%3E"
+       TITLE="[Gpsd-users] PPS on RTS?">gpsd at creativesilicon.com.au
+       </A><BR>
+    <I>Tue Sep 26 13:30:32 CEST 2006</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="001972.html">[Gpsd-users] gpsprof -f cycle
+</A></li>
+        <LI>Next message: <A HREF="002004.html">[Gpsd-users] PPS on RTS?
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2003">[ date ]</a>
+              <a href="thread.html#2003">[ thread ]</a>
+              <a href="subject.html#2003">[ subject ]</a>
+              <a href="author.html#2003">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi All,
+
+First, some background....
+
+I'm attempting to use a Garmin 18 LVC GPS as a time reference on a small 
+datalogger based around the Gumsitx Basix platform.
+
+For those that haven't dealt with the Gumstix platform, it's based around 
+the Intel XSCALE PXA255 microcontroller that is also found in a number of 
+PDAs. GPSD 2.33 cross compiles with the Gumstix ARM tools with minimal 
+issues and I have the Garmin 18 and GPSD talking now.
+
+The issue is that I want to use the PPS signal from the Garmin to provide a 
+time sync as I've done in the past. No problems - connect it up to DCD on 
+the serial port and all is well.
+
+WRONG!
+
+The XSCALE processor has four serial ports - but only one of them (the 
+FFUART - Full Function UART) has a full complement of serial port I/O. All 
+the others only have TxD/RxD/RTS/CTS. And the Gumstix designers didn't 
+bring out the FFUART DCD line onto their I/O connector....so I have no 
+access to the DCD line.
+
+My question(s)
+1. Has anyone else had thoughts about using the RTS line for the PPS 
+signal? I'm not sure if the Linux serial driver would allow it though. If 
+this is thought possible, any pointers to the PPS section(s) in the code 
+would be useful and I'll have a hack at it.
+
+2. Would I be better dropping the the Garmin and going to a SiRF based GPS? 
+I recall a passing mention in my trawling though the mailing lists that 
+using a binary protocol will allow greater time accuracy without using a 
+PPS signal? Is this true or am I confused?
+
+3. Am I completely hosed in trying to get accurate time-keeping without 
+access to a full-function serial port?
+
+Any thoughts or pointers would be muchly appreciated.
+
+
+ciao, Dave
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="001972.html">[Gpsd-users] gpsprof -f cycle
+</A></li>
+	<LI>Next message: <A HREF="002004.html">[Gpsd-users] PPS on RTS?
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2003">[ date ]</a>
+              <a href="thread.html#2003">[ thread ]</a>
+              <a href="subject.html#2003">[ subject ]</a>
+              <a href="author.html#2003">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

@@ -1,0 +1,107 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] GPSd and gpsfeed+ trouble communicating
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2008-January/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20GPSd%20and%20gpsfeed%2B%20trouble%20communicating&In-Reply-To=%3C91981b3e0801131648p6fc27e69g65cb24b1f78174fa%40mail.gmail.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="003082.html">
+   <LINK REL="Next"  HREF="003091.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] GPSd and gpsfeed+ trouble communicating</H1>
+    <B>Chris Kuethe</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20GPSd%20and%20gpsfeed%2B%20trouble%20communicating&In-Reply-To=%3C91981b3e0801131648p6fc27e69g65cb24b1f78174fa%40mail.gmail.com%3E"
+       TITLE="[Gpsd-users] GPSd and gpsfeed+ trouble communicating">chris.kuethe at gmail.com
+       </A><BR>
+    <I>Mon Jan 14 01:48:41 CET 2008</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="003082.html">[Gpsd-users] GPSd and gpsfeed+ trouble communicating
+</A></li>
+        <LI>Next message: <A HREF="003091.html">[Gpsd-users] PPS 5Hz (was Bug - Switching Drivers from Generic	NMEAtoGarmin serial creates 2 gpsd_ppsmonitor thread)
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3083">[ date ]</a>
+              <a href="thread.html#3083">[ thread ]</a>
+              <a href="subject.html#3083">[ subject ]</a>
+              <a href="author.html#3083">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>On Jan 13, 2008 4:15 PM,  &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">roger at edigitalstudios.com</A>&gt; wrote:
+&gt;<i> Hello, I've been messing around with gpsd for a couple days. I want to
+</I>&gt;<i> use gpsfeed+ to simulate a moving gps device. gpsfeed+ is set up to
+</I>&gt;<i> use the serial device /dev/ttyS0 and gpsd is set to receive that data:
+</I>
+yeah, that's not gonna work. think about what you're trying to do:
+gpsfeed writes bits to ttyS0 on the TX lines
+gpsd reads bits from ttyS0 on the RX lines
+
+1) you've got two processes trying to read the same serial device
+2) the input and output are not connected.
+
+you'd have better luck with the use of a pty/tty pair. or two
+usb-serial devices hooked together.
+
+&gt;<i> $ sudo gpsd -F /dev/ttyS0 -S 2497 -D 3 -N
+</I>
+your use of -F is wrong. that's the path to the control socket, not
+the source device
+
+&gt;<i> but when I telnet to localhost 2497, gpsd only answers my queries with ?:
+</I>&gt;<i>
+</I>&gt;<i> Trying 127.0.0.1...
+</I>&gt;<i> Connected to localhost.
+</I>&gt;<i> Escape character is '^]'.
+</I>&gt;<i> o
+</I>&gt;<i> GPSD,O=?
+</I>
+It's easier to monitor with something like cgps. also, running
+something like this will show you that gpsd isn't even seeing any
+data:
+gpsd -n -N -D6 /dev/tty______
+
+&gt;<i> the other day
+</I>&gt;<i> running only gpspipe and not gpsd, but now I get this error:
+</I>&gt;<i>
+</I>&gt;<i> $ sudo gpspipe -r
+</I>&gt;<i> gpspipe: could not connect to gpsd 127.0.0.1:2947, Connection refused(111)
+</I>
+gpspipe is a reader process, not a data source, and it expects to
+connect to gpsd..
+
+CK
+
+-- 
+GDB has a 'break' feature; why doesn't it have 'fix' too?
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="003082.html">[Gpsd-users] GPSd and gpsfeed+ trouble communicating
+</A></li>
+	<LI>Next message: <A HREF="003091.html">[Gpsd-users] PPS 5Hz (was Bug - Switching Drivers from Generic	NMEAtoGarmin serial creates 2 gpsd_ppsmonitor thread)
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3083">[ date ]</a>
+              <a href="thread.html#3083">[ thread ]</a>
+              <a href="subject.html#3083">[ subject ]</a>
+              <a href="author.html#3083">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

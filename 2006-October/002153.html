@@ -1,0 +1,117 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] Garmin Binary
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2006-October/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Garmin%20Binary&In-Reply-To=%3C8c15ae0610301042k2df13e35r98b3def793f752fd%40mail.gmail.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="002152.html">
+   <LINK REL="Next"  HREF="002154.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] Garmin Binary</H1>
+    <B>Michael Robbert</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Garmin%20Binary&In-Reply-To=%3C8c15ae0610301042k2df13e35r98b3def793f752fd%40mail.gmail.com%3E"
+       TITLE="[Gpsd-users] Garmin Binary">mrobbert at gmail.com
+       </A><BR>
+    <I>Mon Oct 30 19:42:51 CET 2006</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="002152.html">[Gpsd-users] Garmin Binary
+</A></li>
+        <LI>Next message: <A HREF="002154.html">[Gpsd-users] Garmin Binary
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2153">[ date ]</a>
+              <a href="thread.html#2153">[ thread ]</a>
+              <a href="subject.html#2153">[ subject ]</a>
+              <a href="author.html#2153">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>On 10/30/06, Gary E. Miller &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">gem at rellim.com</A>&gt; wrote:
+&gt;<i>
+</I>&gt;<i> -----BEGIN PGP SIGNED MESSAGE-----
+</I>&gt;<i> Hash: SHA1
+</I>&gt;<i>
+</I>&gt;<i> Yo Michael!
+</I>&gt;<i>
+</I>&gt;<i> On Mon, 30 Oct 2006, Michael Robbert wrote:
+</I>&gt;<i>
+</I>&gt;<i> &gt; Thanks for working on the update. After updating my code and recompiling
+</I>&gt;<i> &gt; gpsd is not recognizing my GPS. Here is the debug output:
+</I>&gt;<i>
+</I>&gt;<i> And thanks for the quick feedback!
+</I>&gt;<i>
+</I>&gt;<i> &gt; I commented out the check in the code and everything works great.
+</I>&gt;<i>
+</I>&gt;<i> Which check did you comment out?  The check for the garmin_gps in /proc?
+</I>&gt;<i> If so that is odd.  What linux kernel do you have installed?  Are you
+</I>&gt;<i> running as root?
+</I>
+
+It was the /proc check that I commented out, but I was not running as root.
+I uncommented and found that running as root fixed the problem.  Oh, wait! I
+just double checked and it works as a normal user now as well. I must have
+had something else messed up earlier. Everything looks good now!
+
+&gt;<i> So your
+</I>&gt;<i> &gt; patch fixed my problem, but your new detection code appears to have a
+</I>&gt;<i> &gt; problem.
+</I>&gt;<i>
+</I>&gt;<i> I can't just comment out the /proc check because if the garmin_gps
+</I>&gt;<i> driver is installed, but a non-garmin_gps device is the current device
+</I>&gt;<i> I need to not use the garmin usb driver in gpsd.  It is great debugging
+</I>&gt;<i> info to know so thanks for that.
+</I>&gt;<i>
+</I>&gt;<i> I knew that detection would be a problem.  I still need to figure out how
+</I>&gt;<i> to check that garmin_gps is in use on the current tty and not on another
+</I>&gt;<i> one.  I guess I gotta study libusb and learn how they do this.
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i> RGDS
+</I>&gt;<i> GARY
+</I>&gt;<i> -
+</I>&gt;<i> ---------------------------------------------------------------------------
+</I>&gt;<i> Gary E. Miller Rellim 20340 Empire Ave., Suite E-3, Bend, OR 97701
+</I>&gt;<i>         <A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">gem at rellim.com</A>  Tel:+1(541)382-8588
+</I>&gt;<i>
+</I>&gt;<i> -----BEGIN PGP SIGNATURE-----
+</I>&gt;<i> Version: GnuPG v1.4.3 (GNU/Linux)
+</I>&gt;<i>
+</I>&gt;<i> iD8DBQFFRkTY8KZibdeR3qURAj1KAKCGxSmCRy6RYOh7ZhS6B8L6yDhR8wCgzf6I
+</I>&gt;<i> uRYo/M8kWBudRE/YZQdz06k=
+</I>&gt;<i> =T2RH
+</I>&gt;<i> -----END PGP SIGNATURE-----
+</I>&gt;<i>
+</I>&gt;<i>
+</I>
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="002152.html">[Gpsd-users] Garmin Binary
+</A></li>
+	<LI>Next message: <A HREF="002154.html">[Gpsd-users] Garmin Binary
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2153">[ date ]</a>
+              <a href="thread.html#2153">[ thread ]</a>
+              <a href="subject.html#2153">[ subject ]</a>
+              <a href="author.html#2153">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

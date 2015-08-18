@@ -1,0 +1,271 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] Preparing for 2.93 point release
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2010-April/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Preparing%20for%202.93%20point%20release&In-Reply-To=%3Cq2t2196fd761004071435v15b33d95m62403c4ba0c6b8f9%40mail.gmail.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="004360.html">
+   <LINK REL="Next"  HREF="004390.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] Preparing for 2.93 point release</H1>
+    <B>Ji&#345;&#237; Techet</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Preparing%20for%202.93%20point%20release&In-Reply-To=%3Cq2t2196fd761004071435v15b33d95m62403c4ba0c6b8f9%40mail.gmail.com%3E"
+       TITLE="[Gpsd-users] Preparing for 2.93 point release">techet at gmail.com
+       </A><BR>
+    <I>Wed Apr  7 23:35:11 CEST 2010</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="004360.html">[Gpsd-users] Preparing for 2.93 point release
+</A></li>
+        <LI>Next message: <A HREF="004390.html">[Gpsd-users] Bluetooth issues (was: Re: Preparing for 2.93 point	release)
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#4362">[ date ]</a>
+              <a href="thread.html#4362">[ thread ]</a>
+              <a href="subject.html#4362">[ subject ]</a>
+              <a href="author.html#4362">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi Eric,
+
+On Wed, Apr 7, 2010 at 18:54, Eric Raymond &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">esr at thyrsus.com</A>&gt; wrote:
+&gt;<i> Ji&#345;&#237; Techet &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">techet at gmail.com</A>&gt;:
+</I>&gt;&gt;<i> What I miss here is class DEVICE. The documentation says:
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> &quot;When a client is in watcher mode, the daemon will ship it DEVICE
+</I>&gt;&gt;<i> notifications when a device is added to the pool or deactivated.&quot;
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> I would expect that when I connect to gpsd and send ?WATCH, the device
+</I>&gt;&gt;<i> &quot;is added to the pool&quot; and therefore I should get DEVICE class
+</I>&gt;&gt;<i> response. It's really no problem for me to check the contents of
+</I>&gt;&gt;<i> DEVICES instead if this is the expected behavior, but in this case the
+</I>&gt;&gt;<i> documentation should be corrected. (And by the way, the python client
+</I>&gt;&gt;<i> library also doesn't check for DEVICES messages and only looks at
+</I>&gt;&gt;<i> DEVICE notifications.)
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> I also don't get DEVICE notification when the gps device is switched
+</I>&gt;&gt;<i> off - it might be related to the 100pct CPU bug, but it might be
+</I>&gt;&gt;<i> separate bug as well. I believe this worked in 2.39.
+</I>&gt;<i>
+</I>&gt;<i> Hmmmm....
+</I>&gt;<i>
+</I>&gt;<i> Script started on Wed 07 Apr 2010 12:32:34 PM EDT
+</I>&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">esr at snark</A>:~/software/gpsd$ telnet localhost 2947
+</I>&gt;<i> Trying ::1...
+</I>&gt;<i> Connected to snark.thyrsus.com.
+</I>&gt;<i> Escape character is '^]'.
+</I>&gt;<i> {&quot;class&quot;:&quot;VERSION&quot;,&quot;release&quot;:&quot;2.93dev&quot;,&quot;rev&quot;:&quot;2010-04-07T01:23:00&quot;,&quot;proto_major&quot;:3,&quot;proto_minor&quot;:2}
+</I>&gt;<i> ?WATCH;
+</I>&gt;<i> {&quot;class&quot;:&quot;DEVICES&quot;,&quot;devices&quot;:[{&quot;class&quot;:&quot;DEVICE&quot;,&quot;path&quot;:&quot;/dev/ttyUSB0&quot;,&quot;activated&quot;:1270657991.08,&quot;flags&quot;:1,&quot;driver&quot;:&quot;SiRF binary&quot;,&quot;native&quot;:1,&quot;bps&quot;:4800,&quot;parity&quot;:&quot;N&quot;,&quot;stopbits&quot;:1,&quot;cycle&quot;:1.00}]}
+</I>&gt;<i> {&quot;class&quot;:&quot;WATCH&quot;,&quot;enable&quot;:false,&quot;json&quot;:false,&quot;nmea&quot;:false,&quot;raw&quot;:0,&quot;scaled&quot;:false,&quot;timing&quot;:false}
+</I>&gt;<i> ?WATCH={&quot;enable&quot;:true,&quot;json&quot;:true}
+</I>&gt;<i> {&quot;class&quot;:&quot;DEVICES&quot;,&quot;devices&quot;:[{&quot;class&quot;:&quot;DEVICE&quot;,&quot;path&quot;:&quot;/dev/ttyUSB0&quot;,&quot;activated&quot;:1270658036.08,&quot;flags&quot;:1,&quot;driver&quot;:&quot;SiRF binary&quot;,&quot;native&quot;:1,&quot;bps&quot;:4800,&quot;parity&quot;:&quot;N&quot;,&quot;stopbits&quot;:1,&quot;cycle&quot;:1.00}]}
+</I>&gt;<i> {&quot;class&quot;:&quot;WATCH&quot;,&quot;enable&quot;:true,&quot;json&quot;:true,&quot;nmea&quot;:false,&quot;raw&quot;:0,&quot;scaled&quot;:false,&quot;timing&quot;:false}
+</I>&gt;<i> {&quot;class&quot;:&quot;SKY&quot;,&quot;tag&quot;:&quot;MID4&quot;,&quot;device&quot;:&quot;/dev/ttyUSB0&quot;,&quot;time&quot;:1270658026.020,&quot;hdop&quot;:50.00,&quot;satellites&quot;:[{&quot;PRN&quot;:15,&quot;el&quot;:49,&quot;az&quot;:48,&quot;ss&quot;:34,&quot;used&quot;:false},{&quot;PRN&quot;:5,&quot;el&quot;:7,&quot;az&quot;:94,&quot;ss&quot;:0,&quot;used&quot;:false},{&quot;PRN&quot;:6,&quot;el&quot;:12,&quot;az&quot;:304,&quot;ss&quot;:0,&quot;used&quot;:false},{&quot;PRN&quot;:3,&quot;el&quot;:6,&quot;az&quot;:313,&quot;ss&quot;:0,&quot;used&quot;:false},{&quot;PRN&quot;:21,&quot;el&quot;:72,&quot;az&quot;:264,&quot;ss&quot;:27,&quot;used&quot;:false},{&quot;PRN&quot;:24,&quot;el&quot;:73,&quot;az&quot;:274,&quot;ss&quot;:0,&quot;used&quot;:false},{&quot;PRN&quot;:26,&quot;el&quot;:68,&quot;az&quot;:238,&quot;ss&quot;:0,&quot;used&quot;:false},{&quot;PRN&quot;:18,&quot;el&quot;:57,&quot;az&quot;:307,&quot;ss&quot;:0,&quot;used&quot;:false},{&quot;PRN&quot;:27,&quot;el&quot;:49,&quot;az&quot;:120,&quot;ss&quot;:0,&quot;used&quot;:false},{&quot;PRN&quot;:22,&quot;el&quot;:24,&quot;az&quot;:288,&quot;ss&quot;:31,&quot;used&quot;:false}]}
+</I>&gt;<i> {&quot;class&quot;:&quot;TPV&quot;,&quot;tag&quot;:&quot;MID2&quot;,&quot;device&quot;:&quot;/dev/ttyUSB0&quot;,&quot;time&quot;:1270658026.020,&quot;ept&quot;:0.005,&quot;mode&quot;:1}
+</I>&gt;<i> {&quot;class&quot;:&quot;SKY&quot;,&quot;tag&quot;:&quot;MID4&quot;,&quot;device&quot;:&quot;/dev/ttyUSB0&quot;,&quot;time&quot;:1270658027.020,&quot;hdop&quot;:50.00,&quot;satellites&quot;:[{&quot;PRN&quot;:15,&quot;el&quot;:49,&quot;az&quot;:48,&quot;ss&quot;:35,&quot;used&quot;:false},{&quot;PRN&quot;:5,&quot;el&quot;:7,&quot;az&quot;:94,&quot;ss&quot;:0,&quot;used&quot;:false},{&quot;PRN&quot;:6,&quot;el&quot;:12,&quot;az&quot;:304,&quot;ss&quot;:0,&quot;used&quot;:false},{&quot;PRN&quot;:3,&quot;el&quot;:6,&quot;az&quot;:313,&quot;ss&quot;:0,&quot;used&quot;:false},{&quot;PRN&quot;:21,&quot;el&quot;:72,&quot;az&quot;:264,&quot;ss&quot;:28,&quot;used&quot;:false},{&quot;PRN&quot;:24,&quot;el&quot;:73,&quot;az&quot;:274,&quot;ss&quot;:0,&quot;used&quot;:false},{&quot;PRN&quot;:26,&quot;el&quot;:68,&quot;az&quot;:238,&quot;ss&quot;:0,&quot;used&quot;:false},{&quot;PRN&quot;:18,&quot;el&quot;:57,&quot;az&quot;:307,&quot;ss&quot;:0,&quot;used&quot;:false},{&quot;PRN&quot;:27,&quot;el&quot;:49,&quot;az&quot;:120,&quot;ss&quot;:0,&quot;used&quot;:false},{&quot;PRN&quot;:22,&quot;el&quot;:24,&quot;az&quot;:288,&quot;ss&quot;:32,&quot;used&quot;:false}]}
+</I>&gt;<i> {&quot;class&quot;:&quot;TPV&quot;,&quot;tag&quot;:&quot;MID2&quot;,&quot;device&quot;:&quot;/dev/ttyUSB0&quot;,&quot;time&quot;:1270658027.020,&quot;ept&quot;:0.005,&quot;mode&quot;:1}
+</I>&gt;<i> {&quot;class&quot;:&quot;DEVICE&quot;,&quot;path&quot;:&quot;/dev/ttyUSB0&quot;,&quot;activated&quot;:0}
+</I>&gt;<i> ^]
+</I>&gt;<i>
+</I>&gt;<i> telnet&gt; Connection closed.
+</I>&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">esr at snark</A>:~/software/gpsd$ exit
+</I>&gt;<i>
+</I>&gt;<i> Script done on Wed 07 Apr 2010 12:34:26 PM EDT
+</I>&gt;<i>
+</I>&gt;<i> I'm getting a DEVICE notification when I pull the GPS plug -- you can see it
+</I>&gt;<i> at the end of session there. &#160;That's definitely a result of today's spin-bug
+</I>&gt;<i> fix. You should pull HEAD and verify.
+</I>
+Yep, works now (both the 100% CPU usage is gone and I also get DEVICE
+message when I switch off the device). Perfect!
+
+&gt;<i>
+</I>&gt;<i> You've misunderstood the documentation slightly. &#160;I may need to rewrite to
+</I>&gt;<i> clarify. &#160;?WATCH; doesn't add or subtract devices. &#160;It never alters the device
+</I>&gt;<i> pool at all.
+</I>&gt;<i>
+</I>&gt;<i> The device pool is altered in only these ways:
+</I>&gt;<i>
+</I>&gt;<i> 1. When command-line arguments specify initial devices.
+</I>&gt;<i>
+</I>&gt;<i> 2. When EOF is read on a device due to it being disconnected.
+</I>&gt;<i>
+</I>&gt;<i> 3. When a control-channel + or - command (e.g. generated by a
+</I>&gt;<i> &#160; hotplug event) notifies the daemon that a device has
+</I>&gt;<i> &#160; become available or is going away.
+</I>&gt;<i>
+</I>&gt;<i> When you issue a ?WATCH; to a daemon with a stable set of devices that
+</I>&gt;<i> the daemon has already recognized, you shouldn't expect any ?DEVICE
+</I>&gt;<i> responses at all.
+</I>
+OK, I see, thanks for the explanation.
+
+The only problem I see now is that with the bluetooth device I don't
+get any data from the device when
+
+1. I first connect gpsd (the gps device is off)
+2. Turn on the gps device
+
+Is this problem related to the FAQ question
+
+&quot;Why do I have to restart gpsd whenever I power-cycle my Bluetooth device?&quot;
+
+(I don't really need to restart gspd to get some data, all I have to
+do is to first turn on the device and then connect gpsd.) I had this
+problem with 2.3x so it's nothing specific to the new protocol. If
+it's OS problem, has it been reported to the kernel developers? If so,
+is there any reason why this hasn't been fixed yet?
+
+Still I think gps.py is buggy - when the user connects using gps.py
+after the gps device is connected, he won't get the device
+information. This is how I think gps.py should be modified:
+
+diff --git a/gps/gps.py b/gps/gps.py
+index 2a3056a..d96fdba 100755
+--- a/gps/gps.py
++++ b/gps/gps.py
+@@ -176,6 +176,8 @@ class dictwrapper:
+         self.__dict__[key] = val
+     def __str__(self):
+         return &quot;&lt;dictwrapper: &quot; + str(self.__dict__) + &quot;&gt;&quot;
++    def __contains__(self, item):
++        return item in self.__dict__
+     __repr__ = __str__
+
+ class gps(gpsdata):
+@@ -487,6 +489,16 @@ class gps(gpsdata):
+         self.valid |= PACKET_SET
+         return 0
+
++    def __set_device(self, data):
++        if &quot;driver&quot; in data:
++            self.driver = data[&quot;driver&quot;]
++            if &quot;subtype&quot; in data:
++                self.subtype = data[&quot;subtype&quot;]
++            if self.driver:
++                self.gps_id = self.driver
++                if self.subtype:
++                    self.gps_id += self.subtype
++
+     def next(self):
+         &quot;Get next object (new-style interface).&quot;
+         if self.poll() == -1:
+@@ -496,15 +508,11 @@ class gps(gpsdata):
+         if self.data[&quot;class&quot;] == &quot;VERSION&quot;:
+             self.version = payload
+         elif self.data[&quot;class&quot;] == &quot;DEVICE&quot;:
+-            if &quot;driver&quot; in self.data:
+-                if &quot;driver&quot; in data:
+-                    self.driver = self.data[&quot;driver&quot;]
+-                if &quot;subtype&quot; in data:
+-                    self.subtype = self.data[&quot;subtype&quot;]
+-                if self.driver:
+-                    self.gps_id = self.driver
+-                    if self.subtype:
+-                        self.gps_id += self.subtype
++            self.__set_device(self.data)
++        elif self.data[&quot;class&quot;] == &quot;DEVICES&quot;:
++            for device in self.data[&quot;devices&quot;]:
++                self.__set_device(self.data)
++                break
+         elif self.data[&quot;class&quot;] == &quot;TIMING&quot;:
+             payload.c_recv = self.received
+             payload.c_decode = time.time()
+
+(by the way, you might want to consider using gitorious - it's a very
+convenient way for sending and merging patches from external
+developers)
+
+There are several bugs combined in gps.py:
+
+1. In
+
+                if &quot;driver&quot; in data:
+                    self.driver = self.data[&quot;driver&quot;]
+                if &quot;subtype&quot; in data:
+
+you are testing data, but it should be self.data.
+
+2. The dictwrapper class must contain __contains__() method - without
+this you can't use &quot;in&quot; for testing element presence.
+
+3. You should set the data structures also when you get DEVICES class
+response for the reason mentioned above.
+
+Note that I haven't tested the above patch much - for my application I
+have decided to reimplement the python interface by myself - thanks to
+the new protocol (really good work!) it was quite trivial. There are
+several reasons why I think that every serious application should
+avoid using gps.py:
+
+1. There is no formal documentation of the interface - one cannot be
+sure which methods and mainly data members are public and which are
+private. I just felt uncomfortable that something will change in the
+future that will break my application.
+
+2. The interface is pull-based - that is the application is expected
+to periodically pull data from gpsd - but in fact, every GUI
+application just wants to register a callback and be notified when the
+data is ready. Depending on the application this can be a callback in
+a separate thread (yes, I know you don't like them) or by integrating
+it into the main loop of the GUI application. You do this in xgps by
+listening on the socket, but this is quite hacky - the interface
+should abstract the user from internals completely - it shouldn't be
+visible that there are some sockets behind it. Also, as I said in (1),
+I haven't seen any documentation of this interface so it's not clear
+whether the &quot;sock&quot; member is supposed to be public or private.
+
+3. The interface isn't pythonic - poll() returns values like 0, -1,
+which isn't very nice.
+
+4. The interface contains a lot of garbage used for backward
+compatibility - quite understood, but this can also introduce some
+bugs, which are more probable with dynamically typed languages.
+
+I'm not saying this to criticize but to suggest that python clients
+should be encouraged to use the gpsd protocol directly. Each of them
+can have some specific needs for the callback mechanisms, which cannot
+be addressed by a single interface. And doing this is quite trivial -
+it's 150 lines for my wrapping interface. Let me know if you are
+interested in seeing it.
+
+Jiri
+
+
+&gt;<i> --
+</I>&gt;<i> &#160; &#160; &#160; &#160; &#160; &#160; &#160; &#160;&lt;a href=&quot;<A HREF="http://www.catb.org/~esr/">http://www.catb.org/~esr/</A>&quot;&gt;Eric S. Raymond&lt;/a&gt;
+</I>&gt;<i>
+</I>
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="004360.html">[Gpsd-users] Preparing for 2.93 point release
+</A></li>
+	<LI>Next message: <A HREF="004390.html">[Gpsd-users] Bluetooth issues (was: Re: Preparing for 2.93 point	release)
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#4362">[ date ]</a>
+              <a href="thread.html#4362">[ thread ]</a>
+              <a href="subject.html#4362">[ subject ]</a>
+              <a href="author.html#4362">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

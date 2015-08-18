@@ -1,0 +1,114 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] latency differences between chipsets?
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2008-May/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20latency%20differences%20between%20chipsets%3F&In-Reply-To=%3C8631.1211643966%40foxharp.boston.ma.us%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="003257.html">
+   <LINK REL="Next"  HREF="003243.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] latency differences between chipsets?</H1>
+    <B>Paul Fox</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20latency%20differences%20between%20chipsets%3F&In-Reply-To=%3C8631.1211643966%40foxharp.boston.ma.us%3E"
+       TITLE="[Gpsd-users] latency differences between chipsets?">pgf at foxharp.boston.ma.us
+       </A><BR>
+    <I>Sat May 24 17:46:06 CEST 2008</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="003257.html">[Gpsd-users] gps position hinting?
+</A></li>
+        <LI>Next message: <A HREF="003243.html">[Gpsd-users] Garmin USB18 T.S.  Suse-10.3
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3239">[ date ]</a>
+              <a href="thread.html#3239">[ thread ]</a>
+              <a href="subject.html#3239">[ subject ]</a>
+              <a href="author.html#3239">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>i'm a long-time gpsd user.
+
+for years i've used an old Garmin III unit to drive my mapping
+software.  it puts out NMEA, works well, and has always seemed to
+lag &quot;real time&quot; by about a second -- i.e., the latence is
+completely expected, given the serial protocol, etc.  (when i say
+&quot;lags real-time&quot;, i mean that when i'm travelling, my moving map
+s/w shows that i'm at an intersection about a second after i've
+passed it.)
+
+i've recently acquired two new GPS receivers.
+
+one is a Sirf-III usb model from globalsat.  it, too, seems to
+lag real-time by about a second.  it might be a tad better than
+the older garmin unit, but i also changed laptops in the
+meantime, so i suspect they're about the same.
+
+the other recent acquisition, made in an attempt to reduce the
+number of interconnects, is a bluetooth unit, an I-Blue 737.
+it has an MTK chipset.  (the USB bluetooth adapter i use is a
+D-Link DB-120, but i suspect that doesn't matter.) unlike my
+other receivers, this one consistently lags by 4 or even 5
+seconds.
+
+when i first noticed this, i hooked up both the new devices to my
+laptop, ran separate gpsd processes, and connected to each. 
+watching the log output from the two connections, it was clear
+that the timestamp values reported by the MTK unit were behind
+those reported by the Sirf unit, by several seconds.  (i was
+stationary, so i couldn't compare positions easily, and i was
+only &quot;eye-balling&quot; the logs in any case, so it would have been
+hard.)
+
+so:  is it to be expected that some chipsets would have such long
+latencies?  it almost feels like the kind of effect you'd get if
+the designer was doing excessive position averaging, in order to
+be more accurate, or to report less position &quot;wander&quot;.
+
+i confess i'm disappointed, because the MTK bluetooth unit
+appears to be more sensitive (seems to usually get more
+satellites than the Sirf unit), and being wireless, is much more
+convenient.  but the lag makes it much less practical for
+on-the-fly navigation.
+
+(it's possible that the latency is in the bluez bluetooth stack. 
+i've asked about this scenario twice on the bluez list, and have
+been met with utter silence.  frankly, the size of the delay
+(seconds, not just milliseconds) makes me doubt that bluetooth is
+the cause.)
+
+paul
+=---------------------
+ paul fox, <A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">pgf at foxharp.boston.ma.us</A> (arlington, ma, where it's 60.1 degrees)
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="003257.html">[Gpsd-users] gps position hinting?
+</A></li>
+	<LI>Next message: <A HREF="003243.html">[Gpsd-users] Garmin USB18 T.S.  Suse-10.3
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3239">[ date ]</a>
+              <a href="thread.html#3239">[ thread ]</a>
+              <a href="subject.html#3239">[ subject ]</a>
+              <a href="author.html#3239">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

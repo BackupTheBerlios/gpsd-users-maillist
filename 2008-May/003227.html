@@ -1,0 +1,145 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] problem with NTRIP, authentication
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2008-May/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20problem%20with%20NTRIP%2C%20authentication&In-Reply-To=%3C476874.49536.qm%40web45810.mail.sp1.yahoo.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="003226.html">
+   <LINK REL="Next"  HREF="003223.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] problem with NTRIP, authentication</H1>
+    <B>Hamish</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20problem%20with%20NTRIP%2C%20authentication&In-Reply-To=%3C476874.49536.qm%40web45810.mail.sp1.yahoo.com%3E"
+       TITLE="[Gpsd-users] problem with NTRIP, authentication">hamish_b at yahoo.com
+       </A><BR>
+    <I>Thu May  8 09:26:38 CEST 2008</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="003226.html">[Gpsd-users] problem with NTRIP, authentication
+</A></li>
+        <LI>Next message: <A HREF="003223.html">[Gpsd-users] problem with NTRIP, authentication
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3227">[ date ]</a>
+              <a href="thread.html#3227">[ thread ]</a>
+              <a href="subject.html#3227">[ subject ]</a>
+              <a href="author.html#3227">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>&gt;<i> Gary E. Miller wrote:
+</I>&gt;<i> &gt; Yep, psuedo-range data is available from Garmins.  In theory you
+</I>&gt;<i> &gt; could then compute your own corrected postion.
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; Not heard of any code that works with gpsd that can do this for any
+</I>&gt;<i> &gt; GPS. If someone could do this for another GPS type I could then try
+</I>&gt;<i> &gt; to port the Garmin USB to use the same.
+</I>
+Chris Kuethe wrote:
+&gt;<i> gar2rnx to produce a RINEX file.  feed that into gpstk.
+</I>&gt;<i> 
+</I>&gt;<i> if you're feeling ambitious, you could help me with a generic midlayer
+</I>&gt;<i> to turn all vendor binary protocols into RT-IGS which i can then feed
+</I>&gt;<i> into gpstk. :)
+</I>
+neat stuff.
+
+&gt;&gt;&gt;&gt;<i> You will get almost as good accuracy if you just get a recent
+</I>&gt;&gt;&gt;&gt;<i> WAAS compatible GPS.
+</I>H:
+&gt;&gt;&gt;<i> and if you live in a part of the world with WAAS coverage...
+</I>
+Gary:
+&gt;<i> &gt; True.  But how many places will have DGPS coverage and not WAAS?
+</I>&gt;<i> &gt; My brother is in Sardinia now and he claims to get acceptable WAAS
+</I>&gt;<i> &gt;  performance.
+</I>
+Well here in New Zealand is one place where we don't get it.
+
+What you need to build your own DGPS base station (for post-processing):
+ - an extra Garmin
+ - software to save the raw Garmin protocol
+ - a datalogger/laptop + car battery
+ - a known survey benchmark pin where you can leave the recording gear
+   or a friendly surveyor who'll make you one where it's convinent
+ - a datalogger/laptop to record the raw stream from the moving receiver
+ - software to process everything once you get home
+
+What you need to build your own WAAS:
+ - an atomic clock about the size of a VW bug
+ - spooky RF antenna know-how
+ - a rocket to put it into geosynchronous orbit
+ - some sort of personal NORAD communications center to look after it
+ - ...
+
+;-)
+
+[the above is to encourage folks to try, and to explain why it is not
+unusual for far-off places to have DGPS coverage]
+
+
+Chris:
+&gt;<i> Nit-picking: WAAS is one SBAS system that covers North America. EGNOS
+</I>&gt;<i> is the (unfinished) European equivalent. There are others, like
+</I>&gt;<i> starfire, omnistar, cdgps... his receiver probably has a list of SBAS
+</I>&gt;<i> PRNs that transmit a compatible signal, and he picked up the EGNOS
+</I>&gt;<i> ones.
+</I>
+IIRC I can see the PRN of the Japanese MSAS sat, but my when I tell my
+BU-353 SiRFstarIII puck to enable WAAS support nothing happens. my guess
+is that while it is geosynchronous, it's aimed north. Even then I'd worry
+that the ionospheric corrections applied would not be relevant so far
+away from the intended target. shrug, hopefully the Australian gov't has
+a cunning plan. In the end I guess you really need multi-band to get it
+right...
+
+Gary:
+&gt;<i> You will get almost as good accuracy if you just get a recent WAAS
+</I>&gt;<i> compatible GPS.
+</I>
+almost, but not quite. Especially if you lump RTK in with &quot;DGPS&quot;.
+the more the better I suppose.... and yes, WAAS is certainly the simplest
+way, if you can get it.
+
+
+Hamish
+
+
+
+
+      ____________________________________________________________________________________
+Be a better friend, newshound, and 
+know-it-all with Yahoo! Mobile.  Try it now.  <A HREF="http://mobile.yahoo.com/;_ylt=Ahu06i62sR8HDtDypao8Wcj9tAcJ">http://mobile.yahoo.com/;_ylt=Ahu06i62sR8HDtDypao8Wcj9tAcJ</A>
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="003226.html">[Gpsd-users] problem with NTRIP, authentication
+</A></li>
+	<LI>Next message: <A HREF="003223.html">[Gpsd-users] problem with NTRIP, authentication
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3227">[ date ]</a>
+              <a href="thread.html#3227">[ thread ]</a>
+              <a href="subject.html#3227">[ subject ]</a>
+              <a href="author.html#3227">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

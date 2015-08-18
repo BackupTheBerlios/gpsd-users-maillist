@@ -1,0 +1,325 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] gpsd-2.31 is imminent; here is the TODO list
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2006-February/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20gpsd-2.31%20is%20imminent%3B%20here%20is%20the%20TODO%20list&In-Reply-To=%3C43F5DD20.1020600%40vonnieda.org%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="001304.html">
+   <LINK REL="Next"  HREF="001320.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] gpsd-2.31 is imminent; here is the TODO list</H1>
+    <B>Jason von Nieda</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20gpsd-2.31%20is%20imminent%3B%20here%20is%20the%20TODO%20list&In-Reply-To=%3C43F5DD20.1020600%40vonnieda.org%3E"
+       TITLE="[Gpsd-users] gpsd-2.31 is imminent; here is the TODO list">jason at vonnieda.org
+       </A><BR>
+    <I>Fri Feb 17 15:26:40 CET 2006</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="001304.html">[Gpsd-users] gpsd-2.31 is imminent; here is the TODO list
+</A></li>
+        <LI>Next message: <A HREF="001320.html">[Gpsd-users] gpsd-2.31 is imminent; here is the TODO list
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1305">[ date ]</a>
+              <a href="thread.html#1305">[ thread ]</a>
+              <a href="subject.html#1305">[ subject ]</a>
+              <a href="author.html#1305">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi all. I posted a while back about my Trimble Lassen iQ reporting speed
+and mode incorrectly in TSIP mode. I ended up coming up with a patch to
+fix both problems but never got around to submitting it. So, here it is.
+If it can't make it in that's fine, or if it's just something that Rob
+wants to take a look at that's cool too. I've been using this patched
+gpsd in my car for about 2 months and it seems solid.
+
+The two problems I was having were that speed was being reported in m/s
+instead of knots and that the status and mode were inaccurate. gpsd
+would often report that I had a 3D fix but the data coming in would be
+all zeros.
+
+I haven't submitted many patches to many projects, so if I've done this
+all wrong I apologize in advance :)
+
+Jason von Nieda
+
+Eric S. Raymond wrote:
+&gt;<i> I've processed the mail queue.  The TODO list follows -- these will
+</I>&gt;<i> *not* get done this release unless somebody has a quick fix that they
+</I>&gt;<i> get to me before I ship.
+</I>&gt;<i>
+</I>&gt;<i> ** Bugs in gpsd and its clients:
+</I>&gt;<i>
+</I>&gt;<i> *** EPH and EPV reports are zeroed too often in the TSIP driver 
+</I>&gt;<i>
+</I>&gt;<i> There is some bad interaction between the policy code in
+</I>&gt;<i> libgpsd_core.c and the TSIP driver that we haven't figured out.
+</I>&gt;<i>
+</I>&gt;<i> This may be a symptom of more general problems in data management
+</I>&gt;<i> on devices that ship several sentences of fix and related data
+</I>&gt;<i> per cycle.  It does not affect devices speaking SiRF or Zodiac or 
+</I>&gt;<i> Garmin-binary protocol.
+</I>&gt;<i>
+</I>&gt;<i> *** PPS code is flaky, possibly due to a pthreads bug
+</I>&gt;<i>
+</I>&gt;<i> Some code attempting to terminate the PPS-monitoring thread when there
+</I>&gt;<i> is no DCD (e.g., on a USB device) seems to have tickled some kind of
+</I>&gt;<i> bug in pthreads -- termination seems to close the GPS device or
+</I>&gt;<i> otherwise do something nasty to the serial I/O layer.  
+</I>&gt;<i>
+</I>&gt;<i> The default build has ENABLE_PPS off until we figure this one out.
+</I>&gt;<i>
+</I>&gt;<i> *** There's a report that RoyalTek support broke between 2.25 and 2.28 
+</I>&gt;<i>
+</I>&gt;<i> There's a report that RoyalTek support broke between 2.25 and 2.28 by
+</I>&gt;<i> David Mandala &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">davidm at them.com</A>&gt;.  His workaround is to condition out
+</I>&gt;<i> SiRF-II support; it works OK in NMEA mode.  He has undertaken to
+</I>&gt;<i> pin down the SVN revision that broke things after OLS.
+</I>&gt;<i>
+</I>&gt;<i> *** Axiom Sandpiper II OEM NMEA GPS Module gets mistaken for an FV-18
+</I>&gt;<i>
+</I>&gt;<i> David Mandala &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">davidm at them.com</A>&gt; reported this bug.  He says it can 
+</I>&gt;<i> be worked around by setting the port to 4800 manually before starting
+</I>&gt;<i> GPSD.  David sent ESR one of these, it's somewhere in his piles of
+</I>&gt;<i> stuff, testing will get done when it surfaces.  More on the Sandpiper
+</I>&gt;<i> at &lt;<A HREF="http://www.allsurplus.net/Axiom/">http://www.allsurplus.net/Axiom/</A>&gt;.
+</I>&gt;<i>
+</I>&gt;<i> ** Bugs gpsd tickles in other software
+</I>&gt;<i>
+</I>&gt;<i> *** A long-running xgps may induce a memory leak in the X server
+</I>&gt;<i>
+</I>&gt;<i> Rob Janssen writes, reporting from SuSE 9.2 + Xorg 6.8.1 + KDE 3.3:
+</I>&gt;<i>   
+</I>&gt;&gt;<i> I have found something that leaks.  Not in our software, but in the X server.
+</I>&gt;&gt;<i> But caused by xgps.
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> After 3 copies of xgps ran for a couple of days, I noticed a lot of swap
+</I>&gt;&gt;<i> is in use:
+</I>&gt;&gt;<i>             total       used       free     shared    buffers     cached
+</I>&gt;&gt;<i> Mem:       1035776     992324      43452          0     174580      54756
+</I>&gt;&gt;<i> -/+ buffers/cache:     762988     272788
+</I>&gt;&gt;<i> Swap:      2104440    1444944     659496
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> This is more than normal for my system.  I noticed it when switching to a
+</I>&gt;&gt;<i> virtual screen where mozilla is running.  It took several seconds to
+</I>&gt;&gt;<i> redraw.
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> I did a &quot;ps axu&quot; and found these interesting lines:
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> USER       PID %CPU %MEM   VSZ  RSS TTY      STAT START   TIME COMMAND
+</I>&gt;&gt;<i> root      7004  2.5 33.6 1861128 348460 ?    SL   Jun19 210:46 /usr/X11R6/bi
+</I>&gt;&gt;<i> ntp      18011  0.0  0.2  2696 2692 ?        SLs  Jun19   0:00 /usr/sbin/ntp
+</I>&gt;&gt;<i> nobody   23105  0.0  0.0  7004  900 ?        S&lt;sl Jun21   0:17 /home/rob/src
+</I>&gt;&gt;<i> rob      28724  0.2  0.1  7084 1968 pts/18   S    Jun22   9:03 /home/rob/src
+</I>&gt;&gt;<i> rob      28744  0.3  0.1  7084 2040 pts/18   S    Jun22  14:52 /home/rob/src
+</I>&gt;&gt;<i> rob      28759  0.2  0.1  7084 1936 pts/18   S    Jun22   9:44 /home/rob/src
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> So the gps programs were not consuming that much memory.
+</I>&gt;&gt;<i> I still stopped the 3 xgps programs (the last three in this list) and then
+</I>&gt;&gt;<i> the X server showed:
+</I>&gt;&gt;<i> root      7004  2.5  2.2 367140 23424 ?      SL   Jun19 210:49 /usr/X11R6/bi
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> So there certainly is a relation here.
+</I>&gt;&gt;<i> Unfortunately I have zero knowledge about X programming.  I would guess
+</I>&gt;&gt;<i> some kind of session or operation is started and never ended, or something
+</I>&gt;&gt;<i> is said to be saved, but apparently it remains related to the specific
+</I>&gt;&gt;<i> window because the X server neatly frees it once the program disconnects.
+</I>&gt;&gt;<i>     
+</I>&gt;<i>
+</I>&gt;<i> But Rob's xgps memory leak doesn't reproduce on a stock Fedora Core 3
+</I>&gt;<i> system.  ESR tested for this in the simplest possible way, by doing
+</I>&gt;<i> system(&quot;free t&quot;) at the end of each handle_input() call.
+</I>&gt;<i>
+</I>&gt;<i> ** To do:
+</I>&gt;<i>
+</I>&gt;<i> *** SiRF firmware uploader
+</I>&gt;<i>
+</I>&gt;<i> Chris Kuethe has shipped a 0.0 alpha version.  It is not yet 
+</I>&gt;<i> resolved whether SiRF Technology will allow us to ship the 
+</I>&gt;<i> binary loader code needed to actually use it.
+</I>&gt;<i>
+</I>&gt;<i> *** RINEX-format dumping of raw satellite data
+</I>&gt;<i>
+</I>&gt;<i> It would be useful to be able to extract RINEX-format data from any
+</I>&gt;<i> GPS device that can report pseudoranges etc.  This belongs in the
+</I>&gt;<i> daemon because the device drivers are already doing the
+</I>&gt;<i> packet-cracking needed to get the data off the chips.
+</I>&gt;<i>
+</I>&gt;<i> *** RTCM support.
+</I>&gt;<i>
+</I>&gt;<i> We have an RTCM packet decoder, and untested scratch code to serve
+</I>&gt;<i> RTCM packets to port 2101.  Here's the plan for the rest of it:
+</I>&gt;<i>
+</I>&gt;<i> 1) Inversion needs to be done somewhere in the encoding logic.
+</I>&gt;<i>
+</I>&gt;<i> 2) Wolfgang's decoder-hardening patches.
+</I>&gt;<i>
+</I>&gt;<i> 3) Test productions.  I have one that tests dumping and one that uses   
+</I>&gt;<i>    passthrough mode to test that pack() and repack() are inverse.  We
+</I>&gt;<i>    should have an undumping torture test.
+</I>&gt;<i>
+</I>&gt;<i> 4) What about rtcm_output_mag() anyway?  Should that be made
+</I>&gt;<i>    available as an output mode of rtcmdecode and documented?
+</I>&gt;<i>
+</I>&gt;<i> 5) Python libraries must grok RTCM dump format.
+</I>&gt;<i>
+</I>&gt;<i> 6) Extend the test framework so we can verify RTCM service.
+</I>&gt;<i>
+</I>&gt;<i> 7) Get rid of the -d option by hacking open_device() so that when it
+</I>&gt;<i>    sees a command-line option of the form server:port (with no
+</I>&gt;<i>    embedded backslashes) it opens a socket to read from that server.
+</I>&gt;<i>    Now any GPS-packet and RTCM data sources given on the command line
+</I>&gt;<i>    can be remote as well as local.
+</I>&gt;<i>
+</I>&gt;<i> 8) Generate and broadcast RTCM corrections from an attached device?
+</I>&gt;<i>    Might not be possible -- appears to need nanosecond timing.
+</I>&gt;<i>
+</I>&gt;<i> *** Do the research to figure out just what is going on with status bits
+</I>&gt;<i>
+</I>&gt;<i> NMEA actually has *four* kinds of validity bits: Mode, Status, the
+</I>&gt;<i> Active/Void bit (some sources interpret 'V' as 'Navigation receiver
+</I>&gt;<i> warning'), and in later versions the FAA indicator mode.  Sentences
+</I>&gt;<i> that have an Active/Void send V when there is no fix, so the position
+</I>&gt;<i> data is no good.
+</I>&gt;<i>
+</I>&gt;<i> Let's look at which sentences send what:
+</I>&gt;<i>
+</I>&gt;<i>                 GPRMC     GPGLL     GPGGA     GPGSA
+</I>&gt;<i> Returns fix      Yes       Yes       Yes        No
+</I>&gt;<i> Returns status   No        Yes       Yes        No
+</I>&gt;<i> Returns mode     No        No        No         Yes
+</I>&gt;<i> Returns A/V      Yes       Yes       No         No
+</I>&gt;<i>
+</I>&gt;<i> In addition, some sentences use empty fields to signify invalid data.
+</I>&gt;<i>
+</I>&gt;<i> My first conclusion from looking at this table is that the designers
+</I>&gt;<i> of NMEA 0183 should be hung for galloping incompetence.  But never mind that.
+</I>&gt;<i> What are we to make of this mess?
+</I>&gt;<i>
+</I>&gt;<i> The fact that the FV18 sends GPMRC/GPGLL/GPGGA but not GPGSA
+</I>&gt;<i> argues that GPGSA is optional.  I don't see how it can be, since it
+</I>&gt;<i> seems to be the only status bit that applies to altitude.  Just how are
+</I>&gt;<i> we supposed to know when altitude is valid if it doesn't ship GSA?  
+</I>&gt;<i> Can a receiver ever ship a non-empty but invalid altitude?
+</I>&gt;<i>
+</I>&gt;<i> Which of these override which other bits?  I don't think status is ever
+</I>&gt;<i> nonzero when mode is zero. So status overrides mode.  What other such
+</I>&gt;<i> relationships are there?
+</I>&gt;<i>
+</I>&gt;<i> News flash: it develops that the &quot;Navigation receiver warning&quot; is
+</I>&gt;<i> supposed to indicate a valid fix that has a DOP too high or fails
+</I>&gt;<i> an elevation test.
+</I>&gt;<i>
+</I>&gt;<i> ** Future features (?)
+</I>&gt;<i>
+</I>&gt;<i> *** Subsecond polling
+</I>&gt;<i>
+</I>&gt;<i> gpsd relies on the GPS to periodically send PVT reports to it.
+</I>&gt;<i>
+</I>&gt;<i> Most GPSes send PVT reports once a second.  No GPS I am aware of
+</I>&gt;<i> allows you to set a cycle time of less than a second.  This is because
+</I>&gt;<i> at 4800bps, a full PVT report takes just under one second in NMEA.
+</I>&gt;<i>
+</I>&gt;<i> At 50km/h (31mi/h) that's 13.8 meters change in position between
+</I>&gt;<i> updates, about the same as the uncertainty of position under typical
+</I>&gt;<i> conditions.
+</I>&gt;<i>
+</I>&gt;<i> There is, however, a way to sample GPSes at higher frequency.  SiRF
+</I>&gt;<i> chips, and some others, allow you to shut down periodic notifications
+</I>&gt;<i> and poll them for PVT.  At 57600bps we could poll a NMEA GPS 16 times
+</I>&gt;<i> a second, and a SiRF one maybe 18 times a second.
+</I>&gt;<i>
+</I>&gt;<i> Is this worth doing?  Maybe.  It would reduce fix latency, possibly
+</I>&gt;<i> to good effect if your GPS is in motion.  Opinions?  Calculations?
+</I>&gt;<i>
+</I>&gt;<i> *** Set the system time zone from latitude/longitude
+</I>&gt;<i>
+</I>&gt;<i> If we're going to give gpsd the capability to set system time via
+</I>&gt;<i> ntpd, why not let it set timezone as well?  A good thing for hackers
+</I>&gt;<i> travelling with laptops!
+</I>&gt;<i>
+</I>&gt;<i> The major issue here is that I have not yet found code, or a
+</I>&gt;<i> database, that would allow mapping from lon/lat to timezone.
+</I>&gt;<i> And the rules change from year to year.
+</I>&gt;<i>
+</I>&gt;<i> Actually this should be built as a specialized client, as some
+</I>&gt;<i> people won't want it.
+</I>&gt;<i>
+</I>&gt;<i> &gt;From &lt;<A HREF="http://www.linuxsa.org.au/tips/time.html">http://www.linuxsa.org.au/tips/time.html</A>&gt;:
+</I>&gt;<i>
+</I>&gt;<i>     The timezone under Linux is set by a symbolic link from
+</I>&gt;<i>     /etc/localtime[1] to a file in the /usr/share/zoneinfo[2] directory
+</I>&gt;<i>     that corresponds with what timezone you are in. For example, since I'm
+</I>&gt;<i>     in South Australia, /etc/localtime is a symlink to
+</I>&gt;<i>     /usr/share/zoneinfo/Australia/South. To set this link, type:
+</I>&gt;<i>
+</I>&gt;<i>     ln -sf ../usr/share/zoneinfo/your/zone /etc/localtime
+</I>&gt;<i>
+</I>&gt;<i>     Replace your/zone with something like Australia/NSW or
+</I>&gt;<i>     Australia/Perth. Have a look in the directories under
+</I>&gt;<i>     /usr/share/zoneinfo to see what timezones are available.
+</I>&gt;<i>
+</I>&gt;<i>     [1] This assumes that /usr/share/zoneinfo is linked to /etc/localtime as it is under Red Hat Linux.
+</I>&gt;<i>
+</I>&gt;<i>     [2] On older systems, you'll find that /usr/lib/zoneinfo is used
+</I>&gt;<i>     instead of /usr/share/zoneinfo.
+</I>&gt;<i>
+</I>&gt;<i> Changing the hardlink will, of course, update the system timezone for
+</I>&gt;<i> all users.  If I were designing this feature, I'd ensure that the
+</I>&gt;<i> system timezone can be overridden by a user-set TZ, but I don't know
+</I>&gt;<i> if it actually works that way.
+</I>&gt;<i>
+</I>&gt;<i> If I'm reading the tea leaves correctly, this functionality is actually
+</I>&gt;<i> embedded in the GCC library version of tzset(), so the same method will
+</I>&gt;<i> work on any system that uses that.
+</I>&gt;<i>
+</I>&gt;<i> Problem: system daemons use the timezone set when they start up. You
+</I>&gt;<i> can't get them to grok a new one short of rebooting.
+</I>&gt;<i>
+</I>&gt;<i> Sources: 
+</I>&gt;<i>
+</I>&gt;<i> Sources for Time Zone and Daylight Saving Time Data
+</I>&gt;<i> <A HREF="http://www.twinsun.com/tz/tz-link.htm">http://www.twinsun.com/tz/tz-link.htm</A>
+</I>&gt;<i>
+</I>&gt;<i> Free time-zone maps of the U.S.
+</I>&gt;<i> <A HREF="http://www.manifold.net/download/freemaps.html">http://www.manifold.net/download/freemaps.html</A>
+</I>&gt;<i>   
+</I>-------------- next part --------------
+An HTML attachment was scrubbed...
+URL: &lt;<A HREF="https://lists.berlios.de/pipermail/gpsd-users/attachments/20060217/6fa9162f/attachment.html">https://lists.berlios.de/pipermail/gpsd-users/attachments/20060217/6fa9162f/attachment.html</A>&gt;
+-------------- next part --------------
+An embedded and charset-unspecified text was scrubbed...
+Name: gpsd-2.30-tsip-osx-jvn.patch
+URL: &lt;<A HREF="https://lists.berlios.de/pipermail/gpsd-users/attachments/20060217/6fa9162f/attachment.ksh">https://lists.berlios.de/pipermail/gpsd-users/attachments/20060217/6fa9162f/attachment.ksh</A>&gt;
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="001304.html">[Gpsd-users] gpsd-2.31 is imminent; here is the TODO list
+</A></li>
+	<LI>Next message: <A HREF="001320.html">[Gpsd-users] gpsd-2.31 is imminent; here is the TODO list
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1305">[ date ]</a>
+              <a href="thread.html#1305">[ thread ]</a>
+              <a href="subject.html#1305">[ subject ]</a>
+              <a href="author.html#1305">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

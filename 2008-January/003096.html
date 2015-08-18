@@ -1,0 +1,380 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] PPS 5Hz + GPSClock square wave pulse detection in	default nmea driver
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2008-January/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20PPS%205Hz%20%2B%20GPSClock%20square%20wave%20pulse%20detection%20in%0A%09default%20nmea%20driver&In-Reply-To=%3C000001c8571d%244b7e36d0%24fbc31eac%40tau%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="003095.html">
+   <LINK REL="Next"  HREF="003097.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] PPS 5Hz + GPSClock square wave pulse detection in	default nmea driver</H1>
+    <B>John Arthur</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20PPS%205Hz%20%2B%20GPSClock%20square%20wave%20pulse%20detection%20in%0A%09default%20nmea%20driver&In-Reply-To=%3C000001c8571d%244b7e36d0%24fbc31eac%40tau%3E"
+       TITLE="[Gpsd-users] PPS 5Hz + GPSClock square wave pulse detection in	default nmea driver">lists at davey.net.au
+       </A><BR>
+    <I>Tue Jan 15 03:21:05 CET 2008</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="003095.html">[Gpsd-users] PPS 5Hz (was Bug - Switching Drivers from Generic	NMEAtoGarmin serial creates 2 gpsd_ppsmonitor thread)
+</A></li>
+        <LI>Next message: <A HREF="003097.html">[Gpsd-users] Looks like a BUG?? was PPS 5Hz + GPSClock square wave	pulse detection indefault nmea driver
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3096">[ date ]</a>
+              <a href="thread.html#3096">[ thread ]</a>
+              <a href="subject.html#3096">[ subject ]</a>
+              <a href="author.html#3096">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>OK one last patch. ;-)
+
+As well as Garmin 18-5Hz PPS support it also auto detects the value
+of the PPS leading_edge variable. This should make removal of
+the Furuno GPSClock driver code possible since 1Hz square wave
+PPS pulses are now supported in the default nmea driver.
+
+Regards John Arthur
+
+diff -ur gpsd-2.36.orig/drivers.c gpsd-2.36.hack/drivers.c
+--- gpsd-2.36.orig/drivers.c	2008-01-02 01:23:30.000000000 +1030
++++ gpsd-2.36.hack/drivers.c	2008-01-15 12:18:00.000000000 +1030
+@@ -159,6 +159,15 @@
+ static void nmea_probe_subtype(struct gps_device_t *session, unsigned int seq)
+ {
+     /*
++     * Used for 1Hz square wave pulses
++     * Set the default leading_edge.
++     * GPSD will work out if its correct or not
++     */
++    if (seq == 0) {
++	session-&gt;driver.nmea.leading_edge = 0;
++    }
++
++    /*
+      * The reason for splitting these probes up by packet sequence
+      * number, interleaving them with the first few packet receives,
+      * is because many generic-NMEA devices get confused if you send
+@@ -264,23 +273,30 @@
+  * Garmin NMEA
+  *
+  **************************************************************************/
+-
+ #ifdef ALLOW_RECONFIGURE
++#if defined(NMEA_ENABLE)
+ static void garmin_nmea_configurator(struct gps_device_t *session, unsigned int seq)
+ {
+-#if defined(NMEA_ENABLE)
+     /*
+      * Receivers like the Garmin GPS-10 don't handle having having a lot of
+      * probes shoved at them very well.
+      */
+     switch (seq) {
+     case 0:
+-	/* reset some config, AutoFix, WGS84, PPS */
+-	(void)nmea_send(session-&gt;gpsdata.gps_fd, &quot;$PGRMC,A,,100,,,,,,A,,1,2,4,30&quot;);
++//	/* reset some config, AutoFix, WGS84, PPS */
++//	(void)nmea_send(session-&gt;gpsdata.gps_fd, &quot;$PGRMC,A,,100,,,,,,A,,1,2,4,30&quot;);
++	/* 
++         * reset some config, AutoFix, WGS84, PPS 
++         * Set the PPS pulse length to 40ms which leaves the 18-5hz with a 160ms 
++         * low state.
++        */
++	(void)nmea_send(session-&gt;gpsdata.gps_fd, &quot;$PGRMC,A,,100,,,,,,A,,1,2,1,30&quot;);
+ 	break;
+     case 1:
+-	/* once a sec, no averaging, NMEA 2.3, WAAS */
+-	(void)nmea_send(session-&gt;gpsdata.gps_fd, &quot;$PGRMC1,1,1,1,,,,2,W,N&quot;);
++//	/* once a sec, no averaging, NMEA 2.3, WAAS */
++//	(void)nmea_send(session-&gt;gpsdata.gps_fd, &quot;$PGRMC1,1,1,1,,,,2,W,N&quot;);
++	/* once a sec, averaging, NMEA 2.3, WAAS */
++	(void)nmea_send(session-&gt;gpsdata.gps_fd, &quot;$PGRMC1,1,1,2,,,,2,W,N&quot;);
+ 	break;
+     case 2:
+ 	/* get some more config info */
+@@ -456,10 +472,12 @@
+     /*
+      * Michael St. Laurent &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">mikes at hartwellcorp.com</A>&gt; reports that you have to
+      * ignore the trailing PPS edge when extracting time from this chip.
++     * We set the variable with the value of the leading edge.
++     * 0 or 1
+      */
+     if (seq == 0) {
+ 	gpsd_report(LOG_INF, &quot;PPS trailing edge will be ignored&quot;);
+-	session-&gt;driver.nmea.ignore_trailing_edge = true;
++	session-&gt;driver.nmea.leading_edge = 1;
+     }
+ }
+ 
+diff -ur gpsd-2.36.orig/gpsd.h gpsd-2.36.hack/gpsd.h
+--- gpsd-2.36.orig/gpsd.h	2008-01-02 00:49:24.000000000 +1030
++++ gpsd-2.36.hack/gpsd.h	2008-01-15 12:07:37.000000000 +1030
+@@ -198,6 +198,7 @@
+     bool shmTimeInuse[NTPSHMSEGS];
+ # ifdef PPS_ENABLE
+     bool shmTimePPS;
++    int pulse;
+ # endif /* PPS_ENABLE */
+ #endif /* NTPSHM_ENABLE */
+ };
+@@ -276,9 +277,7 @@
+ 	    int part, await;		/* for tracking GSV parts */
+ 	    struct tm date;
+ 	    double subseconds;
+-#ifdef GPSCLOCK_ENABLE
+-	    bool ignore_trailing_edge;
+-#endif /* GPSCLOCK_ENABLE */
++	    int leading_edge;		/* Work out the pulse leading edge state */
+ 	} nmea;
+ #endif /* NMEA_ENABLE */
+ #ifdef BINARY_ENABLE
+@@ -439,7 +438,7 @@
+ extern int ntpshm_alloc(struct gps_context_t *);
+ extern bool ntpshm_free(struct gps_context_t *, int);
+ extern int ntpshm_put(struct gps_device_t *, double);
+-extern int ntpshm_pps(struct gps_device_t *,struct timeval *);
++extern int ntpshm_pps(struct gps_device_t *,struct timeval *, int);
+ 
+ extern void ecef_to_wgs84fix(struct gps_data_t *,
+ 			     double, double, double, 
+diff -ur gpsd-2.36.orig/gpsd.h-tail gpsd-2.36.hack/gpsd.h-tail
+--- gpsd-2.36.orig/gpsd.h-tail	2007-12-18 12:53:27.000000000 +1030
++++ gpsd-2.36.hack/gpsd.h-tail	2008-01-15 12:22:11.000000000 +1030
+@@ -157,6 +157,7 @@
+     bool shmTimeInuse[NTPSHMSEGS];
+ # ifdef PPS_ENABLE
+     bool shmTimePPS;
++    int pulse;
+ # endif /* PPS_ENABLE */
+ #endif /* NTPSHM_ENABLE */
+ };
+@@ -235,9 +236,7 @@
+ 	    int part, await;		/* for tracking GSV parts */
+ 	    struct tm date;
+ 	    double subseconds;
+-#ifdef GPSCLOCK_ENABLE
+-	    bool ignore_trailing_edge;
+-#endif /* GPSCLOCK_ENABLE */
++            int leading_edge;           /* Work out the pulse leading edge state */
+ 	} nmea;
+ #endif /* NMEA_ENABLE */
+ #ifdef BINARY_ENABLE
+@@ -398,7 +397,7 @@
+ extern int ntpshm_alloc(struct gps_context_t *);
+ extern bool ntpshm_free(struct gps_context_t *, int);
+ extern int ntpshm_put(struct gps_device_t *, double);
+-extern int ntpshm_pps(struct gps_device_t *,struct timeval *);
++extern int ntpshm_pps(struct gps_device_t *,struct timeval *, int);
+ 
+ extern void ecef_to_wgs84fix(struct gps_data_t *,
+ 			     double, double, double, 
+diff -ur gpsd-2.36.orig/libgpsd_core.c gpsd-2.36.hack/libgpsd_core.c
+--- gpsd-2.36.orig/libgpsd_core.c	2007-12-21 12:47:11.000000000 +1030
++++ gpsd-2.36.hack/libgpsd_core.c	2008-01-15 12:11:17.000000000 +1030
+@@ -138,6 +138,7 @@
+     pps_device = TIOCM_CTS;
+ #endif
+ 
++    gpsd_report(LOG_PROG, &quot;Create Thread gpsd_ppsmonitor\n&quot;);
+ 
+     /* wait for status change on the device's carrier-detect line */
+     while (ioctl(session-&gt;gpsdata.gps_fd, TIOCMIWAIT, pps_device) == 0) {
+@@ -171,42 +172,53 @@
+ 	     * don't know the polarity of the pulse (different receivers
+ 	     * emit different polarities). The duration variable is used to
+ 	     * determine which way the pulse is going. The code assumes
+-	     * that the UTC second is changing when the signal has not
+-	     * been changing for at least 800ms, i.e. it assumes the duty
+-	     * cycle is at most 20%.
++	     * that the UTC second is changing on the long pulse. For 1Hz
++             * this is normaly when the signal has not been changing for at
++             * least 800ms, i.e. it assumes the duty cycle is at most 20%.
+ 	     *
+ 	     * Some GPS instead output a square wave that is 0.5 Hz and each
+ 	     * edge denotes the start of a second.
++	     *
++	     * 5Hz GPS (Garmin 18-5Hz) pulses at 5Hz. Set the pulse length to 
++	     * 40ms which gives a 160ms pulse before going high.
+ 	     */
+ #define timediff(x, y)	(int)((x.tv_sec-y.tv_sec)*1000000+x.tv_usec-y.tv_usec)
+ 	    cycle = timediff(tv, pulse[state]);
+ 	    duration = timediff(tv, pulse[state == 0]);
+ #undef timediff
+ 
+-	    if (800000 &gt; duration) {
+-		/* less than 800mS, duration too short for anything */
+-		gpsd_report(LOG_RAW, 
+-		    &quot;PPS pulse rejected too short. cycle: %d, duration: %d\n&quot;,
+-		    cycle, duration);
+-#ifdef GPSCLOCK_ENABLE
+-		    /*
+-		     * Ugly hack to cope with things like the Furuno GPSClock,
+-		     * which has the odd property that you have to
+-		     * ignore the trailing edge of the PPS.
+-		     */
+-		    if (state==1 &amp;&amp; session-&gt;driver.nmea.ignore_trailing_edge) 
+-			(void)ntpshm_pps(session, &amp;tv);
+-#endif /* GPSCLOCK_ENABLE */
++	    if (cycle &gt; 199000 &amp;&amp; cycle &lt; 201000 ) {
++		/* 5Hz cycle */
++		gpsd_report(LOG_RAW, &quot;5Hz PPS pulse. cycle: %d, duration: %d\n&quot;,
++			cycle, duration);
++		/* looks like 5hz PPS pulse */
++	        if (duration &gt; 45000)
++		    (void)ntpshm_pps(session, &amp;tv, 5);
+ 	    } else if (cycle &gt; 999000 &amp;&amp; cycle &lt; 1001000 ) {
+-		/* looks like PPS pulse */
+-		(void)ntpshm_pps(session, &amp;tv);
++		/* 1Hz cycle*/
++		gpsd_report(LOG_RAW, &quot;1Hz PPS pulse. cycle: %d, duration: %d\n&quot;,
++			cycle, duration);
++	        if (duration &gt; 200000 ) {
++	            if (duration &gt; 499000 &amp;&amp; duration &lt; 501000 ) {
++		       /* 
++		        * 1Hz square wave pulse and we need to know which edge
++		        * to ignore.
++			*/
++		        if (state == session-&gt;driver.nmea.leading_edge) 
++		            (void)ntpshm_pps(session, &amp;tv, 1);
++		    } else {
++		        (void)ntpshm_pps(session, &amp;tv, 1);
++		    }
++		}
+ 	    } else if (cycle &gt; 1999000 &amp;&amp; cycle &lt; 2001000) {
+-		/* looks like 0.5 Hz square wave */
+-		(void)ntpshm_pps(session, &amp;tv);
++		/* 0.5 Hz cycle */
++		gpsd_report(LOG_RAW, &quot;0.5Hz PPS pulse. cycle: %d, duration: %d\n&quot;,
++			cycle, duration);
++		(void)ntpshm_pps(session, &amp;tv, 1);
+ 	    } else {
+-		    gpsd_report(LOG_RAW, &quot;PPS pulse rejected.  cycle: %d, duration: %d\n&quot;,
++		gpsd_report(LOG_INF, &quot;PPS pulse rejected unknown cycle. cycle: %d, duration: %d\n&quot;, 
+ 			cycle, duration);
+-	    }
++            }
+ 	} else {
+                 gpsd_report(LOG_RAW, &quot;PPS pulse rejected. No fix.\n&quot;);
+ 	}
+diff -ur gpsd-2.36.orig/ntpshm.c gpsd-2.36.hack/ntpshm.c
+--- gpsd-2.36.orig/ntpshm.c	2007-12-06 21:45:47.000000000 +1030
++++ gpsd-2.36.hack/ntpshm.c	2008-01-15 12:36:20.000000000 +1030
+@@ -79,6 +79,7 @@
+     memset(context-&gt;shmTimeInuse,0,sizeof(context-&gt;shmTimeInuse));
+ # ifdef PPS_ENABLE
+     context-&gt;shmTimePPS = enablepps;
++    context-&gt;pulse = 0;
+ # endif /* PPS_ENABLE */
+     context-&gt;enable_ntpshm = true;
+ }
+@@ -141,13 +142,17 @@
+     shmTime-&gt;count++;
+     shmTime-&gt;valid = 1;
+ 
++    gpsd_report(LOG_RAW, &quot;ntpshm_put: Clock: %lu @ %lu.%06lu\n&quot;
++	, (unsigned long)seconds, (unsigned long)tv.tv_sec
++        , (unsigned long)tv.tv_usec);
++
+     return 1;
+ }
+ 
+ #ifdef PPS_ENABLE
+ /* put NTP shared memory info based on received PPS pulse */
+ 
+-int ntpshm_pps(struct gps_device_t *session, struct timeval *tv)
++int ntpshm_pps(struct gps_device_t *session, struct timeval *tv, int Hz)
+ {
+     struct shmTime *shmTime = NULL, *shmTimeP = NULL;
+     time_t seconds;
+@@ -177,16 +182,30 @@
+     }
+     /*@ -ignorequals @*/
+ 
++    gpsd_report(LOG_RAW, &quot;ntpshm_pps: clock: %lu.%06lu, Pulse %d\n&quot;
++	    , (unsigned long)tv-&gt;tv_sec, (unsigned long)tv-&gt;tv_usec, session-&gt;context-&gt;pulse);
++
+     if (tv-&gt;tv_usec &lt; PPS_MAX_OFFSET) {
+ 	seconds = (time_t)tv-&gt;tv_sec;
+ 	offset = (double)tv-&gt;tv_usec / 1000000.0;
++	session-&gt;context-&gt;pulse = 0;
+     } else {
+ 	if (tv-&gt;tv_usec &gt; (1000000 - PPS_MAX_OFFSET)) {
+ 	    seconds = (time_t)(tv-&gt;tv_sec + 1);
+ 	    offset = 1 - ((double)tv-&gt;tv_usec / 1000000.0);
++	    session-&gt;context-&gt;pulse = 0;
+ 	} else {
+-	    shmTimeP-&gt;precision = -1;	/* lost lock */
+-	    gpsd_report(LOG_INF, &quot;ntpshm_pps: lost PPS lock\n&quot;);
++            /* 
++             * Not a PPS at the top of the second.
++             */
++             if ((session-&gt;context-&gt;pulse) &gt;= Hz) {
++		shmTimeP-&gt;precision = -1;   /* lost lock */
++		gpsd_report(LOG_INF, &quot;ntpshm_pps: lost PPS lock: pulse %d\n&quot;, session-&gt;context-&gt;pulse);
++
++                if (tv-&gt;tv_usec &lt; (500000+PPS_MAX_OFFSET) &amp;&amp; tv-&gt;tv_usec &gt; (500000-PPS_MAX_OFFSET))
++                        (session-&gt;driver.nmea.leading_edge == 1) ? 0 : 1;
++             }
++	    session-&gt;context-&gt;pulse++;
+ 	    return -1;
+ 	}
+     }
+@@ -200,7 +219,7 @@
+     shmTimeP-&gt;count++;
+     shmTimeP-&gt;valid = 1;
+ 
+-    gpsd_report(LOG_RAW, &quot;ntpshm_pps: clock: %lu @ %lu.%06lu, precision %d\n&quot;
++    gpsd_report(LOG_RAW, &quot;ntpshm_pps: Clock: %lu @ %lu.%06lu, precision %d\n&quot;
+ 	, (unsigned long)seconds, (unsigned long)tv-&gt;tv_sec
+         , (unsigned long)tv-&gt;tv_usec, shmTimeP-&gt;precision);
+     return 1;
+diff -ur gpsd-2.36.orig/serial.c gpsd-2.36.hack/serial.c
+--- gpsd-2.36.orig/serial.c	2007-12-13 14:44:29.000000000 +1030
++++ gpsd-2.36.hack/serial.c	2008-01-13 13:58:30.000000000 +1030
+@@ -332,7 +332,11 @@
+      * to communicate the navigation message derived and (possibly)
+      * 1pps derived time data to ntpd.
+      */
+-    ntpd_link_activate(session);
++
++     gpsd_report(LOG_RAW, &quot;ntpd_link_activate: %d\n&quot;, 
++                            (int)session-&gt;shmindex &gt;=0 );
++     if (!(session-&gt;shmindex &gt;=0))
++        ntpd_link_activate(session);
+ #endif /* NTPSHM_ENABLE */
+ }
+ 
+
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="003095.html">[Gpsd-users] PPS 5Hz (was Bug - Switching Drivers from Generic	NMEAtoGarmin serial creates 2 gpsd_ppsmonitor thread)
+</A></li>
+	<LI>Next message: <A HREF="003097.html">[Gpsd-users] Looks like a BUG?? was PPS 5Hz + GPSClock square wave	pulse detection indefault nmea driver
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3096">[ date ]</a>
+              <a href="thread.html#3096">[ thread ]</a>
+              <a href="subject.html#3096">[ subject ]</a>
+              <a href="author.html#3096">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

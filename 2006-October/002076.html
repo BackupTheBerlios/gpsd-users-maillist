@@ -1,0 +1,95 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] tsip test, gpsd and linuxpps
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2006-October/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20tsip%20test%2C%20gpsd%20and%20linuxpps&In-Reply-To=%3C200610051845.k95IjaH7011549%40ring.wraith.sf.ca.us%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="002109.html">
+   <LINK REL="Next"  HREF="002077.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] tsip test, gpsd and linuxpps</H1>
+    <B>gnu not unix</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20tsip%20test%2C%20gpsd%20and%20linuxpps&In-Reply-To=%3C200610051845.k95IjaH7011549%40ring.wraith.sf.ca.us%3E"
+       TITLE="[Gpsd-users] tsip test, gpsd and linuxpps">gnu at wraith.sf.ca.us
+       </A><BR>
+    <I>Thu Oct  5 20:45:36 CEST 2006</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="002109.html">[Gpsd-users] fixed-port-speed
+</A></li>
+        <LI>Next message: <A HREF="002077.html">[Gpsd-users] tsip test, gpsd and linuxpps
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2076">[ date ]</a>
+              <a href="thread.html#2076">[ thread ]</a>
+              <a href="subject.html#2076">[ subject ]</a>
+              <a href="author.html#2076">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>
+Hi hi--
+
+In message &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">Pine.LNX.4.64.0609271334580.29291 at catbert.rellim.com</A>&gt; you write:
+
+&gt;<i>I have heard rumours the TSIP has been broekn a while.  It would be
+</I>&gt;<i>good to know if the current code works.  It is iffy right now
+</I>&gt;<i>on the Garmin Serial binary.  There are severl protocols that
+</I>&gt;<i>use &lt;DLE&gt; delimiters and gpsd has trouble picking them apart.
+</I>
+I've tested with TSIP and it seemed to work, in that gpsd was
+able to (sometimes slowly) recognise the TSIP code and not
+coredump on me. Not really much more than a &quot;pass/fail&quot; test
+actually, so don't place too much faith in my report.
+
+
+I also ran gpsd with  NMEA/gps35 and it worked as well. In this
+case I setup ntpd with the two shm clocks and gpsd did write the
+timestamps to ntpd ok. 
+
+One issue, is that gpsd seems to turn on a number of extra NMEA
+strings. These extra strings impacted the linuxpps operation
+as the plots show in the link:
+
+<A HREF="http://www.wraith.sf.ca.us/ntp/linuxpps-gpsd.html">http://www.wraith.sf.ca.us/ntp/linuxpps-gpsd.html</A>
+
+Note that linuxpps was not using gpsd at all, the linuxpps host
+only saw the effect of the extra (other than just $GPGGA) NMEA
+data strings.
+
+This is really only a &quot;beware of side effects&quot; comment with
+regards to gpsd, not a bug report.
+
+../Steven
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="002109.html">[Gpsd-users] fixed-port-speed
+</A></li>
+	<LI>Next message: <A HREF="002077.html">[Gpsd-users] tsip test, gpsd and linuxpps
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2076">[ date ]</a>
+              <a href="thread.html#2076">[ thread ]</a>
+              <a href="subject.html#2076">[ subject ]</a>
+              <a href="author.html#2076">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

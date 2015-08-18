@@ -1,0 +1,143 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] How to start gpsd with fix baud rate of	serial	interface
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2009-September/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20How%20to%20start%20gpsd%20with%20fix%20baud%20rate%20of%0A%09serial%09interface&In-Reply-To=%3C4ABCB6E2.5020900%40wildgooses.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="003979.html">
+   <LINK REL="Next"  HREF="003973.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] How to start gpsd with fix baud rate of	serial	interface</H1>
+    <B>Ed W</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20How%20to%20start%20gpsd%20with%20fix%20baud%20rate%20of%0A%09serial%09interface&In-Reply-To=%3C4ABCB6E2.5020900%40wildgooses.com%3E"
+       TITLE="[Gpsd-users] How to start gpsd with fix baud rate of	serial	interface">lists at wildgooses.com
+       </A><BR>
+    <I>Fri Sep 25 14:26:10 CEST 2009</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="003979.html">[Gpsd-users] Detecting Gps/Modems
+</A></li>
+        <LI>Next message: <A HREF="003973.html">[Gpsd-users] How to start gpsd with fix baud rate of	serial	interface
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3969">[ date ]</a>
+              <a href="thread.html#3969">[ thread ]</a>
+              <a href="subject.html#3969">[ subject ]</a>
+              <a href="author.html#3969">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Eric S. Raymond wrote:
+&gt;<i> Chris Kuethe &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">chris.kuethe at gmail.com</A>&gt;:
+</I>&gt;<i>   
+</I>&gt;&gt;<i> Offhand I would argue that modem-like devices can be quickly detected by the
+</I>&gt;&gt;<i> &quot;OK&quot; response to an &quot;AT&quot; probe. We can't rely on a potential modem to be
+</I>&gt;&gt;<i> gratuitously emitting bytes and we already send other wake-up probes;
+</I>&gt;&gt;<i> earthmate and ac12 come to mind.
+</I>&gt;&gt;<i>     
+</I>&gt;<i>
+</I>&gt;<i> I'm concerned about false positive OKs.  It's only a two-character
+</I>&gt;<i> string; that means it's going to show up in random baud barf
+</I>&gt;<i> approximately once in every 65K characters...which may sound like a
+</I>&gt;<i> lot until you realize that at 9600bps it's just once every 68 seconds.
+</I>&gt;<i>   
+</I>
+There are other fairly reliable strings you can send which are &quot;widely 
+supported&quot;.  As a general rule, all AT commands will finish with a +OK 
+or +ERROR in order to show the end of that command output.  Additionally 
+&quot;most&quot; AT commands return a result after only a short delay (sure there 
+are many that don't, but my point is there are a large number of widely 
+supported ones which do, and those fast commands can be used for testing)
+
+So for example in my testing
+- I tend to hit the modem with &quot;AT&amp;F&quot; which is factory reset and this 
+should come back with OK pretty promptly.
+- I do this a few times in a row and eat any extra data - the logic 
+being that someone else might have been talking to the modem previously 
+and this was garbage, the previous test already confirmed we were 
+&quot;likely&quot; to be talking to a modem, so now we are just trying to get 
+control of it's output so that we can measure cause and effect when we 
+interrogate it
+- After this I hit it with a couple of AT commands to check make and 
+model (+CGMR / +GMR from memory, need to check). These are good 
+identification strings for the device
+- In my application I then run a few tests to see if it's likely a 
+3G/wireless data card, over and above a normal modem.  This is useful 
+data for me since we deal with both classes of device.  I do this by 
+testing if it supports certain types of additional AT command.  This 
+would be a good time to check for the small class of cell phone devices 
+which have a builtin GPS and can output this data over AT or similar (or 
+be flipped into some gps data mode).  This is admittedly a fairly small 
+number of devices, but it's not zero (Siemens modules spring to mind, 
+some Iridium satellite phones and a few other satellite phones, perhaps 
+some of the fancy nokia N series, etc)
+
+Incidently with AT modems they can be interrogated to see *if* they 
+support certain AT commands.  So you can get a near immediate response 
+back to the question as to whether the modem supports a given AT 
+command, which can obviously be different to the output of actually 
+running that AT command itself!  This allows a great deal of flexibility 
+in probing
+
+I think the main thing you might be missing (or I misunderstand your 
+answer?) is that modems as a class just sit there and don't *do 
+anything* until you probe them..  There are no &quot;OK&quot; strings coming out 
+of a modem or any other string for that matter - they just sit quietly 
+until you talk to them!  However, as a class they respond very promptly 
+to certain well specified and well documented commands and those 
+commands DO follow a very specific and rigid structure (specifically 
+they must end with I think it's OK\r or ERROR\r and may have a variable 
+length response before that)
+
+Probing a device to see if it's a modem is actually really easy and very 
+reliable.  At the simplest you could just send an AT and see if it 
+reliably responds OK\r.  If you want to be really sure I would suggest 
+you do that a couple of times (remember the extra few milliseconds are 
+only spent once you already are pretty sure it's a modem...)  A few 
+extra AT questions give you a pretty good idea what general type of 
+modem it is (wireless or wired in particular)
+
+In case we are talking cross purposes, I think detection of additional 
+device types is really for excluding them from gpsd using them.  
+Additionally this functionality is best pushed up to the udev level so I 
+would propose to pinch the main detection loop from gpsd, break it into 
+a separate utility which classifies devices and then once they are 
+detected to be a gps pushes them back to the main gps daemon or 
+somewhere else if not.  I hope someone else will suggest an even neater 
+algorithm, but this seems like a good starting point...
+
+THanks for listening...
+
+Ed W
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="003979.html">[Gpsd-users] Detecting Gps/Modems
+</A></li>
+	<LI>Next message: <A HREF="003973.html">[Gpsd-users] How to start gpsd with fix baud rate of	serial	interface
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3969">[ date ]</a>
+              <a href="thread.html#3969">[ thread ]</a>
+              <a href="subject.html#3969">[ subject ]</a>
+              <a href="author.html#3969">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

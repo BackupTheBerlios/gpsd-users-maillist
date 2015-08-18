@@ -1,0 +1,99 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] gpsd 2.28 bug report
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2005-July/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20gpsd%202.28%20bug%20report&In-Reply-To=%3C20050714004452.GA23943%40thyrsus.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="000840.html">
+   <LINK REL="Next"  HREF="000844.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] gpsd 2.28 bug report</H1>
+    <B>Eric S. Raymond</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20gpsd%202.28%20bug%20report&In-Reply-To=%3C20050714004452.GA23943%40thyrsus.com%3E"
+       TITLE="[Gpsd-users] gpsd 2.28 bug report">esr at thyrsus.com
+       </A><BR>
+    <I>Thu Jul 14 02:44:52 CEST 2005</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="000840.html">[Gpsd-users] gpsd 2.28 bug report
+</A></li>
+        <LI>Next message: <A HREF="000844.html">[Gpsd-users] The state of the GPSD code
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#841">[ date ]</a>
+              <a href="thread.html#841">[ thread ]</a>
+              <a href="subject.html#841">[ subject ]</a>
+              <a href="author.html#841">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>David I S Mandala &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">davidm at them.com</A>&gt;:
+&gt;<i> This may be the lamest bug report I've ever put in but I have confirmed
+</I>&gt;<i> it does not work correctly several times so here goes.
+</I>&gt;<i> 
+</I>&gt;<i> Upgraded to gpsd 2.28 from 2.25 (I think) using a RoyalTek RGM-2000 USB
+</I>&gt;<i> GPS. I have udev installed and whenever the GPS in plugged in it gets 2
+</I>&gt;<i> devices /dev/ttyUSB? and /dev/gps.
+</I>&gt;<i> 
+</I>&gt;<i> If gpsd is compiled with the Sirf binary support it detects that the gps
+</I>&gt;<i> is indeed an Sirf chipset and switches to it. Sometimes (very rarely) it
+</I>&gt;<i> gets it correct and works. Most of the time it gets it wrong and in
+</I>&gt;<i> debug mode says unknown format for the Sirf input. (This did work on the
+</I>&gt;<i> earlier version of gpsd). If I rebuild gpsd without Sirf support and
+</I>&gt;<i> force the device back into NEMA mode all works as expected.
+</I>&gt;<i> 
+</I>&gt;<i> An additional data point for what it's worth, Most of the time (99%)
+</I>&gt;<i> what ever that gpsd does to the gps it requires unplugging the gps and
+</I>&gt;<i> replugging it before sirfmon will connect to it directly to kick it back
+</I>&gt;<i> into NEMA mode. 
+</I>&gt;<i> 
+</I>&gt;<i> This is odd no doubt but it's repeatable, I've spent the last two days
+</I>&gt;<i> tracking this down as I thought the problem was in my code, but once I
+</I>&gt;<i> recompiled leaving Sirf mode out of gpsd my app runs normally again.
+</I>&gt;<i> 
+</I>&gt;<i> Very very odd. Sorry I wish I had more data but I don't. If you would
+</I>&gt;<i> like anything collected just tell me what and how to collect it and I
+</I>&gt;<i> will.
+</I>
+OK.  Try 2.26 and 2.27.  Let's see if we can narrow down when things
+went sour for the RoyalTek.
+
+It must be something fairly subtle. My SiRF-based BU303 works fine,
+detects SiRF mode every time. My bet would be it's a change in the
+SiRF driver itself, not the framework code.
+
+Do you have a Subversion client?  
+-- 
+		&lt;a href=&quot;<A HREF="http://www.catb.org/~esr/">http://www.catb.org/~esr/</A>&quot;&gt;Eric S. Raymond&lt;/a&gt;
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="000840.html">[Gpsd-users] gpsd 2.28 bug report
+</A></li>
+	<LI>Next message: <A HREF="000844.html">[Gpsd-users] The state of the GPSD code
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#841">[ date ]</a>
+              <a href="thread.html#841">[ thread ]</a>
+              <a href="subject.html#841">[ subject ]</a>
+              <a href="author.html#841">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

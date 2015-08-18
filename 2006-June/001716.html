@@ -1,0 +1,95 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] Re: gpsd cpu usage
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2006-June/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Re%3A%20gpsd%20cpu%20usage&In-Reply-To=%3C20060617182244.GB3609%40thyrsus.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="001705.html">
+   <LINK REL="Next"  HREF="001706.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] Re: gpsd cpu usage</H1>
+    <B>Eric S. Raymond</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Re%3A%20gpsd%20cpu%20usage&In-Reply-To=%3C20060617182244.GB3609%40thyrsus.com%3E"
+       TITLE="[Gpsd-users] Re: gpsd cpu usage">esr at thyrsus.com
+       </A><BR>
+    <I>Sat Jun 17 20:22:44 CEST 2006</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="001705.html">[Gpsd-users] Re: gpsd cpu usage
+</A></li>
+        <LI>Next message: <A HREF="001706.html">[Gpsd-users] raw NMEA data?
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1716">[ date ]</a>
+              <a href="thread.html#1716">[ thread ]</a>
+              <a href="subject.html#1716">[ subject ]</a>
+              <a href="author.html#1716">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Eivind Tagseth &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">eivindt-gmane at multinet.no</A>&gt;:
+&gt;<i> 	1.  gpsd sets MAX_DEVICES to FD_SETSIZE, and creates that many
+</I>&gt;<i> instances of several structures.  Setting MAX_DEVICES lower doesn't help
+</I>&gt;<i> much, since FD_SETSIZE is also used for allocations and looping within
+</I>&gt;<i> the main loop.  This is both CPU intensive (for an embedded system) and
+</I>&gt;<i> very memory intensive.
+</I>&gt;<i> 
+</I>&gt;<i> 	2.  Issue 1 became a really big issue, since the main loop ran
+</I>&gt;<i> once per _byte_ received from the GPS, not per line.  Temporarily solved
+</I>&gt;<i> by adding a small delay in the main loop, but I guess this may be
+</I>&gt;<i> better solved by changing tty settings.
+</I>&gt;<i>  
+</I>&gt;<i> I was hoping to create a patch for issue 1, making gpsd a bit more
+</I>&gt;<i> dynamic regarding memory/cpu and the maximum number of client connections
+</I>&gt;<i> vs the actual number of client connections, but I haven't gotten around
+</I>&gt;<i> to it yet.
+</I>
+Currently the daemon does no dynamic allocation.  This is by design;
+if we have no malloc or free, we can't have memory leaks or
+double-frees or stale-pointer references.  I'd prefer to preserve that
+property, so I would probably reject a dynamic-size patch.
+
+My general philosophy about supporting embedded users is that we
+should test as much as possible with the all-singing-all-dancing
+totally autoconfigurating version for end-user laptops, then allow
+embedded users to compile stripped-down versions that reduce
+complexity and resource usage (relying on the regression tests to
+ensure that doesn't break anything).
+
+Thus, I would cheerfully accept a patch that allowed embedded-system
+users to compile in their choice of fixed maxima for number of devices
+and number of sessions rather than leaving them both at FD_SETSIZE.
+-- 
+		&lt;a href=&quot;<A HREF="http://www.catb.org/~esr/">http://www.catb.org/~esr/</A>&quot;&gt;Eric S. Raymond&lt;/a&gt;
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="001705.html">[Gpsd-users] Re: gpsd cpu usage
+</A></li>
+	<LI>Next message: <A HREF="001706.html">[Gpsd-users] raw NMEA data?
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1716">[ date ]</a>
+              <a href="thread.html#1716">[ thread ]</a>
+              <a href="subject.html#1716">[ subject ]</a>
+              <a href="author.html#1716">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

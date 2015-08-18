@@ -1,0 +1,103 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] Ntp and gpsd problem oem4
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2006-September/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Ntp%20and%20gpsd%20problem%20oem4&In-Reply-To=%3CPine.LNX.4.64.0609291848160.20162%40catbert.rellim.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="002043.html">
+   <LINK REL="Next"  HREF="002046.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] Ntp and gpsd problem oem4</H1>
+    <B>Gary E. Miller</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Ntp%20and%20gpsd%20problem%20oem4&In-Reply-To=%3CPine.LNX.4.64.0609291848160.20162%40catbert.rellim.com%3E"
+       TITLE="[Gpsd-users] Ntp and gpsd problem oem4">gem at rellim.com
+       </A><BR>
+    <I>Sat Sep 30 03:49:34 CEST 2006</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="002043.html">[Gpsd-users] Ntp and gpsd problem oem4
+</A></li>
+        <LI>Next message: <A HREF="002046.html">[Gpsd-users] Ntp and gpsd problem oem4
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2044">[ date ]</a>
+              <a href="thread.html#2044">[ thread ]</a>
+              <a href="subject.html#2044">[ subject ]</a>
+              <a href="author.html#2044">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>-----BEGIN PGP SIGNED MESSAGE-----
+Hash: SHA1
+
+Yo George!
+
+On Fri, 29 Sep 2006, xterm wrote:
+
+&gt;<i> ok i got the latest svn and i compiled with --enable-pps-on-cts. I compiled
+</I>&gt;<i> also the latest ntp and now it seems to work.
+</I>
+Good.
+
+&gt;<i> The reach value remains 0 for gps1(pps). I ran gpsd in debug mode and it
+</I>&gt;<i> sees the pulses from cts. Have you got any idea why does this happen?
+</I>
+In ntpshm.c, change this:
+
+#define PUT_MAX_OFFSET  500000          /* microseconds for lost lock */
+
+To this and see what happens:
+
+#define PUT_MAX_OFFSET  500000          /* microseconds for lost lock */
+
+
+Also, if you up the dbug level ral high you should see the PPS pulse
+go up/down in the logging.
+
+
+RGDS
+GARY
+- ---------------------------------------------------------------------------
+Gary E. Miller Rellim 20340 Empire Blvd, Suite E-3, Bend, OR 97701
+	<A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">gem at rellim.com</A>  Tel:+1(541)382-8588
+
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v1.4.3 (GNU/Linux)
+
+iD8DBQFFHc0w8KZibdeR3qURAirLAJ0eiy6EO1qhHoRJMPQCvEhfGRi9RACg7Mb8
+O6/RvF7JYjZtS5+PULJuPqo=
+=qRiQ
+-----END PGP SIGNATURE-----
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="002043.html">[Gpsd-users] Ntp and gpsd problem oem4
+</A></li>
+	<LI>Next message: <A HREF="002046.html">[Gpsd-users] Ntp and gpsd problem oem4
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2044">[ date ]</a>
+              <a href="thread.html#2044">[ thread ]</a>
+              <a href="subject.html#2044">[ subject ]</a>
+              <a href="author.html#2044">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

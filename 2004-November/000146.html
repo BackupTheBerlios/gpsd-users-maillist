@@ -1,0 +1,140 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] Rikaline GPS-6010 USB and gpsd
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2004-November/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Rikaline%20GPS-6010%20USB%20and%20gpsd&In-Reply-To=%3C41A89664.9030607%40airpost.net%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="000145.html">
+   <LINK REL="Next"  HREF="000147.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] Rikaline GPS-6010 USB and gpsd</H1>
+    <B>Aspas</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Rikaline%20GPS-6010%20USB%20and%20gpsd&In-Reply-To=%3C41A89664.9030607%40airpost.net%3E"
+       TITLE="[Gpsd-users] Rikaline GPS-6010 USB and gpsd">aspasaspas at airpost.net
+       </A><BR>
+    <I>Sat Nov 27 15:59:48 CET 2004</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="000145.html">[Gpsd-users] WAAS/EGNOS support.
+</A></li>
+        <LI>Next message: <A HREF="000147.html">[Gpsd-users] Rikaline GPS-6010 USB and gpsd
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#146">[ date ]</a>
+              <a href="thread.html#146">[ thread ]</a>
+              <a href="subject.html#146">[ subject ]</a>
+              <a href="author.html#146">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi,
+
+I just bought one Rikaline GPS-6010 receiver with an USB connection.
+
+This baby uses a PL2303 serial-to-USB chip to handle its USB connection.
+
+The hardware is working, as I have tried it already in anoter machine 
+(Windows).
+
+Then I decided to get it to work on my Linux laptop. I'm running a SuSe 
+9.0 distro with a 2.4.25 kernel.
+
+I read in your page that support for PL2303 was broken in kernel 
+versions above 2.4.18, but I can get a nice NMEA data stream from 
+/dev/ttyUSB0 with stty, so I thought gpsd would work.
+
+I downloaded and compiled gpsd version 2.3.
+
+However, it appears to be unable to read the entire NMEA data stream.
+
+Here's a sample of what I can get from stty (no GPS fix):
+
+ &gt; stty -F /dev/gps ispeed 4800 &amp;&amp; cat &lt; /dev/ttyUSB0
+M,81.4,0000*6D
+$GPRMC,145745.703,V,3857.1203,N,00924.4428,W,0.00,,271104,,*17
+$GPVTG,,T,,M,,N,,K*4E
+$GPGGA,145746.702,3857.1203,N,00924.4428,W,0,00,50.0,155.6,M,50.8,M,81.4,0000*6F
+$GPGSA,,N,,K*4E
+$GPGGA,150048.691,3857.1203,N,00924.4428,W,0,00,50.0,155.6,M,50.8,M,81.4,0000*69
+$GPRMC,150048.691,V,3857.1203,N,00924.4428,W,0.00,,271104,,*13
+$GPVTG,,T,,M,,N,,K*4E
+$GPGGA,150049.691,3857.1203,N,00924.4428,W,0,00,50.0,155.6,M,50.8,M,81.4,0000*68
+$GPRMC,150049.691,V,3857.1203,N,00924.4428,W,0.00,,271104,,*12
+$GPVTG,,T,,M,,N,,K*4E
+$GPGGA,150050.691,3857.1203,N,00924.4428,W,0,00,50.0,155.6,M,50.8,M,81.4,0000*60
+$GPRMC,150050.691,V,3857.1203,N,00924.4428,W,0.00,,271104,,*1A
+$GPVTG,,T,,M,,N,,K*4E
+$GPGGA,150051.691,3857.1203,N,00924.4428,W,0,00,50.0,155.6,M,50.8,M,81.4,0000*61
+$GPGSA,A,1,,,,,,,,,,,,,50.0,50.0,50.0*05
+$GPGSV,3,1,09,21,58,115,,25,56,214,28,16,51,314,00,06,37,054,00*76
+$GPGSV,3,2,09,15,32,178,00,03,19,254,00,30,12,109,00,23,09,297,00*7E
+$GPGSV,3,3,09,01,06,225,00*42
+(data stream continues, repeting the sentences above...)
+
+When I run gpsd in debug mode, I get:
+
+ &gt; ./gpsd -n -D 2
+gpsd: launching (Version 2.3)
+gpsd: listening on port gpsd
+gpsd: opening GPS data source at /dev/gps
+gpsd: setting speed 4800, 8 bits, no parity
+gpsd: gpsd_activate: opened GPS (4)
+gpsd: &lt;= GPS: $GPGSA,A,1,,,,,,,,,,,,,50.0,50.0,50.0*05
+gpsd: &lt;= GPS: $GPG
+
+At a first glance, it appears to be dropping characters. If I use debug 
+level 4, it will print some NMEA fragments like above and I will end up 
+with a continuous stream of lines similar to the following:
+
+gpsd: GPS has 10 chars waiting
+gpsd: GPS has 8 chars waiting
+gpsd: GPS has 10 chars waiting
+gpsd: GPS has 8 chars waiting
+gpsd: GPS has 8 chars waiting
+gpsd: GPS has 2 chars waiting
+
+It goes on and on, always reporting 10 or less chars, and does not 
+output any NMEA data. Telnetting and setting raw mode also produces no 
+data at all.
+
+Now, this is obviously a bug. My question is: is this a bug in gpsd or 
+in the PL2303 support?
+
+Is there something that I can do? If you need me to try something, do 
+let me know. I know C... ;-)
+
+Thank you,
+
+Vasco Veloso
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="000145.html">[Gpsd-users] WAAS/EGNOS support.
+</A></li>
+	<LI>Next message: <A HREF="000147.html">[Gpsd-users] Rikaline GPS-6010 USB and gpsd
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#146">[ date ]</a>
+              <a href="thread.html#146">[ thread ]</a>
+              <a href="subject.html#146">[ subject ]</a>
+              <a href="author.html#146">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

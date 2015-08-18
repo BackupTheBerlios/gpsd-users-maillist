@@ -1,0 +1,183 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] GlobalSat BC-307 GPS card problem
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2004-September/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20GlobalSat%20BC-307%20GPS%20card%20problem&In-Reply-To=%3C20040929014948.A8E273384B%40ws7-3.us4.outblaze.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="000063.html">
+   <LINK REL="Next"  HREF="000066.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] GlobalSat BC-307 GPS card problem</H1>
+    <B>Somil Asthana</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20GlobalSat%20BC-307%20GPS%20card%20problem&In-Reply-To=%3C20040929014948.A8E273384B%40ws7-3.us4.outblaze.com%3E"
+       TITLE="[Gpsd-users] GlobalSat BC-307 GPS card problem">somilasthana at lycos.com
+       </A><BR>
+    <I>Wed Sep 29 03:49:48 CEST 2004</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="000063.html">[Gpsd-users] GlobalSat BC-307 GPS card problem
+</A></li>
+        <LI>Next message: <A HREF="000066.html">[Gpsd-users] gpsd-2.0
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#64">[ date ]</a>
+              <a href="thread.html#64">[ thread ]</a>
+              <a href="subject.html#64">[ subject ]</a>
+              <a href="author.html#64">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi Eric 
+  Thank you for your help stty -F /dev/ttyXXX ispeed 4800; cat &lt;/dev/ttyUSB0 did the magic. I was trying to connect to a wrong serial device /dev/ttyS0 actually on my iPAQ it created /dev/tts/0 serial device for GPS card.
+Now I can use gpsd-2.0 daemon lock the satellite get GPS coordinates.
+
+regards
+Somil
+
+----- Original Message -----
+From: &quot;Eric S. Raymond&quot; &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">esr at thyrsus.com</A>&gt;
+Date: Tue, 28 Sep 2004 14:54:50 -0400
+To: Somil Asthana &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">somilasthana at lycos.com</A>&gt;
+Subject: Re: [Gpsd-users] GlobalSat BC-307 GPS card problem
+
+&gt;<i> Somil Asthana &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">somilasthana at lycos.com</A>&gt;:
+</I>&gt;<i> &gt;   Although what you said make sense but I feel there is some configuration problem. When I use the same card with Pocket PC on COM5 port it works fine. Pocket PC is able to acquire a GPS &amp; connects to it but when I try to do the same with Linux iPAQ I get bad results (the room setting all are same). Further I noticed that same syslogd msg is generated when you unplug the GPS card which makes me to believe that gpsd is not actually contacting the GPS satellite. Are you sure I am doing the right thing ? I am using Familiar OS 5.2 on IPAQ 3870 &amp; GlobalSat BC-307 card
+</I>&gt;<i> 
+</I>&gt;<i> Here are the installation and testing instructions  I am in the process of
+</I>&gt;<i> writing up in response to your issue:
+</I>&gt;<i> 
+</I>&gt;<i> Here are the steps for installing gpsd and verifying its performance:
+</I>&gt;<i> 
+</I>&gt;<i> 1. Start by making sure you can get data from your GPS, otherwise the later
+</I>&gt;<i> steps will be very frustrating.  In this command
+</I>&gt;<i> 
+</I>&gt;<i>       stty -F /dev/ttyXXX ispeed 4800; cat &lt;/dev/ttyUSB0
+</I>&gt;<i> 
+</I>&gt;<i> replace ttyXXX with the filename of the port.  This will probably be
+</I>&gt;<i> either /dev/ttyUSB0 or /dev/ttyS0.  When you run this command, you
+</I>&gt;<i> should see text lines beginning with $ come to stdout (possibly after
+</I>&gt;<i> a short initial burst of binary garbage).  If you don't see this, you
+</I>&gt;<i> may have OS-level problems with your serial support, but more likely
+</I>&gt;<i> have the wrong device.  Look again.
+</I>&gt;<i> 
+</I>&gt;<i> 2. Make a symlink named /dev/gps to your GPS port; the command will be
+</I>&gt;<i> 
+</I>&gt;<i>      ln -s /dev/ttyXXX /dev/gps
+</I>&gt;<i> 
+</I>&gt;<i> where ttyXXX is as in step 1.
+</I>&gt;<i> 
+</I>&gt;<i> 3. Build gpsd from source (skip this step if you have installed a gpsd
+</I>&gt;<i> binary package).
+</I>&gt;<i> 
+</I>&gt;<i> You will need to have either Motif or LessTif installed in order for
+</I>&gt;<i> gps and xgpsspeed to build.  If you're on a Linux system, you probably
+</I>&gt;<i> already have LessTif.  Source code is available from
+</I>&gt;<i> &lt;<A HREF="http://www.lesstif.org/">http://www.lesstif.org/</A>&gt;.
+</I>&gt;<i> 
+</I>&gt;<i> To build from source, run ./autogen.sh (or sh autogen.sh if the
+</I>&gt;<i> script does not have execute permission).  Then run make: libgps.so,
+</I>&gt;<i> gpsd, gps, and xgpsspeed will be built. Copy the app-defaults files
+</I>&gt;<i> gps.ad and xgpsspeed.ad to your home directory or to the system-wide X
+</I>&gt;<i> app-defaults directory.
+</I>&gt;<i> 
+</I>&gt;<i> 4. Determine whether you need a non-NMEA driver.  Usually you will not,
+</I>&gt;<i> but there are unusual exceptions.  Consult the hardware page at
+</I>&gt;<i> 
+</I>&gt;<i>     <A HREF="http://gpsd.berlios.de/hardware.html">http://gpsd.berlios.de/hardware.html</A>
+</I>&gt;<i> 
+</I>&gt;<i> to find out if your hardware is one of them.  If so, you may need to
+</I>&gt;<i> specify a driver type option at gpsd startup time; if you installed 
+</I>&gt;<i> a binary RPM, this will mean editing the gpsd init script.
+</I>&gt;<i> 
+</I>&gt;<i> 5. Start gpsd on a serial or USB port that has the GPS connected to it.
+</I>&gt;<i> If you made a /dev/gps symlink, just invoking &quot;gpsd&quot; as root should do it.
+</I>&gt;<i> If you installed from an RPM, gpsd will be started for you automatically 
+</I>&gt;<i> at boot time.
+</I>&gt;<i> 
+</I>&gt;<i> 6. Once gpsd is running, telnet to port 2947.  Type &quot;r&quot; to start raw
+</I>&gt;<i> and watcher modes.  You should see NMEA data (text lines beginning
+</I>&gt;<i> with $) spewing out.  You will also see lines with a GPSD prefix;
+</I>&gt;<i> these are sentence translations in GPSD protocol.
+</I>&gt;<i> 
+</I>&gt;<i> Note that until your GPS has acquired a fix, typing &quot;p&quot; to get position
+</I>&gt;<i> will only return this:
+</I>&gt;<i> 
+</I>&gt;<i> GPSD,P=?
+</I>&gt;<i> 
+</I>&gt;<i> This response does not mean that gpsd is broken or that the GPS is not
+</I>&gt;<i> sending data, merely that gpsd has not yet seen any *valid* position data.
+</I>&gt;<i> You will have to wait for the GPS to acquire satellite lock.  If you have 
+</I>&gt;<i> raw or watcher mode on it should be obvious when you get a lock.
+</I>&gt;<i> 
+</I>&gt;<i> 7. Start the gps client.  Calling it with no arguments should do the right 
+</I>&gt;<i> thing.  You should see a GUI panel with position/velocity-time information,
+</I>&gt;<i> and a satellite display.  The displays won't look very interesting until 
+</I>&gt;<i> the GPS acquires satellite lock.
+</I>&gt;<i> 
+</I>&gt;<i> 8. Check out the list of supported hardware at 
+</I>&gt;<i> 
+</I>&gt;<i>    <A HREF="http://gpsd.berlios.de/hardware.html">http://gpsd.berlios.de/hardware.html</A>
+</I>&gt;<i> 
+</I>&gt;<i> If your GPS isn't on the list, please send us information to add a new
+</I>&gt;<i> line to the table.  Here's what we need:
+</I>&gt;<i> 
+</I>&gt;<i> 1. Name (preferably with a URL to the vendor's product page or spec sheet).
+</I>&gt;<i> 2. Chipset.  Ideally we'd like to know both the GPS engine chip and
+</I>&gt;<i>    the USB-to-serial chip the device uses.  80% of the time this will be
+</I>&gt;<i>    SiRF-II + PL2303, but it's the exceptions that are interesting.
+</I>&gt;<i> 3. Interface type -- RS232, USB, CF, etc.
+</I>&gt;<i> 4. Vendor (preferably with a URL to the vendor's website).
+</I>&gt;<i> 5. gpsd type -- usually this will be 'n'.  If you had to specify a
+</I>&gt;<i>    non-NMEA driver type to make gpsd work, give it.
+</I>&gt;<i> 6. Version of gpsd you tested with.
+</I>&gt;<i> 7. NMEA protocol version.
+</I>&gt;<i> 8. List of NMEA sentences the GPS emits.
+</I>&gt;<i> 9. Notes -- anything interesting or unusual about this GPS.
+</I>&gt;<i> 
+</I>&gt;<i> You may get some help on fields 2, 7, and 8 by running gpsprobe.  Note that
+</I>&gt;<i> you will have to stop gpsd to do this.
+</I>&gt;<i> 
+</I>&gt;<i> We can also use updates of the latest version number known to work with
+</I>&gt;<i> hardware already supported.
+</I>&gt;<i> 
+</I>&gt;<i> -- 
+</I>&gt;<i> 		&lt;a href=&quot;<A HREF="http://www.catb.org/~esr/">http://www.catb.org/~esr/</A>&quot;&gt;Eric S. Raymond&lt;/a&gt;
+</I>&gt;<i> 
+</I>
+-- 
+_______________________________________________
+Find what you are looking for with the Lycos Yellow Pages
+<A HREF="http://r.lycos.com/r/yp_emailfooter/http://yellowpages.lycos.com/default.asp?SRC=lycos10">http://r.lycos.com/r/yp_emailfooter/http://yellowpages.lycos.com/default.asp?SRC=lycos10</A>
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="000063.html">[Gpsd-users] GlobalSat BC-307 GPS card problem
+</A></li>
+	<LI>Next message: <A HREF="000066.html">[Gpsd-users] gpsd-2.0
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#64">[ date ]</a>
+              <a href="thread.html#64">[ thread ]</a>
+              <a href="subject.html#64">[ subject ]</a>
+              <a href="author.html#64">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

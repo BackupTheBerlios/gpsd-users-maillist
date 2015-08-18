@@ -1,0 +1,114 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] Open-source AIS receiver
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2009-October/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Open-source%20AIS%20receiver&In-Reply-To=%3C20091008221816.GC12348%40thyrsus.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="004001.html">
+   <LINK REL="Next"  HREF="004003.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] Open-source AIS receiver</H1>
+    <B>Eric S. Raymond</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Open-source%20AIS%20receiver&In-Reply-To=%3C20091008221816.GC12348%40thyrsus.com%3E"
+       TITLE="[Gpsd-users] Open-source AIS receiver">esr at thyrsus.com
+       </A><BR>
+    <I>Fri Oct  9 00:18:16 CEST 2009</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="004001.html">[Gpsd-users] Open-source AIS receiver
+</A></li>
+        <LI>Next message: <A HREF="004003.html">[Gpsd-users] Open-source AIS receiver
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#4002">[ date ]</a>
+              <a href="thread.html#4002">[ thread ]</a>
+              <a href="subject.html#4002">[ subject ]</a>
+              <a href="author.html#4002">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Nick Foster &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">nick at zylight.com</A>&gt;:
+&gt;<i> Eric et. al,
+</I>&gt;<i> 
+</I>&gt;<i> I've recently written an open-source AIS receiver using the GNU Radio
+</I>&gt;<i> SDR platform. I wouldn't call it &quot;finished&quot;, but I will call it
+</I>&gt;<i> &quot;stable&quot;, and if you use GNU Radio, you might be interested in it. It's
+</I>&gt;<i> written to output NMEA-0183 sentences to interface with the GPSD AIS
+</I>&gt;<i> decoder. The project is hosted at CGRAN, the Comprehensive GNU Radio
+</I>&gt;<i> Archive Network, and can ordinarily be found at:
+</I>&gt;<i> 
+</I>&gt;<i> <A HREF="https://www.cgran.org/wiki/AIS">https://www.cgran.org/wiki/AIS</A>
+</I>&gt;<i> 
+</I>&gt;<i> However, there is a DNS issue with the cgran.org domain right now, and
+</I>&gt;<i> accessing CGRAN in the next few weeks can be done via its new IP:
+</I>&gt;<i> 
+</I>&gt;<i> <A HREF="https://128.2.212.19/wiki/AIS">https://128.2.212.19/wiki/AIS</A>
+</I>
+Interesting.  When you have stable hosting let me know and I'll
+put a link in our &quot;Related Resources&quot; section.
+ 
+&gt;<i> Just a little disclaimer, yes, I know the longer sentences violate the
+</I>&gt;<i> sentence length limit of NMEA-0183. GPSD seems to be more than happy to
+</I>&gt;<i> parse the sentences anyway. I'll eventually add in the (simple) logic to
+</I>&gt;<i> split up sentences, just to be safe.
+</I>
+As far as GPSD is concerned, don't worry about it. Lots of GPS
+receivers violate that limit in odd ways, as we've found out the hard
+way over the last five years.  The packet buffer in GPSD is far longer
+than any AIS encoding will ever be.
+
+&gt;<i> Feel free to give me suggestions, comments, etc. on this program. If
+</I>&gt;<i> there are GNU Radio aficionados out there who don't have access to the
+</I>&gt;<i> USRP hardware, I can record some sample AIS data for people to play
+</I>&gt;<i> with. Just let me know.
+</I>
+One of the things I want most badly for this project is a complete AIVDM
+test load - significant portions of my decoders have not yet been tested
+on live data, and not because I haven't been looking.  If you could supply
+any of the missing types I'd be very grateful.
+
+I have regression-test loads for AIS types 1-11, 15, 18-21, and 24.  I
+don't have them for types 12-14, 16-17, and 22-23.  
+
+A proper test load includes both the sentence and the decoded output
+oin some human-readable form - but for messages 12 and 14 in
+particular I'll take any data I can get, as the payload is textual and
+it ought therefore to be easy to tell if the decoding is correct.
+
+For types 6 and 8 I have regression-test sentences but no independent
+check that I've got the binary payload right.  If you have any known-good
+receivers you're checking your homebrew one against, perhaps you can help.
+-- 
+		&lt;a href=&quot;<A HREF="http://www.catb.org/~esr/">http://www.catb.org/~esr/</A>&quot;&gt;Eric S. Raymond&lt;/a&gt;
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="004001.html">[Gpsd-users] Open-source AIS receiver
+</A></li>
+	<LI>Next message: <A HREF="004003.html">[Gpsd-users] Open-source AIS receiver
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#4002">[ date ]</a>
+              <a href="thread.html#4002">[ thread ]</a>
+              <a href="subject.html#4002">[ subject ]</a>
+              <a href="author.html#4002">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

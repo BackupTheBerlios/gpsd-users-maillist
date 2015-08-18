@@ -1,0 +1,136 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] A python script feed gpsd to Google Earth
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2011-June/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20A%20python%20script%20feed%20gpsd%20to%20Google%20Earth&In-Reply-To=%3C20110615104502.GA8490%40Tungsten.DarkStar%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="005328.html">
+   <LINK REL="Next"  HREF="005346.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] A python script feed gpsd to Google Earth</H1>
+    <B>Chen Wei</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20A%20python%20script%20feed%20gpsd%20to%20Google%20Earth&In-Reply-To=%3C20110615104502.GA8490%40Tungsten.DarkStar%3E"
+       TITLE="[Gpsd-users] A python script feed gpsd to Google Earth">weichen302 at aol.com
+       </A><BR>
+    <I>Wed Jun 15 12:45:02 CEST 2011</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="005328.html">[Gpsd-users] A python script feed gpsd to Google Earth
+</A></li>
+        <LI>Next message: <A HREF="005346.html">[Gpsd-users] A python script feed gpsd to Google Earth
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#5329">[ date ]</a>
+              <a href="thread.html#5329">[ thread ]</a>
+              <a href="subject.html#5329">[ subject ]</a>
+              <a href="author.html#5329">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>On Wed, Jun 15, 2011 at 05:33:22PM +0700, Chen Wei wrote:
+&gt;<i> On Wed, Jun 15, 2011 at 05:57:08AM -0400, <A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">weichen302 at aol.com</A> wrote:
+</I>&gt;<i> &gt; Substitute gegpsd.py with the attached python script, then open the
+</I>&gt;<i> &gt; 
+</I>&gt;<i> try attach the file again...
+</I>&gt;<i> 
+</I>
+#--------- begin ---------------
+
+#!/usr/bin/env python
+# -*- coding: utf-8 -*-
+import time
+import gps
+
+
+def main(gpsd_report):
+    '''<A HREF="http://code.google.com/apis/kml/documentation/kmlreference.html">http://code.google.com/apis/kml/documentation/kmlreference.html</A>
+       for official kml document'''
+    kml_file = './Realtime_GPS.kml'
+    latitude =  gpsd_report['lat']
+    longitude = gpsd_report['lon']
+    speed_in =  gpsd_report['speed'] # meter/second
+    speed = speed_in * 3.6 # Km/h
+    heading =   gpsd_report['track']
+    altitude =  gpsd_report['alt']
+    time_in =   gpsd_report['time'] # time since the Unix epoch UTC
+    time_str = time.strftime(&quot;%Y-%m-%d %H:%M:%S UTC&quot;, time.gmtime(time_in))
+    gerange = ((speed / 100) * 350) + 650
+    tilt = 0
+
+    if speed &lt; 1:
+        gerange = 200
+        heading = 0
+
+    output = &quot;&quot;&quot;&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
+&lt;kml xmlns=&quot;<A HREF="http://earth.google.com/kml/2.0">http://earth.google.com/kml/2.0</A>&quot;&gt;
+&lt;Placemark&gt;
+    &lt;name&gt;%s km/h,heading %s&lt;/name&gt;
+    &lt;description&gt;Realtime GPS feeding&lt;/description&gt;
+    &lt;LookAt&gt;
+        &lt;longitude&gt;%s&lt;/longitude&gt;
+        &lt;latitude&gt;%s&lt;/latitude&gt;
+    &lt;/LookAt&gt;
+    &lt;Point&gt;
+        &lt;coordinates&gt;%s,%s,%s&lt;/coordinates&gt;
+    &lt;/Point&gt;
+&lt;/Placemark&gt;
+&lt;/kml&gt;&quot;&quot;&quot; % (speed,heading,longitude,latitude,longitude,latitude,altitude)
+
+    status_line = '&lt;{0}&gt; Speed: {1:.2f} Km/h, Heading: {2:.0f}'.format(time_str,
+                                                          speed, heading)
+    print status_line
+    f = open(kml_file, 'w')
+    f.write(output)
+    f.close()
+
+
+if __name__ == &quot;__main__&quot;:
+    session = gps.gps()
+    session.stream(gps.WATCH_ENABLE|gps.WATCH_NEWSTYLE)
+
+    try:
+        while True:
+            report = session.next()
+            if report['class'] == 'TPV':
+                main(report)
+    except StopIteration:
+        print 'GPSD has terminated'
+
+#--------- end ---------------
+
+
+
+-- 
+Chen Wei
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="005328.html">[Gpsd-users] A python script feed gpsd to Google Earth
+</A></li>
+	<LI>Next message: <A HREF="005346.html">[Gpsd-users] A python script feed gpsd to Google Earth
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#5329">[ date ]</a>
+              <a href="thread.html#5329">[ thread ]</a>
+              <a href="subject.html#5329">[ subject ]</a>
+              <a href="author.html#5329">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

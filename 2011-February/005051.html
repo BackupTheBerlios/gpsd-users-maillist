@@ -1,0 +1,99 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] Synchronization with a gps
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2011-February/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Synchronization%20with%20a%20gps&In-Reply-To=%3Cik2su5%248lm%241%40dough.gmane.org%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="005067.html">
+   <LINK REL="Next"  HREF="005052.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] Synchronization with a gps</H1>
+    <B>Damien R.</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Synchronization%20with%20a%20gps&In-Reply-To=%3Cik2su5%248lm%241%40dough.gmane.org%3E"
+       TITLE="[Gpsd-users] Synchronization with a gps">damienrg+list at gmail.com
+       </A><BR>
+    <I>Wed Feb 23 13:01:45 CET 2011</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="005067.html">[Gpsd-users] Preparing for release
+</A></li>
+        <LI>Next message: <A HREF="005052.html">[Gpsd-users] Synchronization with a gps
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#5051">[ date ]</a>
+              <a href="thread.html#5051">[ thread ]</a>
+              <a href="subject.html#5051">[ subject ]</a>
+              <a href="author.html#5051">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi,
+
+I want to synchronize two or more machines with no internet connection 
+and no wired or wireless connection between them.
+I think I should use a synchronization with ntp and a gps with pps.
+So I  set up gpsd and ntp and I have the following results:
+few minutes after ntp is started, ntpq -p reports:
+      remote           refid      st t when poll reach   delay   offset 
+jitter
+==============================================================================
++SHM(0)          .GPS.            0 l    2   16   17    0.000  -29.999 
+  4.309
+*SHM(1)          .PPS.            0 l    -   16   17    0.000   -3.404 
+  0.479
+
+but after few other minutes ntpq -p reports:
+      remote           refid      st t when poll reach   delay   offset 
+jitter
+==============================================================================
+xSHM(0)          .GPS.            0 l    2   16   17    0.000  -29.999 
+  4.309
+xSHM(1)          .PPS.            0 l    -   16   17    0.000   -3.404 
+  0.479
+
+ie, ntp discards the server.
+I have searched on the list and I read that I should use chrony instead 
+of ntp for this purpose but it was not explain why.
+
+So, I have the following questions:
+Is it possible to use ntp and gpsd for the described purpose ?
+Are there better alternatives ?
+Why does ntp discard the servers ?
+Could you also explain why chrony is recommended ?
+
+
+Best regards,
+Damien R.
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="005067.html">[Gpsd-users] Preparing for release
+</A></li>
+	<LI>Next message: <A HREF="005052.html">[Gpsd-users] Synchronization with a gps
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#5051">[ date ]</a>
+              <a href="thread.html#5051">[ thread ]</a>
+              <a href="subject.html#5051">[ subject ]</a>
+              <a href="author.html#5051">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

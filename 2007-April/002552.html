@@ -1,0 +1,105 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] GPSCAT vs. GPSD vs. LIBGPS (LIBGPSMM) (Problems)
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2007-April/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20GPSCAT%20vs.%20GPSD%20vs.%20LIBGPS%20%28LIBGPSMM%29%20%28Problems%29&In-Reply-To=%3C91981b3e0704071138t1b14c853s8e1a5fa5942d93d6%40mail.gmail.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="002553.html">
+   <LINK REL="Next"  HREF="002544.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] GPSCAT vs. GPSD vs. LIBGPS (LIBGPSMM) (Problems)</H1>
+    <B>Chris Kuethe</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20GPSCAT%20vs.%20GPSD%20vs.%20LIBGPS%20%28LIBGPSMM%29%20%28Problems%29&In-Reply-To=%3C91981b3e0704071138t1b14c853s8e1a5fa5942d93d6%40mail.gmail.com%3E"
+       TITLE="[Gpsd-users] GPSCAT vs. GPSD vs. LIBGPS (LIBGPSMM) (Problems)">chris.kuethe at gmail.com
+       </A><BR>
+    <I>Sat Apr  7 20:38:24 CEST 2007</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="002553.html">[Gpsd-users] GPSCAT vs. GPSD vs. LIBGPS (LIBGPSMM) (Problems)
+</A></li>
+        <LI>Next message: <A HREF="002544.html">[Gpsd-users] NMEA over radio modem
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2552">[ date ]</a>
+              <a href="thread.html#2552">[ thread ]</a>
+              <a href="subject.html#2552">[ subject ]</a>
+              <a href="author.html#2552">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>On 4/5/07, Mark Easton &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">mark.easton at azurebell.co.nz</A>&gt; wrote:
+&gt;<i> But, wiith GPSD I run it as follows:
+</I>&gt;<i>
+</I>&gt;<i> gpsd -N -n -D 2 /dev/ttyUSB0
+</I>&gt;<i>
+</I>&gt;<i> but it keeps producing the line :
+</I>&gt;<i>
+</I>&gt;<i> ...unknown sentence: &quot;$PGRMM, WGS 84*06\x0d\x0a&quot; and none of the nice stuff
+</I>&gt;<i> that GPSCat produces. So, why is GPSCAT working fine and not GPSD? Or is
+</I>&gt;<i> this correct operation??
+</I>
+Understand what the &quot;-D2&quot; option does ... it turns on an elevated
+level of debugging. With it, gpsd becomes much more willing to
+disclose its internal state. Second, have a look at where that unknown
+sentence message comes from. You'll see there are about a half dozen
+NMEA sentences that we actually care about and $PGRMM is not one of
+them. Generally these are silently ignored, unless you run with
+elevated debugging. Then we print a message that this sentence was
+ignored.
+
+Once gpsd is processing your device, you can connect to it with cgps,
+xgps or gpspipe to see the processed results.
+
+&gt;<i> Ok so this is the main issue as I want to write an application in C++. In my
+</I>&gt;<i> app I am using lbgpsmm/libgps. There I do an open(&quot;localhost&quot;,
+</I>&gt;<i> &quot;/dev/ttyUSB0&quot;) ... but it just keeps returning &quot;Error opening gpsd&quot;. So,
+</I>&gt;<i> what can possibly be wrong there?
+</I>
+Port is TCP port, not serial port... magic number 2947. Once connected
+to the daemon, you can select a specific device with the F command, if
+you have multiple devices connected.
+
+&gt;<i> I tried to use the set_callback function but that just hangs and seems to do
+</I>&gt;<i> nothing. I dont get past that line in the code. Any ideas?
+</I>
+Possibly fallout from the previous. I've not used the C++ stuff ...
+here's a simple test program someone else wrote:
+
+<A HREF="http://marc.info/?l=gpsd-users&amp;m=117483583018926&amp;w=2">http://marc.info/?l=gpsd-users&amp;m=117483583018926&amp;w=2</A>
+
+CK
+
+-- 
+GDB has a 'break' feature; why doesn't it have 'fix' too?
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="002553.html">[Gpsd-users] GPSCAT vs. GPSD vs. LIBGPS (LIBGPSMM) (Problems)
+</A></li>
+	<LI>Next message: <A HREF="002544.html">[Gpsd-users] NMEA over radio modem
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2552">[ date ]</a>
+              <a href="thread.html#2552">[ thread ]</a>
+              <a href="subject.html#2552">[ subject ]</a>
+              <a href="author.html#2552">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

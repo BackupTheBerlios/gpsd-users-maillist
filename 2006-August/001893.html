@@ -1,0 +1,150 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] Fwd: NTP Problems
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2006-August/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Fwd%3A%20NTP%20Problems&In-Reply-To=%3C7e272c5c0608281910g70f9c436w86e22d9f32286704%40mail.gmail.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="001891.html">
+   <LINK REL="Next"  HREF="001894.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] Fwd: NTP Problems</H1>
+    <B>Karl von Muller</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Fwd%3A%20NTP%20Problems&In-Reply-To=%3C7e272c5c0608281910g70f9c436w86e22d9f32286704%40mail.gmail.com%3E"
+       TITLE="[Gpsd-users] Fwd: NTP Problems">vertigok at gmail.com
+       </A><BR>
+    <I>Tue Aug 29 04:10:56 CEST 2006</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="001891.html">[Gpsd-users] Fwd: NTP Problems
+</A></li>
+        <LI>Next message: <A HREF="001894.html">[Gpsd-users] Fwd: NTP Problems
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1893">[ date ]</a>
+              <a href="thread.html#1893">[ thread ]</a>
+              <a href="subject.html#1893">[ subject ]</a>
+              <a href="author.html#1893">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Well I did forget to start it with -n before, but have restarted it with -n
+and I'm still seeing the same thing. Will have to run some debugging on it i
+guess, will have to probably do that after work though.
+
+Thanks for your help so far Gary!
+
+On 8/29/06, Gary E. Miller &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">gem at rellim.com</A>&gt; wrote:
+&gt;<i>
+</I>&gt;<i> -----BEGIN PGP SIGNED MESSAGE-----
+</I>&gt;<i> Hash: SHA1
+</I>&gt;<i>
+</I>&gt;<i> Yo Karl!
+</I>&gt;<i>
+</I>&gt;<i> On Tue, 29 Aug 2006, Karl von Muller wrote:
+</I>&gt;<i>
+</I>&gt;<i> &gt; &gt; Do the shared memory segments get created when you start ntpd?  Both
+</I>&gt;<i> gpsd
+</I>&gt;<i> &gt; &gt; and ntp will create the shared memory segment if it does not exist
+</I>&gt;<i> yet.
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; It appears they do.
+</I>&gt;<i>
+</I>&gt;<i> Then that narrows things down to gpsd.
+</I>&gt;<i>
+</I>&gt;<i> &gt; I believe i have compiled it in, as long as all as i need is
+</I>&gt;<i> --enable-pps \
+</I>&gt;<i> &gt;        --enable-ntpshm \
+</I>&gt;<i>
+</I>&gt;<i> Just to double check I just downloaded the current SVN and compiled with
+</I>&gt;<i> This way:
+</I>&gt;<i>
+</I>&gt;<i> autogen.sh --enable-pps &amp;&amp; configure &amp;&amp; make &amp;&amp; make install
+</I>&gt;<i>
+</I>&gt;<i> So nothing special there.
+</I>&gt;<i>
+</I>&gt;<i> Here is the config report showing the two NTP options on:
+</I>&gt;<i>
+</I>&gt;<i> ==========================================
+</I>&gt;<i> gpsd 2.34
+</I>&gt;<i> - ------------------------------------------
+</I>&gt;<i> NMEA                    : yes
+</I>&gt;<i> FV-18                   : yes
+</I>&gt;<i> SiRF                    : yes
+</I>&gt;<i> Trimble TSIP            : yes
+</I>&gt;<i> Tripmate                : yes
+</I>&gt;<i> Earthmate               : yes
+</I>&gt;<i> iTrax                   : yes
+</I>&gt;<i> iTalk                   : no
+</I>&gt;<i> Garmin                  : yes
+</I>&gt;<i> True North              : no
+</I>&gt;<i> Evermore                : yes
+</I>&gt;<i> RTCM104 support         : yes
+</I>&gt;<i> NTRIP support           : yes
+</I>&gt;<i> NTP SHM                 : yes
+</I>&gt;<i> NTP PPS                 : yes
+</I>&gt;<i> Fixed port speed        : no
+</I>&gt;<i> Wired buffer policy     : yes
+</I>&gt;<i> Enable shared libraries : yes
+</I>&gt;<i> Enable DBUS support     : no
+</I>&gt;<i> Limited max client fd   : no
+</I>&gt;<i> Limited max devices     : no
+</I>&gt;<i> - ------------------------------------------
+</I>&gt;<i>
+</I>&gt;<i> Then I start gpsd this way:
+</I>&gt;<i>
+</I>&gt;<i> gpsd -n /dev/ttyS1
+</I>&gt;<i>
+</I>&gt;<i> The '-n' is important, otherwise the gpsd waits for a cgps/xgps connection
+</I>&gt;<i> to wake up the gps.
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i> RGDS
+</I>&gt;<i> GARY
+</I>&gt;<i> -
+</I>&gt;<i> ---------------------------------------------------------------------------
+</I>&gt;<i> Gary E. Miller Rellim 20340 Empire Blvd, Suite E-3, Bend, OR 97701
+</I>&gt;<i>         <A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">gem at rellim.com</A>  Tel:+1(541)382-8588
+</I>&gt;<i>
+</I>&gt;<i> -----BEGIN PGP SIGNATURE-----
+</I>&gt;<i> Version: GnuPG v1.4.3 (GNU/Linux)
+</I>&gt;<i>
+</I>&gt;<i> iD8DBQFE85kl8KZibdeR3qURAlEsAKCQRIKPW6awkeeoOsFnb1Q8xvCPcACfbEgH
+</I>&gt;<i> QsHrgIG0ivNX33YVJ/dQG3Y=
+</I>&gt;<i> =QLvO
+</I>&gt;<i> -----END PGP SIGNATURE-----
+</I>&gt;<i>
+</I>&gt;<i>
+</I>-------------- next part --------------
+An HTML attachment was scrubbed...
+URL: &lt;<A HREF="https://lists.berlios.de/pipermail/gpsd-users/attachments/20060829/62d81d07/attachment.html">https://lists.berlios.de/pipermail/gpsd-users/attachments/20060829/62d81d07/attachment.html</A>&gt;
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="001891.html">[Gpsd-users] Fwd: NTP Problems
+</A></li>
+	<LI>Next message: <A HREF="001894.html">[Gpsd-users] Fwd: NTP Problems
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1893">[ date ]</a>
+              <a href="thread.html#1893">[ thread ]</a>
+              <a href="subject.html#1893">[ subject ]</a>
+              <a href="author.html#1893">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

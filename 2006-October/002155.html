@@ -1,0 +1,103 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] Can't connect TNTC rev.3722
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2006-October/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Can%27t%20connect%20TNTC%20rev.3722&In-Reply-To=%3C20061031081139.GA6003%40thyrsus.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="002150.html">
+   <LINK REL="Next"  HREF="002156.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] Can't connect TNTC rev.3722</H1>
+    <B>Eric S. Raymond</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Can%27t%20connect%20TNTC%20rev.3722&In-Reply-To=%3C20061031081139.GA6003%40thyrsus.com%3E"
+       TITLE="[Gpsd-users] Can't connect TNTC rev.3722">esr at thyrsus.com
+       </A><BR>
+    <I>Tue Oct 31 09:11:39 CET 2006</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="002150.html">[Gpsd-users] Can't connect TNTC rev.3722
+</A></li>
+        <LI>Next message: <A HREF="002156.html">[Gpsd-users] Can't connect TNTC rev.3654 last working
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2155">[ date ]</a>
+              <a href="thread.html#2155">[ thread ]</a>
+              <a href="subject.html#2155">[ subject ]</a>
+              <a href="author.html#2155">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Massimo Burcheri &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">burcheri at fgan.de</A>&gt;:
+&gt;<i> Am Mittwoch, den 06.09.2006, 17:04 +0200 schrieb Massimo Burcheri:
+</I>&gt;<i> &gt; Hello.
+</I>&gt;<i> 
+</I>&gt;<i> rev.3722 broke TNTC communication.
+</I>&gt;<i> 
+</I>&gt;<i> 3654 was fine:
+</I>&gt;<i> gpsd: opening GPS data source at '/dev/ttyr01'
+</I>&gt;<i> gpsd: Probing TrueNorth Compass
+</I>&gt;<i> gpsd: hunting at speed 19200
+</I>&gt;<i> gpsd: speed 19200, 8N1
+</I>&gt;<i> gpsd: =&gt; GPS: @X?*67
+</I>&gt;<i> gpsd: =&gt; GPS: @X?*67
+</I>&gt;<i> gpsd: =&gt; GPS: @X?*67
+</I>&gt;<i> gpsd: =&gt; GPS: @BA=15*3A
+</I>&gt;<i> gpsd: =&gt; GPS: @BA=15*3A
+</I>&gt;<i> gpsd: gpsd_activate: opened GPS (6)
+</I>&gt;<i> gpsd: &lt;= GPS: $PTNTHTM,0.1,N,0.6,N,-2.4,N,58.8,4393*15
+</I>&gt;<i> 
+</I>&gt;<i> rev.3722:
+</I>&gt;<i> gpsd: opening GPS data source at '/dev/ttyr01'
+</I>&gt;<i> gpsd: speed 0, 8N1
+</I>&gt;<i> gpsd: Bad NMEA sentence: '@X?*'
+</I>&gt;<i> gpsd: =&gt; GPS: @X?*27\x0d
+</I>&gt;<i> 
+</I>&gt;<i> gpsd: gpsd_activate: opened GPS (6)
+</I>&gt;<i> gpsd: speed 19200, 7N2
+</I>&gt;<i> gpsd: Bad NMEA sentence: '@X?*'
+</I>&gt;<i> gpsd: =&gt; GPS: @X?*27\x0d
+</I>&gt;<i> 
+</I>&gt;<i> gpsd: closing GPS=/dev/ttyr01 (6)
+</I>
+Crap.  I probably broke it when I tried to get rid of the internal
+hunt loop.  Oh, well, this shouldn't be too hard to fix.  
+
+Please follow the binary-search procedure described at &quot;10. Try to
+determine what release introduced the bug&quot; on
+&lt;<A HREF="http://gpsd.berlios.de/faq.html">http://gpsd.berlios.de/faq.html</A>&gt;.  That will get us started.  You
+should be able to pin down the exact revision that broke TNT with no
+more than seven tests.
+-- 
+		&lt;a href=&quot;<A HREF="http://www.catb.org/~esr/">http://www.catb.org/~esr/</A>&quot;&gt;Eric S. Raymond&lt;/a&gt;
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="002150.html">[Gpsd-users] Can't connect TNTC rev.3722
+</A></li>
+	<LI>Next message: <A HREF="002156.html">[Gpsd-users] Can't connect TNTC rev.3654 last working
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2155">[ date ]</a>
+              <a href="thread.html#2155">[ thread ]</a>
+              <a href="subject.html#2155">[ subject ]</a>
+              <a href="author.html#2155">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

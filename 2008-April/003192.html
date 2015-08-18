@@ -1,0 +1,87 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] Unplug/plug the GPS: how to force gpsd to reopen the	device?
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2008-April/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Unplug/plug%20the%20GPS%3A%20how%20to%20force%20gpsd%20to%20reopen%20the%0A%09device%3F&In-Reply-To=%3C20080415140043.GA25593%40rigacci.org%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="003191.html">
+   <LINK REL="Next"  HREF="003193.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] Unplug/plug the GPS: how to force gpsd to reopen the	device?</H1>
+    <B>Niccolo Rigacci</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Unplug/plug%20the%20GPS%3A%20how%20to%20force%20gpsd%20to%20reopen%20the%0A%09device%3F&In-Reply-To=%3C20080415140043.GA25593%40rigacci.org%3E"
+       TITLE="[Gpsd-users] Unplug/plug the GPS: how to force gpsd to reopen the	device?">niccolo at rigacci.org
+       </A><BR>
+    <I>Tue Apr 15 16:00:43 CEST 2008</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="003191.html">[Gpsd-users] Real-time DGPS thru the Internet
+</A></li>
+        <LI>Next message: <A HREF="003193.html">[Gpsd-users] Bluetooth GPS advice:  i.Trek M7
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3192">[ date ]</a>
+              <a href="thread.html#3192">[ thread ]</a>
+              <a href="subject.html#3192">[ subject ]</a>
+              <a href="author.html#3192">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi,
+
+I'm trying to solve an apparently simple problem.
+
+I have an USB gps, I start gpsd at boot time with the controlling 
+socket, with no device name because gps is not generally 
+plugged-in.
+
+When I plug the gps, udev notifies gpsd via the socket. Then I 
+can attach gpspipe and watch NMEA data.
+
+But if I unplug and plug again the gps, gpspipe (like other 
+clients) stops reading data. I discovered that launching another 
+client (eg. just running &quot;gpspipe -r -n1&quot;) the former gpspipe 
+starts to receive data again. Is that normal?
+
+Is it possible to notify gpsd via the socket or via a signal 
+forcing it to reopen the gps device without disturbing attached 
+clients? I think of adding this action into 
+/lib/udev/gpsd.hotplug.
+
+Running gpsd 2.37 on Debian Lenny, Asus EeePC.
+
+-- 
+Niccolo Rigacci
+Firenze - Italy
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="003191.html">[Gpsd-users] Real-time DGPS thru the Internet
+</A></li>
+	<LI>Next message: <A HREF="003193.html">[Gpsd-users] Bluetooth GPS advice:  i.Trek M7
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3192">[ date ]</a>
+              <a href="thread.html#3192">[ thread ]</a>
+              <a href="subject.html#3192">[ subject ]</a>
+              <a href="author.html#3192">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

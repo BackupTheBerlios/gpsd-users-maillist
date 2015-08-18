@@ -1,0 +1,103 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] [Gpsd-dev] Setting the listener address,	and future design direction
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2007-July/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20%5BGpsd-dev%5D%20Setting%20the%20listener%20address%2C%0A%09and%20future%20design%20direction&In-Reply-To=%3C469978E6.4070505%40nippur.net%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="002761.html">
+   <LINK REL="Next"  HREF="002766.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] [Gpsd-dev] Setting the listener address,	and future design direction</H1>
+    <B>Diego Berge</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20%5BGpsd-dev%5D%20Setting%20the%20listener%20address%2C%0A%09and%20future%20design%20direction&In-Reply-To=%3C469978E6.4070505%40nippur.net%3E"
+       TITLE="[Gpsd-users] [Gpsd-dev] Setting the listener address,	and future design direction">gpsd at nippur.net
+       </A><BR>
+    <I>Sun Jul 15 03:31:18 CEST 2007</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="002761.html">[Gpsd-users] Cross Compile on Gumstix issue
+</A></li>
+        <LI>Next message: <A HREF="002766.html">[Gpsd-users] [Gpsd-dev] Setting the listener address,	and future design direction
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2765">[ date ]</a>
+              <a href="thread.html#2765">[ thread ]</a>
+              <a href="subject.html#2765">[ subject ]</a>
+              <a href="author.html#2765">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Eric S. Raymond wrote:
+&gt;<i> Chris just posted a patch implementing an -l option to change the
+</I>&gt;<i> gpsd listener address
+</I>[...]
+&gt;<i> I'm not happy with the idea of a
+</I>&gt;<i> command-line option,
+</I>[...]
+&gt;<i> We could put this option in an optional /etc/gpsd.conf config file.  But then
+</I>&gt;<i> we'd have to write an interpreter for the config file syntax.  I dislike the
+</I>&gt;<i> thought of adding that much complexity overhead.
+</I>[...]
+&gt;<i> So.  Now, let's suppose that we implement &quot;listen-to&quot; as a protocol
+</I>&gt;<i> command taking a listener-address argument.  Then, we add an option
+</I>&gt;<i> (say, -c) that reads protocol commands from standard input at startup time.
+</I>&gt;<i> 
+</I>&gt;<i> Now, to get the effect of a config file, we invoke gpsd as 
+</I>&gt;<i> &quot;gpsd -c &lt;/etc/gpsd.conf&quot; and we're done.
+</I>
+   Sounds good.  One minor suggestion would be to make the hypothetical
+&quot;-c&quot; option take as argument the input file (with the usual &quot;-&quot; for
+stdin).  This is to keep in line with the way most other applications
+seem to work.  Effectively, one would have a configuration file which
+uses protocol syntax, thus doing away with the need to implement a
+different parser.
+
+
+&gt;<i> Chris has made a strong privacy case that the default listener address
+</I>&gt;<i> ought to be 127.0.0.1, so that your client has to be running on the same
+</I>&gt;<i> machine that's hosting the GPS.  Those of you doing remote-telemetry things
+</I>&gt;<i> would have to set a more promiscuous listener address.
+</I>
+   As an aside, those of us doing remote telemetry at some point would
+also probably like to protect the integrity and confidentiality of our
+data by cryptographic means.  However, would I be mistaken in saying
+that the usual existing tools (stunnel, ssh) fill in that role
+adequately, saving us the need to implement this functionality into the
+daemon itself?
+
+Regards,
+Diego Berge.
+
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="002761.html">[Gpsd-users] Cross Compile on Gumstix issue
+</A></li>
+	<LI>Next message: <A HREF="002766.html">[Gpsd-users] [Gpsd-dev] Setting the listener address,	and future design direction
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2765">[ date ]</a>
+              <a href="thread.html#2765">[ thread ]</a>
+              <a href="subject.html#2765">[ subject ]</a>
+              <a href="author.html#2765">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

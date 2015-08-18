@@ -1,0 +1,103 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] gpsfake not going past first NMEA log line
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2009-January/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20gpsfake%20not%20going%20past%20first%20NMEA%20log%20line&In-Reply-To=%3C91981b3e0901061857k1b2507fdob1ee49585fd134b9%40mail.gmail.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="003537.html">
+   <LINK REL="Next"  HREF="003539.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] gpsfake not going past first NMEA log line</H1>
+    <B>Chris Kuethe</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20gpsfake%20not%20going%20past%20first%20NMEA%20log%20line&In-Reply-To=%3C91981b3e0901061857k1b2507fdob1ee49585fd134b9%40mail.gmail.com%3E"
+       TITLE="[Gpsd-users] gpsfake not going past first NMEA log line">chris.kuethe at gmail.com
+       </A><BR>
+    <I>Wed Jan  7 03:57:58 CET 2009</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="003537.html">[Gpsd-users] gpsfake not going past first NMEA log line
+</A></li>
+        <LI>Next message: <A HREF="003539.html">[Gpsd-users] gpsfake not going past first NMEA log line
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3538">[ date ]</a>
+              <a href="thread.html#3538">[ thread ]</a>
+              <a href="subject.html#3538">[ subject ]</a>
+              <a href="author.html#3538">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>have a look at regress-driver to see how the regression tests work. i
+just tried this:
+
+# env PATH=.:$PATH python gpsfake -s 38400 -1 -b -p skunkworks/data.bin
+
+but we're also trying to debug some wierd behaviour (tty layer,
+maybe?) that gpsd, python, the regression tests... seems to expose.
+eric might ask you for more details.
+
+CK
+
+On Tue, Jan 6, 2009 at 6:24 PM, Eric Klein &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">klein.eric at gmail.com</A>&gt; wrote:
+&gt;<i> Hello!
+</I>&gt;<i>
+</I>&gt;<i> I'm developing some software at the hobby level using gpsd, and have
+</I>&gt;<i> been attempting to get gpsfake to work properly. It seems no matter
+</I>&gt;<i> what NMEA log I throw at it, it only ever sends gpsd the first NMEA
+</I>&gt;<i> log line. I have tried using logs downloaded from a couple of gps
+</I>&gt;<i> hobbyists, and also purchased an Earthmate LT-40. The LT-40 works like
+</I>&gt;<i> a champ with gpsd, with xgps and gpsdrive having no trouble following
+</I>&gt;<i> the satellites and track. However, even the NMEA file I generated
+</I>&gt;<i> using gpspipe is only passing the first NMEA log line to gpsd in
+</I>&gt;<i> gpsfake. Am I just missing something? I'll be happy to post to the
+</I>&gt;<i> list or privately any diagnostic info you need.
+</I>&gt;<i>
+</I>&gt;<i> Thanks for the help in advance. Writing code while driving around town
+</I>&gt;<i> seems like it might be dangerous to my health. :-)
+</I>&gt;<i>
+</I>&gt;<i> --
+</I>&gt;<i> Eric M. Klein
+</I>&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">klein.eric at gmail.com</A>
+</I>&gt;<i> &quot;Quidquid latine dictum sit, altum videtur.&quot;
+</I>&gt;<i> _______________________________________________
+</I>&gt;<i> Gpsd-users mailing list
+</I>&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">Gpsd-users at lists.berlios.de</A>
+</I>&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">https://lists.berlios.de/mailman/listinfo/gpsd-users</A>
+</I>&gt;<i>
+</I>
+
+
+-- 
+GDB has a 'break' feature; why doesn't it have 'fix' too?
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="003537.html">[Gpsd-users] gpsfake not going past first NMEA log line
+</A></li>
+	<LI>Next message: <A HREF="003539.html">[Gpsd-users] gpsfake not going past first NMEA log line
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3538">[ date ]</a>
+              <a href="thread.html#3538">[ thread ]</a>
+              <a href="subject.html#3538">[ subject ]</a>
+              <a href="author.html#3538">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

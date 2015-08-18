@@ -1,0 +1,111 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] GPSD client with multiple GPS devices
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2011-September/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20GPSD%20client%20with%20multiple%20GPS%20devices&In-Reply-To=%3CCABc%2BGCSkx7WOubosUZjDCQruRySVm%3DZk8HBvpODKR8_LaH4s6Q%40mail.gmail.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="005485.html">
+   <LINK REL="Next"  HREF="005486.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] GPSD client with multiple GPS devices</H1>
+    <B>Nick Carlevaris</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20GPSD%20client%20with%20multiple%20GPS%20devices&In-Reply-To=%3CCABc%2BGCSkx7WOubosUZjDCQruRySVm%3DZk8HBvpODKR8_LaH4s6Q%40mail.gmail.com%3E"
+       TITLE="[Gpsd-users] GPSD client with multiple GPS devices">nickcarlevaris at gmail.com
+       </A><BR>
+    <I>Thu Sep 22 03:46:39 CEST 2011</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="005485.html">[Gpsd-users] Control Socket and Receiver Commands in 3.1
+</A></li>
+        <LI>Next message: <A HREF="005486.html">[Gpsd-users] Major new revision of the GPSD latency paper
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#5484">[ date ]</a>
+              <a href="thread.html#5484">[ thread ]</a>
+              <a href="subject.html#5484">[ subject ]</a>
+              <a href="author.html#5484">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi All.
+
+I am currently trying to setup gpsd to work with two different GPS devices
+at the same time. I kick off the daemon with the command:
+
+gpsd -N -D 2 -b /dev/ttyS6 /dev/ttyS7
+
+Knowing the device path for each receiver I would like to select which one I
+stream data from based on this path.
+
+With the old libgps I used to be able to issue a querry with something like:
+
+sprintf (query, &quot;j=0 k r+ w+ f=%s\n&quot;, gpsddev);
+gps_query (gpsdata, query);
+
+where gpsddev is a string of the device path.
+
+I understand that this way is no longer avaliable. Looking at the
+documentation it looks like I should use the WATCH_DEVICE flag in the
+gps_stream () function to select the device. I tried something like this:
+
+    // open gpsd client
+    state-&gt;gpsdata = gps_open (NULL, NULL);
+    if (!state-&gt;gpsdata) {
+      ERROR (&quot;gps_open() failed.&quot;);
+      exit (EXIT_FAILURE);
+    }
+
+    gps_set_raw_hook (state-&gt;gpsdata, on_data);
+    gps_stream (state-&gt;gpsdata, WATCH_ENABLE | WATCH_RAW | WATCH_JSON,
+NULL);
+    gps_stream (state-&gt;gpsdata, WATCH_DEVICE, state-&gt;gpsddev);
+
+    // handle lcm
+    gsd_reset_stats (state-&gt;gsd);
+    while (!state-&gt;gsd-&gt;done) {
+        if (0!=gps_poll (state-&gt;gpsdata))
+            ERROR (&quot;trouble polling gpsd!\n&quot;);
+    }
+
+However, I get the following error message.
+
+gpsd: ERROR response: {&quot;class&quot;:&quot;ERROR&quot;,&quot;message&quot;:&quot;Unrecognized request
+'?WATCH={&quot;enable&quot;:true,&quot;json&quot;:true,&quot;device&quot;:/dev/ttyS7};'&quot;}
+
+So even though I think I am setting the device correctly something seems to
+be not quite right. Any suggestions? I am not sure how to proceed from here.
+
+Thanks for any help
+Nick
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="005485.html">[Gpsd-users] Control Socket and Receiver Commands in 3.1
+</A></li>
+	<LI>Next message: <A HREF="005486.html">[Gpsd-users] Major new revision of the GPSD latency paper
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#5484">[ date ]</a>
+              <a href="thread.html#5484">[ thread ]</a>
+              <a href="subject.html#5484">[ subject ]</a>
+              <a href="author.html#5484">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

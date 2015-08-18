@@ -1,0 +1,184 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] ntp + gpsd + pps
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2011-June/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20ntp%20%2B%20gpsd%20%2B%20pps&In-Reply-To=%3C1308305102.15353.337.camel%40stevet61%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="005331.html">
+   <LINK REL="Next"  HREF="005333.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] ntp + gpsd + pps</H1>
+    <B>Stephan Skrodzki</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20ntp%20%2B%20gpsd%20%2B%20pps&In-Reply-To=%3C1308305102.15353.337.camel%40stevet61%3E"
+       TITLE="[Gpsd-users] ntp + gpsd + pps">skrodzki at stevekist.de
+       </A><BR>
+    <I>Fri Jun 17 12:05:02 CEST 2011</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="005331.html">[Gpsd-users] ntp + gpsd + pps
+</A></li>
+        <LI>Next message: <A HREF="005333.html">[Gpsd-users] ntp + gpsd + pps
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#5332">[ date ]</a>
+              <a href="thread.html#5332">[ thread ]</a>
+              <a href="subject.html#5332">[ subject ]</a>
+              <a href="author.html#5332">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi H&#229;kan,
+
+hmm.. your answer confuses me a lot, I thought, that it would be exactly
+possible the way I do it. 
+
+So, perhaps I should describe what the application is and then I would
+look for the best way to do it:
+
+We have a Ubuntu LTS 10.04 (Lucid) based X86 system with this SkyTraq
+GPS610-F attached to ttyS1. Serial speed was set to 4800, PPS to DCD.
+
+The system is not connected to the internet and I would like to use gps
++pps for most perfect setting and adjusting of local clock(s).
+
+I addition to that I want to monitor if there is any GPS reception or
+not, which let me to gpsd in favourite to use ntpd only (as I do not
+know if it is possible to get the fix status out of ntp).
+
+Am Donnerstag, den 16.06.2011, 22:20 +0200 schrieb H&#229;kan Johansson:
+&gt;<i> On Thu, 16 Jun 2011, Stephan Skrodzki wrote:
+</I>&gt;<i>
+</I>&gt;<i> &gt; I have connected a SkyTraq based GPS (GPS-610F) to the system (ttyS1),
+</I>&gt;<i> &gt; configured to output only RMC sentence at 4800baud. PPS is connected to
+</I>&gt;<i> &gt; DCD and gpsd looks fine and detects all pps and gpsmon is also fine.
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; Now using ntp.conf:
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; server 127.127.28.0 minpoll 4
+</I>&gt;<i> &gt; fudge 127.127.28.0 time1 0.335 refid GPS
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; server 127.127.28.1 minpoll 4 prefer
+</I>&gt;<i> &gt; fudge 127.127.28.1 refid PPS
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; I get the following result while tracing ntpq -p with
+</I>&gt;<i> &gt; while true ; do echo `date +%Y%m%d-%H%M%S: ` `ntpq -p | tail -2` &gt;&gt; ntpq_20110616.txt ; sleep 5 ; done
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; 20110616-162616: xSHM(0) .GPS. 0 l 10 16 377 0.000 5.545 1.740 xSHM(1) .PPS. 0 l 7 16 377 0.000 -2.618 0.350
+</I>&gt;<i> &gt; 20110616-162621: xSHM(0) .GPS. 0 l 15 16 377 0.000 5.545 1.740 xSHM(1) .PPS. 0 l 12 16 377 0.000 -2.618 0.350
+</I>&gt;<i> &gt; 20110616-162626: +SHM(0) .GPS. 0 l 4 16 377 0.000 -2.455 7.578 *SHM(1) .PPS. 0 l 17 16 377 0.000 -2.618 0.350
+</I>&gt;<i> &gt; 20110616-162631: +SHM(0) .GPS. 0 l 9 16 377 0.000 -2.455 7.578 *SHM(1) .PPS. 0 l 5 16 377 0.000 -2.705 0.365
+</I>&gt;<i> &gt; 20110616-162636: +SHM(0) .GPS. 0 l 14 16 377 0.000 -2.455 7.578 *SHM(1) .PPS. 0 l 10 16 377 0.000 -2.705 0.365
+</I>&gt;<i> &gt; 20110616-162801: xSHM(0) .GPS. 0 l 13 16 377 0.000 7.689 6.062 xSHM(1) .PPS. 0 l 11 16 377 0.000 -3.202 0.439
+</I>&gt;<i> &gt; 20110616-162806: xSHM(0) .GPS. 0 l 1 16 377 0.000 12.655 10.430 xSHM(1) .PPS. 0 l 16 16 377 0.000 -3.202 0.439
+</I>&gt;<i> &gt; 20110616-162811: xSHM(0) .GPS. 0 l 6 16 377 0.000 12.655 10.430 xSHM(1) .PPS. 0 l 5 16 377 0.000 -3.302 0.447
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; and the system has more and more the tendence to discard the PPS (GPS is discarded even more often)
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; Using the GPS part above only works fine, using the PPS part only works
+</I>&gt;<i> &gt; also but there may second jumps happen (which I understood by the mail
+</I>&gt;<i> &gt; list).
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; So I have several questions:
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; 1. If PPS works fine without the GPS, how could it be, it does not work
+</I>&gt;<i> &gt; with both? (and vice versa)
+</I>&gt;<i> 
+</I>&gt;<i> If you have only these two sources, then NTP has no way of deciding which 
+</I>&gt;<i> one to trust or not, so will flip between the two or none.  Either remove 
+</I>&gt;<i> SHM(0) (so that only SHM(1) is present), or add further sources (at least 
+</I>&gt;<i> one more, network based), in which case NTP should behave good again. 
+</I>&gt;<i> (I.e. find out that in principle both SHM(0) and SHM(1) provide good time, 
+</I>&gt;<i> but with much better precision, less jitter, for SHM(1), so choosing 
+</I>&gt;<i> that).
+</I>
+&gt;<i>From having a look at the pps_shm source in gpsd, it looks that the pps
+</I>part not inserts the gps time but the local time + some gps magic. Why
+did they made it like that? If that what you say is the case: wouldn it
+be fine just to modify pps_shm that it inserts the &quot;real&quot; gps time and
+do use only SHM(1) if pps is available?
+
+&gt;<i> &gt; 2. How do I find out the &quot;perfect&quot; time1 parameter for the distance of
+</I>&gt;<i> &gt; PPS and GPS?
+</I>&gt;<i> 
+</I>&gt;<i> You mean for SHM(1), to determine the 'cable' + interrupt latency offset? 
+</I>&gt;<i> That is in principle impossible, as it requires some independent 'perfect' 
+</I>&gt;<i> knowledge of absoulte time.  The best approximation though is to get the 
+</I>&gt;<i> PPS pulses timestamped within the kernel, using linuxpps, as this 
+</I>&gt;<i> minimises the latency.
+</I>
+To be honest I have not really understood how to configure ntpd to use
+the linuxpps with DCD on ttyS1. Searching on the web leads to such a lot
+of different stuff over the past years that I am completely lost. I
+would really appreciate if somebody could give me hints on configuring
+that on a (that would be best) vanilla Ubuntu Lucid...
+
+I have the understanding that the time1 parameter in SHM(0) does
+compensate NMEA computing and output latency to pps(yes, and there
+interrupt, but I guess main thing is computing latency inside GPS
+modul)?
+
+&gt;<i> &gt; 3. I have the feeling that I should always get a *SHM(1)... why is this
+</I>&gt;<i> &gt; not the case?
+</I>&gt;<i> 
+</I>&gt;<i> See 1.
+</I>
+I think my biggest problem is the complete lack of indeep understanding
+on how that all works :-) 
+
+If what you say is the case would it not make sense to increase mindist
+and mark pps as a truechimer? I have done this now for testing,
+unfortunately the 1 second +- behaviour of pps usage only appears after
+some days... so let's wait for the weekend :-)
+
+Thanks for the help!
+
+ Best regards
+ Stephan
+
+&gt;<i> Cheers,
+</I>&gt;<i> H&#229;kan
+</I>&gt;<i> 
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; Thanks &amp; best regards
+</I>&gt;<i> &gt; Stephan
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; _______________________________________________
+</I>&gt;<i> &gt; Gpsd-users mailing list
+</I>&gt;<i> &gt; <A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">Gpsd-users at lists.berlios.de</A>
+</I>&gt;<i> &gt; <A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">https://lists.berlios.de/mailman/listinfo/gpsd-users</A>
+</I>&gt;<i> &gt;
+</I>
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="005331.html">[Gpsd-users] ntp + gpsd + pps
+</A></li>
+	<LI>Next message: <A HREF="005333.html">[Gpsd-users] ntp + gpsd + pps
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#5332">[ date ]</a>
+              <a href="thread.html#5332">[ thread ]</a>
+              <a href="subject.html#5332">[ subject ]</a>
+              <a href="author.html#5332">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

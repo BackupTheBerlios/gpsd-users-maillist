@@ -1,0 +1,161 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] Garmin StreetPilot C320
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2009-June/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Garmin%20StreetPilot%20C320&In-Reply-To=%3C6ee038b60906280659q1fcc6073g36a4ef248bcf5d28%40mail.gmail.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="003785.html">
+   <LINK REL="Next"  HREF="003787.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] Garmin StreetPilot C320</H1>
+    <B>Max Afonov</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Garmin%20StreetPilot%20C320&In-Reply-To=%3C6ee038b60906280659q1fcc6073g36a4ef248bcf5d28%40mail.gmail.com%3E"
+       TITLE="[Gpsd-users] Garmin StreetPilot C320">max at bumnetworks.com
+       </A><BR>
+    <I>Sun Jun 28 15:59:50 CEST 2009</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="003785.html">[Gpsd-users] Loosing USB GPS on sleep/wakeup cycle.
+</A></li>
+        <LI>Next message: <A HREF="003787.html">[Gpsd-users] Garmin StreetPilot C320
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3786">[ date ]</a>
+              <a href="thread.html#3786">[ thread ]</a>
+              <a href="subject.html#3786">[ subject ]</a>
+              <a href="author.html#3786">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi all,
+
+I've been trying unsuccessfully to get my C320 to work with gpsd.
+First off, here are some system stats:
+
+Linux wart 2.6.31-rc1-00114-g4075ea8 #1 PREEMPT Sat Jun 27 22:12:50
+EDT 2009 armv5tel GNU/Linux
+
+Module                  Size  Used by
+garmin_gps             17536  0
+usbserial              35396  1 garmin_gps
+ipv6                  268280  10
+dm_crypt               14372  0
+dm_mod                 70204  1 dm_crypt
+
+gpsd 2.38
+
+I'm running on this machine whatever I pulled out of Linus' git
+repository yesterday. This is mostly because garmin_gps is broken in
+kernels 2.6.26 through even the released 2.6.30. The rest of the
+system is Ubuntu Jaunty. Very vanilla.
+
+Below is the output of my gpsd debugging session. I have curtailed the
+number of &quot;select waits&quot; messages. It shows what gpsd was doing as
+well as the commands I've tried to send over telnet:
+
+<A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">max at wart</A>:~$ gpsd -N -n -D 20 /dev/ttyUSB0
+gpsd: launching (Version 2.38)
+gpsd: listening on port gpsd
+gpsd: Unable to start ntpshm.  gpsd must run as root.
+gpsd: successfully connected to the DBUS system bus
+gpsd: running with effective group ID 1000
+gpsd: running with effective user ID 1000
+gpsd: opening GPS data source at '/dev/ttyUSB0'
+gpsd: speed 9600, 8N1
+gpsd: =&gt; GPS: $PASHQ,RID*28\x0d
+
+gpsd: Navcom: command dump: 0299661c0800040200001203
+gpsd: =&gt; GPS: 0299661c0800040200001203
+gpsd: Navcom: sent command 0x1c (Test Support Block)
+gpsd: Navcom: command 0x1c mode = 02, length = 0
+gpsd: Navcom: command dump: 029966200e000001ae02000071000000f203
+gpsd: =&gt; GPS: 029966200e000001ae02000071000000f203
+gpsd: Navcom: sent command 0x20 (Data Request) - data block id = ae at rate 00
+gpsd: Navcom: command dump: 029966200e00000186020a0071000000d003
+gpsd: =&gt; GPS: 029966200e00000186020a0071000000d003
+gpsd: Navcom: sent command 0x20 (Data Request) - data block id = 86 at rate 0a
+gpsd: Can't open /proc/bus/usb/devices
+gpsd: no probe matched...
+gpsd: gpsd_activate(1): opened GPS (5)
+gpsd: select waits
+gpsd: client 127.0.0.1 (0) connect on fd 6
+gpsd: select waits
+gpsd: checking client(0)
+gpsd: &lt;= client(0): F
+gpsd: =&gt; client(0): GPSD,F=?
+gpsd: select waits
+gpsd: checking client(0)
+gpsd: &lt;= client(0): F
+gpsd: =&gt; client(0): GPSD,F=?
+gpsd: select waits
+gpsd: checking client(0)
+gpsd: &lt;= client(0): F=/dev/ttyUSB0
+gpsd: &lt;= client(0): switching to /dev/ttyUSB0
+gpsd: =&gt; client(0): GPSD,F=/dev/ttyUSB0
+gpsd: select waits
+gpsd: checking client(0)
+gpsd: &lt;= client(0): p
+gpsd: client(0): channel 5 already active.
+gpsd: GPS is confused about whether it has a fix (status=0, mode=0).
+gpsd: =&gt; client(0): GPSD,P=?
+gpsd: select waits
+gpsd: checking client(0)
+gpsd: detaching 127.0.0.1 (sub 0, fd 6) in detach_client
+gpsd: select waits
+^Cgpsd: Received terminating signal 2. Exiting...
+gpsd: closing GPS=/dev/ttyUSB0 (5)
+<A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">max at wart</A>:~$
+
+An interesting tidbit of log information is the following. It appears
+in syslog when gpsd is started using /etc/init.d/gpsd:
+
+Jun 28 04:06:16 wart gpsd[1944]: gpsd: Can't open /proc/bus/usb/devices
+
+So, my question to all of you is this: what is the 800lb gorilla in
+the room that I'm missing? I have the correct permissions on
+/dev/ttyUSB0, I have the garmin_gps module loaded, gpsd appears to be
+opening the TTY and appears to be doing something with it. My GPS unit
+(it's an automotive dash navigation thingamabob) shows my current
+position, indicating that it has a good fix. What am I missing?
+
+As a side note, I suppose it would be okay if we determined that this
+unit is incapable of interacting with gpsd in this manner. I'm
+assembling a project for which I would really need to use a &quot;USB
+mouse&quot; type of GPS receiver. Yet it would be nice to have a proof of
+concept working before I go out and start hoarding hardware.
+
+Thanks in advance, everyone!
+
+-max
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="003785.html">[Gpsd-users] Loosing USB GPS on sleep/wakeup cycle.
+</A></li>
+	<LI>Next message: <A HREF="003787.html">[Gpsd-users] Garmin StreetPilot C320
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3786">[ date ]</a>
+              <a href="thread.html#3786">[ thread ]</a>
+              <a href="subject.html#3786">[ subject ]</a>
+              <a href="author.html#3786">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

@@ -1,0 +1,98 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] Garmin GPS almost never sends new position data
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2006-June/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Garmin%20GPS%20almost%20never%20sends%20new%20position%20data&In-Reply-To=%3CPine.LNX.4.64.0606072345010.5751%40catbert.rellim.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="001656.html">
+   <LINK REL="Next"  HREF="001658.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] Garmin GPS almost never sends new position data</H1>
+    <B>Gary E. Miller</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Garmin%20GPS%20almost%20never%20sends%20new%20position%20data&In-Reply-To=%3CPine.LNX.4.64.0606072345010.5751%40catbert.rellim.com%3E"
+       TITLE="[Gpsd-users] Garmin GPS almost never sends new position data">gem at rellim.com
+       </A><BR>
+    <I>Thu Jun  8 08:51:34 CEST 2006</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="001656.html">[Gpsd-users] Garmin GPS almost never sends new position data
+</A></li>
+        <LI>Next message: <A HREF="001658.html">[Gpsd-users] Re: Garmin GPS almost never sends new position data
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1657">[ date ]</a>
+              <a href="thread.html#1657">[ thread ]</a>
+              <a href="subject.html#1657">[ subject ]</a>
+              <a href="author.html#1657">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>-----BEGIN PGP SIGNED MESSAGE-----
+Hash: SHA1
+
+Yo Eivind!
+
+On Thu, 8 Jun 2006, Eivind Tagseth wrote:
+
+&gt;<i> I've got a Garmin GPSmap 60Cx that's connected to my laptop using a USB
+</I>&gt;<i> cable.
+</I>&gt;<i> The problem is that when running gpsd (2.32), the communication _seems_
+</I>&gt;<i> to  be working, but the gpsd server (almost) never gets positioning data.
+</I>
+Very odd.  Seems like the input buffer is getting corrupted. GetPacket()
+is about as close to the bottom of the stack as gpsd can get.  Since
+packets are getting corrupted there something very basic is bad.  What
+distro are you running?  This is not a 64bit CPU is it?  Or a really
+loaded up CPU?
+
+gpsd is just about the only app that uses Garmin binary, so I am not
+surprised that other apps work differently since they likely use NMEA.
+
+I have a Garmin GPS18/USB running the SVN trunk right now just fine.
+
+RGDS
+GARY
+- ---------------------------------------------------------------------------
+Gary E. Miller Rellim 20340 Empire Blvd, Suite E-3, Bend, OR 97701
+	<A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">gem at rellim.com</A>  Tel:+1(541)382-8588
+
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v1.4.2.1 (GNU/Linux)
+
+iD8DBQFEh8j58KZibdeR3qURAmRXAKDq9+vheybql7zJjKFYx0M4OgpvSACcDcm1
+9mIMyjHfNWR04i5rIhB/VWo=
+=O7xt
+-----END PGP SIGNATURE-----
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="001656.html">[Gpsd-users] Garmin GPS almost never sends new position data
+</A></li>
+	<LI>Next message: <A HREF="001658.html">[Gpsd-users] Re: Garmin GPS almost never sends new position data
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1657">[ date ]</a>
+              <a href="thread.html#1657">[ thread ]</a>
+              <a href="subject.html#1657">[ subject ]</a>
+              <a href="author.html#1657">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

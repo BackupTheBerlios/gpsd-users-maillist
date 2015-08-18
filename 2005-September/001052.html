@@ -1,0 +1,184 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] Cygwin patch
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2005-September/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Cygwin%20patch&In-Reply-To=%3Cd6b65a27050922211216bd2582%40mail.gmail.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="001051.html">
+   <LINK REL="Next"  HREF="001053.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] Cygwin patch</H1>
+    <B>Richard Finegold</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Cygwin%20patch&In-Reply-To=%3Cd6b65a27050922211216bd2582%40mail.gmail.com%3E"
+       TITLE="[Gpsd-users] Cygwin patch">goldfndr at gmail.com
+       </A><BR>
+    <I>Fri Sep 23 06:12:58 CEST 2005</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="001051.html">[Gpsd-users] Fw: [DebianGIS] DebianGis reminder
+</A></li>
+        <LI>Next message: <A HREF="001053.html">[Gpsd-users] Commercial Navigator Device Embeds GPSD
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1052">[ date ]</a>
+              <a href="thread.html#1052">[ thread ]</a>
+              <a href="subject.html#1052">[ subject ]</a>
+              <a href="author.html#1052">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>The following is a patch against gpsd 2.30 that allows compiling within
+current Cygwin. In case of mangling, the patch is also available as
+<A HREF="http://goldfndr.home.mindspring.com/ftp/cygwin-2.diff">http://goldfndr.home.mindspring.com/ftp/cygwin-2.diff</A> and comments
+at <A HREF="http://www.netstumbler.org/showthread.php?t=14742&amp;page=2#post137259">http://www.netstumbler.org/showthread.php?t=14742&amp;page=2#post137259</A>
+for anyone interested.
+
+As you can see, it isn't that different; just a few changes for
+portability. The first patch I did had a cfsetspeed() function, but
+when I realized that there was only one call to it, I just split it
+out; I have no clue what the /*@i@*/ does.
+
+Since there isn't really any creativity involved (other than where
+checks and cfmakeraw() are located), I release this under the same
+license as the rest of gpsd, if it's even worthy of a license.
+
+I've tried running splint on it, but it was giving me numerous errors
+about posix both on Cygwin (./configure --disable-pps) and with 2.28
+on a Kanotix install at home.
+make testregress also isn't working for me:
+==
+Testing the daemon...
+Processing test/*.log...Traceback (most recent call last):
+  File &quot;/usr/bin/gpsfake&quot;, line 106, in ?
+    test = gpsfake.TestSession(prefix=monitor, options=doptions)
+NameError: name 'gpsfake' is not defined
+diff: test/*.log.chk: No such file or directory
+Testing RTCM decoding...
+/bin/sh: test/*.rtcm: No such file or directory
+diff: test/*.rtcm.chk: No such file or directory
+diff: test/test.chk: No such file or directory
+rm: cannot lstat `test/test.chk': No such file or directory
+make: *** [rtcm-regress] Error 1
+==
+I apologize if that at all reduces the quality of this patch.
+
+=============================================================
+
+--- configure.DIST	2005-09-14 05:15:11.000000000 -0700
++++ configure	2005-09-15 21:36:26.566715200 -0700
+@@ -21248,6 +21248,7 @@
+ cat &gt;&gt;conftest.$ac_ext &lt;&lt;_ACEOF
+ /* end confdefs.h.  */
+
++#define timezonevar
+ #include &lt;time.h&gt;
+
+ int
+--- gpsd.h.DIST	2005-08-16 16:39:33.000000000 -0700
++++ gpsd.h	2005-09-19 18:23:13.930828800 -0700
+@@ -329,12 +329,16 @@
+ #define roundf(x) ((float)rintf(x))
+ #endif /* !HAVE_ROUND */
+
+-/* OpenBSD and FreeBSD don't seem to have NAN, NetBSD does, others? */
++/* OpenBSD and FreeBSD and Cygwin don't seem to have NAN, NetBSD
+does, others? */
+ /* XXX test for this in configure? */
+-#if defined(__OpenBSD__) || defined(__FreeBSD__)
++#if defined(__OpenBSD__) || defined(__FreeBSD__) || defined(__CYGWIN__)
+ #ifndef NAN
+ #define NAN (0.0/0.0)
+ #endif /* !NAN */
+ #endif /* list of Operating Systems */
+
++/* Cygwin, in addition to NAN, doesn't have cfmakeraw */
++#if defined(__CYGWIN__)
++void cfmakeraw(struct termios *);
++#endif /* defined(__CYGWIN__) */
+ #endif /* _gpsd_h_ */
+--- serial.c.DIST	2005-08-16 17:07:13.000000000 -0700
++++ serial.c	2005-09-19 18:32:53.634401600 -0700
+@@ -17,6 +17,20 @@
+ #  endif /* CNEW_RTSCTS */
+ #endif /* !CRTSCTS */
+
++#if defined(__CYGWIN__)
++/* Workaround for Cygwin, which is missing cfmakeraw */
++/* Pasted from man page; added in serial.c arbitrarily */
++void cfmakeraw(struct termios *termios_p)
++{
++    termios_p-&gt;c_iflag &amp;= ~(IGNBRK|BRKINT|PARMRK|ISTRIP
++|INLCR|IGNCR|ICRNL|IXON);
++    termios_p-&gt;c_oflag &amp;= ~OPOST;
++    termios_p-&gt;c_lflag &amp;= ~(ECHO|ECHONL|ICANON|ISIG|IEXTEN);
++    termios_p-&gt;c_cflag &amp;= ~(CSIZE|PARENB);
++    termios_p-&gt;c_cflag |= CS8;
++}
++#endif /* defined(__CYGWIN__) */
++
+ speed_t gpsd_get_speed(struct termios* ttyctl)
+ {
+     speed_t code = cfgetospeed(ttyctl);
+@@ -103,7 +117,8 @@
+     }
+
+     if (session-&gt;saved_baud != -1) {
+-        /*@i@*/(void)cfsetspeed(&amp;session-&gt;ttyset,
+(speed_t)session-&gt;saved_baud);
++        /*@i@*/(void)cfsetispeed(&amp;session-&gt;ttyset,
+(speed_t)session-&gt;saved_baud);
++        /*@i@*/(void)cfsetospeed(&amp;session-&gt;ttyset,
+(speed_t)session-&gt;saved_baud);
+ 	(void)tcsetattr(session-&gt;gpsdata.gps_fd, TCSANOW, &amp;session-&gt;ttyset);
+ 	(void)tcflush(session-&gt;gpsdata.gps_fd, TCIOFLUSH);
+     }
+@@ -215,3 +230,4 @@
+ 	session-&gt;gpsdata.gps_fd = -1;
+     }
+ }
++
+--- sirfmon.c.DIST	2005-09-15 21:51:44.917238400 -0700
++++ sirfmon.c	2005-09-19 18:28:31.577582400 -0700
+@@ -29,6 +29,10 @@
+ #include &lt;math.h&gt;
+ #include &lt;ctype.h&gt;
+ #include &lt;unistd.h&gt;
++/* Cygwin has only _timezone and not timezone unless the following is set */
++#if defined(__CYGWIN__)
++#define timezonevar
++#endif /* defined(__CYGWIN__) */
+ #include &lt;time.h&gt;
+ #include &lt;termios.h&gt;
+ #include &lt;fcntl.h&gt;	/* for O_RDWR */
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="001051.html">[Gpsd-users] Fw: [DebianGIS] DebianGis reminder
+</A></li>
+	<LI>Next message: <A HREF="001053.html">[Gpsd-users] Commercial Navigator Device Embeds GPSD
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1052">[ date ]</a>
+              <a href="thread.html#1052">[ thread ]</a>
+              <a href="subject.html#1052">[ subject ]</a>
+              <a href="author.html#1052">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

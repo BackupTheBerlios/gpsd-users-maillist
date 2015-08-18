@@ -1,0 +1,207 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] bu-353 altitude problem
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2006-August/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20bu-353%20altitude%20problem&In-Reply-To=%3C4a20f6450608010030o31ab575ep152377f227a95032%40mail.gmail.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="001812.html">
+   <LINK REL="Next"  HREF="001814.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] bu-353 altitude problem</H1>
+    <B>K&#233;vin REDON</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20bu-353%20altitude%20problem&In-Reply-To=%3C4a20f6450608010030o31ab575ep152377f227a95032%40mail.gmail.com%3E"
+       TITLE="[Gpsd-users] bu-353 altitude problem">kevredon at gmail.com
+       </A><BR>
+    <I>Tue Aug  1 09:30:21 CEST 2006</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="001812.html">[Gpsd-users] bu-353 altitude problem
+</A></li>
+        <LI>Next message: <A HREF="001814.html">[Gpsd-users] bu-353 altitude problem
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1813">[ date ]</a>
+              <a href="thread.html#1813">[ thread ]</a>
+              <a href="subject.html#1813">[ subject ]</a>
+              <a href="author.html#1813">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>I found exactly the same curious behaviour
+previously sent mail :
+
+ok, I built it from svn
+the result is that it gives the altitude just some time :
+
+tap
+GPSD,T=263.2600,A=36.100,P=48.904293 2.332810
+tap
+GPSD,T=262.6200,A=?,P=48.904287 2.332745
+tap
+GPSD,T=262.8600,A=?,P=48.904283 2.332722
+tap
+GPSD,T=263.7000,A=?,P=48.904280 2.332692
+tap
+GPSD,T=?,A=?,P=48.904277 2.332660
+tap
+GPSD,T=?,A=31.000,P=48.904273 2.332628
+tap
+GPSD,T=261.8100,A=?,P=48.904272 2.332603
+
+is this normal.
+I think that its curious, it should give the last valid information
+(within 5 sec max) instead of ?
+- Hide quoted text -
+
+
+On 7/26/06, Eric S. Raymond &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">esr at thyrsus.com</A>&gt; wrote:
+&gt;<i> K&#233;vin REDON &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">kevredon at gmail.com</A>&gt;:
+</I>&gt;<i> &gt; On 7/21/06, Eric S. Raymond &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">esr at thyrsus.com</A>&gt; wrote:
+</I>&gt;<i> &gt; &gt;K&#233;vin REDON &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">kevredon at gmail.com</A>&gt;:
+</I>&gt;<i> &gt; &gt;&gt; I use a HOLUX GPSlim 236 (SirfIII), it works well with gpsd but I
+</I>&gt;<i> &gt; &gt;&gt; can't get the altitude, it always displays A=?
+</I>&gt;<i> &gt; &gt;&gt; But when I use gpsdrive, it display the altitude, because it
+</I>&gt;<i> &gt; &gt;&gt; calculates it itself.
+</I>&gt;<i> &gt; &gt;&gt;
+</I>&gt;<i> &gt; &gt;&gt; why does gpsd nt support alltitude
+</I>&gt;<i> &gt; &gt;
+</I>&gt;<i> &gt; &gt;gpsd does support altitude.  There must be something odd about what
+</I>&gt;<i> &gt; &gt;this device is emitting.  Can you send me a log file containing a
+</I>&gt;<i> &gt; &gt;representative sample of output?
+</I>&gt;<i>
+</I>&gt;<i> Hm.  I'm seeing altitude when I run your test log through gpsfake.
+</I>&gt;<i> Perhaps you should try building the svn head version?
+</I>&gt;<i> --
+</I>&gt;<i>                 &lt;a href=&quot;<A HREF="http://www.catb.org/~esr/">http://www.catb.org/~esr/</A>&quot;&gt;Eric S. Raymond&lt;/a&gt;
+</I>&gt;<i>
+</I>
+On 01 Aug 2006 00:21:05 -0700, Russell Senior &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">seniorr at aracnet.com</A>&gt; wrote:
+&gt;<i>
+</I>&gt;<i> I'd like to confirm the problem reported recently with confused
+</I>&gt;<i> altitude information from gpsd-2.33 connected to a bu-353 (a generic
+</I>&gt;<i> nmea device).  Here is a sample of the NMEA sentences emitted from
+</I>&gt;<i> gpsd in raw mode:
+</I>&gt;<i>
+</I>&gt;<i> $GPRMC,063927.000,A,4532.7947,N,12238.4289,W,0.17,119.64,010806,,*1A
+</I>&gt;<i> $GPGGA,063928.000,4532.7947,N,12238.4288,W,2,08,0.9,54.6,M,-19.3,M,0.8,0000*7C
+</I>&gt;<i> $GPGSA,A,3,02,05,10,04,30,09,24,06,,,,,1.5,0.9,1.2*34
+</I>&gt;<i> $GPRMC,063928.000,A,4532.7947,N,12238.4288,W,0.31,56.99,010806,,*28
+</I>&gt;<i> $GPGGA,063928.900,4532.7948,N,12238.4288,W,2,08,0.9,54.7,M,-19.3,M,0.8,0000*7B
+</I>&gt;<i> $GPGSA,A,3,02,05,10,04,30,09,24,06,,,,,1.5,0.9,1.2*34
+</I>&gt;<i> $GPGSV,3,1,09,05,78,205,33,02,71,083,34,30,49,302,46,04,33,051,28*70
+</I>&gt;<i> $GPGSV,3,2,09,06,20,273,40,10,17,144,20,09,15,200,31,24,12,045,15*7E
+</I>&gt;<i> $GPGSV,3,3,09,35,34,206,33*45
+</I>&gt;<i> $GPRMC,063928.900,A,4532.7948,N,12238.4288,W,0.07,158.14,010806,,*11
+</I>&gt;<i> $GPGGA,063930.000,4532.7948,N,12238.4288,W,2,08,0.9,54.7,M,-19.3,M,0.8,0000*7B
+</I>&gt;<i> $GPGSA,A,3,02,05,10,04,30,09,24,06,,,,,1.5,0.9,1.2*34
+</I>&gt;<i> $GPRMC,063930.000,A,4532.7948,N,12238.4288,W,0.11,23.07,010806,,*29
+</I>&gt;<i> $GPGGA,063931.000,4532.7948,N,12238.4287,W,2,08,0.9,54.7,M,-19.3,M,1.8,0000*74
+</I>&gt;<i> $GPGSA,A,3,02,05,10,04,30,09,24,06,,,,,1.5,0.9,1.2*34
+</I>&gt;<i> $GPRMC,063931.000,A,4532.7948,N,12238.4287,W,0.09,64.01,010806,,*2B
+</I>&gt;<i> $GPGGA,063932.000,4532.7947,N,12238.4287,W,2,08,0.9,54.7,M,-19.3,M,2.8,0000*7B
+</I>&gt;<i> $GPGSA,A,3,02,05,10,04,30,09,24,06,,,,,1.5,0.9,1.2*34
+</I>&gt;<i> $GPRMC,063932.000,A,4532.7947,N,12238.4287,W,0.05,165.35,010806,,*1C
+</I>&gt;<i> $GPGGA,063933.000,4532.7947,N,12238.4287,W,2,08,0.9,54.6,M,-19.3,M,3.8,0000*7A
+</I>&gt;<i> $GPGSA,A,3,02,05,10,04,30,09,24,06,,,,,1.5,0.9,1.2*34
+</I>&gt;<i> $GPRMC,063933.000,A,4532.7947,N,12238.4287,W,0.03,44.30,010806,,*2C
+</I>&gt;<i>
+</I>&gt;<i> If I query with an &quot;a&quot;, I sometimes get a valid altitude, but usually
+</I>&gt;<i> not.  E.g.:
+</I>&gt;<i>
+</I>&gt;<i> $ nc localhost 2947
+</I>&gt;<i> pavmh
+</I>&gt;<i> GPSD,P=?,A=?,V=?,M=0
+</I>&gt;<i> pavmh
+</I>&gt;<i> GPSD,P=45.546543 -122.640468,A=53.900,V=?,M=3
+</I>&gt;<i> pavmh
+</I>&gt;<i> GPSD,P=45.546545 -122.640467,A=?,V=0.040,M=0
+</I>&gt;<i> pavmh
+</I>&gt;<i> GPSD,P=45.546543 -122.640470,A=?,V=0.080,M=0
+</I>&gt;<i> pavmh
+</I>&gt;<i> GPSD,P=45.546542 -122.640472,A=54.700,V=?,M=3
+</I>&gt;<i> pavmh
+</I>&gt;<i> GPSD,P=45.546548 -122.640475,A=?,V=0.120,M=0
+</I>&gt;<i> pavmh
+</I>&gt;<i> GPSD,P=45.546548 -122.640475,A=?,V=0.030,M=0
+</I>&gt;<i> pavmh
+</I>&gt;<i> GPSD,P=45.546548 -122.640475,A=?,V=0.160,M=0
+</I>&gt;<i> pavmh
+</I>&gt;<i> GPSD,P=45.546548 -122.640477,A=?,V=?,M=0
+</I>&gt;<i> pavmh
+</I>&gt;<i> GPSD,P=45.546548 -122.640477,A=?,V=0.140,M=0
+</I>&gt;<i> pavmh
+</I>&gt;<i> GPSD,P=45.546550 -122.640477,A=?,V=0.100,M=0
+</I>&gt;<i> pavmh
+</I>&gt;<i> GPSD,P=45.546550 -122.640477,A=?,V=0.100,M=0
+</I>&gt;<i> pavmh
+</I>&gt;<i> GPSD,P=45.546550 -122.640477,A=?,V=0.060,M=0
+</I>&gt;<i> pavmh
+</I>&gt;<i> GPSD,P=45.546552 -122.640477,A=?,V=0.220,M=0
+</I>&gt;<i> pavmh
+</I>&gt;<i> GPSD,P=45.546552 -122.640475,A=54.300,V=?,M=3
+</I>&gt;<i> pavmh
+</I>&gt;<i> GPSD,P=45.546552 -122.640477,A=?,V=?,M=0
+</I>&gt;<i> pavmh
+</I>&gt;<i> GPSD,P=45.546552 -122.640477,A=?,V=0.230,M=0
+</I>&gt;<i> pavmh
+</I>&gt;<i> GPSD,P=45.546552 -122.640477,A=54.300,V=?,M=3
+</I>&gt;<i> pavmh
+</I>&gt;<i> GPSD,P=45.546552 -122.640477,A=?,V=0.130,M=0
+</I>&gt;<i> pavmh
+</I>&gt;<i> GPSD,P=45.546552 -122.640478,A=54.400,V=?,M=3
+</I>&gt;<i> pavmh
+</I>&gt;<i> GPSD,P=45.546555 -122.640480,A=?,V=0.090,M=0
+</I>&gt;<i>
+</I>&gt;<i> Running under gdb, I see that it seems to be failing the have_fix()
+</I>&gt;<i> text. E.g.:
+</I>&gt;<i>
+</I>&gt;<i> (gdb) print device-&gt;gpsdata.status
+</I>&gt;<i> $12 = 2
+</I>&gt;<i> (gdb) print device-&gt;gpsdata.fix.mode
+</I>&gt;<i> $13 = 0
+</I>&gt;<i>
+</I>&gt;<i> The associated VALIDATION_COMPLAINT verbage indicates &quot;GPS is confused
+</I>&gt;<i> about whether it has a fix&quot;.  I think, rather, it is gpsd that is
+</I>&gt;<i> confused!  ;-)
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i> --
+</I>&gt;<i> Russell Senior         ``I have nine fingers; you have ten.''
+</I>&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">seniorr at aracnet.com</A>
+</I>&gt;<i> _______________________________________________
+</I>&gt;<i> Gpsd-users mailing list
+</I>&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">Gpsd-users at lists.berlios.de</A>
+</I>&gt;<i> <A HREF="http://bat.berlios.de/mailman/listinfo/gpsd-users">http://bat.berlios.de/mailman/listinfo/gpsd-users</A>
+</I>&gt;<i>
+</I>
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="001812.html">[Gpsd-users] bu-353 altitude problem
+</A></li>
+	<LI>Next message: <A HREF="001814.html">[Gpsd-users] bu-353 altitude problem
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1813">[ date ]</a>
+              <a href="thread.html#1813">[ thread ]</a>
+              <a href="subject.html#1813">[ subject ]</a>
+              <a href="author.html#1813">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

@@ -1,0 +1,131 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] gpsd on windows
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2007-September/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20gpsd%20on%20windows&In-Reply-To=%3C46DF71C3.1090403%40web.de%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="002878.html">
+   <LINK REL="Next"  HREF="002879.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] gpsd on windows</H1>
+    <B>Ulf Lamping</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20gpsd%20on%20windows&In-Reply-To=%3C46DF71C3.1090403%40web.de%3E"
+       TITLE="[Gpsd-users] gpsd on windows">ulf.lamping at web.de
+       </A><BR>
+    <I>Thu Sep  6 05:19:31 CEST 2007</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="002878.html">[Gpsd-users] gpsd on windows
+</A></li>
+        <LI>Next message: <A HREF="002879.html">[Gpsd-users] gpsd on windows
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2873">[ date ]</a>
+              <a href="thread.html#2873">[ thread ]</a>
+              <a href="subject.html#2873">[ subject ]</a>
+              <a href="author.html#2873">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Marshall Crocker schrieb:
+&gt;&gt;<i> I had build gpsd using cygwin, but when I tried to run it it just 
+</I>&gt;&gt;<i> stopped without any warning or error message. You seem to be more 
+</I>&gt;&gt;<i> successful with this approach :-) I'll try your patch shortly.
+</I>&gt;&gt;<i>     
+</I>&gt;<i> Once I got gpsd to compile, it has worked without a hitch.  One thing to remember, when you start gpsd from cygwin you have to start just as in linux such as gpsd /dev/ttyS0.  When you do that, gpsd will go into the background and you can kill it from windows task manager or from a cygwin terminal.  Of course, you can start it with -N and -D to get debug output and to keep it from going into the background.
+</I>&gt;<i>   
+</I>Yes, in the meantime I'm aware of that :-)
+
+On my machine, the call to getprotobyname() simply failed for whatever 
+reason - which terminates gpsd then. I've already provided a patch that 
+solve this issue for all platforms (some embedded linux systems 
+sometimes also seem have problems with this call), see 
+<A HREF="https://lists.berlios.de/pipermail/gpsd-dev/2007-September/005833.html">https://lists.berlios.de/pipermail/gpsd-dev/2007-September/005833.html</A>
+
+BTW: you can also use &quot;gpsd /dev/com1&quot; which seems a bit more natural 
+for a common windows user ;-)
+&gt;<i> The best way to do this is to install gpsd.exe and cygwin1.dll into your program installation directory or a subdirectory and have your application start gpsd.exe with the correct parameters.  This will be transparent to the user and will not conflict with an existing cygwin installation as long as you don't have the cygwin1.dll anywhere in the path. 
+</I>This doesn't really sound like a bullet proof solution.
+&gt;<i> Of course the installer could also check for an existing cygwin installation and decide which dll to use.
+</I>&gt;<i>   
+</I>And when the user decides to delete cygwin from it's machine, an 
+apparently unrelated application like gpsdrive won't run any longer :-(((
+&gt;<i> Of course it would be best to have a single windows gpsd package that a user could download and install as a service or normal application so that any application would be able to use a single gpsd install instead of having to use their own.  
+</I>&gt;<i>   
+</I>ACK!
+&gt;<i> Mingw is native.  
+</I>Native in regard to the runtime environment - yes. Native to use .lib 
+and link to it - unsure. Native to debug libgps related things from 
+withing MSVC application even build from source - no.
+&gt;<i> I'm not 100% certain but I think anything that can compile under mingw can compile under VS.  I haven't tried this but now that I think about it I'd like to see what will happen if I try to compile my app under VS.  I think that mingw may have a few header files that VS doesn't but I'm no expert to make that judgement.  I just know any app compiled on mingw can run on a vanilla win32 system.
+</I>&gt;<i>   
+</I>Andreas Stricker mentioned where this is not the case, I'll send a 
+separate response to this.
+&gt;<i> When I began porting my app to windows I found out that termios is not available on win32 and so I knew porting gpsd to native win32 was going to be quite a chore.  Best of luck to you :).
+</I>&gt;<i>   
+</I>Thanks!
+&gt;&gt;<i> My long term goal for a native Win32 port would be to encapsulate this 
+</I>&gt;&gt;<i> stuff into platform specific files (candidates are gpsd.c and serial.c 
+</I>&gt;&gt;<i> (maybe netlib.c), as they will be pretty different on Linux/Unix and 
+</I>&gt;&gt;<i> Win32) and have the rest of the gpsd code as equal as ever possible.
+</I>&gt;&gt;<i>     
+</I>&gt;<i> You might want to take a look at the Pidgin source (used to be GAIM).  When I started doing my port I was interested in how apps such as Pidgin managed to run on multiple platforms.  Pidgin basically has it's own library for functions that work different for different platforms.  For example, instead of calling write() which of course doesn't work on sockets in win32, it uses a function called wpurple_write().  This function has two definitions, one for win32 and one for linux/unix.  The win32 version checks if the handle is a socket and executes send() if it is and the normal write if it isn't.  I would suggest something similar.
+</I>&gt;<i>
+</I>&gt;<i> When it comes down to it, if you do manage to port gpsd to windows, someone is going to have to maintain this port. I don't know how willing the gpsd developers would be to take on this responsibility so it may be a more effective use of your efforts to put together a windows gpsd cygwin package and direct users to download and install it whenever they install gpsdrive.  I would love to see a native windows version of gpsd but cygwin gets the job done and licensing isn't an issue between the two. 
+</I>&gt;<i>   
+</I>gpsd on cygwin get's the job poorly done (at least for installation 
+issues) - as mentioned above. I've seen so many - not only - open source 
+projects working this way: Finding a way to get things done somehow and 
+let the user run into obvious problems on and on. I was very pleased to 
+read gpsd docs like &quot;we don't want any more command line options&quot; that 
+take better care of these points. That's the way it should be: for most 
+problems users can run into, there is often a much better solution if 
+you only would put a little more effort into development.
+
+Well, I'm doing (on my side windows centric) cross platform open source 
+development (<A HREF="http://www.wireshark.org">http://www.wireshark.org</A>) for years now. I guess bringing a 
+stable Win32 gpsd port to life would be a matter of weeks. However, 
+looking at the responses from the gpsd core developers makes me think 
+that getting the required changes into the repository will take months - 
+if ever (not because of technical, but because of motivational or even 
+religious reasons). The words from Chris and ESR doesn't sound very 
+encouraging :-(
+
+So it's not very appealing for me spending weeks of effort to bring 
+native gpsd win32 port to life, only to recognize that my work won't get 
+into the repository and was just void.
+
+Regards, ULFL
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="002878.html">[Gpsd-users] gpsd on windows
+</A></li>
+	<LI>Next message: <A HREF="002879.html">[Gpsd-users] gpsd on windows
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2873">[ date ]</a>
+              <a href="thread.html#2873">[ thread ]</a>
+              <a href="subject.html#2873">[ subject ]</a>
+              <a href="author.html#2873">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

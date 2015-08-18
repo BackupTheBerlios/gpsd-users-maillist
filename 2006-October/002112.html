@@ -1,0 +1,107 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] Getting output
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2006-October/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Getting%20output&In-Reply-To=%3CPine.LNX.4.64.0610181159070.6953%40catbert.rellim.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="002111.html">
+   <LINK REL="Next"  HREF="002113.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] Getting output</H1>
+    <B>Gary E. Miller</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Getting%20output&In-Reply-To=%3CPine.LNX.4.64.0610181159070.6953%40catbert.rellim.com%3E"
+       TITLE="[Gpsd-users] Getting output">gem at rellim.com
+       </A><BR>
+    <I>Wed Oct 18 21:04:51 CEST 2006</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="002111.html">[Gpsd-users] Getting output
+</A></li>
+        <LI>Next message: <A HREF="002113.html">[Gpsd-users] Getting output
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2112">[ date ]</a>
+              <a href="thread.html#2112">[ thread ]</a>
+              <a href="subject.html#2112">[ subject ]</a>
+              <a href="author.html#2112">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>-----BEGIN PGP SIGNED MESSAGE-----
+Hash: SHA1
+
+Yo Bryan!
+
+On Wed, 18 Oct 2006, Bryan Kardisco wrote:
+
+&gt;<i> I have a 'DeLorme Earthmate GPS LT-20' and am using GPSD.  Have no problem
+</I>&gt;<i> starting it up just do the standard
+</I>
+Good, we would like a success report when you are done.  The format
+is near the bottom of the hardware page here:
+
+	<A HREF="http://gpsd.berlios.de/hardware.html">http://gpsd.berlios.de/hardware.html</A>
+
+
+&gt;<i> 'gpsd - p /dev/tts/USB0' and all is well ; however, I am trying to get some
+</I>&gt;<i> dataout in the form of STDOUT so I can kick it to an external text file.
+</I>
+I recommend you start it this way, unless you are concerned about power
+usage:
+	gpsd -n /dev/tts/USB0
+
+&gt;<i> Now I've done this through telnet no problem -- connected to the local host
+</I>&gt;<i> and have it just going 'p'  -  However, doing this from a shell script
+</I>&gt;<i> exiting the telnet session isn't very clean and I was hoping for a more
+</I>&gt;<i> robust way to do this.  Is it possible to get this data out in another form
+</I>&gt;<i> -- all I need is the lat / long and pull it out once every 2 minutes or so.
+</I>
+Try this:
+	gpspipe -r
+
+RGDS
+GARY
+- ---------------------------------------------------------------------------
+Gary E. Miller Rellim 20340 Empire Ave., Suite E-3, Bend, OR 97701
+	<A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">gem at rellim.com</A>  Tel:+1(541)382-8588
+
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v1.4.3 (GNU/Linux)
+
+iD8DBQFFNnrW8KZibdeR3qURAkQbAJ9pEUa33J6kt0Oa5m3FHN9RnfDMLwCfbFw5
+WnsW32MiyYrXzhpS0PjeQGo=
+=YKoT
+-----END PGP SIGNATURE-----
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="002111.html">[Gpsd-users] Getting output
+</A></li>
+	<LI>Next message: <A HREF="002113.html">[Gpsd-users] Getting output
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2112">[ date ]</a>
+              <a href="thread.html#2112">[ thread ]</a>
+              <a href="subject.html#2112">[ subject ]</a>
+              <a href="author.html#2112">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

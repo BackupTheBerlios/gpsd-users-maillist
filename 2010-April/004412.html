@@ -1,0 +1,84 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] Input to gpsd via UDP/TCP?
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2010-April/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Input%20to%20gpsd%20via%20UDP/TCP%3F&In-Reply-To=%3C20100422192149.GC30439%40thyrsus.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="004414.html">
+   <LINK REL="Next"  HREF="004415.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] Input to gpsd via UDP/TCP?</H1>
+    <B>Eric Raymond</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Input%20to%20gpsd%20via%20UDP/TCP%3F&In-Reply-To=%3C20100422192149.GC30439%40thyrsus.com%3E"
+       TITLE="[Gpsd-users] Input to gpsd via UDP/TCP?">esr at thyrsus.com
+       </A><BR>
+    <I>Thu Apr 22 21:21:49 CEST 2010</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="004414.html">[Gpsd-users] Input to gpsd via UDP/TCP?
+</A></li>
+        <LI>Next message: <A HREF="004415.html">[Gpsd-users] Input to gpsd via UDP/TCP?
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#4412">[ date ]</a>
+              <a href="thread.html#4412">[ thread ]</a>
+              <a href="subject.html#4412">[ subject ]</a>
+              <a href="author.html#4412">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Val Schmidt &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">vschmidt at ccom.unh.edu</A>&gt;:
+&gt;<i> The data stream (for me) is simple ASCI NMEA text.  IMHO, the
+</I>&gt;<i> physical communication mechanism of communicating with the GPS
+</I>&gt;<i> (serial, USB, TCP/UDP) could stand alone from the communication
+</I>&gt;<i> itself, in the standard internet ethos (I've been reading Eric's
+</I>&gt;<i> books).
+</I>
+And, in GPSD, it does.  It's already the case that some of our sensor
+sources can be serial devices while others are sockets accepting data
+from remote Ntrip and DGPSIP servers.
+
+Supporting your case may be as simple as teaching GPSD to open a UDP
+socket listening to whatever your emitter's IP address is, and then to
+pass the datagrams straight to the packet sniffer as though they
+came from yet another serial device.
+
+If so, this would be half an hour of programming supposing I had a 
+UDP-datagram source to test with.  Do you have a public address you
+could broadcast these from?
+
+So how does your Rabbit advertise itself in UDP space?
+-- 
+		&lt;a href=&quot;<A HREF="http://www.catb.org/~esr/">http://www.catb.org/~esr/</A>&quot;&gt;Eric S. Raymond&lt;/a&gt;
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="004414.html">[Gpsd-users] Input to gpsd via UDP/TCP?
+</A></li>
+	<LI>Next message: <A HREF="004415.html">[Gpsd-users] Input to gpsd via UDP/TCP?
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#4412">[ date ]</a>
+              <a href="thread.html#4412">[ thread ]</a>
+              <a href="subject.html#4412">[ subject ]</a>
+              <a href="author.html#4412">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

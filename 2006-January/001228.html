@@ -1,0 +1,121 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] another bug + fix
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2006-January/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20another%20bug%20%2B%20fix&In-Reply-To=%3Cp06230901bff3ec3a3053%40%5B192.168.1.5%5D%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="001223.html">
+   <LINK REL="Next"  HREF="001227.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] another bug + fix</H1>
+    <B>Robin L Darroch</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20another%20bug%20%2B%20fix&In-Reply-To=%3Cp06230901bff3ec3a3053%40%5B192.168.1.5%5D%3E"
+       TITLE="[Gpsd-users] another bug + fix">robin at spade-men.com
+       </A><BR>
+    <I>Wed Jan 18 14:09:34 CET 2006</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="001223.html">[Gpsd-users] ntp pps with garmin 18lvc
+</A></li>
+        <LI>Next message: <A HREF="001227.html">[Gpsd-users] ntp pps with garmin 18lvc
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1228">[ date ]</a>
+              <a href="thread.html#1228">[ thread ]</a>
+              <a href="subject.html#1228">[ subject ]</a>
+              <a href="author.html#1228">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi folks,
+
+Well, the debugging of gpsd-2.30 continues apace: just found a rather 
+palpable bug in the speed reporting part of the daemon.  This evening 
+I was using KisMAC (connected to my gpsd) as a mapping client, and 
+discovered that although we were driving at 80km/h (50mph in the old 
+units), it was reporting a speed of approximately 20km/h.
+
+&quot;Strange&quot;, I thought, &quot;I wonder what speed gpsd is reporting.&quot;  So I 
+checked, and it was churning out numbers around 11 in response to V 
+queries.  Now, the gpsd manual says &quot;V&quot; returns speed in knots, and 
+11 knots is about 20km/h, not 80km/h.
+
+A quick dive into the source code has revealed the culprit: for some 
+reason, although gpsdata.fix.speed is supposed to be in metres/sec, 
+the response to the V query in gpsd.c takes that number and *divides 
+it by KNOTS_TO_KPH*!?  Naturally, this is the same as converting km/h 
+to kt, but the problem is, we're starting with a figure in m/sec, not 
+km/h.
+
+Fairly self-evident patch (along with the fix for the 
+connection-dropping bug I mentioned a couple of weeks ago) follows:
+
+20:54 [~/src/gpsd-2.30] robin&gt; diff -u gpsd-orig.c gpsd.c
+--- gpsd-orig.c 2006-01-04 10:25:48.000000000 +0800
++++ gpsd.c      2006-01-18 20:56:09.000000000 +0800
+@@ -866,7 +866,7 @@
+             break;
+         case 'V':
+             if (assign_channel(whoami) &amp;&amp; have_fix(whoami-&gt;device) &amp;&amp; 
+isnan(whoami-&gt;device-&gt;gpsdata.fix.track)==0)
+-               (void)snprintf(phrase, sizeof(phrase), &quot;,V=%.3f&quot;, 
+whoami-&gt;device-&gt;gpsdata.fix.speed / KNOTS_TO_KPH);
++               (void)snprintf(phrase, sizeof(phrase), &quot;,V=%.3f&quot;, 
+whoami-&gt;device-&gt;gpsdata.fix.speed * MPS_TO_KNOTS);
+             else
+                 (void)strcpy(phrase, &quot;,V=?&quot;);
+             break;
+@@ -1479,7 +1479,9 @@
+                 } else {
+                     buf[buflen] = '\0';
+                     gpsd_report(1, &quot;&lt;= client(%d): %s&quot;, cfd, buf);
+-
++                       // added to prevent timeouts
++                       subscribers[cfd].active = timestamp();
++
+  #ifdef RTCM104_SERVICE
+                     if (subscribers[cfd].rtcm) {
+                         if (handle_dgpsip_request(cfd, buf, buflen) &lt; 0)
+
+
+
+Cheers,
+Robin
+-- 
+
+-------------------------------------------------------------------------
+  Robin L. Darroch - PO Box 2715, South Hedland WA 6722 - +61 421 503 966
+       <A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">robin at darroch.id.au</A> - <A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">robin at nyca.org.au</A> - <A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">robin at spade-men.com</A>
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="001223.html">[Gpsd-users] ntp pps with garmin 18lvc
+</A></li>
+	<LI>Next message: <A HREF="001227.html">[Gpsd-users] ntp pps with garmin 18lvc
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1228">[ date ]</a>
+              <a href="thread.html#1228">[ thread ]</a>
+              <a href="subject.html#1228">[ subject ]</a>
+              <a href="author.html#1228">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

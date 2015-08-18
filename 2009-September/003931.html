@@ -1,0 +1,164 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] gpsd with ntpd and PPS works only if in ntp.conf is a	additional external server
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2009-September/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20gpsd%20with%20ntpd%20and%20PPS%20works%20only%20if%20in%20ntp.conf%20is%20a%0A%09additional%20external%20server&In-Reply-To=%3C74FAB155A3634E56B862F54B1BCB5788%40ohbsystem.de%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="003978.html">
+   <LINK REL="Next"  HREF="003934.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] gpsd with ntpd and PPS works only if in ntp.conf is a	additional external server</H1>
+    <B>Kai Klenke</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20gpsd%20with%20ntpd%20and%20PPS%20works%20only%20if%20in%20ntp.conf%20is%20a%0A%09additional%20external%20server&In-Reply-To=%3C74FAB155A3634E56B862F54B1BCB5788%40ohbsystem.de%3E"
+       TITLE="[Gpsd-users] gpsd with ntpd and PPS works only if in ntp.conf is a	additional external server">klenke at ohb-teledata.de
+       </A><BR>
+    <I>Wed Sep 16 14:17:05 CEST 2009</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="003978.html">[Gpsd-users] How to start gpsd with fix baud	rate	of	serial	interface
+</A></li>
+        <LI>Next message: <A HREF="003934.html">[Gpsd-users] remove me
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3931">[ date ]</a>
+              <a href="thread.html#3931">[ thread ]</a>
+              <a href="subject.html#3931">[ subject ]</a>
+              <a href="author.html#3931">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE> 
+
+Hello,
+
+i am using the ublox &quot;Antaris LEA-4H&quot;-GPS-Receiver and it is via RS232
+connected to the gpsd on a Linux-Debian-Lenny machine. 
+
+The GPS-Receiver is configured to 38400 baud 8-N-1 with standard NMEA output
+(only GPGGA and
+GPRMC are activated).
+
+Additional the DCD is pulsed by the receiver with 900ms logical 0 and 100ms
+logical 1. 
+
+The ntpd is ocnfigured via ntp.conf as followed:
+
+server 127.127.28.0 minpoll 4 maxpoll 4
+fudge 127.127.28.0 time1 0.450 refid GPS
+
+server 127.127.28.1 minpoll 4 maxpoll 4 prefer
+fudge 127.127.28.1 refid PPS
+
+! There are no more other server-Lines ! 
+
+The gpsd sees the NMEA strings and the PPS signal. 
+
+gpsd: GPRMC starts a reporting cycle.
+gpsd: GPRMC sets mode 2
+gpsd: ntpshm_put: Clock: 1253006881 @ 1253006881.439076
+gpsd: &lt;= GPS:
+$GPGGA,092801.00,5306.13903,N,00851.51417,E,1,11,4.09,8.6,M,46.4,M,,*59
+gpsd: GPGGA sets status 1 and mode 3 (changed)
+gpsd: pps-detect (DCD) on /dev/ttyS0 changed to 1
+gpsd: ntpshm_pps: lost PPS lock
+gpsd: PPS pulse. cycle: 999998, duration: 899999
+gpsd: pps-detect (DCD) on /dev/ttyS0 changed to 0
+gpsd: ntpshm_pps: lost PPS lock
+gpsd: PPS pulse. cycle: 999976, duration: 99977
+gpsd: &lt;= GPS:
+$GPRMC,092802.00,A,5306.13903,N,00851.51418,E,0.007,,150909,,,A*7F
+
+Now if ntpd and gpsd are running the ntpq -p shows following things:
+
+remote	   refid      st t when poll reach  delay    offset  jitter
+=========================================================================
+*SHM(0)	  .GPS.      0 l   13   16  377    0.000    0.885   0.882
+ SHM(1)	  .PPS.      0 l   -    16  0      0.000    0.000   0.001
+
+The GPS-Line is works fine, but the PPS shows no changes.
+
+I thought if the line &quot;ntpshm_put: Clock: 1253006881 @ 1253006881.439076&quot;
+the gpsd writes data to the shared memory.
+
+If i now add the line..
+
+server 1.debian.pool.ntp.org iburst dynamic
+
+to the ntp.conf, then restart ntpd with..
+
+&quot;/etc/init.d/ntp stop&quot; and &quot;/etc/init.d/ntp start&quot; (the gpsd is still
+running during these
+changes)
+
+i can see that the gpsd output changes:
+
+gpsd: GPRMC starts a reporting cycle.
+gpsd: GPRMC sets mode 2
+gpsd: ntpshm_put: Clock: 1253084169 @ 1253084169.129956
+gpsd: &lt;= GPS:
+$GPGGA,065609.00,5306.13990,N,00851.51074,E,1,09,2.06,10.1,M,46.4,M,,*62
+gpsd: GPGGA sets status 1 and mode 3 (changed)
+gpsd: pps-detect (DCD) on /dev/ttyS0 changed to 0
+gpsd: ntpshm_pps: clock: 1253084170 @ 1253084169.930675, precision -3
+gpsd: PPS pulse. cycle: 999480, duration: 899538
+gpsd: pps-detect (DCD) on /dev/ttyS0 changed to 1
+gpsd: ntpshm_pps: clock: 1253084170 @ 1253084170.030620, precision -5
+gpsd: PPS pulse. cycle: 999483, duration: 99945
+gpsd: &lt;= GPS:
+$GPRMC,065610.00,A,5306.13991,N,00851.51076,E,0.044,137.85,160909,,,A*6F
+
+Now the line &quot;ntpshm_pps: lost PPS lock&quot; does not appear and after
+approximately 30
+seconds the PPS is used by ntpd.
+
+I wondered, how can improve an additional server in the ntp.conf the
+evaluation of the PPS signal by the gpsd?
+
+It must be an external server in the ntp.conf the &quot;Undisciplined Local
+Clock&quot;
+as NTP reference clock does not work.
+
+Kai
+
+
+
+  
+
+
+
+
+
+Kai
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="003978.html">[Gpsd-users] How to start gpsd with fix baud	rate	of	serial	interface
+</A></li>
+	<LI>Next message: <A HREF="003934.html">[Gpsd-users] remove me
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3931">[ date ]</a>
+              <a href="thread.html#3931">[ thread ]</a>
+              <a href="subject.html#3931">[ subject ]</a>
+              <a href="author.html#3931">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

@@ -1,0 +1,129 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] Python - Current Location
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2011-September/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Python%20-%20Current%20Location&In-Reply-To=%3CD86CCA59-D72A-434E-8166-D5CE94C5CE64%40sky.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="005492.html">
+   <LINK REL="Next"  HREF="005494.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] Python - Current Location</H1>
+    <B>Neil Greenough</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Python%20-%20Current%20Location&In-Reply-To=%3CD86CCA59-D72A-434E-8166-D5CE94C5CE64%40sky.com%3E"
+       TITLE="[Gpsd-users] Python - Current Location">neilgreenough at sky.com
+       </A><BR>
+    <I>Wed Sep 28 01:40:03 CEST 2011</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="005492.html">[Gpsd-users] Python - Current Location
+</A></li>
+        <LI>Next message: <A HREF="005494.html">[Gpsd-users] Python - Current Location
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#5493">[ date ]</a>
+              <a href="thread.html#5493">[ thread ]</a>
+              <a href="subject.html#5493">[ subject ]</a>
+              <a href="author.html#5493">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>No problem. I appreciate your quick response nonetheless. 
+
+Any other takers? 
+
+Sent from my iPhone
+
+On 28 Sep 2011, at 00:34, Ben Smith &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">thex1le at gmail.com</A>&gt; wrote:
+
+&gt;<i> Ah ok, was just trying to save you re inventing the wheel
+</I>&gt;<i> 
+</I>&gt;<i> On Sep 27, 2011 7:10 PM, &quot;Neil Greenough&quot; &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">neilgreenough at sky.com</A>&gt; wrote:
+</I>&gt;<i> &gt; Ben,
+</I>&gt;<i> &gt; 
+</I>&gt;<i> &gt; Thanks for the reply. I've used Kismet quite a bit and this is what actually inspired me to get coding albeit in Python. The reason I'm looking to implement this is simply to develop my knowledge of Python by doing. I just query whether you need a loop to refresh the location using gpsd. My feeling is that you do 
+</I>&gt;<i> &gt; 
+</I>&gt;<i> &gt; Sent from my iPhone
+</I>&gt;<i> &gt; 
+</I>&gt;<i> &gt; On 27 Sep 2011, at 23:59, Ben Smith &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">thex1le at gmail.com</A>&gt; wrote:
+</I>&gt;<i> &gt; 
+</I>&gt;<i> &gt;&gt; Why not just use gpsd and kismet? Provided your wifi card supports monitor mode.
+</I>&gt;<i> &gt;&gt; 
+</I>&gt;<i> &gt;&gt; On Sep 27, 2011 5:01 PM, &quot;Neil Greenough&quot; &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">neilgreenough at sky.com</A>&gt; wrote:
+</I>&gt;<i> &gt;&gt; &gt; Hi folks.
+</I>&gt;<i> &gt;&gt; &gt; 
+</I>&gt;<i> &gt;&gt; &gt; I'm currently putting together a Python (v2.6) script to be run on Linux.
+</I>&gt;<i> &gt;&gt; &gt; This scripts uses the gpsd module (gps) to grab the location of laptop
+</I>&gt;<i> &gt;&gt; &gt; running the script as well as access points in the vicinity.
+</I>&gt;<i> &gt;&gt; &gt; 
+</I>&gt;<i> &gt;&gt; &gt; To scan for the access points, I have a continual loop in a function. Now to
+</I>&gt;<i> &gt;&gt; &gt; get the current GPS location for each time an access point is located, I'm
+</I>&gt;<i> &gt;&gt; &gt; just wondering how is best to do this? At present I have a continual while
+</I>&gt;<i> &gt;&gt; &gt; loop also grabbing the GPS function. The problem is, as I now have two
+</I>&gt;<i> &gt;&gt; &gt; loops, I have to threads running - one with the GPS loop and the other with
+</I>&gt;<i> &gt;&gt; &gt; the wifi loop. Here's the code I'm using so far for the GPS function:-
+</I>&gt;<i> &gt;&gt; &gt; 
+</I>&gt;<i> &gt;&gt; &gt; *#!/usr/bin/python*
+</I>&gt;<i> &gt;&gt; &gt; 
+</I>&gt;<i> &gt;&gt; &gt; *import gps, os, time*
+</I>&gt;<i> &gt;&gt; &gt; 
+</I>&gt;<i> &gt;&gt; &gt; *session = gps.gps()
+</I>&gt;<i> &gt;&gt; &gt; session.poll()
+</I>&gt;<i> &gt;&gt; &gt; session.stream()*
+</I>&gt;<i> &gt;&gt; &gt; 
+</I>&gt;<i> &gt;&gt; &gt; *while 1:
+</I>&gt;<i> &gt;&gt; &gt; session.poll()*
+</I>&gt;<i> &gt;&gt; &gt; 
+</I>&gt;<i> &gt;&gt; &gt; * print session.fix.latitude*
+</I>&gt;<i> &gt;&gt; &gt; 
+</I>&gt;<i> &gt;&gt; &gt; * print session.fix.longitude*
+</I>&gt;<i> &gt;&gt; &gt; 
+</I>&gt;<i> &gt;&gt; &gt; 
+</I>&gt;<i> &gt;&gt; &gt; Is there a way of embedding a call within my wifi loop to grab the current
+</I>&gt;<i> &gt;&gt; &gt; location? So for example, whilst my wifi scanning is running, if an access
+</I>&gt;<i> &gt;&gt; &gt; point is detected, print the coordinates. I think the only way to do this
+</I>&gt;<i> &gt;&gt; &gt; (without a delay each time for polling / streaming) is to have the code
+</I>&gt;<i> &gt;&gt; &gt; running in the background in another thread but just wondering if anyone
+</I>&gt;<i> &gt;&gt; &gt; knows of an alternative way?
+</I>&gt;<i> &gt;&gt; &gt; 
+</I>&gt;<i> &gt;&gt; &gt; 
+</I>&gt;<i> &gt;&gt; &gt; Thanks
+</I>&gt;<i> &gt;&gt; &gt; _______________________________________________
+</I>&gt;<i> &gt;&gt; &gt; Gpsd-users mailing list
+</I>&gt;<i> &gt;&gt; &gt; <A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">Gpsd-users at lists.berlios.de</A>
+</I>&gt;<i> &gt;&gt; &gt; <A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">https://lists.berlios.de/mailman/listinfo/gpsd-users</A>
+</I>&gt;<i> &gt; _______________________________________________
+</I>&gt;<i> &gt; Gpsd-users mailing list
+</I>&gt;<i> &gt; <A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">Gpsd-users at lists.berlios.de</A>
+</I>&gt;<i> &gt; <A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">https://lists.berlios.de/mailman/listinfo/gpsd-users</A>
+</I>
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="005492.html">[Gpsd-users] Python - Current Location
+</A></li>
+	<LI>Next message: <A HREF="005494.html">[Gpsd-users] Python - Current Location
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#5493">[ date ]</a>
+              <a href="thread.html#5493">[ thread ]</a>
+              <a href="subject.html#5493">[ subject ]</a>
+              <a href="author.html#5493">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

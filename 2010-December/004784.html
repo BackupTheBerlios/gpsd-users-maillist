@@ -1,0 +1,81 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] Bidirectional 'raw' communication using libgpsd
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2010-December/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Bidirectional%20%27raw%27%20communication%20using%20libgpsd&In-Reply-To=%3C4CFBCB2D.50401%40kera.name%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="004783.html">
+   <LINK REL="Next"  HREF="004785.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] Bidirectional 'raw' communication using libgpsd</H1>
+    <B>Tomalak Geret'kal</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Bidirectional%20%27raw%27%20communication%20using%20libgpsd&In-Reply-To=%3C4CFBCB2D.50401%40kera.name%3E"
+       TITLE="[Gpsd-users] Bidirectional 'raw' communication using libgpsd">tom at kera.name
+       </A><BR>
+    <I>Sun Dec  5 18:26:05 CET 2010</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="004783.html">[Gpsd-users] Bidirectional 'raw' communication using libgpsd
+</A></li>
+        <LI>Next message: <A HREF="004785.html">[Gpsd-users] Bidirectional 'raw' communication using libgpsd
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#4784">[ date ]</a>
+              <a href="thread.html#4784">[ thread ]</a>
+              <a href="subject.html#4784">[ subject ]</a>
+              <a href="author.html#4784">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>On 05/12/2010 16:45, Mario De Weerd wrote:
+&gt;<i> As security is a concern, gpsd could be listening on the localhost only and
+</I>&gt;<i> allow more specific transactions there rather than oblige the use of the
+</I>&gt;<i> library.  Or as an intermediate step propose a tool similar to 'gpsdcat'
+</I>&gt;<i>   that would plug in to libgpsd and open up a port on the localhost (with
+</I>&gt;<i> some password protection) allowing the bidirectional serial communication
+</I>&gt;<i> through some 'simple' protocol.  That way third party tools could use the
+</I>&gt;<i> lower layer without linking gpsd.  (the external tool could just fire up
+</I>&gt;<i> something like 'gpsdlowlevelport').
+</I>
+As Eric said, the whole point of gpsd is that it manages the 
+device on its own. That's what it does, that's what it's 
+designed to do.
+
+Once you start allowing other tools to write to the receiver 
+too, you enter a world of pain as gpsd is no longer able to 
+guarantee that the receiver is in the state that it's asked 
+it to be in. It's just completely intractable.
+
+Tom
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="004783.html">[Gpsd-users] Bidirectional 'raw' communication using libgpsd
+</A></li>
+	<LI>Next message: <A HREF="004785.html">[Gpsd-users] Bidirectional 'raw' communication using libgpsd
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#4784">[ date ]</a>
+              <a href="thread.html#4784">[ thread ]</a>
+              <a href="subject.html#4784">[ subject ]</a>
+              <a href="author.html#4784">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

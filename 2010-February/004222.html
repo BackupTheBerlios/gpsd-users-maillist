@@ -1,0 +1,118 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] gpsd 1 PPS problem
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2010-February/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20gpsd%201%20PPS%20problem&In-Reply-To=%3C4B74B179.4010202%40scion-associates.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="004224.html">
+   <LINK REL="Next"  HREF="004223.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] gpsd 1 PPS problem</H1>
+    <B>Robert Livingston</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20gpsd%201%20PPS%20problem&In-Reply-To=%3C4B74B179.4010202%40scion-associates.com%3E"
+       TITLE="[Gpsd-users] gpsd 1 PPS problem">livingston at scion-associates.com
+       </A><BR>
+    <I>Fri Feb 12 02:40:09 CET 2010</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="004224.html">[Gpsd-users] Using GPSD to set Date in Unix
+</A></li>
+        <LI>Next message: <A HREF="004223.html">[Gpsd-users] gpsd 1 PPS problem
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#4222">[ date ]</a>
+              <a href="thread.html#4222">[ thread ]</a>
+              <a href="subject.html#4222">[ subject ]</a>
+              <a href="author.html#4222">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>I'm using Debian Lenny, gpsd 2.37, ntp (not openntp), Trimble Resolution-T receiver, TSIP protocol, serial port ttyS0.
+
+The debug output from gpsd confirms time, position, etc. are okay -- but the 1 PPS seems to be ignored.
+
+With the 1 PPS applied to Carrier Detect pin, should the debug list (D6) show CD updates?  I suspected the low voltage (2.8 V) from the Resolution-T but 4.5V does not make any difference.
+
+See the debug output, shmat assignments, and 'ntpq -p' sample below.
+
+Thanks for any information or suggestions.
+---------
+
+gpsd -n -N -D6 /dev/ttyS0 
+gpsd: launching (Version 2.37)
+gpsd: listening on port gpsd
+gpsd: shmat(0,0,0) succeeded
+gpsd: shmat(0,0,0) succeeded
+gpsd: shmat(0,0,0) succeeded
+gpsd: shmat(0,0,0) succeeded
+gpsd: running with effective group ID 0
+gpsd: running with effective user ID 0
+gpsd: opening GPS data source at '/dev/ttyS0'
+gpsd: speed 9600, 8N1
+gpsd: =&gt; GPS: $PASHQ,RID*28\x0d
+..
+..
+gpsd: Satellite Tracking Status: Ch  0 PRN   9 Res 0 Acq 1 Eph  1 SNR 29.5 LMT 427358.4688 El 15.5 Az  37.1
+..
+gpsd: TSIP packet id 0x8f length 17: ab0006855f0622000f03182a160b0207da
+gpsd: GPS Time 427359.000000 1570 15
+.. 
+--------------------
+
+cat /proc/sysvipc/shm
+       key      shmid perms       size  cpid  lpid nattch   uid   gid  cuid  cgid      atime      dtime      ctime
+1314148400          0   644         80  2466  3108      1     0     0     0     0 1265928142 1265928144 1265927571
+1314148401      32769   644         80  2466  3108      1     0     0     0     0 1265928142 1265928144 1265927571
+1314148402      65538   644         80  2466  3108      0     0     0     0     0 1265928142 1265928144 1265927571
+1314148403      98307   644         80  2466  3108      0     0     0     0     0 1265928142 1265928144 1265927571
+         0     131076  1600     393216  2925  2940      2  1000  1000  1000  1000 1265927615 1265927615 1265927614
+         0     163845  1600     393216  2972  2859      2  1000  1000  1000  1000 1265927621          0 1265927621
+         0     196614  1600     393216  2949  3111      2  1000  1000  1000  1000 1265928181 1265928181 1265927623
+         0     229383  1600     393216  2952  2859      2  1000  1000  1000  1000 1265927623          0 1265927623
+         0     262152  1600     393216  3002  2859      2  1000  1000  1000  1000 1265927627          0 1265927627
+         0     294921  1600     393216  2930  2859      2  1000  1000  1000  1000 1265927631          0 1265927631
+         0     327690  1600     393216  2952  2859      2  1000  1000  1000  1000 1265927632          0 1265927632
+         0     360459  1600     393216  3007  3032      2  1000  1000  1000  1000 1265927659 1265927659 1265927638
+         0     393228  1600     393216  2945  2859      2  1000  1000  1000  1000 1265927638          0 1265927638
+         0     425997  1600     393216  2945  2859      2  1000  1000  1000  1000 1265927638          0 1265927638
+----------
+ ntpq -p
+     remote           refid      st t when poll reach   delay   offset  jitter
+==============================================================================
+ SHM(0)          .GPS.            0 l  481   16    0    0.000  -52.658  23.954
+ SHM(1)          .GPS1.           0 l    -   16    0    0.000    0.000   0.001
+*131.107.13.100  .ACTS.           1 u   29   64  377   57.593  -35.208   8.365
+
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="004224.html">[Gpsd-users] Using GPSD to set Date in Unix
+</A></li>
+	<LI>Next message: <A HREF="004223.html">[Gpsd-users] gpsd 1 PPS problem
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#4222">[ date ]</a>
+              <a href="thread.html#4222">[ thread ]</a>
+              <a href="subject.html#4222">[ subject ]</a>
+              <a href="author.html#4222">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

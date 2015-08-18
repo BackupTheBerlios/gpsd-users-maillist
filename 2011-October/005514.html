@@ -1,0 +1,98 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] How to set initial time?
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2011-October/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20How%20to%20set%20initial%20time%3F&In-Reply-To=%3C01e855be5058f17acd7dbf9371617a41.squirrel%40mail.seiner.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="005513.html">
+   <LINK REL="Next"  HREF="005515.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] How to set initial time?</H1>
+    <B>Yan Seiner</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20How%20to%20set%20initial%20time%3F&In-Reply-To=%3C01e855be5058f17acd7dbf9371617a41.squirrel%40mail.seiner.com%3E"
+       TITLE="[Gpsd-users] How to set initial time?">yan at seiner.com
+       </A><BR>
+    <I>Thu Oct 27 00:10:42 CEST 2011</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="005513.html">[Gpsd-users] How to set initial time?
+</A></li>
+        <LI>Next message: <A HREF="005515.html">[Gpsd-users] How to set initial time?
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#5514">[ date ]</a>
+              <a href="thread.html#5514">[ thread ]</a>
+              <a href="subject.html#5514">[ subject ]</a>
+              <a href="author.html#5514">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>
+On Wed, October 26, 2011 8:22 am, Eric S. Raymond wrote:
+&gt;<i> Yan Seiner &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">yan at seiner.com</A>&gt;:
+</I>&gt;&gt;<i> AFAICT gpsd does not report the time it gets from gps.  I've looked at
+</I>&gt;&gt;<i> the
+</I>&gt;&gt;<i> code, and apparently the date and time information are discarded.
+</I>&gt;<i>
+</I>&gt;<i> That's bizarre.  What code are you talking about?  What mode is the device
+</I>&gt;<i> in? Can you send us a test log?
+</I>
+I thought so...  Maybe I'm not reading the code right.
+
+Log is at <A HREF="http://www.seiner.com/cz/logread">http://www.seiner.com/cz/logread</A>
+
+I'm running 2.94 with a SiRF III puck.  I added an extra print statement
+right around line 800 in libgpsd_core.c ; it shows that the correct time
+is in the session structure but for some strange reason it is not reported
+to chrony in a useful way or at least chrony doesn't change the system
+time.  (The &quot;Operation not permitted&quot; is not relevant to the problem.)
+
+As soon as the system gets internet access it sets the date via rdate, and
+from that point on gpsd and chrony stay in sync.  It's just the initial
+sync; when the system time is at 280 seconds Epoch and gpsd is seeing
+700337879 Epoch that chrony will not sync, even if you tell chrony to
+makestep....
+
+Of course now I can't find the code I had mentioned that looked to be
+discarding the time except for a small difference... I'll look for it
+again.  Seems like it was a chunk of code that only kept a difference of
+3600 seconds between the gps time and the system time.  I'll fish around
+some more for it.
+
+-- 
+Pain is temporary. It may last a minute, or an hour, or a day, or a year,
+but eventually it will subside and something else will take its place. If
+I quit, however, it lasts forever.
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="005513.html">[Gpsd-users] How to set initial time?
+</A></li>
+	<LI>Next message: <A HREF="005515.html">[Gpsd-users] How to set initial time?
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#5514">[ date ]</a>
+              <a href="thread.html#5514">[ thread ]</a>
+              <a href="subject.html#5514">[ subject ]</a>
+              <a href="author.html#5514">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

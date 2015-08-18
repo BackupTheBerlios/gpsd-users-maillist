@@ -1,0 +1,158 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] Problems with PPS and gpsd
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2007-October/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Problems%20with%20PPS%20and%20gpsd&In-Reply-To=%3C200710081729.58694.mick.durkin%40saunalahti.fi%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="002924.html">
+   <LINK REL="Next"  HREF="002928.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] Problems with PPS and gpsd</H1>
+    <B>Mick Durkin</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Problems%20with%20PPS%20and%20gpsd&In-Reply-To=%3C200710081729.58694.mick.durkin%40saunalahti.fi%3E"
+       TITLE="[Gpsd-users] Problems with PPS and gpsd">mick.durkin at saunalahti.fi
+       </A><BR>
+    <I>Mon Oct  8 16:29:58 CEST 2007</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="002924.html">[Gpsd-users] Problems with PPS and gpsd
+</A></li>
+        <LI>Next message: <A HREF="002928.html">[Gpsd-users] Problems with PPS and gpsd
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2925">[ date ]</a>
+              <a href="thread.html#2925">[ thread ]</a>
+              <a href="subject.html#2925">[ subject ]</a>
+              <a href="author.html#2925">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi Jim,
+
+I have done quite a bit of work on the 1pps with another member of the group 
+(David Cottle) and found that we both suffered with the initialisation code 
+for the 1pps routine.
+
+When the daemon starts, it scans for incoming data and if it doesn't get a 
+match at the first speed, it can end up killing the 1pps monitoring thread. 
+This may be what bit you at 38,400bps while 9,600bps works.
+
+We got round it temporarily by a bit of trickery and I am still looking at a 
+robust method to offer to the 2.35 codebase. This has proved to be a bit 
+trickier than expected when allowing for all combinations of speed scan and 
+devices which support probing, but I am still trying.
+
+=================================================
+
+On the debug output, you see that your cycle is 1008017 and your duration is 
+100532. Both are in microseconds, so it looks like you are getting a 100 
+millisecond pulse every second. This is reasonable and would normally be 
+fine. However, bear with me and have a look at the code and check what your 
+actual values mean.
+
+The code observes transitions from low to high and vice-versa. It timestamps 
+them and after each transition it calculates the time since:-
+1) the last transition in the same direction
+2) the time since the last transition in the opposite direction.
+
+The time between same-direction events is the repetition rate (cycle) and the 
+time between opposite-direction events is the length of the last part of the 
+waveform (duration).
+
+The important event is when we get a transition from the end of the 
+long &quot;non-active&quot; state to the short &quot;active&quot; state, the 1pps pulse itself.
+
+The 1pps event is defined as being synchronised to this transition and the 
+pulse which starts with this event is usually about 100000 to 200000 
+microseconds in duration, depending on the device.
+
+The events (once &quot;cycle&quot; and &quot;duration&quot; are calculated) are handled in this 
+code lifted from the function &quot;static void *gpsd_ppsmonitor(void *arg)&quot; :-
+
+if ( 800000 &gt; duration) {
+    /* less then 800mS, duration too short for anything */
+    gpsd_report(LOG_RAW, &quot;PPS pulse rejected too short. cycle: %d, 
+        duration: %d\n&quot;, cycle, duration);
+} else if (cycle &gt; 999000 &amp;&amp; cycle &lt; 1001000 ) {
+    /* looks like PPS pulse */
+    (void)ntpshm_pps(session, &amp;tv);
+} else if (cycle &gt; 1999000 &amp;&amp; cycle &lt; 2001000) {
+    /* looks like 2Hz square wave */
+    (void)ntpshm_pps(session, &amp;tv);
+} else {
+    gpsd_report(LOG_RAW, &quot;PPS pulse rejected. No fix.\n&quot;);
+}
+
+There is also handling for a squarewave in there (it should say 0.5Hz, not 2Hz 
+if the cycle lasts 2 seconds!), but that is not an issue for you.
+
+The way the edges are timed/processed, the code is independant of the 
+polarity, since if it is fed by a correctly formed signal, it will see the 
+same value for cycle whichever transition has just occurred and the duration 
+will alternate between about 800-900 milliseconds (for the &quot;idle&quot; part of the 
+waveform) and about 100-200 milliseconds for the actual 1pps pulse.
+
+This means that an inverter is not strictly necessary because the code is 
+insensitive to polarity, but a TTL-RS232 level shifter might be a good idea 
+for other reasons and will usually be an inverter also. On my system, the 
+native output from my gps is a positive going 100 millisecond pulse at TTL 
+level which I buffer to RS232 through a MAX233 which inverts. I am able to 
+lock correctly to this negative-going pulse.
+
+The debug output you show is one resulting from a transition at the end of the 
+actual 1pps pulse. The duration is 100532 microseconds, which is reasonable 
+for the 1pps pulse. It is rejected because we are interested in the 
+transition which happens at the end of the &quot;idle&quot; part of the pulse. 
+Hopefully, your debug output would shortly be follwed by a transition which 
+produces a duration of about 900000 microseconds that would be acceptable.
+
+However, according to your output, it might then discard this anyway as your 
+cycle is not within the limits of 990000 to 1001000 microseconds. This should 
+be the same duration for either direction of transition. The events HAVE to 
+be every 1000000 microseconds for a good 1pps!!
+
+As Dave C suggested, maybe your PC is a bit slow as this is only marginally 
+off limits. Probably the basic waveform is really at 1000000 microseconds, 
+but there is a processing delay in handling it due to debugger overheads.
+
+As suggested, if you get ntpd to eat your output successfully when not in 
+debug mode, you are on to a winner.
+
+Hope this makes it a bit clearer.
+
+BR
+
+Mick Durkin
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="002924.html">[Gpsd-users] Problems with PPS and gpsd
+</A></li>
+	<LI>Next message: <A HREF="002928.html">[Gpsd-users] Problems with PPS and gpsd
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2925">[ date ]</a>
+              <a href="thread.html#2925">[ thread ]</a>
+              <a href="subject.html#2925">[ subject ]</a>
+              <a href="author.html#2925">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

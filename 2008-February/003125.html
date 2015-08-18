@@ -1,0 +1,89 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users]  Globalsat BU-353 USB - Not getting a fix
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2008-February/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20%20Globalsat%20BU-353%20USB%20-%20Not%20getting%20a%20fix&In-Reply-To=%3C15246191.post%40talk.nabble.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   
+   <LINK REL="Next"  HREF="003126.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users]  Globalsat BU-353 USB - Not getting a fix</H1>
+    <B>Robert Easton</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20%20Globalsat%20BU-353%20USB%20-%20Not%20getting%20a%20fix&In-Reply-To=%3C15246191.post%40talk.nabble.com%3E"
+       TITLE="[Gpsd-users]  Globalsat BU-353 USB - Not getting a fix">mark63 at azurebell.co.nz
+       </A><BR>
+    <I>Sat Feb  2 23:21:59 CET 2008</I>
+    <P><UL>
+        
+        <LI>Next message: <A HREF="003126.html">[Gpsd-users] Globalsat BU-353 USB - Not getting a fix
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3125">[ date ]</a>
+              <a href="thread.html#3125">[ thread ]</a>
+              <a href="subject.html#3125">[ subject ]</a>
+              <a href="author.html#3125">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>
+Hi, i am using gpsd 2.34. Have been using it with a number of GPS devices,
+but now am using a Globalsat BU-353 USB device, which does not seem to work
+for me. I am on a ubuntu linux x86. 
+
+When I run the gpsd daemon as &quot;gpsd -n -N -D4 /dev/ttyUSB0, I can see it
+logging the received $GPGGA sentences. 
+
+In my app, I have the following basic code snippet (sans any non-relevant
+code). It never gets a fix with the Globalsat BU-353 device. Why could that
+be?
+
+open_gpsd();
+if (!gpsd_err)
+{
+  resp = gps_rec.query(&quot;p\n&quot;);
+  gpsFix = &amp;resp-&gt;fix;
+  if (!isnan(gpsFix-&gt;latitude))
+  {
+     //Process fix data
+  }else
+    LOG(1, &quot;No fix received from nmea device!&quot;);
+}
+
+TIA for your help,
+Mark
+-- 
+View this message in context: <A HREF="http://www.nabble.com/Globalsat-BU-353-USB---Not-getting-a-fix-tp15246191p15246191.html">http://www.nabble.com/Globalsat-BU-353-USB---Not-getting-a-fix-tp15246191p15246191.html</A>
+Sent from the GPSd - Users mailing list archive at Nabble.com.
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	
+	<LI>Next message: <A HREF="003126.html">[Gpsd-users] Globalsat BU-353 USB - Not getting a fix
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3125">[ date ]</a>
+              <a href="thread.html#3125">[ thread ]</a>
+              <a href="subject.html#3125">[ subject ]</a>
+              <a href="author.html#3125">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

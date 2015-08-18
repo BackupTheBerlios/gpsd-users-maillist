@@ -1,0 +1,180 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] Some problems? too many satellites?
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2006-August/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Some%20problems%3F%20too%20many%20satellites%3F&In-Reply-To=%3Cc32efac40608090137jdfc8217qe354dea88b675a97%40mail.gmail.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="001855.html">
+   <LINK REL="Next"  HREF="001833.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] Some problems? too many satellites?</H1>
+    <B>Dave Hylands</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Some%20problems%3F%20too%20many%20satellites%3F&In-Reply-To=%3Cc32efac40608090137jdfc8217qe354dea88b675a97%40mail.gmail.com%3E"
+       TITLE="[Gpsd-users] Some problems? too many satellites?">dhylands at gmail.com
+       </A><BR>
+    <I>Wed Aug  9 10:37:18 CEST 2006</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="001855.html">[Gpsd-users] gpxlogger command line argument problem
+</A></li>
+        <LI>Next message: <A HREF="001833.html">[Gpsd-users] Some problems? too many satellites?
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1832">[ date ]</a>
+              <a href="thread.html#1832">[ thread ]</a>
+              <a href="subject.html#1832">[ subject ]</a>
+              <a href="author.html#1832">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi,
+
+I'm relatively new to GPS. I'm using a gpsstix from gumstix.com
+
+I'm using gpsd-2.33 with a ublox LEA-4H GPS module.
+
+After letting:
+
+./gpsd -n -N -D2 /dev/ttyS2
+
+run for a while, I get the following output:
+
+gpsd: GPGSV field 3 value of 13 != actual count 0
+gpsd: &lt;= GPS: $GPGLL,4907.58323,N,12242.60453,W,080152.00,A,A*73
+gpsd: can't use GGA/GGL time until after ZDA or RMC has supplied a year.
+gpsd: &lt;= GPS: $GPZDA,080152.00,09,08,2006,00,00*6D
+gpsd: &lt;= GPS: $GPRMC,080153.00,A,4907.58313,N,12242.60458,W,0.067,44.28,090806,,,A*41
+gpsd: &lt;= GPS: $GPVTG,44.28,T,,M,0.067,N,0.125,K,A*00
+gpsd: &lt;= GPS: $GPGGA,080153.00,4907.58313,N,12242.60458,W,1,09,1.63,48.1,M,-16.7,M,,*52
+gpsd: &lt;= GPS: $GPGSA,A,3,02,05,25,06,30,10,47,35,21,,,,2.37,1.63,1.72*06
+gpsd: &lt;= GPS: $GPGSV,4,1,13,02,26,063,32,05,20,173,16,25,12,293,18,06,67,295,35*73
+gpsd: &lt;= GPS: $GPGSV,4,2,13,13,05,016,,51,32,160,43,30,51,204,44,10,52,094,28*78
+gpsd: &lt;= GPS: $GPGSV,4,3,13,07,04,293,23,47,11,246,40,16,02,325,,35,31,205,36*76
+gpsd: &lt;= GPS: $GPGSV,4,4,13,21,24,240,37*4C
+gpsd: internal error - too many satellites!
+gpsd: GPGSV field 3 value of 13 != actual count 0
+gpsd: &lt;= GPS: $GPGLL,4907.58313,N,12242.60458,W,080153.00,A,A*7A
+gpsd: can't use GGA/GGL time until after ZDA or RMC has supplied a year.
+gpsd: &lt;= GPS: $GPZDA,080153.00,09,08,2006,00,00*6C
+gpsd: &lt;= GPS: $GPRMC,080154.00,A,4907.58304,N,12242.60460,W,0.033,41.28,090806,,,A*4F
+gpsd: &lt;= GPS: $GPVTG,41.28,T,,M,0.033,N,0.061,K,A*05
+gpsd: &lt;= GPS: $GPGGA,080154.00,4907.58304,N,12242.60460,W,1,09,1.63,48.0,M,-16.7,M,,*59
+gpsd: &lt;= GPS: $GPGSA,A,3,02,05,25,06,30,10,47,35,21,,,,2.37,1.63,1.72*06
+gpsd: &lt;= GPS: $GPGSV,4,1,13,02,26,063,33,05,20,173,16,25,12,293,18,06,67,295,36*71
+gpsd: &lt;= GPS: $GPGSV,4,2,13,13,05,016,,51,32,160,43,30,51,204,43,10,52,094,28*7F
+gpsd: &lt;= GPS: $GPGSV,4,3,13,07,04,293,23,47,11,246,39,16,02,325,,35,31,205,36*78
+gpsd: &lt;= GPS: $GPGSV,4,4,13,21,24,240,37*4C
+gpsd: internal error - too many satellites!
+gpsd: GPGSV field 3 value of 13 != actual count 0
+gpsd: &lt;= GPS: $GPGLL,4907.58304,N,12242.60460,W,080154.00,A,A*70
+gpsd: can't use GGA/GGL time until after ZDA or RMC has supplied a year.
+gpsd: &lt;= GPS: $GPZDA,080154.00,09,08,2006,00,00*6B
+gpsd: &lt;= GPS: $GPRMC,080155.00,A,4907.58295,N,12242.60460,W,0.040,37.37,090806,,,A*4C
+gpsd: &lt;= GPS: $GPVTG,37.37,T,,M,0.040,N,0.074,K,A*0A
+gpsd: &lt;= GPS: $GPGGA,080155.00,4907.58295,N,12242.60460,W,1,09,1.63,47.9,M,-16.7,M,,*57
+gpsd: &lt;= GPS: $GPGSA,A,3,02,05,25,06,30,10,47,35,21,,,,2.37,1.63,1.71*05
+gpsd: &lt;= GPS: $GPGSV,4,1,13,02,26,063,33,05,20,173,16,25,12,293,18,06,67,295,36*71
+gpsd: &lt;= GPS: $GPGSV,4,2,13,13,05,016,,51,32,160,42,30,51,204,44,10,52,094,30*70
+gpsd: &lt;= GPS: $GPGSV,4,3,13,07,04,293,23,47,11,246,38,16,02,325,,35,31,205,36*79
+gpsd: &lt;= GPS: $GPGSV,4,4,13,21,24,240,38*43
+gpsd: internal error - too many satellites!
+gpsd: GPGSV field 3 value of 13 != actual count 0
+
+I'm wondering if the too many satellites message is legit? I looked
+through the drivers.c file and tried upping the channels = 12 to a
+larger number but that just gave a segmentation fault.
+
+I also noticed that cgps was toggling between 3D Fix and No Fix, which
+is probably related to this.
+
+I'd also like to find out more about the
+gpsd: can't use GGA/GGL time until after ZDA or RMC has supplied a year.
+message.
+
+This is a snippet of the raw NMEA stream from the GPS.
+
+$GPGLL,4907.57663,N,12242.59886,W,080628.00,A,A*79
+$GPZDA,080628.00,09,08,2006,00,00*67
+$GPRMC,080629.00,A,4907.57663,N,12242.59907,W,0.167,101.47,090806,,,A*73
+$GPVTG,101.47,T,,M,0.167,N,0.309,K,A*34
+$GPGGA,080629.00,4907.57663,N,12242.59907,W,1,09,1.89,29.8,M,-16.7,M,,*52
+$GPGSA,A,3,02,05,25,06,30,10,47,35,21,,,,3.09,1.89,2.45*09
+$GPGSV,4,1,14,02,24,063,24,05,18,173,30,25,11,291,28,06,69,295,30*77
+$GPGSV,4,2,14,13,04,014,,51,32,160,42,30,49,203,40,10,52,090,31*7B
+$GPGSV,4,3,14,07,05,294,23,47,11,246,40,16,04,325,17,35,31,205,36*77
+$GPGSV,4,4,14,21,26,241,41,15,02,240,*79
+$GPGLL,4907.57663,N,12242.59907,W,080629.00,A,A*70
+$GPZDA,080629.00,09,08,2006,00,00*66
+$GPRMC,080630.00,A,4907.57664,N,12242.59913,W,0.124,102.75,090806,,,A*7C
+$GPVTG,102.75,T,,M,0.124,N,0.230,K,A*3A
+$GPGGA,080630.00,4907.57664,N,12242.59913,W,1,09,1.88,29.9,M,-16.7,M,,*58
+$GPGSA,A,3,02,05,25,06,30,10,47,35,21,,,,3.09,1.88,2.45*08
+$GPGSV,4,1,14,02,24,063,24,05,18,173,30,25,11,291,28,06,69,295,30*77
+$GPGSV,4,2,14,13,04,014,,51,32,160,42,30,49,203,40,10,52,090,30*7A
+$GPGSV,4,3,14,07,05,294,23,47,11,246,40,16,04,325,16,35,31,205,36*76
+$GPGSV,4,4,14,21,26,241,42,15,02,240,*7A
+$GPGLL,4907.57664,N,12242.59913,W,080630.00,A,A*7A
+$GPZDA,080630.00,09,08,2006,00,00*6E
+$GPRMC,080631.00,A,4907.57669,N,12242.59915,W,0.119,101.43,090806,,,A*7E
+$GPVTG,101.43,T,,M,0.119,N,0.220,K,A*33
+$GPGGA,080631.00,4907.57669,N,12242.59915,W,1,09,1.89,30.0,M,-16.7,M,,*52
+$GPGSA,A,3,02,05,25,06,30,10,47,35,21,,,,3.09,1.89,2.45*09
+$GPGSV,4,1,14,02,24,063,24,05,18,173,30,25,11,291,28,06,69,295,30*77
+$GPGSV,4,2,14,13,04,014,,51,32,160,43,30,49,203,40,10,52,090,30*7B
+$GPGSV,4,3,14,07,05,294,23,47,11,246,40,16,04,325,17,35,31,205,35*74
+$GPGSV,4,4,14,21,26,241,42,15,02,240,*7A
+$GPGLL,4907.57669,N,12242.59915,W,080631.00,A,A*70
+$GPZDA,080631.00,09,08,2006,00,00*6F
+$GPRMC,080632.00,A,4907.57674,N,12242.59916,W,0.264,97.61,090806,,,A*45
+$GPVTG,97.61,T,,M,0.264,N,0.490,K,A*09
+$GPGGA,080632.00,4907.57674,N,12242.59916,W,1,09,1.89,30.0,M,-16.7,M,,*5E
+$GPGSA,A,3,02,05,25,06,30,10,47,35,21,,,,3.09,1.89,2.45*09
+$GPGSV,4,1,14,02,24,063,23,05,18,173,30,25,11,291,28,06,69,295,30*70
+$GPGSV,4,2,14,13,04,014,,51,32,160,43,30,49,203,39,10,52,090,30*75
+$GPGSV,4,3,14,07,05,294,23,47,11,246,39,16,04,325,17,35,31,205,35*7A
+$GPGSV,4,4,14,21,26,241,42,15,02,240,*7A
+
+Apparently, this Antaris 4 module can track upto 16 satellites. What
+do I need to increase to allow this work properly?
+
+Alternatively, I see a note in the ublox data sheet about sending a
+CFG message to reduce the number of channels to 12.
+
+Thanks for any insight...
+
+-- 
+Dave Hylands
+Vancouver, BC, Canada
+<A HREF="http://www.DaveHylands.com/">http://www.DaveHylands.com/</A>
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="001855.html">[Gpsd-users] gpxlogger command line argument problem
+</A></li>
+	<LI>Next message: <A HREF="001833.html">[Gpsd-users] Some problems? too many satellites?
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1832">[ date ]</a>
+              <a href="thread.html#1832">[ thread ]</a>
+              <a href="subject.html#1832">[ subject ]</a>
+              <a href="author.html#1832">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

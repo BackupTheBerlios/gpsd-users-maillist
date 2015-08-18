@@ -1,0 +1,151 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] Another baud rate hunting problem on Jentro BT-GPS-8, causing segfault in gpsd 2.34
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2007-August/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Another%20baud%20rate%20hunting%20problem%20on%20Jentro%20BT-GPS-8%2C%0A%20causing%20segfault%20in%20gpsd%202.34&In-Reply-To=%3C12004120.post%40talk.nabble.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="002808.html">
+   <LINK REL="Next"  HREF="002809.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] Another baud rate hunting problem on Jentro BT-GPS-8, causing segfault in gpsd 2.34</H1>
+    <B>Martin G&#252;nther</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Another%20baud%20rate%20hunting%20problem%20on%20Jentro%20BT-GPS-8%2C%0A%20causing%20segfault%20in%20gpsd%202.34&In-Reply-To=%3C12004120.post%40talk.nabble.com%3E"
+       TITLE="[Gpsd-users] Another baud rate hunting problem on Jentro BT-GPS-8, causing segfault in gpsd 2.34">nabble.to.the_phoenix at xoxy.net
+       </A><BR>
+    <I>Sun Aug  5 14:10:12 CEST 2007</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="002808.html">[Gpsd-users] gpsd &amp; holux240
+</A></li>
+        <LI>Next message: <A HREF="002809.html">[Gpsd-users] GPSD 2.35 (SVN4408) and Navilock NL-209PU
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2807">[ date ]</a>
+              <a href="thread.html#2807">[ thread ]</a>
+              <a href="subject.html#2807">[ subject ]</a>
+              <a href="author.html#2807">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>
+Hi all!
+
+I've been having a similar problem as was described in the two previous
+threads, &quot;gpsd &amp; holux240&quot; and &quot;gpsd baud rate hunts with bluetooth on fc6&quot;.
+I'm posting this because
+a) it might help other owners of my gps device, 
+b) it only seems to happen in version 2.34, although I could be wrong, and
+c) it causes gpsd to segfault, so the developers may be interested.
+
+The device is a Jentro BT-GPS-8 bluetooth GPS device (SiRFstar III),
+connected via a Blumax bluetooth USB dongle. I connected to the GPS
+successfully with rfcomm and started gpsd 2.33-4 on ubuntu feisty, which has
+all the build options enabled:
+<A HREF="http://launchpadlibrarian.net/5038920/buildlog_ubuntu-feisty-i386.gpsd_2.33-4_FULLYBUILT.txt.gz">http://launchpadlibrarian.net/5038920/buildlog_ubuntu-feisty-i386.gpsd_2.33-4_FULLYBUILT.txt.gz</A>
+
+Everything worked; I could successfully connect to gpsd with gpsdrive and
+got a valid position. Unfortunately, version 2.33 seems not to work properly
+with kismet, so I decided to manually compile version 2.34 (all build
+options enabled).
+
+Here's what happens:
+
+<A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">martin at neo</A>:~$ sudo rfcomm bind /dev/rfcomm0 00:0D:B5:81:FF:DC
+
+<A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">martin at neo</A>:~$ sudo gpsd -n -N -D2 /dev/rfcomm0 
+gpsd: launching (Version 2.34)
+gpsd: listening on port gpsd
+gpsd: running with effective group ID 0
+gpsd: running with effective user ID 0
+gpsd: opening GPS data source at '/dev/rfcomm0'
+gpsd: speed 115200, 8N1
+gpsd: garmin_gps not active.
+gpsd: gpsd_activate(1): opened GPS (4)
+gpsd: speed 4800, 8N1
+gpsd: speed 9600, 8N1
+gpsd: speed 19200, 8N1
+gpsd: speed 38400, 8N1
+gpsd: speed 57600, 8N1
+gpsd: speed 0, 7N2
+gpsd: speed 4800, 7N2
+gpsd: speed 9600, 7N2
+gpsd: speed 19200, 7N2
+gpsd: speed 38400, 7N2
+gpsd: speed 57600, 7N2
+gpsd: packet sniffer failed to sync up
+Segmentation fault (core dumped)
+
+<A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">martin at neo</A>:~$ sirfmon /dev/rfcomm0 
+Hunting at speed 57600, 8N1
+Hunting at speed 4800, 8N1
+Hunting at speed 9600, 8N1
+Hunting at speed 19200, 8N1
+Hunting at speed 38400, 8N1
+Hunting at speed 57600, 8N1
+Hunting at speed 57600, 7N2
+Hunting at speed 4800, 7N2
+Hunting at speed 9600, 7N2
+Hunting at speed 19200, 7N2
+Hunting at speed 38400, 7N2
+Hunting at speed 57600, 7N2
+Can't sync up with device!
+
+<A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">martin at neo</A>:~$ cat /dev/rfcomm0 
+&#65533;&#65533;&#65533;&#65533;&#65533;&#65533;&#65533;&#65533;&#65533;&#65533;&#65533;&#65533;&#65533;&#65533;&#65533;&#65533;&#65533;&#65533;&#65533;&#65533;&#65533;&#65533;&#65533;&#65533;&#65533;&#65533;&#65533;&#65533;&#65533;&#65533;&#65533;&#65533;&#65533;&#65533;&#65533;&#65533;&#65533;&#65533;&#65533;&#65533;&#65533;&#65533;&#65533;&#65533;&#65533;&#65533;&#65533;&#65533;&#65533;&#65533;&#65533;&#65533;&#65533;&#65533;&#65533;&#65533;&#65533;
+&#65533;&#65533;&#65533;&#65533;&#65533;&#65533;&#65533;&#65533;&#65533;&#65533;&#65533;&#65533;&#65533;&#65533;&#65533;&#65533;&#65533;&#65533;&#65533;&#65533;&#65533;&#65533;&#65533;&#65533;&#65533;&#65533;&#65533;&#65533;&#65533;&#65533;&#65533;&#65533;&#65533;&#65533;&#65533;&#65533;&#65533;&#65533;&#65533;&#65533;&#65533;&#65533;&#65533;&#65533;&#65533;&#65533;&#65533;&#65533;&#65533;&#65533;&#65533;&#65533;&#65533;&#65533;&#65533;&#65533;&#65533;
+&#65533;&#65533;&#65533;&#65533;&#65533;&#65533;&#65533;&#65533;&#65533;&#65533;&#65533;&#65533;&#65533;&#65533;&#65533;&#65533;&#65533;&#65533;&#65533;&#65533;&#65533;&#65533;&#65533;&#65533;&#65533;&#65533;&#65533;&#65533;&#65533;&#65533;&#65533;&#65533;&#65533;&#65533;&#65533;&#65533;&#65533;&#65533;&#65533;&#65533;&#65533;&#65533;&#65533;&#65533;&#65533;&#65533;&#65533;&#65533;&#65533;&#65533;&#65533;&#65533;&#65533;&#65533;&#65533;&#65533;&#65533;
+&#65533;&#65533;&#65533;&#65533;&#65533;&#65533;&#65533;&#65533;&#65533;&#65533;&#65533;&#65533;&#65533;&#65533;&#65533;&#65533;&#65533;&#65533;&#65533;&#65533;&#65533;&#65533;&#65533;&#65533;&#65533;&#65533;&#65533;&#65533;&#65533;&#65533;&#65533;&#65533;&#65533;&#65533;&#65533;&#65533;&#65533;&#65533;&#65533;&#65533;&#65533;&#65533;&#65533;&#65533;&#65533;&#65533;&#65533;&#65533;&#65533;&#65533;&#65533;&#65533;&#65533;&#65533;&#65533;&#65533;&#65533;
+^C
+
+(all 0xE0)
+
+<A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">martin at neo</A>:~$
+
+Interestingly, the segmentation fault etc. can be reproduced when switching
+back to version 2.33-4. All attempts to switch the device back to NMEA mode
+with sirfmon or SirfDemo (under Windows) failed, all the buggy thing does is
+output a long row of 0xE0.
+
+Thanks to colesen's posts, I could fix the problem by letting the battery
+run down and recompiling gpsd with only NMEA enabled, fixed baud rate of
+4800 and &quot;--disable-reconfigure&quot;. As mentioned in the other post, this
+actually seems to be the upstream bug described here:
+<A HREF="http://gpsd.berlios.de/upstream-bugs.html#bluetooth">http://gpsd.berlios.de/upstream-bugs.html#bluetooth</A>
+
+If anyone is interested, I can provide a core dump and a stack trace.
+-- 
+View this message in context: <A HREF="http://www.nabble.com/Another-baud-rate-hunting-problem-on-Jentro-BT-GPS-8%2C-causing-segfault-in-gpsd-2.34-tf4219561.html#a12004120">http://www.nabble.com/Another-baud-rate-hunting-problem-on-Jentro-BT-GPS-8%2C-causing-segfault-in-gpsd-2.34-tf4219561.html#a12004120</A>
+Sent from the GPSd - Users mailing list archive at Nabble.com.
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="002808.html">[Gpsd-users] gpsd &amp; holux240
+</A></li>
+	<LI>Next message: <A HREF="002809.html">[Gpsd-users] GPSD 2.35 (SVN4408) and Navilock NL-209PU
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2807">[ date ]</a>
+              <a href="thread.html#2807">[ thread ]</a>
+              <a href="subject.html#2807">[ subject ]</a>
+              <a href="author.html#2807">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

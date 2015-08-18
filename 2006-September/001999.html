@@ -1,0 +1,130 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] Garmin GPS almost never sends new position data
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2006-September/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Garmin%20GPS%20almost%20never%20sends%20new%20position%20data&In-Reply-To=%3CPine.LNX.4.64.0609241548130.30456%40catbert.rellim.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="001996.html">
+   <LINK REL="Next"  HREF="001976.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] Garmin GPS almost never sends new position data</H1>
+    <B>Gary E. Miller</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Garmin%20GPS%20almost%20never%20sends%20new%20position%20data&In-Reply-To=%3CPine.LNX.4.64.0609241548130.30456%40catbert.rellim.com%3E"
+       TITLE="[Gpsd-users] Garmin GPS almost never sends new position data">gem at rellim.com
+       </A><BR>
+    <I>Mon Sep 25 00:56:23 CEST 2006</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="001996.html">[Gpsd-users] Garmin GPS almost never sends new position data
+</A></li>
+        <LI>Next message: <A HREF="001976.html">[Gpsd-users] Garmin GPS almost never sends new position data
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1999">[ date ]</a>
+              <a href="thread.html#1999">[ thread ]</a>
+              <a href="subject.html#1999">[ subject ]</a>
+              <a href="author.html#1999">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>-----BEGIN PGP SIGNED MESSAGE-----
+Hash: SHA1
+
+Yo Eivind!
+
+On Mon, 25 Sep 2006, Eivind Tagseth wrote:
+
+&gt;<i> &gt; Still, that puts it in the kernel.  If the kernel is corrupting packets
+</I>&gt;<i> &gt; then we need to get a kernel guy to fix it.
+</I>&gt;<i>
+</I>&gt;<i> No, the kernel is not corrupting any packets, it's concatenating
+</I>&gt;<i> packets.  The packets are not corrupted until gpsd throws away the extra
+</I>&gt;<i> bytes read, and then starts reading in the middle of a packet.
+</I>
+If the start and end data (which is out-of-band) is lost, that is
+corruption.  Not as bad as bit corruption, but almost as fatal long
+term.
+
+&gt;<i> &gt; Have you tried the dump program that comes with the garmin kernel driver?
+</I>&gt;<i> &gt; If the dump program fails then we have removed gpsd as a source of the
+</I>&gt;<i> &gt; problem.
+</I>&gt;<i>
+</I>&gt;<i> I cannot find any dump program with the garmin drivers.  I can see what
+</I>&gt;<i> the garmin_gps driver writes to the tty layer by enabling debug in the
+</I>&gt;<i> driver though, and it seems to be doing it's stuff just fine.
+</I>
+It has magically disapeared from sourceforge.  You need to find and old
+copy of the driver and get it from there.
+
+Also, when you look at the tty layer, do you test it with gpsd running?
+There are two modes, so I want to verify you are running in the mode that
+gpsd uses.
+
+&gt;<i> &gt; The garminusb2nmea is a good one to try, it just does a nice simple
+</I>&gt;<i> &gt; dump of the garmin binary and converts to nmea.
+</I>&gt;<i>
+</I>&gt;<i> Yes, I've tried that one.  It works just fine.  But then again, this
+</I>&gt;<i> program doesn't expect to read the same packets from the tty as the gps
+</I>&gt;<i> driver receives over usb.
+</I>
+And I am looking at the garminusb2nmea source code and it is not using
+the short packet method to determine the packet framing.  They are also
+assuming that a framing error never occurs.
+
+&gt;<i> Let me try to illustrate this again:
+</I>
+No need, I got it.  It is not the way the protocol was documented nor
+implemented.  To do that is just broken.  I will not try to support
+such a broken scheme.  Without a way to recover the frame start/end
+you can get out of sync and never recover.
+
+IFF the kernel is now so badly broken I will move to the other mode
+that does have framing data.  The advantage to that is also that gpsd
+would now support garmin binary over serial.
+
+RGDS
+GARY
+- ---------------------------------------------------------------------------
+Gary E. Miller Rellim 20340 Empire Blvd, Suite E-3, Bend, OR 97701
+	<A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">gem at rellim.com</A>  Tel:+1(541)382-8588
+
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v1.4.3 (GNU/Linux)
+
+iD8DBQFFFw0a8KZibdeR3qURAhsdAJ9ZLOqJIUPwdxanATVP1jh5X5IUYQCfdb7B
+ok4c9bvOEIW7upeKeH8BgeM=
+=Xbe1
+-----END PGP SIGNATURE-----
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="001996.html">[Gpsd-users] Garmin GPS almost never sends new position data
+</A></li>
+	<LI>Next message: <A HREF="001976.html">[Gpsd-users] Garmin GPS almost never sends new position data
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1999">[ date ]</a>
+              <a href="thread.html#1999">[ thread ]</a>
+              <a href="subject.html#1999">[ subject ]</a>
+              <a href="author.html#1999">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

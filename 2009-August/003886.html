@@ -1,0 +1,145 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] New GPSD protocol is ready for beta use
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2009-August/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20New%20GPSD%20protocol%20is%20ready%20for%20beta%20use&In-Reply-To=%3C1251561446.31233.1.camel%40jvcomp.jvlab.nl%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="003885.html">
+   
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] New GPSD protocol is ready for beta use</H1>
+    <B>Jan Veninga</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20New%20GPSD%20protocol%20is%20ready%20for%20beta%20use&In-Reply-To=%3C1251561446.31233.1.camel%40jvcomp.jvlab.nl%3E"
+       TITLE="[Gpsd-users] New GPSD protocol is ready for beta use">veninga at familiemail.nl
+       </A><BR>
+    <I>Sat Aug 29 17:57:26 CEST 2009</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="003885.html">[Gpsd-users] New GPSD protocol is ready for beta use
+</A></li>
+        
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3886">[ date ]</a>
+              <a href="thread.html#3886">[ thread ]</a>
+              <a href="subject.html#3886">[ subject ]</a>
+              <a href="author.html#3886">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>On Sat, 2009-08-29 at 09:20 -0400, Eric S. Raymond wrote:
+&gt;<i> Jan Veninga &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">veninga at familiemail.nl</A>&gt;:
+</I>&gt;<i> &gt; If I start 
+</I>&gt;<i> &gt; 
+</I>&gt;<i> &gt; $ gpsfake ais.nmea 
+</I>&gt;<i> &gt; 
+</I>&gt;<i> &gt; and then make a connection via 
+</I>&gt;<i> &gt; 
+</I>&gt;<i> &gt; $ telnet localhost 2947
+</I>&gt;<i> &gt; 
+</I>&gt;<i> &gt; I ask information about devices
+</I>&gt;<i> &gt; 
+</I>&gt;<i> &gt; ?DEVICES;
+</I>&gt;<i> &gt; Connection closed by foreign host.
+</I>&gt;<i> &gt; 
+</I>&gt;<i> &gt; The connection is closed and can not be opened
+</I>&gt;<i> &gt; 
+</I>&gt;<i> &gt; I might have something to do with not being a real device?
+</I>&gt;<i> 
+</I>&gt;<i> No, that probably means a segfault in the code for processing ?DEVICES.
+</I>&gt;<i> If you'll ship me your test data, I'll run it through under gdb and see.
+</I>&gt;<i> But tere may be something odd about your envieronment that I can't reproduce; 
+</I>&gt;<i> anything involving serial-device handling tends to be dodgy that way.
+</I>&gt;<i> 
+</I>&gt;<i> If you want to try this yourself, run gpsfake with the the -g option. This
+</I>&gt;<i> spawns gpsd under gdb control; you'll get a control window for gdb.  
+</I>&gt;<i> If you tell it 'r' to run, it will process packets from gpsfake as usual.
+</I>
+Ok, tried that. This is what remains in the gdb window:
+
+
++--gpsd_json.c--------------------------------------------------------------+
+   |238                        device-&gt;gpsdata.dev.driver_mode,
+|<i>
+</I>   |239                        (int)gpsd_get_speed(&amp;device-&gt;ttyset),
+|<i>
+</I>   |240                        (int)device-&gt;gpsdata.dev.parity,
+|<i>
+</I>   |241                        device-&gt;gpsdata.dev.stopbits,
+|<i>
+</I>   |242                        device-&gt;gpsdata.dev.cycle);
+|<i>
+</I>  &gt;|243         if (device-&gt;device_type-&gt;rate_switcher != NULL)
+|<i>
+</I>   |244             (void)snprintf(reply+strlen(reply),
+replylen-strlen(reply),|
+   |245                            &quot;,\&quot;mincycle\&quot;:%2.2f&quot;,
+|<i>
+</I>   |246                            device-&gt;device_type-&gt;min_cycle);
+|<i>
+</I>   |247         (void)strlcat(reply, &quot;}&quot;, replylen);
+|<i>
+</I>   |248     }
+|<i>
+</I>   |249
+|<i>
+</I>   |250     int json_watch_read(const char *buf,
+|<i>
+</I>
++---------------------------------------------------------------------------+
+multi-thre Thread 0x7ffb9 In: json_device_dump    Line: 243  PC:
+0x7ffb955b35c6 
+[Thread debugging using libthread_db enabled]
+[New Thread 0x7ffb959ce700 (LWP 734)]
+
+Program received signal SIGSEGV, Segmentation fault.
+[Switching to Thread 0x7ffb959ce700 (LWP 734)]
+0x00007ffb955b35c6 in json_device_dump (device=0x617720, 
+    reply=0x7fff9556a7be &quot;{\&quot;class\&quot;:\&quot;DEVICE\&quot;,\&quot;path\&quot;:\&quot;/dev/pts/12
+\&quot;,\&quot;activ
+---Type &lt;return&gt; to continue, or q &lt;return&gt; to quit---
+
+
+&gt;<i> 
+</I>&gt;<i> &gt; I get 1 gps (TPV) report. After the first AIS report I only get AIS
+</I>&gt;<i> &gt; reports.
+</I>&gt;<i> 
+</I>&gt;<i> That, on te other hand, should be easy to reproduce with your test data.
+</I>
+I will send the test data to you directly.
+
+-- 
+
+Jan Veninga
+
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="003885.html">[Gpsd-users] New GPSD protocol is ready for beta use
+</A></li>
+	
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3886">[ date ]</a>
+              <a href="thread.html#3886">[ thread ]</a>
+              <a href="subject.html#3886">[ subject ]</a>
+              <a href="author.html#3886">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

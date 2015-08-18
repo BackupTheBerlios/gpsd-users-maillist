@@ -1,0 +1,161 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] garmin etrex legend hcx / opensuse 11
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2009-September/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20garmin%20etrex%20legend%20hcx%20/%20opensuse%2011&In-Reply-To=%3Ch8165k%246bl%241%40ger.gmane.org%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="003894.html">
+   <LINK REL="Next"  HREF="003896.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] garmin etrex legend hcx / opensuse 11</H1>
+    <B>Chris Steins</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20garmin%20etrex%20legend%20hcx%20/%20opensuse%2011&In-Reply-To=%3Ch8165k%246bl%241%40ger.gmane.org%3E"
+       TITLE="[Gpsd-users] garmin etrex legend hcx / opensuse 11">chris66nrw at gmx.de
+       </A><BR>
+    <I>Sun Sep  6 22:31:14 CEST 2009</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="003894.html">[Gpsd-users] garmin etrex legend hcx / opensuse 11
+</A></li>
+        <LI>Next message: <A HREF="003896.html">[Gpsd-users] garmin etrex legend hcx / opensuse 11
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3895">[ date ]</a>
+              <a href="thread.html#3895">[ thread ]</a>
+              <a href="subject.html#3895">[ subject ]</a>
+              <a href="author.html#3895">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Chris Kuethe schrieb:
+&gt;&gt;<i> I can't get gpsd running with my garmin legend hcx
+</I>&gt;&gt;<i> using suse 11.0.
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> I start gpsd with gpsd -N -nND2 /dev/ttyUSB0 as root :
+</I>&gt;<i> 
+</I>&gt;<i> When debugging things, I like to turn up the debug level to at least 4.
+</I>&gt;<i> # gpsd -nND4 /dev/ttyUSB0
+</I>&gt;<i> 
+</I>&gt;&gt;<i> So, the garmin seems to be connected,
+</I>&gt;&gt;<i> but commands A or P return &quot;?&quot;.
+</I>&gt;<i> 
+</I>&gt;<i> Do you have a fix? Can you leave the gps by a window (or someplace
+</I>&gt;<i> with a good view of the sky) for a while. This sounds like things are
+</I>&gt;<i> working properly, but you don't have a navigation solution yet.
+</I>
+Chris,
+
+yes there was a fix in the room.
+
+I took the laptop outside, EPE was shown as +/- 3 m.
+
+
+# gpsd -N -nND4 /dev/ttyUSB0
+gpsd: launching (Version 2.37)
+gpsd: listening on port gpsd
+gpsd: shmat(0,0,0) succeeded
+gpsd: shmat(0,0,0) succeeded
+gpsd: shmat(0,0,0) succeeded
+gpsd: shmat(0,0,0) succeeded
+gpsd: successfully connected to the DBUS system bus
+gpsd: running with effective group ID 0
+gpsd: running with effective user ID 0
+gpsd: opening GPS data source at '/dev/ttyUSB0'
+gpsd: speed 9600, 8N1
+gpsd: =&gt; GPS: $PASHQ,RID*28\x0d
+
+gpsd: =&gt; GPS: 0299661c0800040200001203
+gpsd: Navcom: sent command 0x1c (Test Support Block)
+gpsd: Navcom: command 0x1c mode = 02, length = 0
+gpsd: =&gt; GPS: 029966200e000001ae02000071000000f203
+gpsd: Navcom: sent command 0x20 (Data Request) - data block id = ae at
+rate 00
+gpsd: =&gt; GPS: 029966200e00000186020a0071000000d003
+gpsd: Navcom: sent command 0x20 (Data Request) - data block id = 86 at
+rate 0a
+gpsd: Set garmin_gps driver mode = 0
+gpsd: PrintUSBPacket()
+gpsd: Private, Set Mode: 1
+gpsd: =&gt; GPS: 4b6e1001020000000400000001000000
+gpsd: SendPacket(), wrote 16 bytes
+gpsd: probe found Garmin USB binary driver...
+gpsd: ntpd_link_activate: 0
+gpsd: Create Thread gpsd_ppsmonitor
+gpsd: gpsd_activate(1): opened GPS (6)
+gpsd: Get Garmin Product Data
+gpsd: SendPacket(), writing 6 bytes: 10fe00021003
+gpsd: PrintSERPacket(, 0xfe, 00, )
+gpsd: Appl, Product Data req
+gpsd: PrintSERPacket(, 0xfe, 00, ) = 00
+gpsd: =&gt; GPS: 10fe00021003
+gpsd: SendPacket(), wrote 6 bytes
+gpsd: Set Garmin to send reports every 1 second
+gpsd: SendPacket(), writing 8 bytes: 100a023100c31003
+gpsd: PrintSERPacket(, 0xa, 0x2, )
+gpsd: Appl, Command Data: Start Xmit PVT data
+gpsd: PrintSERPacket(, 0xa, 0x2, ) = 00
+gpsd: =&gt; GPS: 100a023100c31003
+gpsd: SendPacket(), wrote 8 bytes
+gpsd: client 127.0.0.1 (0) connect on fd 7
+gpsd: checking client(0)
+gpsd: &lt;= client(0): i
+gpsd: client(0): assigning channel...
+gpsd: User requires 2, channel type is -1
+gpsd: client(0): channel 6 already active.
+gpsd: =&gt; client(0): GPSD,I=Garmin USB binary
+gpsd: checking client(0)
+gpsd: &lt;= client(0): a
+gpsd: client(0): channel 6 already active.
+gpsd: GPS is confused about whether it has a fix (status=0, mode=0).
+gpsd: =&gt; client(0): GPSD,A=?
+gpsd: checking client(0)
+gpsd: &lt;= client(0): p
+gpsd: client(0): channel 6 already active.
+gpsd: GPS is confused about whether it has a fix (status=0, mode=0).
+gpsd: =&gt; client(0): GPSD,P=?
+
+
+Does this help?
+
+By the way: The same device connected to WindowsXP is ok
+(with GpsGate software).
+
+
+Greetings
+
+Chris
+
+
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="003894.html">[Gpsd-users] garmin etrex legend hcx / opensuse 11
+</A></li>
+	<LI>Next message: <A HREF="003896.html">[Gpsd-users] garmin etrex legend hcx / opensuse 11
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3895">[ date ]</a>
+              <a href="thread.html#3895">[ thread ]</a>
+              <a href="subject.html#3895">[ subject ]</a>
+              <a href="author.html#3895">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

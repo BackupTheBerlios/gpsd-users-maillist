@@ -1,0 +1,178 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] new bug &amp; fix
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2006-April/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20new%20bug%20%26%20fix&In-Reply-To=%3Cp0623091ec071ffa2f041%40%5B192.168.11.10%5D%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="001533.html">
+   <LINK REL="Next"  HREF="001519.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] new bug &amp; fix</H1>
+    <B>Robin L Darroch</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20new%20bug%20%26%20fix&In-Reply-To=%3Cp0623091ec071ffa2f041%40%5B192.168.11.10%5D%3E"
+       TITLE="[Gpsd-users] new bug &amp; fix">robin at spade-men.com
+       </A><BR>
+    <I>Mon Apr 24 11:49:25 CEST 2006</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="001533.html">[Gpsd-users] garmin problems
+</A></li>
+        <LI>Next message: <A HREF="001519.html">[Gpsd-users] Debian ARM Packages for gpsd?
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1534">[ date ]</a>
+              <a href="thread.html#1534">[ thread ]</a>
+              <a href="subject.html#1534">[ subject ]</a>
+              <a href="author.html#1534">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>While test-flying GPSd using gpstoge today, I discovered another bug that had lain hidden by the existing bugs (patched in my post to the dev list a couple of weeks ago).  In what I hope is the last case of our metres-per-second-vs-knots issues, libgps was not converting the V response (in knots) back into metres per second (for fix.speed), so subsequent calculations based on fix.speed yielded a speed almost twice actual speed.  Integrated patches for svn R3278 follow:
+
+Index: libgps.c
+===================================================================
+--- libgps.c    (revision 3278)
++++ libgps.c    (working copy)
+@@ -183,10 +183,11 @@
+ 
+     for (ns = buf; ns; ns = strstr(ns+1, &quot;GPSD&quot;)) {
+        if (/*@i1@*/strncmp(ns, &quot;GPSD&quot;, 4) == 0) {
+-           for (sp = ns + 5; ; sp = tp) {
++           // the following should execute for each time we have a good next &quot;sp&quot;
++           for (sp = ns + 5; *sp != '\0'; sp = tp+1) {
+                tp = sp + strcspn(sp, &quot;,\r\n&quot;);
+-               if (*tp == '\0') break;
+-               *tp = '\0';
++               if (*tp == '\0') tp--;
++               else *tp = '\0';
+ 
+                switch (*sp) {
+                case 'A':
+@@ -304,14 +305,14 @@
+                        struct gps_fix_t nf;
+                        char tag[MAXTAGLEN+1], alt[20];
+                        char eph[20], epv[20], track[20],speed[20], climb[20];
+-                       char epd[20], eps[20], epc[20];
++                       char epd[20], eps[20], epc[20], mode[2];
+                        int st = sscanf(sp+2, 
+-                              &quot;%8s %lf %lf %lf %lf %s %s %s %s %s %s %s %s %s&quot;,
++                              &quot;%8s %lf %lf %lf %lf %s %s %s %s %s %s %s %s %s %s&quot;,
+                                tag, &amp;nf.time, &amp;nf.ept, 
+                                &amp;nf.latitude, &amp;nf.longitude,
+                                alt, eph, epv, track, speed, climb,
+-                               epd, eps, epc);
+-                       if (st == 14) {
++                               epd, eps, epc, mode);
++                       if (st == 15) {
+ #define DEFAULT(val) (val[0] == '?') ? NAN : atof(val)
+                            /*@ +floatdouble @*/
+                            nf.altitude = DEFAULT(alt);
+@@ -325,8 +326,8 @@
+                            nf.epc = DEFAULT(epc);
+                            /*@ -floatdouble @*/
+ #undef DEFAULT
+-                           nf.mode = (alt[0] == '?') ? MODE_2D : MODE_3D;
+-                           if (nf.mode == MODE_3D)
++                           nf.mode = (mode[0] == '?') ? MODE_NOT_SEEN : atoi(mode);
++                           if (alt[0] != '?')
+                                gpsdata-&gt;set |= ALTITUDE_SET | CLIMB_SET;
+                            if (isnan(nf.eph)==0)
+                                gpsdata-&gt;set |= HERR_SET;
+@@ -403,6 +404,8 @@
+                        gpsdata-&gt;fix.speed = NAN;
+                    } else {
+                        (void)sscanf(sp, &quot;V=%lf&quot;, &amp;gpsdata-&gt;fix.speed);
++                       // V reply is in kt, fix.speed is in metres/sec
++                       gpsdata-&gt;fix.speed = gpsdata-&gt;fix.speed / MPS_TO_KNOTS;
+                        gpsdata-&gt;set |= SPEED_SET;
+                    }
+                    break;
+Index: nmea_parse.c
+===================================================================
+--- nmea_parse.c        (revision 3278)
++++ nmea_parse.c        (working copy)
+@@ -258,6 +258,9 @@
+        else {
+            mask |= TIME_SET;
+            session-&gt;gpsdata.newdata.time = (double)mkgmtime(&amp;session-&gt;driver.nmea.date)+session-&gt;driver.nmea.subseconds;
++               if (session-&gt;gpsdata.sentence_time != session-&gt;gpsdata.newdata.time)
++                       mask |= CYCLE_START_SET;
++               session-&gt;gpsdata.sentence_time = session-&gt;gpsdata.newdata.time;
+        }
+        do_lat_lon(&amp;field[2], &amp;session-&gt;gpsdata);
+        mask |= LATLON_SET;
+Index: libgpsd_core.c
+===================================================================
+--- libgpsd_core.c      (revision 3278)
++++ libgpsd_core.c      (working copy)
+@@ -556,7 +556,6 @@
+                                      (char *)session-&gt;outbuffer,
+                                      (size_t)session-&gt;outbuflen, 2);
+        /*@ -nullstate @*/
+-       session-&gt;gpsdata.sentence_time = NAN;
+        session-&gt;gpsdata.sentence_length = session-&gt;outbuflen;
+        session-&gt;gpsdata.d_recv_time = timestamp();
+ 
+@@ -568,7 +567,6 @@
+ 
+        /* Clear fix data at start of cycle */
+        if ((received &amp; CYCLE_START_SET)!=0) {
+-           gps_clear_fix(&amp;session-&gt;gpsdata.fix);
+            session-&gt;gpsdata.set &amp;=~ FIX_SET;
+        }
+        /*
+Index: gpsd.c
+===================================================================
+--- gpsd.c      (revision 3278)
++++ gpsd.c      (working copy)
+@@ -794,6 +794,12 @@
+                             &quot; %5.2f&quot;, whoami-&gt;device-&gt;gpsdata.fix.epc);           
+                else
+                    (void)strcat(phrase, &quot;        ?&quot;);
++               if (isnan(whoami-&gt;device-&gt;gpsdata.fix.mode)==0)
++                   (void)snprintf(phrase+strlen(phrase),
++                            sizeof(phrase)-strlen(phrase),
++                            &quot; %d&quot;, whoami-&gt;device-&gt;gpsdata.fix.mode);             
++               else
++                   (void)strcat(phrase, &quot;        ?&quot;);
+            }
+            break;
+        case 'P':
+-- 
+
+-------------------------------------------------------------------------
+ Robin L. Darroch - PO Box 2715, South Hedland WA 6722 - +61 421 503 966
+      <A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">robin at darroch.id.au</A> - <A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">robin at nyca.org.au</A> - <A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">robin at spade-men.com</A>
+     
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="001533.html">[Gpsd-users] garmin problems
+</A></li>
+	<LI>Next message: <A HREF="001519.html">[Gpsd-users] Debian ARM Packages for gpsd?
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1534">[ date ]</a>
+              <a href="thread.html#1534">[ thread ]</a>
+              <a href="subject.html#1534">[ subject ]</a>
+              <a href="author.html#1534">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

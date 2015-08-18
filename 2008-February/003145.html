@@ -1,0 +1,87 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] How to make GPSD work with Sierra 597E USB AirCard?
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2008-February/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20How%20to%20make%20GPSD%20work%20with%20Sierra%20597E%20USB%20AirCard%3F&In-Reply-To=%3CPine.LNX.4.64.0802111951330.19961%40birdbird.example.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="003143.html">
+   <LINK REL="Next"  HREF="003144.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] How to make GPSD work with Sierra 597E USB AirCard?</H1>
+    <B>Matt Roberds</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20How%20to%20make%20GPSD%20work%20with%20Sierra%20597E%20USB%20AirCard%3F&In-Reply-To=%3CPine.LNX.4.64.0802111951330.19961%40birdbird.example.com%3E"
+       TITLE="[Gpsd-users] How to make GPSD work with Sierra 597E USB AirCard?">mattroberds at cox.net
+       </A><BR>
+    <I>Tue Feb 12 03:00:33 CET 2008</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="003143.html">[Gpsd-users] How to make GPSD work with Sierra 597E USB AirCard?
+</A></li>
+        <LI>Next message: <A HREF="003144.html">[Gpsd-users] please test svn
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3145">[ date ]</a>
+              <a href="thread.html#3145">[ thread ]</a>
+              <a href="subject.html#3145">[ subject ]</a>
+              <a href="author.html#3145">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>On Sun, 10 Feb 2008, Igor Chudov wrote:
+&gt;<i> I have a Sierra 597E [wireless broadband] laptop card. It is a
+</I>&gt;<i> ExpressCard and is seen by the PC as a USB device.  [...]
+</I>&gt;<i>
+</I>&gt;<i> What I am after is the GPS capability. The card is advertised as
+</I>&gt;<i> having a GPS receiver.
+</I>
+I *think* that for gpsd to use it, the GPS receiver has to be connected
+to something that looks to the kernel like a serial port, USB-to-serial
+adapter, or similar.  I don't think it can share the serial port with
+the &quot;modem&quot; part of the card; it needs to be two separate serial ports.
+
+What you might do is boot up without the card installed, then plug it
+in.  Wait a few seconds, then check the output of the 'dmesg' command.
+You should probably see some messages about it finding a serial port
+and/or modem; possibly it will report a device like /dev/ttyUSB0 ,
+/dev/ttyUSB1 , etc.  If it reports a second device with a different
+number, that is probably the serial port for the GPS device.  If you
+give that serial port to gpsd, gpsd should be able to talk to the
+receiver.
+
+If the GPS receiver is accessed in some other way (maybe by AT commands
+through the modem port?), then I don't think gpsd can talk to it yet.
+
+Matt Roberds
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="003143.html">[Gpsd-users] How to make GPSD work with Sierra 597E USB AirCard?
+</A></li>
+	<LI>Next message: <A HREF="003144.html">[Gpsd-users] please test svn
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3145">[ date ]</a>
+              <a href="thread.html#3145">[ thread ]</a>
+              <a href="subject.html#3145">[ subject ]</a>
+              <a href="author.html#3145">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

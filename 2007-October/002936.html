@@ -1,0 +1,159 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] Stuff for RPM packaging
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2007-October/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Stuff%20for%20RPM%20packaging&In-Reply-To=%3C3BF93070B3D1B047BA7ABF612958950D018FBE1E%40hcex.hartwellcorp.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="002935.html">
+   <LINK REL="Next"  HREF="002937.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] Stuff for RPM packaging</H1>
+    <B>Michael St. Laurent</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Stuff%20for%20RPM%20packaging&In-Reply-To=%3C3BF93070B3D1B047BA7ABF612958950D018FBE1E%40hcex.hartwellcorp.com%3E"
+       TITLE="[Gpsd-users] Stuff for RPM packaging">mikes at hartwellcorp.com
+       </A><BR>
+    <I>Thu Oct 11 00:43:26 CEST 2007</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="002935.html">[Gpsd-users] More on problems with PPS and gpsd for Jim tatz
+</A></li>
+        <LI>Next message: <A HREF="002937.html">[Gpsd-users] patch for cgpxlogger.c
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2936">[ date ]</a>
+              <a href="thread.html#2936">[ thread ]</a>
+              <a href="subject.html#2936">[ subject ]</a>
+              <a href="author.html#2936">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Here is the /etc/init.d script I use:
+
+#!/bin/bash
+#
+# gpsd		This shell script takes care of starting and stopping
+#		gpsd (GPS device daemon).
+#
+# chkconfig: - 59 74
+# description: gpsd is the GPS device interface daemon. \
+# gpsd is a monitor daemon that watches a TCP/IP port (2947 by default),
+\
+# waiting for applications to request information from GPSes or \
+# differential-GPS radios attached to the host machine. Each GPS or
+radio \
+# is expected to be direct-connected to the host via a USB or RS232C \
+# serial port. The port may be specified to gpsd at startup, or it may
+be \
+# set via a command shipped down a local control socket (e.g. by a USB \
+# hotplug script). Given a GPS device by either means, gpsd discovers
+the \
+# correct port speed and protocol for it.
+
+# Source function library.
+. /etc/init.d/functions
+
+# Source networking configuration.
+. /etc/sysconfig/network
+
+# Check that networking is up.
+[ ${NETWORKING} = &quot;no&quot; ] &amp;&amp; exit 0
+
+if [ -f /etc/sysconfig/gpsd ];then
+        . /etc/sysconfig/gpsd
+fi
+
+RETVAL=0
+prog=&quot;gpsd&quot;
+
+start() {
+        # Start daemons.
+        echo -n $&quot;Starting $prog: &quot;
+	/bin/stty -F /dev/ttyS0 ispeed 4800 ospeed 4800
+	/bin/setserial $DEVICE low_latency
+	daemon gpsd $OPTIONS $DEVICE
+	RETVAL=$?
+        echo
+        [ $RETVAL -eq 0 ] &amp;&amp; touch /var/lock/subsys/gpsd
+	return $RETVAL
+}
+
+stop() {
+        echo -n $&quot;Shutting down $prog: &quot;
+	killproc gpsd
+	RETVAL=$?
+        echo
+        [ $RETVAL -eq 0 ] &amp;&amp; rm -f /var/lock/subsys/gpsd
+	return $RETVAL
+}
+
+# See how we were called.
+case &quot;$1&quot; in
+  start)
+	start
+        ;;
+  stop)
+	stop
+        ;;
+  status)
+	status gpsd
+	RETVAL=$?
+	;;
+  restart|reload)
+	stop
+	start
+	RETVAL=$?
+	;;
+  condrestart)
+	if [ -f /var/lock/subsys/gpsd ]; then
+	    stop
+	    start
+	    RETVAL=$?
+	fi
+	;;
+  *)
+        echo $&quot;Usage: $0 {start|stop|restart|condrestart|status}&quot;
+        exit 1
+esac
+
+exit $RETVAL
+
+
+Here is the /etc/sysconfig/gpsd file:
+
+# /etc/sysconfig/gpsd
+OPTIONS=&quot;-D1 -n&quot;
+DEVICE=/dev/ttyS0
+
+Please feel free to use this in the release if you like.
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="002935.html">[Gpsd-users] More on problems with PPS and gpsd for Jim tatz
+</A></li>
+	<LI>Next message: <A HREF="002937.html">[Gpsd-users] patch for cgpxlogger.c
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2936">[ date ]</a>
+              <a href="thread.html#2936">[ thread ]</a>
+              <a href="subject.html#2936">[ subject ]</a>
+              <a href="author.html#2936">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

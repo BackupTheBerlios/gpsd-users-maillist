@@ -1,0 +1,101 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] Compile Errors
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2005-August/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Compile%20Errors&In-Reply-To=%3C200508300931.08961.list%2BGpsd%40room101.us.eu.org%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="001033.html">
+   
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] Compile Errors</H1>
+    <B>Rob McGee</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Compile%20Errors&In-Reply-To=%3C200508300931.08961.list%2BGpsd%40room101.us.eu.org%3E"
+       TITLE="[Gpsd-users] Compile Errors">list+Gpsd at room101.us.eu.org
+       </A><BR>
+    <I>Tue Aug 30 16:31:08 CEST 2005</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="001033.html">[Gpsd-users] Compile Errors
+</A></li>
+        
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1034">[ date ]</a>
+              <a href="thread.html#1034">[ thread ]</a>
+              <a href="subject.html#1034">[ subject ]</a>
+              <a href="author.html#1034">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>On Tuesday 2005-August-30 01:50, Kevin R. Battersby wrote:
+&gt;<i> I'm trying to compile version 2.29 on a Slackware 10.1 system and am
+</I>&gt;<i> getting the following error;
+</I>
+I just duplicated this error on Slackware-current (2005-08-05).
+
+&gt;<i> make  all-am
+</I>&gt;<i> make[1]: Entering directory `/home/src/gpsd-2.29'
+</I>&gt;<i> if gcc -DHAVE_CONFIG_H -I. -I. -I.   -I/usr/X11R6/include  -g -O2
+</I>&gt;<i> -Wall -Wcast-align -Wmissing-declarations -Wmissing-prototypes
+</I>&gt;<i> -Wstrict-prototypes -Wpointer-arith -Wreturn-type -D_GNU_SOURCE 
+</I>&gt;<i> -I/usr/X11R6/include -MT xgpsspeed.o -MD -MP -MF
+</I>&gt;<i> &quot;.deps/xgpsspeed.Tpo&quot; -c -o xgpsspeed.o xgpsspeed.c; \
+</I>&gt;<i> then mv -f &quot;.deps/xgpsspeed.Tpo&quot; &quot;.deps/xgpsspeed.Po&quot;; else rm -f
+</I>&gt;<i> &quot;.deps/xgpsspeed.Tpo&quot;; exit 1; fi
+</I>&gt;<i> In file included from xgpsspeed.c:12:
+</I>&gt;<i> /usr/X11R6/include/Xm/XmStrDefs.h:959: error: syntax error before
+</I>&gt;<i> &quot;extern&quot; make[1]: *** [xgpsspeed.o] Error 1
+</I>&gt;<i> make[1]: Leaving directory `/home/src/gpsd-2.29'
+</I>&gt;<i> make: *** [all] Error 2
+</I>&gt;<i>
+</I>&gt;<i> I have tried compiling previous versions and have to go back to 1.98
+</I>&gt;<i> to get a clean compile.
+</I>&gt;<i>
+</I>&gt;<i> Has anyone run into this problem and fixed it?
+</I>
+A cop-out workaround is to use &quot;./configure --without-x&quot;.
+
+&quot;/usr/X11R6/include/Xm/XmStrDefs.h&quot; has this at line 955-963:
+#ifdef __cplusplus
+extern &quot;C&quot; {
+#endif
+
+XMLIBEXPORT extern const char _XmStrings[];
+
+#ifdef __cplusplus
+        }
+#endif
+
+The XMLIBEXPORT line is 959.
+-- 
+    Rob - /dev/rob0
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="001033.html">[Gpsd-users] Compile Errors
+</A></li>
+	
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1034">[ date ]</a>
+              <a href="thread.html#1034">[ thread ]</a>
+              <a href="subject.html#1034">[ subject ]</a>
+              <a href="author.html#1034">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

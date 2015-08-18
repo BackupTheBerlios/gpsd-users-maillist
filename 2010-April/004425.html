@@ -1,0 +1,77 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] Bluetooth issues (was: Re: Preparing for 2.93 point release)
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2010-April/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Bluetooth%20issues%20%28was%3A%20Re%3A%20Preparing%20for%202.93%0A%20point%20release%29&In-Reply-To=%3C20100424084749.GA22963%40thyrsus.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="004424.html">
+   <LINK REL="Next"  HREF="004392.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] Bluetooth issues (was: Re: Preparing for 2.93 point release)</H1>
+    <B>Eric Raymond</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Bluetooth%20issues%20%28was%3A%20Re%3A%20Preparing%20for%202.93%0A%20point%20release%29&In-Reply-To=%3C20100424084749.GA22963%40thyrsus.com%3E"
+       TITLE="[Gpsd-users] Bluetooth issues (was: Re: Preparing for 2.93 point release)">esr at thyrsus.com
+       </A><BR>
+    <I>Sat Apr 24 10:47:49 CEST 2010</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="004424.html">[Gpsd-users] Bluetooth issues (was: Re: Preparing for 2.93	point release)
+</A></li>
+        <LI>Next message: <A HREF="004392.html">[Gpsd-users] Preparing for 2.93 point release
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#4425">[ date ]</a>
+              <a href="thread.html#4425">[ thread ]</a>
+              <a href="subject.html#4425">[ subject ]</a>
+              <a href="author.html#4425">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Charles Curley &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">charlescurley at charlescurley.com</A>&gt;:
+&gt;<i> And how does the client know to issue a WATCH? If a new client comes on
+</I>&gt;<i> line, no problem. But if a client is already using gpsd, how would it
+</I>&gt;<i> detect that the server (which may be another machine) has a new gps?
+</I>
+If a client is on line and a new (USB) GPS becomes available, gpsd will be
+notified via the hotplug system, and add the device to its pool.  It
+will then notice that there are clients with active WATCHes, and open
+the device.  Every watching client will get a DEVICE notification.
+
+&gt;<i> Also, it would be nice to know if a gps has gone away. If you only have
+</I>&gt;<i> one, that means the data the client is displaying is bogus.
+</I>
+As was pointed out in a reply, you do get a device notification on detach.
+-- 
+		&lt;a href=&quot;<A HREF="http://www.catb.org/~esr/">http://www.catb.org/~esr/</A>&quot;&gt;Eric S. Raymond&lt;/a&gt;
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="004424.html">[Gpsd-users] Bluetooth issues (was: Re: Preparing for 2.93	point release)
+</A></li>
+	<LI>Next message: <A HREF="004392.html">[Gpsd-users] Preparing for 2.93 point release
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#4425">[ date ]</a>
+              <a href="thread.html#4425">[ thread ]</a>
+              <a href="subject.html#4425">[ subject ]</a>
+              <a href="author.html#4425">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

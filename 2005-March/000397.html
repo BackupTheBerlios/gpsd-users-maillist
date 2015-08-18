@@ -1,0 +1,107 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] gpsd segfaults when no fix is present
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2005-March/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20gpsd%20segfaults%20when%20no%20fix%20is%20present&In-Reply-To=%3C20050323104943.M47815%40bandos.homelinux.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="000395.html">
+   <LINK REL="Next"  HREF="000399.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] gpsd segfaults when no fix is present</H1>
+    <B>Jose Bernardo Silva</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20gpsd%20segfaults%20when%20no%20fix%20is%20present&In-Reply-To=%3C20050323104943.M47815%40bandos.homelinux.com%3E"
+       TITLE="[Gpsd-users] gpsd segfaults when no fix is present">jbs at bandos.homelinux.com
+       </A><BR>
+    <I>Wed Mar 23 11:55:03 CET 2005</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="000395.html">[Gpsd-users] [Announce] EarthMate Userland Library 1.0.1 release
+</A></li>
+        <LI>Next message: <A HREF="000399.html">[Gpsd-users] gpsd segfaults when no fix is present
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#397">[ date ]</a>
+              <a href="thread.html#397">[ thread ]</a>
+              <a href="subject.html#397">[ subject ]</a>
+              <a href="author.html#397">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi!
+
+I have a Fortuna Pocket Xtrack CF GPS card, and I'm having problems getting
+gpsd to work on a zaurus 5500. I built 2.15, 2.16, and 2.17 from source, and
+all fail the same way when the GPS doesn't have a fix:
+--------------------------------------------------------
+root@(none):~# gpsd -N -D3 -n -p /dev/ttyS3
+gpsd: launching (Version 2.17)
+gpsd: listening on port gpsd
+gpsd: opening GPS data source at /dev/ttyS3
+gpsd: No USB serial drivers found.
+gpsd: no probe matched...
+gpsd: hunting at speed 4800, 8N1
+gpsd: gpsd_activate: opened GPS (5)
+gpsd: Selecting Generic NMEA driver...
+gpsd: =&gt; GPS: $PFEC,GPint,GSA01,DTM00,ZDA00,RMC01,GLL01,GSV05*52
+
+gpsd: =&gt; GPS: $PSRF105,1*3E
+
+gpsd: &lt;= GPS: $GPRMC,104820.952,V,,,,,,,230305,,,N*4B
+gpsd: &lt;= GPS: $GPVTG,,T,,M,,N,,K,N*2C
+gpsd: &lt;= GPS: $GPGGA,104821.952,,,,,0,00,,,M,,,,0000*35
+gpsd: GPGGA sets status 0
+gpsd: &lt;= GPS: $GPGLL,,,,,104821.952,V,N*7A
+gpsd: &lt;= GPS: $GPGSA,A,1,,,,*32
+gpsd: GPGSA sets mode 1
+Segmentation fault
+
+--------------------------------------------------------
+
+If I don't use the &quot;-n&quot;, and telnet to the daemon, or try qpegps, it will fail
+randomly. With &quot;-n&quot; it will always fail after a GPGSA sentence setting mode 1.
+
+Of course, qpegps doesn't understand gpsd output any longer, but that is for
+another mailing list... What I want to know is if this bug is known, and where
+can I file a entry for it? And, even better, if there is a workaround for it.
+
+Thanks!
+
+-- 
+Jose Bernardo B R Silva             | Source Mage GNU/Linux Section Guru
+<A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">jbernardo at sourcemage.org</A>            | <A HREF="http://www.sourcemage.org">http://www.sourcemage.org</A>
+<A HREF="http://counter.li.org">http://counter.li.org</A> #245602
+<A HREF="http://cosmos.oninetspeed.pt/jose.bernardo">http://cosmos.oninetspeed.pt/jose.bernardo</A>
+<A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">jbs at bandos.homelinux.com</A>
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="000395.html">[Gpsd-users] [Announce] EarthMate Userland Library 1.0.1 release
+</A></li>
+	<LI>Next message: <A HREF="000399.html">[Gpsd-users] gpsd segfaults when no fix is present
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#397">[ date ]</a>
+              <a href="thread.html#397">[ thread ]</a>
+              <a href="subject.html#397">[ subject ]</a>
+              <a href="author.html#397">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

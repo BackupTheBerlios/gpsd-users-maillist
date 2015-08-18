@@ -1,0 +1,323 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] No PPS
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2011-September/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20No%20PPS&In-Reply-To=%3C20110902084259.24634fyfik1b0i2b%40webmail.aus-city.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="005454.html">
+   <LINK REL="Next"  HREF="005456.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] No PPS</H1>
+    <B>webmaster at aus-city.com</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20No%20PPS&In-Reply-To=%3C20110902084259.24634fyfik1b0i2b%40webmail.aus-city.com%3E"
+       TITLE="[Gpsd-users] No PPS">webmaster at aus-city.com
+       </A><BR>
+    <I>Fri Sep  2 00:42:59 CEST 2011</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="005454.html">[Gpsd-users] No PPS
+</A></li>
+        <LI>Next message: <A HREF="005456.html">[Gpsd-users] No PPS
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#5455">[ date ]</a>
+              <a href="thread.html#5455">[ thread ]</a>
+              <a href="subject.html#5455">[ subject ]</a>
+              <a href="author.html#5455">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi Gary!
+
+I am using ntpd...
+
+Here you go (this is off 3.1 I just compiled the rpm).
+
+[<A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">root at primary</A> ~]# gpsd -nND 8 /dev/ttyS0 2&gt;&amp;1 | egrep 'PPS|NTP'
+gpsd:PROG: NTPD shmat(0,0,0) succeeded, segment 0
+gpsd:PROG: NTPD shmat(32769,0,0) succeeded, segment 1
+gpsd:PROG: NTPD shmat(786450,0,0) succeeded, segment 2
+gpsd:PROG: NTPD shmat(819219,0,0) succeeded, segment 3
+gpsd:INFO: NTPD ntpd_link_activate: 1
+gpsd:PROG: PPS Create Thread gpsd_ppsmonitor
+gpsd:PROG: PPS chrony socket /var/run/chrony.ttyS0.sock doesn't exist
+gpsd:DATA: packet from /dev/ttyS0 with {ONLINE|TIME|PACKET|PPSTIME}
+gpsd:RAW: NTPD ntpshm_put: Clock: 1314916752.000000 @  
+1314916752.611796, fudge: 0.000
+gpsd:DATA: packet from /dev/ttyS0 with  
+{ONLINE|TIME|LATLON|SPEED|TRACK|MODE|PACKET|CLEAR|PPSTIME}
+gpsd:RAW: NTPD ntpshm_put: Clock: 1314916753.000000 @  
+1314916753.269853, fudge: 0.000
+gpsd:DATA: packet from /dev/ttyS0 with  
+{ONLINE|TIME|LATLON|ALTITUDE|STATUS|MODE|PACKET|REPORT|PPSTIME}
+gpsd:DATA: packet from /dev/ttyS0 with {ONLINE|TIME|PACKET|PPSTIME}
+gpsd:DATA: packet from /dev/ttyS0 with  
+{ONLINE|TIME|LATLON|SPEED|TRACK|MODE|PACKET|CLEAR|PPSTIME}
+gpsd:RAW: NTPD ntpshm_put: Clock: 1314916754.000000 @  
+1314916754.266903, fudge: 0.000
+gpsd:DATA: packet from /dev/ttyS0 with  
+{ONLINE|TIME|LATLON|ALTITUDE|STATUS|MODE|PACKET|REPORT|PPSTIME}
+gpsd:DATA: packet from /dev/ttyS0 with {ONLINE|TIME|PACKET|PPSTIME}
+gpsd:DATA: packet from /dev/ttyS0 with  
+{ONLINE|TIME|LATLON|SPEED|TRACK|MODE|PACKET|CLEAR|PPSTIME}
+gpsd:RAW: NTPD ntpshm_put: Clock: 1314916755.000000 @  
+1314916755.268896, fudge: 0.000
+gpsd:DATA: packet from /dev/ttyS0 with  
+{ONLINE|TIME|LATLON|ALTITUDE|STATUS|MODE|PACKET|REPORT|PPSTIME}
+gpsd:DATA: packet from /dev/ttyS0 with {ONLINE|TIME|PACKET|PPSTIME}
+gpsd:DATA: packet from /dev/ttyS0 with  
+{ONLINE|TIME|LATLON|SPEED|TRACK|MODE|PACKET|CLEAR|PPSTIME}
+gpsd:RAW: NTPD ntpshm_put: Clock: 1314916756.000000 @  
+1314916756.266869, fudge: 0.000
+gpsd:DATA: packet from /dev/ttyS0 with  
+{ONLINE|TIME|LATLON|ALTITUDE|STATUS|MODE|PACKET|REPORT|PPSTIME}
+gpsd:DATA: packet from /dev/ttyS0 with {ONLINE|TIME|PACKET|PPSTIME}
+gpsd:DATA: packet from /dev/ttyS0 with  
+{ONLINE|TIME|LATLON|SPEED|TRACK|MODE|PACKET|CLEAR|PPSTIME}
+gpsd:RAW: NTPD ntpshm_put: Clock: 1314916757.000000 @  
+1314916757.266853, fudge: 0.000
+gpsd:DATA: packet from /dev/ttyS0 with  
+{ONLINE|TIME|LATLON|ALTITUDE|STATUS|MODE|PACKET|REPORT|PPSTIME}
+gpsd:DATA: packet from /dev/ttyS0 with {ONLINE|TIME|PACKET|PPSTIME}
+gpsd:DATA: packet from /dev/ttyS0 with  
+{ONLINE|TIME|LATLON|SPEED|TRACK|MODE|PACKET|CLEAR|PPSTIME}
+gpsd:RAW: NTPD ntpshm_put: Clock: 1314916758.000000 @  
+1314916758.267895, fudge: 0.000
+gpsd:DATA: packet from /dev/ttyS0 with  
+{ONLINE|TIME|LATLON|ALTITUDE|STATUS|MODE|PACKET|REPORT|PPSTIME}
+gpsd:DATA: packet from /dev/ttyS0 with {ONLINE|TIME|PACKET|PPSTIME}
+gpsd:DATA: packet from /dev/ttyS0 with  
+{ONLINE|TIME|LATLON|SPEED|TRACK|MODE|PACKET|CLEAR|PPSTIME}
+gpsd:RAW: NTPD ntpshm_put: Clock: 1314916759.000000 @  
+1314916759.268909, fudge: 0.000
+gpsd:DATA: packet from /dev/ttyS0 with  
+{ONLINE|TIME|LATLON|ALTITUDE|STATUS|MODE|PACKET|REPORT|PPSTIME}
+gpsd:DATA: packet from /dev/ttyS0 with {ONLINE|TIME|PACKET|PPSTIME}
+gpsd:DATA: packet from /dev/ttyS0 with  
+{ONLINE|TIME|LATLON|SPEED|TRACK|MODE|PACKET|CLEAR|PPSTIME}
+gpsd:RAW: NTPD ntpshm_put: Clock: 1314916760.000000 @  
+1314916760.266855, fudge: 0.000
+gpsd:DATA: packet from /dev/ttyS0 with  
+{ONLINE|TIME|LATLON|ALTITUDE|STATUS|MODE|PACKET|REPORT|PPSTIME}
+gpsd:DATA: packet from /dev/ttyS0 with {ONLINE|TIME|PACKET|PPSTIME}
+gpsd:DATA: packet from /dev/ttyS0 with  
+{ONLINE|TIME|LATLON|SPEED|TRACK|MODE|PACKET|CLEAR|PPSTIME}
+gpsd:RAW: NTPD ntpshm_put: Clock: 1314916761.000000 @  
+1314916761.266870, fudge: 0.000
+gpsd:DATA: packet from /dev/ttyS0 with  
+{ONLINE|TIME|LATLON|ALTITUDE|STATUS|MODE|PACKET|REPORT|PPSTIME}
+gpsd:DATA: packet from /dev/ttyS0 with {ONLINE|TIME|PACKET|PPSTIME}
+gpsd:DATA: packet from /dev/ttyS0 with  
+{ONLINE|TIME|LATLON|SPEED|TRACK|MODE|PACKET|CLEAR|PPSTIME}
+gpsd:RAW: NTPD ntpshm_put: Clock: 1314916762.000000 @  
+1314916762.268867, fudge: 0.000
+gpsd:DATA: packet from /dev/ttyS0 with  
+{ONLINE|TIME|LATLON|ALTITUDE|STATUS|MODE|PACKET|REPORT|PPSTIME}
+gpsd:DATA: packet from /dev/ttyS0 with {ONLINE|TIME|PACKET|PPSTIME}
+gpsd:DATA: packet from /dev/ttyS0 with  
+{ONLINE|TIME|LATLON|SPEED|TRACK|MODE|PACKET|CLEAR|PPSTIME}
+gpsd:RAW: NTPD ntpshm_put: Clock: 1314916763.000000 @  
+1314916763.266913, fudge: 0.000
+gpsd:DATA: packet from /dev/ttyS0 with  
+{ONLINE|TIME|LATLON|ALTITUDE|STATUS|MODE|PACKET|REPORT|PPSTIME}
+gpsd:DATA: packet from /dev/ttyS0 with {ONLINE|TIME|PACKET|PPSTIME}
+gpsd:DATA: packet from /dev/ttyS0 with  
+{ONLINE|TIME|LATLON|SPEED|TRACK|MODE|PACKET|CLEAR|PPSTIME}
+gpsd:RAW: NTPD ntpshm_put: Clock: 1314916764.000000 @  
+1314916764.256916, fudge: 0.000
+gpsd:DATA: packet from /dev/ttyS0 with  
+{ONLINE|TIME|LATLON|ALTITUDE|STATUS|MODE|PACKET|REPORT|PPSTIME}
+gpsd:DATA: packet from /dev/ttyS0 with {ONLINE|TIME|PACKET|PPSTIME}
+gpsd:DATA: packet from /dev/ttyS0 with  
+{ONLINE|TIME|LATLON|SPEED|TRACK|MODE|PACKET|CLEAR|PPSTIME}
+gpsd:RAW: NTPD ntpshm_put: Clock: 1314916765.000000 @  
+1314916765.267858, fudge: 0.000
+gpsd:DATA: packet from /dev/ttyS0 with  
+{ONLINE|TIME|LATLON|ALTITUDE|STATUS|MODE|PACKET|REPORT|PPSTIME}
+gpsd:DATA: packet from /dev/ttyS0 with {ONLINE|TIME|PACKET|PPSTIME}
+gpsd:DATA: packet from /dev/ttyS0 with  
+{ONLINE|TIME|LATLON|SPEED|TRACK|MODE|PACKET|CLEAR|PPSTIME}
+gpsd:RAW: NTPD ntpshm_put: Clock: 1314916766.000000 @  
+1314916766.266874, fudge: 0.000
+gpsd:DATA: packet from /dev/ttyS0 with  
+{ONLINE|TIME|LATLON|ALTITUDE|STATUS|MODE|PACKET|REPORT|PPSTIME}
+gpsd:DATA: packet from /dev/ttyS0 with {ONLINE|TIME|PACKET|PPSTIME}
+gpsd:DATA: packet from /dev/ttyS0 with  
+{ONLINE|TIME|LATLON|SPEED|TRACK|MODE|PACKET|CLEAR|PPSTIME}
+gpsd:RAW: NTPD ntpshm_put: Clock: 1314916767.000000 @  
+1314916767.269916, fudge: 0.000
+gpsd:DATA: packet from /dev/ttyS0 with  
+{ONLINE|TIME|LATLON|ALTITUDE|STATUS|MODE|PACKET|REPORT|PPSTIME}
+gpsd:DATA: packet from /dev/ttyS0 with {ONLINE|TIME|PACKET|PPSTIME}
+gpsd:DATA: packet from /dev/ttyS0 with  
+{ONLINE|TIME|LATLON|SPEED|TRACK|MODE|PACKET|CLEAR|PPSTIME}
+gpsd:RAW: NTPD ntpshm_put: Clock: 1314916768.000000 @  
+1314916768.266949, fudge: 0.000
+gpsd:DATA: packet from /dev/ttyS0 with  
+{ONLINE|TIME|LATLON|ALTITUDE|STATUS|MODE|PACKET|REPORT|PPSTIME}
+gpsd:DATA: packet from /dev/ttyS0 with {ONLINE|TIME|PACKET|PPSTIME}
+gpsd:DATA: packet from /dev/ttyS0 with  
+{ONLINE|TIME|LATLON|SPEED|TRACK|MODE|PACKET|CLEAR|PPSTIME}
+gpsd:RAW: NTPD ntpshm_put: Clock: 1314916769.000000 @  
+1314916769.266871, fudge: 0.000
+gpsd:DATA: packet from /dev/ttyS0 with  
+{ONLINE|TIME|LATLON|ALTITUDE|STATUS|MODE|PACKET|REPORT|PPSTIME}
+gpsd:DATA: packet from /dev/ttyS0 with {ONLINE|TIME|PACKET|PPSTIME}
+gpsd:DATA: packet from /dev/ttyS0 with  
+{ONLINE|TIME|LATLON|SPEED|TRACK|MODE|PACKET|CLEAR|PPSTIME}
+gpsd:RAW: NTPD ntpshm_put: Clock: 1314916770.000000 @  
+1314916770.268868, fudge: 0.000
+gpsd:DATA: packet from /dev/ttyS0 with  
+{ONLINE|TIME|LATLON|ALTITUDE|STATUS|MODE|PACKET|REPORT|PPSTIME}
+gpsd:DATA: packet from /dev/ttyS0 with {ONLINE|TIME|PACKET|PPSTIME}
+gpsd:DATA: packet from /dev/ttyS0 with  
+{ONLINE|TIME|LATLON|SPEED|TRACK|MODE|PACKET|CLEAR|PPSTIME}
+gpsd:RAW: NTPD ntpshm_put: Clock: 1314916771.000000 @  
+1314916771.264871, fudge: 0.000
+gpsd:DATA: packet from /dev/ttyS0 with  
+{ONLINE|TIME|LATLON|ALTITUDE|STATUS|MODE|PACKET|REPORT|PPSTIME}
+gpsd:DATA: packet from /dev/ttyS0 with {ONLINE|TIME|PACKET|PPSTIME}
+gpsd:DATA: packet from /dev/ttyS0 with  
+{ONLINE|TIME|LATLON|SPEED|TRACK|MODE|PACKET|CLEAR|PPSTIME}
+gpsd:RAW: NTPD ntpshm_put: Clock: 1314916772.000000 @  
+1314916772.264918, fudge: 0.000
+gpsd:DATA: packet from /dev/ttyS0 with  
+{ONLINE|TIME|LATLON|ALTITUDE|STATUS|MODE|PACKET|REPORT|PPSTIME}
+gpsd:DATA: packet from /dev/ttyS0 with {ONLINE|TIME|PACKET|PPSTIME}
+gpsd:DATA: packet from /dev/ttyS0 with  
+{ONLINE|TIME|LATLON|SPEED|TRACK|MODE|PACKET|CLEAR|PPSTIME}
+gpsd:RAW: NTPD ntpshm_put: Clock: 1314916773.000000 @  
+1314916773.257903, fudge: 0.000
+gpsd:DATA: packet from /dev/ttyS0 with  
+{ONLINE|TIME|LATLON|ALTITUDE|STATUS|MODE|PACKET|REPORT|PPSTIME}
+gpsd:DATA: packet from /dev/ttyS0 with {ONLINE|TIME|PACKET|PPSTIME}
+gpsd:DATA: packet from /dev/ttyS0 with  
+{ONLINE|TIME|LATLON|SPEED|TRACK|MODE|PACKET|CLEAR|PPSTIME}
+gpsd:RAW: NTPD ntpshm_put: Clock: 1314916774.000000 @  
+1314916774.265915, fudge: 0.000
+gpsd:DATA: packet from /dev/ttyS0 with  
+{ONLINE|TIME|LATLON|ALTITUDE|STATUS|MODE|PACKET|REPORT|PPSTIME}
+gpsd:DATA: packet from /dev/ttyS0 with {ONLINE|TIME|PACKET|PPSTIME}
+gpsd:DATA: packet from /dev/ttyS0 with  
+{ONLINE|TIME|LATLON|SPEED|TRACK|MODE|PACKET|CLEAR|PPSTIME}
+gpsd:RAW: NTPD ntpshm_put: Clock: 1314916775.000000 @  
+1314916775.268870, fudge: 0.000
+gpsd:DATA: packet from /dev/ttyS0 with  
+{ONLINE|TIME|LATLON|ALTITUDE|STATUS|MODE|PACKET|REPORT|PPSTIME}
+gpsd:DATA: packet from /dev/ttyS0 with {ONLINE|TIME|PACKET|PPSTIME}
+gpsd:DATA: packet from /dev/ttyS0 with  
+{ONLINE|TIME|LATLON|SPEED|TRACK|MODE|PACKET|CLEAR|PPSTIME}
+gpsd:RAW: NTPD ntpshm_put: Clock: 1314916776.000000 @  
+1314916776.266912, fudge: 0.000
+gpsd:DATA: packet from /dev/ttyS0 with  
+{ONLINE|TIME|LATLON|ALTITUDE|STATUS|MODE|PACKET|REPORT|PPSTIME}
+gpsd:DATA: packet from /dev/ttyS0 with {ONLINE|TIME|PACKET|PPSTIME}
+gpsd:DATA: packet from /dev/ttyS0 with  
+{ONLINE|TIME|LATLON|SPEED|TRACK|MODE|PACKET|CLEAR|PPSTIME}
+gpsd:RAW: NTPD ntpshm_put: Clock: 1314916777.000000 @  
+1314916777.271931, fudge: 0.000
+gpsd:DATA: packet from /dev/ttyS0 with  
+{ONLINE|TIME|LATLON|ALTITUDE|STATUS|MODE|PACKET|REPORT|PPSTIME}
+gpsd:DATA: packet from /dev/ttyS0 with {ONLINE|TIME|PACKET|PPSTIME}
+gpsd:DATA: packet from /dev/ttyS0 with  
+{ONLINE|TIME|LATLON|SPEED|TRACK|MODE|PACKET|CLEAR|PPSTIME}
+gpsd:RAW: NTPD ntpshm_put: Clock: 1314916778.000000 @  
+1314916778.266857, fudge: 0.000
+gpsd:DATA: packet from /dev/ttyS0 with  
+{ONLINE|TIME|LATLON|ALTITUDE|STATUS|MODE|PACKET|REPORT|PPSTIME}
+gpsd:DATA: packet from /dev/ttyS0 with {ONLINE|TIME|PACKET|PPSTIME}
+gpsd:DATA: packet from /dev/ttyS0 with  
+{ONLINE|TIME|LATLON|SPEED|TRACK|MODE|PACKET|CLEAR|PPSTIME}
+gpsd:RAW: NTPD ntpshm_put: Clock: 1314916779.000000 @  
+1314916779.266878, fudge: 0.000
+gpsd:DATA: packet from /dev/ttyS0 with  
+{ONLINE|TIME|LATLON|ALTITUDE|STATUS|MODE|PACKET|REPORT|PPSTIME}
+gpsd:DATA: packet from /dev/ttyS0 with {ONLINE|TIME|PACKET|PPSTIME}
+gpsd:DATA: packet from /dev/ttyS0 with  
+{ONLINE|TIME|LATLON|SPEED|TRACK|MODE|PACKET|CLEAR|PPSTIME}
+gpsd:RAW: NTPD ntpshm_put: Clock: 1314916780.000000 @  
+1314916780.268963, fudge: 0.000
+gpsd:DATA: packet from /dev/ttyS0 with  
+{ONLINE|TIME|LATLON|ALTITUDE|STATUS|MODE|PACKET|REPORT|PPSTIME}
+gpsd:DATA: packet from /dev/ttyS0 with {ONLINE|TIME|PACKET|PPSTIME}
+gpsd:DATA: packet from /dev/ttyS0 with  
+{ONLINE|TIME|LATLON|SPEED|TRACK|MODE|PACKET|CLEAR|PPSTIME}
+gpsd:RAW: NTPD ntpshm_put: Clock: 1314916781.000000 @  
+1314916781.266903, fudge: 0.000
+gpsd:DATA: packet from /dev/ttyS0 with  
+{ONLINE|TIME|LATLON|ALTITUDE|STATUS|MODE|PACKET|REPORT|PPSTIME}
+gpsd:DATA: packet from /dev/ttyS0 with {ONLINE|TIME|PACKET|PPSTIME}
+
+
+Cheers,
+
+David
+Quoting &quot;Gary E. Miller&quot; &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">gem at rellim.com</A>&gt;:
+
+&gt;<i> -----BEGIN PGP SIGNED MESSAGE-----
+</I>&gt;<i> Hash: SHA1
+</I>&gt;<i>
+</I>&gt;<i> Yo David!
+</I>&gt;<i>
+</I>&gt;<i> On Fri, 2 Sep 2011, David Cottle wrote:
+</I>&gt;<i>
+</I>&gt;&gt;<i> I can't get PPS working. Worked perfectly on 2.96 any ideas?
+</I>&gt;<i>
+</I>&gt;<i> Works for me.  Are you using ntpd or chrony?
+</I>&gt;<i>
+</I>&gt;<i> What really helps is the output of this:
+</I>&gt;<i>
+</I>&gt;<i> gpsd -nND 8 /dev/ttyS0 2&gt;&amp;1 | egrep 'PPS|NTP'
+</I>&gt;<i>
+</I>&gt;<i> All the non PPS and NTP debug info is just clutter.
+</I>&gt;<i>
+</I>&gt;<i> RGDS
+</I>&gt;<i> GARY
+</I>&gt;<i> - ---------------------------------------------------------------------------
+</I>&gt;<i> Gary E. Miller Rellim 109 NW Wilmington Ave., Suite E, Bend, OR 97701
+</I>&gt;<i> 	<A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">gem at rellim.com</A>  Tel:+1(541)382-8588
+</I>&gt;<i>
+</I>&gt;<i> -----BEGIN PGP SIGNATURE-----
+</I>&gt;<i> Version: GnuPG v1.4.3 (GNU/Linux)
+</I>&gt;<i>
+</I>&gt;<i> iD8DBQFOX+XIBmnRqz71OvMRAgt3AKCK/39KecKMX1p9Nfk2rMCO2Us5KwCfWuiD
+</I>&gt;<i> zrfMpFIhWGbZ3QZV8a3XfhQ=
+</I>&gt;<i> =/f+n
+</I>&gt;<i> -----END PGP SIGNATURE-----
+</I>&gt;<i>
+</I>&gt;<i>
+</I>
+
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="005454.html">[Gpsd-users] No PPS
+</A></li>
+	<LI>Next message: <A HREF="005456.html">[Gpsd-users] No PPS
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#5455">[ date ]</a>
+              <a href="thread.html#5455">[ thread ]</a>
+              <a href="subject.html#5455">[ subject ]</a>
+              <a href="author.html#5455">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

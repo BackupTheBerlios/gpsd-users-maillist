@@ -1,0 +1,86 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] State of GPSD
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2005-August/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20State%20of%20GPSD&In-Reply-To=%3C200508051000.13804.wk%40ire.pw.edu.pl%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="000962.html">
+   <LINK REL="Next"  HREF="000966.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] State of GPSD</H1>
+    <B>Wojciech Kazubski</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20State%20of%20GPSD&In-Reply-To=%3C200508051000.13804.wk%40ire.pw.edu.pl%3E"
+       TITLE="[Gpsd-users] State of GPSD">wk at ire.pw.edu.pl
+       </A><BR>
+    <I>Fri Aug  5 10:00:12 CEST 2005</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="000962.html">[Gpsd-dev] Re: [Gpsd-users] State of GPSD
+</A></li>
+        <LI>Next message: <A HREF="000966.html">[Gpsd-users] State of GPSD
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#965">[ date ]</a>
+              <a href="thread.html#965">[ thread ]</a>
+              <a href="subject.html#965">[ subject ]</a>
+              <a href="author.html#965">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hello!
+...
+&gt;<i>
+</I>&gt;<i> 2. The GPS-18 LVC sends GSV parts in random order and sometimes
+</I>&gt;<i> duplicates them.  As Gary points out, we can get stuff like this:
+</I>&gt;<i>
+</I>&gt;<i> $GPGSV,3,1,11,02,07,307,00,03,13,114,00,04,09,267,00,08,09,249,00*7F
+</I>&gt;<i> $GPGSV,3,3,11,24,02,229,00,27,42,260,42,51,00,000,00*41
+</I>&gt;<i> $GPGSV,3,2,11,13,66,320,49,16,42,059,43,20,28,178,00,23,72,090,50*72
+</I>&gt;<i> $GPGSV,3,2,11,13,66,320,49,16,42,059,43,20,28,178,00,23,72,090,50*72
+</I>&gt;<i>
+</I>&gt;<i> The problem is that after the 3rd sentence, there is a count of 11 sats.
+</I>&gt;<i> When processGSV sees the duplicated sentence it counts past 12, errors
+</I>&gt;<i> out and clears the data.  This causes xgps to show the sats winking on
+</I>&gt;<i> and off over many seconds.
+</I>&gt;<i>
+</I>&gt;<i> The DARPA Grand Challenge guy (Curt, I've never seen his last name)
+</I>&gt;<i> is working on a patch that may fix this.  I don't consider it severe
+</I>&gt;<i> and a fix can wait until after 2.29.
+</I>&gt;<i>
+</I>...
+This may be the problem with low transmission speed. Try to crank it up to 
+9600 or more (should support up to 38400). My GPS-17N operates at 9600 bps.
+
+Wojciech Kazubski
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="000962.html">[Gpsd-dev] Re: [Gpsd-users] State of GPSD
+</A></li>
+	<LI>Next message: <A HREF="000966.html">[Gpsd-users] State of GPSD
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#965">[ date ]</a>
+              <a href="thread.html#965">[ thread ]</a>
+              <a href="subject.html#965">[ subject ]</a>
+              <a href="author.html#965">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

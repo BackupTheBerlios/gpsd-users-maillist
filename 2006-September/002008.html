@@ -1,0 +1,120 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] PPS on RTS?
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2006-September/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20PPS%20on%20RTS%3F&In-Reply-To=%3C4.3.2.7.2.20060927085308.02935318%40postoffice.creativesilicon.com.au%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="002009.html">
+   <LINK REL="Next"  HREF="002012.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] PPS on RTS?</H1>
+    <B>David Clement</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20PPS%20on%20RTS%3F&In-Reply-To=%3C4.3.2.7.2.20060927085308.02935318%40postoffice.creativesilicon.com.au%3E"
+       TITLE="[Gpsd-users] PPS on RTS?">dclement at creativesilicon.com.au
+       </A><BR>
+    <I>Wed Sep 27 00:53:29 CEST 2006</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="002009.html">[Gpsd-users] PPS on RTS?
+</A></li>
+        <LI>Next message: <A HREF="002012.html">[Gpsd-users] PPS on RTS?
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2008">[ date ]</a>
+              <a href="thread.html#2008">[ thread ]</a>
+              <a href="subject.html#2008">[ subject ]</a>
+              <a href="author.html#2008">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi Gary,
+
+ &gt; I'm attempting to use a Garmin 18 LVC GPS as a time reference on a small
+ &gt; datalogger based around the Gumsitx Basix platform.
+
+Good so far.  One potential issue.  The LVC is TTL level and not RS-232 level
+signals.  Some RS-232 port will not work when driven by the GPS-18/LVC but
+most will.
+
+Ahhh - you too have been trapped by the Garmin 18 LVC.  It doesn't output 
+TTL level RS232 suitable for input straight to a UART - it actually outputs 
+RS232 at 5V levels. The RS232 spec is +3 to +30 (space) &amp; -3 to -30 (mark). 
+To connect the 18 LVC to most UARTs (as opposed to a serial port)  you need 
+to do any level shifting AND do a logic inversion. For those interested, 
+three 2N7000 mosfets and three 10k resistors will do both the level shift 
+and the required inversion. Of course, you could also use one of the many 
+variants of the MAX232 TTL-RS232 interface IC.
+
+As you note, this 5V RS232 doesn't work on all serial ports - but should 
+work on most of the newer ports based around a variant of the MAX232.
+
+
+ &gt; 1. Has anyone else had thoughts about using the RTS line for the PPS
+ &gt; signal? I'm not sure if the Linux serial driver would allow it though. If
+ &gt; this is thought possible, any pointers to the PPS section(s) in the code
+ &gt; would be useful and I'll have a hack at it.
+
+DCD is no universal for PPS.  Right now the gpsd_ppsmonitor() just uses
+an ioctl() to poll the state of the serial lines.  Then checks a mask
+(TIOCM_CAR) to see if the DCD changed.  This is in libgpsd_core.c.  It
+should be easy to change the mask to poll for another line.
+
+Will look at this today. Will let you know how I get on.
+
+The Garmin PPS spec is +/-1uSec.  You will have a hard time beating that!
+
+Yep, that's why I looked at it. Also, it's an all in one unit which cuts 
+down my wiring and antenna feed issues. It's easier to run data long(ish) 
+distances than it is to run RF data from a remote antenna. Finally, I know 
+they work well - I've currently got one sitting at a field camp on the 
+Antarctic Peninsula acting as a Stratum 1 timeserver for a logging system.
+
+Without PPS, depending on who yo ask, you will have a hard time getting
+much better than 1 Sec accuracy.  I doubt you could eve get accuracy
+past 100mS over the serial line.
+
+That was my original understanding also. Thanks for clearing this up for 
+me. Quite often confusion is my normal state of affairs....
+
+Thansk for you advice - it's much appreciated.
+
+ciao, Dave
+
+--------------------------------------
+David Clement
+Renfell Technology Pty Ltd
+
+Ph:  04 1859 0133
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="002009.html">[Gpsd-users] PPS on RTS?
+</A></li>
+	<LI>Next message: <A HREF="002012.html">[Gpsd-users] PPS on RTS?
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2008">[ date ]</a>
+              <a href="thread.html#2008">[ thread ]</a>
+              <a href="subject.html#2008">[ subject ]</a>
+              <a href="author.html#2008">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

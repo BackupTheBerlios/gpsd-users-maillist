@@ -1,0 +1,149 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] gpxlogger bug and gpxlogger RFE
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2006-January/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20gpxlogger%20bug%20and%20gpxlogger%20RFE&In-Reply-To=%3C20060124163942.34582d71.hamish_nospam%40yahoo.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="001242.html">
+   <LINK REL="Next"  HREF="001244.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] gpxlogger bug and gpxlogger RFE</H1>
+    <B>Hamish</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20gpxlogger%20bug%20and%20gpxlogger%20RFE&In-Reply-To=%3C20060124163942.34582d71.hamish_nospam%40yahoo.com%3E"
+       TITLE="[Gpsd-users] gpxlogger bug and gpxlogger RFE">hamish_nospam at yahoo.com
+       </A><BR>
+    <I>Tue Jan 24 04:39:42 CET 2006</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="001242.html">[Gpsd-users] xgps doesn't display 3 digit PRN like WAAS
+</A></li>
+        <LI>Next message: <A HREF="001244.html">[Gpsd-users] gpxlogger bug and gpxlogger RFE
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1241">[ date ]</a>
+              <a href="thread.html#1241">[ thread ]</a>
+              <a href="subject.html#1241">[ subject ]</a>
+              <a href="author.html#1241">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi, gpsd-2.30 debain/unstable (clients) package, backported for
+debian/stable by me for the DebianGIS project.
+
+Not sure if these are already taken care of in SVN, the berlios web 
+interface is currently stalled so I can't check easily.
+
+
+I'd like to use the output of gpxlogger with gpsbabel. A bug prevents me
+from doing that:
+
+&lt;?xml version=&quot;1.0&quot; encoding=&quot;utf-8&quot;?&gt;
+&lt;gpx version=&quot;1.1&quot; creator=&quot;navsys logger&quot;
+        xmlns:xsi=&quot;<A HREF="http://www.w3.org/2001/XMLSchema-instance">http://www.w3.org/2001/XMLSchema-instance</A>&quot;
+        xmlns=&quot;<A HREF="http://www.topografix.com/GPX/1.1">http://www.topografix.com/GPX/1.1</A>&quot;
+        xsi:schemaLocation=&quot;<A HREF="http://www.topografix.com/GPS/1/1">http://www.topografix.com/GPS/1/1</A>
+        <A HREF="http://www.topografix.com/GPX/1/1/gpx.xsd">http://www.topografix.com/GPX/1/1/gpx.xsd</A>&quot;&gt;
+ &lt;metadata&gt;
+  &lt;name&gt;NavSys GPS logger dump&lt;/name&gt;
+  &lt;author&gt;Amaury Jacquot&lt;/author&gt;
+  &lt;copyright&gt;GPL v 2.0&lt;/copyright&gt;
+ &lt;/metadata&gt;
+  &lt;/trkseg&gt;
+ &lt;/trk&gt;
+
+
+The last two lines are spurious and lead to this error:
+
+$ gpsbabel -i gpx -f 24jan2006.gpx  -o csv -F 24jan2006.csv
+GPX: XML parse error at 12: mismatched tag
+
+
+This should fix it: (untested)
+
+--- gpxlogger.c.ORIG    2006-01-24 16:16:47.000000000 +1300
++++ gpxlogger.c 2006-01-24 16:21:36.000000000 +1300
+@@ -19,6 +19,7 @@
+ static char *copyright = &quot;GPL v 2.0&quot;;
+
+ static int intrack = 0;
++static int first = 1;
+ static time_t tracklimit = 5; /* seconds */
+
+ static struct {
+@@ -105,7 +106,7 @@
+                 * backwards in time.  The clock sometimes jump
+                 * backward when gpsd is submitting junk on the
+                 * dbus. */
+-               if (fabs(gpsfix.time - gpsfix.old_time) &gt; tracklimit) {
++               if ( (fabs(gpsfix.time - gpsfix.old_time) &gt; tracklimit) &amp;&amp; !first ) {
+                        print_gpx_trk_end();
+                        intrack = 0;
+                }
+@@ -113,6 +114,7 @@
+                if (!intrack) {
+                        print_gpx_trk_start();
+                        intrack = 1;
++                       if(first) first = 0;
+                }
+
+                gpsfix.old_time = gpsfix.time;
+
+
+
+===
+
+Also, two things would be nice for gpxlogger to have:
+
+a) better command line parsing: &quot;gpxlogger --help&quot; currently starts 
+logging to a file called &quot;--help&quot;. argh.
+
+b) a command line option to set the time between trackpoints. Currently
+gpxlogger logs every positon that comes through which leads to HUGE log 
+files if you leave it running for hours at a time. It takes only a few 
+minutes to get to 100k.. For me, anything less than every 10 sec is 
+overkill. It should still retain tracklimit test though, even if that 
+limit is shorter than the logging interval.
+
+Similar to above, add a new timestamp call when a track point is 
+written and then before track point write, add
+
+if (fabs(gpsfix.time - timestamp) &gt; dt) {
+
+?
+
+
+
+thanks,
+Hamish
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="001242.html">[Gpsd-users] xgps doesn't display 3 digit PRN like WAAS
+</A></li>
+	<LI>Next message: <A HREF="001244.html">[Gpsd-users] gpxlogger bug and gpxlogger RFE
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1241">[ date ]</a>
+              <a href="thread.html#1241">[ thread ]</a>
+              <a href="subject.html#1241">[ subject ]</a>
+              <a href="author.html#1241">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

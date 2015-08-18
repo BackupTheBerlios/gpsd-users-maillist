@@ -1,0 +1,101 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users]  AIVDM/AIVDO (AIS) Sentences
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2006-August/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20%20AIVDM/AIVDO%20%28AIS%29%20Sentences&In-Reply-To=%3C44E708EE.6020804%40pelme.se%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="001867.html">
+   <LINK REL="Next"  HREF="001880.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users]  AIVDM/AIVDO (AIS) Sentences</H1>
+    <B>Andreas Pelme</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20%20AIVDM/AIVDO%20%28AIS%29%20Sentences&In-Reply-To=%3C44E708EE.6020804%40pelme.se%3E"
+       TITLE="[Gpsd-users]  AIVDM/AIVDO (AIS) Sentences">andreas at pelme.se
+       </A><BR>
+    <I>Sat Aug 19 14:49:50 CEST 2006</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="001867.html">[Gpsd-users] GPSD setup question
+</A></li>
+        <LI>Next message: <A HREF="001880.html">[Gpsd-users] AIVDM/AIVDO (AIS) Sentences
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1868">[ date ]</a>
+              <a href="thread.html#1868">[ thread ]</a>
+              <a href="subject.html#1868">[ subject ]</a>
+              <a href="author.html#1868">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi,
+
+You need to parse VDM message number 5. It is what you are looking for.
+A VDM message is often splitted into several sentences.
+
+They might look like this:
+!AIVDM,2,1,2,A,53u1V`01gnR5&lt;DTn221&gt;qB0thtJ222222222220l0pJ644b?e=kSlTRk,0*0E
+!AIVDM,2,2,2,A,l2CQp8888888880,2*22
+
+Notice that the first character in the message is &quot;5&quot;. It means that
+this is a &quot;Ship static and voyage related data&quot;.
+
+I have written a parser for VDM messages 1,2,3 (position report &quot;dynamic
+data&quot;) and 5 (name/IMO-number/draught/destination etc &quot;static data&quot;) in C.
+
+I will make it public available (under an Open Source license) when I
+consider it is ready.
+
+ITU Recommendation M.1371
+(<A HREF="http://www.itu.int/rec/R-REC-M.1371-2-200603-I/en">http://www.itu.int/rec/R-REC-M.1371-2-200603-I/en</A>) explains how the
+messages are encoded.
+
+Read &quot;3.3.8.2.3  Message 5: Ship static and voyage related data&quot; for
+more information.
+
+You might find IALA TECHNICAL CLARIFICATIONS ON RECOMMENDATION ITU-R
+M.1371-1
+(<A HREF="http://www.navcen.uscg.gov/enav/ais/ITU-R_M1371-1_IALA_Tech_Note1.3.pdf">http://www.navcen.uscg.gov/enav/ais/ITU-R_M1371-1_IALA_Tech_Note1.3.pdf</A>)
+useful too.
+
+Cheers
+-- 
+Andreas Pelme &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">andreas at pelme.se</A>&gt;
+
+-------------- next part --------------
+A non-text attachment was scrubbed...
+Name: signature.asc
+Type: application/pgp-signature
+Size: 189 bytes
+Desc: OpenPGP digital signature
+URL: &lt;<A HREF="https://lists.berlios.de/pipermail/gpsd-users/attachments/20060819/6e3c99fb/attachment.pgp">https://lists.berlios.de/pipermail/gpsd-users/attachments/20060819/6e3c99fb/attachment.pgp</A>&gt;
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="001867.html">[Gpsd-users] GPSD setup question
+</A></li>
+	<LI>Next message: <A HREF="001880.html">[Gpsd-users] AIVDM/AIVDO (AIS) Sentences
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1868">[ date ]</a>
+              <a href="thread.html#1868">[ thread ]</a>
+              <a href="subject.html#1868">[ subject ]</a>
+              <a href="author.html#1868">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

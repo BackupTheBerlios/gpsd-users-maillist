@@ -1,0 +1,102 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] Gpsd on a Zaurus SL-C3000
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2005-March/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Gpsd%20on%20a%20Zaurus%20SL-C3000&In-Reply-To=%3C16972.8694.764947.836866%40desk.crynwr.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="000491.html">
+   <LINK REL="Next"  HREF="000505.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] Gpsd on a Zaurus SL-C3000</H1>
+    <B>Russell Nelson</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Gpsd%20on%20a%20Zaurus%20SL-C3000&In-Reply-To=%3C16972.8694.764947.836866%40desk.crynwr.com%3E"
+       TITLE="[Gpsd-users] Gpsd on a Zaurus SL-C3000">nelson at crynwr.com
+       </A><BR>
+    <I>Thu Mar 31 18:14:46 CEST 2005</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="000491.html">[Gpsd-users] Gpsd on a Zaurus SL-C3000
+</A></li>
+        <LI>Next message: <A HREF="000505.html">[Gpsd-users] Gpsd on a Zaurus SL-C3000
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#499">[ date ]</a>
+              <a href="thread.html#499">[ thread ]</a>
+              <a href="subject.html#499">[ subject ]</a>
+              <a href="author.html#499">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Eric S. Raymond writes:
+ &gt; And this lossage is *before* we start on the endian issues...
+
+Indeed.  On page 196 of K&amp;R, they write &quot;Fields are assigned
+right-to-left on the PDP-11, left-to-right on other machines.&quot;  K&amp;R2nd
+says &quot;The ANSI standard makes fields even more implementation-
+dependent than did the first edition.&quot;  In other words, you start off
+losing if you try to impose structs on external data.
+
+ &gt; Naive me, I thought all C programmers knew this stuff.  Are you
+ &gt; relatively new to the language?
+
+No, he's not, unfortunately.  His misteak is widespread.  Look at the
+htons and ntohs abortion.  They violate every rule of intelligent
+identifier composition.  They're about as STOOPID (and consequently,
+using them is as stupid) as the combination disk and tape drive that I
+used at HP back in 1982.  The tape was as big as the disk, and so you
+could back up the entire disk on the tape, or restore the disk from
+the tape.  The process for doing this was to open the door, insert the
+tape, and then press one of two levers labelled &quot;tape -&gt; disk&quot; and
+&quot;disk -&gt; tape&quot;.  You're guessing, just about at this point, that I had
+the painful experience of restoring instead of backing up.  Better
+names would have been &quot;littleendian&quot; and &quot;bigendian&quot;, but that doesn't
+fix their semantics.  That just makes it less likely that they'll be
+interchanged.  It doesn't address the problem of when they should be
+used and when not.
+
+You don't need them if you access structured data correctly, by
+offset, and by byte.
+
+Now, if the compiler understood how to map structured data into native
+values, that would be a different thing.  C put out a foot in that
+direction with the :fieldwidth specification.  But that doesn't
+address the direction of allocation of fields, nor byte offsets, nor
+endian issues.
+
+-- 
+--My blog is at     blog.russnelson.com         | The laws of physics cannot
+Crynwr sells support for free software  | PGPok | be legislated.  Neither can
+521 Pleasant Valley Rd. | +1 315-323-1241 cell  | the laws of countries.
+Potsdam, NY 13676-3213  | +1 212-202-2318 VOIP  | 
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="000491.html">[Gpsd-users] Gpsd on a Zaurus SL-C3000
+</A></li>
+	<LI>Next message: <A HREF="000505.html">[Gpsd-users] Gpsd on a Zaurus SL-C3000
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#499">[ date ]</a>
+              <a href="thread.html#499">[ thread ]</a>
+              <a href="subject.html#499">[ subject ]</a>
+              <a href="author.html#499">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

@@ -1,0 +1,401 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] gpsd isn't recognizing TSIP
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2009-September/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20gpsd%20isn%27t%20recognizing%20TSIP&In-Reply-To=%3C20090901005806.GB532090%40hiwaay.net%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   
+   <LINK REL="Next"  HREF="003888.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] gpsd isn't recognizing TSIP</H1>
+    <B>Chris Adams</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20gpsd%20isn%27t%20recognizing%20TSIP&In-Reply-To=%3C20090901005806.GB532090%40hiwaay.net%3E"
+       TITLE="[Gpsd-users] gpsd isn't recognizing TSIP">cmadams at hiwaay.net
+       </A><BR>
+    <I>Tue Sep  1 02:58:06 CEST 2009</I>
+    <P><UL>
+        
+        <LI>Next message: <A HREF="003888.html">[Gpsd-users] skytraq venus 6
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3887">[ date ]</a>
+              <a href="thread.html#3887">[ thread ]</a>
+              <a href="subject.html#3887">[ subject ]</a>
+              <a href="author.html#3887">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Once upon a time, Chris Adams &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">cmadams at hiwaay.net</A>&gt; said:
+&gt;<i> I worked around this by adding a probe routine to the TSIP driver that
+</I>&gt;<i> explicitly tries 9600-8-O-1.  I also added a little more initialization
+</I>&gt;<i> and recognition of a few more TSIP report messages.
+</I>
+Here is my patch, against SVN trunk.  It does several things:
+
+- add a probe routine to look for TSIP at 9600-8-O-1
+- fixed length checking of TSIP DLE stuffed packets in packet_parse()
+- add a couple of additional config requests to TSIP initialization;
+  needed for my old sveesix and after running ntpd libparse driver which
+  sets single-satellite mode
+- recognize a few additional TSIP report packets (mostly not handled,
+  just recognized to avoid errors in debugging)
+
+-- 
+Chris Adams &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">cmadams at hiwaay.net</A>&gt;
+Systems and Network Administrator - HiWAAY Internet Services
+I don't speak for anybody but myself - that's enough trouble.
+-------------- next part --------------
+diff --exclude .svn -ur gpsd-trunk/driver_tsip.c gpsd-cmadams/driver_tsip.c
+--- gpsd-trunk/driver_tsip.c	2009-08-31 19:03:35.000000000 -0500
++++ gpsd-cmadams/driver_tsip.c	2009-08-31 19:04:04.000000000 -0500
+@@ -9,6 +9,14 @@
+ #include &lt;unistd.h&gt;
+ #include &lt;math.h&gt;
+ #include &quot;gpsd_config.h&quot;
++
++#if defined (HAVE_SYS_SELECT_H)
++#include &lt;sys/select.h&gt;
++#endif
++#if defined(HAVE_SYS_TIME_H)
++#include &lt;sys/time.h&gt;
++#endif
++
+ #include &quot;gpsd.h&quot;
+ #include &quot;bits.h&quot;
+ 
+@@ -49,6 +57,57 @@
+     return 0;
+ }
+ 
++/* tsip_detect()
++ *
++ * see if it looks like a TSIP device (speaking 96008O1) is listening and
++ * return 1 if found, 0 if not
++ */
++static bool tsip_detect(struct gps_device_t *session)
++{
++    char buf[BUFSIZ];
++    unsigned int n, ret = 0;
++    int myfd;
++    fd_set fdset;
++    struct timeval to;
++
++    gpsd_report(LOG_PROG, &quot;Probing TSIP\n&quot;);
++
++    gpsd_set_speed(session, 9600, 'O', 1);
++
++    /* request firmware revision and look for a valid response */
++    putbyte(buf, 0, 0x10);
++    putbyte(buf, 1, 0x1f);
++    putbyte(buf, 2, 0x10);
++    putbyte(buf, 3, 0x03);
++    myfd = session-&gt;gpsdata.gps_fd;
++    if (write(myfd, buf, 4) == 4) {
++	for (n = 0; n &lt; 3; n++) {
++	    FD_ZERO(&amp;fdset);
++	    FD_SET(myfd, &amp;fdset);
++	    to.tv_sec = 1;
++	    to.tv_usec = 0;
++	    if (select(myfd + 1, &amp;fdset, NULL, NULL, &amp;to) != 1)
++		break;
++	    if (generic_get(session) &gt;= 0) {
++		if(session-&gt;packet.type == TSIP_PACKET) {
++		    gpsd_report(LOG_RAW, &quot;tsip_detect found\n&quot;);
++		    ret = 1;
++		    break;
++		}
++	    }
++	}
++    }
++
++    if (ret == 0)
++	/* return serial port to original settings */
++	gpsd_set_speed(session,
++		       session-&gt;gpsdata.baudrate,
++		       session-&gt;gpsdata.parity,
++		       session-&gt;gpsdata.stopbits);
++
++    return ret;
++}
++
+ static void tsip_probe_subtype(struct gps_device_t *session, unsigned int seq)
+ {
+     unsigned char buf[100];
+@@ -69,9 +128,13 @@
+ 	(void)tsip_write(session, 0x1f, NULL, 0);
+ 	/* Request Current Time */
+ 	(void)tsip_write(session, 0x21, NULL, 0);
++	/* Set Position Fix Mode (auto 2D/3D) */
++	putbyte(buf,0,0x00);
++	(void)tsip_write(session, 0x22, buf, 1);
+ 	/* Request GPS Systems Message */
+ 	(void)tsip_write(session, 0x28, NULL, 0);
+ 	/* Request Current Datum Values */
++	(void)tsip_write(session, 0x37, NULL, 0);
+ 	putbyte(buf,0,0x15);
+ 	(void)tsip_write(session, 0x8e, buf, 1);
+ 	/* Request Navigation Configuration */
+@@ -194,6 +257,60 @@
+ 	f5 = getbef(buf,16);			/* time-of-fix */
+ 	gpsd_report(LOG_INF, &quot;GPS Velocity XYZ %f %f %f %f %f\n&quot;,f1,f2,f3,f4,f5);
+ 	break;
++    case 0x44:		/* Non-Overdetermined Satellite Selection */
++	/* treat the same as 0x6d; some receivers send both */
++	u1 = getub(buf,0);			/* nsvs/dimension */
++	if (10 &lt; u1)
++	    u1 -= 10;
++	switch (u1)				/* dimension */
++	{
++	case 1:
++	    session-&gt;gpsdata.status = STATUS_NO_FIX;
++	    session-&gt;gpsdata.fix.mode = MODE_NO_FIX;
++	    count = 1;
++	    break;
++	case 3:
++	    session-&gt;gpsdata.status = STATUS_FIX;
++	    session-&gt;gpsdata.fix.mode = MODE_2D;
++	    count = 3;
++	    break;
++	case 4:
++	    session-&gt;gpsdata.status = STATUS_FIX;
++	    session-&gt;gpsdata.fix.mode = MODE_3D;
++	    count = 4;
++	    break;
++	default:
++	    session-&gt;gpsdata.status = STATUS_NO_FIX;
++	    session-&gt;gpsdata.fix.mode = MODE_NO_FIX;
++	    count = 0;
++	    break;
++	}
++	session-&gt;gpsdata.satellites_used = count;
++	session-&gt;gpsdata.pdop = getbef(buf,5);
++	session-&gt;gpsdata.hdop = getbef(buf,9);
++	session-&gt;gpsdata.vdop = getbef(buf,13);
++	session-&gt;gpsdata.tdop = getbef(buf,17);
++	/*@ -evalorder @*/
++	session-&gt;gpsdata.gdop = sqrt(pow(session-&gt;gpsdata.pdop,2)+pow(session-&gt;gpsdata.tdop,2));
++	/*@ +evalorder @*/
++
++	memset(session-&gt;gpsdata.used,0,sizeof(session-&gt;gpsdata.used));
++	buf2[0] = '\0';
++	/*@ +charint @*/
++	for (i = 0; i &lt; count; i++)
++	    (void)snprintf(buf2+strlen(buf2), sizeof(buf2)-strlen(buf2),
++			&quot; %d&quot;,session-&gt;gpsdata.used[i] = getub(buf,1 + i));
++	/*@ -charint @*/
++
++	gpsd_report(LOG_INF, &quot;Sat info: mode %d, satellites used %d: %s\n&quot;,
++	    session-&gt;gpsdata.fix.mode, session-&gt;gpsdata.satellites_used,buf2);
++	gpsd_report(LOG_INF,
++	    &quot;Sat info: DOP P=%.1f H=%.1f V=%.1f T=%.1f G=%.1f\n&quot;,
++	    session-&gt;gpsdata.pdop, session-&gt;gpsdata.hdop,
++	    session-&gt;gpsdata.vdop, session-&gt;gpsdata.tdop,
++	    session-&gt;gpsdata.gdop);
++	mask |= HDOP_SET | VDOP_SET | PDOP_SET | TDOP_SET | GDOP_SET | STATUS_SET | MODE_SET | USED_SET;
++	break;
+     case 0x45:		/* Software Version Information */
+ 	if (len != 10)
+ 	    break;
+@@ -248,6 +365,8 @@
+ 	buf[len] = '\0';
+ 	gpsd_report(LOG_PROG, &quot;GPS System Message: %s\n&quot;,buf);
+ 	break;
++    case 0x49:		/* Almanac Health Page */
++	break;
+     case 0x4a:		/* Single-Precision Position LLA */
+ 	if (len != 20)
+ 	    break;
+@@ -289,6 +408,8 @@
+ 	}
+ #endif /* USE_SUPERPACKET */
+ 	break;
++    case 0x54:		/* One Satellite Bias */
++	break;
+     case 0x55:		/* IO Options */
+ 	if (len != 4)
+ 	    break;
+@@ -354,6 +475,8 @@
+ 	d1 = getbed(buf,17);			/* Time of Measurement */
+ 	gpsd_report(LOG_PROG, &quot;Raw Measurement Data %d %f %f %f %f\n&quot;,getub(buf,0),f1,f2,f3,d1);
+ 	break;
++    case 0x5b:		/* Satellite Ephemeris Status */
++	break;
+     case 0x5c:		/* Satellite Tracking Status */
+ 	if (len != 24)
+ 	    break;
+@@ -384,6 +507,8 @@
+ 		session-&gt;gpsdata.satellites = i;
+ 	}
+ 	break;
++    case 0x5e:		/* Additional Fix Status Report */
++	break;
+     case 0x6d:		/* All-In-View Satellite Selection */
+ 	u1 = getub(buf,0);			/* nsvs/dimension */
+ 	count = (int)((u1 &gt;&gt; 4) &amp; 0x0f);
+@@ -393,15 +518,15 @@
+ 	switch (u1 &amp; 7)				/* dimension */
+ 	{
+ 	case 3:
+-	    //session-&gt;gpsdata.status = STATUS_FIX;
++	    session-&gt;gpsdata.status = STATUS_FIX;
+ 	    session-&gt;gpsdata.fix.mode = MODE_2D;
+ 	    break;
+ 	case 4:
+-	    //session-&gt;gpsdata.status = STATUS_FIX;
++	    session-&gt;gpsdata.status = STATUS_FIX;
+ 	    session-&gt;gpsdata.fix.mode = MODE_3D;
+ 	    break;
+ 	default:
+-	    //session-&gt;gpsdata.status = STATUS_NO_FIX;
++	    session-&gt;gpsdata.status = STATUS_NO_FIX;
+ 	    session-&gt;gpsdata.fix.mode = MODE_NO_FIX;
+ 	    break;
+ 	}
+@@ -892,7 +1017,7 @@
+     .trigger        = NULL,		/* no trigger */
+     .channels       = TSIP_CHANNELS,	/* consumer-grade GPS */
+     .probe_wakeup   = NULL,		/* no wakeup to be done before hunt */
+-    .probe_detect   = NULL,		/* no probe */
++    .probe_detect   = tsip_detect,	/* probe for 96008O1 device*/
+     .probe_subtype  = tsip_probe_subtype,	/* no more subtype discovery */
+     .get_packet     = generic_get,	/* use the generic packet getter */
+     .parse_packet   = tsip_parse_input,	/* parse message packets */
+diff --exclude .svn -ur gpsd-trunk/packet.c gpsd-cmadams/packet.c
+--- gpsd-trunk/packet.c	2009-08-10 15:01:18.000000000 -0500
++++ gpsd-cmadams/packet.c	2009-08-31 19:49:44.000000000 -0500
+@@ -1126,7 +1126,21 @@
+ #endif /* ONCORE_ENABLE */
+ #if defined(TSIP_ENABLE) || defined(GARMIN_ENABLE)
+ 	else if (lexer-&gt;state == TSIP_RECOGNIZED) {
++	    unsigned int pos, dlecnt;
+ 	    size_t packetlen = lexer-&gt;inbufptr - lexer-&gt;inbuffer;
++#ifdef TSIP_ENABLE
++	    /* don't count stuffed DLEs in the length */
++	    dlecnt = 0;
++	    for (pos = 0; pos &lt; packetlen; pos ++)
++		if (lexer-&gt;inbuffer[pos] == DLE)
++		    dlecnt ++;
++	    if (dlecnt &gt; 2) {
++		dlecnt -= 2;
++		dlecnt /= 2;
++		gpsd_report(LOG_RAW, &quot;Unstuffed %d DLEs\n&quot;, dlecnt);
++		packetlen -= dlecnt;
++	    }
++#endif /* TSIP_ENABLE */
+ 	    if ( packetlen &lt; 5) {
+ 		lexer-&gt;state = GROUND_STATE;
+ 	    } else {
+@@ -1191,14 +1205,21 @@
+ 		 * 0x41, GPS time, data length 10
+ 		 * 0x42, Single Precision Fix, data length 16
+ 		 * 0x43, Velocity Fix, data length 20
++		 * 0x44, Non-Overdetermined Satellite Selection, data length 21
+ 		 * 0x45, Software Version Information, data length 10
+ 		 * 0x46, Health of Receiver, data length 2
++		 * 0x47, Signal Levels for All Satellites
+ 		 * 0x48, GPS System Messages
++		 * 0x49, Almanac Health Page, data length 28
+ 		 * 0x4a, LLA Position, data length 20
+ 		 * 0x4b, Machine Code Status, data length 3
++		 * 0x54, One Satellite Bias, data length 12
+ 		 * 0x56, Velocity Fix (ENU), data length 20
++		 * 0x57, Information About Last Computed Fix, data length 8
+ 		 * 0x5a, Raw Measurements
++		 * 0x5b, Satellite Ephemeris Status, data length 16
+ 		 * 0x5c, Satellite Tracking Status, data length 24
++		 * 0x5e, Additional Fix Status Report, data length 2
+ 		 * 0x6d, All-In-View Satellite Selection, data length 16+numSV
+ 		 * 0x82, Differential Position Fix Mode, data length 1
+ 		 * 0x83, Double Precision XYZ, data length 36
+@@ -1207,6 +1228,7 @@
+ 		 * 0xbc, Receiver Port Configuration
+ 		 *
+ 		 * &lt;DLE&gt;[pkt id] [data] &lt;DLE&gt;&lt;ETX&gt;
++		 * any &lt;DLE&gt; in the [data] will be &quot;stuffed&quot; to &lt;DLE&gt; &lt;DLE&gt;
+ 		 */
+ 		/*@ +charint @*/
+ 		pkt_id = lexer-&gt;inbuffer[1]; /* packet ID */
+@@ -1220,28 +1242,42 @@
+ 		    /* pass */;
+ 		else if ((0x41 == pkt_id) &amp;&amp; (0x0e == packetlen))
+ 		    /* pass */;
+-		else if ((0x42 == pkt_id) &amp;&amp; (0x14 == packetlen ))
++		else if ((0x42 == pkt_id) &amp;&amp; (0x14 == packetlen))
+ 		    /* pass */;
+ 		else if ((0x43 == pkt_id) &amp;&amp; (0x18 == packetlen))
+ 		    /* pass */;
++		else if ((0x44 == pkt_id) &amp;&amp; (0x19 == packetlen))
++		    /* pass */;
+ 		else if ((0x45 == pkt_id) &amp;&amp; (0x0e == packetlen))
+ 		    /* pass */;
+ 		else if ((0x46 == pkt_id) &amp;&amp; (0x06 == packetlen))
+ 		    /* pass */;
++		else if ((0x47 == pkt_id) &amp;&amp; ((0x05 &lt;= packetlen) &amp;&amp; (0x41 &gt;= packetlen)))
++		    /* pass */;
+ 		else if ((0x48 == pkt_id) &amp;&amp; (0x1a == packetlen))
+ 		    /* pass */;
++		else if ((0x49 == pkt_id) &amp;&amp; (0x20 == packetlen))
++		    /* pass */;
+ 		else if ((0x4a == pkt_id) &amp;&amp; (0x18 == packetlen))
+ 		    /* pass */;
+ 		else if ((0x4b == pkt_id) &amp;&amp; (0x07 == packetlen))
+ 		    /* pass */;
++		else if ((0x54 == pkt_id) &amp;&amp; (0x10 == packetlen))
++		    /* pass */;
+ 		else if ((0x55 == pkt_id) &amp;&amp; (0x08 == packetlen))
+ 		    /* pass */;
+ 		else if ((0x56 == pkt_id) &amp;&amp; (0x18 == packetlen))
+ 		    /* pass */;
++		else if ((0x57 == pkt_id) &amp;&amp; (0x0c == packetlen))
++		    /* pass */;
+ 		else if ((0x5a == pkt_id) &amp;&amp; ((0x1d &lt;= packetlen) &amp;&amp; (0x1f &gt;= packetlen)))
+ 		    /* pass */;
++		else if ((0x5b == pkt_id) &amp;&amp; (0x14 == packetlen))
++		    /* pass */;
+ 		else if ((0x5c == pkt_id) &amp;&amp; ((0x1c &lt;= packetlen) &amp;&amp; (0x1e &gt;= packetlen)))
+ 		    /* pass */;
++		else if ((0x5e == pkt_id) &amp;&amp; (0x06 == packetlen))
++		    /* pass */;
+ 		else if ((0x5f == pkt_id) &amp;&amp; (70 == packetlen))
+ 		    /* pass */;
+ 		else if ((0x6d == pkt_id) &amp;&amp; ((0x14 &lt;= packetlen) &amp;&amp; (0x20 &gt;= packetlen)))
+@@ -1250,8 +1286,6 @@
+ 		    /* pass */;
+ 		else if ((0x84 == pkt_id) &amp;&amp; ((0x28 &lt;= packetlen) &amp;&amp; (0x29 &gt;= packetlen)))
+ 		    /* pass */;
+-		else if ((0x8e == pkt_id))
+-		    /* pass */;
+ 		else if ((0x8f == pkt_id))
+ 		    /* pass */;
+ 		else if ((0xbb == pkt_id) &amp;&amp; (0x2c == packetlen))
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	
+	<LI>Next message: <A HREF="003888.html">[Gpsd-users] skytraq venus 6
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3887">[ date ]</a>
+              <a href="thread.html#3887">[ thread ]</a>
+              <a href="subject.html#3887">[ subject ]</a>
+              <a href="author.html#3887">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

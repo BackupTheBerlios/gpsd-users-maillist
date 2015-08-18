@@ -1,0 +1,147 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] Version 2.90 timestamps
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2009-December/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Version%202.90%20timestamps&In-Reply-To=%3C4B26C85E.20108%40softdevsys.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="004125.html">
+   <LINK REL="Next"  HREF="004130.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] Version 2.90 timestamps</H1>
+    <B>David Severt</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Version%202.90%20timestamps&In-Reply-To=%3C4B26C85E.20108%40softdevsys.com%3E"
+       TITLE="[Gpsd-users] Version 2.90 timestamps">severtd at softdevsys.com
+       </A><BR>
+    <I>Tue Dec 15 00:21:02 CET 2009</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="004125.html">[Gpsd-users] Version 2.90 timestamps
+</A></li>
+        <LI>Next message: <A HREF="004130.html">[Gpsd-users] Problem with GARMIN GPS 18x LVC (and gpsd + ntpd)
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#4126">[ date ]</a>
+              <a href="thread.html#4126">[ thread ]</a>
+              <a href="subject.html#4126">[ subject ]</a>
+              <a href="author.html#4126">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>One more thing.  In driver_tsip.c on line 739, where it is processing 
+the Primary Timing Packet (0x8F-AB), it does not seem to make any sense 
+that it is checking &quot;if ((int)u1 &gt; 10) {&quot; since this condition will 
+always be true.  Without knowing the intent of the author, I'd guess 
+that the line should read &quot;if((int)ul1 &gt; 10) {&quot;.
+
+Regards,
+David Severt
+
+David Severt wrote:
+&gt;<i> Chris;
+</I>&gt;<i>
+</I>&gt;<i> I hacked around with debug mode and looked at the driver to understand 
+</I>&gt;<i> this problem.  The problem seems to be that the Trimble Resolution SMT 
+</I>&gt;<i> is set up so that it sends 2 &quot;TSIP superpackets&quot; every second by 
+</I>&gt;<i> default.  One is the Primary Timing Packet (0x8F-AB) and has time/date 
+</I>&gt;<i> information.  When this packet is processed, the TIME_SET bit is set and 
+</I>&gt;<i> gpsd sends the time to ntp.  The Primary Timing Packet is immediately 
+</I>&gt;<i> followed by a Supplemental Timing Packet (0x8F-AC).  This packet 
+</I>&gt;<i> contains position information but no timing information, so it returns 
+</I>&gt;<i> LATLON_SET, ALTITUDE_SET, MODE_SET, CLEAR_SET and REPORT_SET.  So, the 
+</I>&gt;<i> data streamed to my application never has a valid gpsdata-&gt;fix.time.  I 
+</I>&gt;<i> tried 2 hacks to fix this.  One, I simply set the REPORT_SET bit along 
+</I>&gt;<i> with TIME_SET.  This made it so my application sees a valid 
+</I>&gt;<i> gpsdata-&gt;fix.time when it gets a message with the tag ID8fab but no time 
+</I>&gt;<i> with ID8fac tag messages.  So I tried REPORT_SET | CLEAR_SET | TIME_SET 
+</I>&gt;<i> with the Primary Timing Packet and removed the CLEAR_SET from the 
+</I>&gt;<i> processing of the Supplemental Timing Packet.  This makes it so that I 
+</I>&gt;<i> see the timestamp with both message tags.  I don't know how CLEAR_SET is 
+</I>&gt;<i> supposed to be used but since the 0x8F-AC is sent immediately following 
+</I>&gt;<i> the 0x8F-AB packet, it should be the 0x8F-AC that does the CLEAR_SET.
+</I>&gt;<i>
+</I>&gt;<i> Please let me know which hack is correct and let me know if you'd like 
+</I>&gt;<i> more information.  I can gpscat the data I'm seeing from the Resolution 
+</I>&gt;<i> SMT if you'd like to have it for testing purposes.  Please also let me 
+</I>&gt;<i> know if I should join the gpsd-devel mailing list for this level of 
+</I>&gt;<i> discussion.
+</I>&gt;<i>
+</I>&gt;<i> Regards,
+</I>&gt;<i> David Severt
+</I>&gt;<i>
+</I>&gt;<i> Chris Kuethe wrote:
+</I>&gt;<i>   
+</I>&gt;&gt;<i> FYI, I've seen your messages and keep meaning to deal with them. I'll
+</I>&gt;&gt;<i> plug in my LiQ and tbolt this weekend and see what these two look
+</I>&gt;&gt;<i> like... does the resolution emit 8N1? if so, can you grab a binary log
+</I>&gt;&gt;<i> and send it to me?
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> On Thu, Dec 10, 2009 at 2:17 PM, David Severt &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">severtd at softdevsys.com</A>&gt; wrote:
+</I>&gt;&gt;<i>   
+</I>&gt;&gt;<i>     
+</I>&gt;&gt;&gt;<i> I have a simple program to set date/time using data from gpsd.  When I
+</I>&gt;&gt;&gt;<i> try to run this program with the 2.90 release it does not work.  I am
+</I>&gt;&gt;&gt;<i> using libgps and gpsd built using 2.90 sources and am using
+</I>&gt;&gt;&gt;<i> &quot;gps_stream()&quot; and &quot;gps_poll()&quot; to get data from gpsd.  I never see a
+</I>&gt;&gt;&gt;<i> valid timestamp on any of the data.  If I just use telnet to connect to
+</I>&gt;&gt;&gt;<i> gpsd and type &quot;w+&quot; to watch packets, none of the packets have
+</I>&gt;&gt;&gt;<i> timestamps.  Using version 2.39, the messages tagged &quot;ID5c&quot; have
+</I>&gt;&gt;&gt;<i> timestamps but the messages tagged &quot;ID8fac&quot; do not.  Using version 2.90
+</I>&gt;&gt;&gt;<i> with the same gps, none of the messages have valid timestamps that I can
+</I>&gt;&gt;&gt;<i> see.  Therefore, the data obtained by using gps_stream() never has valid
+</I>&gt;&gt;&gt;<i> date/time information.  If I send the old-style &quot;d&quot; command with telnet,
+</I>&gt;&gt;&gt;<i> I get valid time/date.  Now that gps_query is gone, is there any way to
+</I>&gt;&gt;&gt;<i> use libgps to get date/time information from gpsd?  Is this a bug?  I am
+</I>&gt;&gt;&gt;<i> using a Trimble Resolution SMT starter kit, in TSIP mode, to do my testing.
+</I>&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;<i> Regards,
+</I>&gt;&gt;&gt;<i> David Severt
+</I>&gt;&gt;&gt;<i> _______________________________________________
+</I>&gt;&gt;&gt;<i> Gpsd-users mailing list
+</I>&gt;&gt;&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">Gpsd-users at lists.berlios.de</A>
+</I>&gt;&gt;&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">https://lists.berlios.de/mailman/listinfo/gpsd-users</A>
+</I>&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;<i>     
+</I>&gt;&gt;&gt;<i>       
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i>   
+</I>&gt;&gt;<i>     
+</I>&gt;<i>
+</I>&gt;<i> _______________________________________________
+</I>&gt;<i> Gpsd-users mailing list
+</I>&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">Gpsd-users at lists.berlios.de</A>
+</I>&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">https://lists.berlios.de/mailman/listinfo/gpsd-users</A>
+</I>&gt;<i>
+</I>&gt;<i>   
+</I>
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="004125.html">[Gpsd-users] Version 2.90 timestamps
+</A></li>
+	<LI>Next message: <A HREF="004130.html">[Gpsd-users] Problem with GARMIN GPS 18x LVC (and gpsd + ntpd)
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#4126">[ date ]</a>
+              <a href="thread.html#4126">[ thread ]</a>
+              <a href="subject.html#4126">[ subject ]</a>
+              <a href="author.html#4126">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

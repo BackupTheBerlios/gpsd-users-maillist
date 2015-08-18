@@ -1,0 +1,136 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] Low Budget Bathymetry
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2006-September/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Low%20Budget%20Bathymetry&In-Reply-To=%3CPine.LNX.4.64.0609171757490.27787%40catbert.rellim.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="001952.html">
+   <LINK REL="Next"  HREF="001954.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] Low Budget Bathymetry</H1>
+    <B>Gary E. Miller</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Low%20Budget%20Bathymetry&In-Reply-To=%3CPine.LNX.4.64.0609171757490.27787%40catbert.rellim.com%3E"
+       TITLE="[Gpsd-users] Low Budget Bathymetry">gem at rellim.com
+       </A><BR>
+    <I>Mon Sep 18 03:24:25 CEST 2006</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="001952.html">[Gpsd-users] Low Budget Bathymetry
+</A></li>
+        <LI>Next message: <A HREF="001954.html">[Gpsd-users] Low Budget Bathymetry
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1953">[ date ]</a>
+              <a href="thread.html#1953">[ thread ]</a>
+              <a href="subject.html#1953">[ subject ]</a>
+              <a href="author.html#1953">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>-----BEGIN PGP SIGNED MESSAGE-----
+Hash: SHA1
+
+Yo Carl!
+
+On Sun, 17 Sep 2006, Carl Brown wrote:
+
+&gt;<i> Why does gpsd not parse more varieties of NMEA sentences?
+</I>
+Because no one cared enough to write the code yet.
+
+&gt;<i> The GPS talks to the fishfinder, which in turn outputs groups of
+</I>&gt;<i> sentences in the following sequence, with an &quot;IN&quot; prefix:
+</I>
+Can you send a sample fragment of a few cycles?  I'll add it to our
+sample collection.
+
+&gt;<i> The RMC, GLL, and GGA sentences all include position information. Parsing all
+</I>&gt;<i> of them would quadruple the position update frequency over parsing only GGA
+</I>&gt;<i> on this unit.
+</I>
+Not really.  If you check the output samples we have collected in gpsd
+you will see that when several of those are output together they have
+the same time stamp.  So they are just slightly different ways of saying
+the same thing.
+
+&gt;<i> Also, neither gpsd nor gpsbabel can parse the DPT sentences,
+</I>
+Conceptually should be easy to add in to gpsd.  It looks simple:
+
+Digital Depth is embedded in the DPT sentence.  Its format is as follows:
+
+INDPT,d.d,o.o*hh&lt;CR&gt;&lt;LF&gt;
+
+where:
+
+    * d.d is the decimal depth value in meters relative to the transducer
+    * o.o is an offset from the the transducer to the surface.
+    * hh is an automatically generated checksum
+    * &lt;CR&gt;&lt;LF&gt;
+
+Eric would have to alocate some way for gpsd to present the info to the
+client.  Not a big deal, but just some bookeeping.  Eric: what do you
+think about this?
+
+&gt;<i> The timestamps that gpsd could add, for example, would provide
+</I>&gt;<i> valuable position interpolation information for more precisely positioning
+</I>&gt;<i> the depth readings between position readings.
+</I>
+gpsd has stayed away from interpolation of data.  The intent has been to
+just provide the facts to the client and let the client do any fancy
+processing of the data.
+
+&gt;<i> Ideally, I would have the incoming sentences parsed on arrival at the laptop,
+</I>&gt;<i> with position translated from lat-lon to UTM.
+</I>
+No one else has requested UTM.  GPS seem to be pretty much wgs84.  I
+guess it could be done, but seems to me to be the sort of thing best
+done in a client.  I would hate to see something like proj.4 linked in to
+gpsd.
+
+RGDS
+GARY
+- ---------------------------------------------------------------------------
+Gary E. Miller Rellim 20340 Empire Blvd, Suite E-3, Bend, OR 97701
+	<A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">gem at rellim.com</A>  Tel:+1(541)382-8588
+
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v1.4.3 (GNU/Linux)
+
+iD8DBQFFDfVN8KZibdeR3qURAlWiAJ44kfqbGDMwsdhb9wuGPeP0hZ6ZbgCg8qxX
+jM80YU9YbxPYvHmxtS1zNkI=
+=EOfN
+-----END PGP SIGNATURE-----
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="001952.html">[Gpsd-users] Low Budget Bathymetry
+</A></li>
+	<LI>Next message: <A HREF="001954.html">[Gpsd-users] Low Budget Bathymetry
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1953">[ date ]</a>
+              <a href="thread.html#1953">[ thread ]</a>
+              <a href="subject.html#1953">[ subject ]</a>
+              <a href="author.html#1953">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

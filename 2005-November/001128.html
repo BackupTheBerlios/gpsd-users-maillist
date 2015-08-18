@@ -1,0 +1,104 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] ntpd offset
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2005-November/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20ntpd%20offset&In-Reply-To=%3C4384D7E3.2090602%40afoyi.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="001133.html">
+   <LINK REL="Next"  HREF="001130.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] ntpd offset</H1>
+    <B>Darryl Ross</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20ntpd%20offset&In-Reply-To=%3C4384D7E3.2090602%40afoyi.com%3E"
+       TITLE="[Gpsd-users] ntpd offset">spam at afoyi.com
+       </A><BR>
+    <I>Wed Nov 23 21:58:11 CET 2005</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="001133.html">[Gpsd-users] Garmin binary with serial interface
+</A></li>
+        <LI>Next message: <A HREF="001130.html">[Gpsd-users] ntpd offset
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1128">[ date ]</a>
+              <a href="thread.html#1128">[ thread ]</a>
+              <a href="subject.html#1128">[ subject ]</a>
+              <a href="author.html#1128">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hey All,
+
+At the moment I'm not making much progress on my in-car system, so I've 
+got my BU-303 plugged into my file server to use as an ntp time source. 
+There seems to be a bit of an offset though:
+
+[<A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">darryl at server1</A> ~]$ sudo /usr/sbin/ntpdc -nc peers
+Password:
+      remote           local      st poll reach  delay   offset    disp
+=======================================================================
+=127.127.28.0    127.0.0.1        0   16  377 0.00000  0.543443 0.01611
+=127.127.1.0     127.0.0.1       15   64  377 0.00000  0.000000 0.03069
+=212.159.114.45  172.17.33.250   14  512  377 2.00748  0.028973 0.14833
+=84.16.227.160   172.17.33.250    2  512  377 0.36880  0.001745 0.09654
+=202.78.46.254   172.17.33.250    2  512  377 0.04637  0.000114 0.09650
+=172.17.33.254   172.17.33.250    3  512  377 0.00072  0.000820 0.09662
+=212.186.110.32  172.17.33.250    2  512  377 0.39462  0.002180 0.08612
+=172.17.30.254   172.17.33.250    3  512  377 0.00322 -0.001441 0.09648
+*202.191.97.130  172.17.33.250    2  512  377 0.04167  0.000414 0.09657
+
+202.78.46.254 and 202.191.97.130 are servers I control on the net, the 
+172.17.* servers are on the LAN and the other servers are from pool.ntp.org.
+
+As you can see, the offset for the SHM source is 0.5 (seconds?). That 
+seems to vary a bit, but that would be about the average I think.
+
+Is this because there is no PPS signal and the speed on the serial port 
+is low?
+
+If it makes any difference the GPS is in NMEA mode. In SiRF mode the 
+offset seemed to be about 13s.
+
+Any ideas?
+
+Regards
+Darryl
+
+-------------- next part --------------
+A non-text attachment was scrubbed...
+Name: signature.asc
+Type: application/pgp-signature
+Size: 187 bytes
+Desc: OpenPGP digital signature
+URL: &lt;<A HREF="https://lists.berlios.de/pipermail/gpsd-users/attachments/20051124/f671d2f3/attachment.pgp">https://lists.berlios.de/pipermail/gpsd-users/attachments/20051124/f671d2f3/attachment.pgp</A>&gt;
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="001133.html">[Gpsd-users] Garmin binary with serial interface
+</A></li>
+	<LI>Next message: <A HREF="001130.html">[Gpsd-users] ntpd offset
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1128">[ date ]</a>
+              <a href="thread.html#1128">[ thread ]</a>
+              <a href="subject.html#1128">[ subject ]</a>
+              <a href="author.html#1128">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

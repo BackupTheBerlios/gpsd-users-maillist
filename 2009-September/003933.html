@@ -1,0 +1,113 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] How to start gpsd with fix baud rate of serial	interface
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2009-September/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20How%20to%20start%20gpsd%20with%20fix%20baud%20rate%20of%20serial%0A%09interface&In-Reply-To=%3C26889.1253112885%40foxharp.boston.ma.us%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="003932.html">
+   <LINK REL="Next"  HREF="003935.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] How to start gpsd with fix baud rate of serial	interface</H1>
+    <B>Paul Fox</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20How%20to%20start%20gpsd%20with%20fix%20baud%20rate%20of%20serial%0A%09interface&In-Reply-To=%3C26889.1253112885%40foxharp.boston.ma.us%3E"
+       TITLE="[Gpsd-users] How to start gpsd with fix baud rate of serial	interface">pgf at foxharp.boston.ma.us
+       </A><BR>
+    <I>Wed Sep 16 16:54:45 CEST 2009</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="003932.html">[Gpsd-users] How to start gpsd with fix baud rate of	serial	interface
+</A></li>
+        <LI>Next message: <A HREF="003935.html">[Gpsd-users] How to start gpsd with fix baud rate of	serial	interface
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3933">[ date ]</a>
+              <a href="thread.html#3933">[ thread ]</a>
+              <a href="subject.html#3933">[ subject ]</a>
+              <a href="author.html#3933">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>eric s. raymond wrote:
+ &gt; Kai Klenke &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">klenke at ohb-teledata.de</A>&gt;:
+ &gt; &gt; i am using the ublox &quot;Antaris LEA-4H&quot;-GPS-Receiver and it is via RS232
+ &gt; &gt; connected to the
+ &gt; &gt; gpsd on a Linux-Debian-Lenny machine.
+ &gt; &gt; 
+ &gt; &gt; The GPS-Receiver is configured to 38400 baud 8-N-1 with standard NMEA
+ &gt; &gt; output.
+ &gt; &gt; 
+ &gt; &gt; With debug level 5 of the gpsd i can see that there is an autobauding which
+ &gt; &gt; starts
+ &gt; &gt; with 9600baud -&gt; 4800baud -&gt; 19200baud -&gt; 38400baud. This takes much time
+ &gt; &gt; and
+ &gt; &gt; so it will be nice if there is a possibility to start the gpsd with a fix
+ &gt; &gt; baudrate.
+ &gt; &gt; 
+ &gt; &gt; Is it possible via default file /etc/default/gpsd?
+ &gt; &gt; 
+ &gt; &gt; I don't find any description about this file.
+ &gt; &gt; 
+ &gt; &gt; Who can help?
+ &gt; 
+ &gt; There is no such file.  and one of my design goals is that
+ &gt; there never will be.
+ &gt; 
+ &gt; The first speed tried by the hunt loop is the one already set by the
+ &gt; hardware (this is why 0 comes first in the hunt group list, to tell
+ &gt; gpsd not to change sppeds).  So, unless the hardware oport speed has
+ &gt; been changed since gpsd lasted opened it, gpsd spends no time at all
+ &gt; baud-hunting.
+
+but on a hand-held device, or even a laptop, the first use after
+boot will likely hit the search phase, right?  i suppose one
+could do an &quot;stty 4800 &lt; /dev/ttyGPS&quot; before starting gpsd, but i
+think that depends on linux tty semantics.  (in fact, so does the
+'try 0 first' trick, right?).  i applaud your goal of minimum
+config, but a &quot;use this baudrate&quot; option would be useful, in my
+opinion.
+
+if nothing else, it would work around a problem i saw a while ago
+(which i'm not equipped to re-verify at the moment -- sorry -- i
+hope i'm remembering right).  i believe that it's possible to set
+a baudrate with the 'b' command which will not be searched for in
+the hunt loop.  at the time i was doing gpsd recompiles for other
+reasons, so i simply extended the hunt loop.  (i didn't know
+about the &quot;try current speed first&quot; behavior at the time -- nor
+would i have likely remembered it, it's not a very traditional
+mechanism.)
+
+paul
+=---------------------
+ paul fox, <A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">pgf at foxharp.boston.ma.us</A> (arlington, ma, where it's 55.6 degrees)
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="003932.html">[Gpsd-users] How to start gpsd with fix baud rate of	serial	interface
+</A></li>
+	<LI>Next message: <A HREF="003935.html">[Gpsd-users] How to start gpsd with fix baud rate of	serial	interface
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3933">[ date ]</a>
+              <a href="thread.html#3933">[ thread ]</a>
+              <a href="subject.html#3933">[ subject ]</a>
+              <a href="author.html#3933">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

@@ -1,0 +1,144 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] [PATCH] Re: Garmin GPS almost never sends new position data
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2006-September/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20%5BPATCH%5D%20Re%3A%20Garmin%20GPS%20almost%20never%20sends%20new%0A%20position%20data&In-Reply-To=%3CPine.LNX.4.64.0609241452580.18493%40catbert.rellim.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="001989.html">
+   <LINK REL="Next"  HREF="001995.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] [PATCH] Re: Garmin GPS almost never sends new position data</H1>
+    <B>Gary E. Miller</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20%5BPATCH%5D%20Re%3A%20Garmin%20GPS%20almost%20never%20sends%20new%0A%20position%20data&In-Reply-To=%3CPine.LNX.4.64.0609241452580.18493%40catbert.rellim.com%3E"
+       TITLE="[Gpsd-users] [PATCH] Re: Garmin GPS almost never sends new position data">gem at rellim.com
+       </A><BR>
+    <I>Mon Sep 25 00:02:31 CEST 2006</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="001989.html">[Gpsd-users] [PATCH] Re: Garmin GPS almost never sends new	position data
+</A></li>
+        <LI>Next message: <A HREF="001995.html">[Gpsd-users] [PATCH] Re: Garmin GPS almost never sends new	position data
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1992">[ date ]</a>
+              <a href="thread.html#1992">[ thread ]</a>
+              <a href="subject.html#1992">[ subject ]</a>
+              <a href="author.html#1992">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>-----BEGIN PGP SIGNED MESSAGE-----
+Hash: SHA1
+
+Yo Eivind!
+
+On Sun, 24 Sep 2006, Eivind Tagseth wrote:
+
+&gt;<i> You are?  I've given you those details several months ago, and not tried
+</I>&gt;<i> getting gspd working since.  Until MikeCarter reported the same problem
+</I>&gt;<i> last week that is.
+</I>
+Mike's problem is not remotely in the least bit like yours.  Your
+packets are clearly corrupted.  He is getting good packets.  The packets
+that Mike is getting are just not documented, so we need to reverse
+engineer a bit.
+
+I guess that is part of my confusion because I see two problems that
+have no relation to each other.
+
+&gt;<i> I'm on gentoo, vanilla kernel 2.6.17.1 on a intel centrino dual core cpu.
+</I>
+A gentoo person that does not update every night?  Wow. :-)
+
+&gt;<i> &gt; On Sun, 24 Sep 2006, Eivind Tagseth wrote:
+</I>&gt;<i>
+</I>&gt;<i> &gt;&gt; 	o at the start of GetPacket, initialize the buffer with the left
+</I>&gt;<i> &gt;&gt; 	  over bytes from the last run, and only read more bytes if
+</I>&gt;<i> &gt;&gt; 	  necessary
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; This to me is really scary.  The size of the buffer returned is supposed to
+</I>&gt;<i> &gt; match the size of the packet.  Anything else is madness.
+</I>&gt;<i>
+</I>&gt;<i> I don't know about madness.  Since I'm using /dev/ttyUSB0 as my device,
+</I>&gt;<i> and that device goes through the tty layer, I'm not so sure that this is
+</I>&gt;<i> madness.
+</I>
+Trying to guess which parts in a read buffer are the real ones and which
+are not is madness.  Certainly NOT the way Garmin or the Garmin kernel
+driver meant it.  If the kernel driver is returning bytes that are not
+part of the packet then the kernel driver is broken.
+
+&gt;<i> I cannot find anything preventing the tty layer to concatenate
+</I>&gt;<i> several packets that it receives from garmin_gps into one read buffer.
+</I>
+Except that the documenetation and implementation of the protocol
+specifically require concatentation not to happen.  It is the not
+64-byte packets that denote the end of the packet since the packets
+themselves have no framing bytes.
+
+&gt;<i> Once this happens, the tty layer cannot know that it should return only
+</I>&gt;<i> parts of that buffer to userspace.
+</I>
+And it never should.  The garin kernel drivers is supposed to return
+EXACTLY what the garmin GPS sent, which is &lt;=64 byte chunks.
+
+&gt;<i> &gt;&gt; I've done some testing, and so far not gotten a single error message about too
+</I>&gt;<i> &gt;&gt; long packets.  Maybe Chris could try this patch and see if it helps on his
+</I>&gt;<i> &gt;&gt; system?
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; Chris is an OpenBSD guy.  So he can not test this.
+</I>&gt;<i>
+</I>&gt;<i> Oh, I'm very sorry, for the past emails when I've mentioned Chris, I've
+</I>&gt;<i> really meant MikeyCarter!  Very sorry!
+</I>
+Mike's packets do not have receive errors. his decode just fine.  There
+is no point him trying this.  Mike's problem is that his unit sends the
+packet with the satellites, but not the packet with the PVT.  Garmins
+are funny that way and a lot is just not docuented.
+
+RGDS
+GARY
+- ---------------------------------------------------------------------------
+Gary E. Miller Rellim 20340 Empire Blvd, Suite E-3, Bend, OR 97701
+	<A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">gem at rellim.com</A>  Tel:+1(541)382-8588
+
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v1.4.3 (GNU/Linux)
+
+iD8DBQFFFwB58KZibdeR3qURArsuAKDf+rBpTHJZ0jUO/5+sft0wmV34HACg7xTd
+ScBy+q/Il34lut5PzVUlVY8=
+=ve4k
+-----END PGP SIGNATURE-----
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="001989.html">[Gpsd-users] [PATCH] Re: Garmin GPS almost never sends new	position data
+</A></li>
+	<LI>Next message: <A HREF="001995.html">[Gpsd-users] [PATCH] Re: Garmin GPS almost never sends new	position data
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1992">[ date ]</a>
+              <a href="thread.html#1992">[ thread ]</a>
+              <a href="subject.html#1992">[ subject ]</a>
+              <a href="author.html#1992">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

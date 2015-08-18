@@ -1,0 +1,108 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] date sync problem
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2012-May/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20date%20sync%20problem&In-Reply-To=%3C1413782404.195714122.1338279778111.JavaMail.root%40spooler3-g27.priv.proxad.net%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="005548.html">
+   <LINK REL="Next"  HREF="005550.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] date sync problem</H1>
+    <B>jean.gueganno at free.fr</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20date%20sync%20problem&In-Reply-To=%3C1413782404.195714122.1338279778111.JavaMail.root%40spooler3-g27.priv.proxad.net%3E"
+       TITLE="[Gpsd-users] date sync problem">jean.gueganno at free.fr
+       </A><BR>
+    <I>Tue May 29 10:22:58 CEST 2012</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="005548.html">[Gpsd-users] Fwd: gpsd 3.6 install error
+</A></li>
+        <LI>Next message: <A HREF="005550.html">[Gpsd-users] date sync problem
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#5549">[ date ]</a>
+              <a href="thread.html#5549">[ thread ]</a>
+              <a href="subject.html#5549">[ subject ]</a>
+              <a href="author.html#5549">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hello,
+
+I have a problem with the synchronization of the date of my embedded card by using gpsd.
+
+I'm working on a chestnut overo fire com with ublox NEO 6G gps. 
+
+The installation of gpsd 3.6 worked fine and when I run the daemon the cgps client print me screen as follow:
+
+&#9484;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9488;&#9484;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9488;
+&#9474;    Time:	 2012-05-29T08:08:16.000Z   &#9474;&#9474;PRN:   Elev:  Azim:  SNR:  Used: &#9474;
+&#9474;    Latitude:    47.263771 N               &#9474;&#9474;   2    45    240    46      Y   &#9474;
+&#9474;    Longitude:    1.648710798              &#9474;&#9474;   4    28    195    42      Y   &#9474;
+&#9474;    Altitude:   224.1 ft                   &#9474;&#9474;   5    45    301    48      Y   &#9474;
+&#9474;    Speed:	 0.1 mph                    &#9474;&#9474;   7    64    087    28      Y   &#9474;
+&#9474;    Heading:    0.0 deg (true)             &#9474;&#9474;   8    52    170    00      Y   &#9474;
+&#9474;    Climb:	 0.0 ft/min                 &#9474;&#9474;  10    74    127    31      Y   &#9474;
+&#9474;    Status:     3D FIX (1243 secs)         &#9474;&#9474;  13    38    063    26      Y   &#9474;
+&#9474;    Longitude Err:   +/- 6 ft              &#9474;&#9474;  16    08    028    26      Y   &#9474;
+&#9474;    Latitude Err:    +/- 8 f8              &#9474;&#9474;  23    08    072    26      Y   &#9474;
+&#9474;    Altitude Err:    +/- 21 f3             &#9474;&#9474;  24    00    328    00      Y   &#9474;
+&#9474;    Course Err:      n/a                   &#9474;&#9474;                                 &#9474;
+&#9474;    Speed Err:       +/- 11 m2h            &#9474;&#9474;                                 &#9474;
+&#9474;    Time offset:     -341866.792796        &#9474;&#9474;                                 &#9474;
+&#9474;    Grid Square:     IN97eg                &#9474;&#9474;                                 &#9474;
+&#9492;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9496;&#9492;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9496;
+
+so may be the daemon works great.
+
+But when I configure the ntpd configuration file so it is fed by the gpsd daemon, there is no synchronization of the date of the card. For information, I don't use the PPS signal, because this signal is connect on a gpio of the card and I don't know how use it.
+
+The configuration which I put in the ntp.conf file is as follow :
+
+server 127.127.28.0 minpoll 4 maxpoll 4
+fudge 127.127.28.0 time1 0.530 refid GPS
+
+Is it possible to sync the date without PPS?
+Did I miss a step which ensure that the synchronization works?
+
+I really need help.
+
+regards,
+
+Jean 
+
+
+
+
+</PRE>
+
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="005548.html">[Gpsd-users] Fwd: gpsd 3.6 install error
+</A></li>
+	<LI>Next message: <A HREF="005550.html">[Gpsd-users] date sync problem
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#5549">[ date ]</a>
+              <a href="thread.html#5549">[ thread ]</a>
+              <a href="subject.html#5549">[ subject ]</a>
+              <a href="author.html#5549">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

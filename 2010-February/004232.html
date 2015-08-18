@@ -1,0 +1,178 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] getting ntpd to work with gpsd
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2010-February/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20getting%20ntpd%20to%20work%20with%20gpsd&In-Reply-To=%3C9114FF5C9483EC46AAE0526E0433F022017EB5%40mail5.amherst.edu%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="004231.html">
+   <LINK REL="Next"  HREF="004233.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] getting ntpd to work with gpsd</H1>
+    <B>Ryan Turcotte 10E</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20getting%20ntpd%20to%20work%20with%20gpsd&In-Reply-To=%3C9114FF5C9483EC46AAE0526E0433F022017EB5%40mail5.amherst.edu%3E"
+       TITLE="[Gpsd-users] getting ntpd to work with gpsd">rturcotte10 at amherst.edu
+       </A><BR>
+    <I>Tue Feb 16 22:30:12 CET 2010</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="004231.html">[Gpsd-users] getting ntpd to work with gpsd
+</A></li>
+        <LI>Next message: <A HREF="004233.html">[Gpsd-users] getting ntpd to work with gpsd
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#4232">[ date ]</a>
+              <a href="thread.html#4232">[ thread ]</a>
+              <a href="subject.html#4232">[ subject ]</a>
+              <a href="author.html#4232">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>debug with egrep:
+gpsd: NTPD shmat(0,0,0) succeeded
+gpsd: NTPD shmat(32769,0,0) succeeded
+gpsd: NTPD shmat(491533,0,0) succeeded
+gpsd: NTPD shmat(524302,0,0) succeeded
+gpsd: NTPD ntpd_link_activate: 0
+gpsd: NTPD ntpshm_put: Clock: 1266355302.000000 @ 1266384408.805441, fudge: 0.000
+gpsd: PPS Create Thread gpsd_ppsmonitor
+gpsd: NTPD ntpshm_put: Clock: 1266355303.000000 @ 1266384409.732061, fudge: 0.000
+gpsd: NTPD ntpshm_put: Clock: 1266355304.000000 @ 1266384410.688147, fudge: 0.000
+gpsd: NTPD ntpshm_put: Clock: 1266355305.000000 @ 1266384411.688105, fudge: 0.000
+gpsd: NTPD ntpshm_put: Clock: 1266355306.000000 @ 1266384413.028122, fudge: 0.000
+gpsd: NTPD ntpshm_put: Clock: 1266355307.000000 @ 1266384413.700145, fudge: 0.000
+
+... with ntpdshm_puts ad nauseum
+
+ps -al:
+F S   UID   PID  PPID  C PRI  NI ADDR SZ WCHAN  TTY          TIME CMD
+4 S     0  8230  3814  0  65 -10 -  3195 stext  pts/0    00:00:00 gpsd
+
+Thanks Gary.
+
+Ryan
+
+
+
+-----Original Message-----
+From: Gary E. Miller [mailto:<A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">gem at rellim.com</A>]
+Sent: Tue 2/16/2010 3:27 PM
+To: Ryan Turcotte 10E
+Cc: <A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">gpsd-users at lists.berlios.de</A>
+Subject: RE: [Gpsd-users] getting ntpd to work with gpsd
+ 
+-----BEGIN PGP SIGNED MESSAGE-----
+Hash: SHA1
+
+Yo Ryan!
+
+On Tue, 16 Feb 2010, Ryan Turcotte 10E wrote:
+
+&gt;<i> I've compiled gpsd 2.90 from source, it gets a 3D fix, but ntpd is not
+</I>&gt;<i> updating. Run both gpsd and ntpd from su -
+</I>
+The current SVN has some updates to allow gpsd to update ntpd even
+when run as a normal user.  So there may be some things in there to
+make  things  betterfor you.
+
+&gt;<i> These are the opening debug lines:
+</I>&gt;<i> gpsd: NTPD shmat(0,0,0) succeeded
+</I>&gt;<i> gpsd: NTPD shmat(32769,0,0) succeeded
+</I>&gt;<i> gpsd: NTPD shmat(491533,0,0) succeeded
+</I>&gt;<i> gpsd: NTPD shmat(524302,0,0) succeeded
+</I>
+That last two are just wrong.  They should be:
+
+gpsd: NTPD shmat(0,0,0) succeeded, segment 0
+gpsd: NTPD shmat(32769,0,0) succeeded, segment 1
+gpsd: NTPD shmat(163842,0,0) succeeded, segment 2
+gpsd: NTPD shmat(196611,0,0) succeeded, segment 3
+
+The keys should be 163842 and 196611, NOT 491533 and 524302. No idea how
+that could happen.  But it indicates something pretty strange.
+
+Then what do you get?  We need the rest of the debug output. Like this:
+	gpsd -nND 6 /dev/ttyS0 2&gt;&amp;1 | egrep 'NTP|PPS'
+
+Maybet he  first 50 lines will do.
+
+Also, when ntp is running, what does this  give you:
+	ps -al | egrep 'gpsd|CMD'
+
+
+&gt;<i> ntpd, obv:
+</I>&gt;<i> delta:~# ntpq -p
+</I>&gt;<i>      remote           refid      st t when poll reach   delay   offset 
+</I>&gt;<i> jitter
+</I>&gt;<i> ==============================================================================
+</I>&gt;<i>  SHM(0)          .GPS.            0 l    -   16    0    0.000    0.000  
+</I>&gt;<i> 0.002
+</I>&gt;<i>  SHM(1)          .GPS1.           0 l    -   16    0    0.000    0.000  
+</I>&gt;<i> 0.002
+</I>
+Yeah, no ntpd input.
+
+&gt;<i> Here is my ntp.conf, with rest of commented lines deleted for brevity:
+</I>
+That looks good.
+
+&gt;<i> Here is the cat command:
+</I>&gt;<i> delta:~# cat /proc/sysvipc/shm
+</I>&gt;<i>        key      shmid perms       size  cpid  lpid nattch   uid   gid 
+</I>&gt;<i> cuid  cgid      atime      dtime      ctime
+</I>&gt;<i> 1314148400          0   700         80  3444  5749      2     0    
+</I>&gt;<i> 0     0     0 1266378629 1266378610 1266375444
+</I>&gt;<i> 1314148401      32769   700         80  3444  5749      2     0    
+</I>&gt;<i> 0     0     0 1266378629 1266378610 1266375444
+</I>
+Those are the two shmid that ntp/gpsd use when both start as root, and 2
+attachments. So likely ntpd and gpsd are on the proper shm.
+
+Looks close, the worrisome thing to me is the  last 2 shmid are wrong and
+that smells like a bad binary or similar.
+
+RGDS
+GARY
+- ---------------------------------------------------------------------------
+Gary E. Miller Rellim 109 NW Wilmington Ave., Suite E, Bend, OR 97701
+	<A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">gem at rellim.com</A>  Tel:+1(541)382-8588
+
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v1.4.3 (GNU/Linux)
+
+iD8DBQFLev+jBmnRqz71OvMRAo3gAKCHFF4aumqoHLJiVPnvA2OLGJGs8QCgyUYm
+Y2i455IxSoq3YWQUV2v+PLI=
+=KJ6b
+-----END PGP SIGNATURE-----
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="004231.html">[Gpsd-users] getting ntpd to work with gpsd
+</A></li>
+	<LI>Next message: <A HREF="004233.html">[Gpsd-users] getting ntpd to work with gpsd
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#4232">[ date ]</a>
+              <a href="thread.html#4232">[ thread ]</a>
+              <a href="subject.html#4232">[ subject ]</a>
+              <a href="author.html#4232">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

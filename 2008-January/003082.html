@@ -1,0 +1,97 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] GPSd and gpsfeed+ trouble communicating
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2008-January/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20GPSd%20and%20gpsfeed%2B%20trouble%20communicating&In-Reply-To=%3C20080113181555.365926kjar3ya8ys%40mail.edigitalstudios.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="003121.html">
+   <LINK REL="Next"  HREF="003083.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] GPSd and gpsfeed+ trouble communicating</H1>
+    <B>roger at edigitalstudios.com</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20GPSd%20and%20gpsfeed%2B%20trouble%20communicating&In-Reply-To=%3C20080113181555.365926kjar3ya8ys%40mail.edigitalstudios.com%3E"
+       TITLE="[Gpsd-users] GPSd and gpsfeed+ trouble communicating">roger at edigitalstudios.com
+       </A><BR>
+    <I>Mon Jan 14 01:15:55 CET 2008</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="003121.html">[Gpsd-users] gpsd.h uses &quot;typename&quot; - OK for C, NG for C++
+</A></li>
+        <LI>Next message: <A HREF="003083.html">[Gpsd-users] GPSd and gpsfeed+ trouble communicating
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3082">[ date ]</a>
+              <a href="thread.html#3082">[ thread ]</a>
+              <a href="subject.html#3082">[ subject ]</a>
+              <a href="author.html#3082">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hello, I've been messing around with gpsd for a couple days. I want to  
+use gpsfeed+ to simulate a moving gps device. gpsfeed+ is set up to  
+use the serial device /dev/ttyS0 and gpsd is set to receive that data:
+
+$ sudo gpsd -F /dev/ttyS0 -S 2497 -D 3 -N
+
+but when I telnet to localhost 2497, gpsd only answers my queries with ?:
+
+Trying 127.0.0.1...
+Connected to localhost.
+Escape character is '^]'.
+o
+GPSD,O=?
+
+and in my gpsd terminal window I get this debug info:
+
+gpsd: client connect on 6
+gpsd: checking client(0)
+gpsd: client(0): assigning channel...
+gpsd: client(0): channel assignment failed.
+
+Is there extra configuration that I'm missing? As far as I can tell  
+gpsfeed+ should be piped into gpsd. Do I need to use gpspipe? I had  
+success getting the data from gpsfeed+ with gpspipe the other day  
+running only gpspipe and not gpsd, but now I get this error:
+
+$ sudo gpspipe -r
+gpspipe: could not connect to gpsd 127.0.0.1:2947, Connection refused(111)
+
+I'm thoroughly stymied, can anyone point me in the right direction?
+
+
+
+
+----------------------------------------------------------------
+This message was sent using IMP, the Internet Messaging Program.
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="003121.html">[Gpsd-users] gpsd.h uses &quot;typename&quot; - OK for C, NG for C++
+</A></li>
+	<LI>Next message: <A HREF="003083.html">[Gpsd-users] GPSd and gpsfeed+ trouble communicating
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3082">[ date ]</a>
+              <a href="thread.html#3082">[ thread ]</a>
+              <a href="subject.html#3082">[ subject ]</a>
+              <a href="author.html#3082">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

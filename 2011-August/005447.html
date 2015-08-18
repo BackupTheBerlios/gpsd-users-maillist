@@ -1,0 +1,239 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] Build issue 3.1
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2011-August/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Build%20issue%203.1&In-Reply-To=%3C4D53A140-87B4-425D-AC88-F5089B86975E%40aus-city.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="005446.html">
+   <LINK REL="Next"  HREF="005450.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] Build issue 3.1</H1>
+    <B>David Cottle</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Build%20issue%203.1&In-Reply-To=%3C4D53A140-87B4-425D-AC88-F5089B86975E%40aus-city.com%3E"
+       TITLE="[Gpsd-users] Build issue 3.1">webmaster at aus-city.com
+       </A><BR>
+    <I>Mon Aug 29 08:12:51 CEST 2011</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="005446.html">[Gpsd-users] Build issue 3.1
+</A></li>
+        <LI>Next message: <A HREF="005450.html">[Gpsd-users] Build issue 3.1
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#5447">[ date ]</a>
+              <a href="thread.html#5447">[ thread ]</a>
+              <a href="subject.html#5447">[ subject ]</a>
+              <a href="author.html#5447">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Thanks Eric,
+
+I added in pps=true...
+
+scons \
+        dbus=yes \
+        systemd=yes \
+        pps=true \
+        libQgpsmm=no \
+        debug=yes \
+        prefix=&quot;&quot; \
+        sysconfdif=%{_sysconfdir} \
+        bindir=%{_bindir} \
+        includedir=%{_includedir} \
+        libdir=%{_libdir} \
+        sbindir=%{_sbindir} \
+        mandir=%{_mandir} \
+        docdir=%{_docdir} \
+        build
+
+
+I will rebuild 3.0 again see if that works and report back.
+
+
+Meantime 3.1:
+
++ /usr/bin/install -d -m 0755 /root/rpmbuild/BUILDROOT/gpsd-3.1-0.el6.x86_64/usr/share/gpsd
++ /usr/bin/install -p -m 0644 packaging/X11/gpsd-logo.png /root/rpmbuild/BUILDROOT/gpsd-3.1-0.el6.x86_64/usr/share/gpsd/gpsd-logo.png
++ rm /root/rpmbuild/BUILDROOT/gpsd-3.1-0.el6.x86_64/usr/lib64/libgpsd.so /root/rpmbuild/BUILDROOT/gpsd-3.1-0.el6.x86_64/usr/lib64/pkgconfig/libgpsd.pc
+rm: cannot remove `/root/rpmbuild/BUILDROOT/gpsd-3.1-0.el6.x86_64/usr/lib64/pkgconfig/libgpsd.pc': No such file or directory
+error: Bad exit status from /var/tmp/rpm-tmp.Uc3r1x (%install)
+
+
+RPM build errors:
+    Bad exit status from /var/tmp/rpm-tmp.Uc3r1x (%install)
+[<A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">root at server</A> SPECS]#
+
+
+Here is the rpm temp build file:
+
+<A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">root at server</A> tmp]# cat rpm-tmp*
+#!/bin/sh
+
+  RPM_SOURCE_DIR=&quot;/root/rpmbuild/SOURCES&quot;
+  RPM_BUILD_DIR=&quot;/root/rpmbuild/BUILD&quot;
+  RPM_OPT_FLAGS=&quot;-O2 -g -pipe -Wall -Wp,-D_FORTIFY_SOURCE=2 -fexceptions -fstack-protector --param=ssp-buffer-size=4 -m64 -mtune=generic&quot;
+  RPM_ARCH=&quot;x86_64&quot;
+  RPM_OS=&quot;linux&quot;
+  export RPM_SOURCE_DIR RPM_BUILD_DIR RPM_OPT_FLAGS RPM_ARCH RPM_OS
+  RPM_DOC_DIR=&quot;/usr/share/doc&quot;
+  export RPM_DOC_DIR
+  RPM_PACKAGE_NAME=&quot;gpsd&quot;
+  RPM_PACKAGE_VERSION=&quot;3.1&quot;
+  RPM_PACKAGE_RELEASE=&quot;0.el6&quot;
+  export RPM_PACKAGE_NAME RPM_PACKAGE_VERSION RPM_PACKAGE_RELEASE
+  LANG=C
+  export LANG
+  unset CDPATH DISPLAY ||:
+  RPM_BUILD_ROOT=&quot;/root/rpmbuild/BUILDROOT/gpsd-3.1-0.el6.x86_64&quot;
+  export RPM_BUILD_ROOT
+
+  PKG_CONFIG_PATH=&quot;/usr/lib64/pkgconfig:/usr/share/pkgconfig&quot;
+  export PKG_CONFIG_PATH
+
+  set -x
+  umask 022
+  cd &quot;/root/rpmbuild/BUILD&quot;
+    [ &quot;$RPM_BUILD_ROOT&quot; != &quot;/&quot; ] &amp;&amp; rm -rf &quot;${RPM_BUILD_ROOT}&quot;
+    mkdir -p `dirname &quot;$RPM_BUILD_ROOT&quot;`
+    mkdir &quot;$RPM_BUILD_ROOT&quot;
+
+cd 'gpsd-3.1'
+LANG=C
+export LANG
+unset DISPLAY
+
+rm -rf /root/rpmbuild/BUILDROOT/gpsd-3.1-0.el6.x86_64
+DESTDIR=/root/rpmbuild/BUILDROOT/gpsd-3.1-0.el6.x86_64 scons install
+
+## service files
+#/usr/bin/install -d -m 0755 /root/rpmbuild/BUILDROOT/gpsd-3.1-0.el6.x86_64/lib/systemd/system
+#/usr/bin/install -p -m 0644 /root/rpmbuild/SOURCES/gpsd.init \
+#       /root/rpmbuild/BUILDROOT/gpsd-3.1-0.el6.x86_64/lib/systemd/system/gpsd.service
+#
+#/usr/bin/install -d -m 0755 /root/rpmbuild/BUILDROOT/gpsd-3.1-0.el6.x86_64/etc/sysconfig
+#/usr/bin/install -p -m 0644 /root/rpmbuild/SOURCES/gpsd.sysconfig \
+#       /root/rpmbuild/BUILDROOT/gpsd-3.1-0.el6.x86_64/etc/sysconfig/gpsd
+
+# init scripts
+/usr/bin/install -d -m 0755 /root/rpmbuild/BUILDROOT/gpsd-3.1-0.el6.x86_64/etc/init.d
+/usr/bin/install -p -m 0755 /root/rpmbuild/SOURCES/gpsd.init \
+        /root/rpmbuild/BUILDROOT/gpsd-3.1-0.el6.x86_64/etc/init.d/gpsd
+
+/usr/bin/install -d -m 0755 /root/rpmbuild/BUILDROOT/gpsd-3.1-0.el6.x86_64/etc/sysconfig
+/usr/bin/install -p -m 0644 /root/rpmbuild/SOURCES/gpsd.sysconfig \
+        /root/rpmbuild/BUILDROOT/gpsd-3.1-0.el6.x86_64/etc/sysconfig/gpsd
+
+# udev rules
+/usr/bin/install -d -m 0755 /root/rpmbuild/BUILDROOT/gpsd-3.1-0.el6.x86_64/etc/udev/rules.d
+/usr/bin/install -p -m 0644 gpsd.rules \
+        /root/rpmbuild/BUILDROOT/gpsd-3.1-0.el6.x86_64/etc/udev/rules.d/99-gpsd.rules
+
+# hotplug script
+/usr/bin/install -d -m 0755 /root/rpmbuild/BUILDROOT/gpsd-3.1-0.el6.x86_64/lib/udev
+/usr/bin/install -p -m 0755 gpsd.hotplug /root/rpmbuild/BUILDROOT/gpsd-3.1-0.el6.x86_64/lib/udev
+
+# Install the .desktop files
+desktop-file-install --vendor fedora \
+        --dir /root/rpmbuild/BUILDROOT/gpsd-3.1-0.el6.x86_64/usr/share/applications \
+        --add-category X-Fedora \
+        packaging/X11/xgps.desktop
+desktop-file-install --vendor fedora \
+        --dir /root/rpmbuild/BUILDROOT/gpsd-3.1-0.el6.x86_64/usr/share/applications \
+        --add-category X-Fedora \
+        packaging/X11/xgpsspeed.desktop
+
+# Install logo icon for .desktop files
+/usr/bin/install -d -m 0755 /root/rpmbuild/BUILDROOT/gpsd-3.1-0.el6.x86_64/usr/share/gpsd
+/usr/bin/install -p -m 0644 packaging/X11/gpsd-logo.png /root/rpmbuild/BUILDROOT/gpsd-3.1-0.el6.x86_64/usr/share/gpsd/gpsd-logo.png
+
+# Not needed since gpsd.h is not installed
+rm /root/rpmbuild/BUILDROOT/gpsd-3.1-0.el6.x86_64/usr/lib64/{libgpsd.so,pkgconfig/libgpsd.pc}
+
+
+
+   /usr/lib/rpm/find-debuginfo.sh --strict-build-id  &quot;/root/rpmbuild/BUILD/gpsd-3.1&quot;
+
+    /usr/lib/rpm/check-buildroot
+
+    /usr/lib/rpm/redhat/brp-compress
+
+    /usr/lib/rpm/redhat/brp-strip-static-archive /usr/bin/strip
+    /usr/lib/rpm/redhat/brp-strip-comment-note /usr/bin/strip /usr/bin/objdump
+    /usr/lib/rpm/brp-python-bytecompile
+    /usr/lib/rpm/redhat/brp-python-hardlink
+    /usr/lib/rpm/redhat/brp-java-repack-jars
+
+
+
+That's where it stops dead.
+
+
+Thanks again for the help!
+
+Cheers,
+David
+
+
+Sent from my iPad
+
+On 29/08/2011, at 15:52, Eric Raymond &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">esr at thyrsus.com</A>&gt; wrote:
+
+&gt;<i> David Cottle &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">webmaster at aus-city.com</A>&gt;:
+</I>&gt;&gt;<i> I seem to have a problem building my rpm with 3.1 on Centos / red hat 6. It's failing to build.
+</I>&gt;<i> 
+</I>&gt;<i> Can you send a log of the failing build?
+</I>&gt;<i> 
+</I>&gt;&gt;<i> I think it's to do with /use systemd
+</I>&gt;&gt;<i> 
+</I>&gt;&gt;<i> I set it to off, but how do I add initscripts?
+</I>&gt;<i> 
+</I>&gt;<i> You should be able to set it to on.  If that's not working let's
+</I>&gt;<i> try to fix it.
+</I>&gt;<i> 
+</I>&gt;&gt;<i> Still having PPS issues in 3.0 I am hoping 3.1 is better.
+</I>&gt;<i> 
+</I>&gt;<i> Do you know git?  If so, perhaps we can run a bisection to figure out
+</I>&gt;<i> what changed.
+</I>&gt;<i> 
+</I>&gt;&gt;<i> What are the build commands for PPS with scons?
+</I>&gt;<i> 
+</I>&gt;<i> Try 'scons pps=true'.
+</I>&gt;<i> 
+</I>&gt;&gt;<i> I tried to find a list of the commands, any help greatly appreciated.
+</I>&gt;<i> 
+</I>&gt;<i> Try 'scons --help'.
+</I>&gt;<i> -- 
+</I>&gt;<i>        &lt;a href=&quot;<A HREF="http://www.catb.org/~esr/">http://www.catb.org/~esr/</A>&quot;&gt;Eric S. Raymond&lt;/a&gt;
+</I>
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="005446.html">[Gpsd-users] Build issue 3.1
+</A></li>
+	<LI>Next message: <A HREF="005450.html">[Gpsd-users] Build issue 3.1
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#5447">[ date ]</a>
+              <a href="thread.html#5447">[ thread ]</a>
+              <a href="subject.html#5447">[ subject ]</a>
+              <a href="author.html#5447">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

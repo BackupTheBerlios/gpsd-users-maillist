@@ -1,0 +1,158 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] Packaging is getting harder with 1.96
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2004-September/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Packaging%20is%20getting%20harder%20with%201.96&In-Reply-To=%3C1094139922.20825.19.camel%40q.sr.unh.edu%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="000028.html">
+   <LINK REL="Next"  HREF="000030.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] Packaging is getting harder with 1.96</H1>
+    <B>Robert E. Anderson</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Packaging%20is%20getting%20harder%20with%201.96&In-Reply-To=%3C1094139922.20825.19.camel%40q.sr.unh.edu%3E"
+       TITLE="[Gpsd-users] Packaging is getting harder with 1.96">rea at q.sr.unh.edu
+       </A><BR>
+    <I>Thu Sep  2 17:45:22 CEST 2004</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="000028.html">[Gpsd-users] DOP and dependencies
+</A></li>
+        <LI>Next message: <A HREF="000030.html">[Gpsd-users] Packaging is getting harder with 1.96
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#29">[ date ]</a>
+              <a href="thread.html#29">[ thread ]</a>
+              <a href="subject.html#29">[ subject ]</a>
+              <a href="author.html#29">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>With all the changes in the configure and Makefile packing up ONLY gpsd
+1.96 was harder than doing the same thing for 1.95.
+
+It would be really nice if the Motif Application could be separated from
+the code required to RUN gpsd.
+
+While trying to great a Open Embedded build script I'm currently doing a
+lot of interpretation of the Makefile just to build and install for a
+cross platform pda target build.
+
+Ideally I would love to just:
+	1. define DESTDIR
+	2. make gpsd-server
+	3. make install-gpsd-server
+	4. make install-gpsd-server-devel
+
+I'm not saying that it should be tailored to what I'm doing, but the
+current structure inside of the Makefile is really complex, and I'm not
+sure what the gain is for doing it?  If there are more changes to the
+Makefile (which I hope there will be) it would be nice to split out the
+gpsd server code from the application code.  I don't need it but having
+the devel portion split out would make a lot of sense too.  Parts of it
+are already clearly separate, just not in a any way that is usefull with
+make targets.
+
+Currently this is what I find myself doing.  The .lib directory took me
+some time to figure out what had changed, enough so that I'm note 100%
+sure I have all this stuff correct now.
+
+
+[<A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">rea at new</A> oe]$ more oe-packages/gpsd/gpsd_1.96.oe 
+DESCRIPTION = &quot;A TCP/IP Daemon simplifying the communication with GPS
+devices&quot;
+SECTION = &quot;net&quot;
+PRIORITY = &quot;optional&quot;
+MAINTAINER = &quot;Robert Anderson &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">rea at sr.unh.edu</A>&gt;&quot;
+# PR=&quot;r1&quot;
+
+# &quot;<A HREF="ftp://ftp.berlios.de/pub/gpsd/gpsd-${PV">ftp://ftp.berlios.de/pub/gpsd/gpsd-${PV</A>}.tar.gz&quot;
+
+SRC_URI = &quot;<A HREF="http://ftp.berlios.de/gpsd/gpsd-${PV">http://ftp.berlios.de/gpsd/gpsd-${PV</A>}.tar.gz&quot;
+
+inherit autotools
+
+LDFLAGS = -lm
+
+do_configure() {
+        oe_runconf 
+}
+
+do_compile() {
+        oe_runmake gpsd gpsd.1 libgps.3 libgpsd.3 gps.h gpsd.h
+}
+
+do_stage () {
+        oe_libinstall -so -C ${S}/.libs libgps ${STAGING_LIBDIR}
+        install ${S}/libgps.la ${STAGING_LIBDIR}
+        install ${S}/gps.h              ${S}/gpsd.h \
+                ${STAGING_INCDIR}
+}
+
+do_install () {
+        install -m 755 -o 0 -g 0 -d             ${D}/usr/sbin \
+                ${D}/usr/share/man/man1         ${D}/usr/share/man/man3
+\
+                ${D}/usr/include                ${D}/usr/lib \
+                ${D}/etc/init.d
+
+        install -m 0755 ${S}/.libs/gpsd ${D}/usr/sbin/
+        oe_libinstall -so -C ${S}/.libs libgps ${D}/usr/lib/
+        install -m 755 -o 0 -g 0 gpsd.1 ${D}/usr/share/man/man1/gpsd.1
+
+        install -m 0755 ${S}/libgps.la ${D}/usr/lib/libgps.la
+        install -m 0755 ${S}/gps.h              ${S}/gpsd.h \
+                ${D}/usr/include/
+        install -m 755 -o 0 -g 0 libgps.3       libgpsd.3 \
+                ${D}/usr/share/man/man3/
+#       install -m 755 -o 0 -g 0 gpsd.1 ${D}/usr/share/man/man3/libgps.3
+
+        install -m 755 -o 0 -g 0 gpsd.init ${D}/etc/init.d/gpsd
+        # /sbin/chkconfig --add gpsd
+        # chkconfig --levels 35 gpsd on
+}
+
+PACKAGES =+ &quot; ${PN}-devdoc &quot;
+FILES_${PN}-devdoc = &quot; /usr/share/man/man3 &quot;
+
+
+
+
+-- 
+--------------------------------------------------------------
+ Robert E. Anderson  		 	email: <A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">rea at sr.unh.edu</A>
+ Systems Programmer			phone: (603) 862-3489
+ UNH Research Computing Center		  fax: (603) 862-1761
+--------------------------------------------------------------
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="000028.html">[Gpsd-users] DOP and dependencies
+</A></li>
+	<LI>Next message: <A HREF="000030.html">[Gpsd-users] Packaging is getting harder with 1.96
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#29">[ date ]</a>
+              <a href="thread.html#29">[ thread ]</a>
+              <a href="subject.html#29">[ subject ]</a>
+              <a href="author.html#29">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

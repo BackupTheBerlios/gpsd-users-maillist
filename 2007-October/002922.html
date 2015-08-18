@@ -1,0 +1,84 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] Problems with PPS and gpsd
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2007-October/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Problems%20with%20PPS%20and%20gpsd&In-Reply-To=%3C2685.138.194.202.241.1191816632.squirrel%40www.wireless.org.au%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="002921.html">
+   <LINK REL="Next"  HREF="002926.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] Problems with PPS and gpsd</H1>
+    <B>Jason Hecker</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Problems%20with%20PPS%20and%20gpsd&In-Reply-To=%3C2685.138.194.202.241.1191816632.squirrel%40www.wireless.org.au%3E"
+       TITLE="[Gpsd-users] Problems with PPS and gpsd">jhecker at wireless.org.au
+       </A><BR>
+    <I>Mon Oct  8 06:10:32 CEST 2007</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="002921.html">[Gpsd-users] Problems with PPS and gpsd
+</A></li>
+        <LI>Next message: <A HREF="002926.html">[Gpsd-users] Problems with PPS and gpsd
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2922">[ date ]</a>
+              <a href="thread.html#2922">[ thread ]</a>
+              <a href="subject.html#2922">[ subject ]</a>
+              <a href="author.html#2922">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>&gt;<i> Can anyone offer some insight as to what I'm missing? Or what appears to
+</I>&gt;<i> be wrong with the PPS signal?
+</I>
+Is your PPS signal a regular 3V/5V TTL/CMOS output or proper RS-232 level
+signal?  Some RS-232 ports will amazingly work with logic levels though
+they shouldn't, strictly speaking.  Not to mention that the polarity will
+be inverted too but I think GPSD can resolve the polarity problem.
+
+I use a Garmin GPS-15H that does RS-232 on the Tx and RX lines but uses a
+logic level signal for the PPS.  I massage this signal with a NOT logic
+gate to invert it which then drives a MAX-232 transceiver to convert the
+signal to RS-232 levels.  I thought this was the right way to do it (which
+it is) and was surprised to learn people have had success with the CMOS
+level driving DCD directly.  I think this point should be made in the GPSD
+manual that the proper level conversion needs to be done.
+
+See if you can adjust the pulse duty with a command and if that doesn't
+work then throw an inverter and RS-232 transceiver into the fray.  I have
+had trouble with GPSD not syncing to the PPS properly until I issue a
+manual $PGRMI,,,,,,,R to reset the GPS15H.  I think it's fair to say that
+the PPS code in GPSD needs a bit of lovin'.
+
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="002921.html">[Gpsd-users] Problems with PPS and gpsd
+</A></li>
+	<LI>Next message: <A HREF="002926.html">[Gpsd-users] Problems with PPS and gpsd
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2922">[ date ]</a>
+              <a href="thread.html#2922">[ thread ]</a>
+              <a href="subject.html#2922">[ subject ]</a>
+              <a href="author.html#2922">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

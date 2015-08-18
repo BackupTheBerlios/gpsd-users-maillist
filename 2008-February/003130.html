@@ -1,0 +1,206 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] Globalsat BU-353 USB - Not getting a fix
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2008-February/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Globalsat%20BU-353%20USB%20-%20Not%20getting%20a%20fix&In-Reply-To=%3C03f801c8660e%2438be25a0%246401a8c0%40markdevelope%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="003127.html">
+   <LINK REL="Next"  HREF="003128.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] Globalsat BU-353 USB - Not getting a fix</H1>
+    <B>Mark Easton</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Globalsat%20BU-353%20USB%20-%20Not%20getting%20a%20fix&In-Reply-To=%3C03f801c8660e%2438be25a0%246401a8c0%40markdevelope%3E"
+       TITLE="[Gpsd-users] Globalsat BU-353 USB - Not getting a fix">mark63 at azurebell.co.nz
+       </A><BR>
+    <I>Sun Feb  3 03:41:04 CET 2008</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="003127.html">[Gpsd-users] Globalsat BU-353 USB - Not getting a fix
+</A></li>
+        <LI>Next message: <A HREF="003128.html">[Gpsd-users] Globalsat BU-353 USB - Not getting a fix
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3130">[ date ]</a>
+              <a href="thread.html#3130">[ thread ]</a>
+              <a href="subject.html#3130">[ subject ]</a>
+              <a href="author.html#3130">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Ok, understand Chris.  I will try the retry method first and see how that
+goes. 
+
+Many thanks for explaining it in such detail.
+
+Cheers,
+Mark
+
+&gt;<i> -----Original Message-----
+</I>&gt;<i> From: Chris Kuethe [mailto:<A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">chris.kuethe at gmail.com</A>] 
+</I>&gt;<i> Sent: Sunday, 3 February 2008 3:36 p.m.
+</I>&gt;<i> To: <A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">mark63 at azurebell.co.nz</A>
+</I>&gt;<i> Cc: <A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">gpsd-users at lists.berlios.de</A>
+</I>&gt;<i> Subject: Re: [Gpsd-users] Globalsat BU-353 USB - Not getting a fix
+</I>&gt;<i> 
+</I>&gt;<i> On Feb 2, 2008 6:15 PM, Mark Easton &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">mark63 at azurebell.co.nz</A>&gt; wrote:
+</I>&gt;<i> &gt; My program makes a call to gpsd every minute to obtain data.
+</I>&gt;<i> 
+</I>&gt;<i> Like this?
+</I>&gt;<i> 
+</I>&gt;<i> while(1){
+</I>&gt;<i>         connectToGPS()
+</I>&gt;<i>         queryGPS()
+</I>&gt;<i>         disconnectFromGPS()
+</I>&gt;<i>         processData()
+</I>&gt;<i>         sleep(60)
+</I>&gt;<i> }
+</I>&gt;<i> 
+</I>&gt;<i> &gt; So, I don't understand why you are referencing this FAQ??
+</I>&gt;<i> 
+</I>&gt;<i> I referenced it because from the look of your code snippet 
+</I>&gt;<i> those were relevant. If you're disconnecting and 
+</I>&gt;<i> reconnecting, then those two FAQ entries are highly relevant. 
+</I>&gt;<i> Gpsd doesn't have a device associated with your client at the 
+</I>&gt;<i> time you queried. I see a couple of options
+</I>&gt;<i> here:
+</I>&gt;<i> 
+</I>&gt;<i> - add some &quot;error&quot; handling or retry logic. If you don't get 
+</I>&gt;<i> a fix, wait 1 second and query again. Try up to 3(?) times 
+</I>&gt;<i> with increasing delays before giving up. This will also 
+</I>&gt;<i> protect you from momentary loss of signal. This shouldn't 
+</I>&gt;<i> impact your program too much if you're only logging once a minute.
+</I>&gt;<i> 
+</I>&gt;<i> - just open the connection to gpsd, set your channel to 
+</I>&gt;<i> watcher mode (possibly with de-jittering) and just let gpsd 
+</I>&gt;<i> push fixes to you.
+</I>&gt;<i> Discard the ones you don't want (ie. drop 59 out of 60).
+</I>&gt;<i> 
+</I>&gt;<i> &gt; I have been
+</I>&gt;<i> &gt; running my very same software for ages with a Garmin GPS 
+</I>&gt;<i> and with an 
+</I>&gt;<i> &gt; on board boat gps and against both of these devices my program has 
+</I>&gt;<i> &gt; worked. I now have picked up this  Globalsat BU-353 USB 
+</I>&gt;<i> device and the 
+</I>&gt;<i> &gt; SAME program in not working. So, surely my program is fine 
+</I>&gt;<i> and the problem is elsewhere.
+</I>&gt;<i> 
+</I>&gt;<i> &quot;Surely&quot;? Why &quot;surely&quot;? You are not using the exact SAME configuration
+</I>&gt;<i> (end-to-end) you previously had; there may be different behaviour.
+</I>&gt;<i> This may very well be the case if your '353 is in binary mode 
+</I>&gt;<i> (it likely is - gpsd often reconfigures devices). &lt;guess&gt;When 
+</I>&gt;<i> feeding gpsd with an NMEA source you're getting partial fix 
+</I>&gt;<i> fragments at basically 4-5Hz - quickly enough that your 
+</I>&gt;<i> program was lucky. Using a binary source, you get fixes every 
+</I>&gt;<i> 1.0s, and if the fix hasn't come in and been processed before 
+</I>&gt;<i> you query, or if it's come and gone, then you get back no 
+</I>&gt;<i> result.&lt;/guess&gt;
+</I>&gt;<i> 
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; &gt; -----Original Message-----
+</I>&gt;<i> &gt; &gt; From: Chris Kuethe [mailto:<A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">chris.kuethe at gmail.com</A>]
+</I>&gt;<i> &gt; &gt; Sent: Sunday, 3 February 2008 3:00 p.m.
+</I>&gt;<i> &gt; &gt; To: Robert Easton
+</I>&gt;<i> &gt; &gt; Cc: <A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">gpsd-users at lists.berlios.de</A>
+</I>&gt;<i> &gt; &gt; Subject: Re: [Gpsd-users] Globalsat BU-353 USB - Not getting a fix
+</I>&gt;<i> &gt; &gt;
+</I>&gt;<i> &gt; &gt; Have a look at the FAQ at <A HREF="http://gpsd.berlios.de/faq.html.">http://gpsd.berlios.de/faq.html.</A>
+</I>&gt;<i> &gt; &gt; The following sections should be particularly interesting to you:
+</I>&gt;<i> &gt; &gt;
+</I>&gt;<i> &gt; &gt; Why does the first A,E,O,P,T,U, or V command to a device always 
+</I>&gt;<i> &gt; &gt; return &quot;?&quot;
+</I>&gt;<i> &gt; &gt; Why does my single-shot query fail to return fix data?
+</I>&gt;<i> &gt; &gt;
+</I>&gt;<i> &gt; &gt; CK
+</I>&gt;<i> &gt; &gt;
+</I>&gt;<i> &gt; &gt; On Feb 2, 2008 2:21 PM, Robert Easton 
+</I>&gt;<i> &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">mark63 at azurebell.co.nz</A>&gt; wrote:
+</I>&gt;<i> &gt; &gt; &gt;
+</I>&gt;<i> &gt; &gt; &gt; Hi, i am using gpsd 2.34. Have been using it with a 
+</I>&gt;<i> number of GPS 
+</I>&gt;<i> &gt; &gt; &gt; devices, but now am using a Globalsat BU-353 USB device, which 
+</I>&gt;<i> &gt; &gt; &gt; does not seem to work for me. I am on a ubuntu linux x86.
+</I>&gt;<i> &gt; &gt; &gt;
+</I>&gt;<i> &gt; &gt; &gt; When I run the gpsd daemon as &quot;gpsd -n -N -D4 /dev/ttyUSB0,
+</I>&gt;<i> &gt; &gt; I can see
+</I>&gt;<i> &gt; &gt; &gt; it logging the received $GPGGA sentences.
+</I>&gt;<i> &gt; &gt; &gt;
+</I>&gt;<i> &gt; &gt; &gt; In my app, I have the following basic code snippet (sans any 
+</I>&gt;<i> &gt; &gt; &gt; non-relevant code). It never gets a fix with the 
+</I>&gt;<i> Globalsat BU-353 
+</I>&gt;<i> &gt; &gt; &gt; device. Why could that be?
+</I>&gt;<i> &gt; &gt; &gt;
+</I>&gt;<i> &gt; &gt; &gt; open_gpsd();
+</I>&gt;<i> &gt; &gt; &gt; if (!gpsd_err)
+</I>&gt;<i> &gt; &gt; &gt; {
+</I>&gt;<i> &gt; &gt; &gt;   resp = gps_rec.query(&quot;p\n&quot;);
+</I>&gt;<i> &gt; &gt; &gt;   gpsFix = &amp;resp-&gt;fix;
+</I>&gt;<i> &gt; &gt; &gt;   if (!isnan(gpsFix-&gt;latitude))
+</I>&gt;<i> &gt; &gt; &gt;   {
+</I>&gt;<i> &gt; &gt; &gt;      //Process fix data
+</I>&gt;<i> &gt; &gt; &gt;   }else
+</I>&gt;<i> &gt; &gt; &gt;     LOG(1, &quot;No fix received from nmea device!&quot;); }
+</I>&gt;<i> &gt; &gt; &gt;
+</I>&gt;<i> &gt; &gt; &gt; TIA for your help,
+</I>&gt;<i> &gt; &gt; &gt; Mark
+</I>&gt;<i> &gt; &gt; &gt; --
+</I>&gt;<i> &gt; &gt; &gt; View this message in context:
+</I>&gt;<i> &gt; &gt; &gt;
+</I>&gt;<i> &gt; &gt; 
+</I>&gt;<i> <A HREF="http://www.nabble.com/Globalsat-BU-353-USB---Not-getting-a-fix-tp152">http://www.nabble.com/Globalsat-BU-353-USB---Not-getting-a-fix-tp152</A>
+</I>&gt;<i> &gt; &gt; 46
+</I>&gt;<i> &gt; &gt; &gt; 191p15246191.html Sent from the GPSd - Users mailing list
+</I>&gt;<i> &gt; &gt; archive at
+</I>&gt;<i> &gt; &gt; &gt; Nabble.com.
+</I>&gt;<i> &gt; &gt; &gt;
+</I>&gt;<i> &gt; &gt; &gt; _______________________________________________
+</I>&gt;<i> &gt; &gt; &gt; Gpsd-users mailing list
+</I>&gt;<i> &gt; &gt; &gt; <A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">Gpsd-users at lists.berlios.de</A>
+</I>&gt;<i> &gt; &gt; &gt; <A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">https://lists.berlios.de/mailman/listinfo/gpsd-users</A>
+</I>&gt;<i> &gt; &gt; &gt;
+</I>&gt;<i> &gt; &gt;
+</I>&gt;<i> &gt; &gt;
+</I>&gt;<i> &gt; &gt;
+</I>&gt;<i> &gt; &gt; --
+</I>&gt;<i> &gt; &gt; GDB has a 'break' feature; why doesn't it have 'fix' too?
+</I>&gt;<i> &gt; &gt;
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt;
+</I>&gt;<i> 
+</I>&gt;<i> 
+</I>&gt;<i> 
+</I>&gt;<i> --
+</I>&gt;<i> GDB has a 'break' feature; why doesn't it have 'fix' too?
+</I>&gt;<i> 
+</I>
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="003127.html">[Gpsd-users] Globalsat BU-353 USB - Not getting a fix
+</A></li>
+	<LI>Next message: <A HREF="003128.html">[Gpsd-users] Globalsat BU-353 USB - Not getting a fix
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3130">[ date ]</a>
+              <a href="thread.html#3130">[ thread ]</a>
+              <a href="subject.html#3130">[ subject ]</a>
+              <a href="author.html#3130">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

@@ -1,0 +1,99 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] Can't connect TNTC
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2006-September/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Can%27t%20connect%20TNTC&In-Reply-To=%3C1157555067.8709.4.camel%40mabupc.psk%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="001929.html">
+   <LINK REL="Next"  HREF="001928.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] Can't connect TNTC</H1>
+    <B>Massimo Burcheri</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Can%27t%20connect%20TNTC&In-Reply-To=%3C1157555067.8709.4.camel%40mabupc.psk%3E"
+       TITLE="[Gpsd-users] Can't connect TNTC">burcheri at fgan.de
+       </A><BR>
+    <I>Wed Sep  6 17:04:27 CEST 2006</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="001929.html">[Gpsd-users] Magellan Meridian: unkown sentence
+</A></li>
+        <LI>Next message: <A HREF="001928.html">[Gpsd-users] Can't connect TNTC
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1926">[ date ]</a>
+              <a href="thread.html#1926">[ thread ]</a>
+              <a href="subject.html#1926">[ subject ]</a>
+              <a href="author.html#1926">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hello.
+
+I received my TNTC unit.
+Now I can't get it connected to gpsd. The TNTC is set to 9600 and two
+NMEA sets are enabled at 60/min.
+With cat I can see the data, but gpsd doesn't find it:
+
+$ cat /dev/ttyS0
+$HCHDG,204.1,0.0,W,0.0,W*45
+
+$HCHDT,204.1,T*2E
+
+$HCHDG,204.7,0.0,W,0.0,W*43
+
+$HCHDT,204.7,T*28
+
+
+$ /usr/sbin/gpsd -n -N -D2 /dev/ttyS0
+gpsd: launching (Version 2.33)
+gpsd: listening on port 2947
+gpsd: running with effective group ID 557
+gpsd: running with effective user ID 557
+gpsd: opening GPS data source at '/dev/ttyS0'
+gpsd: speed 9600, 8N1
+gpsd: gpsd_activate: opened GPS (6)
+gpsd: speed 4800, 8N1
+gpsd: speed 9600, 8N1
+gpsd: speed 19200, 8N1
+gpsd: speed 38400, 8N1
+gpsd: speed 57600, 8N1
+
+Is there a way to set the serial settings directly? Also for other
+devices like my Magellan Platinum gpsd takes some time if serial isn't
+set to 9600.
+
+Regards,
+Massimo
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="001929.html">[Gpsd-users] Magellan Meridian: unkown sentence
+</A></li>
+	<LI>Next message: <A HREF="001928.html">[Gpsd-users] Can't connect TNTC
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1926">[ date ]</a>
+              <a href="thread.html#1926">[ thread ]</a>
+              <a href="subject.html#1926">[ subject ]</a>
+              <a href="author.html#1926">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

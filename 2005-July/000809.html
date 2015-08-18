@@ -1,0 +1,137 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] Odd behavior with gpsd on OSX (tiger)
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2005-July/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Odd%20behavior%20with%20gpsd%20on%20OSX%20%28tiger%29&In-Reply-To=%3CB3503DD8-3286-472B-802A-42A6CD1DB9A6%40binaryfaith.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="000808.html">
+   <LINK REL="Next"  HREF="000807.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] Odd behavior with gpsd on OSX (tiger)</H1>
+    <B>Mark Cohen</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Odd%20behavior%20with%20gpsd%20on%20OSX%20%28tiger%29&In-Reply-To=%3CB3503DD8-3286-472B-802A-42A6CD1DB9A6%40binaryfaith.com%3E"
+       TITLE="[Gpsd-users] Odd behavior with gpsd on OSX (tiger)">markc at binaryfaith.com
+       </A><BR>
+    <I>Mon Jul  4 02:36:19 CEST 2005</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="000808.html">[Gpsd-users] Odd behavior with gpsd on OSX (tiger)
+</A></li>
+        <LI>Next message: <A HREF="000807.html">[Gpsd-users] GPSD+kismet &quot;lost GPS signal&quot;
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#809">[ date ]</a>
+              <a href="thread.html#809">[ thread ]</a>
+              <a href="subject.html#809">[ subject ]</a>
+              <a href="author.html#809">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Glen,
+
+I didn't compile with autogen.sh. It appears that its fairly buggy.
+
+1. it didn't take the command line arguments that I specified. ie ./ 
+autogen.sh --x-includes=/usr/X11R6/include didn't work, nor did  
+adding --disable-dbus
+
+2. autogen.sh had problems with uniary arguments on line 76 and 79. I  
+added [[ and ]] which fixed that but it still doesn't work
+
+So I just ran ./configure --disable-dbus --x-includes=/usr/X11R6/ 
+include and I got this :
+
+==========================================
+gpsd 2.26
+------------------------------------------
+SiRF-II                 : yes
+Trimble TSIP            : yes
+Tripmate                : yes
+Earthmate               : yes
+Garmin                  : yes
+NTP SHM                 : yes
+NTP PPS                 : no
+Enable shared libraries : yes
+Enable DBUS support     : no
+------------------------------------------
+Configure finished, type 'make' to build.
+
+I may be wrong here, but I think dbus is only for setting the system  
+time from the gps.
+
+For what its worth, I've never liked autogen scripts. ./configure has  
+always worked for me when I've passed the proper command line arguments.
+
+I would be interested in knowing if after you've compiled gpsd on  
+Tiger if you can connect to the Daemon with multiple clients and have  
+all of the clients actually get data.. I've not see that work with  
+Tiger.
+
+-Mark
+
+
+
+On Jul 1, 2005, at 8:18 PM, Glen Barnes wrote:
+
+&gt;<i> Mark Cohen wrote:
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;&gt;<i> I've successfully been able to download and build gpsd on Tiger  
+</I>&gt;&gt;<i> with  one problem.
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> I can connect with one app and see data, but when I connect with  
+</I>&gt;&gt;<i> a  second app or telnet session only the 1st is able to see any data.
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> What am I doing wrong?
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> -MarkC
+</I>&gt;&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i> Hi Mark,
+</I>&gt;<i>
+</I>&gt;<i> Any pointers on getting this compiled on Tiger? Running Autogen.sh  
+</I>&gt;<i> gives me an error when it checks for dbus. What enviroment do you  
+</I>&gt;<i> have? Fink or Darwin ports, etc.
+</I>&gt;<i>
+</I>&gt;<i> Thanks,
+</I>&gt;<i> Glen
+</I>&gt;<i>
+</I>
+-------------- next part --------------
+A non-text attachment was scrubbed...
+Name: PGP.sig
+Type: application/pgp-signature
+Size: 155 bytes
+Desc: This is a digitally signed message part
+URL: &lt;<A HREF="https://lists.berlios.de/pipermail/gpsd-users/attachments/20050703/aa08532c/attachment.pgp">https://lists.berlios.de/pipermail/gpsd-users/attachments/20050703/aa08532c/attachment.pgp</A>&gt;
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="000808.html">[Gpsd-users] Odd behavior with gpsd on OSX (tiger)
+</A></li>
+	<LI>Next message: <A HREF="000807.html">[Gpsd-users] GPSD+kismet &quot;lost GPS signal&quot;
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#809">[ date ]</a>
+              <a href="thread.html#809">[ thread ]</a>
+              <a href="subject.html#809">[ subject ]</a>
+              <a href="author.html#809">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

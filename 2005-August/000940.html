@@ -1,0 +1,79 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] libgps: status member always zero?
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2005-August/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20libgps%3A%20status%20member%20always%20zero%3F&In-Reply-To=%3C42F07DA1.7010408%40wind.sannet.ne.jp%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="000933.html">
+   <LINK REL="Next"  HREF="000941.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] libgps: status member always zero?</H1>
+    <B>Lance F.</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20libgps%3A%20status%20member%20always%20zero%3F&In-Reply-To=%3C42F07DA1.7010408%40wind.sannet.ne.jp%3E"
+       TITLE="[Gpsd-users] libgps: status member always zero?">ashikase at wind.sannet.ne.jp
+       </A><BR>
+    <I>Wed Aug  3 10:17:37 CEST 2005</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="000933.html">[Gpsd-users] libgps: status member always zero?
+</A></li>
+        <LI>Next message: <A HREF="000941.html">[Gpsd-users] libgps: status member always zero?
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#940">[ date ]</a>
+              <a href="thread.html#940">[ thread ]</a>
+              <a href="subject.html#940">[ subject ]</a>
+              <a href="author.html#940">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Lance Fetters wrote:
+&gt;<i> The 'status' member of the gps_data_t structure returned by gps_poll is
+</I>&gt;<i> always (at least in my case) set to zero (i.e. no fix), even when my GPS
+</I>&gt;<i> receiver has a fix. The debug messages of gpsd show that the status is
+</I>&gt;<i> being detected properly (0 with no fix, 1 with). Has anyone else noticed
+</I>&gt;<i> this? This is not the proper behaviour, is it?
+</I>
+I investigated the problem a bit further, and found that the only
+messages libgps (gps_poll) receives are of the type &quot;GPSD,O=&quot; and
+&quot;GPSD,Y=&quot;; it never receives &quot;GPSD,S=&quot;.
+
+The same is true when telnetting directly to the daemon and setting
+watcher mode. However, if I specifically request the status ('s' query),
+it returns the proper value.
+
+Does gpsd/libgps not automatically return the status on a status change?
+
+- Lance F.
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="000933.html">[Gpsd-users] libgps: status member always zero?
+</A></li>
+	<LI>Next message: <A HREF="000941.html">[Gpsd-users] libgps: status member always zero?
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#940">[ date ]</a>
+              <a href="thread.html#940">[ thread ]</a>
+              <a href="subject.html#940">[ subject ]</a>
+              <a href="author.html#940">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

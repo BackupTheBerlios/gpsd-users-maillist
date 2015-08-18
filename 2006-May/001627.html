@@ -1,0 +1,101 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] gpsfake doesn't work with cgps
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2006-May/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20gpsfake%20doesn%27t%20work%20with%20cgps&In-Reply-To=%3C1148390349.21165.8.camel%40mabupc.psk%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="001630.html">
+   <LINK REL="Next"  HREF="001629.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] gpsfake doesn't work with cgps</H1>
+    <B>Massimo Burcheri</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20gpsfake%20doesn%27t%20work%20with%20cgps&In-Reply-To=%3C1148390349.21165.8.camel%40mabupc.psk%3E"
+       TITLE="[Gpsd-users] gpsfake doesn't work with cgps">burcheri at fgan.de
+       </A><BR>
+    <I>Tue May 23 15:19:09 CEST 2006</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="001630.html">[Gpsd-users] Not Getting Output from Garmin GPS-18 (USB)
+</A></li>
+        <LI>Next message: <A HREF="001629.html">[Gpsd-users] 2006 WINNING NOTIFICATION
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1627">[ date ]</a>
+              <a href="thread.html#1627">[ thread ]</a>
+              <a href="subject.html#1627">[ subject ]</a>
+              <a href="author.html#1627">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hello.
+
+For testing I don't want to use my gps for hours.
+But I can't get gpsfake working:
+
+First I recorded some sentences:
+$ gpspipe -r localhost:2947 &gt; gpsfake.data
+
+Then I deleted the first line as told in a different thread, so it looks
+like:
+
+$ cat gpsfake.data
+$PMGNST,05.40,2,T,961,08.3,+04583,00*4C
+$GPGLL,5036.9881,N,00707.9142,E,125412.480,A*3F
+$GPGGA,125412.48,5036.9881,N,00707.9142,E,2,04,20.5,00269,M,,,,*17
+$GPRMC,125412.48,A,5036.9881,N,00707.9142,E,00.0,000.0,230506,00,E*4F
+$GPGSA,A,2,27,04,08,24,,,,,,,,,20.5,20.5,*12
+$GPGSV,3,1,10,13,81,052,,04,58,240,39,23,44,064,,24,43,188,36*75
+$GPGSV,3,2,10,02,42,295,,27,34,177,40,20,21,113,,16,12,058,*7F
+$GPGSV,3,3,10,08,07,189,38,10,05,293,,131,11,117,,120,28,209,*76
+...
+
+$ gpsfake -c 1  -D5 -o -n gpsfake.data
+
+But it doesn't give any output. But after a while:
+Cannot stat file /proc/9067/fd/6: No such file or directory
+
+$ netstat -ap |grep 2947
+tcp        0      0 *:2947            *:*   LISTEN   28442/gpsd
+
+cgps shows &quot;no data&quot;.
+
+The only way to stop gpsfake is:
+$ killall -9 python
+
+Any idea?
+
+Regards,
+Massimo
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="001630.html">[Gpsd-users] Not Getting Output from Garmin GPS-18 (USB)
+</A></li>
+	<LI>Next message: <A HREF="001629.html">[Gpsd-users] 2006 WINNING NOTIFICATION
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1627">[ date ]</a>
+              <a href="thread.html#1627">[ thread ]</a>
+              <a href="subject.html#1627">[ subject ]</a>
+              <a href="author.html#1627">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

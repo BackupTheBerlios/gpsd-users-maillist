@@ -1,0 +1,149 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] ntp/gpsd -- was working, moved to new mobo,	now ntp no longer syncs properly w/stratum0 usb/gps device
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2012-July/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20ntp/gpsd%20--%20was%20working%2C%20moved%20to%20new%20mobo%2C%0A%09now%20ntp%20no%20longer%20syncs%20properly%20w/stratum0%20usb/gps%20device&In-Reply-To=%3C013e01cd5ace%2446807940%24d3816bc0%24%40lucidpixels.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   
+   <LINK REL="Next"  HREF="005554.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] ntp/gpsd -- was working, moved to new mobo,	now ntp no longer syncs properly w/stratum0 usb/gps device</H1>
+    <B>Justin Piszcz</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20ntp/gpsd%20--%20was%20working%2C%20moved%20to%20new%20mobo%2C%0A%09now%20ntp%20no%20longer%20syncs%20properly%20w/stratum0%20usb/gps%20device&In-Reply-To=%3C013e01cd5ace%2446807940%24d3816bc0%24%40lucidpixels.com%3E"
+       TITLE="[Gpsd-users] ntp/gpsd -- was working, moved to new mobo,	now ntp no longer syncs properly w/stratum0 usb/gps device">jpiszcz at lucidpixels.com
+       </A><BR>
+    <I>Thu Jul  5 18:50:24 CEST 2012</I>
+    <P><UL>
+        
+        <LI>Next message: <A HREF="005554.html">[Gpsd-users] Gpsd-users Digest, Vol 72, Issue 1
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#5553">[ date ]</a>
+              <a href="thread.html#5553">[ thread ]</a>
+              <a href="subject.html#5553">[ subject ]</a>
+              <a href="author.html#5553">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hello,
+
+I had this configuration on an older Supermicro Atom D510 motherboard and
+everything was working great (at bottom).
+I moved to a new Supermicro X9SCM-F-O (exact same USB ports used, etc) but
+now NTP no longer syncs properly.
+
+Distribution: Debian x86_64 (testing)
+Version: gpsd 3.6-3
+Version: ntp 4.2.6.p5+dfsg-2
+
+NTP CONF:
+# grep -v ^# /etc/ntp.conf|grep .
+driftfile /var/lib/ntp/ntp.drift
+statistics loopstats peerstats clockstats
+filegen loopstats file loopstats type day enable
+filegen peerstats file peerstats type day enable
+filegen clockstats file clockstats type day enable
+server 127.127.28.0 minpoll 4 maxpoll 4
+fudge 127.127.28.0 refid GPS
+server 0.debian.pool.ntp.org iburst
+server 1.debian.pool.ntp.org iburst
+server 2.debian.pool.ntp.org iburst
+server 3.debian.pool.ntp.org iburst
+restrict -4 default kod notrap nomodify nopeer noquery
+restrict 127.0.0.1
+
+Problem, the x127 for the GPS:
+$ ntpq -pn
+     remote           refid      st t when poll reach   delay   offset
+jitter
+============================================================================
+==
+x127.127.28.0    .GPS.            0 l    6   16  377    0.000  1443.00
+36.466
++63.240.161.99   66.228.54.155    3 u   52   64  377   48.170  436.044
+159.262
++108.61.73.244   18.26.4.105      2 u   56   64  377   25.063  428.222
+157.392
+*108.59.14.130   209.51.161.238   2 u   61   64  377   19.650  431.776
+154.896
++64.6.144.6      128.252.19.1     2 u   62   64  377   70.834  433.166
+155.304
+
+Everything worked before
+Cgps/utilites work fine, it reports a lock, no problems:
+
++-------------------------------------------++------------------------------
+---+
+|<i>    Time:       2012-07-05T16:42:13.000Z   ||PRN:   Elev:  Azim:  SNR:
+</I>Used: |
+|<i>    Latitude:    (omitted)               ||  13    29    315    25      Y
+</I>|<i>
+</I>|<i>    Longitude:   (omitted)               ||   6    45    144    20      Y
+</I>|<i>
+</I>|<i>    Altitude:   323.0 ft                   ||  30    55    042    19      Y
+</I>|<i>
+</I>|<i>    Speed:      1.5 mph                    ||  23    61    295    27      Y
+</I>|<i>
+</I>|<i>    Heading:    (omitted) deg (true)            ||  16    83    349    22
+</I>Y   |
+|<i>    Climb:      -42.5 ft/min               ||  31    25    087    23      Y
+</I>|<i>
+</I>|<i>    Status:     3D FIX (1047 secs)         ||  19    08    180    19      Y
+</I>|<i>
+</I>|<i>    Longitude Err:   +/- 39 ft             ||  20    18    235    17      N
+</I>|<i>
+</I>|<i>    Latitude Err:    +/- 42 ft             ||   3    38    166    16      N
+</I>|<i>
+</I>|<i>    Altitude Err:    +/- 119 ft            ||   7    06    286    16      N
+</I>|<i>
+</I>|<i>    Course Err:      n/a                   ||
+</I>|<i>
+</I>|<i>    Speed Err:       +/- 57 mph            ||
+</I>|<i>
+</I>|<i>    Time offset:     -0.845                ||
+</I>|<i>
+</I>|<i>    Grid Square:     (omitted)                ||
+</I>|<i>
+</I>+-------------------------------------------++------------------------------
+---
+
+Any thoughts on what I need to do in order to fix this?
+
+It is a GlobalSat BU-353 USB GPS Reciver:
+<A HREF="http://www.amazon.com/GlobalSat-BU-353-USB-GPS-Receiver/dp/B000PKX2KA">http://www.amazon.com/GlobalSat-BU-353-USB-GPS-Receiver/dp/B000PKX2KA</A>
+
+Justin.
+
+
+</PRE>
+
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	
+	<LI>Next message: <A HREF="005554.html">[Gpsd-users] Gpsd-users Digest, Vol 72, Issue 1
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#5553">[ date ]</a>
+              <a href="thread.html#5553">[ thread ]</a>
+              <a href="subject.html#5553">[ subject ]</a>
+              <a href="author.html#5553">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

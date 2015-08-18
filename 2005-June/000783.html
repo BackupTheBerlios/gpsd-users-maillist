@@ -1,0 +1,124 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] Roadmap for gpsd 2.27
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2005-June/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Roadmap%20for%20gpsd%202.27&In-Reply-To=%3C200506221323.j5MDNFBx001621%40snark.thyrsus.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="000782.html">
+   <LINK REL="Next"  HREF="000784.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] Roadmap for gpsd 2.27</H1>
+    <B>Eric S. Raymond</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Roadmap%20for%20gpsd%202.27&In-Reply-To=%3C200506221323.j5MDNFBx001621%40snark.thyrsus.com%3E"
+       TITLE="[Gpsd-users] Roadmap for gpsd 2.27">esr at snark.thyrsus.com
+       </A><BR>
+    <I>Wed Jun 22 15:23:15 CEST 2005</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="000782.html">[Gpsd-users] Announcing release 2.26 of gpsd
+</A></li>
+        <LI>Next message: <A HREF="000784.html">[Gpsd-users] Roadmap for gpsd 2.27
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#783">[ date ]</a>
+              <a href="thread.html#783">[ thread ]</a>
+              <a href="subject.html#783">[ subject ]</a>
+              <a href="author.html#783">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>I expect 2.26 to be a stable release that will be in use for some time.
+Between the splint audit, the regression test suite, and Rob Janssen's 
+salutary nagging :-), I am now much more confident about the code
+quality than I have been.
+
+With multisession and autoconfiguration now firmly in place, I
+consider the daemon essentially feature-complete.  The one bit that
+still needs to be filled in is computation of a track error estimate.
+The main issue here is figuring out the applied mathematics.
+
+Chris Kuethe, the SiRF firmware loader is now increasing in
+importance. We're going to need to test new SiRF firmware versions, 
+probably within months rather than years. 
+
+Pursuant to Rob Janssen's last-minute suggestion, I audited the code
+for MAXCHANNELS dependencies. I didn't change MAXCHANNELS to 16, as we
+don't yet link any drivers that require this.  But I have done the
+prep work -- there are now NMEA_CHANNELS, SIRF_CHANNELS and
+ZODIAC_CHANNELS defines, used appropriately, which means that we can
+set MAXCHANNELS to any value &gt;= 12 without breaking NMEA or packet
+processing.  I have regression-tested MAXCHANNELS=16 and it works.
+
+I consider the most serious item on the bug list to be Wojciech
+Kazubski's report of a possible resource-exhaustion bug.  I think
+we should attack this in at least two ways:
+
+1) Dynamic auditing using valgrind, ccmalloc, or Electric Fence.
+
+2) Build some test tools to script opening and closing multiple 
+   sessions to the daemon and see if we can detect and reproduce
+   a lockup.
+
+If anybody on the list has experience with dynamic-auditing tools,
+please step forward.  Does anyone know of tools for detecting fd
+leaks?
+
+I will be quite surprised if we can induce a lockup with
+non-overlapping client sessions of one device at a time.  Multiple
+devices and multiple sessions overlapping in odd ways is another
+matter entirely -- getting deallocation right so as to prevent
+memory or fd leaks is notoriously difficult in these circumstances,
+and I wouldn't be astonished if we have bugs there.
+
+I am also concerned about Rob Janssen's report of possible
+state-machine lockups in the presence of heavy disk activity.  I will
+attempt to reproduce this, but am not optimistic about doing so.
+
+I expect Rob will be working on fixing the PPS code.  Odds are this
+is a pthreads bug that will have to be worked around.
+
+The known TSIP driver problems are annoying but can be lived with.
+And that about does it for the bug list.
+-- 
+		&lt;a href=&quot;<A HREF="http://www.catb.org/~esr/">http://www.catb.org/~esr/</A>&quot;&gt;Eric S. Raymond&lt;/a&gt;
+
+It is proper to take alarm at the first experiment on our
+liberties. We hold this prudent jealousy to be the first duty of
+citizens and one of the noblest characteristics of the late
+Revolution. The freemen of America did not wait till usurped power had
+strengthened itself by exercise and entangled the question in
+precedents. They saw all the consequences in the principle, and they
+avoided the consequences by denying the principle. We revere this
+lesson too much ... to forget it	-- James Madison.
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="000782.html">[Gpsd-users] Announcing release 2.26 of gpsd
+</A></li>
+	<LI>Next message: <A HREF="000784.html">[Gpsd-users] Roadmap for gpsd 2.27
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#783">[ date ]</a>
+              <a href="thread.html#783">[ thread ]</a>
+              <a href="subject.html#783">[ subject ]</a>
+              <a href="author.html#783">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

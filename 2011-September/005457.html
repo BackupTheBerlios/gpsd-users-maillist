@@ -1,0 +1,154 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] No PPS
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2011-September/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20No%20PPS&In-Reply-To=%3C20110902092005.35614y00myfwga3p%40webmail.aus-city.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="005456.html">
+   <LINK REL="Next"  HREF="005458.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] No PPS</H1>
+    <B>webmaster at aus-city.com</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20No%20PPS&In-Reply-To=%3C20110902092005.35614y00myfwga3p%40webmail.aus-city.com%3E"
+       TITLE="[Gpsd-users] No PPS">webmaster at aus-city.com
+       </A><BR>
+    <I>Fri Sep  2 01:20:05 CEST 2011</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="005456.html">[Gpsd-users] No PPS
+</A></li>
+        <LI>Next message: <A HREF="005458.html">[Gpsd-users] No PPS
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#5457">[ date ]</a>
+              <a href="thread.html#5457">[ thread ]</a>
+              <a href="subject.html#5457">[ subject ]</a>
+              <a href="author.html#5457">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi Gary!
+
+Here is the output on the same server rolled back to gpsd-2.96
+
++SHM(0)          .GPS.            0 l   12   16  377    0.000  -34.473   1.064
+*SHM(1)          .PPS.            0 l   17   16  377    0.000   -0.004   0.009
+-time.nist.gov   .ACTS.           1 u   28   64  377  188.038   -4.697   0.536
++clock.isc.org   .GPS.            1 u   33   64  377  162.519  -14.652   0.693
+-ntp-nasa.arc.na .GPS.            1 u   22   64  377  158.804   -7.899   4.957
+-ntp0.usno.navy. .USNO.           1 u   25   64  377  299.714  -27.154   2.170
+-tock.usno.navy. .USNO.           1 u   16   64  377  302.389  -26.712   2.255
+-204.34.198.40   .USNO.           1 u    8   64  377  325.913  -33.237   3.479
+-ds001.hostingsh 203.12.160.2     3 u   27   64  377   27.852    1.660   1.193
+xns2.unico.com.a 203.19.252.4     3 u    5   64  377   27.508    2.838   9.850
+-2001:388:d000:1 192.5.41.40      2 u   19   64  377  399.045  -34.041   1.049
+-yarrina.connect 130.95.179.80    2 u    7   64  377   29.308   -7.024   0.550
+-freya.witworx.c 207.95.240.188   3 u   20   64  377   44.774   -4.926   2.083
+  192.168.0.255   .BCST.          16 u    -   64    0    0.000    0.000   0.001
+  10.255.255.255  .BCST.          16 u    -   64    0    0.000    0.000   0.001
+  ntp.mcast.net   .MCST.          16 u    -   64    0    0.000    0.000   0.001
+  LOCAL(0)        .PRIM.           0 l   63   64  377    0.000    0.000   0.001
+
+
+All that I have done is changed to 3.0 and 3.1 (3.0 was the same).  
+Something changed in PPS detection in the compile.  Obviously its  
+seeing the ttyS0 as you can see the serial data.
+
+Installed Packages
+gpsd.i686                            2.96-0.el6
+Available Packages
+gpsd.i686                            3.1-0.el6
+
+What's changed in 3.0 as far as PPS that's when I lost PPS?
+
+I know in fedora, they built a support package called pps-tools. The  
+redhat people tell me that is not compatible with the redhat 6 kernel,  
+so build it without the requires pps-tools which I have done.
+
+My box is redhat 6 32 bit.
+
+I also added as I was told by someone here, add pps=true:
+
+scons \
+	dbus=yes \
+	systemd=yes \
+	pps=true \
+	libQgpsmm=no \
+
+Any idea's something is not right at all, and we know my hardware works.
+
+Cheers,
+
+David
+
+
+Quoting &quot;Gary E. Miller&quot; &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">gem at rellim.com</A>&gt;:
+
+&gt;<i> -----BEGIN PGP SIGNED MESSAGE-----
+</I>&gt;<i> Hash: SHA1
+</I>&gt;<i>
+</I>&gt;<i> Yo David!
+</I>&gt;<i>
+</I>&gt;<i> On Fri, 2 Sep 2011, <A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">webmaster at aus-city.com</A> wrote:
+</I>&gt;<i>
+</I>&gt;&gt;<i> I am using ntpd...
+</I>&gt;<i>
+</I>&gt;<i> That works, as long as you are (almost) always internet connected.
+</I>&gt;<i>
+</I>&gt;&gt;<i> Here you go (this is off 3.1 I just compiled the rpm).
+</I>&gt;<i>
+</I>&gt;<i> I see no indication that gpsd ever saw any PPS input at all.  You need
+</I>&gt;<i> to verify that you have the PPS pin is hooked up to the DCD pin and
+</I>&gt;<i> sending a signal to that pin.
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i> RGDS
+</I>&gt;<i> GARY
+</I>&gt;<i> - ---------------------------------------------------------------------------
+</I>&gt;<i> Gary E. Miller Rellim 109 NW Wilmington Ave., Suite E, Bend, OR 97701
+</I>&gt;<i> 	<A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">gem at rellim.com</A>  Tel:+1(541)382-8588
+</I>&gt;<i>
+</I>&gt;<i> -----BEGIN PGP SIGNATURE-----
+</I>&gt;<i> Version: GnuPG v1.4.3 (GNU/Linux)
+</I>&gt;<i>
+</I>&gt;<i> iD8DBQFOYA4QBmnRqz71OvMRAvp6AJ9/NAUFMFNysGD+yu7X8SWuatt3fACg3qOi
+</I>&gt;<i> d1fTtuiG6v5F348cmUyLXnk=
+</I>&gt;<i> =MsBW
+</I>&gt;<i> -----END PGP SIGNATURE-----
+</I>&gt;<i>
+</I>&gt;<i>
+</I>
+
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="005456.html">[Gpsd-users] No PPS
+</A></li>
+	<LI>Next message: <A HREF="005458.html">[Gpsd-users] No PPS
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#5457">[ date ]</a>
+              <a href="thread.html#5457">[ thread ]</a>
+              <a href="subject.html#5457">[ subject ]</a>
+              <a href="author.html#5457">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

@@ -1,0 +1,163 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] new bug + fix: gpsd dropping connection regardless of activity
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2006-January/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20new%20bug%20%2B%20fix%3A%20gpsd%20dropping%20connection%20regardless%20of%20activity&In-Reply-To=%3Cp06230901bfe0ccf8fbe2%40%5B165.118.183.50%5D%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="001201.html">
+   <LINK REL="Next"  HREF="001203.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] new bug + fix: gpsd dropping connection regardless of activity</H1>
+    <B>Robin L Darroch</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20new%20bug%20%2B%20fix%3A%20gpsd%20dropping%20connection%20regardless%20of%20activity&In-Reply-To=%3Cp06230901bfe0ccf8fbe2%40%5B165.118.183.50%5D%3E"
+       TITLE="[Gpsd-users] new bug + fix: gpsd dropping connection regardless of activity">robin at spade-men.com
+       </A><BR>
+    <I>Wed Jan  4 04:36:44 CET 2006</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="001201.html">[Gpsd-users] information updating
+</A></li>
+        <LI>Next message: <A HREF="001203.html">[Gpsd-users] new bug + fix: gpsd dropping connection regardless of activity
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1202">[ date ]</a>
+              <a href="thread.html#1202">[ thread ]</a>
+              <a href="subject.html#1202">[ subject ]</a>
+              <a href="author.html#1202">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Happy new year everyone!
+
+I'm continuing work on a gpsd-to-Google Earth real-time translator, 
+and it's working pretty well so far.  However, I kept getting &quot;Broken 
+Pipe&quot; messages, and by testing with other gpsd clients (including 
+straight telnet sessions) I've found a bug in gpsd 2.30 itself. 
+Given the additional problems in versions between 2.25 and 2.30 I 
+haven't rebuilt all the intervening versions to see when the bug 
+first appeared, but I don't believe I had seen this problem in 2.25 
+(which was the last version I used for a substantial period of time). 
+Although I'll share the full source code for my &quot;gpstoge&quot; program 
+shortly, the part that interfaces with gpsd is as follows:
+
+
+	gps1 = gps_open(server,port);
+	gps_query(gps1, &quot;o\n&quot;);
+	sleep(1);
+
+	for (;;) {
+
+		gps_query(gps1, &quot;o\n&quot;);
+
+
+		sleep(3);
+	}
+
+	gps_close(gps1);
+
+The first &quot;o&quot; query is just to make sure that gpsd is awake, then 
+after that an &quot;o&quot; query is sent every three seconds without fail. 
+Another program I use - KisMAC - sends a query every second or two 
+also... and yet it will regularly report that gpsd 2.30 has closed 
+the connection.
+
+Although I've coded gpstoge to work around the problem (by closing 
+and reopening the connection if it doesn't get a successful result 
+from gps_query), this shouldn't really be necessary if gpsd can be 
+persuaded not to close active connections.  So, what is gpsd 
+reporting?  Well, there's the curious part:
+
+[whole bunch of normal debug output, then...]
+GPS sent 1 new characters
+&lt;= GPS: $GPRMC,004952.747,A,2022.6884,S,11837.9725,E,0.000000,,040106,,*08
+gpsd: polling 5
+Read 1 chars to buffer offset 0 (total 1): 24
+00197365: character '$' [24], new state: NMEA_DOLLAR
+GPS sent 1 new characters
+New data, not yet a packet
+gpsd: client(4) timed out on command wait.
+gpsd: detaching 4 in detach_client
+gpsd: unflagging descriptor 5 in open_device
+closing GPS=/dev/cu.usbserial0 (5)
+
+So... it claims to be timing out &quot;on command wait&quot;.
+
+Further debugging has shown that it is reaching the limit for the 
+difference between &quot;subscribers[cfd].active&quot; and &quot;timestamp()&quot;, so 
+I've investigated what is happening to &quot;.active&quot;... and it appears 
+the answer is &quot;nothing&quot;.  Well, that's not entirely true.  It's 
+assigned the current timestamp when the client first connects, but it 
+is not updated at all regardless of client activity, so - as it has 
+been coded to do - it will drop the connection when a given client, 
+regardless of activity, has been connected continuously for 
+POLLER_TIMEOUT.
+
+I believe the idea should be to disconnect a client only if it has 
+been *inactive* for that long, so I've added a line in gpsd.c to 
+update .active every time it actually sends information to the client:
+
+10:28 [~/src/gpsd-2.30] robin&gt; diff -u gpsd-orig.c gpsd.c
+--- gpsd-orig.c 2006-01-04 10:25:48.000000000 +0800
++++ gpsd.c      2006-01-04 10:29:27.000000000 +0800
+@@ -1479,7 +1479,9 @@
+                 } else {
+                     buf[buflen] = '\0';
+                     gpsd_report(1, &quot;&lt;= client(%d): %s&quot;, cfd, buf);
+-
++                       // added to prevent timeouts
++                       subscribers[cfd].active = timestamp();
++
+  #ifdef RTCM104_SERVICE
+                     if (subscribers[cfd].rtcm) {
+                         if (handle_dgpsip_request(cfd, buf, buflen) &lt; 0)
+
+I've tested this using both my gpstoge client, and telnet sessions 
+(one in watcher mode, and another with a query or two and then idle). 
+The idle session is disconnected as it should be, but the others 
+remain active.
+
+One bug squashed!
+
+Cheers,
+Robin
+
+P.S.  When I do reach a point of deciding that gpstoge is ready to 
+go, what is the best way to share it with others on this list?
+-- 
+
+-------------------------------------------------------------------------
+  Robin L. Darroch - PO Box 2715, South Hedland WA 6722 - +61 421 503 966
+       <A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">robin at darroch.id.au</A> - <A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">robin at nyca.org.au</A> - <A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">robin at spade-men.com</A>
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="001201.html">[Gpsd-users] information updating
+</A></li>
+	<LI>Next message: <A HREF="001203.html">[Gpsd-users] new bug + fix: gpsd dropping connection regardless of activity
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1202">[ date ]</a>
+              <a href="thread.html#1202">[ thread ]</a>
+              <a href="subject.html#1202">[ subject ]</a>
+              <a href="author.html#1202">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

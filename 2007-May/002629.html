@@ -1,0 +1,122 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] how to crosscompile gpsd for avr32
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2007-May/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20how%20to%20crosscompile%20gpsd%20for%20avr32&In-Reply-To=%3C20070509054731.4141CEF415%40mail.berlios.de%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="002628.html">
+   <LINK REL="Next"  HREF="002630.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] how to crosscompile gpsd for avr32</H1>
+    <B>Randy</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20how%20to%20crosscompile%20gpsd%20for%20avr32&In-Reply-To=%3C20070509054731.4141CEF415%40mail.berlios.de%3E"
+       TITLE="[Gpsd-users] how to crosscompile gpsd for avr32">wrr01 at yahoo.com
+       </A><BR>
+    <I>Wed May  9 08:45:10 CEST 2007</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="002628.html">[Gpsd-users] how to crosscompile gpsd for avr32
+</A></li>
+        <LI>Next message: <A HREF="002630.html">[Gpsd-users] how to crosscompile gpsd for avr32
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2629">[ date ]</a>
+              <a href="thread.html#2629">[ thread ]</a>
+              <a href="subject.html#2629">[ subject ]</a>
+              <a href="author.html#2629">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>
+On Wed, 9 May 2007 00:08:24 -0500 (CDT), Matt Roberds wrote:
+
+&gt;<i>On Tue, 8 May 2007, Randy wrote:
+</I>&gt;&gt;<i> 1)During the make process I get: ldconfig: command not found.
+</I>
+&gt;<i>ldconfig looks for shared libraries in some &quot;standard&quot; directories
+</I>
+&gt;<i>The upshot of all of the above is that it only really makes sense to run
+</I>&gt;<i>ldconfig on the target system.  
+</I>&gt;<i>(The other way to do
+</I>&gt;<i>this would be to have an avr emulator and a copy of your target
+</I>&gt;<i>environment on your desktop machine.  
+</I>
+I can't see a copy of ldconfig on the precompiled and preinstalled target
+dev board. There is a copy of busybox plus various other utilities.
+ The dev board is the only avr32 environment I have at the 
+moment so no emulator is possible right now.
+
+&gt;&gt;<i> 2) when i take the resulting gpsd executable to my avr32 system and
+</I>&gt;&gt;<i>    attempt to run it, i get &quot;can't load library 'libstdc++.so.6'.
+</I>
+&gt;<i>Running ldconfig on the target system *might* fix this.  Or, perhaps C++
+</I>&gt;<i>support wasn't selected when you installed Linux onto the embedded system -
+</I>&gt;<i>you might have to spend some more quality time with the install disks.
+</I>
+There are no c++ libs preconfigured on the target machine.  It is only compiled in the
+initial state for c programs but i think c++ may be possible.  the only c++ lib there is the
+lib i copied there and the symlink i made.
+
+can gpsd be compled for C only?  (no c++)
+
+&gt;<i>You could try 'file /lib/libstdc++.so.6' on the target system to see
+</I>&gt;<i>what kind of file it is (if you've got the 'file' command on the
+</I>&gt;<i>target system).  Even if not, the 'file' command on your desktop system
+</I>&gt;<i>should tell you: 'file /path/to/avr-compiler/lib/libstdc++.so.6'.
+</I>
+it appears there is no file command on the avr32 taget system and
+i got a not found for file in the cygwin window where i am compiling.
+i will go try on the ubuntu system and see.
+
+&gt;&gt;<i> is there a way to tell the configure script for gpsd to completely
+</I>&gt;&gt;<i> link the gpsd exe to all shared libs so it wont need any shared libs
+</I>&gt;&gt;<i> at run time?
+</I>
+&gt;<i>This is usually called &quot;static linking&quot;.  You might try adding
+</I>&gt;<i>'--disable-shared --enable static' to your configure command line to
+</I>&gt;<i>see if that does what you want.  One way you can tell is that the
+</I>&gt;<i>resulting executables will be much larger than what you have now.
+</I>
+i will review my config settings and retry this way. right now i already have
+--disable shared   but dont have yet the enable static.   
+
+&gt;<i>Matt Roberds
+</I>
+
+Thanks Matt - i'll have an update in the morning!  Your help is appreciated!
+
+Randy Rainwater
+
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="002628.html">[Gpsd-users] how to crosscompile gpsd for avr32
+</A></li>
+	<LI>Next message: <A HREF="002630.html">[Gpsd-users] how to crosscompile gpsd for avr32
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2629">[ date ]</a>
+              <a href="thread.html#2629">[ thread ]</a>
+              <a href="subject.html#2629">[ subject ]</a>
+              <a href="author.html#2629">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

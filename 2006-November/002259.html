@@ -1,0 +1,99 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] Problems with gps.py gpsprof on Fedora Core 6,	does not like IPv6 ::1 notation for localhost
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2006-November/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Problems%20with%20gps.py%20gpsprof%20on%20Fedora%20Core%206%2C%0A%09does%20not%20like%20IPv6%20%3A%3A1%20notation%20for%20localhost&In-Reply-To=%3C20061123083202.GA29816%40thyrsus.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="002258.html">
+   <LINK REL="Next"  HREF="002260.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] Problems with gps.py gpsprof on Fedora Core 6,	does not like IPv6 ::1 notation for localhost</H1>
+    <B>Eric S. Raymond</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Problems%20with%20gps.py%20gpsprof%20on%20Fedora%20Core%206%2C%0A%09does%20not%20like%20IPv6%20%3A%3A1%20notation%20for%20localhost&In-Reply-To=%3C20061123083202.GA29816%40thyrsus.com%3E"
+       TITLE="[Gpsd-users] Problems with gps.py gpsprof on Fedora Core 6,	does not like IPv6 ::1 notation for localhost">esr at thyrsus.com
+       </A><BR>
+    <I>Thu Nov 23 09:32:02 CET 2006</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="002258.html">[Gpsd-users] Problems with gps.py gpsprof on Fedora Core 6,	does not like IPv6 ::1 notation for localhost
+</A></li>
+        <LI>Next message: <A HREF="002260.html">[Gpsd-users] gpsd not working with Garmin GPS Map 60CSX
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2259">[ date ]</a>
+              <a href="thread.html#2259">[ thread ]</a>
+              <a href="subject.html#2259">[ subject ]</a>
+              <a href="author.html#2259">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Robert J.Berger &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">rberger at ibd.com</A>&gt;:
+&gt;<i> Looks like for some reason the gps.py code does not like having an / 
+</I>&gt;<i> etc/hosts file that uses the ::1 ipv6 notation for localhost.
+</I>&gt;<i> 
+</I>&gt;<i> Until I changed the line in /etc/hosts from:
+</I>&gt;<i> ::1    localhost.localdomain   localhost
+</I>&gt;<i> 
+</I>&gt;<i> to:
+</I>&gt;<i> 127.0.0.1       localhost.localdomain   localhost
+</I>&gt;<i> 
+</I>&gt;<i> gps.py would fail when trying to open the socket connection to the gpsd:
+</I>&gt;<i>    File &quot;/usr/local/bin/spGps.py&quot;, line 198, in __init__
+</I>&gt;<i>      self.connect(host, port)
+</I>&gt;<i>    File &quot;/usr/local/bin/spGps.py&quot;, line 237, in connect
+</I>&gt;<i>      raise socket.error, msg
+</I>&gt;<i> socket.error: (111, 'Connection refused')
+</I>&gt;<i> 
+</I>&gt;<i> and gpsprof would fail with:
+</I>&gt;<i> # gpsprof | gnuplot -persist
+</I>&gt;<i> gpsprof: gpsd unreachable.
+</I>&gt;<i> Exit 1
+</I>&gt;<i> 
+</I>&gt;<i> Not sure what the problem is. Seems more like a python problem than a  
+</I>&gt;<i> gpsd problem. But folks should be aware of it. It took me about 5  
+</I>&gt;<i> hours to figure it out....
+</I>
+Yup, that looks like a Python bug.  Show me what your Python
+prints on startup?  Mine says
+
+<A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">esr at snark</A>:~$ python
+Python 2.4.3 (#1, Oct  1 2006, 17:59:36) 
+[GCC 4.1.1 20060928 (Red Hat 4.1.1-28)] on linux2
+Type &quot;help&quot;, &quot;copyright&quot;, &quot;credits&quot; or &quot;license&quot; for more information.
+&gt;&gt;&gt;<i> 
+</I>
+I need the version and OS to pass the bug upstream.
+-- 
+		&lt;a href=&quot;<A HREF="http://www.catb.org/~esr/">http://www.catb.org/~esr/</A>&quot;&gt;Eric S. Raymond&lt;/a&gt;
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="002258.html">[Gpsd-users] Problems with gps.py gpsprof on Fedora Core 6,	does not like IPv6 ::1 notation for localhost
+</A></li>
+	<LI>Next message: <A HREF="002260.html">[Gpsd-users] gpsd not working with Garmin GPS Map 60CSX
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2259">[ date ]</a>
+              <a href="thread.html#2259">[ thread ]</a>
+              <a href="subject.html#2259">[ subject ]</a>
+              <a href="author.html#2259">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

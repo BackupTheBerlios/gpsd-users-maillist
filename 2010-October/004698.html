@@ -1,0 +1,191 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] How to get ephemeris and pseudorange
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2010-October/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20How%20to%20get%20ephemeris%20and%20pseudorange&In-Reply-To=%3CSNT102-W27E39789226F241C8F6F9AEC5B0%40phx.gbl%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="004696.html">
+   <LINK REL="Next"  HREF="004697.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] How to get ephemeris and pseudorange</H1>
+    <B>Daniele Fetoni</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20How%20to%20get%20ephemeris%20and%20pseudorange&In-Reply-To=%3CSNT102-W27E39789226F241C8F6F9AEC5B0%40phx.gbl%3E"
+       TITLE="[Gpsd-users] How to get ephemeris and pseudorange">daniele.fetoni at hotmail.it
+       </A><BR>
+    <I>Tue Oct 19 12:36:53 CEST 2010</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="004696.html">[Gpsd-users] How to get ephemeris and pseudorange
+</A></li>
+        <LI>Next message: <A HREF="004697.html">[Gpsd-users] Fwd: Re: No data from Garmin GPSMap 76CSx through gpsd to tango GPS
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#4698">[ date ]</a>
+              <a href="thread.html#4698">[ thread ]</a>
+              <a href="subject.html#4698">[ subject ]</a>
+              <a href="author.html#4698">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>
+First, thanks for your kindness.
+
+Than, probably I should report more details.
+
+Now, I have a code like this:
+
+      session=&sessione;
+      strcpy (session-&gt;dev, porta);
+      garmin_Open(session);
+      garmin_detect(session); 
+
+This part open the connection with my Garmin; I think it will be replaced with a simple gps_open(session).
+Than, I have to get ephemeris and pseudorange. Actually I have to parse some messages coming from my GPS device, just like this:
+
+              garmin_DownloadEph (session, channelsGar);        
+              garmin_MisurePseudorange (session, channelsGar);    
+
+.....
+
+void garmin_DownloadEph (sessione_t *session, channelGarmin_t *channels) {
+    packetSer_t *packet=(packetSer_t *) (session-&gt;stream.outBuffer);
+     int i = 0;
+     int numeroEph = 0;  
+         Build_Send_SER_Packet (session, GARMIN_LAYERID_APPL, GARMIN_PKTID_L001_COMMAND_DATA, 2, CMND_START_DOWNLOAD_EPH );
+         
+    do{
+               readSerPacket (session);
+         } while (packet-&gt;mPacketId!=GARMIN_PKTID_L001_RECORDS);   
+   
+         numeroEph = get_uint16((uint8_t *)packet-&gt;mData.uchars);     
+
+         do{
+               readSerPacket (session);
+              if (packet-&gt;mPacketId == GARMIN_PKTID_EPH_DATA) {
+             SMD_spc_eph_type *punt;
+             punt = (SMD_spc_eph_type*)packet-&gt;mData.uchars;
+             channels[i].ephemeris = *punt;
+             swap(&amp;channels[i].ephemeris.e);            // eccentricity
+             swap(&amp;channels[i].ephemeris.sqrta);    // square root of semi-major axis (m^.5)
+             swap(&amp;channels[i].ephemeris.dn);    // mean motion correction (r/s)
+             swap(&amp;channels[i].ephemeris.m0);    // mean anomaly at reference time (r)
+             swap(&amp;channels[i].ephemeris.w);        // argument of perigee (r)
+             swap(&amp;channels[i].ephemeris.omg0);    // right ascension (r)
+             swap(&amp;channels[i].ephemeris.i0);    // inclination angle at reference time (r)
+             i++;
+          }
+ 
+     } while (packet-&gt;mPacketId!=GARMIN_PKTID_L001_XFER_CMPLT);
+}
+
+
+void garmin_MisurePseudorange (sessione_t *session,channelGarmin_t *channels) {
+      int i=0;
+    correzionePseudorange_t deltaPr[GARMIN_CHANNELS]={0};
+    cpo_rcv_data *rmd = NULL;
+      packetSer_t *packet=(packetSer_t *) (session-&gt;stream.outBuffer);
+      Build_Send_SER_Packet(session, GARMIN_LAYERID_APPL,GARMIN_PKTID_L001_COMMAND_DATA, 2, CMND_START_RM_DATA);
+      while (1) {
+            readSerPacket (session);
+            if   (packet-&gt;mPacketId== GARMIN_PKTID_RMD_DATA) {
+            (void)PrintSERPacket (session, (unsigned char)packet-&gt;mPacketId, (int)packet-&gt;mDataSize, (uint8_t *)packet-&gt;mData.uchars);
+                  rmd = (cpo_rcv_data *)packet-&gt;mData.uchars;
+                  for (i = 0 ; i &lt; GARMIN_CHANNELS ; i++) {
+                channels[i].rcvr_tow=rmd-&gt;rcvr_tow;
+                channels[i].pseudorange=rmd-&gt;sv[i];
+                  }
+                  break;
+              }
+      }
+        Build_Send_SER_Packet(session, GARMIN_LAYERID_APPL,GARMIN_PKTID_L001_COMMAND_DATA, 2, CMND_STOP_RM_DATA);
+}
+
+
+As you can see, even if lots of functions are not reported, this works only for a certain device. 
+Now I should make this application work with several different devices, and I hoped gpsd could help me in retrieve the informations I need, but seems that this is not possible (now...). 
+
+Maybe is possible to get ephemeris data, (if on line, gpsd or someone else could download for each satellite the relative Posix file and put data in a struct; this is an easy solution), but probably is very difficult, as Gary said, to retrieve pseudorange information for different GPSs. This solution is not useful for me, because I need to get the infos runtime, but could be interesting for someone else. 
+
+If you have any other idea to solve my problem...
+
+Again, thanks to all.
+
+Daniele
+
+
+&gt;<i> Date: Mon, 18 Oct 2010 09:37:58 -0700
+</I>&gt;<i> From: <A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">gem at rellim.com</A>
+</I>&gt;<i> To: <A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">daniele.fetoni at hotmail.it</A>
+</I>&gt;<i> CC: <A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">gpsd-users at lists.berlios.de</A>
+</I>&gt;<i> Subject: Re: [Gpsd-users] How to get ephemeris and pseudorange
+</I>&gt;<i> 
+</I>&gt;<i> -----BEGIN PGP SIGNED MESSAGE-----
+</I>&gt;<i> Hash: SHA1
+</I>&gt;<i> 
+</I>&gt;<i> Yo Daniele!
+</I>&gt;<i> 
+</I>&gt;<i> On Mon, 18 Oct 2010, Daniele Fetoni wrote:
+</I>&gt;<i> 
+</I>&gt;<i> &gt; I am trying to develop a C application that needs to download ephemeris
+</I>&gt;<i> &gt; and pseudorange from a gps in order to calculate position with less than
+</I>&gt;<i> &gt;  4 satellites.
+</I>&gt;<i> 
+</I>&gt;<i> At the moment gpsd collects the ephemeris, but does not ever pass it on.
+</I>&gt;<i> We have discussed it many times in the past, should be not too hard to
+</I>&gt;<i> do, but never had an eager consumer for final motivation.
+</I>&gt;<i> 
+</I>&gt;<i> The psuedo range is a bit tougher since every GPS seems to do this
+</I>&gt;<i> differently and many leave out important bits of info.  We suspect to
+</I>&gt;<i> protect the value of their 'survey grade' products.
+</I>&gt;<i> 
+</I>&gt;<i> If you are willing to be patient and work with the gpsd team we could get
+</I>&gt;<i> you a solution.
+</I>&gt;<i> 
+</I>&gt;<i> What would your ideal solution look like?
+</I>&gt;<i> 
+</I>&gt;<i> RGDS
+</I>&gt;<i> GARY
+</I>&gt;<i> - ---------------------------------------------------------------------------
+</I>&gt;<i> Gary E. Miller Rellim 109 NW Wilmington Ave., Suite E, Bend, OR 97701
+</I>&gt;<i> 	<A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">gem at rellim.com</A>  Tel:+1(541)382-8588
+</I>&gt;<i> 
+</I>&gt;<i> -----BEGIN PGP SIGNATURE-----
+</I>&gt;<i> Version: GnuPG v1.4.3 (GNU/Linux)
+</I>&gt;<i> 
+</I>&gt;<i> iD8DBQFMvHfoBmnRqz71OvMRAsT2AJ9zaIe/zz6poLsRoPhi3rO5U3d1FQCeN6GY
+</I>&gt;<i> 4kqLEDRB7LLZ98QGU11BKEM=
+</I>&gt;<i> =JZVi
+</I>&gt;<i> -----END PGP SIGNATURE-----
+</I>&gt;<i> 
+</I> 		 	   		  
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="004696.html">[Gpsd-users] How to get ephemeris and pseudorange
+</A></li>
+	<LI>Next message: <A HREF="004697.html">[Gpsd-users] Fwd: Re: No data from Garmin GPSMap 76CSx through gpsd to tango GPS
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#4698">[ date ]</a>
+              <a href="thread.html#4698">[ thread ]</a>
+              <a href="subject.html#4698">[ subject ]</a>
+              <a href="author.html#4698">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

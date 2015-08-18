@@ -1,0 +1,102 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] gpsd fails with Illegal instruction on old AMD	athlon
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2011-August/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20gpsd%20fails%20with%20Illegal%20instruction%20on%20old%20AMD%0A%09athlon&In-Reply-To=%3C4E5A21C4.5090905%40t-online.de%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="005442.html">
+   <LINK REL="Next"  HREF="005444.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] gpsd fails with Illegal instruction on old AMD	athlon</H1>
+    <B>Reinhard Arlt</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20gpsd%20fails%20with%20Illegal%20instruction%20on%20old%20AMD%0A%09athlon&In-Reply-To=%3C4E5A21C4.5090905%40t-online.de%3E"
+       TITLE="[Gpsd-users] gpsd fails with Illegal instruction on old AMD	athlon">reinhard.arlt at t-online.de
+       </A><BR>
+    <I>Sun Aug 28 13:08:52 CEST 2011</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="005442.html">[Gpsd-users] gpsd fails with Illegal instruction on old AMD athlon
+</A></li>
+        <LI>Next message: <A HREF="005444.html">[Gpsd-users] Hurricane Irene is abating and 3.2 is shipped.
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#5443">[ date ]</a>
+              <a href="thread.html#5443">[ thread ]</a>
+              <a href="subject.html#5443">[ subject ]</a>
+              <a href="author.html#5443">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hello,
+
+gpsd works, if i build it with
+
+scons debug=true shm_export=no
+
+Here is the spec file of the compiler (it is the ubuntu gcc)
+
+  Using built-in specs.
+Target: i486-linux-gnu
+Configured with: ../src/configure -v --with-pkgversion='Ubuntu 
+4.4.3-4ubuntu5' --with-bugurl=<A HREF="file:///usr/share/doc/gcc-4.4/README.Bugs">file:///usr/share/doc/gcc-4.4/README.Bugs</A> 
+--enable-languages=c,c++,fortran,objc,obj-c++ --prefix=/usr 
+--enable-shared --enable-multiarch --enable-linker-build-id 
+--with-system-zlib --libexecdir=/usr/lib --without-included-gettext 
+--enable-threads=posix --with-gxx-include-dir=/usr/include/c++/4.4 
+--program-suffix=-4.4 --enable-nls --enable-clocale=gnu 
+--enable-libstdcxx-debug --enable-plugin --enable-objc-gc 
+--enable-targets=all --disable-werror --with-arch-32=i486 
+--with-tune=generic --enable-checking=release --build=i486-linux-gnu 
+--host=i486-linux-gnu --target=i486-linux-gnu
+Thread model: posix
+gcc version 4.4.3 (Ubuntu 4.4.3-4ubuntu5)
+
+
+Reinhard
+
+Eric Raymond wrote:
+&gt;<i> Reinhard Arlt&lt;<A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">reinhard.arlt at t-online.de</A>&gt;:
+</I>&gt;&gt;<i> Program received signal SIGILL, Illegal instruction.
+</I>&gt;&gt;<i> barrier () at gpsd.h:1069
+</I>&gt;&gt;<i> 1069            asm volatile(&quot;mfence&quot;);
+</I>&gt;&gt;<i> (gdb)
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> Do you have an idea, what is going wrong?
+</I>&gt;&gt;<i> The system works flawless even with version 2.96 of gpsd.
+</I>&gt;<i>
+</I>&gt;<i> This looks like a problem with your 32-bit toolchain.  Try building with
+</I>&gt;<i> shm_export=no - the problematic code is not used in normal operation. Please
+</I>&gt;<i> let us know if that works.
+</I>
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="005442.html">[Gpsd-users] gpsd fails with Illegal instruction on old AMD athlon
+</A></li>
+	<LI>Next message: <A HREF="005444.html">[Gpsd-users] Hurricane Irene is abating and 3.2 is shipped.
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#5443">[ date ]</a>
+              <a href="thread.html#5443">[ thread ]</a>
+              <a href="subject.html#5443">[ subject ]</a>
+              <a href="author.html#5443">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

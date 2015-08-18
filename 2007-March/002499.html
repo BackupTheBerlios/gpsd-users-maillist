@@ -1,0 +1,129 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] Issues with PPS on Garmin GPS 18LVC
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2007-March/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Issues%20with%20PPS%20on%20Garmin%20GPS%2018LVC&In-Reply-To=%3C4.3.2.7.2.20070319210128.02c85d70%40postoffice.creativesilicon.com.au%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="002498.html">
+   <LINK REL="Next"  HREF="002504.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] Issues with PPS on Garmin GPS 18LVC</H1>
+    <B>Dave C</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Issues%20with%20PPS%20on%20Garmin%20GPS%2018LVC&In-Reply-To=%3C4.3.2.7.2.20070319210128.02c85d70%40postoffice.creativesilicon.com.au%3E"
+       TITLE="[Gpsd-users] Issues with PPS on Garmin GPS 18LVC">gpsd at creativesilicon.com.au
+       </A><BR>
+    <I>Mon Mar 19 12:32:10 CET 2007</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="002498.html">[Gpsd-users] GPSD is not setting the time via ntpd
+</A></li>
+        <LI>Next message: <A HREF="002504.html">[Gpsd-users] the forthcoming gpsd-2.35 release
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2499">[ date ]</a>
+              <a href="thread.html#2499">[ thread ]</a>
+              <a href="subject.html#2499">[ subject ]</a>
+              <a href="author.html#2499">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi All,
+
+I've just spent the afternoon and evening attempting to get gpsd V2.34 to 
+recognize PPS input from a Garmin 18LVC - but I haven't had much joy.
+
+Using the following command line
+
+	gpsd -n -N -D 5 /dev/ttyS1
+
+I see the
+
+	pps-detect  (DCD) on /dev/ttyS1 changed to 1
+and
+	pps-detect  (DCD) on /dev/ttyS1 changed to 0
+
+messages in the debug info on the console. BUT, gpsd never accepts that the 
+PPS signal is valid. Every occurrence of '.. changed to 0' is immediately 
+followed by:
+
+	PPS pulse rejected too short.
+
+and various cycle &amp; duration values.
+
+I've tried the following:
+
+1. gpsd V2.34 via Gentoo ebuild (which required the ~x86 keyword as the 
+package is still marked as testing in Gentoo).
+This seems to be compiled with all GPSs enabled, PPS on DCD &amp; NTP support 
+enabled. This was when I first noticed this issue, as ntpd would sync to 
+the GPS refclock, but not to the PPS refclock.
+Some investigation of sentences sent to the GPS showed that the unit was 
+correctly being identified as a Garmin, baudrate was being set, and that 
+the PPS pulse was being set to 100mS.
+At this point I thought that maybe 100mS was too short for the hardware (a 
+PIII 1GHz). It's not a particularly busy machine though - at the moment 
+it's only running gpsd &amp; ntpd.
+
+2. Checked out latest from SVN trunk.
+Ran the autogen.sh script and then make. Rand gpsd - Same issue.
+
+3. I then revisited my thoughts that the PPS pulse was too short, so I 
+reconfigured gpsd with the --disable-reconfigure option &amp; recompiled. I 
+then used the Garmin supplied windows program to change the PPS pulse width 
+from 100mS to 500mS to 800mS, and finally right out to 940mS, testing 
+against gpsd each time. Same results. The cycle and duration values in the 
+log message do change to match the particular length of PPS pulse that the 
+GPS was set to at the time.
+
+4. According to an earlier post, Gary recommended changing the
+	#define PUT_MAX_OFFSET        500000
+in ntpshm.c to
+	#define PUT_MAX_OFFSET        600000
+
+I did this, recompiled gpsd and re-ran the tests that I did in trial 3, 
+above. Still no joy....
+
+BTW, I know that the PPS pulse is enabled, as I've watched it on my 
+oscilloscope. Also, I doubt that I would be getting the lines in the debug 
+output if it wasn't.
+
+
+Any hints on what I've done wrong would be greatly appreciated. I KNOW that 
+the 18LVC works as a PPS source as a number of people (including Gary) 
+indicate that it's working well for them...... I just wish that it would 
+work well for me!
+
+Thanks, Dave
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="002498.html">[Gpsd-users] GPSD is not setting the time via ntpd
+</A></li>
+	<LI>Next message: <A HREF="002504.html">[Gpsd-users] the forthcoming gpsd-2.35 release
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2499">[ date ]</a>
+              <a href="thread.html#2499">[ thread ]</a>
+              <a href="subject.html#2499">[ subject ]</a>
+              <a href="author.html#2499">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

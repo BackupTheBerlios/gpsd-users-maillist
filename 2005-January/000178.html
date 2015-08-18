@@ -1,0 +1,152 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] client with vector mapping data?
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2005-January/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20client%20with%20vector%20mapping%20data%3F&In-Reply-To=%3C20050102113818.20868.qmail%40web52705.mail.yahoo.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="000177.html">
+   <LINK REL="Next"  HREF="000179.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] client with vector mapping data?</H1>
+    <B>Hamish</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20client%20with%20vector%20mapping%20data%3F&In-Reply-To=%3C20050102113818.20868.qmail%40web52705.mail.yahoo.com%3E"
+       TITLE="[Gpsd-users] client with vector mapping data?">hamish_nospam at yahoo.com
+       </A><BR>
+    <I>Sun Jan  2 12:38:18 CET 2005</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="000177.html">[Gpsd-users] Announcing release 2.6 of gpsd
+</A></li>
+        <LI>Next message: <A HREF="000179.html">[Gpsd-users] client with vector mapping data?
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#178">[ date ]</a>
+              <a href="thread.html#178">[ thread ]</a>
+              <a href="subject.html#178">[ subject ]</a>
+              <a href="author.html#178">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>[heading off topic, but maybe of interest to others]
+
+&gt;&gt;<i> That's probably the most straight forward solution but if you are 
+</I>&gt;&gt;<i> into some functionality overkill you could also try my real-time 
+</I>&gt;&gt;<i> plugin for GRASS GIS; although a bit clunky and based on old
+</I>versions
+&gt;&gt;<i> (GPSD 1.1 and GRASS 5.0), it takes care of the task it was written 
+</I>&gt;&gt;<i> for nicely.
+</I>&gt;<i>
+</I>&gt;<i> I assume, though, that it still works fine with current gpsd, and 
+</I>&gt;<i> any upgrading for newer grass should not be a big deal either.
+</I>
+Um, no on both counts. I used a patched gpsd 1.10 I think and tried in
+November to run it with the latest gpsd. It didn't work first time
+around so I used the older version which did work. With some minor
+tweaks I'm sure it could work but I was at sea at the time and just
+wanted something that worked. My C code for talking to gpsd is a bit
+patched together so if there is a problem I think it would be with my
+code.....
+
+re. GRASS, it requires GRASS versions 5.0-5.4, as the site-point system
+was changed from a straight ascii file into a feature type in the
+topological vector engine for versions 5.7+. GRASS 5.7+ ascii vector
+files are pretty easy to write to (just 'echo &quot;P x y&quot; &gt;&gt; file.asc' or
+so) but you have to reimport to binary the ascii file with every new
+fix.. actually I could just add the point to a DBF database or into the
+GRASS vector file at each fix but I still think I'd have to rebuild
+topology at each step.. So: could work but 5.4.0 is the current stable
+version of GRASS &amp; the implimentation is a bit cleaner so I'm not
+working on it yet. 5.4 has a new build mechanism vs 5.0 &amp; I haven't
+updated the m.realtime_gps distribution with a new Makefile and
+instructions for that yet (but it works).
+
+
+&gt;&gt;<i> You get support for all raster/vector map formats supported by 
+</I>&gt;&gt;<i> GDAL/OGR (which is most):
+</I>&gt;&gt;<i>  <A HREF="http://gdal.org/">http://gdal.org/</A>
+</I>&gt;&gt;<i>  <A HREF="http://gdal.org/ogr/">http://gdal.org/ogr/</A>
+</I>&gt;<i>
+</I>&gt;<i> In this regard the grass solution is more complete than xastir, which
+</I>&gt;<i> currently supports OGR but not GDAL (though for the asker, who wants 
+</I>&gt;<i> vector, there is no difference)
+</I>
+for clarity &amp; the record, OGR comes as part of the GDAL distribution;
+GDAL covers raster formats (GeoTIFFs, USGS binary DEMs, etc) while OGR
+does the same thing for vector formats (US census TIGER, ESRI shape
+files, etc). Rasters tend to take up more resources..
+
+
+&gt;&gt;<i> FYI something else which doesn't cover the real-time nature of gpsd 
+</I>&gt;&gt;<i> you are probably thinking of; typical use with the GIS is
+</I>downloading
+&gt;&gt;<i> the waypoints and tracks at the end of the day. This is very easy 
+</I>&gt;&gt;<i> with gpstrans + GRASS GIS 5.7 = v.in.garmin module. I'm planning on 
+</I>&gt;&gt;<i> one day updating this to talk to gpsbabel as well..
+</I>&gt;<i>
+</I>&gt;<i> I have a Magellan and a cheesy awk(!) script to do it. I suppose I 
+</I>&gt;<i> should look at gpsbabel.
+</I>
+for clarity &amp; the record, gpsbabel talks to a whole lot of brands of
+GPSs and GPS softwares' file formats and downloads &amp; translates them.
+v.in.garmin is a nice little GRASS script which will use gpstrans to
+connect to a Garmin unit, download waypoints, tracks, and routes; load
+them into the GIS including labels timestampts etc features; and
+transform coordinates into the current map projection/datum.
+
+
+&gt;<i> meaning I could port it to my car stereo, with a minimal simple 2 bit
+</I>
+&gt;<i> depth display (128x32) and only a low-end CPU.
+</I>
+via mini-itx + the travla casetronic 137(?) rocks.
+
+GRASS was written by the US Govt starting in about 1983..it runs on
+really low end hardware (mostly in text mode)[*]. I've run it on a
+2-bit NCD thin terminal without any problems. but that was under NCD's
+X. There is only so much you can do with 128x32.  time, loc'n, speed,
+direction, &amp; status text I guess.
+
+[*] historical footnote: apparently william shatner once did a video
+promo for GRASS in the mid to late 80s for Goddard SFC. now you know.
+
+
+
+Hamish
+
+
+__________________________________________________
+Do You Yahoo!?
+Tired of spam?  Yahoo! Mail has the best spam protection around 
+<A HREF="http://mail.yahoo.com">http://mail.yahoo.com</A> 
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="000177.html">[Gpsd-users] Announcing release 2.6 of gpsd
+</A></li>
+	<LI>Next message: <A HREF="000179.html">[Gpsd-users] client with vector mapping data?
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#178">[ date ]</a>
+              <a href="thread.html#178">[ thread ]</a>
+              <a href="subject.html#178">[ subject ]</a>
+              <a href="author.html#178">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

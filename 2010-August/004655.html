@@ -1,0 +1,95 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] gpsd sync to ntpd under large offset conditions
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2010-August/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20gpsd%20sync%20to%20ntpd%20under%20large%20offset%20conditions&In-Reply-To=%3C20100827175820.GP37836%40glebius.int.ru%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="004653.html">
+   <LINK REL="Next"  HREF="004654.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] gpsd sync to ntpd under large offset conditions</H1>
+    <B>Gleb Smirnoff</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20gpsd%20sync%20to%20ntpd%20under%20large%20offset%20conditions&In-Reply-To=%3C20100827175820.GP37836%40glebius.int.ru%3E"
+       TITLE="[Gpsd-users] gpsd sync to ntpd under large offset conditions">glebius at glebius.int.ru
+       </A><BR>
+    <I>Fri Aug 27 19:58:20 CEST 2010</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="004653.html">[Gpsd-users] gpsd sync to ntpd under large offset conditions
+</A></li>
+        <LI>Next message: <A HREF="004654.html">[Gpsd-users] gpsd sync to ntpd under large offset conditions
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#4655">[ date ]</a>
+              <a href="thread.html#4655">[ thread ]</a>
+              <a href="subject.html#4655">[ subject ]</a>
+              <a href="author.html#4655">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>On Fri, Aug 27, 2010 at 04:43:43PM +0100, Tomalak Geret'kal wrote:
+T&gt; I'm running gpsd and ntpd on an embedded platform. The 
+T&gt; machine may be deployed in the field where NTP servers are 
+T&gt; inaccessible, and the machine may boot with a wildly 
+T&gt; inaccurate hardware clock.
+T&gt; 
+T&gt; When the machine's time/date is at least vaguely correct, 
+T&gt; gpsd is successfully throwing time sync to ntpd via SHM. 
+T&gt; This is functioning. I have also done `tinker panic 0` in 
+T&gt; ntp which works for making ntpd ignore large time offsets, 
+T&gt; and have proved with normal NTP servers that ntpd is no 
+T&gt; longer bothered by large time offsets.
+T&gt; 
+T&gt; Unfortunately, gpsd/SHM/ntpd is still ignoring my gpsd/SHM 
+T&gt; time source when the machine's RTC is highly offset from the 
+T&gt; GPS-reported time. I've found code in the gpsd source that 
+T&gt; writes to the syslog that the [gps-reported] &quot;date is more 
+T&gt; than a year in the future&quot; but can't find any logic in gpsd 
+T&gt; that would go on to prevent the time being used in this case.
+T&gt; 
+T&gt; Ideally I'd like to make it so that gpsd will always provide 
+T&gt; time sync to ntpd, regardless of the size of the offset, as 
+T&gt; I have set ntp up to happen with normal sources.
+T&gt; 
+T&gt; Any thoughts? :D
+
++1 on this problem.
+
+I'm running gpsd in CarPC as GPX logger, and my PC may reset to
+BIOS production date of 1 January 2006 on boot, if car DC voltage
+is too low.
+
+-- 
+Totus tuus, Glebius.
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="004653.html">[Gpsd-users] gpsd sync to ntpd under large offset conditions
+</A></li>
+	<LI>Next message: <A HREF="004654.html">[Gpsd-users] gpsd sync to ntpd under large offset conditions
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#4655">[ date ]</a>
+              <a href="thread.html#4655">[ thread ]</a>
+              <a href="subject.html#4655">[ subject ]</a>
+              <a href="author.html#4655">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

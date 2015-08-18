@@ -1,0 +1,127 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] Not Getting Output from Garmin GPS-18 (USB)
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2006-March/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Not%20Getting%20Output%20from%20Garmin%20GPS-18%20%28USB%29&In-Reply-To=%3C89cb55a50603311125m7ef29868oa11ea7a06ae5ab35%40mail.gmail.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="001491.html">
+   <LINK REL="Next"  HREF="001493.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] Not Getting Output from Garmin GPS-18 (USB)</H1>
+    <B>Adam VanBerlo</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Not%20Getting%20Output%20from%20Garmin%20GPS-18%20%28USB%29&In-Reply-To=%3C89cb55a50603311125m7ef29868oa11ea7a06ae5ab35%40mail.gmail.com%3E"
+       TITLE="[Gpsd-users] Not Getting Output from Garmin GPS-18 (USB)">NiX0n at fragfest.cx
+       </A><BR>
+    <I>Fri Mar 31 21:25:42 CEST 2006</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="001491.html">[Gpsd-users] Not Getting Output from Garmin GPS-18 (USB)
+</A></li>
+        <LI>Next message: <A HREF="001493.html">[Gpsd-users] Not Getting Output from Garmin GPS-18 (USB)
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1492">[ date ]</a>
+              <a href="thread.html#1492">[ thread ]</a>
+              <a href="subject.html#1492">[ subject ]</a>
+              <a href="author.html#1492">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Ok, thank you.
+back to the 64bit RPM, and I get the same debug output that I showed
+you when I compiled myself.
+
+[<A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">root at epona</A> tmp]# gpsd -nN -D 5 /dev/ttyUSB0
+gpsd: launching (Version 2.32)
+gpsd: listening on port gpsd
+gpsd: running with effective group ID 0
+gpsd: running with effective user ID 0
+gpsd: opening GPS data source at '/dev/ttyUSB0'
+gpsd: garmin_probe: Compile error, garmin.Buffer too small.
+gpsd: no probe matched...
+gpsd: speed 9600, 8N1
+gpsd: gpsd_activate: opened GPS (4)
+gpsd: flagging descriptor 4 in open_device
+gpsd: client connect on 5
+gpsd: checking client(5)
+gpsd: &lt;= client(5): r
+gpsd: client(5): assigning channel...
+gpsd: User requires 2, channel type is -1
+gpsd: client(5): channel 4 already active.
+gpsd: client(5) turned on raw mode
+gpsd: =&gt; client(5): GPSD,R=1
+
+I couldn't run cgps because gpsd-clients wouldn't install w/o having
+an old version libXm.so.3()(64bit).  Oldest I have is 3.  Nonetheless,
+not the problem at hand, I still can't raw output even from
+telnetting.  I wanted to go back to the 64bit rpm, as it was the only
+rpm available for download, and I do have a x86_64 arch.  I figured,
+since it was specially written to work w/ 64bit procs, we might get
+different errors.  I don't, so what now?  Perhaps something else is
+causing problems?
+
+Adam &quot;NiX0n&quot;
+
+On 3/29/06, Gary E. Miller &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">gem at rellim.com</A>&gt; wrote:
+&gt;<i> -----BEGIN PGP SIGNED MESSAGE-----
+</I>&gt;<i> Hash: SHA1
+</I>&gt;<i>
+</I>&gt;<i> Yo Adam!
+</I>&gt;<i>
+</I>&gt;<i> On Wed, 29 Mar 2006, Adam VanBerlo wrote:
+</I>&gt;<i>
+</I>&gt;<i> &gt; hehe, yeah.  i know how to remove a rpm.  Sorry, I should have been
+</I>&gt;<i> &gt; more specific.  The last thing I did was compile source.  What do I
+</I>&gt;<i> &gt; need to do to remove the compiled files?  (i.e. where are they? or
+</I>&gt;<i> &gt; better yet, is there a script?)
+</I>&gt;<i>
+</I>&gt;<i> make uninstall
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i> RGDS
+</I>&gt;<i> GARY
+</I>&gt;<i> - ---------------------------------------------------------------------------
+</I>&gt;<i> Gary E. Miller Rellim 20340 Empire Blvd, Suite E-3, Bend, OR 97701
+</I>&gt;<i>         <A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">gem at rellim.com</A>  Tel:+1(541)382-8588
+</I>&gt;<i>
+</I>&gt;<i> -----BEGIN PGP SIGNATURE-----
+</I>&gt;<i> Version: GnuPG v1.4.2.1 (GNU/Linux)
+</I>&gt;<i>
+</I>&gt;<i> iD8DBQFEKtP18KZibdeR3qURAg6cAJ9yvSIk4DkZ8PmcrQiP41Xm2MdiowCg4qQ6
+</I>&gt;<i> Xn0Kge4ukPGdNqfgCCNNoiQ=
+</I>&gt;<i> =CiLu
+</I>&gt;<i> -----END PGP SIGNATURE-----
+</I>&gt;<i>
+</I>&gt;<i>
+</I>
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="001491.html">[Gpsd-users] Not Getting Output from Garmin GPS-18 (USB)
+</A></li>
+	<LI>Next message: <A HREF="001493.html">[Gpsd-users] Not Getting Output from Garmin GPS-18 (USB)
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1492">[ date ]</a>
+              <a href="thread.html#1492">[ thread ]</a>
+              <a href="subject.html#1492">[ subject ]</a>
+              <a href="author.html#1492">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

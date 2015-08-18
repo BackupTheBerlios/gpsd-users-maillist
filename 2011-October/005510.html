@@ -1,0 +1,124 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] [gpsd-users] time setting chicken and egg
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2011-October/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20%5Bgpsd-users%5D%20time%20setting%20chicken%20and%20egg&In-Reply-To=%3C18282F33-7837-4DA1-84C3-4D272CAC3721%40pelgrum.org%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="005509.html">
+   <LINK REL="Next"  HREF="005511.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] [gpsd-users] time setting chicken and egg</H1>
+    <B>Wouter Pelgrum</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20%5Bgpsd-users%5D%20time%20setting%20chicken%20and%20egg&In-Reply-To=%3C18282F33-7837-4DA1-84C3-4D272CAC3721%40pelgrum.org%3E"
+       TITLE="[Gpsd-users] [gpsd-users] time setting chicken and egg">wouter at pelgrum.org
+       </A><BR>
+    <I>Mon Oct 24 04:42:43 CEST 2011</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="005509.html">[Gpsd-users] [gpsd-users] time setting chicken and egg
+</A></li>
+        <LI>Next message: <A HREF="005511.html">[Gpsd-users] [gpsd-users] time setting chicken and egg
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#5510">[ date ]</a>
+              <a href="thread.html#5510">[ thread ]</a>
+              <a href="subject.html#5510">[ subject ]</a>
+              <a href="author.html#5510">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Check out the makestep command in the chrony.conf.
+
+4.2.27 makestep
+Normally chronyd will cause the system to gradually correct any time offset, by slowing down or speeding up the clock as required. In certain situations, the system clock may be so far adrift that this slewing process would take a very long time to correct the system clock.
+
+This directive forces chronyd to step system clock if the adjustment is larger than a threshold value, but only if there were no more clock updates since chronyd was started than a specified limit (a negative value can be used to disable the limit).
+
+This is particularly useful when using reference clocks, because the initstepslew directive (see section initstepslew) works only with NTP sources.
+
+An example of the use of this directive is
+
+ 	
+makestep 1000 10
+This would step system clock if the adjustment is larger than 1000 seconds, but only in the first ten clock updates. 
+
+
+
+On Sunday Oct 23 2011, at 22:15:36, Yan Seiner wrote:
+
+&gt;<i> Do you have a script or some hints on how to do that?
+</I>&gt;<i> 
+</I>&gt;<i> Thanks.
+</I>&gt;<i> 
+</I>&gt;<i> 
+</I>&gt;<i> David Edwards wrote:
+</I>&gt;&gt;<i> What I've done in the past is to just directly read the GPS NMEA stream, parse out the time, set the date/time, and then fire up gpsd and let it handle fine adjustments.
+</I>&gt;&gt;<i> 
+</I>&gt;&gt;<i> On Sun, Oct 23, 2011 at 9:50 PM, Yan Seiner &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">yan at seiner.com</A> &lt;mailto:<A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">yan at seiner.com</A>&gt;&gt; wrote:
+</I>&gt;&gt;<i> 
+</I>&gt;&gt;<i>    I'm working on a platform that is mobile it sometimes has access
+</I>&gt;&gt;<i>    to the internet and sometimes not.   The hardware does not have a
+</I>&gt;&gt;<i>    RTC so at power-up it sets the clock to something like Dec 31, 1969.
+</I>&gt;&gt;<i> 
+</I>&gt;&gt;<i>    I'm trying to set up chrony + gpsd to set the time from the gps
+</I>&gt;&gt;<i>    directly.
+</I>&gt;&gt;<i> 
+</I>&gt;&gt;<i>    The behavior I'm seeing from gpsd is that it won't report a time
+</I>&gt;&gt;<i>    to chrony until the system clock is close to what gpsd is seeing
+</I>&gt;&gt;<i>    from the gps.  I have not found a way to override this.
+</I>&gt;&gt;<i> 
+</I>&gt;&gt;<i>    I'm attaching a log of what happens.  On wifi connect the system
+</I>&gt;&gt;<i>    gets a system time via rdate, at which point gpsd and chrony start
+</I>&gt;&gt;<i>    to function normally.  You can see that gpsd reports a discrepancy
+</I>&gt;&gt;<i>    and chrony doesn't set the clock at all.....
+</I>&gt;&gt;<i> 
+</I>&gt;&gt;<i>    Does anyone have any ideas on where to look?
+</I>&gt;&gt;<i> 
+</I>&gt;&gt;<i>    --     Few people are capable of expressing with equanimity opinions
+</I>&gt;&gt;<i>    which differ from the prejudices of their social environment. Most
+</I>&gt;&gt;<i>    people are even incapable of forming such opinions.
+</I>&gt;&gt;<i>      Albert Einstein
+</I>&gt;&gt;<i> 
+</I>&gt;<i> 
+</I>&gt;<i> 
+</I>&gt;<i> -- 
+</I>&gt;<i> Few people are capable of expressing with equanimity opinions which differ from the prejudices of their social environment. Most people are even incapable of forming such opinions.
+</I>&gt;<i>   Albert Einstein
+</I>&gt;<i> 
+</I>&gt;<i> _______________________________________________
+</I>&gt;<i> Gpsd-users mailing list
+</I>&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">Gpsd-users at lists.berlios.de</A>
+</I>&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">https://lists.berlios.de/mailman/listinfo/gpsd-users</A>
+</I>
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="005509.html">[Gpsd-users] [gpsd-users] time setting chicken and egg
+</A></li>
+	<LI>Next message: <A HREF="005511.html">[Gpsd-users] [gpsd-users] time setting chicken and egg
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#5510">[ date ]</a>
+              <a href="thread.html#5510">[ thread ]</a>
+              <a href="subject.html#5510">[ subject ]</a>
+              <a href="author.html#5510">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

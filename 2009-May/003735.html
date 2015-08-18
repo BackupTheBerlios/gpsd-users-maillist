@@ -1,0 +1,158 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] RE : gpsd on mac osx leopard
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2009-May/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20RE%20%3A%20gpsd%20on%20mac%20osx%20leopard&In-Reply-To=%3C856648.73685.qm%40web110004.mail.gq1.yahoo.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="003737.html">
+   <LINK REL="Next"  HREF="003736.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] RE : gpsd on mac osx leopard</H1>
+    <B>Hamish</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20RE%20%3A%20gpsd%20on%20mac%20osx%20leopard&In-Reply-To=%3C856648.73685.qm%40web110004.mail.gq1.yahoo.com%3E"
+       TITLE="[Gpsd-users] RE : gpsd on mac osx leopard">hamish_b at yahoo.com
+       </A><BR>
+    <I>Sat May 16 16:07:34 CEST 2009</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="003737.html">[Gpsd-users] gpsd on mac osx leopard
+</A></li>
+        <LI>Next message: <A HREF="003736.html">[Gpsd-users] Newbie Help - gpsd: Can't open	/proc/bus/usb/devices
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3735">[ date ]</a>
+              <a href="thread.html#3735">[ thread ]</a>
+              <a href="subject.html#3735">[ subject ]</a>
+              <a href="author.html#3735">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>
+Massimo Di Stefano wrote:
+&gt;<i> from the page :
+</I>&gt;<i> 
+</I>&gt;<i> <A HREF="http://www.nabble.com/Patch-of-Makefile.am-fixes-Mac-OS-X-X11-build-errors...-td21462618.html">http://www.nabble.com/Patch-of-Makefile.am-fixes-Mac-OS-X-X11-build-errors...-td21462618.html</A>
+</I>
+which also links to
+ <A HREF="http://gpsd.berlios.de/upstream-bugs.html#macxlibs">http://gpsd.berlios.de/upstream-bugs.html#macxlibs</A>
+ <A HREF="http://openradar.appspot.com/6498632">http://openradar.appspot.com/6498632</A>
+
+&gt;<i> I tried to apply these changes :
+</I>&gt;<i> 
+</I>&gt;<i> Index: Makefile.am
+</I>&gt;<i> ===================================================================
+</I>&gt;<i> --- Makefile.am&#160;&#160;&#160; (revision 5001)
+</I>&gt;<i> +++ Makefile.am&#160;&#160;&#160; (working copy)
+</I>&gt;<i> @@ -56,7 +56,7 @@
+</I>&gt;<i> &#160; xgpsspeed_SOURCES = \
+</I>&gt;<i> &#160; &#160;&#160;&#160; $(xgpsspeed_c_sources) \
+</I>&gt;<i> &#160; &#160;&#160;&#160; xgpsspeed.icon
+</I>&gt;<i> -xgpsspeed_LDADD = $(LIBM) $(LIBC) $(LIBNSL) $(LIBSOCKET)
+</I>&gt;<i> $(XAW_LIBS) $ 
+</I>&gt;<i> (X_LIBS) $(X_PRE_LIBS) libgps.la -lm $(LIBPTHREAD)
+</I>&gt;<i> +xgpsspeed_LDADD = $(LIBM) $(LIBC) $(LIBNSL) $(LIBSOCKET)
+</I>&gt;<i> $(XAW_LIBS) $ 
+</I>&gt;<i> (XT_LIBS) $(X_LIBS) $(X_PRE_LIBS) libgps.la -lm
+</I>&gt;<i> $(LIBPTHREAD)
+</I>&gt;<i> 
+</I>&gt;<i> &#160; #
+</I>&gt;<i> &#160; # Build cgps
+</I>&gt;<i> 
+</I>&gt;<i> now the error is reduced to :
+</I>&gt;<i> 
+</I>&gt;<i> 
+</I>&gt;<i> /bin/sh ./libtool --tag=CC&#160;&#160;&#160;--mode=link
+</I>&gt;<i> gcc&#160; -g -O2 -Wall -Wcast- 
+</I>&gt;<i> align -Wmissing-declarations -Wmissing-prototypes
+</I>&gt;<i> -Wstrict-prototypes - 
+</I>&gt;<i> Wpointer-arith -Wreturn-type -D_GNU_SOURCE&#160;
+</I>&gt;<i> -I/usr/X11/include&#160; -L/usr/ 
+</I>&gt;<i> X11/lib -o xgpsspeed xgpsspeed.o Tachometer.o -lm
+</I>&gt;<i> -lc&#160;&#160;&#160;-lXaw8 -lXt -L/ 
+</I>&gt;<i> usr/X11/lib -lSM -lICE libgps.la -lm -lpthread
+</I>&gt;<i> gcc -g -O2 -Wall -Wcast-align -Wmissing-declarations
+</I>&gt;<i> -Wmissing- 
+</I>&gt;<i> prototypes -Wstrict-prototypes -Wpointer-arith
+</I>&gt;<i> -Wreturn-type - 
+</I>&gt;<i> D_GNU_SOURCE -I/usr/X11/include -o .libs/xgpsspeed
+</I>&gt;<i> xgpsspeed.o&#160; 
+</I>&gt;<i> Tachometer.o&#160; -L/usr/X11/lib -lXaw8 -lXt -lSM -lICE
+</I>&gt;<i> ./.libs/libgps. 
+</I>&gt;<i> 18.0.0.dylib -lc -lm -lpthread
+</I>&gt;<i> Undefined symbols:
+</I>&gt;<i> &#160;&#160;&#160;&quot;_XDrawLines&quot;, referenced from:
+</I>&gt;<i> &#160; &#160; &#160;&#160;&#160;_DrawNeedle in
+</I>&gt;<i> Tachometer.o
+</I>&gt;<i> &#160; &#160; &#160;&#160;&#160;_DrawTachometer in
+</I>&gt;<i> Tachometer.o
+</I>&gt;<i> &#160;&#160;&#160;&quot;_XFillPolygon&quot;, referenced from:
+</I>&gt;<i> &#160; &#160; &#160;&#160;&#160;_FastFillCircle in
+</I>&gt;<i> Tachometer.o
+</I>&gt;<i> &#160; &#160; &#160;&#160;&#160;_DrawTachometer in
+</I>&gt;<i> Tachometer.o
+</I>&gt;<i> &#160;&#160;&#160;&quot;_XDrawSegments&quot;, referenced from:
+</I>&gt;<i> &#160; &#160; &#160;&#160;&#160;_DrawSingleNumber in
+</I>&gt;<i> Tachometer.o
+</I>&gt;<i> &#160;&#160;&#160;&quot;_XClearWindow&quot;, referenced from:
+</I>&gt;<i> &#160; &#160; &#160;&#160;&#160;_Resize in Tachometer.o
+</I>&gt;<i> &#160;&#160;&#160;&quot;_XCreateBitmapFromData&quot;, referenced
+</I>&gt;<i> from:
+</I>&gt;<i> &#160; &#160; &#160;&#160;&#160;_main in xgpsspeed.o
+</I>&gt;<i> &#160;&#160;&#160;&quot;_XDrawLine&quot;, referenced from:
+</I>&gt;<i> &#160; &#160; &#160;&#160;&#160;_DrawTachometer in
+</I>&gt;<i> Tachometer.o
+</I>&gt;<i> ld: symbol(s) not found
+</I>&gt;<i> collect2: ld returned 1 exit status
+</I>&gt;<i> make[1]: *** [xgpsspeed] Error 1
+</I>&gt;<i> make: *** [all] Error 2
+</I>&gt;<i> macbook-pro-15-di-sasha:gpsd sasha$
+</I>
+those functions can probably be found in /usr/include/X11/Xlib.h
+and /usr/lib/libX11.so (not sure on the Mac). In the above gcc
+line &quot;-lX11&quot; seems to be missing to pull in libX11.so|dynlib?
+See if you can add that.
+
+anyway if the X-clients don't build it is not a complete loss,
+as the gpsd program, libgps, and python stuff should still build
+ok. Just comment out or config without the X clients.
+The X11 programs are nice for testing though.
+
+
+Hamish
+
+
+
+      
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="003737.html">[Gpsd-users] gpsd on mac osx leopard
+</A></li>
+	<LI>Next message: <A HREF="003736.html">[Gpsd-users] Newbie Help - gpsd: Can't open	/proc/bus/usb/devices
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3735">[ date ]</a>
+              <a href="thread.html#3735">[ thread ]</a>
+              <a href="subject.html#3735">[ subject ]</a>
+              <a href="author.html#3735">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

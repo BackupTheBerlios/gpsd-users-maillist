@@ -1,0 +1,106 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] Fwd: Set Ephemeris and Set Almanac
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2009-March/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Fwd%3A%20Set%20Ephemeris%20and%20Set%20Almanac&In-Reply-To=%3C8294d2690903260851j6df97509t9204396a9aaddc30%40mail.gmail.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="003682.html">
+   <LINK REL="Next"  HREF="003684.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] Fwd: Set Ephemeris and Set Almanac</H1>
+    <B>Shkadarevich Dmitri</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Fwd%3A%20Set%20Ephemeris%20and%20Set%20Almanac&In-Reply-To=%3C8294d2690903260851j6df97509t9204396a9aaddc30%40mail.gmail.com%3E"
+       TITLE="[Gpsd-users] Fwd: Set Ephemeris and Set Almanac">dmitri.sh at gmail.com
+       </A><BR>
+    <I>Thu Mar 26 16:51:56 CET 2009</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="003682.html">[Gpsd-users] State of my AIVDM decoder
+</A></li>
+        <LI>Next message: <A HREF="003684.html">[Gpsd-users] Fwd: Set Ephemeris and Set Almanac
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3683">[ date ]</a>
+              <a href="thread.html#3683">[ thread ]</a>
+              <a href="subject.html#3683">[ subject ]</a>
+              <a href="author.html#3683">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hello, All,
+
+Now I'm implementing an assisted GPS functionality with Gpsd, but I've
+faced with quite undesirable
+behaviour from my chip: FALCOM JP14 - high efficient 20 channel GPS receiver
+
+<A HREF="http://www.falcom.de/products/gps-modules/jp14/">http://www.falcom.de/products/gps-modules/jp14/</A>
+
+I cannot set any almanac or ephemeris data, which were stored in &#160;previous run,
+and were retrieved by means of PollAlamanc and PollEmphemeris functions.
+I'm &#160;working in SiRF binary protocol. Additional investigation has
+shown, that &#160;receiver always reports an:
+&#160;0x0C &#160;12 &#160; &#160;Command No Acknowledgement &#160; &#160;Unsuccessful request
+
+Example:
+PollEphemeris:
+&gt;&gt;&gt;&gt;<i> a0 a2 &#160;00 &#160;03 &#160;93 &#160;00 &#160;00 &#160;00 &#160;93 &#160;b0 &#160;b3
+</I>
+Here is a response on PollEphemeris data(message without header and
+end, only data):
+Ephemeris Data:
+0f 07 00 07 00 81 b0 a5 7d 10 00 6b 9e 47 c0 a4 47 b2 40 18 37 cb e9
+16 62 70 00 ff fc 02 c8 79 00 07 00 81 ae ab 16 09 36 2e 50 be d5 94
+a9 07 cc 01 35 f9 3a 14 6a a1 0d 63 1b 62 70 49 00 07 00 81 af 2e ff
+c0 9d c2 33 f1 00 2a 27 62 57 d0 18 aa 76 5b cc 50 ff a9 c4 16 1a 4e
+
+NB: Generally I receive more ephemeris, only for the sake of space and
+reading time I reduce size to the only one single SvID Ephemeris.
+
+Here the SetEmphemeris call:
+&gt;&gt;&gt;&gt;<i> &#160;a0 a2 &#160;00 &#160;5b &#160;95 &#160;00 &#160;07 &#160;00 &#160;81 &#160;b0 &#160;a5 &#160;7d &#160;10 &#160;00 &#160;6b &#160;9e &#160;47 &#160;c0 &#160;a4 &#160;47 &#160;b2 &#160;40 &#160;18 &#160;37 &#160;cb &#160;e9 &#160;16 &#160;62 &#160;70 &#160;00 &#160;ff &#160;fc &#160;02 &#160;c8 &#160;79 &#160;00 &#160;07 &#160;00 &#160;81 &#160;ae &#160;ab &#160;16 &#160;09 &#160;36 &#160;2e &#160;50 &#160;be &#160;d5 &#160;94 &#160;a9 &#160;07 &#160;cc &#160;01 &#160;35 &#160;f9 &#160;3a &#160;14 &#160;6a &#160;a1 &#160;0d &#160;63 &#160;1b &#160;62 &#160;70 &#160;49 &#160;00 &#160;07 &#160;00 &#160;81 &#160;af &#160;2e &#160;ff &#160;c0 &#160;9d &#160;c2 &#160;33 &#160;f1 &#160;00 &#160;2a &#160;27 &#160;62 &#160;57 &#160;d0 &#160;18 &#160;aa &#160;76 &#160;5b &#160;cc &#160;50 &#160;ff &#160;a9 &#160;c4 &#160;16 &#160;1a &#160;4e &#160;24 &#160;b4 &#160;b0 &#160;b3
+</I>
+
+Response from receiver (Command NAcknowledgment.):
+&#160;0c 95
+
+end.
+
+So, Generally I have the same behavior with SetAlamanc, but for
+example Initialize Data Source (0x80) &#160;works stable,
+and I always get an &quot;Command Acknowledgment&quot; message.
+
+Does anyone have any idea? :)
+Thanks in advance,
+Dima Shkadarevich
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="003682.html">[Gpsd-users] State of my AIVDM decoder
+</A></li>
+	<LI>Next message: <A HREF="003684.html">[Gpsd-users] Fwd: Set Ephemeris and Set Almanac
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3683">[ date ]</a>
+              <a href="thread.html#3683">[ thread ]</a>
+              <a href="subject.html#3683">[ subject ]</a>
+              <a href="author.html#3683">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

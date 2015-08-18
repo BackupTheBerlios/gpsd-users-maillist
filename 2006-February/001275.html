@@ -1,0 +1,135 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] Kismet, GPSDrive, and GPSD 2.30
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2006-February/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Kismet%2C%20GPSDrive%2C%20and%20GPSD%202.30&In-Reply-To=%3C1139111059.10293.12.camel%40cowlitz.plecoptera.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="001273.html">
+   <LINK REL="Next"  HREF="001277.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] Kismet, GPSDrive, and GPSD 2.30</H1>
+    <B>Erik Beck</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Kismet%2C%20GPSDrive%2C%20and%20GPSD%202.30&In-Reply-To=%3C1139111059.10293.12.camel%40cowlitz.plecoptera.com%3E"
+       TITLE="[Gpsd-users] Kismet, GPSDrive, and GPSD 2.30">erikbeck at tahoma.com
+       </A><BR>
+    <I>Sun Feb  5 04:44:19 CET 2006</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="001273.html">[Gpsd-users] Kismet, GPSDrive, and GPSD 2.30
+</A></li>
+        <LI>Next message: <A HREF="001277.html">[Gpsd-users] Kismet, GPSDrive, and GPSD 2.30
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1275">[ date ]</a>
+              <a href="thread.html#1275">[ thread ]</a>
+              <a href="subject.html#1275">[ subject ]</a>
+              <a href="author.html#1275">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Robin,
+
+Thanks for sending me this.  I'll try the patch out along with the alpha
+version of Gpsdrive Joerg pointed me too.
+
+Regards,
+
+Erik
+
+
+On Sun, 2006-02-05 at 11:16 +0800, Robin L Darroch wrote:
+&gt;<i> Hi Erik,
+</I>&gt;<i> 
+</I>&gt;<i> There is a bug in the speed reporting of gpsd 2.30 which I reported 
+</I>&gt;<i> (and posted a patch for) a couple of weeks back.  Basically, it's 
+</I>&gt;<i> doing a completely incorrect unit conversion.  Here's the diff output 
+</I>&gt;<i> (which also fixes the connection timeout bug I reported about a month 
+</I>&gt;<i> ago):
+</I>&gt;<i> 
+</I>&gt;<i> 20:54 [~/src/gpsd-2.30] robin&gt; diff -u gpsd-orig.c gpsd.c
+</I>&gt;<i> --- gpsd-orig.c 2006-01-04 10:25:48.000000000 +0800
+</I>&gt;<i> +++ gpsd.c      2006-01-18 20:56:09.000000000 +0800
+</I>&gt;<i> @@ -866,7 +866,7 @@
+</I>&gt;<i>              break;
+</I>&gt;<i>          case 'V':
+</I>&gt;<i>              if (assign_channel(whoami) &amp;&amp; have_fix(whoami-&gt;device) &amp;&amp; 
+</I>&gt;<i> isnan(whoami-&gt;device-&gt;gpsdata.fix.track)==0)
+</I>&gt;<i> -               (void)snprintf(phrase, sizeof(phrase), &quot;,V=%.3f&quot;, 
+</I>&gt;<i> whoami-&gt;device-&gt;gpsdata.fix.speed / KNOTS_TO_KPH);
+</I>&gt;<i> +               (void)snprintf(phrase, sizeof(phrase), &quot;,V=%.3f&quot;, 
+</I>&gt;<i> whoami-&gt;device-&gt;gpsdata.fix.speed * MPS_TO_KNOTS);
+</I>&gt;<i>              else
+</I>&gt;<i>                  (void)strcpy(phrase, &quot;,V=?&quot;);
+</I>&gt;<i>              break;
+</I>&gt;<i> @@ -1479,7 +1479,9 @@
+</I>&gt;<i>                  } else {
+</I>&gt;<i>                      buf[buflen] = '\0';
+</I>&gt;<i>                      gpsd_report(1, &quot;&lt;= client(%d): %s&quot;, cfd, buf);
+</I>&gt;<i> -
+</I>&gt;<i> +                       // added to prevent timeouts
+</I>&gt;<i> +                       subscribers[cfd].active = timestamp();
+</I>&gt;<i> +
+</I>&gt;<i>   #ifdef RTCM104_SERVICE
+</I>&gt;<i>                      if (subscribers[cfd].rtcm) {
+</I>&gt;<i>                          if (handle_dgpsip_request(cfd, buf, buflen) &lt; 0)
+</I>&gt;<i> 
+</I>&gt;<i> 
+</I>&gt;<i> 
+</I>&gt;<i> &gt;I recently tried out gpsd 2.30 on a long drive to see how well it worked
+</I>&gt;<i> &gt;with Kismet and GPSdrive. In general, things work well with my GPS Unit
+</I>&gt;<i> &gt;(DeLorme Earthmate USB), but one notable problem was the speed reporting
+</I>&gt;<i> &gt;in Kismet and GPSdrive.  The velocity numbers these two programs
+</I>&gt;<i> &gt;reported were quite close to each other (good precision) but they were
+</I>&gt;<i> &gt;wildly inaccurate compared to the values reported by the speedometer and
+</I>&gt;<i> &gt;xgps (which were pretty close to each other).  The Kismet/GPSDrive
+</I>&gt;<i> &gt;figures were only about 1/3 to 1/2 the true values. 
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt;I realize that GPSDrive and Kismet were designed around a much older
+</I>&gt;<i> &gt;gpsd, but is there a short term workaround until these programs are
+</I>&gt;<i> &gt;updated to work with gpsd 2.30?  I tried to look at (linked to the gpsd
+</I>&gt;<i> &gt;faq page) <A HREF="http://gpsd.berlios.de/start-kismet">http://gpsd.berlios.de/start-kismet</A> to see if it might suggest
+</I>&gt;<i> &gt;something, but the link is busted.
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt;Thanks,
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt;Erik
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt;_______________________________________________
+</I>&gt;<i> &gt;Gpsd-users mailing list
+</I>&gt;<i> &gt;<A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">Gpsd-users at lists.berlios.de</A>
+</I>&gt;<i> &gt;<A HREF="http://lists.berlios.de/mailman/listinfo/gpsd-users">http://lists.berlios.de/mailman/listinfo/gpsd-users</A>
+</I>&gt;<i> 
+</I>&gt;<i> 
+</I>
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="001273.html">[Gpsd-users] Kismet, GPSDrive, and GPSD 2.30
+</A></li>
+	<LI>Next message: <A HREF="001277.html">[Gpsd-users] Kismet, GPSDrive, and GPSD 2.30
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1275">[ date ]</a>
+              <a href="thread.html#1275">[ thread ]</a>
+              <a href="subject.html#1275">[ subject ]</a>
+              <a href="author.html#1275">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

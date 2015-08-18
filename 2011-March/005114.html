@@ -1,0 +1,116 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] gps_read() does not block
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2011-March/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20gps_read%28%29%20does%20not%20block&In-Reply-To=%3C20110309084228.GA20880%40thyrsus.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="005112.html">
+   <LINK REL="Next"  HREF="005109.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] gps_read() does not block</H1>
+    <B>Eric Raymond</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20gps_read%28%29%20does%20not%20block&In-Reply-To=%3C20110309084228.GA20880%40thyrsus.com%3E"
+       TITLE="[Gpsd-users] gps_read() does not block">esr at thyrsus.com
+       </A><BR>
+    <I>Wed Mar  9 09:42:28 CET 2011</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="005112.html">[Gpsd-users] gps_read() does not block
+</A></li>
+        <LI>Next message: <A HREF="005109.html">[Gpsd-users] gps_read() does not block
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#5114">[ date ]</a>
+              <a href="thread.html#5114">[ thread ]</a>
+              <a href="subject.html#5114">[ subject ]</a>
+              <a href="author.html#5114">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Charles Curley &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">charlescurley at charlescurley.com</A>&gt;:
+&gt;<i> Here's my concern. If I hadn't read the man page, I might set up my
+</I>&gt;<i> time structure outside a loop which calls gps_wait (), followed by a
+</I>&gt;<i> call to gps_read () and then my display code. I'd initialize it once
+</I>&gt;<i> and forget it. This is good practice for a variable I do not expect
+</I>&gt;<i> the called function to change.
+</I>&gt;<i> 
+</I>&gt;<i> --------------------------------------------------
+</I>&gt;<i> 
+</I>&gt;<i> struct timeval tv;
+</I>&gt;<i> 
+</I>&gt;<i> /* set up tv for 300 ms */
+</I>&gt;<i> tv.tv_sec = 0;
+</I>&gt;<i> tv.tv_usec = 300;
+</I>&gt;<i> 
+</I>&gt;<i> while (1) {
+</I>&gt;<i>   if (gps_wait(&amp;gps_data, &amp;tv) == true) {
+</I>&gt;<i>     if (gps_read (&amp;gps_data) == -1) {
+</I>&gt;<i>       ...
+</I>&gt;<i>     }
+</I>&gt;<i>     ...
+</I>&gt;<i>   }
+</I>&gt;<i>   if (hell_frozen_over == true) {
+</I>&gt;<i>     break;
+</I>&gt;<i>   }
+</I>&gt;<i> }
+</I>&gt;<i> 
+</I>&gt;<i> --------------------------------------------------
+</I>
+Ah, I see.  The answer is that the application programmer never gets
+to touch the timeval struct at all.  In fact, I've already pushed a
+changeset to give gps_waiting() an argument that's a number of
+microseconds passed in by value.  The canonical polll loop used, eg., in cgps 
+now looks like this:
+
+    for (;;) {
+	if (!gps_waiting(&amp;gpsdata, 5000000)) {
+	    fprintf(stderr, &quot;cgps: error while waiting\n&quot;);
+	    exit(2);
+	} else {
+	    errno = 0;
+	    if (gps_read(&amp;gpsdata) == -1) {
+		fprintf(stderr, &quot;cgps: socket error 4\n&quot;);
+		die(errno == 0 ? GPS_GONE : GPS_ERROR);
+	    } else {
+		/* Here's where updates go now that things are established. */
+		update_gps_panel(&amp;gpsdata);
+	    }
+	}
+
+	// accept and process user input
+}
+
+-- 
+		&lt;a href=&quot;<A HREF="http://www.catb.org/~esr/">http://www.catb.org/~esr/</A>&quot;&gt;Eric S. Raymond&lt;/a&gt;
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="005112.html">[Gpsd-users] gps_read() does not block
+</A></li>
+	<LI>Next message: <A HREF="005109.html">[Gpsd-users] gps_read() does not block
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#5114">[ date ]</a>
+              <a href="thread.html#5114">[ thread ]</a>
+              <a href="subject.html#5114">[ subject ]</a>
+              <a href="author.html#5114">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

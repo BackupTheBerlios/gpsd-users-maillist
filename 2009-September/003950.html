@@ -1,0 +1,123 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] How to start gpsd with fix baud rate of serial	interface
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2009-September/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20How%20to%20start%20gpsd%20with%20fix%20baud%20rate%20of%20serial%0A%09interface&In-Reply-To=%3C54157.21733.qm%40web110011.mail.gq1.yahoo.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="003941.html">
+   <LINK REL="Next"  HREF="003951.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] How to start gpsd with fix baud rate of serial	interface</H1>
+    <B>Hamish</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20How%20to%20start%20gpsd%20with%20fix%20baud%20rate%20of%20serial%0A%09interface&In-Reply-To=%3C54157.21733.qm%40web110011.mail.gq1.yahoo.com%3E"
+       TITLE="[Gpsd-users] How to start gpsd with fix baud rate of serial	interface">hamish_b at yahoo.com
+       </A><BR>
+    <I>Thu Sep 17 17:21:39 CEST 2009</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="003941.html">[Gpsd-users] How to start gpsd with fix baud rate of serial	interface
+</A></li>
+        <LI>Next message: <A HREF="003951.html">[Gpsd-users] How to start gpsd with fix baud rate of	serial	interface
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3950">[ date ]</a>
+              <a href="thread.html#3950">[ thread ]</a>
+              <a href="subject.html#3950">[ subject ]</a>
+              <a href="author.html#3950">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Eric wrote:
+&gt;<i> I love the Unix culture.  But this particular &quot;tradition&quot; (bolting on
+</I>&gt;<i> configuration options as a substitute for autoconfiguration) should
+</I>&gt;<i> die a swift and horrible death. It's not gpsd that is defective here,
+</I>&gt;<i> it's your habits of thought.
+</I>
+
+Or maybe it is a desire not to bind the end user to the limits of the
+programmer's finite imagination? (a high ratio of control freaks and
+gear heads might explain it too.. :)
+
+I agree that an explosion of options is often used as a programmer's
+cop out as opposed to really sitting down and taking the time to choose
+good defaults or whatever; thus shifting the work load from the programmer
+to the users. This is after all the legend of why Macs still ship with a
+one button mouse - it forces the app developers not to be so lazy with
+their program design interface.
+
+I can understand the slippery-slope and lead-by-example arguments, even
+if I don't really buy into those philosophies completely myself. At the
+same time though there is no shame in accepting sage advice and taking
+advantage of tip-offs. Quite the opposite actually - at some point it
+just becomes plain old bloody-mindedness to ignore those gifts.
+
+My &quot;classic unix programmer&quot; solution would be to have the program check
+at search-time for two getenv() enviro variables called for example
+GPSD_BAUD_HINT and GPSD_PROTOCOL_HINT:
+  GPSD_BAUD_HINT=&quot;4800,N81&quot;
+  GPSD_PROTOCOL_HINT=&quot;NMEA&quot;
+If present and valid they'd be tried as the first iteration of the search
+loop. They don't have to be well advertised, they could be buried down
+the bottom of the protocol or debugging help pages. But they would be a
+useful debugging tool.
+
+Asking the end-users of the Mac OSX package to recompile just to get
+it to work well with their hardware starts to cause more harm than it
+solves IMO. The only savior from a 60sec search time is the fact that
+the GPS itself might take that long to find a valid fix once powered
+up by the USB port. Otherwise it would be ridiculous if the correct
+values were known by the human in advance by they had no easy way of
+communicating it.
+
+Q: I never could figure out how to run &quot;stty&quot; successfully on OSX, the
+example in the Gpsd help pages only works on Linux. Anyone know?
+(see ML archives of this list for details of my previous attempts)
+
+
+As a final point, folks may well be asking for this option because
+they have seen it in every other terminal program they've ever used
+and can't figure out where it has gone. But there is often deep truth
+to be found in &quot;the customer is always right&quot;. They may be totally 
+mistaken in their expectations or why the 'need' the widget, but the
+query itself belies the fact that something, somewhere, is amiss.
+
+
+regards,
+Hamish
+
+
+
+      
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="003941.html">[Gpsd-users] How to start gpsd with fix baud rate of serial	interface
+</A></li>
+	<LI>Next message: <A HREF="003951.html">[Gpsd-users] How to start gpsd with fix baud rate of	serial	interface
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3950">[ date ]</a>
+              <a href="thread.html#3950">[ thread ]</a>
+              <a href="subject.html#3950">[ subject ]</a>
+              <a href="author.html#3950">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

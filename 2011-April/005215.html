@@ -1,0 +1,98 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] pilot plug
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2011-April/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20pilot%20plug&In-Reply-To=%3C20110415133059.GA19476%40thyrsus.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="005213.html">
+   <LINK REL="Next"  HREF="005216.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] pilot plug</H1>
+    <B>Eric Raymond</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20pilot%20plug&In-Reply-To=%3C20110415133059.GA19476%40thyrsus.com%3E"
+       TITLE="[Gpsd-users] pilot plug">esr at thyrsus.com
+       </A><BR>
+    <I>Fri Apr 15 15:31:00 CEST 2011</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="005213.html">[Gpsd-users] pilot plug
+</A></li>
+        <LI>Next message: <A HREF="005216.html">[Gpsd-users] pilot plug
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#5215">[ date ]</a>
+              <a href="thread.html#5215">[ thread ]</a>
+              <a href="subject.html#5215">[ subject ]</a>
+              <a href="author.html#5215">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>vwf &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">vwf at vulkor.net</A>&gt;:
+&gt;<i> A question, not about a gps device but the pilot-plug that can be found
+</I>&gt;<i> on the bridges of (large) ships. Does anyone have experience with
+</I>&gt;<i> reading and using this data using Python? 
+</I>&gt;<i> 
+</I>&gt;<i> I'm told that the data is straight ASCII, 38k Baud, RS422, converted to
+</I>&gt;<i> USB.  I would like to use all data available from the pilot-plug for
+</I>&gt;<i> navigation.
+</I>
+If you're talking about the device described at 
+
+   <A HREF="http://www.pilotplug.com/faq.html">http://www.pilotplug.com/faq.html</A>
+
+this &quot;pilot plug&quot; just emits AIS sentences over USB. Your source is
+correct; these are plain-ASCII in a variant of NMEA format. gpsd will
+interpret them quite happily, and will turn them into JSON which you can
+parse with our Python client library. We have regression tests for this
+capability in our test suite; it is quite reliable.
+
+For an example of AIS parsing and report generation in Python, see the
+xgps test client. When you have gpsd watching a pilot plug, xgps
+should pop open a panel that displays the contents of selected AIS
+messages in a readable form.
+
+The only caveat is that gpsd does not yet unpack the specialized types
+of AIS messages 6 and 8 described in IMO Circular 289.  That you may
+have to wait another release for.  But it will do message types 1-15,
+18-21, and 24 with 6 and 8 reported as binary data.  My guess is you
+are mainly interested in types 1-5 and possibly 24; it will handle
+those just fine.
+
+If you want to know more about what the pilot plug emits, the most
+complete documentation to be found in one place anywhere is here:
+
+<A HREF="http://gpsd.berlios.de/AIVDM.html">http://gpsd.berlios.de/AIVDM.html</A>
+-- 
+		&lt;a href=&quot;<A HREF="http://www.catb.org/~esr/">http://www.catb.org/~esr/</A>&quot;&gt;Eric S. Raymond&lt;/a&gt;
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="005213.html">[Gpsd-users] pilot plug
+</A></li>
+	<LI>Next message: <A HREF="005216.html">[Gpsd-users] pilot plug
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#5215">[ date ]</a>
+              <a href="thread.html#5215">[ thread ]</a>
+              <a href="subject.html#5215">[ subject ]</a>
+              <a href="author.html#5215">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

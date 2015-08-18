@@ -1,0 +1,160 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] problem of altitude with gpsd-2.37
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2009-March/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20problem%20of%20altitude%20with%20gpsd-2.37&In-Reply-To=%3CFED4CD95710D97448362E8C37814C66B01DA95%40SINFRA0-HUB001.MTQ.MIN.INTRA%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="003637.html">
+   <LINK REL="Next"  HREF="003640.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] problem of altitude with gpsd-2.37</H1>
+    <B>Lapointe, Claude</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20problem%20of%20altitude%20with%20gpsd-2.37&In-Reply-To=%3CFED4CD95710D97448362E8C37814C66B01DA95%40SINFRA0-HUB001.MTQ.MIN.INTRA%3E"
+       TITLE="[Gpsd-users] problem of altitude with gpsd-2.37">Claude.Lapointe at mtq.gouv.qc.ca
+       </A><BR>
+    <I>Mon Mar  9 17:13:48 CET 2009</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="003637.html">[Gpsd-users] problem of altitude with gpsd-2.37
+</A></li>
+        <LI>Next message: <A HREF="003640.html">[Gpsd-users] problem of altitude with gpsd-2.37
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3638">[ date ]</a>
+              <a href="thread.html#3638">[ thread ]</a>
+              <a href="subject.html#3638">[ subject ]</a>
+              <a href="author.html#3638">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi Eric,
+
+We Configure gpsd 2.37 with &quot;--disable-ntpshm&quot; to disable the shared-memory
+feature, and compile.
+
+We have the correct value for altitude if we disable the share memory
+writing clock for ntp.
+
+The problem seem a side effect with this feature.
+
+
+Claude Lapointe, ing. 
+Transport Qu&#233;bec
+Chef du secteur des technologies d'exploitation
+Direction du soutien aux op&#233;rations 
+Service de l'exploitation
+
+700, boulevard Ren&#233; L&#233;vesque Est, 22e &#233;tage 
+Qu&#233;bec (Qu&#233;bec) G1R 5H1 
+T&#233;l.  :   418 644-4490, poste 2478 
+T&#233;l&#233;c.:  418 644-6963 
+Courriel: <A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">Claude.Lapointe at mtq.gouv.qc.ca</A>
+
+-----Message d'origine-----
+De : Eric S. Raymond [mailto:<A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">esr at thyrsus.com</A>] 
+Envoy&#233; : 9 mars 2009 11:35
+&#192; : Lapointe, Claude
+Cc : <A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">gpsd-users at lists.berlios.de</A>; <A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">gpsd-dev at lists.berlios.de</A>; Sifi, Hocine
+Objet : Re: [Gpsd-users] problem of altitude with gpsd-2.37
+
+(Copying to dev so our SHM experts will see this bug report.)
+
+Lapointe, Claude &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">Claude.Lapointe at mtq.gouv.qc.ca</A>&gt;:
+&gt;<i> Does with libgps library we can connect remotly to a gpsd daemon on other
+</I>&gt;<i> computer on the port 2947?
+</I>&gt;<i> 
+</I>&gt;<i> We try the watcher mode W=1 and try the O command to read the altitude and
+</I>&gt;<i> position.
+</I>&gt;<i> 
+</I>&gt;<i> I have exactly the same problem.  The altitude value is &quot;nan&quot; when we wait
+</I>5
+&gt;<i> seconds to start gpsd at the booting process of the computer and gpsd
+</I>start
+&gt;<i> after my master program for data acquisition.
+</I>&gt;<i> 
+</I>&gt;<i> My expression &quot;board effect&quot; is a english translation for the french
+</I>&gt;<i> expression:  &quot;Effet de bord&quot;.
+</I>
+Ah.  In English that is &quot;side effect&quot;.  (Je comprends un peu le fran&#231;ais.)
+
+&gt;<i> When I put a 5 sec of delay into the script that start gpsd we find when I
+</I>&gt;<i> start gpsd in debug mode :  /usr/sbin/gpsd -N -D5 gpsd /dev/usb/tts/1
+</I>&gt;<i> 
+</I>&gt;<i> That gpsd write the clock value into the share memory shm for ntp before
+</I>&gt;<i> sending the response to the client request &quot;ap&quot; and the altitude value was
+</I>&gt;<i> A=nan and the position have correct value.
+</I>&gt;<i> 
+</I>&gt;<i> When I remove the delay into the script that start gpsd, ghe gpsd write
+</I>the
+&gt;<i> clock value only one time at the starting of the gpsd and never after
+</I>write
+&gt;<i> the clock value into the share memory shm and the altitude value was
+</I>correct
+&gt;<i> like A=138m and the position have also correct value.
+</I>&gt;<i> 
+</I>&gt;<i> The value of altitude seem to be correlated by the fact that gpsd write
+</I>into
+&gt;<i> share memory or not write in share memory.
+</I>&gt;<i> 
+</I>&gt;<i> When gpsd write into share memory the clock value for ntp, the parsing for
+</I>&gt;<i> altidue give bad value of nan.
+</I>&gt;<i> 
+</I>&gt;<i> We don't know why gpsd decide to write or not into share memory on
+</I>/dev/shm
+&gt;<i> if we put a delay of 5 sec into the script that start gpsd but when they
+</I>do
+&gt;<i> that, the board effect is that the altitude parsing is not good and we
+</I>have
+&gt;<i> all the time a value of nan.
+</I>
+OK, now I understand your situation better.  That is a very weird bug.  I
+have
+no idea why it is doing this.  It sounds like the write to shared memory is
+corrupting gpsd's internal data structures, though why only altitude should
+be 
+affected is hard to understand.
+
+The easy way to check this is:
+
+(1) Get a copy of the development sources from Subversion.  See
+<A HREF="http://developer.berlios.de/svn/?group_id=2116">http://developer.berlios.de/svn/?group_id=2116</A> for instructions.
+
+(2) Configure with &quot;--disable-ntpshm&quot; to disable the shared-memory
+feature, and compile.
+
+(3) Test.  If this banishes your problem, we know something in the SHM
+code is wrong.  If it doesn't, we can try other diagnostics.
+-- 
+		&lt;a href=&quot;<A HREF="http://www.catb.org/~esr/">http://www.catb.org/~esr/</A>&quot;&gt;Eric S. Raymond&lt;/a&gt;
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="003637.html">[Gpsd-users] problem of altitude with gpsd-2.37
+</A></li>
+	<LI>Next message: <A HREF="003640.html">[Gpsd-users] problem of altitude with gpsd-2.37
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3638">[ date ]</a>
+              <a href="thread.html#3638">[ thread ]</a>
+              <a href="subject.html#3638">[ subject ]</a>
+              <a href="author.html#3638">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

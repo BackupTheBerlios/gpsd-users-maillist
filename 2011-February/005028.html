@@ -1,0 +1,153 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] NTRIP/RTCM disconnects solved(?)
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2011-February/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20NTRIP/RTCM%20disconnects%20solved%28%3F%29&In-Reply-To=%3C4D5D2A84.5060702%40googlemail.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="005026.html">
+   <LINK REL="Next"  HREF="005027.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] NTRIP/RTCM disconnects solved(?)</H1>
+    <B>Andre Naujoks</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20NTRIP/RTCM%20disconnects%20solved%28%3F%29&In-Reply-To=%3C4D5D2A84.5060702%40googlemail.com%3E"
+       TITLE="[Gpsd-users] NTRIP/RTCM disconnects solved(?)">nautsch2 at googlemail.com
+       </A><BR>
+    <I>Thu Feb 17 15:02:44 CET 2011</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="005026.html">[Gpsd-users] NTRIP/RTCM disconnects solved(?)
+</A></li>
+        <LI>Next message: <A HREF="005027.html">[Gpsd-users] GlobalSat Compact Flash GPS with multi-card reader
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#5028">[ date ]</a>
+              <a href="thread.html#5028">[ thread ]</a>
+              <a href="subject.html#5028">[ subject ]</a>
+              <a href="author.html#5028">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Am 14.02.2011 09:51, schrieb Andre Naujoks:
+&gt;<i> Am 13.02.2011 12:15, schrieb Eric Raymond:
+</I>&gt;&gt;<i> Andre Naujoks &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">nautsch2 at googlemail.com</A>&gt;:
+</I>
+-snip-
+
+Hi again.
+
+&gt;<i> 
+</I>&gt;&gt;<i>
+</I>&gt;&gt;&gt;<i> I then had to add the EAGAIN cases during the NTRIP probing and
+</I>&gt;&gt;&gt;<i> opening, because the server could not possibly answer as fast as was
+</I>&gt;&gt;&gt;<i> expected and the read failed every time on the nonblocking socket
+</I>&gt;&gt;&gt;<i> with EAGAIN. The downside of this is that a non answering server
+</I>&gt;&gt;&gt;<i> will cause an infinite loop here. Maybe a counter should be added
+</I>&gt;&gt;&gt;<i> there.
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> This on the other hand is not good.  Besides the failure case you have
+</I>&gt;&gt;<i> pointed out, another problem is that while the usleep(3) is executing
+</I>&gt;&gt;<i> gpsd will block input from other data sources.
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> Both problems should be solved in the same way: ntrip_open() should
+</I>&gt;&gt;<i> set a state in the device context that indicates an attempted open is
+</I>&gt;&gt;<i> in progress, and then the actual open should be retried on each trip
+</I>&gt;&gt;<i> around the main select(2) loop until we either hit a maximum-retry
+</I>&gt;&gt;<i> threshold or the connection is established.
+</I>&gt;<i> 
+</I>&gt;<i> Yes, you are right. The whole handshakish stuff should be decoupled. And
+</I>&gt;<i> I think usleep isn't even portable. But the current code just does not
+</I>&gt;<i> work, if the server doesn't answer in the microsecond it takes to get
+</I>&gt;<i> from the write to the read. Which should be always for a non local
+</I>&gt;<i> server. Another way would be to make the socket blocking. But there seem
+</I>&gt;<i> to be some things, that break other code. (I tried it :-) )
+</I>&gt;<i> 
+</I>&gt;<i> I will hopefully get another GPS receiver with RTCM capabilities soon so
+</I>&gt;<i> I can do some experimenting with this. I have to delay this for now. Sorry.
+</I>
+I had a chance to take a look at the ntrip code for the connection
+establishment.
+
+It requires a huge amount of change in the ntrip code to make this work
+and even some things in gpsd.c/gpsd.h-tail. This &quot;multi-stage&quot;
+connection, as I started to call it, is quite hard to integrate into gpsd.
+
+gpsd expects that a connection is open after calling open_device(). This
+wouldn't be the case for ntrip and its mutli-stage connection process.
+
+Meanwhile I am almost convinced, that a short wait in ntrip_open()
+wouldn't hurt anyone. The explicit wait could be avoided by setting the
+socket back to blocking during the connection establishment.
+
+If this is not acceptable at all, I will try to get something working to
+you with a mutli-stage connection for ntrip. It would need another
+member in gps_context_t to keep the current state of the connection and
+another path in consume_packet() (or main() ) to check if the connection
+is actually an ntrip connection and not completely configured.
+
+There may be more than only the state of the connection to remember. An
+ntrip server is basically a http server and so does not send all of its
+data in a single swoop. The ntrip_open might have to be called 5 or more
+times until a connection is established, depending on the amount of data
+the server sends and the size of the chunks it sends. I might want to
+break the &quot;no static variables&quot; rule on that, if it is ok.
+
+&gt;<i> 
+</I>&gt;&gt;<i>
+</I>&gt;&gt;&gt;<i> The last one fixes the sending of the current position to the RTCM
+</I>&gt;&gt;&gt;<i> caster. The current implementation sends exactly one GGA sentence to
+</I>&gt;&gt;&gt;<i> the server and then stops.  In my case that led to a closed
+</I>&gt;&gt;&gt;<i> connection by the server because of an NMEA timeout.  Since this is
+</I>&gt;&gt;&gt;<i> the only Server I could try this with, I don't know the implications
+</I>&gt;&gt;&gt;<i> of the change, but it works for me.
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> I don't understand this change yet, so I have not committed it.  Let's
+</I>&gt;&gt;<i> get the probe/open problem solved first.
+</I>&gt;<i> 
+</I>&gt;<i> Problem is, that the server (or maybe this particular one) drops the
+</I>&gt;<i> connection as soon as GPS updates fail to arrive in a certain timeout.
+</I>&gt;<i> The former code just sent exactly one update (a GGA sentence through
+</I>&gt;<i> gpsd_position_fix_dump()) and then nothing more, so the connection was
+</I>&gt;<i> dropped after about 20 seconds every time.
+</I>&gt;<i> 
+</I>&gt;<i> This flag is set once and never reset: session-&gt;context-&gt;sentdgps = true
+</I>&gt;<i> But when it is set, no updates are sent to the server. The patch sends
+</I>&gt;<i> periodic updates to the server.
+</I>
+This is still valid. If an ntrip server needs NMEA updates, this has to
+be done.
+
+Regards
+  Andre
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="005026.html">[Gpsd-users] NTRIP/RTCM disconnects solved(?)
+</A></li>
+	<LI>Next message: <A HREF="005027.html">[Gpsd-users] GlobalSat Compact Flash GPS with multi-card reader
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#5028">[ date ]</a>
+              <a href="thread.html#5028">[ thread ]</a>
+              <a href="subject.html#5028">[ subject ]</a>
+              <a href="author.html#5028">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

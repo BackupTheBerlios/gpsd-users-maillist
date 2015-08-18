@@ -1,0 +1,83 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] Problems getting started with gpsd
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2006-January/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Problems%20getting%20started%20with%20gpsd&In-Reply-To=%3C20060116234148.3DD40BB47C%40xprdmailfe27.nwk.excite.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="001215.html">
+   <LINK REL="Next"  HREF="001217.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] Problems getting started with gpsd</H1>
+    <B>mark_2811</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Problems%20getting%20started%20with%20gpsd&In-Reply-To=%3C20060116234148.3DD40BB47C%40xprdmailfe27.nwk.excite.com%3E"
+       TITLE="[Gpsd-users] Problems getting started with gpsd">mark_2811 at excite.com
+       </A><BR>
+    <I>Tue Jan 17 00:41:48 CET 2006</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="001215.html">[Gpsd-users] Problems getting started with gpsd
+</A></li>
+        <LI>Next message: <A HREF="001217.html">[Gpsd-users] Problems getting started with gpsd
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1216">[ date ]</a>
+              <a href="thread.html#1216">[ thread ]</a>
+              <a href="subject.html#1216">[ subject ]</a>
+              <a href="author.html#1216">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>
+ --- On Mon 01/16, Gary E. Miller &lt; <A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">gem at rellim.com</A> &gt; wrote:
+From: Gary E. Miller [mailto: <A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">gem at rellim.com</A>]
+To: <A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">mark_2811 at excite.com</A>
+     Cc: <A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">gpsd-users at lists.berlios.de</A>
+Date: Mon, 16 Jan 2006 14:53:44 -0800 (PST)
+Subject: Re: [Gpsd-users] Problems getting started with gpsd
+
+-----BEGIN PGP SIGNED MESSAGE-----&lt;br&gt;Hash: SHA1&lt;br&gt;&lt;br&gt;Yo Mark!&lt;br&gt;&lt;br&gt;On Mon, 16 Jan 2006, mark_2811 wrote:&lt;br&gt;&lt;br&gt;&gt; I have the necessary line in /etc/protocols.  I'm using the binary (inst&lt;br&gt;&gt; alled) version of gspd which I verified with the 'file' command.  Someth&lt;br&gt;&gt; ing is wrong with my environment but I don't know what it is...&lt;br&gt;&lt;br&gt;Have you tried starting gpsd with a high debug level?  Like:&lt;br&gt;	gpsd -nN -D 6 /dev/gps&lt;br&gt;&lt;br&gt;If that does not help then try strace:&lt;br&gt;	strace gpsd -nN -D 6 /dev/gps&lt;br&gt;&lt;br&gt;Maybe you have an oddball /etc/nsswitch.conf file?  Mine is zero length&lt;br&gt;to give me the defaults.&lt;br&gt;&lt;br&gt;RGDS&lt;br&gt;GARY&lt;br&gt;- ---------------------------------------------------------------------------&lt;br&gt;Gary E. Miller Rellim 20340 Empire Blvd, Suite E-3, Bend, OR 97701&lt;br&gt;	<A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">gem at rellim.com</A>  Tel:+1(541)382-8588 Fax: +1(541)382-8676&lt;br&gt;&lt;br&gt;-----BEGIN PGP SIGNATURE-----&lt;br&gt;Version: GnuPG v1.4.1 
+(GNU/Linux)&lt;br&gt;&lt;br&gt;iD8DBQFDzCP68KZibdeR3qURAvX4AKCC/3RLfxEqjsQ7Vqdp2BU0oLD9zgCfT1yE&lt;br&gt;zRF4dWRyuf2bXfyJvuP6lR0=&lt;br&gt;=PUpQ&lt;br&gt;-----END PGP SIGNATURE-----&lt;br&gt;&lt;br&gt;_______________________________________________&lt;br&gt;Gpsd-users mailing list&lt;br&gt;<A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">Gpsd-users at lists.berlios.de</A>&lt;br&gt;<A HREF="http://lists.berlios.de/mailman/listinfo/gpsd-users&lt;br">http://lists.berlios.de/mailman/listinfo/gpsd-users&lt;br</A>&gt;
+
+Ok, I ran strace on my target system and saw it trying to open a bunch of libnss* files.  So I copied /lib/libnss* to my compact-flash card and now it seems to work!  I'm not a fan of this method as I didn't really figure out what was wrong in the first place.  Plus now I have a bunch of extra bloat on my compact-flash card.
+
+Strange thing is that 'ldd' doesn't tell you that these extra libs are required.
+
+Mark
+
+_______________________________________________
+Join Excite! - <A HREF="http://www.excite.com">http://www.excite.com</A>
+The most personalized portal on the Web!
+
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="001215.html">[Gpsd-users] Problems getting started with gpsd
+</A></li>
+	<LI>Next message: <A HREF="001217.html">[Gpsd-users] Problems getting started with gpsd
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1216">[ date ]</a>
+              <a href="thread.html#1216">[ thread ]</a>
+              <a href="subject.html#1216">[ subject ]</a>
+              <a href="author.html#1216">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

@@ -1,0 +1,101 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] gps_data_t.online always changes
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2007-May/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20gps_data_t.online%20always%20changes&In-Reply-To=%3C464D7A8E.4AAF.00BD.0%40cavs.msstate.edu%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="002648.html">
+   <LINK REL="Next"  HREF="002653.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] gps_data_t.online always changes</H1>
+    <B>Marshall Crocker</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20gps_data_t.online%20always%20changes&In-Reply-To=%3C464D7A8E.4AAF.00BD.0%40cavs.msstate.edu%3E"
+       TITLE="[Gpsd-users] gps_data_t.online always changes">crocker at cavs.msstate.edu
+       </A><BR>
+    <I>Fri May 18 17:06:07 CEST 2007</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="002648.html">[Gpsd-users] gps_data_t.online always changes
+</A></li>
+        <LI>Next message: <A HREF="002653.html">[Gpsd-users] gps_data_t.online always changes
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2652">[ date ]</a>
+              <a href="thread.html#2652">[ thread ]</a>
+              <a href="subject.html#2652">[ subject ]</a>
+              <a href="author.html#2652">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>&gt;<i>In gps_unpack(), online gets set to -1 if the response from the daemon
+</I>&gt;<i>contains &quot;X=?&quot;, or the number if the reponse contains &quot;X=[number]&quot;.
+</I>
+This is the behavior I expected to see and this is what I see when I telnet to gpsd and execute &quot;x&quot;.  After I unplug the gps, &quot;x&quot; returns the last timestamp gpsd got data and it does not change, but in my application, the gpsdata-&gt;online is different after every query().
+
+&gt;<i>gps_unpack() is called by gps_poll().  Right before gps_poll() calls
+</I>&gt;<i>gps_unpack(), gps_poll() also updates online.  I'm not sure why
+</I>&gt;<i>gps_poll() updates online - possibly this is a bug?
+</I>
+&gt;<i>gps_query() calls gps_poll() , which updates online before calling
+</I>&gt;<i>gps_unpack() .
+</I>
+gps_query() calls gps_poll()?  Then why doesn't gps_query() block like gps_poll() does?  When I changed my application to use poll, instead of query, my gps collector thread would block on poll() if the gps was disconnected but this did not happen when I was using query.
+
+
+&gt;<i>I don't know if this will break other things, but if you've compiled
+</I>&gt;<i>gpsd from source or can do so, it might be interesting to change line
+</I>&gt;<i>526 of libgps.c (as shipped with gpsd-2.34) from
+</I>
+ &gt;    received = gpsdata-&gt;online = timestamp();
+
+&gt;<i>to
+</I>
+&gt;<i>     received = timestamp();
+</I>
+By doing that, gpsdata-&gt;online is no longer updated even when gps is connected which is the opposite of my previous problem :).
+
+Looking at libgps, I see now where gps_query calls gps_poll which is incredibly odd since gps_query doesn't block but poll does.  I'm guessing that since query is not blocking, the timestamp is getting updated because poll is returning.
+
+It's possible that when I call query and pass the query string &quot;w+p\n&quot; this writes the query to gpsd and gpsd replies with a ? or other response so the read statement in poll has something to read and therefore returns and gpsdata-&gt;online gets updated.  
+
+I guess I need to figure out a different way to determine if the gps is connected since I can't have poll blocking my gps collector thread.  I could change the attributes of the gps_fd so the read won't block but I'm sure that's a bad idea.
+
+Marshall
+
+
+
+
+
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="002648.html">[Gpsd-users] gps_data_t.online always changes
+</A></li>
+	<LI>Next message: <A HREF="002653.html">[Gpsd-users] gps_data_t.online always changes
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2652">[ date ]</a>
+              <a href="thread.html#2652">[ thread ]</a>
+              <a href="subject.html#2652">[ subject ]</a>
+              <a href="author.html#2652">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

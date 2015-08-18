@@ -1,0 +1,103 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] GlobalSat BC-307 GPS card problem
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2004-September/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20GlobalSat%20BC-307%20GPS%20card%20problem&In-Reply-To=%3C20040928165456.A20A5CA06F%40ws7-4.us4.outblaze.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="000067.html">
+   <LINK REL="Next"  HREF="000061.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] GlobalSat BC-307 GPS card problem</H1>
+    <B>Somil Asthana</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20GlobalSat%20BC-307%20GPS%20card%20problem&In-Reply-To=%3C20040928165456.A20A5CA06F%40ws7-4.us4.outblaze.com%3E"
+       TITLE="[Gpsd-users] GlobalSat BC-307 GPS card problem">somilasthana at lycos.com
+       </A><BR>
+    <I>Tue Sep 28 18:54:56 CEST 2004</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="000067.html">[Gpsd-users] Problems with logfile and gpsd 2.0
+</A></li>
+        <LI>Next message: <A HREF="000061.html">[Gpsd-users] GlobalSat BC-307 GPS card problem
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#60">[ date ]</a>
+              <a href="thread.html#60">[ thread ]</a>
+              <a href="subject.html#60">[ subject ]</a>
+              <a href="author.html#60">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi All, 
+   I am trying to make GlobalSat BC-307 GPS card over iPAQs running Familiar OS (5.2). My iPAQ was able to recognize GPS card as serial driver but the problem is that I cannot make it to work. When my application try to connect to 2947 port and issue &quot;p\n&quot; command, gpsd gives back &quot;GPSD,P=?&quot;. 
+
+I complied gspd-2.0 from cvs repository (gpsd-2.0.tar.gz) and ran following command &quot;./gpsd -D9 -p /dev/tty0 -s 4800&quot; to setup the gpsd daemon. 
+
+The syslog when my app tries to connect to gpsd daemon doesnt help either 
+// syslog 
+gpsd: closed GPS
+gpsd: opening GPS data source at /dev/tty0
+gpsd: setting speed 4800, 8 bits, no parity
+gpsd: gpsd_activate: opened GPS (5)
+gpsd: &lt;= client: pgpsd: GPS has no fix (status=0, mode=1).
+gpsd: =&gt; client(4): GPSD,P=?
+// syslog
+
+Does this line &quot;pgpsd: GPS has no fix (status=0, mode=1): mean that gpsd is not able to connect to the GPS infrastructure.
+
+Anyway I tried a old version of gpsd (gpsd_from_qpegps_0_9_1.tar.gz) from qpeGPS website. When I ran the same test again received something &quot;GPSD,P = 0.000000 0.000000&quot;. (the syslog for this version is not meaningful I see &quot;Open gps &amp; Closed gps&quot;
+
+Further when I eject or insert the GPS card I get these messages and thats made me to believe that serial device should be /dev/tty0 However when I tried to use ttyS0 it didnt work because there was no file named as /dev/ttyS0
+// dump from ejecting &amp; inserting the GPS card
+sh-2.03# tty00 unloaded
+Sept 28 00:17:52 dpaq kernel: tty00 unloaded
+Sept 28 00:17:52 dpaq cardmgr[149]: executing: './serial stop ttyS0'
+Sept 28 00:17:52 dpaq cardmgr[149]: + ./serial: fuser: command not found
+Sept 28 00:18:49 dpaq cardmgr[149]: socket 0: Serial or Modem
+
+register_serial: port=c49a0400 irq=42 flags=1000040
+ttyS00 at port 0xc49a0400 (irq = 42) is a 16C950/954
+Sept 28 00:18:49 dpaq cardmgr[149]: executing: './serial start ttyS0'
+Sept 28 00:18:49 dpaq kernel: register_serial: port=c49a0400 irq=42 flags=1000040
+Sept 28 00:18:49 dpaq kernel: ttyS00 at port 0xc49a0400 (irq = 42) is a 16C950/954
+
+So bottomline GPS card is still not working. Can someone pls help me 
+
+thank you
+Somil
+-- 
+_______________________________________________
+Find what you are looking for with the Lycos Yellow Pages
+<A HREF="http://r.lycos.com/r/yp_emailfooter/http://yellowpages.lycos.com/default.asp?SRC=lycos10">http://r.lycos.com/r/yp_emailfooter/http://yellowpages.lycos.com/default.asp?SRC=lycos10</A>
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="000067.html">[Gpsd-users] Problems with logfile and gpsd 2.0
+</A></li>
+	<LI>Next message: <A HREF="000061.html">[Gpsd-users] GlobalSat BC-307 GPS card problem
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#60">[ date ]</a>
+              <a href="thread.html#60">[ thread ]</a>
+              <a href="subject.html#60">[ subject ]</a>
+              <a href="author.html#60">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

@@ -1,0 +1,164 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] Preparing for 2.93 point release
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2010-April/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Preparing%20for%202.93%20point%20release&In-Reply-To=%3Cp2u2196fd761004181548g9bacb8a9x8c5d0fbd4d73a336%40mail.gmail.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="004392.html">
+   <LINK REL="Next"  HREF="004420.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] Preparing for 2.93 point release</H1>
+    <B>Ji&#345;&#237; Techet</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Preparing%20for%202.93%20point%20release&In-Reply-To=%3Cp2u2196fd761004181548g9bacb8a9x8c5d0fbd4d73a336%40mail.gmail.com%3E"
+       TITLE="[Gpsd-users] Preparing for 2.93 point release">techet at gmail.com
+       </A><BR>
+    <I>Mon Apr 19 00:48:37 CEST 2010</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="004392.html">[Gpsd-users] Preparing for 2.93 point release
+</A></li>
+        <LI>Next message: <A HREF="004420.html">[Gpsd-users] Preparing for 2.93 point release
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#4399">[ date ]</a>
+              <a href="thread.html#4399">[ thread ]</a>
+              <a href="subject.html#4399">[ subject ]</a>
+              <a href="author.html#4399">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hello Eric,
+
+On Fri, Apr 16, 2010 at 08:58, Eric Raymond &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">esr at thyrsus.com</A>&gt; wrote:
+&gt;<i> Ji&#345;&#237; Techet &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">techet at gmail.com</A>&gt;:
+</I>&gt;&gt;<i> (by the way, you might want to consider using gitorious - it's a very
+</I>&gt;&gt;<i> convenient way for sending and merging patches from external
+</I>&gt;&gt;<i> developers)
+</I>&gt;<i>
+</I>&gt;<i> Point me to a tutorial?
+</I>
+Ah, no tutorial - it's actually very simple. Just go to
+www.gitorious.org and create an account and a gpsd project there. For
+you it will behave like one more git repository. Every time you push,
+you should push there as well (you can prepare a hook that does this
+for you). The great thing is that everybody can create his own branch
+of your mainline, implement his changes and then request merge with
+mainline. Then you can merge (or rebase) his changes with mainline.
+The contributor can use his branch as a normal repository - there are
+no restrictions of any kind for him. Creating the branch is one mouse
+click. After he is done, it's again one mouse click for him to request
+merge with mainline. One mouse click to delete the repository. For the
+maintainer it is definitely easier to merge using git and not merging
+patches the contributor has sent if there is some development on the
+mainline in between. Also after merging, you'll see all the
+contributor's commits in git repository which you lose if you apply
+the patch and commit it by yourself. Just have a look at some project
+there - in my opinion it's a very nice platform for developer
+collaboration. There are actually several portals offering very
+similar services, e.g. github to name one.
+
+&gt;<i>
+</I>&gt;&gt;<i> &#160; &#160; &#160; &#160; &#160; &#160; &#160; &#160; &#160; &#160; &#160; &#160; &#160; &#160; &#160; &#160; &#160; &#160; &#160; &#160; &#160; &#160; &#160; &#160; &#160; &#160; &#160; &#160; &#160;There are
+</I>&gt;&gt;<i> several reasons why I think that every serious application should
+</I>&gt;&gt;<i> avoid using gps.py:
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> 2. The interface is pull-based - that is the application is expected
+</I>&gt;&gt;<i> to periodically pull data from gpsd - but in fact, every GUI
+</I>&gt;&gt;<i> application just wants to register a callback and be notified when the
+</I>&gt;&gt;<i> data is ready. Depending on the application this can be a callback in
+</I>&gt;&gt;<i> a separate thread (yes, I know you don't like them) or by integrating
+</I>&gt;&gt;<i> it into the main loop of the GUI application. You do this in xgps by
+</I>&gt;&gt;<i> listening on the socket, but this is quite hacky - the interface
+</I>&gt;&gt;<i> should abstract the user from internals completely - it shouldn't be
+</I>&gt;&gt;<i> visible that there are some sockets behind it. Also, as I said in (1),
+</I>&gt;&gt;<i> I haven't seen any documentation of this interface so it's not clear
+</I>&gt;&gt;<i> whether the &quot;sock&quot; member is supposed to be public or private.
+</I>&gt;<i>
+</I>&gt;<i> It's supposed to be private. &#160;But otherwise I don't completely
+</I>&gt;<i> understand this criticism.
+</I>
+OK, my point was that if sock is supposed to be private, you shouldn't
+do anything like this in the user application (that is, accessing the
+private member from outside the wrapper):
+
+gobject.io_add_watch(daemon.sock, gobject.IO_IN, self.handle_response)
+gobject.io_add_watch(daemon.sock, gobject.IO_ERR, self.handle_hangup)
+gobject.io_add_watch(daemon.sock, gobject.IO_HUP, self.handle_hangup)
+
+(taken from xgps) And I'm afraid this is the only way you can create a
+callback-based interface now. If sock is private, the applications
+shouldn't have to rely on its existence - being private means that it
+can change any time in the future and break the existing applications
+if they rely on its existence.
+
+&gt;<i>
+</I>&gt;<i> I disagree with speaking the wire protocol directly, because it leaves
+</I>&gt;<i> applications too exposed if that has to change. &#160;But I agree that the
+</I>&gt;<i> best design for Python would be (unlike the C interface) a very thin layer
+</I>&gt;<i> over the wire protocol. Perhaps one just thick enough to do compatibility
+</I>&gt;<i> translations, supposing that ever becomes necessary.
+</I>&gt;<i>
+</I>
+How much is the protocol going to change in the future? I hope it
+won't be too much - I expected you'll just be adding more JSON objects
+and possibly add more members of existing objects, but the rest of the
+protocol (e.g. the fact that messages end with newline, that every
+object contains class member, ...) will remain unchanged. Actually
+every application will have to check the result it gets in the
+callback anyway as most of the object members may be missing in the
+response.
+
+&gt;&gt;<i> &#160; &#160; &#160; &#160; &#160; &#160; &#160; &#160; &#160; &#160; &#160; &#160; &#160; &#160; &#160; &#160; &#160;And doing this is quite trivial -
+</I>&gt;&gt;<i> it's 150 lines for my wrapping interface. Let me know if you are
+</I>&gt;&gt;<i> interested in seeing it.
+</I>&gt;<i>
+</I>&gt;<i> I would like to see yours. I think I will prototype a new client binding,
+</I>&gt;<i> and ask you to critique it.
+</I>
+Here you are:
+
+<A HREF="http://dl.dropbox.com/u/2554438/gpsgtk.py">http://dl.dropbox.com/u/2554438/gpsgtk.py</A>
+
+Well, it's quite simple, most of the code are various error checks. It
+works for gtk applications only as it integrates into the main loop
+using gobject.io_add_watch (the same way you do in xgps, I actually
+copied how it works). I use callbacks, but maybe it's more gtk-ish to
+use signals for notifying the application. But for qt you'd need
+something else and the callback-based interface would be different for
+pure X, curses, console application, multithreaded application ... So
+this is why I think it is better to say &quot;look, user, this is what we
+do for gtk, just modify it and use it the way you need&quot;.
+
+Jiri
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="004392.html">[Gpsd-users] Preparing for 2.93 point release
+</A></li>
+	<LI>Next message: <A HREF="004420.html">[Gpsd-users] Preparing for 2.93 point release
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#4399">[ date ]</a>
+              <a href="thread.html#4399">[ thread ]</a>
+              <a href="subject.html#4399">[ subject ]</a>
+              <a href="author.html#4399">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

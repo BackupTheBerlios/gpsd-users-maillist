@@ -1,0 +1,118 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] gpsd 2.28, SV6 (TSIP) report
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2005-July/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20gpsd%202.28%2C%20SV6%20%28TSIP%29%20report&In-Reply-To=%3C200507230107.j6N17eP6012675%40ring.wraith.sf.ca.us%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="000858.html">
+   <LINK REL="Next"  HREF="000863.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] gpsd 2.28, SV6 (TSIP) report</H1>
+    <B>gnu not unix</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20gpsd%202.28%2C%20SV6%20%28TSIP%29%20report&In-Reply-To=%3C200507230107.j6N17eP6012675%40ring.wraith.sf.ca.us%3E"
+       TITLE="[Gpsd-users] gpsd 2.28, SV6 (TSIP) report">gnu at wraith.sf.ca.us
+       </A><BR>
+    <I>Sat Jul 23 03:07:40 CEST 2005</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="000858.html">[Gpsd-users] Localization of gpsd?
+</A></li>
+        <LI>Next message: <A HREF="000863.html">[Gpsd-users] gpsd 2.28, SV6 (TSIP) report
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#861">[ date ]</a>
+              <a href="thread.html#861">[ thread ]</a>
+              <a href="subject.html#861">[ subject ]</a>
+              <a href="author.html#861">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi Folks--here's a report when using Trimble SV6 in TSIP mode
+with the gpsd. I have this GPS running with ntp happily, btw.
+Is gpsd really spitting NMEA to the tsip device? 
+
+1. Trimble SV6 aka sveesix
+2. gpsd coredumps
+3. ??
+4. ??
+5. rs-232
+6. BG Micro (surplus dealer)
+7. 2.28
+8. ?
+9. ?
+10. I think I can glean a few things about this beast by running
+    in DOS with their tsipchat program. 
+
+#/usr/sbin/gpsd  -N -n -D 4 -d dgps.wsrcc.com /dev/refclock-0
+gpsd: launching (Version 2.28)
+gpsd: listening on port 2947
+gpsd: connection to DGPS server dgps.wsrcc.com established.
+gpsd: running with effective group ID 0
+gpsd: running with effective user ID 0
+gpsd: opening GPS data source at '/dev/refclock-0'
+gpsd: no probe matched...
+gpsd: speed 9600, 8N1
+gpsd: gpsd_activate: opened GPS (5)
+gpsd: packet sniff finds type 3
+gpsd: Selecting Trimble TSIP driver...
+gpsd: speed 9600, 8O1
+gpsd: tsip_analyze packet type -1
+gpsd: GPS Velocity ENU 0.000000 0.000000 0.000000 113.633705 521427.250000
+gpsd: GPS DP LLA 37.976540 -122.304992 67.510727
+gpsd: &lt;= GPS: $GPRMC,204552,V,3758.5924,N,12218.2995,W,nan,nan,131201,,*10
+gpsd: GPS Velocity ENU 0.000000 0.000000 0.000000 113.366203 521427.750000
+gpsd: IO Options 1e 02 00 08
+gpsd: Software versions 5.10 970603 1.18 970602
+gpsd: GPS Time 521428.500000 1332 13.000000
+gpsd: GPS System Message: 4J47VCK&quot;JK7:'K&quot;16.2ROG
+gpsd: Current Datum 0 0.000000 0.000000 0.000000 6378137.000000 0.006694
+gpsd: GPS Time 521428.531250 1332 13.000000
+gpsd: Sat info: 2 2.434589 2.219735 1.000000 1.147918 2.691643 3: 13 28 8
+gpsd: &lt;= GPS: $GPGSA,A,2,00,00,00,,,,,,,,,,2.4,2.2,1.0*34
+$PGRME,17.76,8.00,19.48*74
+gpsd: Satellite Tracking Status 5: 19 0x29 1 1 3.2 521427.750000 33.9 78.2
+gpsd: Satellite Tracking Status 0: 13 0x00 1 1 3.8 521427.750000 52.9 144.7
+gpsd: Satellite Tracking Status 4: 27 0x20 1 1 2.8 521426.406250 68.1 22.2
+gpsd: Satellite Tracking Status 2: 23 0x10 2 1 1.8 521213.750000 18.9 141.9
+gpsd: Satellite Tracking Status 2: 10 0x11 0 0 0.0 -1.000000 25.7 323.7
+gpsd: Satellite Tracking Status 1: 28 0x08 1 1 5.3 521427.406250 42.2 228.8
+gpsd: Satellite Tracking Status 1:  8 0x09 1 1 6.1 521427.812500 53.6 309.2
+gpsd: Satellite Tracking Status 3:  3 0x19 1 1 2.6 521427.750000 19.5 49.9
+gpsd: GPS DP LLA 37.976540 -122.304993 67.510728
+gpsd: &lt;= GPS: $GPRMC,005015,A,3758.5924,N,12218.2996,W,nan,nan,230705,,*02
+gpsd: GPS Velocity ENU 0.000000 0.000000 0.000000 113.370903 521428.250000
+gpsd: =&gt; dgps R 37.97653991 -122.30499278 67.51
+Segmentation fault (core dumped)
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="000858.html">[Gpsd-users] Localization of gpsd?
+</A></li>
+	<LI>Next message: <A HREF="000863.html">[Gpsd-users] gpsd 2.28, SV6 (TSIP) report
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#861">[ date ]</a>
+              <a href="thread.html#861">[ thread ]</a>
+              <a href="subject.html#861">[ subject ]</a>
+              <a href="author.html#861">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

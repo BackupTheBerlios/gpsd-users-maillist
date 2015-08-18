@@ -1,0 +1,106 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] cross compiling on fedora vs ubuntu
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2008-October/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20cross%20compiling%20on%20fedora%20vs%20ubuntu&In-Reply-To=%3C200810141959.39889.dennisveatch%40bellsouth.net%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="003421.html">
+   <LINK REL="Next"  HREF="003423.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] cross compiling on fedora vs ubuntu</H1>
+    <B>Dennis Veatch</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20cross%20compiling%20on%20fedora%20vs%20ubuntu&In-Reply-To=%3C200810141959.39889.dennisveatch%40bellsouth.net%3E"
+       TITLE="[Gpsd-users] cross compiling on fedora vs ubuntu">dennisveatch at bellsouth.net
+       </A><BR>
+    <I>Wed Oct 15 01:59:39 CEST 2008</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="003421.html">[Gpsd-users] cross compiling on fedora vs ubuntu
+</A></li>
+        <LI>Next message: <A HREF="003423.html">[Gpsd-users] cross compiling on fedora vs ubuntu
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3422">[ date ]</a>
+              <a href="thread.html#3422">[ thread ]</a>
+              <a href="subject.html#3422">[ subject ]</a>
+              <a href="author.html#3422">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>On Tuesday 14 October 2008 18:59:16 John de la Garza wrote:
+&gt;<i> Anyone seen anything like this before?
+</I>&gt;<i>
+</I>&gt;<i> On my desktop box I run Ubuntu (really xubuntu) and I have made gpsd
+</I>&gt;<i> into a package for our build system (ltib).
+</I>&gt;<i>
+</I>&gt;<i> When I use ltib to build  gpsd on my desktop it works fine, but when
+</I>&gt;<i> other people try to build it (they all use Fedora) they get some
+</I>&gt;<i> warnings then an error after ltib calls make
+</I>&gt;<i>
+</I>&gt;<i> the first warning is this:
+</I>&gt;<i>
+</I>&gt;<i>  gcc -DHAVE_CONFIG_H -I. -I. -I. -I/usr/include -g -O2 -Wall
+</I>&gt;<i> -Wcast-align -Wmissing-declarations -Wmissing-prototypes
+</I>&gt;<i> -Wstrict-prototypes -Wpointer-arith -Wreturn-type -D_GNU_SOURCE
+</I>&gt;<i> -I/usr/include -MT libgpsd_core.lo -MD -MP -MF .deps/libgpsd_core.Tpo -c
+</I>&gt;<i> libgpsd_core.c  -fPIC -DPIC -o .libs/libgpsd_core.o
+</I>&gt;<i> In file included from gps.h:19,
+</I>&gt;<i>                  from gpsd.h:16,
+</I>&gt;<i>                  from netlib.c:25:
+</I>&gt;<i> /usr/include/pthread.h:653: warning: '__regparm__' attribute directive
+</I>&gt;<i> ignored
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i> then it gets this:
+</I>&gt;<i>  gcc -DHAVE_CONFIG_H -I. -I. -I. -I/usr/include -g -O2 -Wall
+</I>&gt;<i> -Wcast-align -Wmissing-declarations -Wmissing-prototypes
+</I>&gt;<i> -Wstrict-prototypes -Wpointer-arith -Wreturn-type -D_GNU_SOURCE
+</I>&gt;<i> -I/usr/include -MT ntpshm.lo -MD -MP -MF .deps/ntpshm.Tpo -c ntpshm.c
+</I>&gt;<i> -fPIC -DPIC -o .libs/ntpshm.o
+</I>&gt;<i> /usr/include/bits/mathinline.h:530: error: impossible constraint in 'asm'
+</I>&gt;<i> make[1]: *** [libgpsd_core.lo] Error 1
+</I>&gt;<i>
+</I>&gt;<i>
+</I>
+To me the most interesting bit is the pthread and mathinline error. I will 
+hazard a guess and say it might be glibc version differences between you and 
+&quot;them&quot;?
+
+-- 
+You can tuna piano but you can't tune a fish.
+
+<A HREF="http://www.lunar-linux.org/">http://www.lunar-linux.org/</A>
+It's worth the spin.
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="003421.html">[Gpsd-users] cross compiling on fedora vs ubuntu
+</A></li>
+	<LI>Next message: <A HREF="003423.html">[Gpsd-users] cross compiling on fedora vs ubuntu
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3422">[ date ]</a>
+              <a href="thread.html#3422">[ thread ]</a>
+              <a href="subject.html#3422">[ subject ]</a>
+              <a href="author.html#3422">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

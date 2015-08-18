@@ -1,0 +1,76 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] gpsd goes into endless loop after disconnecting gps receiver
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2010-March/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20gpsd%20goes%20into%20endless%20loop%20after%20disconnecting%0A%20gps%20receiver&In-Reply-To=%3C20100311074114.GA18475%40thyrsus.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="004272.html">
+   <LINK REL="Next"  HREF="004275.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] gpsd goes into endless loop after disconnecting gps receiver</H1>
+    <B>Eric Raymond</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20gpsd%20goes%20into%20endless%20loop%20after%20disconnecting%0A%20gps%20receiver&In-Reply-To=%3C20100311074114.GA18475%40thyrsus.com%3E"
+       TITLE="[Gpsd-users] gpsd goes into endless loop after disconnecting gps receiver">esr at thyrsus.com
+       </A><BR>
+    <I>Thu Mar 11 08:41:14 CET 2010</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="004272.html">[Gpsd-users] RFC on removing DBUS support from GPSD
+</A></li>
+        <LI>Next message: <A HREF="004275.html">[Gpsd-users] Version-control and forge migration
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#4274">[ date ]</a>
+              <a href="thread.html#4274">[ thread ]</a>
+              <a href="subject.html#4274">[ subject ]</a>
+              <a href="author.html#4274">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Please set your mail client to send text rather than HTML.
+
+Andre Naujoks &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">nautsch2 at googlemail.com</A>&gt;:
+&gt;<i> Observed with 2.92 ... and reproducible with svn trunk on x86_64 and
+</I>&gt;<i> ppc.
+</I>&gt;<i> 
+</I>&gt;<i> I tried a UBlox gps receiver and a noname usb receiver attached over
+</I>&gt;<i> the cp210x kernel driver. Both trigger the same behaviour.
+</I>&gt;<i> 
+</I>&gt;<i> An strace showed, that gpsd was somehow stuck in a select loop.
+</I>
+That's useful information, becauser there's only one select loop in gpsd.  
+Does the select fd set go empty when it starts to eat CPU?
+-- 
+		&lt;a href=&quot;<A HREF="http://www.catb.org/~esr/">http://www.catb.org/~esr/</A>&quot;&gt;Eric S. Raymond&lt;/a&gt;
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="004272.html">[Gpsd-users] RFC on removing DBUS support from GPSD
+</A></li>
+	<LI>Next message: <A HREF="004275.html">[Gpsd-users] Version-control and forge migration
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#4274">[ date ]</a>
+              <a href="thread.html#4274">[ thread ]</a>
+              <a href="subject.html#4274">[ subject ]</a>
+              <a href="author.html#4274">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

@@ -1,0 +1,105 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] Fwd: NTP Problems
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2006-August/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Fwd%3A%20NTP%20Problems&In-Reply-To=%3CPine.LNX.4.64.0608281802160.21687%40catbert.rellim.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="001888.html">
+   <LINK REL="Next"  HREF="001890.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] Fwd: NTP Problems</H1>
+    <B>Gary E. Miller</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Fwd%3A%20NTP%20Problems&In-Reply-To=%3CPine.LNX.4.64.0608281802160.21687%40catbert.rellim.com%3E"
+       TITLE="[Gpsd-users] Fwd: NTP Problems">gem at rellim.com
+       </A><BR>
+    <I>Tue Aug 29 03:06:59 CEST 2006</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="001888.html">[Gpsd-users] Fwd: NTP Problems
+</A></li>
+        <LI>Next message: <A HREF="001890.html">[Gpsd-users] Fwd: NTP Problems
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1889">[ date ]</a>
+              <a href="thread.html#1889">[ thread ]</a>
+              <a href="subject.html#1889">[ subject ]</a>
+              <a href="author.html#1889">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>-----BEGIN PGP SIGNED MESSAGE-----
+Hash: SHA1
+
+Yo Karl!
+
+On Tue, 29 Aug 2006, Karl von Muller wrote:
+
+&gt;<i> Looks like gpsd isnt creating/writing to the shared memory.
+</I>&gt;<i>
+</I>&gt;<i> [<A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">root at gumstix</A> ~]# gpsd /dev/ttyS0
+</I>&gt;<i> [<A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">root at gumstix</A> ~]# cat /proc/sysvipc/shm
+</I>&gt;<i>       key      shmid perms       size  cpid  lpid nattch   uid   gid  cuid
+</I>&gt;<i> cgid      atime      dtime      ctime
+</I>
+Do the shared memory segments get created when you start ntpd?  Both gpsd
+and ntp will create the shared memory segment if it does not exist yet.
+
+&gt;<i> that was even after leaving gpsd running for 20 minutes or so.
+</I>
+The shared memory is created during the startup of gpsd, before any
+NMEA is processed.  So either it happens right away or not at all.
+
+&gt;<i> Hmm, im not sure how correct this is, but have just done some quick digging
+</I>&gt;<i> and it appears that ntpshm_put is only called when running/using a garmin,
+</I>&gt;<i> sirf, tsip or zodiac gps.
+</I>
+I use it with an NMEA only gps.  That is all you need, as long as you compiled
+in the ntp support.
+
+
+RGDS
+GARY
+- ---------------------------------------------------------------------------
+Gary E. Miller Rellim 20340 Empire Blvd, Suite E-3, Bend, OR 97701
+	<A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">gem at rellim.com</A>  Tel:+1(541)382-8588
+
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v1.4.3 (GNU/Linux)
+
+iD8DBQFE85M28KZibdeR3qURAnEzAJ9oUwmty9WrxUvdGqK99qPaDPWZqgCfQ+hy
+ipom2stowzAbOeJWpsLmM8g=
+=oU0W
+-----END PGP SIGNATURE-----
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="001888.html">[Gpsd-users] Fwd: NTP Problems
+</A></li>
+	<LI>Next message: <A HREF="001890.html">[Gpsd-users] Fwd: NTP Problems
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1889">[ date ]</a>
+              <a href="thread.html#1889">[ thread ]</a>
+              <a href="subject.html#1889">[ subject ]</a>
+              <a href="author.html#1889">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

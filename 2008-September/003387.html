@@ -1,0 +1,166 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] Lassen IQ + gpsd + shm
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2008-September/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Lassen%20IQ%20%2B%20gpsd%20%2B%20shm&In-Reply-To=%3C1221445279.48cdc69f94ee2%40dev.getwebemail.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="003357.html">
+   <LINK REL="Next"  HREF="003388.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] Lassen IQ + gpsd + shm</H1>
+    <B>Adam Dosch</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Lassen%20IQ%20%2B%20gpsd%20%2B%20shm&In-Reply-To=%3C1221445279.48cdc69f94ee2%40dev.getwebemail.com%3E"
+       TITLE="[Gpsd-users] Lassen IQ + gpsd + shm">adamdosch at fdlinux.com
+       </A><BR>
+    <I>Mon Sep 15 04:21:19 CEST 2008</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="003357.html">[Gpsd-users] Lassen IQ + gpsd + shm
+</A></li>
+        <LI>Next message: <A HREF="003388.html">[Gpsd-users] Lassen IQ + gpsd + shm
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3387">[ date ]</a>
+              <a href="thread.html#3387">[ thread ]</a>
+              <a href="subject.html#3387">[ subject ]</a>
+              <a href="author.html#3387">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Gary,
+
+My apologies for the tardy reply back.  I wanted to get a good sampling of the
+wide jitter and offset I've been seeing before responding back.
+
+&gt;<i> &gt; I can get `ntp` to use the SHM device while I have `gpsd` running, but
+</I>&gt;<i> after
+</I>&gt;<i> &gt; about a good 5 to 10 minutes, I get an extreme amount of delay and jitter
+</I>&gt;<i> 
+</I>&gt;<i> A few things to start, be sure not much else is running on your ntp server
+</I>&gt;<i> and that the ntpd and gpsd processes are running at a high priority.
+</I>&gt;<i> 
+</I>&gt;<i> Here is how I start my gpsd:
+</I>&gt;<i> 
+</I>&gt;<i> 	nice -n -20 /usr/local/sbin/gpsd -n /dev/ttyS0
+</I>
+I haven't been upping the priority for `gpsd`, but I did take your
+recommendation and have been running `gpsd` with a niceness of 20.  I have been
+running `ntpd` with the -N flag (high priority) the the whole as well.
+
+&gt;<i> What is the output of this:
+</I>&gt;<i> 	 ntpdc -p
+</I>
+As of right now (9/14/08 @ 2050), this is what I have for the output of `ntpdc
+-p` that was polled in around 5 minute increments.  I'm using a few other NTP
+servers of the of the NTP pool right now as a benchmark that you'll see in there:
+
+
+     remote           local      st poll reach  delay   offset    disp
+=======================================================================
+=SHM(0)          127.0.0.1        0   64  377 0.00000 -0.339167 0.03044
+=c-76-115-181-18 192.168.0.16     1   64  377 0.08670 -0.061885 0.05359
+*ntp-nasa.arc.na 192.168.0.16     1   64  337 0.06383 -0.056781 0.05219
+
+     remote           local      st poll reach  delay   offset    disp
+=======================================================================
+=SHM(0)          127.0.0.1        0   64  377 0.00000 -0.382931 0.03044
+=c-76-115-181-18 192.168.0.16     1   64  377 0.08670 -0.061885 0.06766
+*ntp-nasa.arc.na 192.168.0.16     1   64  377 0.06383 -0.056781 0.07253
+
+
+     remote           local      st poll reach  delay   offset    disp
+=======================================================================
+*SHM(0)          127.0.0.1        0   64  377 0.00000 -0.056697 0.03043
+=c-76-115-181-18 192.168.0.16     1   64  377 0.08809 -0.023639 0.04515
+=ntp-nasa.arc.na 192.168.0.16     1   64  376 0.06375 -0.018303 0.07033
+
+
+     remote           local      st poll reach  delay   offset    disp
+=======================================================================
+*SHM(0)          127.0.0.1        0   64  377 0.00000  0.018558 0.03043
+=c-76-115-181-18 192.168.0.16     1   64  137 0.08696 -0.015174 0.07594
+=ntp-nasa.arc.na 192.168.0.16     1   64  377 0.06470 -0.008669 0.06497
+
+     remote           local      st poll reach  delay   offset    disp
+=======================================================================
+=SHM(0)          127.0.0.1        0   64  377 0.00000 -0.255329 0.03043
+=c-76-115-181-18 192.168.0.16     1   64  377 0.08720 -0.016790 0.06750
+*ntp-nasa.arc.na 192.168.0.16     1   64  353 0.06435 -0.010779 0.08598
+
+     remote           local      st poll reach  delay   offset    disp
+=======================================================================
+=SHM(0)          127.0.0.1        0   64  377 0.00000  0.056435 0.03043
+=c-76-115-181-18 192.168.0.16     1   64  337 0.08705 -0.014973 0.04263
+*ntp-nasa.arc.na 192.168.0.16     1   64  357 0.06447 -0.008686 0.04643
+
+
+If you look down, you'll see those huge jumpers in the offset and jitter that
+are kind of indescribable, considering I don't see any hard errors in `ntp` and
+I've got the debug on `gpsd` set to level 3 and haven't noticed anything that
+would make sense or hint to me what I'm seeing.  It's always is this gradual,
+exponential spike in jitter and offset (which is mostly always negative, so
+better than the local clock) then slowly drives down, but never picks up as the
+primary system peer again.  If I restart `ntpd`, then after a minute to, it's
+back to have respectable readings and after a good period of time (3-4+ hours)
+it'll start doing this again.
+
+I guess for the sake of asking, am I expecting too much?  Is this type of flux
+in using 'gpsd' and the SHM refclock normal?
+
+Thanks for any help,
+
+Adam
+
+&gt;<i> 
+</I>&gt;<i> RGDS
+</I>&gt;<i> GARY
+</I>&gt;<i> -
+</I>&gt;<i> ---------------------------------------------------------------------------
+</I>&gt;<i> Gary E. Miller Rellim 109 NW Wilmington Ave., Suite E, Bend, OR 97701
+</I>&gt;<i> 	<A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">gem at rellim.com</A>  Tel:+1(541)382-8588
+</I>&gt;<i> 
+</I>&gt;<i> -----BEGIN PGP SIGNATURE-----
+</I>&gt;<i> Version: GnuPG v1.4.3 (GNU/Linux)
+</I>&gt;<i> 
+</I>&gt;<i> iD8DBQFIvuWNBmnRqz71OvMRAmjuAJ0Q2HkRFer4GFpo+LGfcdaENTYSaACePg5a
+</I>&gt;<i> wOoJiMPd4Rp59AY9MoADAjg=
+</I>&gt;<i> =xMRO
+</I>&gt;<i> -----END PGP SIGNATURE-----
+</I>&gt;<i> 
+</I>&gt;<i> 
+</I>
+
+
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="003357.html">[Gpsd-users] Lassen IQ + gpsd + shm
+</A></li>
+	<LI>Next message: <A HREF="003388.html">[Gpsd-users] Lassen IQ + gpsd + shm
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3387">[ date ]</a>
+              <a href="thread.html#3387">[ thread ]</a>
+              <a href="subject.html#3387">[ subject ]</a>
+              <a href="author.html#3387">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

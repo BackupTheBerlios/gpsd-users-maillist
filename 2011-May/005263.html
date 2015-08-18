@@ -1,0 +1,128 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] Gpsd configuration files
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2011-May/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Gpsd%20configuration%20files&In-Reply-To=%3C4DE3A4B5.3090009%40open-t.co.uk%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="005262.html">
+   <LINK REL="Next"  HREF="005266.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] Gpsd configuration files</H1>
+    <B>Sebastian Arcus</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Gpsd%20configuration%20files&In-Reply-To=%3C4DE3A4B5.3090009%40open-t.co.uk%3E"
+       TITLE="[Gpsd-users] Gpsd configuration files">shop at open-t.co.uk
+       </A><BR>
+    <I>Mon May 30 16:07:49 CEST 2011</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="005262.html">[Gpsd-users] Gpsd configuration files
+</A></li>
+        <LI>Next message: <A HREF="005266.html">[Gpsd-users] [Gpsd-dev] Gpsd configuration files
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#5263">[ date ]</a>
+              <a href="thread.html#5263">[ thread ]</a>
+              <a href="subject.html#5263">[ subject ]</a>
+              <a href="author.html#5263">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>
+
+On 30/05/11 14:07, Charles Curley wrote:
+&lt;/snip&gt;
+&gt;<i>
+</I>&gt;<i> Probably the major reason is that the main customers for gpsd are not
+</I>&gt;<i> us folks running around on the M4 with our Linux laptops and a GPS
+</I>&gt;<i> receiver dongle.
+</I>
+:<i>-)) Thanks Charles. That made my day.
+</I>
+It would be nice though to have a /etc/gpsd.conf file like:
+
+#/etc/gpsd.conf
+[global]
+port=3000
+
+
+[receiver_1]
+serial=4090039409
+no_wait=yes
+bt_safe=no
+
+[receiver_2]
+serial=4099309409098
+no_wait=yes
+bt_safe=yes
+
+Of course, gpsd would continue to run its sanity checks everytime it 
+tries to open a device. Also, it's code can be used to probe a new 
+device, when it is added to the config file (through a console or X 
+based wizard, for example).
+
+The above system is akin to pairing to Bluetooth devices. Surely the 
+same concept can be applied to &quot;pairing&quot; to a gps device?
+
+Then, a gpsdconf script could be built, which is run by the user 
+everytime they want to add a new dongle to the config file - which would 
+run a simpe wizard, extract the serial from the hardware, and add it 
+together with options to the gpsd.conf file.
+
+I think identifying adapters by serial id's is the only way, as these 
+usb-to-serial converters are used in so many other pieces of hardware - 
+it's really unreliable to identify by manufacturer id in the default 
+config files.
+
+This would require for the user to manually add a new device initially 
+to the configuration file (directly or through a wizard) - but it means 
+that gpsd could just poll the filesystem (through inotify for example) 
+for new /dev/ttyUSBx or /dev/ttySx devices, and connect to them 
+dynamically if their serial number is in the config file. None of the 
+current setup, where udev rules triggers gpsd.hotplug.wrapper script 
+which triggers gpsd.hotplug script, which talks to gpsd through gpsctl 
+through a socket - which means that gpsd can't be started with usb_auto 
+while the root filesystem is mounted read-only. Surely, whichever way 
+you look at it, the current setup is not pretty, or elegant, or 
+potentially reliable with so many different pieces of software involved.
+
+And I'm not sure I understand why a simple config file, like the one 
+above, would be a downside for embedded systems?
+
+Merely enquiring after an entire weekend spent trying to fit a square 
+gpsd into a round Slackware init script whole, where udev runs initially 
+on a read-only filesystem (and doesn't allow gpsd to create its socket 
+file).
+
+Sebastian
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="005262.html">[Gpsd-users] Gpsd configuration files
+</A></li>
+	<LI>Next message: <A HREF="005266.html">[Gpsd-users] [Gpsd-dev] Gpsd configuration files
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#5263">[ date ]</a>
+              <a href="thread.html#5263">[ thread ]</a>
+              <a href="subject.html#5263">[ subject ]</a>
+              <a href="author.html#5263">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

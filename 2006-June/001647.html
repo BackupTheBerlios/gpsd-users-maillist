@@ -1,0 +1,92 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] Re: accuracy in conversion from meters/sec to knots
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2006-June/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Re%3A%20accuracy%20in%20conversion%20from%20meters/sec%20to%20knots&In-Reply-To=%3Cp06230917c0a9d70ced35%40%5B192.168.1.6%5D%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="001678.html">
+   <LINK REL="Next"  HREF="001648.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] Re: accuracy in conversion from meters/sec to knots</H1>
+    <B>Robin L Darroch</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Re%3A%20accuracy%20in%20conversion%20from%20meters/sec%20to%20knots&In-Reply-To=%3Cp06230917c0a9d70ced35%40%5B192.168.1.6%5D%3E"
+       TITLE="[Gpsd-users] Re: accuracy in conversion from meters/sec to knots">robin at spade-men.com
+       </A><BR>
+    <I>Mon Jun  5 14:44:51 CEST 2006</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="001678.html">[Gpsd-users] TNTC, tilt, magnetic compass
+</A></li>
+        <LI>Next message: <A HREF="001648.html">[Gpsd-users] Re: accuracy in conversion from meters/sec to knots
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1647">[ date ]</a>
+              <a href="thread.html#1647">[ thread ]</a>
+              <a href="subject.html#1647">[ subject ]</a>
+              <a href="author.html#1647">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>I've been working on a new GPSd client program lately, and as a 
+result was digging back through my GPS mailing list inbox, where I 
+found this:
+
+&gt;<i>Off-topic, but as long as we're using GPS for accurate position, an
+</I>&gt;<i>accurate value for MPS_TO_KNOTS (accurate to epsilon for long double) is
+</I>&gt;<i>1.943844492440604752.  1.9437 isn't a good approximation; 1.9438 would
+</I>&gt;<i>be closer.  The 'units' program says:
+</I>&gt;<i>
+</I>&gt;<i>$ units
+</I>&gt;<i>2084 units, 71 prefixes, 32 nonlinear units
+</I>&gt;<i>
+</I>&gt;<i>You have: meters per second
+</I>&gt;<i>You want: knots
+</I>&gt;<i>         * 1.9438445
+</I>&gt;<i>         / 0.51444444
+</I>&gt;<i>
+</I>&gt;<i>(Meters in a nautical mile: exactly 1852; seconds in an hour: 3600)
+</I>
+Checking my (current with SVN as of a few days ago) gps.h, I still 
+see the same factor.  Is there any reason why this hasn't been 
+amended?  If not, can someone with commit access please amend it?
+
+Thanks!
+Robin
+-- 
+
+-------------------------------------------------------------------------
+  Robin L. Darroch - PO Box 2715, South Hedland WA 6722 - +61 421 503 966
+       <A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">robin at darroch.id.au</A> - <A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">robin at nyca.org.au</A> - <A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">robin at spade-men.com</A>
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="001678.html">[Gpsd-users] TNTC, tilt, magnetic compass
+</A></li>
+	<LI>Next message: <A HREF="001648.html">[Gpsd-users] Re: accuracy in conversion from meters/sec to knots
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1647">[ date ]</a>
+              <a href="thread.html#1647">[ thread ]</a>
+              <a href="subject.html#1647">[ subject ]</a>
+              <a href="author.html#1647">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

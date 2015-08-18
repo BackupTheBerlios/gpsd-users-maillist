@@ -1,0 +1,96 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] GPS time jitter
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2008-May/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20GPS%20time%20jitter&In-Reply-To=%3C20080521141000.GB17681%40navigator.protonlab.net%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="003232.html">
+   <LINK REL="Next"  HREF="003235.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] GPS time jitter</H1>
+    <B>Chris Brotherton</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20GPS%20time%20jitter&In-Reply-To=%3C20080521141000.GB17681%40navigator.protonlab.net%3E"
+       TITLE="[Gpsd-users] GPS time jitter">chris at protonlab.net
+       </A><BR>
+    <I>Wed May 21 16:10:00 CEST 2008</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="003232.html">[Gpsd-users] every 5th point gets lost
+</A></li>
+        <LI>Next message: <A HREF="003235.html">[Gpsd-users] GPS time jitter
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3234">[ date ]</a>
+              <a href="thread.html#3234">[ thread ]</a>
+              <a href="subject.html#3234">[ subject ]</a>
+              <a href="author.html#3234">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>I am currently using a Garmin GPS 18 LVC with a recent svn checkout of gpsd.
+In addition to the gps data, I am also using the garmin for a time server.  My
+problem is that I am seeing large jitter.
+
+Here is an example output of ntpq -p (after 24 hours of operation):
+
+remote           refid      st t when poll reach   delay   offset  jitter
+==============================================================================
++SHM(0)          .GPS.          0 l    -   16  377    0.000  -10.377 12.419
+*SHM(1)          .GPS1.         0 l   11   16  377    0.000   -0.149 15.169
+
+
+In my logs, I am seeing the following entries:
+
+May 21 07:50:41 gpsd[12581]: gpsd: GPGSV field 3 value of 11 != actual
+count 18
+May 21 07:53:58 gpsd[12581]: gpsd: GPGSV field 3 value of 11 != actual
+count 18
+May 21 07:54:02 gpsd[12581]: gpsd: GPGSV field 3 value of 11 != actual
+count 14
+May 21 07:56:46 gpsd[12581]: gpsd: PPS pulse rejected.  cycle:
+1003168, duration: 963173
+May 21 07:56:47 gpsd[12581]: gpsd: PPS pulse rejected.  cycle: 996837,
+duration: 960009
+May 21 07:56:54 gpsd[12581]: gpsd: PPS pulse rejected.  cycle:
+1003903, duration: 43898
+May 21 07:56:55 gpsd[12581]: gpsd: PPS pulse rejected.  cycle: 996097,
+duration: 39987
+
+I suspect that these errors are causing the jitter?  Has anyone else seen
+this?  I saw a similar problem with gpsd 2.37.  So I decided to try the recent
+svn version (4692).
+
+Thanks,
+Chris.
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="003232.html">[Gpsd-users] every 5th point gets lost
+</A></li>
+	<LI>Next message: <A HREF="003235.html">[Gpsd-users] GPS time jitter
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3234">[ date ]</a>
+              <a href="thread.html#3234">[ thread ]</a>
+              <a href="subject.html#3234">[ subject ]</a>
+              <a href="author.html#3234">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

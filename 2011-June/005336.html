@@ -1,0 +1,215 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] embedded gpsd fails to return data 1 in 15 times. xgps unblocks the flow. no watchdog?
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2011-June/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20embedded%20gpsd%20fails%20to%20return%20data%201%20in%2015%20times.%20xgps%0A%20unblocks%20the%20flow.%20no%20watchdog%3F&In-Reply-To=%3C4E00E3A3.9060005%40obviously.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="005335.html">
+   <LINK REL="Next"  HREF="005337.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] embedded gpsd fails to return data 1 in 15 times. xgps unblocks the flow. no watchdog?</H1>
+    <B>Bryce Nesbitt</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20embedded%20gpsd%20fails%20to%20return%20data%201%20in%2015%20times.%20xgps%0A%20unblocks%20the%20flow.%20no%20watchdog%3F&In-Reply-To=%3C4E00E3A3.9060005%40obviously.com%3E"
+       TITLE="[Gpsd-users] embedded gpsd fails to return data 1 in 15 times. xgps unblocks the flow. no watchdog?">bryce2 at obviously.com
+       </A><BR>
+    <I>Tue Jun 21 20:32:03 CEST 2011</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="005335.html">[Gpsd-users] ntp + gpsd + pps
+</A></li>
+        <LI>Next message: <A HREF="005337.html">[Gpsd-users] embedded gpsd fails to return data 1 in 15 times. xgps unblocks the flow. no watchdog?
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#5336">[ date ]</a>
+              <a href="thread.html#5336">[ thread ]</a>
+              <a href="subject.html#5336">[ subject ]</a>
+              <a href="author.html#5336">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Dear gpsd users;
+
+I've built an embedded system using a BU-353 Sirf mouse and gpsd.  One 
+of every 15 boots or so the gpsd daemon returns no data.  When someone 
+goes to examine the machine it suddenly comes to life, oddly enough the 
+moment they run &quot;xgps&quot;.
+
+I've done some testing, and any 2nd connection to the gpsd daemon brings 
+the first connection back to life.  I'm struggling to understand why one 
+connection could affect another inside the daemon.
+
+Here is a test script that shows the same behavior as the real application:
+
+    #!/usr/bin/perl -w
+    #
+    use strict;
+    use Carp;
+    use 5.008_000;
+    use IO::Socket;
+
+    my $PORT_GPSD   = 2947;
+    my $sock_gpsd = IO::Socket::INET-&gt;new(
+                             PeerAddr =&gt; '127.0.0.1',
+                             PeerPort =&gt; $PORT_GPSD,
+                             Proto =&gt; 'tcp',
+                             ) or confess &quot;Can't connect to gpsd on
+    localhost port $PORT_GPSD $@&quot;;
+    #$sock-&gt;sockopt(SO_RCVBUF, 1024);   # Tiny buffer so if we get
+    behind we die rather than send stale data
+    $sock_gpsd-&gt;send('?WATCH={&quot;enable&quot;:true,&quot;json&quot;:true}'.&quot;\n&quot;) or
+    confess (&quot;Socket send $@&quot;);
+
+    while (defined(my $line=$sock_gpsd-&gt;getline))  {
+         print $line;
+    }
+    print &quot;gps test exit&quot;;
+    close($sock_gpsd);
+
+This script can sit for hours returning no data.
+
+Running the same script a second time in different window unblocks the 
+first script, and both return a steady stream of data.
+
+------------------------------------------------------------------------
+
+Now I'm assuming what's going on is the first invocation fails to enable 
+the Sirf chip.  What's needed is a watchdog, hitting the Sirf chip any 
+time it is not returning data.  I'm hacking this up like so:
+
+    gps_collector.pl
+    sleep 3
+    echo '?WATCH={&quot;enable&quot;:true,&quot;json&quot;:true}' | nc -q 5 localhost 2947
+
+But I'm loath to put this into my application, because it seems like a 
+function that the low level library should handle (e.g. kicking balky 
+hardware into operation).  Is there a watchdog inside gpsd, and is it 
+known to be robust?
+
+
+I am using &quot;gpsd: 2.95 (revision 2010-12-03T21:16:03)&quot;, and am also 
+loath to change that because that's what comes packaged with my 
+distribution:
+
+    {&quot;class&quot;:&quot;VERSION&quot;,&quot;release&quot;:&quot;2.92&quot;,&quot;rev&quot;:&quot;svn&quot;,&quot;proto_major&quot;:3,&quot;proto_minor&quot;:1}
+    {&quot;class&quot;:&quot;DEVICES&quot;,&quot;devices&quot;:[{&quot;class&quot;:&quot;DEVICE&quot;,&quot;path&quot;:&quot;/dev/ttyUSB0&quot;,&quot;activated&quot;:1308617448.00,&quot;native&quot;:0,&quot;bps&quot;:57600,&quot;parity&quot;:&quot;N&quot;,&quot;stopbits&quot;:1,&quot;cycle&quot;:1.00}]}
+    {&quot;class&quot;:&quot;WATCH&quot;,&quot;enable&quot;:true,&quot;json&quot;:true,&quot;nmea&quot;:false,&quot;raw&quot;:0,&quot;scaled&quot;:false,&quot;timing&quot;:false}
+    {&quot;class&quot;:&quot;DEVICE&quot;,&quot;path&quot;:&quot;/dev/ttyUSB0&quot;,&quot;activated&quot;:1308621040.05,&quot;driver&quot;:&quot;SiRF
+    binary&quot;,&quot;native&quot;:1,&quot;bps&quot;:4800,&quot;parity&quot;:&quot;N&quot;,&quot;stopbits&quot;:1,&quot;cycle&quot;:1.00}
+
+    Jun 21 11:13:05 ubuntu gpsd[2741]: gpsd: launching (Version 2.95)
+    Jun 21 11:13:05 ubuntu gpsd[2741]: gpsd: listening on port gpsd
+    Jun 21 11:13:05 ubuntu gpsd[2741]: gpsd: running with effective
+    group ID 20
+    Jun 21 11:13:05 ubuntu gpsd[2741]: gpsd: running with effective user
+    ID 65534
+    Jun 21 11:13:19 ubuntu kernel: [  215.403688] usb 7-1: USB
+    disconnect, address 2
+    Jun 21 11:13:19 ubuntu kernel: [  215.403895] pl2303 ttyUSB0: pl2303
+    disconnected from ttyUSB0
+    Jun 21 11:13:24 ubuntu kernel: [  220.339836] pl2303 7-1:1.0: pl2303
+    converter detected
+    Jun 21 11:13:24 ubuntu kernel: [  220.350809] usb 7-1: pl2303
+    converter now attached to ttyUSB0
+    Jun 21 11:13:24 ubuntu gpsd.hotplug: gpsd_control(action=add,
+    arg=/dev/ttyUSB0)
+    Jun 21 11:13:24 ubuntu gpsd.hotplug: reached a running gpsd
+    Jun 21 11:13:24 ubuntu gpsd[2741]: gpsd: control socket connect on fd 8
+    Jun 21 11:13:24 ubuntu gpsd[2741]: gpsd: &lt;= control(8): adding
+    /dev/ttyUSB0
+    Jun 21 11:13:24 ubuntu gpsd[2741]: gpsd: stashing device
+    /dev/ttyUSB0 at slot 0
+    Jun 21 11:13:53 ubuntu gpsd[2741]: gpsd: opening GPS data source
+    type 3 at '/dev/ttyUSB0'
+    Jun 21 11:13:53 ubuntu gpsd[2741]: gpsd: speed 115200, 8N1
+    Jun 21 11:13:54 ubuntu gpsd[2741]: gpsd: attempting USB device
+    enumeration.
+    Jun 21 11:13:54 ubuntu gpsd[2741]: gpsd: 1d6b:0002 (bus 1, device 1)
+    Jun 21 11:13:54 ubuntu gpsd[2741]: gpsd: 1d6b:0002 (bus 2, device 1)
+    Jun 21 11:13:54 ubuntu gpsd[2741]: gpsd: 1d6b:0001 (bus 3, device 1)
+    Jun 21 11:13:54 ubuntu gpsd[2741]: gpsd: 1d6b:0001 (bus 4, device 1)
+    Jun 21 11:13:54 ubuntu gpsd[2741]: gpsd: 1d6b:0001 (bus 5, device 1)
+    Jun 21 11:13:54 ubuntu gpsd[2741]: gpsd: 1d6b:0001 (bus 6, device 1)
+    Jun 21 11:13:54 ubuntu gpsd[2741]: gpsd: 1d6b:0001 (bus 7, device 1)
+    Jun 21 11:13:54 ubuntu gpsd[2741]: gpsd: 1d6b:0001 (bus 8, device 1)
+    Jun 21 11:13:54 ubuntu gpsd[2741]: gpsd: 048d:1336 (bus 2, device 2)
+    Jun 21 11:13:54 ubuntu gpsd[2741]: gpsd: 13fd:1650 (bus 2, device 4)
+    Jun 21 11:13:54 ubuntu gpsd[2741]: gpsd: 0db0:3871 (bus 2, device 5)
+    Jun 21 11:13:54 ubuntu gpsd[2741]: gpsd: 0db0:a871 (bus 8, device 2)
+    Jun 21 11:13:54 ubuntu gpsd[2741]: gpsd: 1d6b:0003 (bus 9, device 1)
+    Jun 21 11:13:54 ubuntu gpsd[2741]: gpsd: 067b:2303 (bus 7, device 3)
+    Jun 21 11:13:54 ubuntu gpsd[2741]: gpsd: 046d:c00c (bus 4, device 2)
+    Jun 21 11:13:54 ubuntu gpsd[2741]: gpsd: 0510:0032 (bus 9, device 2)
+    Jun 21 11:13:54 ubuntu gpsd[2741]: gpsd: vendor/product match with
+    091e:0003 not found
+    Jun 21 11:13:54 ubuntu gpsd[2741]: gpsd: speed 9600, 8O1
+    Jun 21 11:13:55 ubuntu gpsd[2741]: gpsd: speed 115200, 8N1
+    Jun 21 11:13:56 ubuntu gpsd[2741]: gpsd: gpsd_activate(): opened GPS
+    (fd 9)
+    Jun 21 11:14:02 ubuntu gpsd[2741]: gpsd: speed 4800, 8N1
+    Jun 21 11:14:21 ubuntu gpsd[2741]: gpsd: speed 9600, 8N1
+    Jun 21 11:14:39 ubuntu gpsd[2741]: gpsd: speed 19200, 8N1
+    Jun 21 11:14:40 ubuntu gpsd[2741]: gpsd: NTPD ntpd_link_activate: 1
+    Jun 21 11:14:40 ubuntu gpsd[2741]: gpsd: /dev/ttyUSB0 identified as
+    type Generic NMEA (44.338723 sec @ 19200bps)
+    Jun 21 11:14:40 ubuntu gpsd[2741]: gpsd: =&gt; Probing device subtype 0
+    Jun 21 11:14:40 ubuntu gpsd[2741]: gpsd: can't use GGA time until
+    after ZDA or RMC has supplied a year.
+    Jun 21 11:14:40 ubuntu gpsd[2741]: gpsd: =&gt; Probing device subtype 1
+    Jun 21 11:14:40 ubuntu gpsd[2741]: gpsd: =&gt; Probing device subtype 2
+    Jun 21 11:14:40 ubuntu gpsd[2741]: gpsd: GPS on /dev/ttyUSB0 is
+    offline (0.000678 sec since data)
+    Jun 21 11:14:41 ubuntu gpsd[2741]: gpsd: =&gt; Probing device subtype 3
+    Jun 21 11:14:41 ubuntu gpsd[2741]: gpsd: SiRF binary packet seen
+    when NMEA expected.
+    Jun 21 11:14:41 ubuntu gpsd[2741]: gpsd: NTPD ntpd_link_activate: 1
+    Jun 21 11:14:41 ubuntu gpsd[2741]: gpsd: GPS on /dev/ttyUSB0 is
+    offline (0.000017 sec since data)
+    Jun 21 11:14:41 ubuntu gpsd[2741]: gpsd: GPS on /dev/ttyUSB0 is
+    offline (0.000014 sec since data)
+    Jun 21 11:14:42 ubuntu gpsd[2741]: gpsd: GPS on /dev/ttyUSB0 is
+    offline (0.000018 sec since data)
+    Jun 21 11:14:42 ubuntu gpsd[2741]: gpsd: GPS on /dev/ttyUSB0 is
+    offline (0.000088 sec since data)
+    Jun 21 11:14:42 ubuntu gpsd[2741]: gpsd: GPS on /dev/ttyUSB0 is
+    offline (0.000279 sec since data)
+    Jun 21 11:14:42 ubuntu gpsd[2741]: gpsd: GPS on /dev/ttyUSB0 is
+    offline (0.000016 sec since data)
+    ....repeats every second forever...
+
+
+Suggestions?
+Ideas why the second connection unblocks the first?
+Thoughts about watchdogs?
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="005335.html">[Gpsd-users] ntp + gpsd + pps
+</A></li>
+	<LI>Next message: <A HREF="005337.html">[Gpsd-users] embedded gpsd fails to return data 1 in 15 times. xgps unblocks the flow. no watchdog?
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#5336">[ date ]</a>
+              <a href="thread.html#5336">[ thread ]</a>
+              <a href="subject.html#5336">[ subject ]</a>
+              <a href="author.html#5336">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

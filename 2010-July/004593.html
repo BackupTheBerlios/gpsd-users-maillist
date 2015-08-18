@@ -1,0 +1,126 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] python client
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2010-July/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20python%20client&In-Reply-To=%3CAANLkTikL6jNQvo3LoWMGpuIszHGtVtc0Dif3WLjj9OOa%40mail.gmail.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="004590.html">
+   <LINK REL="Next"  HREF="004594.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] python client</H1>
+    <B>Gabriel Zea</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20python%20client&In-Reply-To=%3CAANLkTikL6jNQvo3LoWMGpuIszHGtVtc0Dif3WLjj9OOa%40mail.gmail.com%3E"
+       TITLE="[Gpsd-users] python client">z3a at randomlab.net
+       </A><BR>
+    <I>Wed Jul 21 00:30:13 CEST 2010</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="004590.html">[Gpsd-users] standalone client?
+</A></li>
+        <LI>Next message: <A HREF="004594.html">[Gpsd-users] D-BUS support
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#4593">[ date ]</a>
+              <a href="thread.html#4593">[ thread ]</a>
+              <a href="subject.html#4593">[ subject ]</a>
+              <a href="author.html#4593">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi there!
+
+I'm trying to write a very simple python client for Gpsd, but I have
+this error after some time of execute the script:
+
+Traceback (most recent call last):
+  File &quot;gps_cap.py&quot;, line 13, in &lt;module&gt;
+    g.stream()
+  File &quot;/usr/lib/python2.6/site-packages/gps/gps.py&quot;, line 348, in stream
+    gpsjson.stream(self, flags)
+  File &quot;/usr/lib/python2.6/site-packages/gps/client.py&quot;, line 176, in stream
+    return self.send(arg + &quot;}&quot;)
+  File &quot;/usr/lib/python2.6/site-packages/gps/client.py&quot;, line 111, in send
+    self.sock.send(commands)
+socket.error: [Errno 104] Connection reset by peer
+
+and this is my python code:
+
+import os
+from gps import *
+from time import *
+
+g = gps(mode=WATCH_ENABLE)
+while 1:
+       os.system('clear')	
+	g.poll()
+	if PACKET_SET:
+		g.stream()
+	
+	print
+        print ' GPS reading'
+    	print '----------------------------------------'
+   	print 'latitude    ' , g.fix.latitude
+   	print 'longitude   ' , g.fix.longitude
+   	print 'time utc    ' , g.utc,' + ', g.fix.time
+   	print 'altitude    ' , g.fix.altitude
+	print 'epc	   ' , g.fix.epc
+	print 'epd	   ' , g.fix.epd
+	print 'eps	   ' , g.fix.eps
+   	print 'epx         ' , g.fix.epx
+   	print 'epv         ' , g.fix.epv
+   	print 'ept         ' , g.fix.ept
+   	print 'speed       ' , g.fix.speed
+   	print 'climb       ' , g.fix.climb
+	print 'track	   ' , g.fix.track	
+	print 'mode	   ' , g.fix.mode
+	print
+	print 'sats	   ' , g.satellites	
+	
+	sleep(1)
+
+Maybe anyone can help with this issue? I'm runnig Gpsd 2.95 in a ArchLinux box.
+
+Thanks!
+
+zea
+
+-- 
+Gabriel Zea
+
+Portfolio :: <A HREF="http://zea.randomlab.net">http://zea.randomlab.net</A>
+nerdBot :: <A HREF="http://nerdbots.info">http://nerdbots.info</A>
+@twitter | @identica :: z3a
+@flickr :: <A HREF="http://is.gd/1Mry9">http://is.gd/1Mry9</A>
+@skype :: g.z.e.a
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="004590.html">[Gpsd-users] standalone client?
+</A></li>
+	<LI>Next message: <A HREF="004594.html">[Gpsd-users] D-BUS support
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#4593">[ date ]</a>
+              <a href="thread.html#4593">[ thread ]</a>
+              <a href="subject.html#4593">[ subject ]</a>
+              <a href="author.html#4593">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

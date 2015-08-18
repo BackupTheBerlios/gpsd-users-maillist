@@ -1,0 +1,188 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] Error estimates not being displayed
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2010-July/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Error%20estimates%20not%20being%20displayed&In-Reply-To=%3C136365.41516.qm%40web112112.mail.gq1.yahoo.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="004575.html">
+   <LINK REL="Next"  HREF="004583.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] Error estimates not being displayed</H1>
+    <B>Sarfraz Nawaz</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Error%20estimates%20not%20being%20displayed&In-Reply-To=%3C136365.41516.qm%40web112112.mail.gq1.yahoo.com%3E"
+       TITLE="[Gpsd-users] Error estimates not being displayed">siffi28 at yahoo.com
+       </A><BR>
+    <I>Tue Jul  6 19:14:02 CEST 2010</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="004575.html">[Gpsd-users] libgps questions
+</A></li>
+        <LI>Next message: <A HREF="004583.html">[Gpsd-users] Error estimates not being displayed
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#4566">[ date ]</a>
+              <a href="thread.html#4566">[ thread ]</a>
+              <a href="subject.html#4566">[ subject ]</a>
+              <a href="author.html#4566">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hello,
+
+I have been doing some more poking around with verbose mode of gpsd and what I have found is that the GPS unit when connected to the desktop emits GSA sentences which trigger the DOP calculations. However when connected to the laptop, no GSA sentences are emitted by the GPS unit. Following are the partial logs showing this.
+
+I am using PhotoTrackr GPS unit <A HREF="http://www.gisteq.com/PhotoTrackr/PhotoTrackrDPL700.php">http://www.gisteq.com/PhotoTrackr/PhotoTrackrDPL700.php</A> that connets through the USB. This seems quite a strange behaviour. Can anyone please suggest what might be going wrong here?
+
+
+LAPTOP
+
+gpsd: Partial satellite data (1 of 3).
+gpsd: modeling errors: mode=3, masks={ONLINE|ERROR|PACKET}
+gpsd: &lt;= GPS: $GPGSV,3,2,12,18,37,284,30,28,30,051,26,17,25,097,34,22,19,318,22*78\x0d
+
+gpsd: Partial satellite data (2 of 3).
+gpsd: modeling errors: mode=3, masks={ONLINE|ERROR|PACKET}
+gpsd: &lt;= GPS: $GPGSV,3,3,12,12,10,209,,24,04,311,,08,02,077,,43,,,*4F\x0d
+
+gpsd: GSV: Satellite data OK (3 of 3).
+gpsd: Satellite picture:
+gpsd: Line-of-sight matrix:
+gpsd: product:
+gpsd: 0.000000 0.000000 0.000000 0.000000
+gpsd: 0.000000 0.000000 0.000000 0.000000
+gpsd: 0.000000 0.000000 0.000000 0.000000
+gpsd: 0.000000 0.000000 0.000000 0.000000
+gpsd: LOS matrix is singular, can't calculate DOPs - source '/dev/ttyACM0'
+gpsd: modeling errors: mode=3, masks={ONLINE|SATELLITE|PACKET}
+
+DESKTOP
+
+gpsd: GPGSA sets mode 3
+gpsd: GPGSA: mode=3 used=6 pdop=1.80 hdop=1.58 vdop=0.86 mask={MODE|DOP|USED}
+gpsd: modeling errors: mode=3, masks={ONLINE|MODE|DOP|USED|PACKET}
+gpsd: Changed mask: {ONLINE|MODE|DOP|USED|PACKET} with reliable cycle detection
+gpsd: &lt;= GPS: $GPGSV,3,1,11,29,72,184,24,30,66,089,24,31,57,292,16,12,31,091,24*7B\x0d
+
+gpsd: Partial satellite data (1 of 3).
+gpsd: modeling errors: mode=3, masks={ONLINE|ERROR|PACKET}
+gpsd: Changed mask: {ONLINE|ERROR|PACKET} with reliable cycle detection
+gpsd: &lt;= GPS: $GPGSV,3,2,11,02,26,054,20,14,20,224,16,21,03,173,,16,02,275,*79\x0d
+
+gpsd: Partial satellite data (2 of 3).
+gpsd: modeling errors: mode=3, masks={ONLINE|ERROR|PACKET}
+gpsd: Changed mask: {ONLINE|ERROR|PACKET} with reliable cycle detection
+gpsd: &lt;= GPS: $GPGSV,3,3,11,04,01,022,,23,01,345,,48,,,*72\x0d
+
+gpsd: GSV: Satellite data OK (3 of 3).
+gpsd: Satellite picture:
+gpsd: az: 184 el: 72  SV: 31
+gpsd: az: 89 el: 66  SV: 12
+gpsd: az: 292 el: 57  SV: 29
+gpsd: az: 91 el: 31  SV: 14
+gpsd: az: 54 el: 26  SV: 30
+gpsd: az: 224 el: 20  SV: 2
+gpsd: Line-of-sight matrix:
+gpsd: -0.021556 -0.308264 0.951057 1.000000
+gpsd: 0.406675 0.007099 0.913545 1.000000
+gpsd: -0.504981 0.204025 0.838671 1.000000
+gpsd: 0.857037 -0.014960 0.515038 1.000000
+gpsd: 0.727140 0.528298 0.438371 1.000000
+gpsd: -0.652765 -0.675958 0.342020 1.000000
+gpsd: product:
+gpsd: 2.110201 0.719070 0.464407 0.811549
+gpsd: 0.719070 0.872946 -0.122887 -0.259760
+gpsd: 0.464407 -0.122887 3.016853 3.998702
+gpsd: 0.811549 -0.259760 3.998702 6.000000
+gpsd: DOPS computed/reported: X=0.877475/nan, Y=1.336973/nan, H=1.599206/1.580000, V=1.719617/0.860000, P=2.348306/1.800000, T=1.255724/nan, G=2.662965/nan
+gpsd: modeling errors: mode=3, masks={ONLINE|DOP|SATELLITE|PACKET}
+
+
+
+--- On Fri, 2/7/10, Gary E. Miller &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">gem at rellim.com</A>&gt; wrote:
+
+&gt;<i> From: Gary E. Miller &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">gem at rellim.com</A>&gt;
+</I>&gt;<i> Subject: Re: [Gpsd-users] Error estimates not being displayed
+</I>&gt;<i> To: &quot;Sarfraz Nawaz&quot; &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">siffi28 at yahoo.com</A>&gt;
+</I>&gt;<i> Cc: <A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">gpsd-users at lists.berlios.de</A>
+</I>&gt;<i> Date: Friday, 2 July, 2010, 22:59
+</I>&gt;<i> -----BEGIN PGP SIGNED MESSAGE-----
+</I>&gt;<i> Hash: SHA1
+</I>&gt;<i> 
+</I>&gt;<i> Yo Sarfraz!
+</I>&gt;<i> 
+</I>&gt;<i> 
+</I>&gt;<i> On Fri, 2 Jul 2010, Sarfraz Nawaz wrote:
+</I>&gt;<i> 
+</I>&gt;<i> &gt; On my laptop machine, gpsd complains about GSV
+</I>&gt;<i> sentence and thus does no
+</I>&gt;<i> &gt; t calculate the DOPs. When DOPs are not available the
+</I>&gt;<i> error estimates ar
+</I>&gt;<i> &gt; e not calculated.
+</I>&gt;<i> 
+</I>&gt;<i> Since the gpsd version is the same, maybe it is a caused by
+</I>&gt;<i> different versions
+</I>&gt;<i> of gcc, or glibc?&#160; Can you send your tool chain
+</I>&gt;<i> versions?
+</I>&gt;<i> 
+</I>&gt;<i> &gt; gpsd: unknown sentence:
+</I>&gt;<i> &quot;$GPGSV,4,3,13,10,12,165,18,19,07,023,,07,05,063,,24,04,344,*7D\x0d\x0a&quot;
+</I>&gt;<i> 
+</I>&gt;<i> Very odd.&#160; Can you run the debug lievel up a bit more
+</I>&gt;<i> and send us the
+</I>&gt;<i> output?
+</I>&gt;<i> 
+</I>&gt;<i> RGDS
+</I>&gt;<i> GARY
+</I>&gt;<i> -
+</I>&gt;<i> ---------------------------------------------------------------------------
+</I>&gt;<i> Gary E. Miller Rellim 109 NW Wilmington Ave., Suite E,
+</I>&gt;<i> Bend, OR 97701
+</I>&gt;<i> &#160;&#160;&#160; <A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">gem at rellim.com</A>&#160;
+</I>&gt;<i> Tel:+1(541)382-8588
+</I>&gt;<i> 
+</I>&gt;<i> -----BEGIN PGP SIGNATURE-----
+</I>&gt;<i> Version: GnuPG v1.4.3 (GNU/Linux)
+</I>&gt;<i> 
+</I>&gt;<i> iD8DBQFMLij5BmnRqz71OvMRAjFSAKDAKtstoc++I7UX7MNNYMA8pDe6gwCgx0cD
+</I>&gt;<i> ZZkG0Q+qb/+TLwS6yJFmvTI=
+</I>&gt;<i> =3n8i
+</I>&gt;<i> -----END PGP SIGNATURE-----
+</I>&gt;<i> 
+</I>&gt;<i>
+</I>
+
+
+
+      
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="004575.html">[Gpsd-users] libgps questions
+</A></li>
+	<LI>Next message: <A HREF="004583.html">[Gpsd-users] Error estimates not being displayed
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#4566">[ date ]</a>
+              <a href="thread.html#4566">[ thread ]</a>
+              <a href="subject.html#4566">[ subject ]</a>
+              <a href="author.html#4566">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

@@ -1,0 +1,123 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] serial connection problems, gpsd compile failed
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2004-December/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20serial%20connection%20problems%2C%20gpsd%20compile%20failed&In-Reply-To=%3C200412121853.57793.list%2BGpsd%40room101.us.eu.org%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="000163.html">
+   <LINK REL="Next"  HREF="000165.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] serial connection problems, gpsd compile failed</H1>
+    <B>Rob McGee</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20serial%20connection%20problems%2C%20gpsd%20compile%20failed&In-Reply-To=%3C200412121853.57793.list%2BGpsd%40room101.us.eu.org%3E"
+       TITLE="[Gpsd-users] serial connection problems, gpsd compile failed">list+Gpsd at room101.us.eu.org
+       </A><BR>
+    <I>Mon Dec 13 01:53:57 CET 2004</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="000163.html">[Gpsd-users] serial connection problems, gpsd compile failed
+</A></li>
+        <LI>Next message: <A HREF="000165.html">[Gpsd-users] serial connection problems, gpsd compile failed
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#164">[ date ]</a>
+              <a href="thread.html#164">[ thread ]</a>
+              <a href="subject.html#164">[ subject ]</a>
+              <a href="author.html#164">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>On Sunday 12 December 2004 17:43, Hamish wrote:
+&gt;<i> try debugging NMEA with GtkTerm or minicom.
+</I>
+I tried minicom but didn't know what to do from there ... are there
+interactive commands I can type at the GPS unit?
+
+&gt;<i> comm settings at GPS end? 
+</I>
+These are the choices under SETUP / INTERFACE
+
+I/O Format    Baud  Beacon  Bit rate  Freq       
+-----------   ----  ------  --------  ---------  
+GARMIN
+GARMIN DGPS   4800  SCAN    200       300.0 KHz (scans)
+NMEA          4800
+TEXT OUT      4800
+RTCM IN       4800
+RTCM/NMEA     4800  SCAN    200       300.0 KHz (scans)
+RTCM/TEXT     4800
+
+Under the two DGPS settings, there's a USER option under beacon, which
+also allows you to set the bit rate and frequency. From what I can tell
+neither of those are for me; I don't even know what a Differential GPS
+is. :)
+
+The serial port, which I am pretty sure is the right one because of the
+occasional binary data:
+
+$ stty -F /dev/gps -a
+speed 4800 baud; rows 0; columns 0; line = 0;
+intr = ^C; quit = ^\; erase = ^?; kill = ^U; eof = ^D; eol = &lt;undef&gt;; 
+eol2 = &lt;undef&gt;; start = ^Q;
+stop = ^S; susp = ^Z; rprnt = ^R; werase = ^W; lnext = ^V; flush = ^O; 
+min = 1; time = 0;
+-parenb -parodd cs8 hupcl -cstopb cread clocal -crtscts
+-ignbrk -brkint -ignpar -parmrk -inpck -istrip -inlcr -igncr -icrnl 
+-ixon -ixoff -iuclc -ixany
+-imaxbel
+-opost -olcuc -ocrnl onlcr -onocr -onlret -ofill -ofdel nl0 cr0 tab0 bs0 
+vt0 ff0
+-isig -icanon -iexten -echo echoe echok -echonl -noflsh -xcase -tostop 
+-echoprt echoctl echoke
+
+I *have* heard odd things about old ThinkPads. This page:
+    <A HREF="http://www.levien.com/tp600.html">http://www.levien.com/tp600.html</A>
+suggests that maybe I was using the infrared? I guess that might have
+been possible, that I picked up stray infrared while walking with it?
+
+Oh boy, if so this won't be easy to fix; I have no floppy drive and can
+only SOMETIMES boot the hard drive. CD's won't boot at all. The trials
+and tribulations of trying to rescue old junk machines ...
+
+&gt;<i> please add the line
+</I>&gt;<i> #include &lt;stdio.h&gt;
+</I>&gt;<i>
+</I>&gt;<i> to the top of gps.c. I think this is already fixed for the next
+</I>
+Beautiful! I knew it would be simple. Looks like I can attempt some
+debugging with gpsd now. Thank you. I'll go sit outside in the dark and
+cold night and see what I can do. :) I'll check in later.
+-- 
+    Rob - /dev/rob0
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="000163.html">[Gpsd-users] serial connection problems, gpsd compile failed
+</A></li>
+	<LI>Next message: <A HREF="000165.html">[Gpsd-users] serial connection problems, gpsd compile failed
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#164">[ date ]</a>
+              <a href="thread.html#164">[ thread ]</a>
+              <a href="subject.html#164">[ subject ]</a>
+              <a href="author.html#164">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

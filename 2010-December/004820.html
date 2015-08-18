@@ -1,0 +1,88 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] gpsd HEAD and SiRF
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2010-December/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20gpsd%20HEAD%20and%20SiRF&In-Reply-To=%3C20101222231845.600275de%40dragon%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="004852.html">
+   <LINK REL="Next"  HREF="004821.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] gpsd HEAD and SiRF</H1>
+    <B>Charles Curley</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20gpsd%20HEAD%20and%20SiRF&In-Reply-To=%3C20101222231845.600275de%40dragon%3E"
+       TITLE="[Gpsd-users] gpsd HEAD and SiRF">charlescurley at charlescurley.com
+       </A><BR>
+    <I>Thu Dec 23 07:18:45 CET 2010</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="004852.html">[Gpsd-users] SOLVED: Re:  Ubuntu 10.10 Udev package problems
+</A></li>
+        <LI>Next message: <A HREF="004821.html">[Gpsd-users] gpsd HEAD and SiRF
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#4820">[ date ]</a>
+              <a href="thread.html#4820">[ thread ]</a>
+              <a href="subject.html#4820">[ subject ]</a>
+              <a href="author.html#4820">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>I have a GlobalSat BU-353, which has a SiRF chipset. gpsd reports it
+as:
+
+&quot;SiRF binary&quot;,&quot;subtype&quot;:&quot;GSW3.1.1LowV_3.1.00.07-C23B1.00 &quot;
+
+I noticed problems after doing a &quot;git pull&quot; and rebuild. New messages
+were very slow in arriving at the client, and after from five to 10
+messages, would stop entirely. The messages were as much as 40 seconds
+apart, but the time stamps were sequential. In other words, the
+messages were delayed, not dropped.
+
+Examining the log, I saw several commits related to SiRF on Dec. 17. I
+rolled back to the commit just before those:
+
+git checkout -b SiRF-Rollback e69da701b358cc40b6a1b766669c8e204158257b
+
+and rebuilt and re-installed. I do not see the halting delivery noted
+above.
+
+-- 
+
+Charles Curley                  /&quot;\    ASCII Ribbon Campaign
+Looking for fine software       \ /    Respect for open standards
+and/or writing?                  X     No HTML/RTF in email
+<A HREF="http://www.charlescurley.com">http://www.charlescurley.com</A>    / \    No M$ Word docs in email
+
+Key fingerprint = CE5C 6645 A45A 64E4 94C0  809C FFF6 4C48 4ECD DFDB
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="004852.html">[Gpsd-users] SOLVED: Re:  Ubuntu 10.10 Udev package problems
+</A></li>
+	<LI>Next message: <A HREF="004821.html">[Gpsd-users] gpsd HEAD and SiRF
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#4820">[ date ]</a>
+              <a href="thread.html#4820">[ thread ]</a>
+              <a href="subject.html#4820">[ subject ]</a>
+              <a href="author.html#4820">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

@@ -1,0 +1,94 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] NMEA sentence request
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2011-September/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20NMEA%20sentence%20request&In-Reply-To=%3C1315551567.35048.YahooMailClassic%40web110004.mail.gq1.yahoo.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="005472.html">
+   <LINK REL="Next"  HREF="005478.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] NMEA sentence request</H1>
+    <B>Hamish</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20NMEA%20sentence%20request&In-Reply-To=%3C1315551567.35048.YahooMailClassic%40web110004.mail.gq1.yahoo.com%3E"
+       TITLE="[Gpsd-users] NMEA sentence request">hamish_b at yahoo.com
+       </A><BR>
+    <I>Fri Sep  9 08:59:27 CEST 2011</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="005472.html">[Gpsd-users] NMEA sentence request
+</A></li>
+        <LI>Next message: <A HREF="005478.html">[Gpsd-users] NMEA sentence request
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#5475">[ date ]</a>
+              <a href="thread.html#5475">[ thread ]</a>
+              <a href="subject.html#5475">[ subject ]</a>
+              <a href="author.html#5475">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>&gt;<i> &gt; &gt; $SDDBS
+</I>&gt;<i> &gt; &gt; $SDDBT      &lt;=== depth sounder
+</I>&gt;<i> &gt; &gt; $SDDPT
+</I>&gt;<i> &gt; &gt; $YCMTW      &lt;=== [water temperature, typically provided by
+</I>  the depth sounder as thermisors are cheap and it uses it for
+  the ping's speed of sound through the water column, which is
+  why it is often seen as a child of $SD, although not in my case]
+
+Hamish:
+&gt;<i> &gt; fwiw the depth sounder is interesting as it adds Z' to
+</I>&gt;<i> &gt; the normal X,Y,Z 3D solution.
+</I>Eric:
+&gt;<i> Agreed.&#160; Can you point me at documentation? 
+</I>
+
+some documentation of it here:  (see pages 13-15)
+  <A HREF="http://www.actisense.com/Downloads/TechTalk/NMEA%200183/The%20NMEA%200183%20Information%20Sheet.pdf">http://www.actisense.com/Downloads/TechTalk/NMEA%200183/The%20NMEA%200183%20Information%20Sheet.pdf</A>
+
+and a BSD implementation of it here:
+  <A HREF="http://code.google.com/p/nmeaparser/source/browse/trunk/NMEAParser/SentenceHandlers/">http://code.google.com/p/nmeaparser/source/browse/trunk/NMEAParser/SentenceHandlers/</A>
+
+
+AFAICT $xxDBS (depth below sounder) is just a clone of $xxDBT
+and can be ignored.
+
+
+They are used by most marine navigation softwares, e.g. in the
+gpsd family, (partly) by OpenCPN
+ git/opencpn/plugins/dashboard_pi/src/nmea0183/dpt.*  etc
+
+
+Hamish
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="005472.html">[Gpsd-users] NMEA sentence request
+</A></li>
+	<LI>Next message: <A HREF="005478.html">[Gpsd-users] NMEA sentence request
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#5475">[ date ]</a>
+              <a href="thread.html#5475">[ thread ]</a>
+              <a href="subject.html#5475">[ subject ]</a>
+              <a href="author.html#5475">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

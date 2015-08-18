@@ -1,0 +1,106 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] can't bind to port gpsd, netlib error -1
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2005-June/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20can%27t%20bind%20to%20port%20gpsd%2C%20netlib%20error%20-1&In-Reply-To=%3C1119175468.3093.315.camel%40mtack.xs4all.nl%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="000770.html">
+   <LINK REL="Next"  HREF="000772.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] can't bind to port gpsd, netlib error -1</H1>
+    <B>Aart Koelewijn</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20can%27t%20bind%20to%20port%20gpsd%2C%20netlib%20error%20-1&In-Reply-To=%3C1119175468.3093.315.camel%40mtack.xs4all.nl%3E"
+       TITLE="[Gpsd-users] can't bind to port gpsd, netlib error -1">aart at mtack.xs4all.nl
+       </A><BR>
+    <I>Sun Jun 19 12:04:28 CEST 2005</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="000770.html">[Gpsd-users] can't bind to port gpsd, netlib error -1
+</A></li>
+        <LI>Next message: <A HREF="000772.html">[Gpsd-users] Patches to gps.py
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#773">[ date ]</a>
+              <a href="thread.html#773">[ thread ]</a>
+              <a href="subject.html#773">[ subject ]</a>
+              <a href="author.html#773">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Op za, 18-06-2005 te 13:48 -0500, schreef Lonnie Mendez:
+&gt;<i> On Saturday 18 June 2005 01:35 pm, Aart Koelewijn wrote:
+</I>&gt;<i> &gt; Hello,
+</I>&gt;<i> &gt; 
+</I>&gt;<i> &gt; I'm just trying to get gpsd working to use it with kismet and gpsdrive.
+</I>&gt;<i> &gt; When I try to start gpsd I get the following message:
+</I>&gt;<i> &gt; Jun 18 20:21:39 localhost gpsd[5857]: gpsd: Can't bind to port gpsd
+</I>&gt;<i> &gt; Jun 18 20:21:39 localhost gpsd[5857]: gpsd: startup failed, netlib error
+</I>&gt;<i> &gt; -1
+</I>&gt;<i> &gt; 
+</I>&gt;<i> &gt; What can be the cause of this? I'm using Debian Sarge all up to date to
+</I>&gt;<i> &gt; today, gpsd 2.13. When I use a direct connection from gpsdrive to the
+</I>&gt;<i> &gt; gps it works ok, but for kismet I need gpsd.
+</I>&gt;<i> 
+</I>&gt;<i>    gpsdrive also uses gpsd.  That error message means you were trying
+</I>&gt;<i> to start gpsd with an already running instance of the daemon.  The second
+</I>&gt;<i> process could not bind to the port it needs to listen for clients, so it 
+</I>&gt;<i> terminated.
+</I>
+OK, I got it working now, I think. At least in my room at home, still
+have to try it out in the car. The problem seens to be in the order in
+which I start things.
+
+I use devfs, this means that when no gps is connected, the port isn't
+there either and the symbolic link to the port seems to be removed too.
+
+So how I got it to work:
+
+Start laptop
+connect gps and see which port it uses
+start gpsd -p [port]
+start gpsdrive
+start kismet
+
+If I start kismet before I start gpsdrive, gpsdrive will hang during
+start-up.
+
+All the above with present versions of the programms in Debian Sarge.
+I'll try some wardriving this afternoon.
+
+Thanks for the help
+
+Aart
+
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="000770.html">[Gpsd-users] can't bind to port gpsd, netlib error -1
+</A></li>
+	<LI>Next message: <A HREF="000772.html">[Gpsd-users] Patches to gps.py
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#773">[ date ]</a>
+              <a href="thread.html#773">[ thread ]</a>
+              <a href="subject.html#773">[ subject ]</a>
+              <a href="author.html#773">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

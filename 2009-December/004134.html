@@ -1,0 +1,85 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] Problem with GARMIN GPS 18x LVC (and gpsd + ntpd)
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2009-December/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Problem%20with%20GARMIN%20GPS%2018x%20LVC%20%28and%20gpsd%20%2B%20ntpd%29&In-Reply-To=%3Calpine.DEB.1.10.0912220849300.5713%40org-pc51.fy.chalmers.se%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="004132.html">
+   <LINK REL="Next"  HREF="004135.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] Problem with GARMIN GPS 18x LVC (and gpsd + ntpd)</H1>
+    <B>H&#229;kan Johansson</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Problem%20with%20GARMIN%20GPS%2018x%20LVC%20%28and%20gpsd%20%2B%20ntpd%29&In-Reply-To=%3Calpine.DEB.1.10.0912220849300.5713%40org-pc51.fy.chalmers.se%3E"
+       TITLE="[Gpsd-users] Problem with GARMIN GPS 18x LVC (and gpsd + ntpd)">f96hajo at chalmers.se
+       </A><BR>
+    <I>Tue Dec 22 08:56:27 CET 2009</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="004132.html">[Gpsd-users] Problem with GARMIN GPS 18x LVC (and gpsd + ntpd)
+</A></li>
+        <LI>Next message: <A HREF="004135.html">[Gpsd-users] Problem with GARMIN GPS 18x LVC (and gpsd + ntpd)
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#4134">[ date ]</a>
+              <a href="thread.html#4134">[ thread ]</a>
+              <a href="subject.html#4134">[ subject ]</a>
+              <a href="author.html#4134">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>
+Hi Gary, Torbj&#246;rn,
+
+&gt;<i> We have never seen a 5Hz model.  Either you need to figure out how to
+</I>&gt;<i> get your GPS in 1Hz mode or we need a way to tell which pulse is the
+</I>&gt;<i> right one.  At the moment I have no idea if either is possible.
+</I>
+according to the manual
+
+<A HREF="http://www8.garmin.com/manuals/425_TechnicalSpecification.pdf">http://www8.garmin.com/manuals/425_TechnicalSpecification.pdf</A>
+
+section 4.4.2, the default pulse width (also in 5 Hz mode) is 100 ms. 
+Just making it a square wave :-(  But it is supposed to be reprogrammable 
+in from 20 ms to 180 ms ($PGRMC).  If it is just made shorter, the normal 
+logics for picking the right edge would work.
+
+Gary, do I remember correctly that you have experience playing with garmin 
+pulse lengths?
+
+Then, if the serial time stamp info comes as the manual says between all 
+pulses, it should be possible to use them all.  (The egrep &quot;NTPD|PPS&quot; log 
+messages are needed).
+
+Cheers,
+H&#229;kan
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="004132.html">[Gpsd-users] Problem with GARMIN GPS 18x LVC (and gpsd + ntpd)
+</A></li>
+	<LI>Next message: <A HREF="004135.html">[Gpsd-users] Problem with GARMIN GPS 18x LVC (and gpsd + ntpd)
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#4134">[ date ]</a>
+              <a href="thread.html#4134">[ thread ]</a>
+              <a href="subject.html#4134">[ subject ]</a>
+              <a href="author.html#4134">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

@@ -1,0 +1,81 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] Re-activating GPS devices
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2008-February/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Re-activating%20GPS%20devices&In-Reply-To=%3C20080204014835.C4DE81CE7A2%40ws1-6.us4.outblaze.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="003134.html">
+   <LINK REL="Next"  HREF="003133.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] Re-activating GPS devices</H1>
+    <B>Matthew Lee</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Re-activating%20GPS%20devices&In-Reply-To=%3C20080204014835.C4DE81CE7A2%40ws1-6.us4.outblaze.com%3E"
+       TITLE="[Gpsd-users] Re-activating GPS devices">mjlee at mindless.com
+       </A><BR>
+    <I>Mon Feb  4 02:48:35 CET 2008</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="003134.html">[Gpsd-users] Globalsat BU-353 USB - Not getting a fix
+</A></li>
+        <LI>Next message: <A HREF="003133.html">[Gpsd-users] Re-activating GPS devices
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3132">[ date ]</a>
+              <a href="thread.html#3132">[ thread ]</a>
+              <a href="subject.html#3132">[ subject ]</a>
+              <a href="author.html#3132">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi,
+
+I'm using gpsd with a blox GPS receiver.  Occasionally gpsd says that the GPS device is offline.  Why the GPS receiver stopped transmitting is a separate matter (still investigating), but it only stops for a short period; it does start transmitting again within a few seconds.
+
+However, once gpsd has marked the 'device' as offline, it never receives data from the receiver again.
+
+I've spent some time looking into what's happening:  Once detected as offline, the serial port's FD is cleared from the all_fds list and the serial port is closed (gps_fd is set to -1).  I've tried adding code to detect this situation and call gpsd_open() again.  The port is opened, but the FD is now bigger than the maximum FD in all_fds, so select() never detects any activity on the serial port.
+
+All the code that sets all_fds is hidden in static functions in gpsd.c , so I can't call them from the ubx driver.
+
+What is the appropriate way for reopening a GPS device once it has been determined to be offline, without restarting gpsd?
+
+thanks,
+Matt
+
+
+-- 
+Want an e-mail address like mine?
+Get a free e-mail account today at www.mail.com!
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="003134.html">[Gpsd-users] Globalsat BU-353 USB - Not getting a fix
+</A></li>
+	<LI>Next message: <A HREF="003133.html">[Gpsd-users] Re-activating GPS devices
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3132">[ date ]</a>
+              <a href="thread.html#3132">[ thread ]</a>
+              <a href="subject.html#3132">[ subject ]</a>
+              <a href="author.html#3132">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

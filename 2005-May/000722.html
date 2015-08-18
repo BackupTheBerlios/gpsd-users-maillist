@@ -1,0 +1,99 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] gpsd error and anonymous svn access
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2005-May/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20gpsd%20error%20and%20anonymous%20svn%20access&In-Reply-To=%3C20050530195910.54111c3d%40localhost%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="000721.html">
+   <LINK REL="Next"  HREF="000723.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] gpsd error and anonymous svn access</H1>
+    <B>Steve Arnold</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20gpsd%20error%20and%20anonymous%20svn%20access&In-Reply-To=%3C20050530195910.54111c3d%40localhost%3E"
+       TITLE="[Gpsd-users] gpsd error and anonymous svn access">sarnold at arnolds.dhs.org
+       </A><BR>
+    <I>Tue May 31 04:59:10 CEST 2005</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="000721.html">[Gpsd-users] watcher mode - bug ?
+</A></li>
+        <LI>Next message: <A HREF="000723.html">[Gpsd-users] gpsd error and anonymous svn access
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#722">[ date ]</a>
+              <a href="thread.html#722">[ thread ]</a>
+              <a href="subject.html#722">[ subject ]</a>
+              <a href="author.html#722">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Howdy (again):
+
+When I tried to checkout the current version, I get this error:
+
+svn checkout <A HREF="svn://svn.berlios.de/gpsd/trunk">svn://svn.berlios.de/gpsd/trunk</A>
+svn: Can't connect to host 'svn.berlios.de': Connection refused
+
+I also tried the rapidsvn GUI with username &quot;anonymous&quot; but I got
+the same error.  I usually use CVS, so I'm not sure where to go from
+here (networking and everything else works fine).  I checked the
+docs but couldn't find anything helpful (mostly ssh- stuff).  Any
+svn newbie tips would be groovy...
+
+I'm also still having trouble with the gpsd privileges, ie, it only
+works correctly if I start it as root (or via sudo with root privs).
+We tried a little patch my friend cooked up, but no go.  Here is
+the patch, the -D 6 output, and an strace of running the hotplug
+script directly as root:
+
+Patch:  <A HREF="http://arnolds.dhs.org/static/files/gpsd-2.25-race.patch">http://arnolds.dhs.org/static/files/gpsd-2.25-race.patch</A>
+
+Debug output:  <A HREF="http://arnolds.dhs.org/static/files/error_log.txt">http://arnolds.dhs.org/static/files/error_log.txt</A>
+
+Output of the following command as root:
+
+strace -o error_trace.txt /etc/hotplug/usb/gpsd.hotplug add
+/dev/ttyUSB0
+
+<A HREF="http://arnolds.dhs.org/static/files/error_trace.txt">http://arnolds.dhs.org/static/files/error_trace.txt</A>
+
+Thanks in advance for any feedback.
+
+Steve
+
+-- 
+Steve Arnold                           <A HREF="http://arnolds.dhs.org/">http://arnolds.dhs.org/</A>
+gnupg key:      <A HREF="http://arnolds.dhs.org/static/files/pubkey.txt">http://arnolds.dhs.org/static/files/pubkey.txt</A>
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="000721.html">[Gpsd-users] watcher mode - bug ?
+</A></li>
+	<LI>Next message: <A HREF="000723.html">[Gpsd-users] gpsd error and anonymous svn access
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#722">[ date ]</a>
+              <a href="thread.html#722">[ thread ]</a>
+              <a href="subject.html#722">[ subject ]</a>
+              <a href="author.html#722">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

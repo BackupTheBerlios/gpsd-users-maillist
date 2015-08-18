@@ -1,0 +1,168 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] Cellink BTG-7000 Bluetooth GPS OK with gpsd?
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2007-February/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Cellink%20BTG-7000%20Bluetooth%20GPS%20OK%20with%20gpsd%3F&In-Reply-To=%3C91981b3e0702140831sc31c3b7n91c0737ac96812ea%40mail.gmail.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="002462.html">
+   <LINK REL="Next"  HREF="002463.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] Cellink BTG-7000 Bluetooth GPS OK with gpsd?</H1>
+    <B>Chris Kuethe</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Cellink%20BTG-7000%20Bluetooth%20GPS%20OK%20with%20gpsd%3F&In-Reply-To=%3C91981b3e0702140831sc31c3b7n91c0737ac96812ea%40mail.gmail.com%3E"
+       TITLE="[Gpsd-users] Cellink BTG-7000 Bluetooth GPS OK with gpsd?">chris.kuethe at gmail.com
+       </A><BR>
+    <I>Wed Feb 14 17:31:36 CET 2007</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="002462.html">[Gpsd-users] Cellink BTG-7000 Bluetooth GPS OK with gpsd?
+</A></li>
+        <LI>Next message: <A HREF="002463.html">[Gpsd-users] gpsd install failure
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2461">[ date ]</a>
+              <a href="thread.html#2461">[ thread ]</a>
+              <a href="subject.html#2461">[ subject ]</a>
+              <a href="author.html#2461">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>On 2/14/07, kd4e &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">kd4e at verizon.net</A>&gt; wrote:
+&gt;<i> Chris,
+</I>&gt;<i>
+</I>&gt;<i>     Sure appreciate your reply!
+</I>&gt;<i>
+</I>&gt;<i>     I am hurried for time because I just learned
+</I>&gt;<i> that I have to prepare a presentation for this
+</I>&gt;<i> evening to cover someone who is ill.
+</I>
+No worries. We all have real world stuff that gets in the way...
+
+&gt;<i> Quick question:  If I want a functional GPS unit
+</I>&gt;<i> vs one that I will hope to get functioning some
+</I>&gt;<i> day then neither Sony or Nemerix would be good
+</I>&gt;<i> choices under gpsd and gpsdrive?
+</I>&gt;<i>
+</I>&gt;<i>     Or is the Sony and Nemerix functionality not
+</I>&gt;<i> that bad, just incomplete in the details?
+</I>
+There are two things that can seriously get in your way with GPS:
+interface and protocol. In your case, you're using bluetooth, so you
+won't have a problem with some new-and-unsupported usb-serial chip
+getting in your way. You might have a problem with the Serial Port
+Profile on bluetooth if you attempt to adjust the device settings, but
+if you're just expecting to turn it on and have NMEA coming out, then
+you're in good shape.
+
+The second issue is protocol: we are able to process UBX, SiRF, iTalk,
+TSIP, Garmin, Evermore, Navcom, Zodiac... They're all proprietary
+protocols, and we also process the industry-standard NMEA protocol,
+which is what the BTG-7000 outputs by default.
+
+Basically, we don't have the information or motivation at this time to
+support any nifty features that may be provided by the Nemerix or Sony
+chips. That being said, as long as they output generic NMEA, they will
+work with gpsd.
+
+&gt;<i>     I have purchased devices with questionable Linux
+</I>&gt;<i> functionality in the past and in most cases they
+</I>&gt;<i> have become paperweights.  I would really like to
+</I>&gt;<i> acquire a Bluetooth GPS that works, even if a few
+</I>&gt;<i> non-critical features are incomplete under Linux.
+</I>&gt;<i> Mapping for traveling is one key feature I'd need
+</I>&gt;<i> right away.
+</I>
+Overall, as a magic black box you should be OK. The BTG-7000 outputs
+NMEA over the serial port profile. That's not the optimal
+configuration, but it's enough to give you a straight answer to &quot;where
+am i?&quot;
+
+&gt;<i>     I will E-mail <A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">Lewis.Boore at nemerix.com</A> and explain
+</I>&gt;<i> the harm to sales that results from an uncooperative
+</I>&gt;<i> policy.
+</I>
+I've already requested docs. They said something about NDA, I said I
+didn't think that was necessary given the specifics of what I asked
+for, and that was the last I ever heard of them.
+
+Getting up on my soapbox for a moment: open documentation is important
+to all of you. It means we can write and maintain drivers, and you can
+validate our work. If you look in the list archives you'll see an
+instance of me writing something to the hardware... backwards, and it
+was caught by one of our sharp-eyed users. Documentation helps you get
+more out of the hardware you bought, and helps maintain its
+usefulness. Support vendors who provide documentation to the open
+source community.
+
+&gt;<i>     If I fall into an extra $35.99 to whom would I
+</I>&gt;<i> send a Cellink BTG-7000 for reverse engineering?
+</I>
+Snail mail address via private email...
+
+&gt;<i> &gt; Nemerix and Sony are both supported insofar as we can parse their
+</I>&gt;<i> &gt; NMEA. They're not quite as supported as something like SiRF because we
+</I>&gt;<i> &gt; don't have any sample hardware and full protocol docs. It's probably
+</I>&gt;<i> &gt; good that we don't have specific protocol support for these two yet
+</I>&gt;<i> &gt; because speed/protocol changes on bluetooth tend to be somewhat
+</I>&gt;<i> &gt; problematic.
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; Sony's chip doesn't look like it does anything fancy to make binary
+</I>&gt;<i> &gt; support worthwhile. Or maybe it's just their front end that is lame;
+</I>&gt;<i> &gt; iSuite from Fastrax (makers of iTrax) can use the Sony chip set and
+</I>&gt;<i> &gt; get lots of interesting data out of it. Nemerix is being uncooperative
+</I>&gt;<i> &gt; about releasing the protocol documentation. If you'd like to help with
+</I>&gt;<i> &gt; getting Nemerix more supported, you can email <A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">Lewis.Boore at nemerix.com</A>
+</I>&gt;<i> &gt; and try explain how it'll help you to have the protocol specification
+</I>&gt;<i> &gt; open.
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; Doc *and* hardware are important for ongoing device support.
+</I>&gt;<i> &gt; <A HREF="http://gpsd.berlios.de/wishlist.html">http://gpsd.berlios.de/wishlist.html</A>
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; CK
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i> --
+</I>&gt;<i>
+</I>&gt;<i> Thanks! &amp; 73, doc, KD4E
+</I>&gt;<i> ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+</I>&gt;<i> Projects: <A HREF="http://ham-macguyver.bibleseven.com">http://ham-macguyver.bibleseven.com</A>
+</I>&gt;<i> Personal: <A HREF="http://bibleseven.com">http://bibleseven.com</A>
+</I>&gt;<i> ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+</I>&gt;<i>
+</I>
+
+-- 
+GDB has a 'break' feature; why doesn't it have 'fix' too?
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="002462.html">[Gpsd-users] Cellink BTG-7000 Bluetooth GPS OK with gpsd?
+</A></li>
+	<LI>Next message: <A HREF="002463.html">[Gpsd-users] gpsd install failure
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2461">[ date ]</a>
+              <a href="thread.html#2461">[ thread ]</a>
+              <a href="subject.html#2461">[ subject ]</a>
+              <a href="author.html#2461">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

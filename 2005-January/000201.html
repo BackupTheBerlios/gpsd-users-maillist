@@ -1,0 +1,123 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] Suggestions for simple GPS log program?
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2005-January/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Suggestions%20for%20simple%20GPS%20log%20program%3F&In-Reply-To=%3C34F86266-652C-11D9-9211-000D934502A0%40simplykiwi.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="000203.html">
+   <LINK REL="Next"  HREF="000202.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] Suggestions for simple GPS log program?</H1>
+    <B>John Taylor</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Suggestions%20for%20simple%20GPS%20log%20program%3F&In-Reply-To=%3C34F86266-652C-11D9-9211-000D934502A0%40simplykiwi.com%3E"
+       TITLE="[Gpsd-users] Suggestions for simple GPS log program?">john at simplykiwi.com
+       </A><BR>
+    <I>Thu Jan 13 07:27:32 CET 2005</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="000203.html">[Gpsd-users] Suggestions for simple GPS log program?
+</A></li>
+        <LI>Next message: <A HREF="000202.html">[Gpsd-users] Suggestions for simple GPS log program?
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#201">[ date ]</a>
+              <a href="thread.html#201">[ thread ]</a>
+              <a href="subject.html#201">[ subject ]</a>
+              <a href="author.html#201">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>I can't seem to get your program to work with shell redirection. It 
+works if I run it from a normal command prompt with the output going to 
+the screen, and I can successfully format the results, but if I ever 
+try to redirect, I get an empty file.
+
+I've tried:
+
+gpslogger &gt; gpsdata.log
+gpslogger -f &quot;%u:%l:%L&quot; -d 5 -i 60 &gt;&gt; /home/user/gpsdata.log
+
+and even:
+
+script -c gpslogger gpsdata.log
+script -c gpslogger /home/user/gpsdata.log
+
+I'm not getting any permission errors, and I can write to the file 
+normally (or redirect something like ls -a) but I can't get anything 
+from gpslogger to go anywhere else. I've also tried piping it to tee, 
+or to another program without luck.
+
+Does anyone have some suggestions? I must be overlooking something 
+awfully simple. In response to another comment, this would be a great 
+function to have built into gpsd itself, where a logfile and format can 
+be specified, perhaps even some kind of ring buffer/incremental 
+filename system.
+
+Many thanks!
+
+-John
+
+
+On 2005-Jan-12 , at 03:24 AM, Tilman Koschnick wrote:
+
+&gt;<i> On Tue, 2005-01-11 at 12:03 -0500, John wrote:
+</I>&gt;&gt;<i> Is there a list of gpsd clients available somewhere? I'm looking for a
+</I>&gt;&gt;<i> simple log of location data over a trip, written to a text file. I
+</I>&gt;&gt;<i> suppose I could write something myself, but if something is already
+</I>&gt;&gt;<i> designed that makes it easy to later import the tracks into other
+</I>&gt;&gt;<i> programs (i.e., uses some standard I'm not aware of), that would be
+</I>&gt;&gt;<i> ideal. Many thanks!
+</I>&gt;<i>
+</I>&gt;<i> I've written a small program that does just that, available here:
+</I>&gt;<i> <A HREF="http://www.subnetz.org/gpslogger/gpslogger.c">http://www.subnetz.org/gpslogger/gpslogger.c</A> - not very well tested,
+</I>&gt;<i> though. To be linked against libgps from the gpsd package.
+</I>&gt;<i>
+</I>&gt;<i> It takes a format string as a description how the logfile should look
+</I>&gt;<i> like, and writes to stdout. There are options for time and/or distance
+</I>&gt;<i> intervals. A format string would look like &quot;lat: %l lon: %L time: %u&quot; 
+</I>&gt;<i> or
+</I>&gt;<i> just &quot;%l %L %u&quot;. The idea is to have a collection of pre-defined format
+</I>&gt;<i> strings, and an option for each, so that '% gpslogger -F &gt; file' 
+</I>&gt;<i> creates
+</I>&gt;<i> the right input format for program Foo. Any such format strings are
+</I>&gt;<i> welcome.
+</I>&gt;<i>
+</I>&gt;<i> Cheers, Til
+</I>&gt;<i>
+</I>&gt;<i> _______________________________________________
+</I>&gt;<i> Gpsd-users mailing list
+</I>&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">Gpsd-users at lists.berlios.de</A>
+</I>&gt;<i> <A HREF="http://lists.berlios.de/mailman/listinfo/gpsd-users">http://lists.berlios.de/mailman/listinfo/gpsd-users</A>
+</I>
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="000203.html">[Gpsd-users] Suggestions for simple GPS log program?
+</A></li>
+	<LI>Next message: <A HREF="000202.html">[Gpsd-users] Suggestions for simple GPS log program?
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#201">[ date ]</a>
+              <a href="thread.html#201">[ thread ]</a>
+              <a href="subject.html#201">[ subject ]</a>
+              <a href="author.html#201">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

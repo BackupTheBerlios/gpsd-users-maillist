@@ -1,0 +1,269 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] gps_poll doesn't seem to update on every call
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2010-January/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20gps_poll%20doesn%27t%20seem%20to%20update%20on%20every%20call&In-Reply-To=%3C4B60BFE3.3040102%40visionrobotics.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="004179.html">
+   <LINK REL="Next"  HREF="004183.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] gps_poll doesn't seem to update on every call</H1>
+    <B>Ryan Carlon</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20gps_poll%20doesn%27t%20seem%20to%20update%20on%20every%20call&In-Reply-To=%3C4B60BFE3.3040102%40visionrobotics.com%3E"
+       TITLE="[Gpsd-users] gps_poll doesn't seem to update on every call">rcarlon at visionrobotics.com
+       </A><BR>
+    <I>Wed Jan 27 23:36:19 CET 2010</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="004179.html">[Gpsd-users] OBD GPS Logger: another gpsd client
+</A></li>
+        <LI>Next message: <A HREF="004183.html">[Gpsd-users] Ancient GPS questions
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#4181">[ date ]</a>
+              <a href="thread.html#4181">[ thread ]</a>
+              <a href="subject.html#4181">[ subject ]</a>
+              <a href="author.html#4181">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi there,
+
+I have a Holux m-241 data logger connected through USB.  I'm running a 
+simple C program that's basically:
+
+    struct gps_data_t *gpsData;
+    gpsData = gps_open( &quot;127.0.0.1&quot;, &quot;2947&quot; );
+    gps_stream( gpsData, WATCH_NEWSTYLE, NULL );
+
+
+    while( 1 ){
+         gps_poll( gpsData );
+         Delay( 1 );  /* one second delay */
+         print( gpsData-&gt;fix stuff );
+    }
+
+ From a terminal window, I'm running gpsd( version 2.9 ) with gpsd -b 
+-D5 -N /dev/ttyUSB0, and then running my program from another terminal 
+window.
+
+Now my problem is that while gpsd reports back every second, gps_poll() 
+will often go a few to 10s of seconds without updating gpsData.  I tried 
+using WATCH_ENABLE with the same results.  Any ideas on why this might 
+be happening?  I'm tempted to say it's not the actual gps device, as 
+gpsd is reporting back the correct position/times during the non-updated 
+intervals.
+
+I'm including the gpsd output for both a poll that works, and one that 
+doesn't.  Thanks so much for your help,
+
+Ryan
+
+
+Working output:
+
+    WORKING ONE:
+
+    gpsd: &lt;= GPS:
+    $GPGGA,204715.000,3254.8339,N,11714.0546,W,2,9,0.92,-1.8,M,-35.6,M,0000,0000*47\x0d
+
+    gpsd: GPGGA: registers fractional time 204715.00
+    gpsd: GGA: hhmmss=204715.000 lat=32.91 lon=-117.23 alt=-1.80 mode=3
+    status=2 mask={TIME|LATLON|ALTITUDE|STATUS|MODE}
+    gpsd: GPGGA computed time is 1264625235.000000 = Sun Jan 27 20:47:15
+    2010
+
+    gpsd: GPGGA reporting cycle started on 204715.00.
+    gpsd: GPGGA starts a reporting cycle.
+    gpsd: Changed mask:
+    {ONLINE|TIME|LATLON|ALTITUDE|STATUS|MODE|PACKET|CLEAR} with reliable
+    cycle detection
+    gpsd: reporting finished
+    gpsd: &lt;= GPS:
+    $GPGSA,A,3,24,26,14,29,21,03,18,22,09,,,,1.22,0.92,0.80*0C\x0d
+
+    gpsd: GPGSA sets mode 3
+    gpsd: GPGSA: mode=3 used=9 pdop=1.22 hdop=0.92 vdop=0.80
+    mask={MODE|DOP|USED}
+    gpsd: Changed mask: {ONLINE|MODE|DOP|USED|PACKET} with reliable
+    cycle detection
+    gpsd: reporting finished
+
+    gpsd: &lt;= GPS:
+    $GPGSV,4,1,14,18,74,342,23,21,66,035,18,22,51,260,25,51,50,162,42*7E\x0d
+
+    gpsd: Partial satellite data (1 of 4).
+    gpsd: Changed mask: {ONLINE|ERROR|PACKET} with reliable cycle detection
+    gpsd: reporting finished
+    gpsd: &lt;= GPS:
+    $GPGSV,4,2,14,24,36,085,24,26,34,175,33,06,30,312,,29,26,155,23*78\x0d
+
+    gpsd: Partial satellite data (2 of 4).
+    gpsd: Changed mask: {ONLINE|ERROR|PACKET} with reliable cycle detection
+    gpsd: reporting finished
+
+    gpsd: &lt;= GPS:
+    $GPGSV,4,3,14,15,26,048,,03,20,315,22,16,19,260,,14,15,190,28*79\x0d
+
+    gpsd: Partial satellite data (3 of 4).
+    gpsd: Changed mask: {ONLINE|ERROR|PACKET} with reliable cycle detection
+    gpsd: reporting finished
+    gpsd: &lt;= GPS: $GPGSV,4,4,14,27,08,097,,09,06,109,27*7D\x0d
+
+    gpsd: GSV: Satellite data OK (4 of 4).
+    gpsd: Changed mask: {ONLINE|SATELLITE|PACKET} with reliable cycle
+    detection
+    gpsd: =&gt; client(0):
+    {&quot;class&quot;:&quot;SKY&quot;,&quot;tag&quot;:&quot;GSV&quot;,&quot;device&quot;:&quot;/dev/ttyUSB0&quot;,&quot;vdop&quot;:0.80,&quot;hdop&quot;:0.92,&quot;pdop&quot;:1.22,&quot;satellites&quot;:[{&quot;PRN&quot;:18,&quot;el&quot;:74,&quot;az&quot;:342,&quot;ss&quot;:23,&quot;used&quot;:true},{&quot;PRN&quot;:21,&quot;el&quot;:66,&quot;az&quot;:35,&quot;ss&quot;:18,&quot;used&quot;:true},{&quot;PRN&quot;:22,&quot;el&quot;:51,&quot;az&quot;:260,&quot;ss&quot;:25,&quot;used&quot;:true},{&quot;PRN&quot;:51,&quot;el&quot;:50,&quot;az&quot;:162,&quot;ss&quot;:42,&quot;used&quot;:false},{&quot;PRN&quot;:24,&quot;el&quot;:36,&quot;az&quot;:85,&quot;ss&quot;:24,&quot;used&quot;:true},{&quot;PRN&quot;:26,&quot;el&quot;:34,&quot;az&quot;:175,&quot;ss&quot;:33,&quot;used&quot;:true},{&quot;PRN&quot;:6,&quot;el&quot;:30,&quot;az&quot;:312,&quot;ss&quot;:0,&quot;used&quot;:false},{&quot;PRN&quot;:29,&quot;el&quot;:26,&quot;az&quot;:155,&quot;ss&quot;:23,&quot;used&quot;:true},{&quot;PRN&quot;:15,&quot;el&quot;:26,&quot;az&quot;:48,&quot;ss&quot;:0,&quot;used&quot;:false},{&quot;PRN&quot;:3,&quot;el&quot;:20,&quot;az&quot;:315,&quot;ss&quot;:22,&quot;used&quot;:true},{&quot;PRN&quot;:16,&quot;el&quot;:19,&quot;az&quot;:260,&quot;ss&quot;:0,&quot;used&quot;:false},{&quot;PRN&quot;:14,&quot;el&quot;:15,&quot;az&quot;:190,&quot;ss&quot;:28,&quot;used&quot;:true},{&quot;PRN&quot;:27,&quot;el&quot;:8,&quot;az&quot;:97,&quot;ss&quot;:0,&quot;used&quot;:false},{&quot;PRN&quot;:9,&quot;el&quot;:6,&quot;az&quot;:109,&quot;ss&quot;:27,&quot;used&quot;:true}]}
+    gpsd: reporting finished
+
+    gpsd: &lt;= GPS:
+    $GPRMC,204715.000,A,3254.8339,N,11714.0546,W,0.14,124.71,270110,,,D*79\x0d
+
+    gpsd: GPRMC: registers fractional time 204715.00
+    gpsd: RMC: ddmmyy=270110 hhmmss=204715.000 lat=32.91 lon=-117.23
+    speed=0.07 track=124.71 mode=2 status=2
+    mask={TIME|LATLON|SPEED|TRACK|MODE}
+    gpsd: GPRMC computed time is 1264625235.000000 = Sun Jan 27 20:47:15
+    2010
+
+    gpsd: GPRMC reporting cycle started on 204715.00.
+    gpsd: GPRMC ends a reporting cycle.
+    gpsd: DOPS computed/reported: X=0.729122/nan, Y=0.628831/nan,
+    H=0.962833/0.920000, V=1.846271/0.800000, P=2.082250/1.220000,
+    T=1.290274/nan, G=2.449606/nan
+    gpsd: Changed mask:
+    {ONLINE|TIME|LATLON|SPEED|TRACK|DOP|PACKET|REPORT} with reliable
+    cycle detection
+    gpsd: time to report a fix
+    gpsd: =&gt; client(0):
+    {&quot;class&quot;:&quot;TPV&quot;,&quot;tag&quot;:&quot;RMC&quot;,&quot;device&quot;:&quot;/dev/ttyUSB0&quot;,&quot;time&quot;:1264625235.000,&quot;ept&quot;:0.005,&quot;lat&quot;:32.913898333,&quot;lon&quot;:-117.234243333,&quot;alt&quot;:-1.800,&quot;epx&quot;:2.734,&quot;epy&quot;:2.358,&quot;epv&quot;:4.600,&quot;track&quot;:124.7100,&quot;speed&quot;:0.072,&quot;climb&quot;:0.000,&quot;eps&quot;:5.47,&quot;mode&quot;:3}
+    gpsd: reporting finished
+    gpsd: &lt;= GPS: $GPVTG,124.71,T,,M,0.14,N,0.26,K,D*38\x0d
+
+    gpsd: reporting finished
+
+
+Nonworking:
+
+    gpsd: &lt;= GPS:
+    $GPGGA,211502.000,3254.8341,N,11714.0534,W,2,8,1.64,-3.2,M,-35.6,M,0000,0000*4C\x0d
+
+    gpsd: GPGGA: registers fractional time 211502.00
+    gpsd: GGA: hhmmss=211502.000 lat=32.91 lon=-117.23 alt=-3.20 mode=3
+    status=2 mask={TIME|LATLON|ALTITUDE|STATUS|MODE}
+    gpsd: GPGGA computed time is 1264626902.000000 = Sun Jan 27 21:15:02
+    2010
+
+    gpsd: GPGGA reporting cycle started on 211502.00.
+    gpsd: GPGGA starts a reporting cycle.
+    gpsd: Changed mask:
+    {ONLINE|TIME|LATLON|ALTITUDE|STATUS|MODE|PACKET|CLEAR} with reliable
+    cycle detection
+    gpsd: reporting finished
+    gpsd: &lt;= GPS:
+    $GPGSA,A,3,15,26,21,18,14,29,24,27,,,,,2.42,1.64,1.79*0D\x0d
+
+    gpsd: GPGSA sets mode 3
+    gpsd: GPGSA: mode=3 used=8 pdop=2.42 hdop=1.64 vdop=1.79
+    mask={MODE|DOP|USED}
+    gpsd: Changed mask: {ONLINE|MODE|DOP|USED|PACKET} with reliable
+    cycle detection
+    gpsd: reporting finished
+    gpsd: &lt;= GPS:
+    $GPGSV,4,1,15,18,66,011,15,21,63,065,27,22,59,279,,51,50,162,42*77\x0d
+
+    gpsd: Partial satellite data (1 of 4).
+    gpsd: Changed mask: {ONLINE|ERROR|PACKET} with reliable cycle detection
+    gpsd: reporting finished
+    gpsd: &lt;= GPS:
+    $GPGSV,4,2,15,26,48,171,37,06,39,303,,24,29,097,24,03,29,308,16*7D\x0d
+
+    gpsd: Partial satellite data (2 of 4).
+    gpsd: Changed mask: {ONLINE|ERROR|PACKET} with reliable cycle detection
+    gpsd: reporting finished
+    gpsd: &lt;= GPS:
+    $GPGSV,4,3,15,14,28,190,27,15,17,042,18,29,14,158,29,27,13,085,25*71\x0d
+
+    gpsd: Partial satellite data (3 of 4).
+    gpsd: Changed mask: {ONLINE|ERROR|PACKET} with reliable cycle detection
+    gpsd: reporting finished
+    gpsd: &lt;= GPS: $GPGSV,4,4,15,16,13,249,,09,12,098,,19,07,322,*40\x0d
+
+    gpsd: GSV: Satellite data OK (4 of 4).
+    gpsd: Changed mask: {ONLINE|SATELLITE|PACKET} with reliable cycle
+    detection
+    gpsd: =&gt; client(0):
+    {&quot;class&quot;:&quot;SKY&quot;,&quot;tag&quot;:&quot;GSV&quot;,&quot;device&quot;:&quot;/dev/ttyUSB0&quot;,&quot;vdop&quot;:1.79,&quot;hdop&quot;:1.64,&quot;pdop&quot;:2.42,&quot;satellites&quot;:[{&quot;PRN&quot;:18,&quot;el&quot;:66,&quot;az&quot;:11,&quot;ss&quot;:15,&quot;used&quot;:true},{&quot;PRN&quot;:21,&quot;el&quot;:63,&quot;az&quot;:65,&quot;ss&quot;:27,&quot;used&quot;:true},{&quot;PRN&quot;:22,&quot;el&quot;:59,&quot;az&quot;:279,&quot;ss&quot;:0,&quot;used&quot;:false},{&quot;PRN&quot;:51,&quot;el&quot;:50,&quot;az&quot;:162,&quot;ss&quot;:42,&quot;used&quot;:false},{&quot;PRN&quot;:26,&quot;el&quot;:48,&quot;az&quot;:171,&quot;ss&quot;:37,&quot;used&quot;:true},{&quot;PRN&quot;:6,&quot;el&quot;:39,&quot;az&quot;:303,&quot;ss&quot;:0,&quot;used&quot;:false},{&quot;PRN&quot;:24,&quot;el&quot;:29,&quot;az&quot;:97,&quot;ss&quot;:24,&quot;used&quot;:true},{&quot;PRN&quot;:3,&quot;el&quot;:29,&quot;az&quot;:308,&quot;ss&quot;:16,&quot;used&quot;:false},{&quot;PRN&quot;:14,&quot;el&quot;:28,&quot;az&quot;:190,&quot;ss&quot;:27,&quot;used&quot;:true},{&quot;PRN&quot;:15,&quot;el&quot;:17,&quot;az&quot;:42,&quot;ss&quot;:18,&quot;used&quot;:true},{&quot;PRN&quot;:29,&quot;el&quot;:14,&quot;az&quot;:158,&quot;ss&quot;:29,&quot;used&quot;:true},{&quot;PRN&quot;:27,&quot;el&quot;:13,&quot;az&quot;:85,&quot;ss&quot;:25,&quot;used&quot;:true},{&quot;PRN&quot;:16,&quot;el&quot;:13,&quot;az&quot;:249,&quot;ss&quot;:0,&quot;used&quot;:false},{&quot;PRN&quot;:9,&quot;el&quot;:12,&quot;az&quot;:98,&quot;ss&quot;:0,&quot;used&quot;:false},{&quot;PRN&quot;:19,&quot;el&quot;:7,&quot;az&quot;:322,&quot;ss&quot;:0,&quot;used&quot;:false}]}
+    gpsd: reporting finished
+    gpsd: &lt;= GPS:
+    $GPRMC,211502.000,A,3254.8341,N,11714.0534,W,0.47,117.95,270110,,,D*7F\x0d
+
+    gpsd: GPRMC: registers fractional time 211502.00
+    gpsd: RMC: ddmmyy=270110 hhmmss=211502.000 lat=32.91 lon=-117.23
+    speed=0.24 track=117.95 mode=2 status=2
+    mask={TIME|LATLON|SPEED|TRACK|MODE}
+    gpsd: GPRMC computed time is 1264626902.000000 = Sun Jan 27 21:15:02
+    2010
+
+    gpsd: GPRMC reporting cycle started on 211502.00.
+    gpsd: GPRMC ends a reporting cycle.
+    gpsd: DOPS computed/reported: X=0.780672/nan, Y=0.939445/nan,
+    H=1.221477/1.640000, V=2.212225/1.790000, P=2.527043/2.420000,
+    T=1.637396/nan, G=3.011148/nan
+    gpsd: Changed mask:
+    {ONLINE|TIME|LATLON|SPEED|TRACK|DOP|PACKET|REPORT} with reliable
+    cycle detection
+    gpsd: time to report a fix
+    gpsd: =&gt; client(0):
+    {&quot;class&quot;:&quot;TPV&quot;,&quot;tag&quot;:&quot;RMC&quot;,&quot;device&quot;:&quot;/dev/ttyUSB0&quot;,&quot;time&quot;:1264626902.000,&quot;ept&quot;:0.005,&quot;lat&quot;:32.913901667,&quot;lon&quot;:-117.234223333,&quot;alt&quot;:-3.200,&quot;epx&quot;:2.768,&quot;epy&quot;:2.764,&quot;epv&quot;:7.303,&quot;track&quot;:117.9500,&quot;speed&quot;:0.242,&quot;climb&quot;:0.200,&quot;eps&quot;:5.54,&quot;mode&quot;:3}
+    gpsd: reporting finished
+    gpsd: &lt;= GPS: $GPVTG,117.95,T,,M,0.47,N,0.86,K,D*3E\x0d
+
+    gpsd: reporting finished
+
+-- 
+Ryan Carlon
+Vision Robotics Corporation
+<A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">rcarlon at visionrobotics.com</A>
+530 520 0816
+
+This message is intended only for the use of the Addressee and may
+contain information that is PRIVILEGED and CONFIDENTIAL. If you are not
+the intended recipient, dissemination of this communication is
+prohibited. If you have received this communication in error, please
+erase all copies of the message and its attachments and notify us
+immediately.
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="004179.html">[Gpsd-users] OBD GPS Logger: another gpsd client
+</A></li>
+	<LI>Next message: <A HREF="004183.html">[Gpsd-users] Ancient GPS questions
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#4181">[ date ]</a>
+              <a href="thread.html#4181">[ thread ]</a>
+              <a href="subject.html#4181">[ subject ]</a>
+              <a href="author.html#4181">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

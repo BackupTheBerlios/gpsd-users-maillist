@@ -1,0 +1,205 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] [Gpsd-dev] The state of RTCM2 and RTCM3
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2011-March/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20%5BGpsd-dev%5D%20The%20state%20of%20RTCM2%20and%20RTCM3&In-Reply-To=%3C4D6F8BA6.2030402%40googlemail.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="005083.html">
+   <LINK REL="Next"  HREF="005085.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] [Gpsd-dev] The state of RTCM2 and RTCM3</H1>
+    <B>Andre Naujoks</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20%5BGpsd-dev%5D%20The%20state%20of%20RTCM2%20and%20RTCM3&In-Reply-To=%3C4D6F8BA6.2030402%40googlemail.com%3E"
+       TITLE="[Gpsd-users] [Gpsd-dev] The state of RTCM2 and RTCM3">nautsch2 at googlemail.com
+       </A><BR>
+    <I>Thu Mar  3 13:37:58 CET 2011</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="005083.html">[Gpsd-users] [Gpsd-dev] The state of RTCM2 and RTCM3
+</A></li>
+        <LI>Next message: <A HREF="005085.html">[Gpsd-users] [Gpsd-dev] The state of RTCM2 and RTCM3
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#5084">[ date ]</a>
+              <a href="thread.html#5084">[ thread ]</a>
+              <a href="subject.html#5084">[ subject ]</a>
+              <a href="author.html#5084">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Am 03.03.2011 11:02, schrieb Eric Raymond:
+&gt;<i> Andre Naujoks &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">nautsch2 at googlemail.com</A>&gt;:
+</I>&gt;&gt;<i> Am 02.03.2011 23:57, schrieb Eric Raymond:
+</I>&gt;&gt;&gt;<i> Should I take your last, relatively minor patch to mean that the Ntrip
+</I>&gt;&gt;&gt;<i> support is now working for you?
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> I don't see it in the git repo yet. But with that minor patch it works
+</I>&gt;&gt;<i> for me.
+</I>&gt;<i> 
+</I>&gt;<i> Please resend.
+</I>
+I tried to bury the reset of the conn_state as deep as possible in the chain
+of ntrip calls to make the smallest impact possible on the rest of the code.
+
+conn_state has to be reset before a connection is initiated.
+
+diff --git a/net_gnss_dispatch.c b/net_gnss_dispatch.c
+index 1f12d01..a6326cc 100644
+--- a/net_gnss_dispatch.c
++++ b/net_gnss_dispatch.c
+@@ -33,6 +33,7 @@ int netgnss_uri_open(struct gps_device_t *dev, char *netgnss_service)
+ {
+ #ifdef NTRIP_ENABLE
+     if (strncmp(netgnss_service, NETGNSS_NTRIP, strlen(NETGNSS_NTRIP)) == 0)
++       dev-&gt;ntrip.conn_state = ntrip_conn_init;
+        return ntrip_open(dev, netgnss_service + strlen(NETGNSS_NTRIP));
+ #endif
+
+
+&gt;<i>  
+</I>&gt;&gt;&gt;<i> What we need, for each protocol, is a representative list of binary
+</I>&gt;&gt;&gt;<i> packets paired with dumps of the data in them is a human-readable 
+</I>&gt;&gt;&gt;<i> format.  Can you put together such pairs?
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> If I can send RTCM sentences, I could give the accompanying gpspipe
+</I>&gt;&gt;<i> output ... but that wouldn't make any sense for testing purposes, would
+</I>&gt;&gt;<i> it?
+</I>&gt;<i> 
+</I>&gt;<i> No.  The whole point is to verify gpsd against decodes that are *known* good.
+</I>&gt;<i> I don't know that GPSD's code is right; that's exactly what's bothering me.
+</I>&gt;<i> 
+</I>&gt;<i> Here is *everything* I currently know about this:
+</I>&gt;<i> 
+</I>&gt;<i> 1. An Ntrip RTCM2 log you gave me (test/daemon/naujoks-ntrip.log) begins
+</I>&gt;<i> with a type 14 sentence.  I'm pretty sure my decode of it is good
+</I>&gt;<i> because it ends with leapsecs:15.  Of course it's still possible I
+</I>&gt;<i> have got previous bitfield boundaries wrong.  Note that I do *not*
+</I>&gt;<i> know that any of the following type 1 messages in that file are decoded
+</I>&gt;<i> correctly, and I have no idea why I'm seeing type 31s.
+</I>
+Type 14 you say? The Sourcetable says it should contain only 1, 3, 16 and 31
+
+You have to remove the first 4 bytes of the binary part.
+The rest should be pure rtcm2. I'll try to get you something bigger.
+
+&gt;<i> 
+</I>&gt;<i> 2. The RTCM3.1 standard includes a hexdump of a type 1029 message
+</I>&gt;<i> and a complete decode.  GPSD matches this decode exactly so I'm
+</I>&gt;<i> pretty sure I have this type right.
+</I>&gt;<i> 
+</I>&gt;<i> 3. The RTCM3.1 standard includes a hexdump of a type 1005 message
+</I>&gt;<i> and a complete decode. My decoder gets *almost* all fields correct
+</I>&gt;<i> - but this one drives me crazy because I get ECEF-Y right and the
+</I>&gt;<i> ECEF-X and ECEF-Z fields on either side of it wrong.  I can't figure
+</I>&gt;<i> out why - all three are 38-bit signed and the field lengths of 
+</I>&gt;<i> everything else look right.
+</I>&gt;<i> 
+</I>&gt;<i> 4. ckuethe gave me three Ntrip samples from RTCM3 Ntrip casters.  My
+</I>&gt;<i> decoder gets only garbage from them - lots of skips and a few packets
+</I>&gt;<i> with impossible message numbers.  This is weirder because one thing I am
+</I>&gt;<i> pretty sure of is that the sniffer assembles RTCM3 packets correctly
+</I>&gt;<i> (it does the right thing on 2 and 3).
+</I>&gt;<i> 
+</I>&gt;<i> 5. All other RTCM2 and RTCM3 packet type decodes to JSON are
+</I>&gt;<i> *completely unverified*.  This bothers me a lot.  I've been searching
+</I>&gt;<i> for decent test datasets for years, fruitlessly so far.
+</I>&gt;<i> 
+</I>&gt;&gt;<i>   I think I remember some tool out there, that decodes rtcm2. I may be
+</I>&gt;&gt;<i> able to use that to offer some help.
+</I>
+It may have been called rtcmdecode and may have been written by you ... so 
+kudos to you. It doesn't help in this case however. :-)
+
+&gt;<i> 
+</I>&gt;<i> That's the sort of thing I need, yes.  Readable dumps made using a known-good
+</I>&gt;<i> decoder, and the binary they were made from.  Ideally, with a representative 
+</I>&gt;<i> sample of all packet types.
+</I>&gt;<i> 
+</I>&gt;&gt;<i> I am not sure about packets though. RTCM2 is not byte based, but 30bit
+</I>&gt;&gt;<i> word based and there is no padding between words and/or packets as far
+</I>&gt;&gt;<i> as I am aware of. It could be quite hard to extract packets from that.
+</I>&gt;<i> 
+</I>&gt;<i> Actually it's not that bad.  You segregate out RTCM2 packets by
+</I>&gt;<i> syncing to the ISGPS bitstream in a particular way, looking for leader
+</I>&gt;<i> characters guarded by 6-bit parity.  The code to do it is very nasty,
+</I>&gt;<i> but thanks to work by Wolfgang Rupprecht (the DGPSIP guy) and later by
+</I>&gt;<i> myself, GPSD has been able to turn this trick for years; the relevant
+</I>&gt;<i> code is in isgps.c.  It gives back sequences of 30-bit words which you
+</I>&gt;<i> then pull bitfields out of - see driver_rtcm2.c for an example.
+</I>
+I meant extraction of single packets from a stream to use as test data.
+If the driver_rtcm2 could dump the data, the task would indeed be almost
+trivial.
+
+&gt;<i> 
+</I>&gt;<i> I am pretty sure my RTCM2 and RTCM3 packetizers are good.  It's the
+</I>&gt;<i> layer above that, the bitfield extractions, that I have been unable 
+</I>&gt;<i> to verify.
+</I>&gt;<i> 
+</I>&gt;&gt;&gt;<i> Being able to eyeball-check gpsd's results against the output
+</I>&gt;&gt;&gt;<i> from another analyzer would be hugely useful.
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> Do you have a specific analyzer in mind?
+</I>&gt;<i> 
+</I>&gt;<i> I only know of one - the rtcm-ntrip.org suite, which I've grabbed the
+</I>&gt;<i> code tree for.  Trouble is, (1) it's not documented.  At *all*.  (2)
+</I>&gt;<i> I see no Makefiles and can't figure out how to build it, and (3) I
+</I>&gt;<i> don't see a dump utility in there.  The closest approximation I've
+</I>&gt;<i> found is a translator to RINEX, which is only a partial dump.
+</I>
+I looked through this one a little. It looks documented, but I am not
+seeing a complete rtcm parser with all the kinks and bits.
+
+<A HREF="http://igs.bkg.bund.de/ntrip/download">http://igs.bkg.bund.de/ntrip/download</A>
+
+Under &quot;Multi-Function Ntrip Software and Assisting Tools&quot; The first tool.
+theres C++ Source code under GPL. 
+
+<A HREF="http://igs.bkg.bund.de/root_ftp/NTRIP/software/Bnc25-Source.zip">http://igs.bkg.bund.de/root_ftp/NTRIP/software/Bnc25-Source.zip</A>
+
+There is also an rtcm windows binary. I am not sure what exactly it does,
+but maybe its worth looking at.
+
+&gt;<i> 
+</I>&gt;<i> How in the hell do other people check their decoders?  *Somebody*
+</I>&gt;<i> must have a decent test set, but I've been unable to find it.
+</I>
+I guess its all in the hell of proprietary, closed source software. ;-)
+
+&gt;<i> 
+</I>&gt;<i> (I had similar troubles with AIS, but with helpo from Kurt Schewhr
+</I>&gt;<i> I managed to put together a decent - though still not entirely complete 
+</I>&gt;<i> - test set. See test/sample.aivdm.)
+</I>
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="005083.html">[Gpsd-users] [Gpsd-dev] The state of RTCM2 and RTCM3
+</A></li>
+	<LI>Next message: <A HREF="005085.html">[Gpsd-users] [Gpsd-dev] The state of RTCM2 and RTCM3
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#5084">[ date ]</a>
+              <a href="thread.html#5084">[ thread ]</a>
+              <a href="subject.html#5084">[ subject ]</a>
+              <a href="author.html#5084">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

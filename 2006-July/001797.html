@@ -1,0 +1,90 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] [Gpsd-dev] Have we cut	processor	utilization	any?
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2006-July/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20%5BGpsd-dev%5D%20Have%20we%20cut%09processor%09utilization%09any%3F&In-Reply-To=%3C20060727215621.GA6814%40thyrsus.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="001795.html">
+   <LINK REL="Next"  HREF="001798.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] [Gpsd-dev] Have we cut	processor	utilization	any?</H1>
+    <B>Eric S. Raymond</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20%5BGpsd-dev%5D%20Have%20we%20cut%09processor%09utilization%09any%3F&In-Reply-To=%3C20060727215621.GA6814%40thyrsus.com%3E"
+       TITLE="[Gpsd-users] [Gpsd-dev] Have we cut	processor	utilization	any?">esr at thyrsus.com
+       </A><BR>
+    <I>Thu Jul 27 23:56:21 CEST 2006</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="001795.html">[Gpsd-users] [Gpsd-dev] Have we cut	processor	utilization	any?
+</A></li>
+        <LI>Next message: <A HREF="001798.html">[Gpsd-users] Common GPS baud rates?
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1797">[ date ]</a>
+              <a href="thread.html#1797">[ thread ]</a>
+              <a href="subject.html#1797">[ subject ]</a>
+              <a href="author.html#1797">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Marshall Crocker &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">crocker at cavs.msstate.edu</A>&gt;:
+&gt;<i> Compiling with --enable-max-client-fd=8 and --enable-max-devices=1
+</I>&gt;<i> produces
+</I>&gt;<i> 
+</I>&gt;<i> ~$ gpsd -n -N -D 1 /dev/ttyS2
+</I>&gt;<i> gpsd: launching (version 2.33)
+</I>&gt;<i> gpsd: listening on port 2947
+</I>&gt;<i> gpsd: opening GPS data source at '/dev/ttyS2'
+</I>&gt;<i> gpsd: speed 4800, 8N1
+</I>&gt;<i> gpsd: gpsd_activate: opened GPS (5)
+</I>&gt;<i> Segmentation fault
+</I>
+Compiler bug.  I managed to reproduce it, then banish it.  Here's 
+what's in the TODO file now:
+
+*** Compiling with --enable-max-devices=1 may trigger a gcc optimizer bug
+
+At gpsd revision level 3365, compiling with --enable-max-devices=1 has
+been observed to trigger an optimizer bug in gcc 4.1.0 20060304 (Red
+Hat 4.1.0-3).  The symptom is a for-loop termination condition not
+causing an exit, leading to a core dump.  Removing -O2 from the
+compilation flags works around the problem; upgrading to gcc 4.1.1
+20060525 (Red Hat 4.1.1-1) solves it.  Other reports indicate this
+bug was introduced sometime after gcc 4.0.2 20051125 (Red Hat 4.0.2-8).
+
+This is, like, my third GCC bug.  But they were scattered over a decade,
+so I guess I can't gripe too loudly.
+-- 
+		&lt;a href=&quot;<A HREF="http://www.catb.org/~esr/">http://www.catb.org/~esr/</A>&quot;&gt;Eric S. Raymond&lt;/a&gt;
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="001795.html">[Gpsd-users] [Gpsd-dev] Have we cut	processor	utilization	any?
+</A></li>
+	<LI>Next message: <A HREF="001798.html">[Gpsd-users] Common GPS baud rates?
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1797">[ date ]</a>
+              <a href="thread.html#1797">[ thread ]</a>
+              <a href="subject.html#1797">[ subject ]</a>
+              <a href="author.html#1797">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

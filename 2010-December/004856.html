@@ -1,0 +1,173 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] Cannot get Garmin 18x LVC NMEA to work right with ntp
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2010-December/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Cannot%20get%20Garmin%2018x%20LVC%20NMEA%20to%20work%20right%20with%20ntp&In-Reply-To=%3C4D1CCF9E.1020303%40funsoft.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="004839.html">
+   <LINK REL="Next"  HREF="004857.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] Cannot get Garmin 18x LVC NMEA to work right with ntp</H1>
+    <B>Gary Eheman</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Cannot%20get%20Garmin%2018x%20LVC%20NMEA%20to%20work%20right%20with%20ntp&In-Reply-To=%3C4D1CCF9E.1020303%40funsoft.com%3E"
+       TITLE="[Gpsd-users] Cannot get Garmin 18x LVC NMEA to work right with ntp">eheman at funsoft.com
+       </A><BR>
+    <I>Thu Dec 30 19:29:50 CET 2010</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="004839.html">[Gpsd-users] Sample GPS Log Data
+</A></li>
+        <LI>Next message: <A HREF="004857.html">[Gpsd-users] Cannot get Garmin 18x LVC NMEA to work right with ntp
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#4856">[ date ]</a>
+              <a href="thread.html#4856">[ thread ]</a>
+              <a href="subject.html#4856">[ subject ]</a>
+              <a href="author.html#4856">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>I am a noob when it comes to gpsd and ntp combination.
+
+I recently purchased a Garmin 18x LVC and built myself a DE9 (female-DB9) cable with
+integrated led for confirming PPS signal using the info from the various recommended
+websites. The GPS seems to be working ok, and I can get ntpd to sync with the PPS
+shared memory segment. It never seems to like the NMEA shared memory segment data and
+always marks the NMEA signal as &quot;falsetick&quot; as reported by ntpq associates.
+
+I have tried running on openSuSE 11.1 and have also tried it on 11.3.  Because the
+gpsd package available in the openSuSE repositories had issues with PPS and I read in
+the list archives that a lot of bugs with PPS were fixed in gpsd 2.95, I built gpsd
+2.95 from its sources tarball and am using that.
+
+Since this is opensuse, and they have ntpd protected via apparmor, I also had to run
+# aa-complain /usr/sbin/ntpd
+to get around the permission problems apparmor causes for the shared memory segments.
+
+# gpsd -V
+gpsd: 2.95 (revision 2010-12-29T20:39:22)
+
+(this on opensuse 11.3)
+# rpm -qa | grep ntp
+ntp-4.2.4p8-7.2.x86_64
+
+(this on opensuse 11.1 32-bit)
+# rpm -qa | grep ntp
+ntp-4.2.4p6-2.3.1
+
+The following is typical of what I see on both systems after letting them stabilize.
+
+# ntpq
+ntpq&gt; peers
+     remote           refid      st t when poll reach   delay   offset  jitter
+==============================================================================
+ LOCAL(0)        .LOCL.          10 l   53   64  377    0.000    0.000   0.001
+xSHM(0)          .NMEA.           0 l   17   16  377    0.000  -565.00  13.252
+*SHM(1)          .PPS.            0 l    5   16  377    0.000   -0.907   0.084
+-navobs1.gatech. .GPS.            1 u   60   64  377   40.433   -8.898   1.103
+-ns4.usg.edu     168.24.81.244    2 u   45   64  377   42.554  -11.191   0.266
++time-a.nist.gov .ACTS.           1 u   49   64  373   43.662    1.318   1.552
++ntp1.twc.weathe .CDMA.           1 u   43   64  377   23.809   -0.162   0.624
+
+ntpq&gt; assoc
+
+ind assID status  conf reach auth condition  last_event cnt
+===========================================================
+  1 36903  9014   yes   yes  none    reject   reachable  1
+  2 36904  9114   yes   yes  none falsetick   reachable  1
+  3 36905  9614   yes   yes  none  sys.peer   reachable  1
+  4 36906  9314   yes   yes  none   outlyer   reachable  1
+  5 36907  9314   yes   yes  none   outlyer   reachable  1
+  6 36908  9414   yes   yes  none  candidat   reachable  1
+  7 36909  9414   yes   yes  none  candidat   reachable  1
+
+The significant parts of my /etc/ntp.conf are:
+(snip)
+server 127.127.28.0  minpoll 4 maxpoll 4
+fudge 127.127.28.0  time2 0.690 refid NMEA
+
+server 127.127.28.1  minpoll 4 maxpoll 4 prefer
+fudge 127.127.28.1  refid PPS
+
+server navobs1.gatech.edu  iburst
+server rolex.usg.edu  iburst
+server time-a.nist.gov  iburst
+server time.twc.weather.com  iburst
+(end snip)
+
+
+The &quot;time2 0.690&quot; on the fudge for the NMEA was tried after computing it using the
+method described at
+<A HREF="http://support.ntp.org/bin/view/Support/ConfiguringNMEARefclocks#Section_6.1.12.2.">http://support.ntp.org/bin/view/Support/ConfiguringNMEARefclocks#Section_6.1.12.2.</A>
+This is just one of several different fudge adjustments (time1, flag1, flag2)
+settings I have tried.
+
+A snippet from /var/log/ntp, in case it helps:
+(snip)
+30 Dec 12:32:52 ntpd[1143]: ntpd exiting on signal 15
+30 Dec 12:32:52 ntpd[1143]: offset -0.001065 sec freq 25.592 ppm error 0.005325 poll 6
+30 Dec 12:34:45 ntpd[4479]: system event 'event_restart' (0x01) status 'sync_alarm,
+sync_unspec, 1 event, event_unspec' (0xc010)
+30 Dec 12:34:45 ntpd[4479]: peer LOCAL(0) event 'event_reach' (0x84) status 'unreach,
+conf, 1 event, event_reach' (0x8014)
+30 Dec 12:34:46 ntpd[4479]: peer SHM(0) event 'event_reach' (0x84) status 'unreach,
+conf, 1 event, event_reach' (0x8014)
+30 Dec 12:34:47 ntpd[4479]: peer SHM(1) event 'event_reach' (0x84) status 'unreach,
+conf, 1 event, event_reach' (0x8014)
+30 Dec 12:34:48 ntpd[4479]: peer 130.207.244.240 event 'event_reach' (0x84) status
+'unreach, conf, 1 event, event_reach' (0x8014)
+30 Dec 12:34:49 ntpd[4479]: peer 131.144.4.10 event 'event_reach' (0x84) status
+'unreach, conf, 1 event, event_reach' (0x8014)
+30 Dec 12:34:50 ntpd[4479]: peer 129.6.15.28 event 'event_reach' (0x84) status
+'unreach, conf, 1 event, event_reach' (0x8014)
+30 Dec 12:34:51 ntpd[4479]: peer 65.212.71.102 event 'event_reach' (0x84) status
+'unreach, conf, 1 event, event_reach' (0x8014)
+30 Dec 12:34:54 ntpd[4479]: system event 'event_peer/strat_chg' (0x04) status
+'sync_alarm, sync_ntp, 2 events, event_restart' (0xc621)
+30 Dec 12:34:54 ntpd[4479]: synchronized to 130.207.244.240, stratum 1
+30 Dec 12:34:54 ntpd[4479]: kernel time sync status change 2001
+30 Dec 12:34:54 ntpd[4479]: system event 'event_sync_chg' (0x03) status 'leap_none,
+sync_ntp, 3 events, event_peer/strat_chg' (0x634)
+30 Dec 12:34:54 ntpd[4479]: system event 'event_peer/strat_chg' (0x04) status
+'leap_none, sync_ntp, 4 events, event_sync_chg' (0x643)
+30 Dec 12:35:34 ntpd[4479]: synchronized to SHM(1), stratum 0
+
+(end snip)
+
+As a noob, and having read as much and found as many examples of using the Garmin 18x
+LVC with gpsd and ntpd as I can dig up, I'm needing help in making ntpd like the NMEA
+data as well as it seems to accept the PPS data. Advice is appreciated.
+--
+Gary Eheman
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="004839.html">[Gpsd-users] Sample GPS Log Data
+</A></li>
+	<LI>Next message: <A HREF="004857.html">[Gpsd-users] Cannot get Garmin 18x LVC NMEA to work right with ntp
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#4856">[ date ]</a>
+              <a href="thread.html#4856">[ thread ]</a>
+              <a href="subject.html#4856">[ subject ]</a>
+              <a href="author.html#4856">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

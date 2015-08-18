@@ -1,0 +1,116 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] Serving more than one device
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2006-September/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Serving%20more%20than%20one%20device&In-Reply-To=%3C91981b3e0609272318y4665ab75j5824a5d2f65b2b57%40mail.gmail.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="002026.html">
+   <LINK REL="Next"  HREF="002018.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] Serving more than one device</H1>
+    <B>Chris Kuethe</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Serving%20more%20than%20one%20device&In-Reply-To=%3C91981b3e0609272318y4665ab75j5824a5d2f65b2b57%40mail.gmail.com%3E"
+       TITLE="[Gpsd-users] Serving more than one device">chris.kuethe at gmail.com
+       </A><BR>
+    <I>Thu Sep 28 08:18:45 CEST 2006</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="002026.html">[Gpsd-users] Serving more than one device
+</A></li>
+        <LI>Next message: <A HREF="002018.html">[Gpsd-users] Can't connect TNTC
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2027">[ date ]</a>
+              <a href="thread.html#2027">[ thread ]</a>
+              <a href="subject.html#2027">[ subject ]</a>
+              <a href="author.html#2027">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>That's what the &quot;F&quot; command is for. You can use it to query which
+device you're getting data from, and to switch to a different device.
+
+       f      Gets or sets the active GPS device name. The bare
+              command 'f' requests a response containing 'F='
+              followed by the name of the active GPS device. The
+              other form of the command is 'f=', in which case
+              all following printable characters up to but not
+              including the next CR/LF are interpreted as the
+              name of a trial GPS device. If the trial device is
+              in gpsd's device list, it is opened and read to see
+              if a GPS can be found there. If it can, the trial
+              device becomes the active device for this client.
+
+              The 'f=' command may fail if the specified device
+              name is not on the daemon's device list. This
+              device list is initialized with the paths given on
+              the command line, if any were specified. For
+              security reasons, ordinary clients cannot change
+              this device list; instead, this must be done via
+              the daemon's local control socket declared with the
+              -F option.
+
+              Once an 'f=' command succeeds, the client is tied
+              to the specified device until the client disconnects.
+
+              Whether the command is 'f' or 'f=' or not, and
+              whether it succeeds or not, the response always
+              lists the name of the client's device.
+
+              (At protocol level 1, the F command failed if more
+              than one client was attached, and multiple devices
+              were not supported.)
+
+
+On 9/28/06, Massimo Burcheri &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">burcheri at fgan.de</A>&gt; wrote:
+&gt;<i> Am Mittwoch, den 27.09.2006, 09:16 -0600 schrieb Chris Kuethe:
+</I>&gt;<i>
+</I>&gt;<i> &gt;          gpsd -n /dev/cuaU0 /dev/cuaU1
+</I>&gt;<i>
+</I>&gt;<i> To be honest I didn't try. But then which information would gpsd provide
+</I>&gt;<i> on tcp port? My case is MagellanGPS + Truenorth.
+</I>&gt;<i> Both are using heading for example, which one is used then?
+</I>&gt;<i>
+</I>&gt;<i> Massimo
+</I>&gt;<i>
+</I>&gt;<i> _______________________________________________
+</I>&gt;<i> Gpsd-users mailing list
+</I>&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">Gpsd-users at lists.berlios.de</A>
+</I>&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">https://lists.berlios.de/mailman/listinfo/gpsd-users</A>
+</I>&gt;<i>
+</I>
+
+-- 
+GDB has a 'break' feature; why doesn't it have 'fix' too?
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="002026.html">[Gpsd-users] Serving more than one device
+</A></li>
+	<LI>Next message: <A HREF="002018.html">[Gpsd-users] Can't connect TNTC
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2027">[ date ]</a>
+              <a href="thread.html#2027">[ thread ]</a>
+              <a href="subject.html#2027">[ subject ]</a>
+              <a href="author.html#2027">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

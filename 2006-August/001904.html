@@ -1,0 +1,116 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] Fwd: NTP Problems
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2006-August/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Fwd%3A%20NTP%20Problems&In-Reply-To=%3CPine.LNX.4.64.0608301132090.27563%40catbert.rellim.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="001903.html">
+   <LINK REL="Next"  HREF="001906.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] Fwd: NTP Problems</H1>
+    <B>Gary E. Miller</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Fwd%3A%20NTP%20Problems&In-Reply-To=%3CPine.LNX.4.64.0608301132090.27563%40catbert.rellim.com%3E"
+       TITLE="[Gpsd-users] Fwd: NTP Problems">gem at rellim.com
+       </A><BR>
+    <I>Wed Aug 30 20:41:16 CEST 2006</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="001903.html">[Gpsd-users] Fwd: NTP Problems
+</A></li>
+        <LI>Next message: <A HREF="001906.html">[Gpsd-users] Fwd: NTP Problems
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1904">[ date ]</a>
+              <a href="thread.html#1904">[ thread ]</a>
+              <a href="subject.html#1904">[ subject ]</a>
+              <a href="author.html#1904">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>-----BEGIN PGP SIGNED MESSAGE-----
+Hash: SHA1
+
+Yo Karl!
+
+On Wed, 30 Aug 2006, Karl von Muller wrote:
+
+&gt;<i> NTP SHM                 : yes
+</I>&gt;<i> NTP PPS                 : yes
+</I>
+That shows NTP support compiled in.
+
+
+&gt;<i> mq_notify(2, ptrace: umoven: Input/output error
+</I>&gt;<i> {...})                     = 3
+</I>&gt;<i> SYS_294(0x3, 0x1, 0x2, 0xbe8db914, 0x4) = 0
+</I>&gt;<i> mq_getsetattr(3, {mq_flags=O_RDWR|O_DIRECT|O_LARGEFILE|0x83080000,
+</I>&gt;<i> mq_maxmsg=0, mq_msgsize=0, mq_curmsg=0}, ptrace: umoven: Input/output error
+</I>&gt;<i> {...}) = 0
+</I>&gt;<i> waitid(0x3 /* P_??? */, 5, ptrace: umoven: Input/output error
+</I>&gt;<i> {???}, __WCLONE|__WNOTHREAD|0x1e8db914, NULL) = 0
+</I>
+Not sure what the above are, but does not look good.
+
+&gt;<i> getuid()                                = 0
+</I>&gt;<i> getegid()                               = 0
+</I>&gt;<i> geteuid()                               = 0
+</I>
+Good, you are running as root.
+
+&gt;<i> rt_sigaction(SIGHUP, {0x9e90, [HUP], SA_RESTART|0x4000000}, {SIG_DFL}, 8) =
+</I>&gt;<i> 0
+</I>
+But the ntpshm_init() does not seem to be called.
+
+Try adding some gpsd_report()s to the call to ntpshm_init() in gpsd.c
+and in ntpshm.c to see why the shared memory funcs are not being called.
+
+Have you tried the currrent SVN code?  If you can pull that code I could add
+some debugging code for you.
+
+RGDS
+GARY
+- ---------------------------------------------------------------------------
+Gary E. Miller Rellim 20340 Empire Blvd, Suite E-3, Bend, OR 97701
+	<A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">gem at rellim.com</A>  Tel:+1(541)382-8588
+
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v1.4.3 (GNU/Linux)
+
+iD8DBQFE9dvQ8KZibdeR3qURApRmAKDXAHSc/3HOkM6/MzHq5qYH7deuwACggE9H
+GHwAxuUvqiGRKwQnj33WjoI=
+=ATxA
+-----END PGP SIGNATURE-----
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="001903.html">[Gpsd-users] Fwd: NTP Problems
+</A></li>
+	<LI>Next message: <A HREF="001906.html">[Gpsd-users] Fwd: NTP Problems
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1904">[ date ]</a>
+              <a href="thread.html#1904">[ thread ]</a>
+              <a href="subject.html#1904">[ subject ]</a>
+              <a href="author.html#1904">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

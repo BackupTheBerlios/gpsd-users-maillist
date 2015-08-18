@@ -1,0 +1,107 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] Problem with GARMIN GPS 18x LVC (and gpsd + ntpd)
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2009-December/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Problem%20with%20GARMIN%20GPS%2018x%20LVC%20%28and%20gpsd%20%2B%20ntpd%29&In-Reply-To=%3Calpine.LNX.1.10.0912211105520.4179%40catbert.rellim.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="004130.html">
+   <LINK REL="Next"  HREF="004134.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] Problem with GARMIN GPS 18x LVC (and gpsd + ntpd)</H1>
+    <B>Gary E. Miller</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Problem%20with%20GARMIN%20GPS%2018x%20LVC%20%28and%20gpsd%20%2B%20ntpd%29&In-Reply-To=%3Calpine.LNX.1.10.0912211105520.4179%40catbert.rellim.com%3E"
+       TITLE="[Gpsd-users] Problem with GARMIN GPS 18x LVC (and gpsd + ntpd)">gem at rellim.com
+       </A><BR>
+    <I>Mon Dec 21 20:16:30 CET 2009</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="004130.html">[Gpsd-users] Problem with GARMIN GPS 18x LVC (and gpsd + ntpd)
+</A></li>
+        <LI>Next message: <A HREF="004134.html">[Gpsd-users] Problem with GARMIN GPS 18x LVC (and gpsd + ntpd)
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#4132">[ date ]</a>
+              <a href="thread.html#4132">[ thread ]</a>
+              <a href="subject.html#4132">[ subject ]</a>
+              <a href="author.html#4132">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>-----BEGIN PGP SIGNED MESSAGE-----
+Hash: SHA1
+
+Yo Data!
+
+On Mon, 21 Dec 2009, Data Kungen wrote:
+
+&gt;<i> I have purchased and installed a GARMIN GPS 18x LVC for connection to
+</I>&gt;<i> a PC&#160;for use with gpsd and ntpd.
+</I>
+Looking at your log file it does not look like you have a GPS is sending
+PPS signals, but instead it is sending 5Hz signals.  Notice the cycle
+time is 200mS, not 1Sec.
+
+I'm not familiar with the 18x series, but for the 18/LVC there are
+two flavors.  One does PPS as you expect and one does a pulse every
+200mS.  Unless the 18x is switchable you look to have the 5Hz type.
+
+&gt;<i> 1. There is a large offset (differs between invocations) between
+</I>&gt;<i> SHM(0) (GPS) and SHM(1) (PPS)
+</I>
+Yeah, gpsd is not sure how to lock onto the right one of the 5 pulses
+that comes each second.  The other 4 pulses (9 edges) need to be
+rejected.  That is why you see so many rejects, that is as it should be.
+
+&gt;<i> 2. The jitter is higher then what I expected.
+</I>
+Actually, the SHM(0) is much better than I would expect.  The SHM(1) will
+improve over a few days as ntpd learns to discipline your local crystal.
+
+We have never seen a 5Hz model.  Either you need to figure out how to
+get your GPS in 1Hz mode or we need a way to tell which pulse is the
+right one.  At the moment I have no idea if either is possible.
+
+RGDS
+GARY
+- ---------------------------------------------------------------------------
+Gary E. Miller Rellim 109 NW Wilmington Ave., Suite E, Bend, OR 97701
+	<A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">gem at rellim.com</A>  Tel:+1(541)382-8588
+
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v1.4.3 (GNU/Linux)
+
+iD8DBQFLL8mQBmnRqz71OvMRAor/AKCDimUQmPRxxxuK5QhitrR7v+zdbgCfQUxi
+gnbfV9b1LJ7W4ms0AUJgX34=
+=8rBO
+-----END PGP SIGNATURE-----
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="004130.html">[Gpsd-users] Problem with GARMIN GPS 18x LVC (and gpsd + ntpd)
+</A></li>
+	<LI>Next message: <A HREF="004134.html">[Gpsd-users] Problem with GARMIN GPS 18x LVC (and gpsd + ntpd)
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#4132">[ date ]</a>
+              <a href="thread.html#4132">[ thread ]</a>
+              <a href="subject.html#4132">[ subject ]</a>
+              <a href="author.html#4132">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

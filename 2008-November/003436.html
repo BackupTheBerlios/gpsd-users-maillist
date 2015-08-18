@@ -1,0 +1,100 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] GPSd blocks device?
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2008-November/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20GPSd%20blocks%20device%3F&In-Reply-To=%3C490F297E.7070600%40keynote-sigos.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="003435.html">
+   <LINK REL="Next"  HREF="003437.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] GPSd blocks device?</H1>
+    <B>Jens Oberender</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20GPSd%20blocks%20device%3F&In-Reply-To=%3C490F297E.7070600%40keynote-sigos.com%3E"
+       TITLE="[Gpsd-users] GPSd blocks device?">jens.oberender at keynote-sigos.com
+       </A><BR>
+    <I>Mon Nov  3 17:40:30 CET 2008</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="003435.html">[Gpsd-users] GPSd blocks device?
+</A></li>
+        <LI>Next message: <A HREF="003437.html">[Gpsd-users] GPSd blocks device?
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3436">[ date ]</a>
+              <a href="thread.html#3436">[ thread ]</a>
+              <a href="subject.html#3436">[ subject ]</a>
+              <a href="author.html#3436">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi
+
+&gt;<i> could be a whole lot of things. turn up the debug level, send it all
+</I>&gt;<i> to a file and wait 2 days... i don't think it's a gpsd bug, since i
+</I>&gt;<i> have both ublox and non-ublox receivers that have been connected to
+</I>&gt;<i> gpsd instances for more than a month. but without more data, it's hard
+</I>&gt;<i> to know what to look at next.
+</I>
+I run with debug level 5, is that enough?
+
+Here a snippet from the syslog, after 09:14:04 gpsd doesn't print more
+messages then direct answers to client requests:
+
+Oct 31 09:14:03 mlu2 gpsd[1666]: gpsd: UBX: len 26
+Oct 31 09:14:03 mlu2 gpsd[1666]: gpsd: UBX_NAV_DOP
+Oct 31 09:14:03 mlu2 gpsd[1666]: gpsd: &lt;= GPS:
+$GPGSA,A,0,05,09,12,14,15,22,30,30,30,30,124,124,-343597384,1073920081,171798692,1073521623,-1030792151,1073228021,-1374389535,1073144135,1074135040,-343597384,1077065809,08,05,09,12,14,15,22,30,120,,,,,,,,,,,,,,,,,,,2.3,1.8,1.5*3E\x0d\x0a$PGRME,0.00,M,0.00,M,9.02,M*15
+Oct 31 09:14:03 mlu2 gpsd[1666]: gpsd: transfer mask on 0x0104: 7c01
+Oct 31 09:14:03 mlu2 gpsd[1666]: gpsd: UBX: len 24
+Oct 31 09:14:03 mlu2 gpsd[1666]: gpsd: UBX_NAV_TIMEGPS
+Oct 31 09:14:03 mlu2 gpsd[1666]: gpsd: transfer mask on 0x0120: 03
+Oct 31 09:14:04 mlu2 gpsd[1666]: gpsd: UBX: len 60
+Oct 31 09:14:04 mlu2 gpsd[1666]: gpsd: UBX_NAV_SOL
+Oct 31 09:14:04 mlu2 gpsd[1666]: gpsd: ntpshm_put: Clock: 1225440845 @
+1225440844.428072
+Oct 31 09:14:04 mlu2 gpsd[1666]: gpsd: &lt;= GPS:
+$GPGGA,081405,4928.5423,N,01106.6681,E,1,07,1.79,329.38,M,47.293,M,,*42\x0d\x0a$GPRMC,081405,A,4928.5423,N,01106.6681,E,0.1034,230.448,311008,,*29\x0d\x0a$GPGSA,A,3,05,09,12,14,15,22,30,30,30,30,124,124,-343597384,1073920081,171798692,1073521623,-1030792151,1073228021,-1374389535,1073144135,1074135040,-343597384,1077065809,08,05,09,12,14,15,22,30,120,,,,,,,,,,,,,,,,,,,2.3,1.8,1.5*3D\x0d\x0a$PGRME,3.02,M,0.00,M,9.02,M*14
+Oct 31 09:14:04 mlu2 gpsd[1666]: gpsd: transfer mask on 0x0106: 101013fb
+Oct 31 09:14:04 mlu2 gpsd[1666]: gpsd: client(0): channel 5 already active.
+Oct 31 09:14:04 mlu2 gpsd[1666]: gpsd: GPS has a fix (status=1, mode=3).
+Oct 31 09:14:04 mlu2 gpsd[1666]: gpsd: =&gt; client(0): GPSD,O=0x0106
+1225440845.000 0.005 49.475704 11.111135 329.38 14.32 12.08 230.4481 0.053
+0.042 ? 28.64 ? 3
+Oct 31 09:14:29 mlu2 pppd[31065]: pppd 2.4.3 started by root, uid 0
+Oct 31 09:14:29 mlu2 pppd[31065]: using channel 1577
+Oct 31 09:14:29 mlu2 pppd[31065]: Using interface ppp0
+Oct 31 09:14:29 mlu2 pppd[31065]: Connect: ppp0 &lt;--&gt; /dev/ttyUSB7
+Oct 31 09:14:29 mlu2 pppd[31065]: sent [LCP ConfReq id=0x1 &lt;asyncmap 0x0&gt;
+&lt;magic 0xaec770de&gt; &lt;pcomp&gt; &lt;accomp&gt;]
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="003435.html">[Gpsd-users] GPSd blocks device?
+</A></li>
+	<LI>Next message: <A HREF="003437.html">[Gpsd-users] GPSd blocks device?
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3436">[ date ]</a>
+              <a href="thread.html#3436">[ thread ]</a>
+              <a href="subject.html#3436">[ subject ]</a>
+              <a href="author.html#3436">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

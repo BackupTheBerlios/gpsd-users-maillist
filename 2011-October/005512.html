@@ -1,0 +1,90 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] How to set initial time?
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2011-October/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20How%20to%20set%20initial%20time%3F&In-Reply-To=%3C151a8acfb3fcc49e99da904e3f9dbdba.squirrel%40mail.seiner.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="005511.html">
+   <LINK REL="Next"  HREF="005513.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] How to set initial time?</H1>
+    <B>Yan Seiner</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20How%20to%20set%20initial%20time%3F&In-Reply-To=%3C151a8acfb3fcc49e99da904e3f9dbdba.squirrel%40mail.seiner.com%3E"
+       TITLE="[Gpsd-users] How to set initial time?">yan at seiner.com
+       </A><BR>
+    <I>Wed Oct 26 17:08:57 CEST 2011</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="005511.html">[Gpsd-users] [gpsd-users] time setting chicken and egg
+</A></li>
+        <LI>Next message: <A HREF="005513.html">[Gpsd-users] How to set initial time?
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#5512">[ date ]</a>
+              <a href="thread.html#5512">[ thread ]</a>
+              <a href="subject.html#5512">[ subject ]</a>
+              <a href="author.html#5512">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>I posted on this before.  I have an embedded platform without a RTC that
+comes up often without network access.  When the box boots, it sets the
+date to some arbitrary date (1992 or thereabouts).
+
+I have been trying to figure out a way to get gpsd to report the gps time
+to chrony so the system clock can be set correctly.
+
+The problems I am running into:
+
+AFAICT gpsd does not report the time it gets from gps.  I've looked at the
+code, and apparently the date and time information are discarded.
+
+gpsd puts the puck into sirf binary mode.  On warm boot, the puck stays in
+binary mode.  This means I cannot get nmea messages from the serial port. 
+I have tried gpsctl, but it does not set the puck into nmea mode until the
+system clock and the gps time match.
+
+Is there any way at all, including dirty hacks to the code, that I can use
+to coax the date and time fields from gpsd?  Something like the fields in
+GPRMC?
+
+
+
+
+-- 
+Pain is temporary. It may last a minute, or an hour, or a day, or a year,
+but eventually it will subside and something else will take its place. If
+I quit, however, it lasts forever.
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="005511.html">[Gpsd-users] [gpsd-users] time setting chicken and egg
+</A></li>
+	<LI>Next message: <A HREF="005513.html">[Gpsd-users] How to set initial time?
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#5512">[ date ]</a>
+              <a href="thread.html#5512">[ thread ]</a>
+              <a href="subject.html#5512">[ subject ]</a>
+              <a href="author.html#5512">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

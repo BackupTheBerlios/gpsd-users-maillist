@@ -1,0 +1,139 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] Getting GPSD to pick up PPS from Delorme Earthmate Serial GPS
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2007-July/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Getting%20GPSD%20to%20pick%20up%20PPS%20from%20Delorme%20Earthmate%0A%20Serial%20GPS&In-Reply-To=%3C4.3.2.7.2.20070703080033.028f5700%40postoffice.creativesilicon.com.au%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="002736.html">
+   <LINK REL="Next"  HREF="002738.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] Getting GPSD to pick up PPS from Delorme Earthmate Serial GPS</H1>
+    <B>Dave C</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Getting%20GPSD%20to%20pick%20up%20PPS%20from%20Delorme%20Earthmate%0A%20Serial%20GPS&In-Reply-To=%3C4.3.2.7.2.20070703080033.028f5700%40postoffice.creativesilicon.com.au%3E"
+       TITLE="[Gpsd-users] Getting GPSD to pick up PPS from Delorme Earthmate Serial GPS">gpsd at creativesilicon.com.au
+       </A><BR>
+    <I>Tue Jul  3 00:09:10 CEST 2007</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="002736.html">[Gpsd-users] Getting GPSD to pick up PPS from Delorme Earthmate Serial GPS
+</A></li>
+        <LI>Next message: <A HREF="002738.html">[Gpsd-users] Getting GPSD to pick up PPS from Delorme Earthmate Serial GPS
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2737">[ date ]</a>
+              <a href="thread.html#2737">[ thread ]</a>
+              <a href="subject.html#2737">[ subject ]</a>
+              <a href="author.html#2737">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hiya.
+
+I've had a few issues with PPS over the last 6 months.
+
+My GPS: Garmin 18LVC
+
+1. I found that I had issues getting gpsd to lock to the PPS when I had the 
+gpsd debug level set to -D5 or greater. Admittedly, I was using a 1GHz PIII 
+as the host processor, so what I think was happening was that the act of 
+outputting the debug info was messing up the PPS timing loop. Turned the 
+debug level down (or off) and I found that eventually ntpd would pick up 
+the PPS signal from gpsd and all was happy.
+
+2. Check your PPS interface circuit for signal inversion. You may find that 
+instead of being too short, your PPS pulse may have been inverted and is 
+now too long. (Yep, this got me too).
+
+3. If you are still having issues with the DCD pin on your serial port, try 
+using CTS instead. You will have to re-run configure with the 
+--enable-pps-cts (check the help for exact option) and then recompile gpsd. 
+It's a long shot, but will test if you've got a hardware issue on your 
+serial port.
+
+Hope this helps.
+
+ciao, Dave
+
+At 03:35 PM 2/07/2007 -0500, you wrote:
+&gt;<i>Hi,
+</I>&gt;<i>
+</I>&gt;<i>I'm currently dabbling with getting GPSD fully working with my really old
+</I>&gt;<i>Delorme Earthmate Hyperformance serial GPS to set up a home-brew stratum-0 NTP
+</I>&gt;<i>server for my own gratification.
+</I>&gt;<i>
+</I>&gt;<i>Right now with `gpsd`, it does a good job of auto-probing my GPS and does 
+</I>&gt;<i>start
+</I>&gt;<i>to query NMEA traffic, so I'm good in that sense.  My problem is getting 
+</I>&gt;<i>GPSD to
+</I>&gt;<i>defect PPS from the DCD (Carrier Detect) pin.  I've whipped together a tiny
+</I>&gt;<i>circuit that will show an LED light pulse every time PPS is detected on 
+</I>&gt;<i>the DCD
+</I>&gt;<i>pin on the serial port (pin 1), and I can see it happening, although I have no
+</I>&gt;<i>real way to measure the pulse length or anything like that.
+</I>&gt;<i>
+</I>&gt;<i>But when I run `gpsd` in a really verbose debug mode (using -D6 flag) looking
+</I>&gt;<i>for any &quot;pps&quot; signal lines that it's detected, I see nothing but gpsd probing
+</I>&gt;<i>for my GPS type, then I see about 10 or 12 line so of this:
+</I>&gt;<i>
+</I>&gt;<i>    gpsd:  packet sniff finds type -1
+</I>&gt;<i>
+</I>&gt;<i>...then shortly after that, I start to see all the GP* type raw data lines
+</I>&gt;<i>coming down.
+</I>&gt;<i>
+</I>&gt;<i>After some googling, I did come to realize that different GPS's may have a
+</I>&gt;<i>shortened hardware pulse length that might not fit into the range that libgps
+</I>&gt;<i>might have outlined? (note:  I haven't looked at libgps code at all, just
+</I>&gt;<i>something I read)
+</I>&gt;<i>
+</I>&gt;<i>I'm open to any suggestions or comments to track down why `gpsd` might not be
+</I>&gt;<i>detecting PPS on the DCD pin on my GPS.
+</I>&gt;<i>
+</I>&gt;<i>Thanks alot,
+</I>&gt;<i>
+</I>&gt;<i>Adam Dosch
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i>_______________________________________________
+</I>&gt;<i>Gpsd-users mailing list
+</I>&gt;<i><A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">Gpsd-users at lists.berlios.de</A>
+</I>&gt;<i><A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">https://lists.berlios.de/mailman/listinfo/gpsd-users</A>
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i>__________ NOD32 2371 (20070702) Information __________
+</I>&gt;<i>
+</I>&gt;<i>This message was checked by NOD32 antivirus system.
+</I>&gt;<i><A HREF="http://www.eset.com">http://www.eset.com</A>
+</I>
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="002736.html">[Gpsd-users] Getting GPSD to pick up PPS from Delorme Earthmate Serial GPS
+</A></li>
+	<LI>Next message: <A HREF="002738.html">[Gpsd-users] Getting GPSD to pick up PPS from Delorme Earthmate Serial GPS
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2737">[ date ]</a>
+              <a href="thread.html#2737">[ thread ]</a>
+              <a href="subject.html#2737">[ subject ]</a>
+              <a href="author.html#2737">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

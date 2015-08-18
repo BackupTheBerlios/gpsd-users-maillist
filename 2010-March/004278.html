@@ -1,0 +1,157 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] Problem running GPSD
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2010-March/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Problem%20running%20GPSD&In-Reply-To=%3CSNT109-W99FEF4F33230EF6C5B06ADF2D0%40phx.gbl%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="004277.html">
+   <LINK REL="Next"  HREF="004279.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] Problem running GPSD</H1>
+    <B>Sofia Silva</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Problem%20running%20GPSD&In-Reply-To=%3CSNT109-W99FEF4F33230EF6C5B06ADF2D0%40phx.gbl%3E"
+       TITLE="[Gpsd-users] Problem running GPSD">chufia at hotmail.com
+       </A><BR>
+    <I>Tue Mar 16 15:35:55 CET 2010</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="004277.html">[Gpsd-users] Now serving - git
+</A></li>
+        <LI>Next message: <A HREF="004279.html">[Gpsd-users] Incompatibility between gpsd and Fedora 12
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#4278">[ date ]</a>
+              <a href="thread.html#4278">[ thread ]</a>
+              <a href="subject.html#4278">[ subject ]</a>
+              <a href="author.html#4278">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>
+Hi all!! I hope you can help me.
+
+ 
+
+I'm trying to run gpsd but I get this messages:
+
+ 
+
+<A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">root at beagleboard</A>:/home/ubuntu/GPSD/gpsd-2.92# gpsd -N -D 9 /dev/ttyUSB2
+gpsd: launching (Version 2.92)
+gpsd: Can't bind to port gpsd
+gpsd: Can't create socket
+gpsd: command sockets create failed, netlib errors -1, -1
+
+
+As you can see I installed gpsd version 2.92 on a BeagleBoard. The Beagle Board is running Ubuntu with kernel 2.6.33-11879-gc4bc411-dirty.
+
+ 
+
+I know that those messages are very common when gpsd is already running. The strange thing is that gpsd is not running. I did ps -ef | grep gpsd and I only got the grep process.
+
+ 
+
+I thought it could be that the port is in use, so I did netstat -a and I got this:
+
+ 
+
+<A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">root at beagleboard</A>:/home/ubuntu/GPSD/gpsd-2.92# netstat -a
+Active Internet connections (servers and established)
+Proto Recv-Q Send-Q Local Address           Foreign Address         State
+tcp        0      0 *:www                   *:*                     LISTEN
+tcp        0      0 *:ssh                   *:*                     LISTEN
+tcp        0      0 192.168.0.253:ssh       192.168.0.105:49568     ESTABLISHED
+tcp        0      0 192.168.1.253:ssh       192.168.1.105:49175     ESTABLISHED
+tcp        0     52 192.168.0.253:ssh       192.168.0.105:49318     ESTABLISHED
+Active UNIX domain sockets (servers and established)
+Proto RefCnt Flags       Type       State         I-Node   Path
+unix  2      [ ]         DGRAM                    39       @/com/ubuntu/upstart
+unix  10     [ ]         DGRAM                    8280     /dev/log
+unix  2      [ ]         DGRAM                    252      @/org/kernel/udev/udevd
+unix  2      [ ]         DGRAM                    8797     @/org/freedesktop/hal/udev_event
+unix  2      [ ACC ]     STREAM     LISTENING     8365     /var/run/dbus/system_bus_socket
+unix  2      [ ACC ]     STREAM     LISTENING     8768     @/var/run/hald/dbus-lZiQCPOxo5
+unix  2      [ ACC ]     STREAM     LISTENING     8744     @/var/run/hald/dbus-DZUO6w9nEV
+unix  2      [ ACC ]     STREAM     LISTENING     8687     /dev/printer
+unix  3      [ ]         STREAM     CONNECTED     33353    /var/run/dbus/system_bus_socket
+unix  3      [ ]         STREAM     CONNECTED     33352
+unix  2      [ ]         DGRAM                    33351
+unix  3      [ ]         STREAM     CONNECTED     29033    /var/run/dbus/system_bus_socket
+unix  3      [ ]         STREAM     CONNECTED     29032
+unix  2      [ ]         DGRAM                    29031
+unix  3      [ ]         STREAM     CONNECTED     18208    /var/run/dbus/system_bus_socket
+unix  3      [ ]         STREAM     CONNECTED     18207
+unix  2      [ ]         DGRAM                    9231
+unix  3      [ ]         STREAM     CONNECTED     9164     /var/run/dbus/system_bus_socket
+unix  3      [ ]         STREAM     CONNECTED     9163
+unix  2      [ ]         DGRAM                    9160
+unix  2      [ ]         DGRAM                    9129
+unix  3      [ ]         STREAM     CONNECTED     8938     @/var/run/hald/dbus-DZUO6w9nEV
+unix  3      [ ]         STREAM     CONNECTED     8879
+unix  3      [ ]         STREAM     CONNECTED     8792     @/var/run/hald/dbus-lZiQCPOxo5
+unix  3      [ ]         STREAM     CONNECTED     8791
+unix  3      [ ]         STREAM     CONNECTED     8760     /var/run/dbus/system_bus_socket
+unix  3      [ ]         STREAM     CONNECTED     8759
+unix  3      [ ]         STREAM     CONNECTED     8746     /var/run/dbus/system_bus_socket
+unix  3      [ ]         STREAM     CONNECTED     8745
+unix  2      [ ]         DGRAM                    8704
+unix  2      [ ]         DGRAM                    8684
+unix  3      [ ]         STREAM     CONNECTED     8370
+unix  3      [ ]         STREAM     CONNECTED     8369
+unix  2      [ ]         DGRAM                    8338
+
+
+ 
+
+I think this means taht the port isn't in use. What's the problem then??
+
+ 
+
+Please I need to solve this as soon as posible.
+
+ 
+
+Thank you a lot!!
+
+ 
+
+Regards, 
+
+ 
+
+Sofia
+ 		 	   		  
+_________________________________________________________________
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="004277.html">[Gpsd-users] Now serving - git
+</A></li>
+	<LI>Next message: <A HREF="004279.html">[Gpsd-users] Incompatibility between gpsd and Fedora 12
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#4278">[ date ]</a>
+              <a href="thread.html#4278">[ thread ]</a>
+              <a href="subject.html#4278">[ subject ]</a>
+              <a href="author.html#4278">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

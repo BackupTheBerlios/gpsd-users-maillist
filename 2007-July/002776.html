@@ -1,0 +1,104 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] Issue with 'D' command
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2007-July/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Issue%20with%20%27D%27%20command&In-Reply-To=%3C4.3.2.7.2.20070724082837.03b120e0%40postoffice.creativesilicon.com.au%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="002773.html">
+   <LINK REL="Next"  HREF="002777.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] Issue with 'D' command</H1>
+    <B>Dave C</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Issue%20with%20%27D%27%20command&In-Reply-To=%3C4.3.2.7.2.20070724082837.03b120e0%40postoffice.creativesilicon.com.au%3E"
+       TITLE="[Gpsd-users] Issue with 'D' command">gpsd at creativesilicon.com.au
+       </A><BR>
+    <I>Tue Jul 24 00:36:17 CEST 2007</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="002773.html">[Gpsd-users] Issue with 'D' command
+</A></li>
+        <LI>Next message: <A HREF="002777.html">[Gpsd-users] Issue with 'D' command
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2776">[ date ]</a>
+              <a href="thread.html#2776">[ thread ]</a>
+              <a href="subject.html#2776">[ subject ]</a>
+              <a href="author.html#2776">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi Chris,
+
+Thanks for your prompt reply.
+
+This is what I see with two command sequences immediately following each 
+other (after logon):
+
+#&gt; telnet 127.0.0.1 2947
+DPD
+GPSD,D=2007-07-23T22:20:49.00Z,P=-27.538503 
+153.029078,D=2007-07-23T22:20:49.00Z
+DPD
+GPSD,D=2007-07-23T22:27:57.00Z,P=-27.538302 
+153.029073,D=2007-07-23T22:27:57.00Z
+
+As you can see, the first DPD command returns the date of the previous 
+client logon, then the next DPD returns the current time and date.
+
+BTW, I didn't realize that you could stack commands like this. Thanks for 
+the tip.
+
+&gt;<i>Yes, gpsd should be updating all the internal structures. About all
+</I>&gt;<i>that I can think of at this time is that your receiver is in NMEA
+</I>&gt;<i>mode, so gpsd has to assemble the full solution (including time) from
+</I>&gt;<i>a bunch of sentences, and you may just be getting very unlucky.
+</I>
+Yep, my GPS is in NMEA mode - but this is repeatable every time my process 
+attaches to gpsd.
+
+&gt;<i>That being said, perhaps you could instrument gpsd to log the results
+</I>&gt;<i>of gettimeofday() and the gps timestamp every time a request for some
+</I>&gt;<i>timestamped data is made...
+</I>
+I can do this - but I'll need a little help please. I'm not that flash a 
+programmer.... I can try pretty much anything here that needs to be done.
+
+&gt;<i>  i'll look into doing that here, see if i
+</I>&gt;<i>can't spot something....
+</I>
+Thanks. Much appreciated.
+
+ciao, Dave
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="002773.html">[Gpsd-users] Issue with 'D' command
+</A></li>
+	<LI>Next message: <A HREF="002777.html">[Gpsd-users] Issue with 'D' command
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2776">[ date ]</a>
+              <a href="thread.html#2776">[ thread ]</a>
+              <a href="subject.html#2776">[ subject ]</a>
+              <a href="author.html#2776">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

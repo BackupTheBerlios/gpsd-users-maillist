@@ -1,0 +1,155 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] gpsd 3.4, Ubuntu 12.04.1 and PPS (not working)
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2012-September/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20gpsd%203.4%2C%20Ubuntu%2012.04.1%20and%20PPS%20%28not%20working%29&In-Reply-To=%3CCAD%2B1-48W7REyJ1jOQTWPe8AYOdERYae35n_ESZBtcBE95Kd0SA%40mail.gmail.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   
+   
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] gpsd 3.4, Ubuntu 12.04.1 and PPS (not working)</H1>
+    <B>Joe Bennett</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20gpsd%203.4%2C%20Ubuntu%2012.04.1%20and%20PPS%20%28not%20working%29&In-Reply-To=%3CCAD%2B1-48W7REyJ1jOQTWPe8AYOdERYae35n_ESZBtcBE95Kd0SA%40mail.gmail.com%3E"
+       TITLE="[Gpsd-users] gpsd 3.4, Ubuntu 12.04.1 and PPS (not working)">jammer10000 at ka3nam.com
+       </A><BR>
+    <I>Sun Sep 30 03:15:05 CEST 2012</I>
+    <P><UL>
+        
+        
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#5557">[ date ]</a>
+              <a href="thread.html#5557">[ thread ]</a>
+              <a href="subject.html#5557">[ subject ]</a>
+              <a href="author.html#5557">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi,
+
+Am wondering if I am looking at this correctly. It seems to me that when I
+run: gpsd -n -N -D2 /dev/ttyS0 i get the response below. Is it normal to
+see gpsd 'hang' after it identifies the GPS? I don't remember this when the
+server ran Ubuntu 10.04. I am using gpsd to interface PPS to ntpd... Right
+now ntp seems happy with the shared memory config, but no PPS is being
+shared...
+
+I found this on the net, but it did not fix the issue as it apparently did
+to the person who posted it:
+
+<A HREF="http://lists.gnu.org/archive/html/gpsd-users/2012-04/msg00063.html">http://lists.gnu.org/archive/html/gpsd-users/2012-04/msg00063.html</A>
+
+
+
+
+ <A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">server at server</A>:~$ sudo gpsd -n -N -D2 /dev/ttyS0
+
+gpsd:INFO: launching (Version 3.4)
+
+gpsd:INFO: listening on port gpsd
+
+gpsd:INFO: NTPD ntpd_link_activate: 1
+
+gpsd:INFO: stashing device /dev/ttyS0 at slot 0
+
+gpsd:INFO: opening GPS data source type 2 at '/dev/ttyS0'
+
+gpsd:INFO: PPS cycle: 260609690, duration: 260609690 @ 1348959293.970074
+
+gpsd:INFO: speed 9600, 8N1
+
+gpsd:INFO: speed 9600, 8O1
+
+gpsd:INFO: speed 9600, 8N1
+
+gpsd:INFO: gpsd_activate(): activated GPS (fd 6)
+
+gpsd:INFO: device /dev/ttyS0 activated
+
+gpsd:INFO: running with effective group ID 20
+
+gpsd:INFO: running with effective user ID 65534
+
+gpsd:INFO: startup at 2012-09-29T22:54:55.000Z (1348959295)
+
+gpsd:INFO: PPS cycle: 262509613, duration: 1899923 @ 1348959295.869997
+
+gpsd:INFO: PPS cycle: 1999913, duration: 99990 @ 1348959295.969987
+
+gpsd:INFO: PPS cycle: 999970, duration: 899980 @ 1348959296.869967
+
+gpsd:INFO: PPS cycle: 999976, duration: 99996 @ 1348959296.969963
+
+gpsd:INFO: PPS cycle: 999978, duration: 899982 @ 1348959297.869945
+
+gpsd:INFO: PPS cycle: 999978, duration: 99996 @ 1348959297.969941
+
+gpsd:INFO: PPS cycle: 999988, duration: 899992 @ 1348959298.869933
+
+gpsd:INFO: PPS cycle: 999974, duration: 99982 @ 1348959298.969915
+
+gpsd:INFO: PPS cycle: 999965, duration: 899983 @ 1348959299.869898
+
+gpsd:INFO: PPS cycle: 999993, duration: 100010 @ 1348959299.969908
+
+gpsd:INFO: PPS cycle: 999985, duration: 899975 @ 1348959300.869883
+
+gpsd:INFO: PPS cycle: 999967, duration: 99992 @ 1348959300.969875
+
+gpsd:INFO: PPS cycle: 999973, duration: 899981 @ 1348959301.869856
+
+gpsd:INFO: PPS cycle: 999977, duration: 99996 @ 1348959301.969852
+
+gpsd:INFO: PPS cycle: 999973, duration: 899977 @ 1348959302.869829
+
+gpsd:INFO: PPS cycle: 999976, duration: 99999 @ 1348959302.969828
+
+gpsd:INFO: PPS cycle: 999982, duration: 899983 @ 1348959303.869811
+
+gpsd:INFO: PPS cycle: 999979, duration: 99996 @ 1348959303.969807
+
+gpsd:INFO: PPS cycle: 999970, duration: 899974 @ 1348959304.869781
+
+gpsd:INFO: PPS cycle: 999976, duration: 100002 @ 1348959304.969783
+
+gpsd:INFO: PPS cycle: 999978, duration: 899976 @ 1348959305.869759
+
+gpsd:INFO: PPS cycle: 999988, duration: 100012 @ 1348959305.969771
+
+gpsd:INFO: speed 4800, 8N1
+
+gpsd:INFO: /dev/ttyS0 identified as type Generic NMEA (11.898875 sec @
+4800bps)
+
+
+
+ -Joe
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	
+	
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#5557">[ date ]</a>
+              <a href="thread.html#5557">[ thread ]</a>
+              <a href="subject.html#5557">[ subject ]</a>
+              <a href="author.html#5557">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

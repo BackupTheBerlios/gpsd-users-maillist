@@ -1,0 +1,170 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] How to start gpsd with fix baud rate of	serial	interface
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2009-September/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20How%20to%20start%20gpsd%20with%20fix%20baud%20rate%20of%0A%09serial%09interface&In-Reply-To=%3C20090917180259.GA31168%40thyrsus.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="003950.html">
+   <LINK REL="Next"  HREF="003953.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] How to start gpsd with fix baud rate of	serial	interface</H1>
+    <B>Eric S. Raymond</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20How%20to%20start%20gpsd%20with%20fix%20baud%20rate%20of%0A%09serial%09interface&In-Reply-To=%3C20090917180259.GA31168%40thyrsus.com%3E"
+       TITLE="[Gpsd-users] How to start gpsd with fix baud rate of	serial	interface">esr at thyrsus.com
+       </A><BR>
+    <I>Thu Sep 17 20:02:59 CEST 2009</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="003950.html">[Gpsd-users] How to start gpsd with fix baud rate of serial	interface
+</A></li>
+        <LI>Next message: <A HREF="003953.html">[Gpsd-users] How to start gpsd with fix baud rate	ofserial	interface
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3951">[ date ]</a>
+              <a href="thread.html#3951">[ thread ]</a>
+              <a href="subject.html#3951">[ subject ]</a>
+              <a href="author.html#3951">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hamish &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">hamish_b at yahoo.com</A>&gt;:
+&gt;<i> Eric wrote:
+</I>&gt;<i> &gt; I love the Unix culture.  But this particular &quot;tradition&quot; (bolting on
+</I>&gt;<i> &gt; configuration options as a substitute for autoconfiguration) should
+</I>&gt;<i> &gt; die a swift and horrible death. It's not gpsd that is defective here,
+</I>&gt;<i> &gt; it's your habits of thought.
+</I>&gt;<i> 
+</I>&gt;<i> Or maybe it is a desire not to bind the end user to the limits of the
+</I>&gt;<i> programmer's finite imagination? (a high ratio of control freaks and
+</I>&gt;<i> gear heads might explain it too.. :)
+</I>
+&quot;A desire not to bind the end user to the limits of the programmer's
+finite imagination&quot; is both the soundest and the most frequently cited
+reason for many Unix traditions, yes.  I endorsed it as a general
+argument myself in my book &quot;The Art Of Unix Programming&quot; (TAOUP).  I
+think in general, acting on this desire is a good thing and to be
+encouraged.
+
+But I said &quot;as a substitute for autoconfiguration&quot;. That makes a much
+more specific claim about a very specific kind of situation, one where
+an option switch is used to tell a program something that it can and
+should deduce for itself.  If autoconfiguration &quot;binds the end user to
+limits&quot;, then the right way to think about it is that *it's being done
+wrong and should be fixed*, not that autoconfiguration should be
+discarded in favor of a hasty, thoughtless grab for an option switch.
+ 
+&gt;<i> I agree that an explosion of options is often used as a programmer's
+</I>&gt;<i> cop out as opposed to really sitting down and taking the time to choose
+</I>&gt;<i> good defaults or whatever; thus shifting the work load from the programmer
+</I>&gt;<i> to the users.
+</I>
+While that's true, it's actually not the sort of design error that is
+provoking my ire.  Good choice of defaults is often disputable.  Many
+other possible options of the what-background-color-do-you-want kind
+are matters of taste.  In these situations giving users lots of
+flavor options is readily defensible.
+
+What baud rate and protocol gpsd should set to make sense of incoming
+data are not like this -- these are not &quot;flavor&quot; options, these are
+&quot;drop-dead&quot; options. There is only one right baud rate and protocol;
+if you choose wrongly, you lose - you don't just get an unpleasant
+taste, *nothing works at all*.  And gpsd can figure out the right
+values in less than a minute - on a Linux box, not more than two
+seconds, and normally the time overhead is close to zero (fewer
+than three packet transits).
+
+It's that combination - errors being fatal plus discoverability - that
+makes the case for autoconfiguration open and shut.  It's not like
+choosing the style of your window decorations!
+
+&gt;<i> I can understand the slippery-slope and lead-by-example arguments, even
+</I>&gt;<i> if I don't really buy into those philosophies completely myself. At the
+</I>&gt;<i> same time though there is no shame in accepting sage advice and taking
+</I>&gt;<i> advantage of tip-offs. Quite the opposite actually - at some point it
+</I>&gt;<i> just becomes plain old bloody-mindedness to ignore those gifts.
+</I>
+Yes?  Riddle me this, Batman...you've been around, you know how
+frequently end users will screw up and misconfigure critical knobs
+like baud rates and protocol selectors if there's any way for that to
+happen.  Over the last five years, how many stupid pilot errors would
+you suppose I've avoided by *not* having these switches?
+
+If it's bloody-mindedness for me to prefer shipping a tool that just
+works in 99.9% of cases to one where there are drop-dead options
+sticking out all over that end-users routinely fuck themselves up
+with, I accept the indictment and plead for more bloody-mindedness in
+the world.
+
+Applying the kind of thinking that defends flavor options to drop-dead
+options is a bad mental habit, an overgeneralization, a category
+error that Unix programmers need to unlearn.  Yes, this means *you*,
+Hamish!  And you, Paul Fox.  
+
+Your Unix-tradition reflexes are blinding you to significant
+life-cycle costs.  Here's another one besides users shooting
+themselves in the foot: when you have n drop-dead options, test
+complexity rises on the order of 2**n.
+
+&gt;<i> My &quot;classic unix programmer&quot; solution would be to have the program check
+</I>&gt;<i> at search-time for two getenv() enviro variables called for example
+</I>&gt;<i> GPSD_BAUD_HINT and GPSD_PROTOCOL_HINT:
+</I>&gt;<i>   GPSD_BAUD_HINT=&quot;4800,N81&quot;
+</I>&gt;<i>   GPSD_PROTOCOL_HINT=&quot;NMEA&quot;
+</I>&gt;<i> If present and valid they'd be tried as the first iteration of the search
+</I>&gt;<i> loop. They don't have to be well advertised, they could be buried down
+</I>&gt;<i> the bottom of the protocol or debugging help pages. But they would be a
+</I>&gt;<i> useful debugging tool.
+</I>
+And if I ever circumvent our autoconfiguration at runtime, that's very
+likely how I'll do it.  You've proposed about the most subtle and
+understated way to address the problem that fits within Unix
+tradition.
+
+But now my problem is exactly that the gravitational pull of that
+tradition is so strong.  Once I've conceded that we're going to fall
+back into option-switch-as-band-aid behavior even once, where does it
+stop?
+ 
+&gt;<i> As a final point, folks may well be asking for this option because
+</I>&gt;<i> they have seen it in every other terminal program they've ever used
+</I>&gt;<i> and can't figure out where it has gone. But there is often deep truth
+</I>&gt;<i> to be found in &quot;the customer is always right&quot;. They may be totally 
+</I>&gt;<i> mistaken in their expectations or why the 'need' the widget, but the
+</I>&gt;<i> query itself belies the fact that something, somewhere, is amiss.
+</I>
+Yeah.  Blame it on RS-232.  But arguing that gpsd should be brain-dead because
+RS-232 is won't get you anywhere with me.
+-- 
+		&lt;a href=&quot;<A HREF="http://www.catb.org/~esr/">http://www.catb.org/~esr/</A>&quot;&gt;Eric S. Raymond&lt;/a&gt;
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="003950.html">[Gpsd-users] How to start gpsd with fix baud rate of serial	interface
+</A></li>
+	<LI>Next message: <A HREF="003953.html">[Gpsd-users] How to start gpsd with fix baud rate	ofserial	interface
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3951">[ date ]</a>
+              <a href="thread.html#3951">[ thread ]</a>
+              <a href="subject.html#3951">[ subject ]</a>
+              <a href="author.html#3951">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

@@ -1,0 +1,151 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] gpsd HEAD and SiRF
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2010-December/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20gpsd%20HEAD%20and%20SiRF&In-Reply-To=%3C20101223222454.6247c011%40dragon%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="004824.html">
+   <LINK REL="Next"  HREF="004834.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] gpsd HEAD and SiRF</H1>
+    <B>Charles Curley</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20gpsd%20HEAD%20and%20SiRF&In-Reply-To=%3C20101223222454.6247c011%40dragon%3E"
+       TITLE="[Gpsd-users] gpsd HEAD and SiRF">charlescurley at charlescurley.com
+       </A><BR>
+    <I>Fri Dec 24 06:24:54 CET 2010</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="004824.html">[Gpsd-users] gpsd HEAD and SiRF
+</A></li>
+        <LI>Next message: <A HREF="004834.html">[Gpsd-users] gpsd HEAD and SiRF
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#4831">[ date ]</a>
+              <a href="thread.html#4831">[ thread ]</a>
+              <a href="subject.html#4831">[ subject ]</a>
+              <a href="author.html#4831">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>On Thu, 23 Dec 2010 09:10:06 -0600
+Chris Kuethe &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">chris.kuethe at gmail.com</A>&gt; wrote:
+
+&gt;<i> driver_sirf.c defines two control messages &quot;enablesubframe&quot;
+</I>&gt;<i> (driver_sirf.c:60) and &quot;disablesubframe&quot; (driver_sirf.c:76). These are
+</I>&gt;<i> used to prevent link flooding, based on port speed (driver_sirf.c:424)
+</I>&gt;<i> 
+</I>&gt;<i> &gt; Thoughts?  
+</I>&gt;<i> 
+</I>&gt;<i> I think the test above, in combination with another test (serial.c:51)
+</I>&gt;<i> is broken. Please consider instrumenting serial.c to report what your
+</I>&gt;<i> device is classified as, and instrumenting driver_sirf.c to report why
+</I>&gt;<i> it chose to en-/dis-able more packets.
+</I>
+The test in serial.c looks at the device major numbers. An &quot;ls -l&quot;
+tells me the device has a major number of 188, which the test indicates
+is for USB devices.
+
+Before I recompiled to HEAD, I fired up gpsd as follows:
+
+.../gpsd.head/gpsd -N -D 8 -F /var/run/gpsd.sock /dev/ttyUSB0
+
+And got, among lots of other stuff:
+
+gpsd: polling 7
+gpsd: Read 1 chars to buffer offset 16 (total 17): 5a
+gpsd: packet_get() fd 7 -&gt; 1 (0)
+gpsd: /dev/ttyUSB0 is known to be SiRF binary
+gpsd: select() {3 4 5 6 7} -&gt; { 7 } at 1293162028.016524 (errno 0)
+gpsd: polling 7
+
+Then I recompiled to remove all the drivers except NMEA and SiRF. Also,
+I realized that the debug levels are ORed together. So:
+
+.../gpsd -N -D 255 -F /var/run/gpsd.sock /dev/ttyUSB0 &gt; foo.txt 2&gt;&amp;1
+
+With that, I see a lot of &quot;class&quot;:&quot;DEVICES&quot;,&quot;devices&quot;... messages,
+usually one or two a second. E.g:
+
+{&quot;class&quot;:&quot;DEVICE&quot;,&quot;path&quot;:&quot;/dev/ttyUSB0&quot;,&quot;activated&quot;:1293165832.02,&quot;flags&quot;:1,&quot;driver&quot;:&quot;SiRF
+binary&quot;,&quot;subtype&quot;:&quot;GSW3.1.1LowV_3.1.00.07-C23B1.00
+&quot;,&quot;native&quot;:1,&quot;bps&quot;:4800,&quot;parity&quot;:&quot;N&quot;,&quot;stopbits&quot;:1,&quot;cycle&quot;:1.00}
+
+And I do see where the subframe code is enabled:
+
+gpsd: Accepted packet on /dev/ttyUSB0.
+gpsd: SiRF: Raw packet type 0x06 length 34: 06475357332e312e314c6f77565f332e312e30302e30372d43323342312e30302000
+gpsd: SiRF: fv: 0.00, Driver state flags are: 1
+gpsd: SiRF: Enabling subframe transmission...
+gpsd: SiRF: Writing control type 80:a0a2001980000000000000000000000000000000000000000000000c10009cb0b3
+gpsd: SiRF: FV 0x06: subtype='GSW3.1.1LowV_3.1.00.07-C23B1.00 ' mask={DEVICEID}
+gpsd: modeling errors: mode=2, masks={ONLINE|DEVICEID|PACKET}
+gpsd: packet from /dev/ttyUSB0 with {ONLINE|DEVICEID|PACKET}
+
+I have a 4.1M trace. I can compress it and put it where you can grab
+it, but probably shouldn't send it to the list.
+
+The test for enabling the subframe message is:
+
+    if ( (session-&gt;gpsdata.dev.baudrate &gt;= 38400)
+      || (session-&gt;sourcetype == source_usb) ) {
+	gpsd_report(LOG_PROG, &quot;SiRF: Enabling subframe transmission...\n&quot;);
+	(void)sirf_write(session-&gt;gpsdata.gps_fd, enablesubframe);
+    }
+
+(Around line 421.) Since earlier it reports the baud rate:
+
+gpsd: selecting SiRF binary driver...
+gpsd: NTPD ntpd_link_activate: 1
+gpsd: /dev/ttyUSB0 sent 17 new characters
+gpsd: Accepted packet on /dev/ttyUSB0.
+gpsd: /dev/ttyUSB0 identified as type SiRF binary (0.064127 sec @ 4800bps)
+gpsd: SiRF: baudrate: 4800
+gpsd: SiRF: unset MID 30...
+
+If gpsd changed the baud rate (or tried to), I don't see it. I suspect
+some confusion about the baud rate.
+
+
+Let me know if any of this is useful.
+
+
+-- 
+
+Charles Curley                  /&quot;\    ASCII Ribbon Campaign
+Looking for fine software       \ /    Respect for open standards
+and/or writing?                  X     No HTML/RTF in email
+<A HREF="http://www.charlescurley.com">http://www.charlescurley.com</A>    / \    No M$ Word docs in email
+
+Key fingerprint = CE5C 6645 A45A 64E4 94C0  809C FFF6 4C48 4ECD DFDB
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="004824.html">[Gpsd-users] gpsd HEAD and SiRF
+</A></li>
+	<LI>Next message: <A HREF="004834.html">[Gpsd-users] gpsd HEAD and SiRF
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#4831">[ date ]</a>
+              <a href="thread.html#4831">[ thread ]</a>
+              <a href="subject.html#4831">[ subject ]</a>
+              <a href="author.html#4831">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

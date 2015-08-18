@@ -1,0 +1,113 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] Ocean Server digital compass,	combining data with GPS position
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2008-August/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Ocean%20Server%20digital%20compass%2C%0A%09combining%20data%20with%20GPS%20position&In-Reply-To=%3C91981b3e0808231038i57fd837i4af27f09968016c2%40mail.gmail.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="003329.html">
+   <LINK REL="Next"  HREF="003345.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] Ocean Server digital compass,	combining data with GPS position</H1>
+    <B>Chris Kuethe</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Ocean%20Server%20digital%20compass%2C%0A%09combining%20data%20with%20GPS%20position&In-Reply-To=%3C91981b3e0808231038i57fd837i4af27f09968016c2%40mail.gmail.com%3E"
+       TITLE="[Gpsd-users] Ocean Server digital compass,	combining data with GPS position">chris.kuethe at gmail.com
+       </A><BR>
+    <I>Sat Aug 23 19:38:26 CEST 2008</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="003329.html">[Gpsd-users] Ocean Server digital compass,	combining data with GPS position
+</A></li>
+        <LI>Next message: <A HREF="003345.html">[Gpsd-users] Ocean Server digital compass,	combining data with	GPS position
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3336">[ date ]</a>
+              <a href="thread.html#3336">[ thread ]</a>
+              <a href="subject.html#3336">[ subject ]</a>
+              <a href="author.html#3336">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>On Thu, Aug 21, 2008 at 4:26 AM, Phil Endecott
+&lt;<A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">spam_from_gpsd at chezphil.org</A>&gt; wrote:
+&gt;<i> Dear Experts,
+</I>&gt;<i>
+</I>&gt;<i> I've just bought myself an Ocean Server OS5000 digital compass:
+</I>&gt;<i>
+</I>&gt;<i>   <A HREF="http://www.ocean-server.com/compass.html">http://www.ocean-server.com/compass.html</A>
+</I>&gt;<i>
+</I>&gt;<i> It's a small board with a 3-axis accelerometer and a 3-axis magnetic
+</I>&gt;<i> sensor, and it outputs heading, pitch and roll over a serial and/or USB
+</I>&gt;<i> interface.  It has various configuration settings and at least one of
+</I>&gt;<i> its output formats is NMEA sentences.
+</I>
+Fun. I wish it had gyros too.
+
+&gt;<i> I note that gpsd claims to work with another digital compass from True
+</I>&gt;<i> North Technologies; I have the impression that that's a similar device,
+</I>&gt;<i> though rather more expensive.  So presumably it will or could be hacked
+</I>&gt;<i> to work with my device.
+</I>
+We only claim weak compatibility with the TrueNorth device. None of
+the developers have one and getting access to one seems to be
+difficult. There seem to be some quirks with device initialization...
+
+&gt;<i> What I want to do is to get both the compass data AND position
+</I>&gt;<i> information from a GPS connected to another USB port.  But as I
+</I>&gt;<i> understand it, gpsd does not attempt to merge data from more than one
+</I>&gt;<i> source and in fact the application will get one or the other, randomly.
+</I>
+close. gpsd won't merge data, but it will keep the streams separate.
+you can switch between which device you're querying with the F
+command.
+
+&gt;<i> Have I understood this correctly?  Is anyone using the True North
+</I>&gt;<i> device in combination with a GPS?  Could gpsd be modified to do what I
+</I>&gt;<i> want, or am I better off writing my own code?
+</I>
+I think we had 1 TrueNorth user - haven't heard from him in ages.
+
+i'm not so keen on the current approach to overloading the meaning of
+various gpsd internals to map in devices other than GPSes. I think
+some refactoring needs to happen if we want to start being a
+generalize random-fragments-of-navigation-state relay daemon.
+
+If you're just looking to propagate NMEA data from this compass gpsd
+can probably relay it in &quot;R=1&quot; mode, though no processing will be done
+- it's just pass-through.
+
+CK
+
+-- 
+GDB has a 'break' feature; why doesn't it have 'fix' too?
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="003329.html">[Gpsd-users] Ocean Server digital compass,	combining data with GPS position
+</A></li>
+	<LI>Next message: <A HREF="003345.html">[Gpsd-users] Ocean Server digital compass,	combining data with	GPS position
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3336">[ date ]</a>
+              <a href="thread.html#3336">[ thread ]</a>
+              <a href="subject.html#3336">[ subject ]</a>
+              <a href="author.html#3336">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

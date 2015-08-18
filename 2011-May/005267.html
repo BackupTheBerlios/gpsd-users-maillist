@@ -1,0 +1,118 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] [Gpsd-dev] Gpsd configuration files
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2011-May/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20%5BGpsd-dev%5D%20Gpsd%20configuration%20files&In-Reply-To=%3C4DE520F7.7090903%40open-t.co.uk%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="005266.html">
+   <LINK REL="Next"  HREF="005268.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] [Gpsd-dev] Gpsd configuration files</H1>
+    <B>Sebastian Arcus</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20%5BGpsd-dev%5D%20Gpsd%20configuration%20files&In-Reply-To=%3C4DE520F7.7090903%40open-t.co.uk%3E"
+       TITLE="[Gpsd-users] [Gpsd-dev] Gpsd configuration files">shop at open-t.co.uk
+       </A><BR>
+    <I>Tue May 31 19:10:15 CEST 2011</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="005266.html">[Gpsd-users] [Gpsd-dev] Gpsd configuration files
+</A></li>
+        <LI>Next message: <A HREF="005268.html">[Gpsd-users] [Gpsd-dev]   Gpsd configuration files
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#5267">[ date ]</a>
+              <a href="thread.html#5267">[ thread ]</a>
+              <a href="subject.html#5267">[ subject ]</a>
+              <a href="author.html#5267">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi
+
+On 31/05/11 17:39, Eric Raymond wrote:
+&gt;<i> Sebastian Arcus&lt;<A HREF="https://lists.berlios.de/mailman/listinfo/gpsd-users">shop at open-t.co.uk</A>&gt;:
+</I>&gt;&gt;<i> I was just wondering why gpsd doesn't have a configuration file in
+</I>&gt;&gt;<i> /etc/gpsd.conf, like most other Unix/Linux software?
+</I>&gt;<i>
+</I>&gt;<i> Because configuration files are evil, and not to be countenanced unless they
+</I>&gt;<i> become an absolutely necessary evil. Which in gpsd's case is not yet,
+</I>&gt;<i> and I sincerely hope not *ever*.
+</I>&gt;<i>
+</I>&gt;<i> Yes, I know this sounds like heresy coming from a Unix programmer.  But the
+</I>&gt;<i> trouble with configuration files is that they too easily become an excuse
+</I>&gt;<i> for not doing the right thing. (The same is true of command-line switches;
+</I>&gt;<i> all of what I have to say here against config files applies to switches
+</I>&gt;<i> as well, which is why gpsd has so few of them.)
+</I>&gt;<i>
+</I>&gt;<i> Can't decide whether that new feature is a good idea or not? Create an
+</I>&gt;<i> option.  Can't settle a design issue?  Create an option. Can't be
+</I>&gt;<i> bothered to figure out how to autoconfigure your software properly?
+</I>&gt;<i> Create an option.  Want to double your software's test complexity?
+</I>&gt;<i> Create an option.
+</I>&gt;<i>
+</I>&gt;<i> Lots of options and elaborate config files are sometimes necessary for
+</I>&gt;<i> Swiss-Army-knife-like system utilities; I implemented a boatload of them
+</I>&gt;<i> in fetchmail because I had to. But doing that made me unhappy and I
+</I>&gt;<i> junked a lot of delivery options when I figured out that forwarding
+</I>&gt;<i> fetched mail to SMTP was the right thing.
+</I>&gt;<i>
+</I>&gt;<i> It's better to design so you don't *need* a configuration file.  One
+</I>&gt;<i> of gpsd's goals is to be zero-configuration; when it's installed properly,
+</I>&gt;<i> you plug in a USB GPS and it just works.  Nothing to tweak, nothing
+</I>&gt;<i> to configure, nothing you have to mess with.
+</I>
+Well, I'm all happy with that philosophy. Then why does it take four 
+different configuration/script files and a Unix socket (which means you 
+need RW access to the file system when you start gpsd) in order to hot 
+plug gps devices? You need:
+/etc/default/gpsd
+/etc/udev/rules.d/gpsd.rules
+/lib/udev/gpsd.hotplug
+/lib/udev/gpsd.hotplug.wrapper
+
+I was suggesting an approach which would have used one single 
+/etc/gpsd.conf instead of the four above. If somebody can do away with 
+all of them without replacement, that's even better.
+
+It seems to me that  in order to avoid a single configuration file at 
+all costs, the setup ended up far more complicated then it was needed.
+
+The way I see it, the main problem is that gpsd doesn't have (as far as 
+I can figure out) an operation mode where it keeps an eye out on new 
+/dev/ttyUSBx and /dev/ttySx devices and connects to them automatically 
+when they are inserted - without needing udev, udev rules, one Bash 
+script, one Python script, one config file in /etc and one Unix socket.
+
+Sebastian
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="005266.html">[Gpsd-users] [Gpsd-dev] Gpsd configuration files
+</A></li>
+	<LI>Next message: <A HREF="005268.html">[Gpsd-users] [Gpsd-dev]   Gpsd configuration files
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#5267">[ date ]</a>
+              <a href="thread.html#5267">[ thread ]</a>
+              <a href="subject.html#5267">[ subject ]</a>
+              <a href="author.html#5267">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

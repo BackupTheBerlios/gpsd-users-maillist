@@ -1,0 +1,97 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] gps_data_t.online always changes
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2007-May/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20gps_data_t.online%20always%20changes&In-Reply-To=%3C464C8242.4AAF.00BD.0%40cavs.msstate.edu%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="002649.html">
+   <LINK REL="Next"  HREF="002646.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] gps_data_t.online always changes</H1>
+    <B>Marshall Crocker</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20gps_data_t.online%20always%20changes&In-Reply-To=%3C464C8242.4AAF.00BD.0%40cavs.msstate.edu%3E"
+       TITLE="[Gpsd-users] gps_data_t.online always changes">crocker at cavs.msstate.edu
+       </A><BR>
+    <I>Thu May 17 23:26:42 CEST 2007</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="002649.html">[Gpsd-users] [ gpsdrive ] Re:  UT-41/GT-331R USB GPS
+</A></li>
+        <LI>Next message: <A HREF="002646.html">[Gpsd-users] gps_data_t.online always changes
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2645">[ date ]</a>
+              <a href="thread.html#2645">[ thread ]</a>
+              <a href="subject.html#2645">[ subject ]</a>
+              <a href="author.html#2645">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>I'm using the c++ interface for gpsd and I'm attempting to use gps_data_t.online to determine if the connected gps is actually sending data.  My system has been prone to stop receiving gps data ( haven't determined if it's a problem with the hardware or software ) so I figured I could use the online member from the gps_data_t struct to determine if gpsd is receiving data from the gps.  I know I could open the serial port and check myself but I figured that information was already available somewhere in gps_data_t.
+
+What I'm seeing is that online always changes even if I unplug the gps.  I can telnet to gpsd and execute &quot;x&quot; and the online timestamp is not updated but executing the query and reading online from my application always returns a different value.  I assume it's something I'm doing wrong with my query.  Here's the general idea of what I'm doing:
+
+gpsmm gpsd;
+struct gps_data_t *gpsdata = NULL;
+
+gpsdata = gpsd.open();
+
+if ( ! gpsdata )
+{
+     ....
+}
+
+/// gather gps data from gpsd every second
+while ( !bExit )
+{
+	gpsdata = gpsd.query(&quot;w+p\n&quot;);
+
+	if ( gpsdata )
+	{
+                     cout &lt;&lt; gpsdata-&gt;online &lt;&lt; endl;
+
+                 }
+
+	sleep( 1 );
+}
+
+
+Maybe by executing query() each time I'm forcing an update?  Should I change it to execute query(&quot;w+\n&quot;) after opening a connection to gpsd and then poll() each time in the loop?
+
+Thanks for any help,
+
+Marshall
+
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="002649.html">[Gpsd-users] [ gpsdrive ] Re:  UT-41/GT-331R USB GPS
+</A></li>
+	<LI>Next message: <A HREF="002646.html">[Gpsd-users] gps_data_t.online always changes
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2645">[ date ]</a>
+              <a href="thread.html#2645">[ thread ]</a>
+              <a href="subject.html#2645">[ subject ]</a>
+              <a href="author.html#2645">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

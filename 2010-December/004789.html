@@ -1,0 +1,164 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] Bidirectional 'raw' communication using libgpsd
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2010-December/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Bidirectional%20%27raw%27%20communication%20using%20libgpsd&In-Reply-To=%3CAANLkTi%3Dy1F5Hvp4Qtj6KcHFXUMwwGy_N%3DFweXnMakVuy%40mail.gmail.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="004788.html">
+   <LINK REL="Next"  HREF="004790.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] Bidirectional 'raw' communication using libgpsd</H1>
+    <B>Mario De Weerd</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Bidirectional%20%27raw%27%20communication%20using%20libgpsd&In-Reply-To=%3CAANLkTi%3Dy1F5Hvp4Qtj6KcHFXUMwwGy_N%3DFweXnMakVuy%40mail.gmail.com%3E"
+       TITLE="[Gpsd-users] Bidirectional 'raw' communication using libgpsd">m.deweerd at ieee.org
+       </A><BR>
+    <I>Mon Dec  6 12:45:19 CET 2010</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="004788.html">[Gpsd-users] Bidirectional 'raw' communication using libgpsd
+</A></li>
+        <LI>Next message: <A HREF="004790.html">[Gpsd-users] Bidirectional 'raw' communication using libgpsd
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#4789">[ date ]</a>
+              <a href="thread.html#4789">[ thread ]</a>
+              <a href="subject.html#4789">[ subject ]</a>
+              <a href="author.html#4789">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi
+
+Responding to a set of replies that I received in the DIGEST:
+
+
+&gt;<i> As Eric said, the whole point of gpsd is that it manages the
+</I>&gt;<i> device on its own. That's what it does, that's what it's
+</I>&gt;<i> designed to do.
+</I>&gt;<i>
+</I>&gt;<i> Once you start allowing other tools to write to the receiver
+</I>&gt;<i> too, you enter a world of pain as gpsd is no longer able to
+</I>&gt;<i> guarantee that the receiver is in the state that it's asked
+</I>&gt;<i> it to be in. It's just completely intractable.
+</I>
+I agree that state management could become a pain, but in most cases it will
+not be a pain.
+Currently the pain is that GPSD monopolises the port.
+BT747 does a lot more than retrieving current position data - it retrieves
+stored data logs and allows configuration of log conditions, etc.
+BT747 is also multiplatform - including Windows and mobile devices, so the
+intent is not to leave NMEA analysis out.  The NMEA analysis is mainly there
+for the control commands/replies anyway.
+
+&gt;<i> Methinks ESR mean &quot;hack&quot; as a compliment.
+</I>&gt;<i> <A HREF="http://www.catb.org/~esr/faqs/hacker-howto.html">http://www.catb.org/~esr/faqs/hacker-howto.html</A>
+</I>
+I am a hacker.  It's just that I consider hacking to be the act of modifying
+an existing system to overcome a limit in a way that was not intended in the
+original design.
+
+
+&gt;<i> To be clear, BT747 should go through libgps, not direct to gpsd itself.
+</I>&gt;<i> Then you leave all the intricacies of the vendor's mangling of NMEA,
+</I>&gt;<i> etc. to gpsd, and the BT747 code is a lot cleaner.
+</I>
+BT747 probably has more NMEA mangling regarding MTK devices than GPSD does.
+
+&gt;<i> A Java wrapper around libgps shouldn't be too hard to do. I would
+</I>&gt;<i> suggest a set of factory classes to produce beans with the various
+</I>&gt;<i> types of data libgps produces, per the &quot;set&quot; bit mask in struct
+</I>&gt;<i> gps_data_t (gps.h), or maybe just the interesting ones. Do that up
+</I>&gt;<i> right, and any gpsd client written in Java could use it.
+</I>
+I agree that such a thing would be a reuseable component.  Native libraries
+are a pain though in Java because you need a build for every system and the
+idea is to avoid that.  So using standard mechanism known by Java makes that
+more portable.  'Unix domain sockets' are not part of that standard.
+
+&gt;<i> On a quick check of the gpsd hardware compatibility list
+</I>&gt;<i> (<A HREF="http://gpsd.berlios.de/hardware.html">http://gpsd.berlios.de/hardware.html</A>), I don't see any BT747 devices
+</I>&gt;<i> there. This may be because no-one has tested any with gpsd. I'd be
+</I>&gt;<i> curious to see how they fare together.
+</I>There is one or two (M-241 for instance).
+
+&gt;<i> If I understand what I read on the BT747 page, BT747 is capable of
+</I>&gt;<i> pulling logging data from a compatible receiver. Does gpsd support
+</I>&gt;<i>anything like that?
+</I>I don't think GPSD is doing that, but I am not a GPSD expert.
+
+&gt;&gt;<i> A pity that this control port is a unix domain socket and not a TCP
+</I>socket.
+&gt;&gt;<i>   I do not think that security will be hurt a lot if it were a TCP socket
+</I>&gt;&gt;<i> listening on 127.0.0.1 only (accepting from the localhost only, and not
+</I>&gt;&gt;<i> listening on the public IP address).
+</I>&gt;<i>
+</I>&gt;<i>Why? Why add the overhead of going through the network stack
+</I>&gt;<i>-- even if you're avoiding the physical drivers -- if you're
+</I>&gt;<i>just doing local IPC?
+</I>
+ I need the reply from the device. and I did not see the equivalent of a
+'?WATCH' command in the Control Socket Commands.
+
+&gt;<i> Unix domain sockets are fine.
+</I>But not supported by default in java and not so commonly used.
+
+&gt;&gt;<i> After connecting to the Unix socket @/var/run/gps.sock , I got 'OK'
+</I>&gt;&gt;<i> responses, but no reaction from the device.
+</I>&gt;&gt;<i> I requested a cold start using:
+</I>&gt;&gt;<i> !/dev/ttyS0=$PMTK103*30
+</I>&gt;&gt;<i> and I also tried the hex equivalent using '&amp;'.
+</I>&gt;&gt;<i> I got an 'OK' each time, but the device did not 'cold start'.
+</I>&gt;<i>
+</I>&gt;<i>Your device is probably expecting a newline after
+</I>&gt;<i>&quot;$PMTK103*30&quot;. I suggest hex-encoding the entire string
+</I>&gt;<i>&quot;$PMTK103*30\n&quot; and sending it with the '&amp;' variant.
+</I>
+I already tried the hex encoding, including concatenating the command
+several times in the same '&amp;' call so that at least one of them was preceded
+by a 0d0a  (A \n is not always sufficient - \r\n is more complete).
+So I also did something like:
+&amp;/dev/ttyS0=24504d544b3130332a33300d0a24504d544b3130332a33300d0a24504d544b3130332a33300d0a
+
+And I did it as 'root' to avoid any potential restriction of rights on the
+unix domain socket.  Given the I got an 'OK' response (and sometimes ERROR
+when not putting the right command), I conclude that write and read both
+worked.
+
+So I guess I'll have to resort to some serial protocol sniffing to see what
+is really sent (supposing that something was sent).
+
+Kind regards
+
+Mario
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="004788.html">[Gpsd-users] Bidirectional 'raw' communication using libgpsd
+</A></li>
+	<LI>Next message: <A HREF="004790.html">[Gpsd-users] Bidirectional 'raw' communication using libgpsd
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#4789">[ date ]</a>
+              <a href="thread.html#4789">[ thread ]</a>
+              <a href="subject.html#4789">[ subject ]</a>
+              <a href="author.html#4789">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

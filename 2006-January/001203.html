@@ -1,0 +1,166 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] new bug + fix: gpsd dropping connection regardless of activity
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2006-January/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20new%20bug%20%2B%20fix%3A%20gpsd%20dropping%20connection%20regardless%0A%20of%20activity&In-Reply-To=%3C43BBEBC6.1000209%40vonnieda.org%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="001202.html">
+   <LINK REL="Next"  HREF="001204.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] new bug + fix: gpsd dropping connection regardless of activity</H1>
+    <B>Jason von Nieda</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20new%20bug%20%2B%20fix%3A%20gpsd%20dropping%20connection%20regardless%0A%20of%20activity&In-Reply-To=%3C43BBEBC6.1000209%40vonnieda.org%3E"
+       TITLE="[Gpsd-users] new bug + fix: gpsd dropping connection regardless of activity">jason at vonnieda.org
+       </A><BR>
+    <I>Wed Jan  4 16:37:42 CET 2006</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="001202.html">[Gpsd-users] new bug + fix: gpsd dropping connection regardless of activity
+</A></li>
+        <LI>Next message: <A HREF="001204.html">[Gpsd-users] gpstoge
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1203">[ date ]</a>
+              <a href="thread.html#1203">[ thread ]</a>
+              <a href="subject.html#1203">[ subject ]</a>
+              <a href="author.html#1203">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>This is great! I had been experiencing this in my carputer but hadn't
+had time to investigate it. It seemed that the connection was dropping
+about every 15 minutes.
+
+Thanks,
+Jason von Nieda
+
+Robin L Darroch wrote:
+&gt;<i> Happy new year everyone!
+</I>&gt;<i>
+</I>&gt;<i> I'm continuing work on a gpsd-to-Google Earth real-time translator,
+</I>&gt;<i> and it's working pretty well so far.  However, I kept getting &quot;Broken
+</I>&gt;<i> Pipe&quot; messages, and by testing with other gpsd clients (including
+</I>&gt;<i> straight telnet sessions) I've found a bug in gpsd 2.30 itself. Given
+</I>&gt;<i> the additional problems in versions between 2.25 and 2.30 I haven't
+</I>&gt;<i> rebuilt all the intervening versions to see when the bug first
+</I>&gt;<i> appeared, but I don't believe I had seen this problem in 2.25 (which
+</I>&gt;<i> was the last version I used for a substantial period of time).
+</I>&gt;<i> Although I'll share the full source code for my &quot;gpstoge&quot; program
+</I>&gt;<i> shortly, the part that interfaces with gpsd is as follows:
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i>     gps1 = gps_open(server,port);
+</I>&gt;<i>     gps_query(gps1, &quot;o\n&quot;);
+</I>&gt;<i>     sleep(1);
+</I>&gt;<i>
+</I>&gt;<i>     for (;;) {
+</I>&gt;<i>
+</I>&gt;<i>         gps_query(gps1, &quot;o\n&quot;);
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i>         sleep(3);
+</I>&gt;<i>     }
+</I>&gt;<i>
+</I>&gt;<i>     gps_close(gps1);
+</I>&gt;<i>
+</I>&gt;<i> The first &quot;o&quot; query is just to make sure that gpsd is awake, then
+</I>&gt;<i> after that an &quot;o&quot; query is sent every three seconds without fail.
+</I>&gt;<i> Another program I use - KisMAC - sends a query every second or two
+</I>&gt;<i> also... and yet it will regularly report that gpsd 2.30 has closed the
+</I>&gt;<i> connection.
+</I>&gt;<i>
+</I>&gt;<i> Although I've coded gpstoge to work around the problem (by closing and
+</I>&gt;<i> reopening the connection if it doesn't get a successful result from
+</I>&gt;<i> gps_query), this shouldn't really be necessary if gpsd can be
+</I>&gt;<i> persuaded not to close active connections.  So, what is gpsd
+</I>&gt;<i> reporting?  Well, there's the curious part:
+</I>&gt;<i>
+</I>&gt;<i> [whole bunch of normal debug output, then...]
+</I>&gt;<i> GPS sent 1 new characters
+</I>&gt;<i> &lt;= GPS:
+</I>&gt;<i> $GPRMC,004952.747,A,2022.6884,S,11837.9725,E,0.000000,,040106,,*08
+</I>&gt;<i> gpsd: polling 5
+</I>&gt;<i> Read 1 chars to buffer offset 0 (total 1): 24
+</I>&gt;<i> 00197365: character '$' [24], new state: NMEA_DOLLAR
+</I>&gt;<i> GPS sent 1 new characters
+</I>&gt;<i> New data, not yet a packet
+</I>&gt;<i> gpsd: client(4) timed out on command wait.
+</I>&gt;<i> gpsd: detaching 4 in detach_client
+</I>&gt;<i> gpsd: unflagging descriptor 5 in open_device
+</I>&gt;<i> closing GPS=/dev/cu.usbserial0 (5)
+</I>&gt;<i>
+</I>&gt;<i> So... it claims to be timing out &quot;on command wait&quot;.
+</I>&gt;<i>
+</I>&gt;<i> Further debugging has shown that it is reaching the limit for the
+</I>&gt;<i> difference between &quot;subscribers[cfd].active&quot; and &quot;timestamp()&quot;, so
+</I>&gt;<i> I've investigated what is happening to &quot;.active&quot;... and it appears the
+</I>&gt;<i> answer is &quot;nothing&quot;.  Well, that's not entirely true.  It's assigned
+</I>&gt;<i> the current timestamp when the client first connects, but it is not
+</I>&gt;<i> updated at all regardless of client activity, so - as it has been
+</I>&gt;<i> coded to do - it will drop the connection when a given client,
+</I>&gt;<i> regardless of activity, has been connected continuously for
+</I>&gt;<i> POLLER_TIMEOUT.
+</I>&gt;<i>
+</I>&gt;<i> I believe the idea should be to disconnect a client only if it has
+</I>&gt;<i> been *inactive* for that long, so I've added a line in gpsd.c to
+</I>&gt;<i> update .active every time it actually sends information to the client:
+</I>&gt;<i>
+</I>&gt;<i> 10:28 [~/src/gpsd-2.30] robin&gt; diff -u gpsd-orig.c gpsd.c
+</I>&gt;<i> --- gpsd-orig.c 2006-01-04 10:25:48.000000000 +0800
+</I>&gt;<i> +++ gpsd.c      2006-01-04 10:29:27.000000000 +0800
+</I>&gt;<i> @@ -1479,7 +1479,9 @@
+</I>&gt;<i>                 } else {
+</I>&gt;<i>                     buf[buflen] = '\0';
+</I>&gt;<i>                     gpsd_report(1, &quot;&lt;= client(%d): %s&quot;, cfd, buf);
+</I>&gt;<i> -
+</I>&gt;<i> +                       // added to prevent timeouts
+</I>&gt;<i> +                       subscribers[cfd].active = timestamp();
+</I>&gt;<i> +
+</I>&gt;<i>  #ifdef RTCM104_SERVICE
+</I>&gt;<i>                     if (subscribers[cfd].rtcm) {
+</I>&gt;<i>                         if (handle_dgpsip_request(cfd, buf, buflen) &lt; 0)
+</I>&gt;<i>
+</I>&gt;<i> I've tested this using both my gpstoge client, and telnet sessions
+</I>&gt;<i> (one in watcher mode, and another with a query or two and then idle).
+</I>&gt;<i> The idle session is disconnected as it should be, but the others
+</I>&gt;<i> remain active.
+</I>&gt;<i>
+</I>&gt;<i> One bug squashed!
+</I>&gt;<i>
+</I>&gt;<i> Cheers,
+</I>&gt;<i> Robin
+</I>&gt;<i>
+</I>&gt;<i> P.S.  When I do reach a point of deciding that gpstoge is ready to go,
+</I>&gt;<i> what is the best way to share it with others on this list?
+</I>
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="001202.html">[Gpsd-users] new bug + fix: gpsd dropping connection regardless of activity
+</A></li>
+	<LI>Next message: <A HREF="001204.html">[Gpsd-users] gpstoge
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1203">[ date ]</a>
+              <a href="thread.html#1203">[ thread ]</a>
+              <a href="subject.html#1203">[ subject ]</a>
+              <a href="author.html#1203">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>

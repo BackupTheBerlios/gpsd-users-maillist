@@ -1,0 +1,117 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Gpsd-users] Gpsd on a Zaurus SL-C3000
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/gpsd-users/2005-March/index.html" >
+   <LINK REL="made" HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Gpsd%20on%20a%20Zaurus%20SL-C3000&In-Reply-To=%3C200503292244.38515.john%40jsjf.demon.co.uk%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="000455.html">
+   <LINK REL="Next"  HREF="000444.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Gpsd-users] Gpsd on a Zaurus SL-C3000</H1>
+    <B>John Foster</B> 
+    <A HREF="mailto:gpsd-users%40lists.berlios.de?Subject=Re%3A%20%5BGpsd-users%5D%20Gpsd%20on%20a%20Zaurus%20SL-C3000&In-Reply-To=%3C200503292244.38515.john%40jsjf.demon.co.uk%3E"
+       TITLE="[Gpsd-users] Gpsd on a Zaurus SL-C3000">john at jsjf.demon.co.uk
+       </A><BR>
+    <I>Wed Mar 30 00:44:38 CEST 2005</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="000455.html">[Gpsd-users] Gpsd on a Zaurus SL-C3000
+</A></li>
+        <LI>Next message: <A HREF="000444.html">[Gpsd-users] Intro + (bit Off-Topic) Leadtek 9532
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#456">[ date ]</a>
+              <a href="thread.html#456">[ thread ]</a>
+              <a href="subject.html#456">[ subject ]</a>
+              <a href="author.html#456">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>On Tuesday 29 March 2005 7:20 pm, Gary E. Miller wrote:
+&gt;<i> Yo John!
+</I>&gt;<i>
+</I>&gt;<i> On Tue, 29 Mar 2005, John Foster wrote:
+</I>&gt;<i> &gt; The other 12 are in garmin.c as
+</I>&gt;<i> &gt; follows: line number, and the expression that offended the compiler. Line
+</I>&gt;<i> &gt; numbers relate to version 2.19 tarball. In each case, the message is
+</I>&gt;<i> &gt; &quot;warning: cast increases required alignment of target type&quot;.
+</I>&gt;<i>
+</I>&gt;<i> I an the person responsible to that tortured code.  It is cobbled
+</I>&gt;<i> together from a number of sources so is not exactly consistent.  Not
+</I>&gt;<i> an example pf great code, but it works.  So I guess I need to answer
+</I>&gt;<i> this.
+</I>&gt;<i>
+</I>&gt;<i> &gt; 571: (Packet_t*)session-&gt;GarminBuffer
+</I>&gt;<i>
+</I>&gt;<i> Basically the Packet_t is a poor-man's union with a character buffer.
+</I>&gt;<i> That allows the code to access items in the packet by offset in the packet
+</I>&gt;<i> or by structure name.  Some of the code I stole used one method and some
+</I>&gt;<i> another, so this makes both happy.
+</I>&gt;<i>
+</I>&gt;<i> This only works if the structure is packed.  If the structure is packed
+</I>&gt;<i> then the alignment should, and must, be identical.  So my best guess is
+</I>&gt;<i> that your compiler does not understand, and does not obey, line 99 in
+</I>&gt;<i> garmin.c:
+</I>&gt;<i>
+</I>&gt;<i> #pragma pack(1)
+</I>
+The gcc docs don't seem to mention that pragma, but __attribute__ ((packed)) 
+made no difference. I had thought it was a question of aligning the start 
+address of the whole character array, but I've tried that, and it made no 
+difference either. I agree with Eric's view: the compiler is simply being 
+over-picky.
+
+It's not an issue for me: the C3000 has an Arm processor like other models, 
+and I don't know of any architectural issues. I made the original post only 
+because I saw nothing in the archive about building on that platform so I 
+thought maybe it'd be helpful to record the experience.
+
+Gspd does run, but I can't prove it works yet because I haven't been able to 
+get any output from the card, even using the stty method in the INSTALL 
+document. When I solve that one, I'll hopefully be able to report success!
+
+&gt;<i> BTW, do you know if libusb runs on your target?  Not implemented, but in
+</I>&gt;<i> the noodling stage, is support for libusb instead of native kernel drivers.
+</I>
+Ah, now that's a good one. What I know about libusb is approximately zero, and 
+I'm not sure whether you mean 'is running' or 'would run'. I can tell you 
+that I can't find a file whose name begins with libusb in the 
+LD_LIBRARY_PATH: does that answer the question, or do you have another 
+suggestion as to how I can tell?
+
+Cheers
+
+John
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="000455.html">[Gpsd-users] Gpsd on a Zaurus SL-C3000
+</A></li>
+	<LI>Next message: <A HREF="000444.html">[Gpsd-users] Intro + (bit Off-Topic) Leadtek 9532
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#456">[ date ]</a>
+              <a href="thread.html#456">[ thread ]</a>
+              <a href="subject.html#456">[ subject ]</a>
+              <a href="author.html#456">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/gpsd-users">More information about the Gpsd-users
+mailing list</a><br>
+</body></html>
